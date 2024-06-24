@@ -87,7 +87,8 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 
 <h3><a id="index_m"></a>- m -</h3><ul>
 <li>m_args
-: <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a81cbbfab8168bd34880ce326a25d83aa">alpaka::TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
+: <a class="el" href="classalpaka_1_1KernelBundle.html#acbf8bda87406b19f8b1b2ce067cd9d6a">alpaka::KernelBundle&lt; TKernelFn, TArgs &gt;</a>
+, <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a81cbbfab8168bd34880ce326a25d83aa">alpaka::TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>m_barrier
 : <a class="el" href="classalpaka_1_1BlockSyncBarrierThread.html#a64a992d8a5e98e972330b9dba62befb7">alpaka::BlockSyncBarrierThread&lt; TIdx &gt;</a>
@@ -208,6 +209,9 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 </li>
 <li>m_isMasterThreadFn
 : <a class="el" href="classalpaka_1_1BlockSharedMemStMemberMasterSync.html#a1f09f14335a657fc3607e2e300ba9d5a">alpaka::BlockSharedMemStMemberMasterSync&lt; TDataAlignBytes &gt;</a>
+</li>
+<li>m_kernelFn
+: <a class="el" href="classalpaka_1_1KernelBundle.html#a3b9539e109d47f4adcecb461f55495d4">alpaka::KernelBundle&lt; TKernelFn, TArgs &gt;</a>
 </li>
 <li>m_kernelFnObj
 : <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a35fc3725cde6251430e0930d4a8ee681">alpaka::TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
@@ -351,6 +355,12 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 , <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10.html#a53257c0379a7720881a0565451cbab19">alpaka::rand::Philox4x32x10</a>
 , <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a804014e48e8fac499c9b39bdc44e6821">alpaka::rand::Philox4x32x10Vector</a>
 </li>
+<li>maxDynamicSharedSizeBytes
+: <a class="el" href="structalpaka_1_1KernelFunctionAttributes.html#ac7edfb6d5b99bb259e3e54cf5fe9f398">alpaka::KernelFunctionAttributes</a>
+</li>
+<li>maxThreadsPerBlock
+: <a class="el" href="structalpaka_1_1KernelFunctionAttributes.html#a6f6de3aec1d4fed5a751b6e505406763">alpaka::KernelFunctionAttributes</a>
+</li>
 <li>mem_fence()
 : <a class="el" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4.html#aa23ac86d13f9626908887303258a6869">alpaka::trait::MemFence&lt; MemFenceCpu, TMemScope &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Block_01_4.html#abfd0c9cef19a19ce08a551c3f9e55a29">alpaka::trait::MemFence&lt; MemFenceCpuSerial, memory_scope::Block &gt;</a>
@@ -433,7 +443,7 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jun 21 2024 11:54:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jun 24 2024 09:27:04 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

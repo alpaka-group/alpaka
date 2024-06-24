@@ -330,6 +330,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1IsKernelArgumentTriviallyCopyable.html">IsKernelArgumentTriviallyCopyable</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a type used as kernel argument is trivially copyable.  <a href="structalpaka_1_1IsKernelArgumentTriviallyCopyable.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html">KernelBundle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class used to bind kernel function object and arguments together. Once an instance of this class is created, arguments are not needed to be separately given to functions who need kernel function and arguments.  <a href="classalpaka_1_1KernelBundle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1KernelFunctionAttributes.html">KernelFunctionAttributes</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel function attributes struct. Attributes are filled by calling the API of the accelerator using the kernel function as an argument. In case of a CPU backend, maxThreadsPerBlock is set to 1 and other values remain zero since there are no correponding API functions to get the values.  <a href="structalpaka_1_1KernelFunctionAttributes.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1MemFenceCpu.html">MemFenceCpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default CPU memory fence.  <a href="classalpaka_1_1MemFenceCpu.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -537,9 +543,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">TagToAcc</a> = typename <a class="el" href="structalpaka_1_1trait_1_1TagToAcc.html">trait::TagToAcc</a>&lt; TTag, TDim, TIdx &gt;::type</td></tr>
 <tr class="memdesc:affc8849a6a5b20ced64d3f1248e24a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps a tag type to an acc type  <a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">More...</a><br /></td></tr>
 <tr class="separator:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35">TaskKernelGpuCudaRt</a> = <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt;</td></tr>
-<tr class="separator:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a525a00514a2b4058161717b284e55356"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a525a00514a2b4058161717b284e55356"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a525a00514a2b4058161717b284e55356">TaskKernelGpuCudaRt</a> = <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDev, TDim, TIdx, TKernelFnObj, TArgs... &gt;</td></tr>
+<tr class="separator:a525a00514a2b4058161717b284e55356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -754,6 +760,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6049156c92d1112a3e7cfb96f09b153e"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a6049156c92d1112a3e7cfb96f09b153e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6049156c92d1112a3e7cfb96f09b153e">getFreeMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
 <tr class="separator:a6049156c92d1112a3e7cfb96f09b153e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26afd07a34e29c6979c42fbcf35e7443"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle &gt; </td></tr>
+<tr class="memitem:a26afd07a34e29c6979c42fbcf35e7443"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a26afd07a34e29c6979c42fbcf35e7443">getFunctionAttributes</a> (TDev const &amp;dev, TKernelBundle const &amp;kernelBundle) -&gt; <a class="el" href="structalpaka_1_1KernelFunctionAttributes.html">alpaka::KernelFunctionAttributes</a></td></tr>
+<tr class="separator:a26afd07a34e29c6979c42fbcf35e7443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27ab73d92933109a6e66dea772fbfdbb"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
 <tr class="memitem:a27ab73d92933109a6e66dea772fbfdbb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a27ab73d92933109a6e66dea772fbfdbb">getHeight</a> (TExtent const &amp;extent=TExtent()) -&gt; <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TExtent &gt;</td></tr>
 <tr class="separator:a27ab73d92933109a6e66dea772fbfdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -845,6 +854,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a336492ddbb304d87f082dd90164f8f30"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TGridElemExtent  = Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent  = Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a336492ddbb304d87f082dd90164f8f30"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a336492ddbb304d87f082dd90164f8f30">getValidWorkDiv</a> ([[maybe_unused]] TDev const &amp;dev, [[maybe_unused]] TGridElemExtent const &amp;gridElemExtent=<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] TThreadElemExtent const &amp;threadElemExtents=<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent=true, [[maybe_unused]] <a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TGridElemExtent &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TGridElemExtent &gt;&gt;</td></tr>
 <tr class="separator:a336492ddbb304d87f082dd90164f8f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae27dd1d17e2324e71dc1677f5f4a49fa">getValidWorkDivForKernel</a> ([[maybe_unused]] TDev const &amp;dev, TKernelBundle const &amp;kernelBundle, [[maybe_unused]] TGridElemExtent const &amp;gridElemExtent=<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] TThreadElemExtent const &amp;threadElemExtents=<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent=true, [[maybe_unused]] <a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt; TAcc &gt;&gt;</td></tr>
+<tr class="separator:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a351e6b1a8b15c2e1d4d2f29fdbd73af5"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a351e6b1a8b15c2e1d4d2f29fdbd73af5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5">getWarpSizes</a> (TDev const &amp;dev) -&gt; std::vector&lt; std::size_t &gt;</td></tr>
 <tr class="separator:a351e6b1a8b15c2e1d4d2f29fdbd73af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -871,6 +883,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a378a4ed1bdce40639b3204d84a004d1c">isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
 <tr class="separator:a378a4ed1bdce40639b3204d84a004d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97e152630160dfc73adccf8b2ff85d5b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBundle , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a97e152630160dfc73adccf8b2ff85d5b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a97e152630160dfc73adccf8b2ff85d5b">isValidWorkDivKernel</a> (<a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, TKernelBundle const &amp;kernelBundle, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
+<tr class="separator:a97e152630160dfc73adccf8b2ff85d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab2b849f4367cf6163a6a287b546f725d">isValidWorkDivKernel</a> (TDev const &amp;dev, TKernelBundle const &amp;kernelBundle, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
+<tr class="separator:ab2b849f4367cf6163a6a287b546f725d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8b59145bf3945a2b499d77b09d052b"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFn , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a5d8b59145bf3945a2b499d77b09d052b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5d8b59145bf3945a2b499d77b09d052b">KernelBundle</a> (TKernelFn const &amp;kernelFn, TArgs &amp;&amp;... args) -&gt; <a class="el" href="classalpaka_1_1KernelBundle.html">KernelBundle</a>&lt; TKernelFn, TArgs... &gt;</td></tr>
+<tr class="memdesc:a5d8b59145bf3945a2b499d77b09d052b"><td class="mdescLeft">&#160;</td><td class="mdescRight">User defined deduction guide with trailing return type. For CTAD during the construction.  <a href="namespacealpaka.html#a5d8b59145bf3945a2b499d77b09d052b">More...</a><br /></td></tr>
+<tr class="separator:a5d8b59145bf3945a2b499d77b09d052b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAlloc &gt; </td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a> (TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</td></tr>
 <tr class="separator:a30687ca1eaba239c74afd1bb2f26831c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -953,10 +975,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a734094d00febe551f0e85310a3faf1ec"><td class="memTemplParams" colspan="2">template&lt;typename TVec &gt; </td></tr>
 <tr class="memitem:a734094d00febe551f0e85310a3faf1ec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a734094d00febe551f0e85310a3faf1ec">reverseVec</a> (TVec const &amp;vec)</td></tr>
 <tr class="separator:a734094d00febe551f0e85310a3faf1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5543b86d23164032daa056ed21ba1484"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a5543b86d23164032daa056ed21ba1484"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5543b86d23164032daa056ed21ba1484">subDivideGridElems</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;threadElemExtent, <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, bool blockThreadMustDivideGridThreadExtent=true, <a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt;</td></tr>
-<tr class="memdesc:a5543b86d23164032daa056ed21ba1484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extent into blocks restricted by the maxima allowed.  <a href="namespacealpaka.html#a5543b86d23164032daa056ed21ba1484">More...</a><br /></td></tr>
-<tr class="separator:a5543b86d23164032daa056ed21ba1484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeb203c11f29a926f5f2739bd9b7f704"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:aeeb203c11f29a926f5f2739bd9b7f704"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aeeb203c11f29a926f5f2739bd9b7f704">subDivideGridElems</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;threadElemExtent, <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, TIdx kernelBlockThreadCountMax=static_cast&lt; TIdx &gt;(0u), bool blockThreadMustDivideGridThreadExtent=true, <a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memdesc:aeeb203c11f29a926f5f2739bd9b7f704"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extent into blocks restricted by the maxima allowed.  <a href="namespacealpaka.html#aeeb203c11f29a926f5f2739bd9b7f704">More...</a><br /></td></tr>
+<tr class="separator:aeeb203c11f29a926f5f2739bd9b7f704"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed27e1316e97fbfb281a3e13e433ec5"><td class="memTemplParams" colspan="2">template&lt;typename TSubDim , typename TVec &gt; </td></tr>
 <tr class="memitem:abed27e1316e97fbfb281a3e13e433ec5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abed27e1316e97fbfb281a3e13e433ec5">subVecBegin</a> (TVec const &amp;vec)</td></tr>
 <tr class="separator:abed27e1316e97fbfb281a3e13e433ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1877,16 +1899,16 @@ template&lt;typename TTag , typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
-<a id="aa48aeb76936551ea2dc5c4fe4759eb35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa48aeb76936551ea2dc5c4fe4759eb35">&#9670;&nbsp;</a></span>TaskKernelGpuCudaRt</h2>
+<a id="a525a00514a2b4058161717b284e55356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a525a00514a2b4058161717b284e55356">&#9670;&nbsp;</a></span>TaskKernelGpuCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
+template&lt;typename TAcc , typename TDev , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35">alpaka::TaskKernelGpuCudaRt</a> = typedef <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a525a00514a2b4058161717b284e55356">alpaka::TaskKernelGpuCudaRt</a> = typedef <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDev, TDim, TIdx, TKernelFnObj, TArgs...&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1926,7 +1948,7 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnOb
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00027">27</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00030">30</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -3547,7 +3569,7 @@ template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The kernel execution task. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00262">262</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00302">302</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4089,7 +4111,7 @@ template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKern
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00309">309</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00349">349</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4435,7 +4457,7 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the shared memory allocated for a block in bytes. The default implementation always returns zero. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00157">157</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00179">179</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4777,6 +4799,55 @@ template&lt;typename TDev &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Do not use this query if getMemBytes returned 0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00104">104</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a26afd07a34e29c6979c42fbcf35e7443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26afd07a34e29c6979c42fbcf35e7443">&#9670;&nbsp;</a></span>getFunctionAttributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDev , typename TKernelBundle &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getFunctionAttributes </td>
+          <td>(</td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelBundle const &amp;&#160;</td>
+          <td class="paramname"><em>kernelBundle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="structalpaka_1_1KernelFunctionAttributes.html">alpaka::KernelFunctionAttributes</a>
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAcc</td><td>The accelerator type. </td></tr>
+    <tr><td class="paramname">TDev</td><td>The device type. </td></tr>
+    <tr><td class="paramname">TKernelBundle</td><td>The kernel object type, which includes the kernel function object and it's invocation arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>The device instance </td></tr>
+    <tr><td class="paramname">kernelBundle</td><td>The kernel object, which includes the kernel function object and it's invocation arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structalpaka_1_1KernelFunctionAttributes.html" title="Kernel function attributes struct. Attributes are filled by calling the API of the accelerator using ...">KernelFunctionAttributes</a> instance. Instance is filled with values returned by the accelerator API depending on the specific kernel. The default version always returns the instance with fields which are set to zero. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00204">204</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5289,7 +5360,7 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information as an <a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">alpaka::omp::Schedule</a> object if the kernel specialized the OmpSchedule trait, an object of another type if the kernel didn't specialize the trait. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00186">186</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00226">226</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5620,15 +5691,93 @@ template&lt;typename TAcc , typename TDev , typename TGridElemExtent  = Vec&lt;D
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TAcc</td><td>The accelerator for which this work division has to be valid. </td></tr>
+    <tr><td class="paramname">TDev</td><td>The type of the device. </td></tr>
     <tr><td class="paramname">TGridElemExtent</td><td>The type of the grid element extent. </td></tr>
     <tr><td class="paramname">TThreadElemExtent</td><td>The type of the thread element extent. </td></tr>
-    <tr><td class="paramname">TDev</td><td>The type of the device. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev</td><td>The device the work division should be valid for. </td></tr>
+    <tr><td class="paramname">gridElemExtent</td><td>The full extent of elements in the grid. </td></tr>
+    <tr><td class="paramname">threadElemExtents</td><td>the number of elements computed per thread. </td></tr>
+    <tr><td class="paramname">blockThreadMustDivideGridThreadExtent</td><td>If this is true, the grid thread extent will be multiples of the corresponding block thread extent. NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block-thread extent will be one in this dimension. </td></tr>
+    <tr><td class="paramname">gridBlockExtentSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The work division. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00326">326</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae27dd1d17e2324e71dc1677f5f4a49fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae27dd1d17e2324e71dc1677f5f4a49fa">&#9670;&nbsp;</a></span>getValidWorkDivForKernel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getValidWorkDivForKernel </td>
+          <td>(</td>
+          <td class="paramtype">[[maybe_unused] ] TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelBundle const &amp;&#160;</td>
+          <td class="paramname"><em>kernelBundle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[[maybe_unused] ] TGridElemExtent const &amp;&#160;</td>
+          <td class="paramname"><em>gridElemExtent</em> = <code><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;,&#160;<a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[[maybe_unused] ] TThreadElemExtent const &amp;&#160;</td>
+          <td class="paramname"><em>threadElemExtents</em> = <code><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;,&#160;<a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[[maybe_unused] ] bool&#160;</td>
+          <td class="paramname"><em>blockThreadMustDivideGridThreadExtent</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[[maybe_unused] ] <a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27">GridBlockExtentSubDivRestrictions</a>&#160;</td>
+          <td class="paramname"><em>gridBlockExtentSubDivRestrictions</em> = <code><a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TDev</td><td>The type of the device. </td></tr>
+    <tr><td class="paramname">TKernelBundle</td><td>The type of the bundle of kernel and the arguments. Kernel is used to get number of threads per block, this number could be less than or equal to the number of threads per block according to device properties. </td></tr>
+    <tr><td class="paramname">TGridElemExtent</td><td>The type of the grid element extent. </td></tr>
+    <tr><td class="paramname">TThreadElemExtent</td><td>The type of the thread element extent. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>The device the work division should be valid for. </td></tr>
+    <tr><td class="paramname">kernelBundle</td><td>An instance of a class consisting Kernel function and its arguments </td></tr>
     <tr><td class="paramname">gridElemExtent</td><td>The full extent of elements in the grid. </td></tr>
     <tr><td class="paramname">threadElemExtents</td><td>the number of elements computed per thread. </td></tr>
     <tr><td class="paramname">blockThreadMustDivideGridThreadExtent</td><td>If this is true, the grid thread extent will be multiples of the corresponding block thread extent. NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
@@ -5638,7 +5787,7 @@ template&lt;typename TAcc , typename TDev , typename TGridElemExtent  = Vec&lt;D
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The work division. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00284">284</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00389">389</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -5796,7 +5945,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the accelerator device properties are valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00084">84</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00087">87</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -5845,7 +5994,7 @@ template&lt;typename TDim , typename TIdx , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid for the given accelerator device properties. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00331">331</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00447">447</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -5892,7 +6041,169 @@ template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00380">380</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00582">582</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a97e152630160dfc73adccf8b2ff85d5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97e152630160dfc73adccf8b2ff85d5b">&#9670;&nbsp;</a></span>isValidWorkDivKernel() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBundle , typename TWorkDiv &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::isValidWorkDivKernel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>accDevProps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelBundle const &amp;&#160;</td>
+          <td class="paramname"><em>kernelBundle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramname"><em>workDiv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; bool
+
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TDim</td><td>The dimensionality of the accelerator device properties. </td></tr>
+    <tr><td class="paramname">TIdx</td><td>The idx type of the accelerator device properties. </td></tr>
+    <tr><td class="paramname">TKernelBundle</td><td>The type of the bundle of kernel and the arguments. Kernel is used to get number of threads per block, this number could be less than or equal to the number of threads per block according to device properties. </td></tr>
+    <tr><td class="paramname">TWorkDiv</td><td>The type of the work division. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
+    <tr><td class="paramname">kernelBundle</td><td>An instance of a class consisting Kernel function and its arguments. </td></tr>
+    <tr><td class="paramname">workDiv</td><td>The work division to test for validity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns true if the work division is valid for the given accelerator device properties and for the given kernel. Otherwise returns false. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00503">503</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab2b849f4367cf6163a6a287b546f725d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b849f4367cf6163a6a287b546f725d">&#9670;&nbsp;</a></span>isValidWorkDivKernel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TWorkDiv &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::isValidWorkDivKernel </td>
+          <td>(</td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelBundle const &amp;&#160;</td>
+          <td class="paramname"><em>kernelBundle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramname"><em>workDiv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; bool
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAcc</td><td>The accelerator to test the validity on. </td></tr>
+    <tr><td class="paramname">TDev</td><td>The type of the device. </td></tr>
+    <tr><td class="paramname">TKernelBundle</td><td>The type of the bundle of kernel and the arguments. </td></tr>
+    <tr><td class="paramname">TWorkDiv</td><td>The type of work division to test for validity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>The device to test the work division for validity on. </td></tr>
+    <tr><td class="paramname">kernelBundle</td><td>An instance of a class consisting Kernel function and its arguments. </td></tr>
+    <tr><td class="paramname">workDiv</td><td>The work division to test for validity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns the value of isValidWorkDivKernel function. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00569">569</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5d8b59145bf3945a2b499d77b09d052b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d8b59145bf3945a2b499d77b09d052b">&#9670;&nbsp;</a></span>KernelBundle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TKernelFn , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a> </td>
+          <td>(</td>
+          <td class="paramtype">TKernelFn const &amp;&#160;</td>
+          <td class="paramname"><em>kernelFn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="classalpaka_1_1KernelBundle.html">KernelBundle</a>&lt; TKernelFn, TArgs... &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>User defined deduction guide with trailing return type. For CTAD during the construction. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TKernelFn</td><td>The kernel function object type. </td></tr>
+    <tr><td class="paramname">TArgs</td><td>Kernel function object argument types as a parameter pack. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kernelFn</td><td>The kernel object </td></tr>
+    <tr><td class="paramname">args,...</td><td>The kernel invocation arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Kernel function bundle. An instance of <a class="el" href="classalpaka_1_1KernelBundle.html" title="The class used to bind kernel function object and arguments together. Once an instance of this class ...">KernelBundle</a> which consists the kernel function object and its arguments. </dd></dl>
 
 </div>
 </div>
@@ -7998,8 +8309,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a5543b86d23164032daa056ed21ba1484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5543b86d23164032daa056ed21ba1484">&#9670;&nbsp;</a></span>subDivideGridElems()</h2>
+<a id="aeeb203c11f29a926f5f2739bd9b7f704"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeb203c11f29a926f5f2739bd9b7f704">&#9670;&nbsp;</a></span>subDivideGridElems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8023,6 +8334,12 @@ template&lt;typename TDim , typename TIdx &gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
           <td class="paramname"><em>accDevProps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TIdx&#160;</td>
+          <td class="paramname"><em>kernelBlockThreadCountMax</em> = <code>static_cast&lt;TIdx&gt;(0u)</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -8056,6 +8373,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
     <tr><td class="paramname">gridElemExtent</td><td>The full extent of elements in the grid. </td></tr>
     <tr><td class="paramname">threadElemExtent</td><td>the number of elements computed per thread. </td></tr>
     <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
+    <tr><td class="paramname">kernelBlockThreadCountMax</td><td>The maximum number of threads per block. If it is zero this argument is not used, device hard limits are used. </td></tr>
     <tr><td class="paramname">blockThreadMustDivideGridThreadExtent</td><td>If this is true, the grid thread extent will be multiples of the corresponding block thread extent. NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
     <tr><td class="paramname">gridBlockExtentSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
   </table>
@@ -8063,7 +8381,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>why omit the last element? </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00129">129</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00130">130</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -8735,7 +9053,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00224">224</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00264">264</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8909,7 +9227,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Jun 21 2024 11:54:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jun 24 2024 09:27:02 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

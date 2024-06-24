@@ -142,6 +142,8 @@ var hierarchy =
     [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
     ] ],
+    [ "alpaka::KernelBundle< TKernelFn, TArgs >", "classalpaka_1_1KernelBundle.html", null ],
+    [ "alpaka::KernelFunctionAttributes", "structalpaka_1_1KernelFunctionAttributes.html", null ],
     [ "alpaka::math::ConceptMathAbs", "structalpaka_1_1math_1_1ConceptMathAbs.html", null ],
     [ "alpaka::math::ConceptMathAcos", "structalpaka_1_1math_1_1ConceptMathAcos.html", null ],
     [ "alpaka::math::ConceptMathAcosh", "structalpaka_1_1math_1_1ConceptMathAcosh.html", null ],
@@ -689,6 +691,12 @@ var hierarchy =
     [ "alpaka::trait::FreeSharedVars< BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html", null ],
     [ "alpaka::trait::FreeSharedVars< BlockSharedMemStMemberMasterSync< TDataAlignBytes > >", "structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStMemberMasterSync_3_01TDataAlignBytes_01_4_01_4.html", null ],
     [ "alpaka::trait::FreeSharedVars< BlockSharedMemStUniformCudaHipBuiltIn >", "structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html", null ],
+    [ "alpaka::trait::FunctionAttributes< TAcc, TDev, TKernelBundle >", "structalpaka_1_1trait_1_1FunctionAttributes.html", null ],
+    [ "alpaka::trait::FunctionAttributes< AccCpuOmp2Blocks< TDim, TIdx >, TDev, KernelBundle< TKernelFn, TArgs... > >", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3.html", null ],
+    [ "alpaka::trait::FunctionAttributes< AccCpuOmp2Threads< TDim, TIdx >, TDev, KernelBundle< TKernelFn, TArgs... > >", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01T61fe975c414816ae02c80dbf2f1dfda7.html", null ],
+    [ "alpaka::trait::FunctionAttributes< AccCpuSerial< TDim, TIdx >, TDev, KernelBundle< TKernelFn, TArgs... > >", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_00_01TDev_0b46e50ab757f7d729af89f82b713676f.html", null ],
+    [ "alpaka::trait::FunctionAttributes< AccCpuThreads< TDim, TIdx >, TDev, KernelBundle< TKernelFn, TArgs... > >", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TDev_4939e3ac35f70efa83b74e5cb0f31c7f.html", null ],
+    [ "alpaka::trait::FunctionAttributes< AccGpuUniformCudaHipRt< TApi, TDim, TIdx >, TDev, KernelBundle< TKernelFn, TArgs... > >", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01T7bdc4bf4826d0074b8f696585956398a.html", null ],
     [ "alpaka::trait::GetAccDevProps< TAcc, TSfinae >", "structalpaka_1_1trait_1_1GetAccDevProps.html", null ],
     [ "alpaka::trait::GetAccDevProps< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetAccDevProps< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
