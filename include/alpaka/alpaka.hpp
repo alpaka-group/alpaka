@@ -9905,7 +9905,7 @@
 			// == ./include/alpaka/kernel/Traits.hpp ==
 			// ==
 			/* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
-			 *                Andrea Bocci, Aurora Perego
+			 *                Andrea Bocci, Aurora Perego, Mehmet Yusufoglu
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -10010,6 +10010,37 @@
 
 			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/kernel/KernelFunctionAttributes.hpp ==
+				// ==
+				/* Copyright 2022 René Widera, Mehmet Yusufoglu
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include <cstddef>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+				    //! Kernel function attributes struct. Attributes are filled by calling the API of the accelerator using the kernel
+				    //! function as an argument. In case of a CPU backend, maxThreadsPerBlock is set to 1 and other values remain zero
+				    //! since there are no correponding API functions to get the values.
+				    struct KernelFunctionAttributes
+				    {
+				        std::size_t constSizeBytes{0};
+				        std::size_t localSizeBytes{0};
+				        std::size_t sharedSizeBytes{0};
+				        int maxDynamicSharedSizeBytes{0};
+				        int numRegs{0};
+				        // This field is ptx or isa version if the backend is GPU
+				        int asmVersion{0};
+				        int maxThreadsPerBlock{0};
+				    };
+				} // namespace alpaka
+				// ==
+				// == ./include/alpaka/kernel/KernelFunctionAttributes.hpp ==
+				// ============================================================================
+
 				// ============================================================================
 				// == ./include/alpaka/queue/Traits.hpp ==
 				// ==
@@ -10198,6 +10229,27 @@
 			            }
 			        };
 
+			        //! \brief The structure template to access to the functions attributes of a kernel function object.
+			        //! \tparam TAcc The accelerator type
+			        //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
+			        //! arguments.
+			        template<typename TAcc, typename TDev, typename TKernelBundle>
+			        struct FunctionAttributes
+			        {
+			            //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
+			            //! invocation arguments.
+			            //! \return KernelFunctionAttributes data structure instance. The default version always returns the
+			            //! instance with fields which are set to zero.
+			            ALPAKA_FN_HOST static auto getFunctionAttributes(
+			                TDev const&,
+			                [[maybe_unused]] TKernelBundle const& kernelBundle) -> alpaka::KernelFunctionAttributes
+			            {
+			                std::string const str
+			                    = std::string(__func__) + " function is not specialised for the given arguments.\n";
+			                throw std::invalid_argument{str};
+			            }
+			        };
+
 			        //! The trait for getting the warp size required by a kernel.
 			        //!
 			        //! \tparam TKernelFnObj The kernel function object.
@@ -10294,6 +10346,24 @@
 			            blockThreadExtent,
 			            threadElemExtent,
 			            args...);
+			    }
+
+			    //! \tparam TAcc The accelerator type.
+			    //! \tparam TDev The device type.
+			    //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
+			    //! arguments.
+			    //! \param dev The device instance
+			    //! \param kernelBundle The kernel object, which includes the kernel function object and it's invocation
+			    //! arguments.
+			    //! \return KernelFunctionAttributes instance. Instance is filled with values returned by the accelerator API
+			    //! depending on the specific kernel. The default version always returns the instance with fields which are set to
+			    //! zero.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TAcc, typename TDev, typename TKernelBundle>
+			    ALPAKA_FN_HOST auto getFunctionAttributes(TDev const& dev, TKernelBundle const& kernelBundle)
+			        -> alpaka::KernelFunctionAttributes
+			    {
+			        return trait::FunctionAttributes<TAcc, TDev, TKernelBundle>::getFunctionAttributes(dev, kernelBundle);
 			    }
 
 			#if BOOST_COMP_CLANG
@@ -19197,6 +19267,78 @@
 			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
+				// == ./include/alpaka/kernel/KernelBundle.hpp ==
+				// ==
+				/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Mehmet
+				 * Yusufoglu SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				#include <alpaka/core/RemoveRestrict.hpp>
+
+				// #include <tuple>    // amalgamate: file already included
+				// #include <type_traits>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+				    //! \brief The class used to bind kernel function object and arguments together. Once an instance of this class is
+				    //! created, arguments are not needed to be separately given to functions who need kernel function and arguments.
+				    //! \tparam TKernelFn The kernel function object type.
+				    //! \tparam TArgs Kernel function object invocation argument types as a parameter pack.
+				    template<typename TKernelFn, typename... TArgs>
+				    class KernelBundle
+				    {
+				    public:
+				#if BOOST_COMP_CLANG
+				#    pragma clang diagnostic push
+				#    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
+				                                                       // arguments "args,...". Ignore the error.
+				#endif
+				        //! \param kernelFn The kernel function-object
+				        //! \param args,... The kernel invocation arguments.
+				#if BOOST_COMP_CLANG
+				#    pragma clang diagnostic pop
+				#endif
+				        KernelBundle(TKernelFn const& kernelFn, TArgs&&... args)
+				            : m_kernelFn(kernelFn)
+				            , m_args(std::forward<TArgs>(args)...)
+				        {
+				        }
+
+				        //! The function object type
+				        using KernelFn = TKernelFn;
+				        //! Tuple type to encapsulate kernel function argument types and argument values
+				        using ArgTuple = std::tuple<remove_restrict_t<std::decay_t<TArgs>>...>;
+
+				        KernelFn m_kernelFn;
+				        ArgTuple m_args;
+				    };
+
+				    //! \brief User defined deduction guide with trailing return type. For CTAD during the construction.
+				    //! \tparam TKernelFn The kernel function object type.
+				    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+				    //! \param kernelFn The kernel object
+				#if BOOST_COMP_CLANG
+				#    pragma clang diagnostic push
+				#    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
+				                                                       // arguments "args,...". Ignore the error.
+				#endif
+				    //! \param args,... The kernel invocation arguments.
+				#if BOOST_COMP_CLANG
+				#    pragma clang diagnostic pop
+				#endif
+				    //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
+				    //! arguments.
+				    template<typename TKernelFn, typename... TArgs>
+				    KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
+
+				} // namespace alpaka
+				// ==
+				// == ./include/alpaka/kernel/KernelBundle.hpp ==
+				// ============================================================================
+
+			// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
+				// ============================================================================
 				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
 				// ==
 				/* Copyright 2023 Andrea Bocci, Aurora Perego
@@ -19301,6 +19443,7 @@
 				// ============================================================================
 
 			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
@@ -19564,6 +19707,34 @@
 			    {
 			        using type = TIdx;
 			    };
+
+			    //! \brief Specialisation of the class template FunctionAttributes
+			    //! \tparam TDev The device type.
+			    //! \tparam TDim The dimensionality of the accelerator device properties.
+			    //! \tparam TIdx The idx type of the accelerator device properties.
+			    //! \tparam TKernelFn Kernel function object type.
+			    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+			    template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+			    struct FunctionAttributes<AccGenericSycl<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+			    {
+			        //! \param dev The device instance
+			        //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+			        //! determined. Max threads per block is one of the attributes.
+			        //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+			        //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+			        ALPAKA_FN_HOST static auto getFunctionAttributes(
+			            TDev const& dev,
+			            [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle) -> alpaka::KernelFunctionAttributes
+			        {
+			            alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+			            // set function properties for maxThreadsPerBlock to device properties
+			            auto const& props = alpaka::getAccDevProps<AccGenericSycl<TDim, TIdx>>(dev);
+			            kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+			            return kernelFunctionAttributes;
+			        }
+			    };
+
 			} // namespace alpaka::trait
 
 			#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
@@ -27836,7 +28007,84 @@
 	// #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
+		// ==
+		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+
+		// #include <sstream>    // amalgamate: file already included
+		// #include <vector>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    //! The CPU device platform.
+		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
+		    {
+		#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
+		    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
+		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
+		        char c = {};
+		#endif
+		    };
+
+		    namespace trait
+		    {
+		        //! The CPU device device type trait specialization.
+		        template<>
+		        struct DevType<PlatformCpu>
+		        {
+		            using type = DevCpu;
+		        };
+
+		        //! The CPU platform device count get trait specialization.
+		        template<>
+		        struct GetDevCount<PlatformCpu>
+		        {
+		            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
+		            {
+		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+		                return 1;
+		            }
+		        };
+
+		        //! The CPU platform device get trait specialization.
+		        template<>
+		        struct GetDevByIdx<PlatformCpu>
+		        {
+		            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
+		            {
+		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+		                std::size_t const devCount = getDevCount(platform);
+		                if(devIdx >= devCount)
+		                {
+		                    std::stringstream ssErr;
+		                    ssErr << "Unable to return device handle for CPU device with index " << devIdx
+		                          << " because there are only " << devCount << " devices!";
+		                    throw std::runtime_error(ssErr.str());
+		                }
+
+		                return {};
+		            }
+		        };
+		    } // namespace trait
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
+		// ============================================================================
+
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
@@ -28765,6 +29013,38 @@
 	        {
 	            using type = TIdx;
 	        };
+
+	        //! \brief Specialisation of the class template FunctionAttributes
+	        //! \tparam TDev The device type.
+	        //! \tparam TDim The dimensionality of the accelerator device properties.
+	        //! \tparam TIdx The idx type of the accelerator device properties.
+	        //! \tparam TKernelFn Kernel function object type.
+	        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+	        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+	        struct FunctionAttributes<AccCpuOmp2Blocks<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+	        {
+	            //! \param dev The device instance
+	            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+	            //! determined. Max threads per block is one of the attributes.
+	            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+	            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+	            ALPAKA_FN_HOST static auto getFunctionAttributes(
+	                TDev const& dev,
+	                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+	                -> alpaka::KernelFunctionAttributes
+	            {
+	                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+	                // set function properties for maxThreadsPerBlock to device properties, since API doesn't have function
+	                // properties function.
+	                auto const& props = alpaka::getAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>(dev);
+	                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+	                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+	                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
+	                return kernelFunctionAttributes;
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -28792,6 +29072,8 @@
 	// #include "alpaka/acc/AccCpuOmp2Threads.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/meta/NdLoop.hpp ==
@@ -28884,6 +29166,7 @@
 		// == ./include/alpaka/meta/NdLoop.hpp ==
 		// ============================================================================
 
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
@@ -29059,6 +29342,38 @@
 	        {
 	            using type = TIdx;
 	        };
+
+	        //! \brief Specialisation of the class template FunctionAttributes
+	        //! \tparam TDev The device type.
+	        //! \tparam TDim The dimensionality of the accelerator device properties.
+	        //! \tparam TIdx The idx type of the accelerator device properties.
+	        //! \tparam TKernelFn Kernel function object type.
+	        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+	        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+	        struct FunctionAttributes<AccCpuOmp2Threads<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+	        {
+	            //! \param dev The device instance
+	            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+	            //! determined. Max threads per block is one of the attributes.
+	            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+	            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+	            ALPAKA_FN_HOST static auto getFunctionAttributes(
+	                TDev const& dev,
+	                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+	                -> alpaka::KernelFunctionAttributes
+	            {
+	                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+	                // set function properties for maxThreadsPerBlock to device properties, since API doesn't have function
+	                // properties function.
+	                auto const& props = alpaka::getAccDevProps<AccCpuOmp2Threads<TDim, TIdx>>(dev);
+	                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+	                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+	                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
+	                return kernelFunctionAttributes;
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -29086,8 +29401,11 @@
 	// #include "alpaka/acc/AccCpuSerial.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
@@ -29208,6 +29526,37 @@
 	        {
 	            using type = TIdx;
 	        };
+
+	        //! \brief Specialisation of the class template FunctionAttributes
+	        //! \tparam TDev The device type.
+	        //! \tparam TDim The dimensionality of the accelerator device properties.
+	        //! \tparam TIdx The idx type of the accelerator device properties.
+	        //! \tparam TKernelFn Kernel function object type.
+	        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+	        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+	        struct FunctionAttributes<AccCpuSerial<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+	        {
+	            //! \param dev The device instance
+	            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+	            //! determined. Max threads per block is one of the attributes.
+	            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+	            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+	            ALPAKA_FN_HOST static auto getFunctionAttributes(
+	                TDev const& dev,
+	                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+	                -> alpaka::KernelFunctionAttributes
+	            {
+	                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+	                // set function properties for maxThreadsPerBlock to device properties, since API doesn't have function
+	                // properties function.
+	                auto const& props = alpaka::getAccDevProps<AccCpuSerial<TDim, TIdx>>(dev);
+	                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+	                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+	                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
+	                return kernelFunctionAttributes;
+	            }
+	        };
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -29237,8 +29586,11 @@
 	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
@@ -29370,6 +29722,37 @@
 	        {
 	            using type = TIdx;
 	        };
+
+	        //! \brief Specialisation of the class template FunctionAttributes
+	        //! \tparam TDev The device type.
+	        //! \tparam TDim The dimensionality of the accelerator device properties.
+	        //! \tparam TIdx The idx type of the accelerator device properties.
+	        //! \tparam TKernelFn Kernel function object type.
+	        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+	        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+	        struct FunctionAttributes<AccCpuTbbBlocks<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+	        {
+	            //! \param dev The device instance
+	            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+	            //! determined. Max threads per block is one of the attributes.
+	            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+	            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+	            ALPAKA_FN_HOST static auto getFunctionAttributes(
+	                TDev const& dev,
+	                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+	                -> alpaka::KernelFunctionAttributes
+	            {
+	                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+	                // set function properties for maxThreadsPerBlock to device properties, since API doesn't have function
+	                // properties function.
+	                auto const& props = alpaka::getAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>(dev);
+	                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+	                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+	                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
+	                return kernelFunctionAttributes;
+	            }
+	        };
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -29399,8 +29782,11 @@
 	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ThreadPool.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <algorithm>    // amalgamate: file already included
@@ -29582,6 +29968,38 @@
 	        {
 	            using type = TIdx;
 	        };
+
+	        //! \brief Specialisation of the class template FunctionAttributes
+	        //! \tparam TDev The device type.
+	        //! \tparam TDim The dimensionality of the accelerator device properties.
+	        //! \tparam TIdx The idx type of the accelerator device properties.
+	        //! \tparam TKernelFn Kernel function object type.
+	        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+	        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+	        struct FunctionAttributes<AccCpuThreads<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+	        {
+	            //! \param dev The device instance
+	            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+	            //! determined. Max threads per block is one of the attributes.
+	            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+	            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+	            ALPAKA_FN_HOST static auto getFunctionAttributes(
+	                TDev const& dev,
+	                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+	                -> alpaka::KernelFunctionAttributes
+	            {
+	                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+	                // set function properties for maxThreadsPerBlock to device properties, since API doesn't have function
+	                // properties function.
+	                auto const& props = alpaka::getAccDevProps<AccCpuThreads<TDim, TIdx>>(dev);
+	                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+	                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+	                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
+	                return kernelFunctionAttributes;
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -29605,7 +30023,7 @@
 		// == ./include/alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp ==
 		// ==
 		/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
-		 * Manfred Gruber, Antonio Di Pilato
+		 * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -29622,6 +30040,8 @@
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
@@ -29641,6 +30061,9 @@
 			// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
@@ -29744,23 +30167,22 @@
 			    //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
 			    //! 3. The requirement of the block extent.
 			    //!
-			    //! \param gridElemExtent
-			    //!     The full extent of elements in the grid.
-			    //! \param threadElemExtent
-			    //!     the number of elements computed per thread.
-			    //! \param accDevProps
-			    //!     The maxima for the work division.
-			    //! \param blockThreadMustDivideGridThreadExtent
-			    //!     If this is true, the grid thread extent will be multiples of the corresponding block thread extent.
+			    //! \param gridElemExtent The full extent of elements in the grid.
+			    //! \param threadElemExtent the number of elements computed per thread.
+			    //! \param accDevProps The maxima for the work division.
+			    //! \param kernelBlockThreadCountMax The maximum number of threads per block. If it is zero this argument is not
+			    //! used, device hard limits are used.
+			    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
+			    //! corresponding block thread extent.
 			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
 			    //!     thread extent will be one in this dimension.
-			    //! \param gridBlockExtentSubDivRestrictions
-			    //!     The grid block extent subdivision restrictions.
+			    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
 			    template<typename TDim, typename TIdx>
 			    ALPAKA_FN_HOST auto subDivideGridElems(
 			        Vec<TDim, TIdx> const& gridElemExtent,
 			        Vec<TDim, TIdx> const& threadElemExtent,
 			        AccDevProps<TDim, TIdx> const& accDevProps,
+			        TIdx kernelBlockThreadCountMax = static_cast<TIdx>(0u),
 			        bool blockThreadMustDivideGridThreadExtent = true,
 			        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
 			        = GridBlockExtentSubDivRestrictions::Unrestricted) -> WorkDivMembers<TDim, TIdx>
@@ -29779,7 +30201,7 @@
 
 			        // Handle threadElemExtent and compute gridThreadExtent. Afterwards, only the blockThreadExtent has to be
 			        // optimized.
-			        auto const clippedThreadElemExtent = elementwise_min(threadElemExtent, gridElemExtent);
+			        auto clippedThreadElemExtent = elementwise_min(threadElemExtent, gridElemExtent);
 			        auto const gridThreadExtent = [&]
 			        {
 			            Vec r;
@@ -29799,11 +30221,27 @@
 			        // For equal block thread extent, restrict it to its minimum component.
 			        // For example (512, 256, 1024) will get (256, 256, 256).
 			        if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
-			            blockThreadExtent = Vec::all(blockThreadExtent.min());
+			            blockThreadExtent = Vec::all(blockThreadExtent.min() != TIdx(0) ? blockThreadExtent.min() : TIdx(1));
+
+			        // Choose kernelBlockThreadCountMax if it is not zero. It is less than the accelerator properties.
+			        TIdx const& blockThreadCountMax
+			            = (kernelBlockThreadCountMax != 0) ? kernelBlockThreadCountMax : accDevProps.m_blockThreadCountMax;
+
+			        // Block thread extent could be {1024,1024,1024} although max threads per block is 1024. Block thread extent
+			        // shows the max number of threads along each axis, it is not a measure to get max number of threads per block.
+			        // It must be further limited (clipped above) by the kernel limit along each axis, using device limits is not
+			        // enough.
+			        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+			        {
+			            blockThreadExtent[i] = std::min(blockThreadExtent[i], blockThreadCountMax);
+			        }
 
 			        // Make the blockThreadExtent product smaller or equal to the accelerator's limit.
-			        auto const& blockThreadCountMax = accDevProps.m_blockThreadCountMax;
-			        if(blockThreadExtent.prod() > blockThreadCountMax)
+			        if(blockThreadCountMax == 1)
+			        {
+			            blockThreadExtent = Vec::all(core::nthRootFloor(blockThreadCountMax, TIdx{TDim::value}));
+			        }
+			        else if(blockThreadExtent.prod() > blockThreadCountMax)
 			        {
 			            switch(gridBlockExtentSubDivRestrictions)
 			            {
@@ -29835,6 +30273,7 @@
 			                break;
 			            }
 			        }
+
 
 			        // Make the block thread extent divide the grid thread extent.
 			        if(blockThreadMustDivideGridThreadExtent)
@@ -29873,13 +30312,15 @@
 			                [[fallthrough]];
 			            case GridBlockExtentSubDivRestrictions::Unrestricted:
 			                for(DimLoopInd i(0u); i < TDim::value; ++i)
+			                {
 			                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
+			                }
 			                break;
 			            }
 			        }
 
 			        // grid blocks extent = grid thread / block thread extent. quotient is rounded up.
-			        auto const gridBlockExtent = [&]
+			        auto gridBlockExtent = [&]
 			        {
 			            Vec r;
 			            for(DimLoopInd i = 0; i < TDim::value; ++i)
@@ -29887,25 +30328,46 @@
 			            return r;
 			        }();
 
+
+			        // Store the maxima allowed for extents of grid, blocks and threads.
+			        auto const gridBlockExtentMax = subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax);
+			        auto const blockThreadExtentMax = subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax);
+			        auto const threadElemExtentMax = subVecEnd<TDim>(accDevProps.m_threadElemExtentMax);
+
+			        // Check that the extents for all dimensions are correct.
+			        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+			        {
+			            // Check that the maximum extents are greater or equal 1.
+			            if(gridBlockExtentMax[i] < gridBlockExtent[i])
+			            {
+			                gridBlockExtent[i] = gridBlockExtentMax[i];
+			            }
+			            if(blockThreadExtentMax[i] < blockThreadExtent[i])
+			            {
+			                blockThreadExtent[i] = blockThreadExtentMax[i];
+			            }
+			            if(threadElemExtentMax[i] < threadElemExtent[i])
+			            {
+			                clippedThreadElemExtent[i] = threadElemExtentMax[i];
+			            }
+			        }
+
+
 			        return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
 			    }
 
 			    //! \tparam TAcc The accelerator for which this work division has to be valid.
+			    //! \tparam TDev The type of the device.
 			    //! \tparam TGridElemExtent The type of the grid element extent.
 			    //! \tparam TThreadElemExtent The type of the thread element extent.
-			    //! \tparam TDev The type of the device.
-			    //! \param dev
-			    //!     The device the work division should be valid for.
-			    //! \param gridElemExtent
-			    //!     The full extent of elements in the grid.
-			    //! \param threadElemExtents
-			    //!     the number of elements computed per thread.
-			    //! \param blockThreadMustDivideGridThreadExtent
-			    //!     If this is true, the grid thread extent will be multiples of the corresponding block thread extent.
-			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
-			    //!     thread extent will be one in this dimension.
-			    //! \param gridBlockExtentSubDivRestrictions
-			    //!     The grid block extent subdivision restrictions.
+			    //! \param dev The device the work division should be valid for.
+			    //! \param gridElemExtent The full extent of elements in the grid.
+			    //! \param threadElemExtents the number of elements computed per thread.
+			    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
+			    //! corresponding block thread extent.
+			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the
+			    //!     block-thread extent will be one in this dimension.
+			    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
 			    //! \return The work division.
 			    template<
 			        typename TAcc,
@@ -29946,8 +30408,82 @@
 			                getExtents(gridElemExtent),
 			                getExtents(threadElemExtents),
 			                getAccDevProps<TAcc>(dev),
+			                static_cast<Idx<TAcc>>(0u),
 			                blockThreadMustDivideGridThreadExtent,
 			                gridBlockExtentSubDivRestrictions);
+			        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
+			        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
+			    }
+
+			    //! \tparam TDev The type of the device.
+			    //! \tparam TKernelBundle The type of the bundle of kernel and the arguments. Kernel is used to get number of
+			    //! threads per block, this number could be less than or equal to the number of threads per block according to
+			    //! device properties.
+			    //! \tparam TGridElemExtent The type of the grid element extent.
+			    //! \tparam TThreadElemExtent The type of the thread element extent.
+			    //! \param dev The device the work division should be valid for.
+			    //! \param kernelBundle An instance of a class consisting Kernel function and its arguments
+			    //! \param gridElemExtent The full extent of elements in the grid.
+			    //! \param threadElemExtents the number of elements computed per thread.
+			    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
+			    //! corresponding block thread extent.
+			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
+			    //!     thread extent will be one in this dimension.
+			    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
+			    //! \return The work division.
+			    template<
+			        typename TAcc,
+			        typename TDev,
+			        typename TKernelBundle,
+			        typename TGridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>,
+			        typename TThreadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>>
+			    ALPAKA_FN_HOST auto getValidWorkDivForKernel(
+			        [[maybe_unused]] TDev const& dev,
+			        TKernelBundle const& kernelBundle,
+			        [[maybe_unused]] TGridElemExtent const& gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+			        [[maybe_unused]] TThreadElemExtent const& threadElemExtents = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+			        [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent = true,
+			        [[maybe_unused]] GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
+			        = GridBlockExtentSubDivRestrictions::Unrestricted) -> WorkDivMembers<Dim<TAcc>, Idx<TAcc>>
+			    {
+			        using Acc = TAcc;
+
+			        static_assert(
+			            Dim<TGridElemExtent>::value == Dim<Acc>::value,
+			            "The dimension of Acc and the dimension of TGridElemExtent have to be identical!");
+			        static_assert(
+			            Dim<TThreadElemExtent>::value == Dim<Acc>::value,
+			            "The dimension of Acc and the dimension of TThreadElemExtent have to be identical!");
+			        static_assert(
+			            std::is_same_v<Idx<TGridElemExtent>, Idx<Acc>>,
+			            "The idx type of Acc and the idx type of TGridElemExtent have to be identical!");
+			        static_assert(
+			            std::is_same_v<Idx<TThreadElemExtent>, Idx<Acc>>,
+			            "The idx type of Acc and the idx type of TThreadElemExtent have to be identical!");
+
+			        // Get max number of threads per block depending on the kernel function attributes.
+			        // For GPU backend; number of registers used by the kernel, local and shared memory usage of the kernel
+			        // determines the max number of threads per block. This number could be equal or less than the max number of
+			        // threads per block defined by device properties.
+			        auto const kernelFunctionAttributes = getFunctionAttributes<Acc>(dev, kernelBundle);
+			        auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+
+			        if constexpr(Dim<TGridElemExtent>::value == 0)
+			        {
+			            auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
+			            ALPAKA_ASSERT(gridElemExtent == zero);
+			            ALPAKA_ASSERT(threadElemExtents == zero);
+			            return WorkDivMembers<DimInt<0>, Idx<Acc>>{zero, zero, zero};
+			        }
+			        else
+			            return subDivideGridElems(
+			                getExtents(gridElemExtent),
+			                getExtents(threadElemExtents),
+			                getAccDevProps<Acc>(dev),
+			                static_cast<Idx<Acc>>(threadsPerBlock),
+			                blockThreadMustDivideGridThreadExtent,
+			                gridBlockExtentSubDivRestrictions);
+
 			        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
 			        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
 			    }
@@ -29964,7 +30500,7 @@
 			        // Get the extents of grid, blocks and threads of the work division to check.
 			        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
 			        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
-			        auto const threadElemExtent = getWorkDiv<Block, Threads>(workDiv);
+			        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
 
 			        // Check that the maximal counts are satisfied.
 			        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
@@ -30001,6 +30537,92 @@
 			        }
 
 			        return true;
+			    }
+
+			    //! \tparam TDim The dimensionality of the accelerator device properties.
+			    //! \tparam TIdx The idx type of the accelerator device properties.
+			    //! \tparam TKernelBundle The type of the bundle of kernel and the arguments. Kernel is used to get number of
+			    //! threads per block, this number could be less than or equal to the number of threads per block according to
+			    //! device properties.
+			    //! \tparam TWorkDiv The type of the work division.
+			    //! \param accDevProps The maxima for the work division.
+			    //! \param kernelBundle An instance of a class consisting Kernel function and its arguments.
+			    //! \param workDiv The work division to test for validity.
+			    //! \return Returns true if the work division is valid for the given accelerator device properties and for the
+			    //! given kernel. Otherwise returns false.
+			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelBundle, typename TWorkDiv>
+			    ALPAKA_FN_HOST auto isValidWorkDivKernel(
+			        AccDevProps<TDim, TIdx> const& accDevProps,
+			        TKernelBundle const& kernelBundle,
+			        TWorkDiv const& workDiv) -> bool
+
+			    {
+			        auto const platformAcc = alpaka::Platform<TAcc>{};
+			        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+
+			        // Get the extents of grid, blocks and threads of the work division to check.
+			        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+			        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
+			        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
+			        // Use kernel properties to find the max threads per block for the kernel
+			        auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<TAcc>(dev, kernelBundle);
+			        auto const threadsPerBlockForKernel = kernelFunctionAttributes.maxThreadsPerBlock;
+			        // Select the minimum to find the upper bound for the threads per block
+			        auto const allowedThreadsPerBlock = std::min(
+			            static_cast<TIdx>(threadsPerBlockForKernel),
+			            static_cast<TIdx>(accDevProps.m_blockThreadCountMax));
+			        // Check that the maximal counts are satisfied.
+			        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
+			        {
+			            return false;
+			        }
+			        if(allowedThreadsPerBlock < blockThreadExtent.prod())
+			        {
+			            return false;
+			        }
+			        if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
+			        {
+			            return false;
+			        }
+
+			        // Check that the extents for all dimensions are correct.
+			        if constexpr(Dim<TWorkDiv>::value > 0)
+			        {
+			            // Store the maxima allowed for extents of grid, blocks and threads.
+			            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
+			            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
+			            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
+
+			            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
+			            {
+			                // No extent is allowed to be zero or greater then the allowed maximum.
+			                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
+			                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
+			                   || (threadElemExtentMax[i] < threadElemExtent[i]))
+			                {
+			                    return false;
+			                }
+			            }
+			        }
+
+			        return true;
+			    }
+
+			    //! \tparam TAcc The accelerator to test the validity on.
+			    //! \tparam TDev The type of the device.
+			    //! \tparam TKernelBundle The type of the bundle of kernel and the arguments.
+			    //! \tparam TWorkDiv The type of work division to test for validity.
+			    //! \param dev The device to test the work division for validity on.
+			    //! \param kernelBundle An instance of a class consisting Kernel function and its arguments.
+			    //! \param workDiv The work division to test for validity.
+			    //! \return Returns the value of isValidWorkDivKernel function.
+			    template<typename TAcc, typename TDev, typename TKernelBundle, typename TWorkDiv>
+			    ALPAKA_FN_HOST auto isValidWorkDivKernel(
+			        TDev const& dev,
+			        TKernelBundle const& kernelBundle,
+			        TWorkDiv const& workDiv) -> bool
+			    {
+			        return isValidWorkDivKernel<TAcc>(getAccDevProps<TAcc>(dev), kernelBundle, workDiv);
 			    }
 
 			    //! \tparam TAcc The accelerator to test the validity on.
@@ -30058,11 +30680,7 @@
 		            TKernelFnObj const kernelFnObj,
 		            TArgs... args)
 		        {
-		#        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
-		#            error "Device capability >= 2.0 is required!"
-		#        endif
-
-		            const TAcc acc(threadElemExtent);
+		            TAcc const acc(threadElemExtent);
 
 		// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
 		#        if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
@@ -30384,6 +31002,75 @@
 		                }
 		            }
 		        };
+
+		        //! \brief Specialisation of the class template FunctionAttributes
+		        //! \tparam TApi The type the API of the GPU accelerator backend. Currently Cuda or Hip.
+		        //! \tparam TDim The dimensionality of the accelerator device properties.
+		        //! \tparam TIdx The idx type of the accelerator device properties.
+		        //! \tparam TKernelFn Kernel function object type.
+		        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+		        template<typename TApi, typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+		        struct FunctionAttributes<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
+		        {
+		            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+		            //! determined. Max threads per block is one of the attributes.
+		            //! \return KernelFunctionAttributes instance. For GPU backend, all values are set by calling the
+		            //! corresponding API functions. The default version always returns an instance with zero fields. For CPU,
+		            //! the field of max threads allowed by kernel function for the block is 1.
+		            ALPAKA_FN_HOST static auto getFunctionAttributes(
+		                TDev const&,
+		                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+		                -> alpaka::KernelFunctionAttributes
+		            {
+		                auto kernelName = alpaka::detail::gpuKernel<
+		                    TKernelFn,
+		                    TApi,
+		                    AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
+		                    TDim,
+		                    TIdx,
+		                    remove_restrict_t<std::decay_t<TArgs>>...>;
+
+		                typename TApi::FuncAttributes_t funcAttrs;
+		#        if BOOST_COMP_GNUC
+		                // Disable and enable compile warnings for gcc
+		#            pragma GCC diagnostic push
+		#            pragma GCC diagnostic ignored "-Wconditionally-supported"
+		#        endif
+		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+		                    TApi::funcGetAttributes(&funcAttrs, reinterpret_cast<void const*>(kernelName)));
+		#        if BOOST_COMP_GNUC
+		#            pragma GCC diagnostic pop
+		#        endif
+
+		                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+		                kernelFunctionAttributes.constSizeBytes = funcAttrs.constSizeBytes;
+		                kernelFunctionAttributes.localSizeBytes = funcAttrs.localSizeBytes;
+		                kernelFunctionAttributes.sharedSizeBytes = funcAttrs.sharedSizeBytes;
+		                kernelFunctionAttributes.maxDynamicSharedSizeBytes = funcAttrs.maxDynamicSharedSizeBytes;
+		                kernelFunctionAttributes.numRegs = funcAttrs.numRegs;
+		                kernelFunctionAttributes.asmVersion = funcAttrs.ptxVersion;
+		                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(funcAttrs.maxThreadsPerBlock);
+
+		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+		                printf("Kernel Function Attributes: \n");
+		                printf("binaryVersion: %d \n", funcAttrs.binaryVersion);
+		                printf(
+		                    "constSizeBytes: %lu \n localSizeBytes: %lu, sharedSizeBytes %lu  maxDynamicSharedSizeBytes: %d "
+		                    "\n",
+		                    funcAttrs.constSizeBytes,
+		                    funcAttrs.localSizeBytes,
+		                    funcAttrs.sharedSizeBytes,
+		                    funcAttrs.maxDynamicSharedSizeBytes);
+
+		                printf(
+		                    "numRegs: %d, ptxVersion: %d \n maxThreadsPerBlock: %d .\n ",
+		                    funcAttrs.numRegs,
+		                    funcAttrs.ptxVersion,
+		                    funcAttrs.maxThreadsPerBlock);
+		#        endif
+		                return kernelFunctionAttributes;
+		            }
+		        };
 		    } // namespace trait
 		} // namespace alpaka
 
@@ -30399,8 +31086,9 @@
 
 	namespace alpaka
 	{
-	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelGpuCudaRt = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TAcc, typename TDev, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelGpuCudaRt
+	        = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDev, TDim, TIdx, TKernelFnObj, TArgs...>;
 	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -30785,81 +31473,7 @@
 		// ============================================================================
 
 	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/platform/PlatformCpu.hpp ==
-		// ==
-		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-
-		// #include <sstream>    // amalgamate: file already included
-		// #include <vector>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    //! The CPU device platform.
-		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
-		    {
-		#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-		    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
-		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
-		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
-		        char c = {};
-		#endif
-		    };
-
-		    namespace trait
-		    {
-		        //! The CPU device device type trait specialization.
-		        template<>
-		        struct DevType<PlatformCpu>
-		        {
-		            using type = DevCpu;
-		        };
-
-		        //! The CPU platform device count get trait specialization.
-		        template<>
-		        struct GetDevCount<PlatformCpu>
-		        {
-		            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
-		            {
-		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-		                return 1;
-		            }
-		        };
-
-		        //! The CPU platform device get trait specialization.
-		        template<>
-		        struct GetDevByIdx<PlatformCpu>
-		        {
-		            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
-		            {
-		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-		                std::size_t const devCount = getDevCount(platform);
-		                if(devIdx >= devCount)
-		                {
-		                    std::stringstream ssErr;
-		                    ssErr << "Unable to return device handle for CPU device with index " << devIdx
-		                          << " because there are only " << devCount << " devices!";
-		                    throw std::runtime_error(ssErr.str());
-		                }
-
-		                return {};
-		            }
-		        };
-		    } // namespace trait
-		} // namespace alpaka
-		// ==
-		// == ./include/alpaka/platform/PlatformCpu.hpp ==
-		// ============================================================================
-
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
