@@ -2,6 +2,16 @@
 <!-- filters='"*" ~[!nonportable] ~[!benchmark] ~[approvals]' rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
+  <file path="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp">
+    <testCase name="Incomplete AssertionHandler" duration="{duration}">
+      <skipped message="REQUIRE(Dummy)">
+FAILED:
+	REQUIRE( Dummy )
+Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+at AssertionHandler.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
     <testCase name="Clara::Arg supports single-arg parse the way Opt does" duration="{duration}"/>
     <testCase name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" duration="{duration}"/>
@@ -111,7 +121,6 @@
     <testCase name="estimate_clock_resolution" duration="{duration}"/>
     <testCase name="mean" duration="{duration}"/>
     <testCase name="measure" duration="{duration}"/>
-    <testCase name="normal_cdf" duration="{duration}"/>
     <testCase name="normal_quantile" duration="{duration}"/>
     <testCase name="resolution" duration="{duration}"/>
     <testCase name="run_for_at_least, chronometer" duration="{duration}"/>
@@ -119,6 +128,26 @@
     <testCase name="uniform samples" duration="{duration}"/>
     <testCase name="warmup" duration="{duration}"/>
     <testCase name="weighted_average_quantile" duration="{duration}"/>
+  </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp">
+    <testCase name="JsonWriter/Newly constructed JsonWriter does nothing" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeObject will create an empty pair of braces" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeObject with key will create an object to write the value" duration="{duration}"/>
+    <testCase name="JsonWriter/nesting objects" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeArray will create an empty pair of braces" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeArray creates array to write the values to" duration="{duration}"/>
+    <testCase name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" duration="{duration}"/>
+    <testCase name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" duration="{duration}"/>
+    <testCase name="JsonWriter/Custom class shall be quoted" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/Quote in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/Backslash in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/Forward slash in a string is **not** escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/Backspace in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/Formfeed in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/linefeed in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/carriage return in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/tab in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes charaters in strings properly/combination of characters is escaped" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp">
     <testCase name="Parse uints/proper inputs" duration="{duration}"/>
@@ -151,6 +180,7 @@
     <testCase name="Our PCG implementation provides expected results for known seeds/Specific seed" duration="{duration}"/>
     <testCase name="Random seed generation accepts known methods" duration="{duration}"/>
     <testCase name="Random seed generation reports unknown methods" duration="{duration}"/>
+    <testCase name="uniform_integer_distribution can return the bounds" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp">
     <testCase name="Multireporter calls reporters and listeners in correct order" duration="{duration}"/>
@@ -168,6 +198,9 @@
     <testCase name="Reporter's write listings to provided stream/console reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists tests" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tests" duration="{duration}"/>
@@ -228,12 +261,13 @@
     <testCase name="replaceInPlace/replace last char" duration="{duration}"/>
     <testCase name="replaceInPlace/replace all chars" duration="{duration}"/>
     <testCase name="replaceInPlace/replace no chars" duration="{duration}"/>
+    <testCase name="replaceInPlace/no replace in already-replaced string/lengthening" duration="{duration}"/>
+    <testCase name="replaceInPlace/no replace in already-replaced string/shortening" duration="{duration}"/>
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
     <testCase name="startsWith" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
-    <testCase name="Empty tag is not allowed" duration="{duration}"/>
     <testCase name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" duration="{duration}"/>
     <testCase name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" duration="{duration}"/>
     <testCase name="Tags with spaces and non-alphanumerical characters are accepted" duration="{duration}"/>
@@ -587,35 +621,39 @@ at Condition.tests.cpp:<line number>
 FAILED:
 	CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
-	9.1f == Approx( 9.1099996567 )
+	9.100000381f
+==
+Approx( 9.10999965667724609 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.float_nine_point_one == Approx( 9.0f ))">
 FAILED:
 	CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
-	9.1f == Approx( 9.0 )
+	9.100000381f == Approx( 9.0 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.float_nine_point_one == Approx( 1 ))">
 FAILED:
 	CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
-	9.1f == Approx( 1.0 )
+	9.100000381f == Approx( 1.0 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.float_nine_point_one == Approx( 0 ))">
 FAILED:
 	CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
-	9.1f == Approx( 0.0 )
+	9.100000381f == Approx( 0.0 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.double_pi == Approx( 3.1415 ))">
 FAILED:
 	CHECK( data.double_pi == Approx( 3.1415 ) )
 with expansion:
-	3.1415926535 == Approx( 3.1415 )
+	3.14159265350000005
+==
+Approx( 3.14150000000000018 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.str_hello == &quot;goodbye&quot;)">
@@ -650,7 +688,9 @@ at Condition.tests.cpp:<line number>
 FAILED:
 	CHECK( x == Approx( 1.301 ) )
 with expansion:
-	1.3 == Approx( 1.301 )
+	1.30000000000000027
+==
+Approx( 1.30099999999999993 )
 at Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
@@ -667,14 +707,18 @@ at Condition.tests.cpp:<line number>
 FAILED:
 	CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
-	9.1f != Approx( 9.1000003815 )
+	9.100000381f
+!=
+Approx( 9.10000038146972656 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.double_pi != Approx( 3.1415926535 ))">
 FAILED:
 	CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
-	3.1415926535 != Approx( 3.1415926535 )
+	3.14159265350000005
+!=
+Approx( 3.14159265350000005 )
 at Condition.tests.cpp:<line number>
       </skipped>
       <skipped message="CHECK(data.str_hello != &quot;hello&quot;)">
@@ -778,21 +822,21 @@ at Condition.tests.cpp:<line number>
 FAILED:
 	CHECK( data.float_nine_point_one &lt; 9 )
 with expansion:
-	9.1f &lt; 9
+	9.100000381f &lt; 9
 at Condition.tests.cpp:<line number>
       </failure>
       <failure message="CHECK(data.float_nine_point_one > 10)">
 FAILED:
 	CHECK( data.float_nine_point_one > 10 )
 with expansion:
-	9.1f > 10
+	9.100000381f > 10
 at Condition.tests.cpp:<line number>
       </failure>
       <failure message="CHECK(data.float_nine_point_one > 9.2)">
 FAILED:
 	CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
-	9.1f > 9.2
+	9.100000381f > 9.19999999999999929
 at Condition.tests.cpp:<line number>
       </failure>
       <failure message="CHECK(data.str_hello > &quot;hello&quot;)">
@@ -974,7 +1018,7 @@ at Exception.tests.cpp:<line number>
     <testCase name="Unexpected exceptions can be translated" duration="{duration}">
       <error message="TEST_CASE()">
 FAILED:
-3.14
+3.14000000000000012
 at Exception.tests.cpp:<line number>
       </error>
     </testCase>
@@ -1039,6 +1083,7 @@ at Generators.tests.cpp:<line number>
     <testCase name="Copy and then generate a range/from var and iterators" duration="{duration}"/>
     <testCase name="Copy and then generate a range/From a temporary container" duration="{duration}"/>
     <testCase name="Copy and then generate a range/Final validation" duration="{duration}"/>
+    <testCase name="GENERATE can combine literals and generators" duration="{duration}"/>
     <testCase name="Generators -- adapters/Filtering by predicate/Basic usage" duration="{duration}"/>
     <testCase name="Generators -- adapters/Filtering by predicate/Throws if there are no matching values" duration="{duration}"/>
     <testCase name="Generators -- adapters/Shortening a range" duration="{duration}"/>
@@ -1389,10 +1434,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of AllMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/All true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/Empty evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AllTrue range matcher/Basic usage/One false evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of AllTrue range matcher/Basic usage/One false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/All true evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
@@ -1402,10 +1447,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of AnyMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/All true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/Empty evaluates to false" duration="{duration}"/>
-    <testCase name="Usage of AnyTrue range matcher/Basic usage/One true evalutes to true" duration="{duration}"/>
+    <testCase name="Usage of AnyTrue range matcher/Basic usage/One true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All true evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evalutes to true" duration="{duration}"/>
+    <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
@@ -1415,10 +1460,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of NoneMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/All true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/Empty evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of NoneTrue range matcher/Basic usage/One true evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of NoneTrue range matcher/Basic usage/One true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/All false evaluates to true" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All true evaluates to false" duration="{duration}"/>
-    <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
@@ -1468,6 +1513,15 @@ at Message.tests.cpp:<line number>
       <failure message="FAIL_CHECK()">
 FAILED:
 This is a failure
+at Message.tests.cpp:<line number>
+      </failure>
+    </testCase>
+    <testCase name="INFO and UNSCOPED_INFO can stream multiple arguments" duration="{duration}">
+      <failure message="FAIL()">
+FAILED:
+Show infos!
+This info has multiple parts.
+This unscoped info has multiple parts.
 at Message.tests.cpp:<line number>
       </failure>
     </testCase>
@@ -1731,6 +1785,22 @@ FAILED:
 at Misc.tests.cpp:<line number>
       </skipped>
     </testCase>
+    <testCase name="Testing checked-if 4" duration="{duration}">
+      <skipped message="({Unknown expression after the reported line})">
+FAILED:
+	{Unknown expression after the reported line}
+Uncaught exception should fail!
+at Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Testing checked-if 5" duration="{duration}">
+      <skipped message="({Unknown expression after the reported line})">
+FAILED:
+	{Unknown expression after the reported line}
+Uncaught exception should fail!
+at Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="This test 'should' fail but doesn't" duration="{duration}"/>
     <testCase name="checkedElse" duration="{duration}"/>
     <testCase name="checkedElse, failing" duration="{duration}">
@@ -1871,6 +1941,13 @@ at Misc.tests.cpp:<line number>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Skip.tests.cpp">
+    <testCase name="Empty generators can SKIP in constructor" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+This generator is empty
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="a succeeding test can still be skipped" duration="{duration}">
       <skipped message="SKIP()">
 SKIPPED

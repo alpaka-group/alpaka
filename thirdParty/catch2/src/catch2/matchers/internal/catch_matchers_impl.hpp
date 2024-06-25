@@ -8,10 +8,25 @@
 #ifndef CATCH_MATCHERS_IMPL_HPP_INCLUDED
 #define CATCH_MATCHERS_IMPL_HPP_INCLUDED
 
-#include <catch2/internal/catch_test_macro_impl.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_decomposer.hpp>
+#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#include <string>
+
 namespace Catch {
+
+#ifdef __clang__
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wsign-compare"
+#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+#elif defined __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsign-compare"
+#    pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#endif
 
     template<typename ArgT, typename MatcherT>
     class MatchExpr : public ITransientExpression {
@@ -30,6 +45,13 @@ namespace Catch {
                << m_matcher.toString();
         }
     };
+
+#ifdef __clang__
+#    pragma clang diagnostic pop
+#elif defined __GNUC__
+#    pragma GCC diagnostic pop
+#endif
+
 
     namespace Matchers {
         template <typename ArgT>

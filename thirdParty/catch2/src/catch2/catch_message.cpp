@@ -37,7 +37,11 @@ namespace Catch {
     }
 
 
-    Capturer::Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names ) {
+    Capturer::Capturer( StringRef macroName,
+                        SourceLineInfo const& lineInfo,
+                        ResultWas::OfType resultType,
+                        StringRef names ):
+        m_resultCapture( getResultCapture() ) {
         auto trimmed = [&] (size_t start, size_t end) {
             while (names[start] == ',' || isspace(static_cast<unsigned char>(names[start]))) {
                 ++start;
@@ -87,6 +91,7 @@ namespace Catch {
                     m_messages.back().message += " := ";
                     start = pos;
                 }
+            default:; // noop
             }
         }
         assert(openings.empty() && "Mismatched openings");

@@ -9,6 +9,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
+#include <catch2/internal/catch_test_registry.hpp>
 
 #include <cassert>
 #include <cctype>
@@ -84,8 +85,10 @@ namespace Catch {
             while (lastDot > 0 && filename[lastDot - 1] != '.') {
                 --lastDot;
             }
-            --lastDot;
+            // In theory we could have filename without any extension in it
+            if ( lastDot == 0 ) { return StringRef(); }
 
+            --lastDot;
             size_t nameStart = lastDot;
             while (nameStart > 0 && filename[nameStart - 1] != '/' && filename[nameStart - 1] != '\\') {
                 --nameStart;
@@ -139,12 +142,20 @@ namespace Catch {
         for (size_t idx = 0; idx < originalTags.size(); ++idx) {
             auto c = originalTags[idx];
             if (c == '[') {
-                assert(!inTag);
+                CATCH_ENFORCE(
+                    !inTag,
+                    "Found '[' inside a tag while registering test case '"
+                        << _nameAndTags.name << "' at " << _lineInfo );
+
                 inTag = true;
                 tagStart = idx;
             }
             if (c == ']') {
-                assert(inTag);
+                CATCH_ENFORCE(
+                    inTag,
+                    "Found unmatched ']' while registering test case '"
+                        << _nameAndTags.name << "' at " << _lineInfo );
+
                 inTag = false;
                 tagEnd = idx;
                 assert(tagStart < tagEnd);
@@ -153,7 +164,11 @@ namespace Catch {
                 // it over to backing storage and actually reference the
                 // backing storage in the saved tags
                 StringRef tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
-                CATCH_ENFORCE(!tagStr.empty(), "Empty tags are not allowed");
+                CATCH_ENFORCE( !tagStr.empty(),
+                               "Found an empty tag while registering test case '"
+                                   << _nameAndTags.name << "' at "
+                                   << _lineInfo );
+
                 enforceNotReservedTag(tagStr, lineInfo);
                 properties |= parseSpecialTag(tagStr);
                 // When copying a tag to the backing storage, we need to
@@ -167,8 +182,12 @@ namespace Catch {
                 // the tags.
                 internalAppendTag(tagStr);
             }
-            (void)inTag; // Silence "set-but-unused" warning in release mode.
         }
+        CATCH_ENFORCE( !inTag,
+                       "Found an unclosed tag while registering test case '"
+                           << _nameAndTags.name << "' at " << _lineInfo );
+
+
         // Add [.] if relevant
         if (isHidden()) {
             internalAppendTag("."_sr);
