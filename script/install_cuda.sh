@@ -101,8 +101,20 @@ else
             ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.3.2-545.23.08-1_amd64.deb
             ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
+        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.4" ]
+        then
+            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-4-local
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.4.0-550.54.14-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_OLD_KEYS=false
+        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.5" ]
+        then
+            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-5-local
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.5.0-555.42.02-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.5.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_OLD_KEYS=false
         else
-            echo CUDA versions other than 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2 and 12.3 are not currently supported on linux!
+            echo CUDA versions other than 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2, 12.3, 12.4 and 12.5 are not currently supported on linux!
         fi
 
         # First install the local repository.

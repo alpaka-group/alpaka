@@ -83,4 +83,14 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
+    # there is a bug with g++-13 and cuda 12.4 on Ubuntu 20.04
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+        and row_check_version(row, DEVICE_COMPILER, "==", "12.4")
+        and row_check_name(row, HOST_COMPILER, "==", GCC)
+        and row_check_version(row, HOST_COMPILER, "==", "13")
+        and row_check_version(row, UBUNTU, "==", "20.04")
+    ):
+        return False
+
     return True
