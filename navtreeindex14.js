@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,90],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a7f6ac0e300cc165f82ff8077f1babf14":[3,0,0,15,90,0],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,91],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#afeeb2438e36746bda2dd912e276c60ca":[3,0,0,15,91,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#a741fa2456ef5edf44ebc43fbd03f3a0d":[3,0,0,15,216,0],
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html":[3,0,0,15,211],
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html#a11e6ea28be884d2e296b8f845f9b59f4":[3,0,0,15,211,0],
-"structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html":[3,0,0,15,212]
+"structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html":[3,0,0,15,212],
+"structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html#a4fdd3212b86c37f264f82ed382993589":[3,0,0,15,212,0]
 };
