@@ -29,7 +29,7 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-        KernelBundle(TKernelFn const& kernelFn, TArgs&&... args)
+        ALPAKA_FN_HOST KernelBundle(TKernelFn const& kernelFn, TArgs&&... args)
             : m_kernelFn(kernelFn)
             , m_args(std::forward<TArgs>(args)...)
         {
@@ -60,6 +60,6 @@ namespace alpaka
     //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
     //! arguments.
     template<typename TKernelFn, typename... TArgs>
-    KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
+    ALPAKA_FN_HOST KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
 
 } // namespace alpaka
