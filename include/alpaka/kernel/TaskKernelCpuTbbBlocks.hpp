@@ -86,6 +86,10 @@ namespace alpaka
             tbb::this_task_arena::isolate(
                 [&]
                 {
+                    // Create a shared barrier for grid sync, which will be passed by reference to each thread to
+                    // achieve shared state
+                    core::tbb::BarrierThread<TIdx> barrier(numBlocksInGrid);
+
                     tbb::parallel_for(
                         static_cast<TIdx>(0),
                         static_cast<TIdx>(numBlocksInGrid),
@@ -93,7 +97,8 @@ namespace alpaka
                         {
                             AccCpuTbbBlocks<TDim, TIdx> acc(
                                 *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
-                                blockSharedMemDynSizeBytes);
+                                blockSharedMemDynSizeBytes,
+                                barrier);
 
                             acc.m_gridBlockIdx
                                 = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(i)), gridBlockExtent);
@@ -175,6 +180,22 @@ namespace alpaka
                 kernelFunctionAttributes.maxDynamicSharedSizeBytes
                     = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
                 return kernelFunctionAttributes;
+            }
+        };
+
+        //! The CPU CPU OMP2 blocks get max active blocks for cooperative kernel specialization.
+        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+        struct MaxActiveBlocks<AccCpuTbbBlocks<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+                TKernelFnObj const& /*kernelFnObj*/,
+                TDev const& device,
+                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+                TArgs const&... /*args*/) -> int
+            {
+                return static_cast<int>(
+                    trait::GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
             }
         };
     } // namespace trait

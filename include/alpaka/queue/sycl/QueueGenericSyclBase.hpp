@@ -148,7 +148,7 @@ namespace alpaka
                                     cgh.depends_on(m_dependencies);
 
                                 if constexpr(is_sycl_kernel<TTask>) // Kernel
-                                    task(cgh); // Will call cgh.parallel_for internally
+                                    task(cgh, m_queue); // Will call cgh.parallel_for internally
                                 else // Host
                                     cgh.host_task(task);
                             });
