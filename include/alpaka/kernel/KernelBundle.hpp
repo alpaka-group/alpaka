@@ -38,7 +38,7 @@ namespace alpaka
         //! The function object type
         using KernelFn = TKernelFn;
         //! Tuple type to encapsulate kernel function argument types and argument values
-        using ArgTuple = std::tuple<remove_restrict_t<std::decay_t<TArgs>>...>;
+        using ArgTuple = std::tuple<std::decay_t<TArgs>...>;
 
         KernelFn m_kernelFn;
         ArgTuple m_args;
