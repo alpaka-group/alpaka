@@ -49,7 +49,21 @@ def alpaka_post_filter(row: List) -> bool:
     # https://github.com/alpaka-group/alpaka/issues/639
     if row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA) and (
         row_check_backend_version(row, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, "==", ON_VER)
-        or row_check_backend_version(row, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, "==", ON_VER)
+        or row_check_backend_version(
+            row, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, "==", ON_VER
+        )
+    ):
+        return False
+
+    # there is a compiler bug in GCC 11.4 which avoids working with NVCC 11.5
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+        and (
+            row_check_version(row, DEVICE_COMPILER, "==", "11.4")
+            or row_check_version(row, DEVICE_COMPILER, "==", "11.5")
+        )
+        and row_check_name(row, HOST_COMPILER, "==", GCC)
+        and row_check_version(row, HOST_COMPILER, "==", "11")
     ):
         return False
 

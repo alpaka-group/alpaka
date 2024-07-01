@@ -3,7 +3,7 @@
 # nvcc + g++
 linux_nvcc12.0_gcc12_debug_relocatable_device_code_compile_only:
   extends: .base_cuda_gcc_compile_only
-  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.1
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.2
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "12.0"
@@ -15,7 +15,7 @@ linux_nvcc12.0_gcc12_debug_relocatable_device_code_compile_only:
 
 linux_nvcc12.0_gcc12_release_extended_lambda_off_compile_only:
   extends: .base_cuda_gcc_compile_only
-  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.1
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.2
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "12.0"
