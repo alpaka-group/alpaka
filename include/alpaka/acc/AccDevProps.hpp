@@ -30,5 +30,6 @@ namespace alpaka
         TIdx m_threadElemCountMax; //!< The maximum number of elements in a threads.
         size_t m_sharedMemSizeBytes; //!< The size of shared memory per block
         size_t m_globalMemSizeBytes; //!< The size of global memory
+        bool m_cooperativeLaunch; //!< The support for launch of cooperative kernels
     };
 } // namespace alpaka
