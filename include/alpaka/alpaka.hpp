@@ -59,6 +59,7 @@
 #include "alpaka/core/Align.hpp"
 #include "alpaka/core/AlignedAlloc.hpp"
 #include "alpaka/core/Assert.hpp"
+#include "alpaka/core/BarrierTbb.h"
 #include "alpaka/core/BarrierThread.hpp"
 #include "alpaka/core/ClipCast.hpp"
 #include "alpaka/core/Common.hpp"
@@ -107,6 +108,13 @@
 #include "alpaka/exec/UniformElements.hpp"
 // extent
 #include "alpaka/extent/Traits.hpp"
+// grid
+#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
+#include "alpaka/grid/GridSyncBarrierCpuThread.hpp"
+#include "alpaka/grid/GridSyncCpuTbbBlocks.hpp"
+#include "alpaka/grid/GridSyncGpuCudaHip.hpp"
+#include "alpaka/grid/GridSyncNoOp.hpp"
+#include "alpaka/grid/Traits.hpp"
 // idx
 #include "alpaka/idx/Accessors.hpp"
 #include "alpaka/idx/MapIdx.hpp"

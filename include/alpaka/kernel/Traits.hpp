@@ -36,6 +36,19 @@ namespace alpaka
             typename TSfinae = void*/>
         struct CreateTaskKernel;
 
+        //! The cooperative kernel execution task creation trait.
+        template<
+            typename TAcc,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs/*,
+            typename TSfinae = void*/>
+        struct CreateTaskCooperativeKernel;
+
+        //! Get maximum requested blocks for cooperative kernel trait.
+        template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+        struct MaxActiveBlocks;
+
         //! The trait for getting the size of the block shared dynamic memory of a kernel.
         //!
         //! \tparam TKernelFnObj The kernel function object.
@@ -180,6 +193,7 @@ namespace alpaka
 #endif
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
+
     ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
         TKernelFnObj const& kernelFnObj,
         Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
@@ -210,6 +224,80 @@ namespace alpaka
             dev,
             kernelFnObj,
             std::forward<TArgs>(args)...);
+    }
+
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+    //! \tparam TAcc The accelerator type.
+    //! \param device The device for which the maximum block count should be calculated.
+    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+    //! \param blockThreadExtent The block thread extent.
+    //! \param threadElemExtent The thread element extent.
+    //! \param args... The kernel invocation arguments.
+    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+    //! specified extents.
+    //!
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+        TDev const& device,
+        TKernelFnObj const& kernelFnObj,
+        alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+        alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+        TArgs const&... args) -> int
+    {
+        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, TDim, TIdx, TArgs...>::getMaxActiveBlocks(
+            kernelFnObj,
+            device,
+            blockThreadExtent,
+            threadElemExtent,
+            args...);
+    }
+
+    //! Returns the maximum block aount for cooperative kernle launch on the device.
+    //!  Note that grid sync and other cooperative launch fucntioanlity is not guaranteed to work if you don't use
+    //!  createTaskCooperativeKernel()
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+    //! \tparam TAcc The accelerator type.
+    //! \param device The device for which the maximum block count should be calculated.
+    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+    //! \param blockThreadExtent The block thread extent.
+    //! \param threadElemExtent The thread element extent.
+    //! \param args... The kernel invocation arguments.
+    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+    //! specified extents.
+    //!
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TIdx, typename... TArgs>
+
+    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+        TDev const& device,
+        TKernelFnObj const& kernelFnObj,
+        TIdx const& blockThreadExtent,
+        TIdx const& threadElemExtent,
+        TArgs const&... args) -> int
+    {
+        auto const v_blockThreadExtent = Vec<DimInt<1>, TIdx>(blockThreadExtent);
+        auto const v_threadElemExtent = Vec<DimInt<1>, TIdx>(threadElemExtent);
+        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, DimInt<1>, TIdx, TArgs...>::getMaxActiveBlocks(
+            kernelFnObj,
+            device,
+            v_blockThreadExtent,
+            v_threadElemExtent,
+            args...);
     }
 
 #if ALPAKA_COMP_CLANG
@@ -318,8 +406,13 @@ namespace alpaka
     template<typename T>
     inline constexpr bool isKernelTriviallyCopyable = IsKernelTriviallyCopyable<T>::value;
 
-//! @}
+    //! @}
 
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
 //! Creates a kernel execution task.
 //!
 //! \tparam TAcc The accelerator type.
@@ -356,6 +449,57 @@ namespace alpaka
                   << std::endl;
 #endif
         return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
+            workDiv,
+            kernelFnObj,
+            std::forward<TArgs>(args)...);
+    }
+
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+//! Creates a cooperative kernel execution task.
+//! Allows to use grid sync, but disables dynamic parallelism and enforces a hardware limit on the number of blocks.
+//!
+//! \tparam TAcc The accelerator type.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+//! \return The kernel execution task.
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto createTaskCooperativeKernel(
+        TWorkDiv const& workDiv,
+        TKernelFnObj const& kernelFnObj,
+        TArgs&&... args)
+    {
+        // check for void return type
+        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
+
+#if ALPAKA_COMP_NVCC
+        static_assert(
+            std::is_trivially_copyable_v<TKernelFnObj> || __nv_is_extended_device_lambda_closure_type(TKernelFnObj)
+                || __nv_is_extended_host_device_lambda_closure_type(TKernelFnObj),
+            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
+#else
+        static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
+#endif
+        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
+        static_assert(
+            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
+            "The dimensions of TAcc and TWorkDiv have to be identical!");
+        static_assert(
+            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
+            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
+                  << std::endl;
+#endif
+        return trait::CreateTaskCooperativeKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskCooperativeKernel(
             workDiv,
             kernelFnObj,
             std::forward<TArgs>(args)...);
@@ -405,6 +549,36 @@ namespace alpaka
         enqueue(
             queue,
             createTaskKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
+                workDiv,
+                kernelFnObj,
+                std::forward<TArgs>(args)...));
+    }
+
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+//! Executes the given kernel in cooperative mode in the given queue.
+//!
+//! \tparam TTag The tag type.
+//! \param queue The queue to enqueue the view copy task into.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<concepts::Tag TTag, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto execCooperative(
+        TQueue& queue,
+        TWorkDiv const& workDiv,
+        TKernelFnObj const& kernelFnObj,
+        TArgs&&... args) -> void
+    {
+        enqueue(
+            queue,
+            createTaskCooperativeKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
                 workDiv,
                 kernelFnObj,
                 std::forward<TArgs>(args)...));
