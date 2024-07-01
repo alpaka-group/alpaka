@@ -118,7 +118,7 @@ namespace alpaka
     } // namespace uniform_cuda_hip
 
     //! The GPU CUDA/HIP accelerator execution task.
-    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
     class TaskKernelGpuUniformCudaHipRt final : public WorkDivMembers<TDim, TIdx>
     {
     public:
@@ -143,36 +143,36 @@ namespace alpaka
     namespace trait
     {
         //! The GPU CUDA/HIP execution task accelerator type trait specialization.
-        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct AccType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+        struct AccType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             using type = AccGpuUniformCudaHipRt<TApi, TDim, TIdx>;
         };
 
         //! The GPU CUDA/HIP execution task device type trait specialization.
-        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct DevType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+        struct DevType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             using type = DevUniformCudaHipRt<TApi>;
         };
 
         //! The GPU CUDA/HIP execution task dimension getter trait specialization.
-        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct DimType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+        struct DimType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             using type = TDim;
         };
 
         //! The CPU CUDA/HIP execution task platform type trait specialization.
-        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct PlatformType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+        struct PlatformType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             using type = PlatformUniformCudaHipRt<TApi>;
         };
 
         //! The GPU CUDA/HIP execution task idx type trait specialization.
-        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct IdxType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+        struct IdxType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             using type = TIdx;
         };
@@ -185,14 +185,15 @@ namespace alpaka
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
+            bool TCooperative,
             typename... TArgs>
         struct Enqueue<
             uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>,
-            TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
         {
             ALPAKA_FN_HOST static auto enqueue(
                 uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-                TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void
+                TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...> const& task) -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
@@ -250,6 +251,40 @@ namespace alpaka
                 auto kernelName = alpaka::detail::
                     gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
 
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                if constexpr (TCooperative) {
+                    // This checks if requested number of blocks is compliant with the maxima of the accelerator.
+                    int numBlocksPerSm = 0;
+                    cudaOccupancyMaxActiveBlocksPerMultiprocessor(
+                        &numBlocksPerSm,
+                        kernelName,
+                        blockThreadExtent.prod(),
+                        static_cast<std::size_t>(blockSharedMemDynSizeBytes));
+                    auto multiProcessorCount
+                        = trait::GetAccDevProps<TAcc>::getAccDevProps(getDev(queue)).m_multiProcessorCount;
+
+#                   if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << "maxBlocksPerGrid for the " << core::demangled<TKernelFnObj> << ": "
+                        << numBlocksPerSm * multiProcessorCount << std::endl;
+#                   endif
+
+                    if(numBlocksPerSm
+                           * multiProcessorCount
+                       < gridBlockExtent.prod())
+                    {
+                        throw std::runtime_error(
+                            "The number of requested blocks is larger than maximuma of the device for the kernel "
+                            + core::demangled<TKernelFnObj>
+                            + "! Device: " + getAccName<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>()
+                            + ", requested: " + std::to_string(gridBlockExtent.prod()) + ", maximum allowed: "
+                            + std::to_string(
+                                multiProcessorCount * numBlocksPerSm)
+                            + ".");
+                    }
+                }
+
+#        endif
+
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
                 typename TApi::FuncAttributes_t funcAttrs;
@@ -274,11 +309,26 @@ namespace alpaka
                 std::apply(
                     [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
                     {
-                        kernelName<<<
+                        //checks whether to launch cooperative or non-cooperative kernel
+                        if constexpr (TCooperative)
+                        {
+                            void const* kernelArgs[] = {&threadElemExtent, &task.m_kernelFnObj, &args...};
+
+                            cudaLaunchCooperativeKernel(
+                                reinterpret_cast<void*>(kernelName),
+                                gridDim,
+                                blockDim,
+                                const_cast<void**>(kernelArgs),
+                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                                queue.getNativeHandle());
+                        } else
+                        {
+                            kernelName<<<
                             gridDim,
                             blockDim,
                             static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                             queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
+                        }
                     },
                     task.m_args);
 

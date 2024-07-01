@@ -34,6 +34,15 @@ namespace alpaka
             typename TSfinae = void*/>
         struct CreateTaskKernel;
 
+        //! The cooperative kernel execution task creation trait.
+        template<
+            typename TAcc,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs/*,
+            typename TSfinae = void*/>
+        struct CreateTaskCooperativeKernel;
+
         //! The trait for getting the size of the block shared dynamic memory of a kernel.
         //!
         //! \tparam TKernelFnObj The kernel function object.
@@ -315,6 +324,11 @@ namespace alpaka
 
     //! @}
 
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
 //! Creates a kernel execution task.
 //!
 //! \tparam TAcc The accelerator type.
@@ -361,6 +375,57 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
+//! Creates a cooperative kernel execution task.
+//! Allows to use grid sync, but disables dynamic parallelism and enforces a hardware limit on the number of blocks.
+//!
+//! \tparam TAcc The accelerator type.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+//! \return The kernel execution task.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto createTaskCooperativeKernel(
+        TWorkDiv const& workDiv,
+        TKernelFnObj const& kernelFnObj,
+        TArgs&&... args)
+    {
+        // check for void return type
+        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
+
+#if BOOST_COMP_NVCC
+        static_assert(
+            std::is_trivially_copyable_v<TKernelFnObj> || __nv_is_extended_device_lambda_closure_type(TKernelFnObj)
+                || __nv_is_extended_host_device_lambda_closure_type(TKernelFnObj),
+            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
+#else
+        static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
+#endif
+        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
+        static_assert(
+            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
+            "The dimensions of TAcc and TWorkDiv have to be identical!");
+        static_assert(
+            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
+            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
+                  << std::endl;
+#endif
+        return trait::CreateTaskCooperativeKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskCooperativeKernel(
+            workDiv,
+            kernelFnObj,
+            std::forward<TArgs>(args)...);
+    }
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
 //! Executes the given kernel in the given queue.
 //!
 //! \tparam TAcc The accelerator type.
@@ -376,5 +441,30 @@ namespace alpaka
         -> void
     {
         enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
+    }
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+//! Executes the given kernel in cooperative mode in the given queue.
+//!
+//! \tparam TAcc The accelerator type.
+//! \param queue The queue to enqueue the view copy task into.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto execCooperative(
+        TQueue& queue,
+        TWorkDiv const& workDiv,
+        TKernelFnObj const& kernelFnObj,
+        TArgs&&... args) -> void
+    {
+        enqueue(queue, createTaskCooperativeKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
     }
 } // namespace alpaka
