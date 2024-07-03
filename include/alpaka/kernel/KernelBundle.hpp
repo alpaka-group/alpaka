@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>
 #include <alpaka/core/RemoveRestrict.hpp>
 
 #include <tuple>
