@@ -19,26 +19,16 @@ namespace alpaka
     class KernelBundle
     {
     public:
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
-                                                       // arguments "args,...". Ignore the error.
-#endif
-        //! \param kernelFn The kernel function-object
-        //! \param args,... The kernel invocation arguments.
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
-        ALPAKA_FN_HOST KernelBundle(TKernelFn const& kernelFn, TArgs&&... args)
-            : m_kernelFn(kernelFn)
-            , m_args(std::forward<TArgs>(args)...)
+        ALPAKA_FN_HOST KernelBundle(TKernelFn kernelFn, TArgs&&... args)
+            : m_kernelFn(std::move(kernelFn))
+            , m_args(std::make_tuple(std::forward<TArgs>(args)...))
         {
         }
 
         //! The function object type
         using KernelFn = TKernelFn;
         //! Tuple type to encapsulate kernel function argument types and argument values
-        using ArgTuple = std::tuple<std::decay_t<TArgs>...>;
+        using ArgTuple = std::tuple<std::remove_const_t<std::remove_reference_t<TArgs>>...>;
 
         KernelFn m_kernelFn;
         ArgTuple m_args;
@@ -60,6 +50,9 @@ namespace alpaka
     //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
     //! arguments.
     template<typename TKernelFn, typename... TArgs>
-    ALPAKA_FN_HOST KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
+    ALPAKA_FN_HOST KernelBundle(TKernelFn, TArgs&&...) -> KernelBundle<TKernelFn, TArgs...>;
+    // template<typename TKernelFn, typename... TArgs>
+    // ALPAKA_FN_HOST KernelBundle(TKernelFn kernelFn, TArgs&&... args) -> KernelBundle<std::decay_t<TKernelFn>,
+    // std::decay_t<TArgs>...>;
 
 } // namespace alpaka
