@@ -20,19 +20,21 @@ namespace alpaka
     class KernelBundle
     {
     public:
-        ALPAKA_FN_HOST KernelBundle(TKernelFn kernelFn, TArgs&&... args)
-            : m_kernelFn(std::move(kernelFn))
-            , m_args(std::make_tuple(std::forward<TArgs>(args)...))
-        {
-        }
-
         //! The function object type
         using KernelFn = TKernelFn;
         //! Tuple type to encapsulate kernel function argument types and argument values
         using ArgTuple = std::tuple<std::remove_const_t<std::remove_reference_t<TArgs>>...>;
 
+        // Constructor
+        KernelBundle(KernelFn kernelFn, TArgs&&... args)
+            : m_kernelFn(std::move(kernelFn))
+            , m_args(std::forward<TArgs>(args)...)
+        {
+        }
+
+    private:
         KernelFn m_kernelFn;
-        ArgTuple m_args;
+        ArgTuple m_args; // Store the argument types without const and reference
     };
 
     //! \brief User defined deduction guide with trailing return type. For CTAD during the construction.
