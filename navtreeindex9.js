@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"platform_2Traits_8hpp.html#a87d64705ec25ad0c9a25a218118c0ad4":[4,0,0,0,17,8,7],
 "platform_2Traits_8hpp.html#aa3eb41a0009d08e6e466c14424280971":[4,0,0,0,17,8,4],
 "platform_2Traits_8hpp.html#ae3425c31d35deb9045bc65b21a9bfe0f":[4,0,0,0,17,8,6],
 "platform_2Traits_8hpp.html#aec2e8bbefd54fa3bcb2da600f5184f96":[4,0,0,0,17,8,3],
@@ -33,8 +34,8 @@ var NAVTREEINDEX9 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html#a2fb6439818493244c87c70c5c5f9cb3a":[3,0,1,1,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html":[3,0,1,4],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html":[3,0,7],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html#ac943810fed2a3b2dfd58b4a771564ba8":[3,0,1,4,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html#ac943810fed2a3b2dfd58b4a771564ba8":[3,0,7,0],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html#ac943810fed2a3b2dfd58b4a771564ba8":[3,0,1,4,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01alpaka_1_1hierarch9c6ab17cd3b8e7c30e137b6233c0f776.html":[3,0,1,3],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01alpaka_1_1hierarch9c6ab17cd3b8e7c30e137b6233c0f776.html":[3,0,6],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01alpaka_1_1hierarch9c6ab17cd3b8e7c30e137b6233c0f776.html#a84cdde59d510cba09e67f5daa7947a0b":[3,0,6,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1AtomicInc.html#ab5e0a2977f237320876c3b6cc8f5f0dc":[3,0,0,35,0],
 "structalpaka_1_1AtomicMax.html":[3,0,0,36],
 "structalpaka_1_1AtomicMax.html#a60857019d7be86cee38d76b13c36d2eb":[3,0,0,36,0],
-"structalpaka_1_1AtomicMin.html":[3,0,0,37],
-"structalpaka_1_1AtomicMin.html#a155ad724edc391891a1bed0d8ef435b8":[3,0,0,37,0]
+"structalpaka_1_1AtomicMin.html":[3,0,0,37]
 };
