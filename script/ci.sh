@@ -17,11 +17,6 @@ if [ -n "$GITHUB_ACTIONS" ] && [ "$ALPAKA_CI_OS_NAME" = "Linux" ]; then
   sudo sysctl vm.mmap_rnd_bits=28
 fi
 
-if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
-then
-  ./script/docker_ci.sh
-elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
-then
-  source ./script/install.sh
-  ./script/run.sh
-fi
+source ./script/install.sh
+./script/run.sh
+

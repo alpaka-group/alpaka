@@ -47,7 +47,6 @@ concurrency:
 #   [ON] ALPAKA_CI_HIP_BRANCH                   : {rocm-4.2}
 # alpaka_USE_MDSPAN                             : {OFF, FETCH, SYSTEM}
 
-# if you add/remove any CI variable, also update docker_ci.sh
 env:
   alpaka_CI: GITHUB
   ALPAKA_CI_BUILD_JOBS: 2
