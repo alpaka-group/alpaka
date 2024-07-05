@@ -1,6 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"structalpaka_1_1math_1_1trait_1_1Log2.html#ae8a9b91d3992010678a02ac0693a02b6":[3,0,0,9,0,64,0],
 "structalpaka_1_1math_1_1trait_1_1Log2_3_01Log2UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable683ba86d1b161a19b5c7b25ba70e350c.html":[3,0,0,9,0,65],
 "structalpaka_1_1math_1_1trait_1_1Log2_3_01Log2UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable683ba86d1b161a19b5c7b25ba70e350c.html#a291aed30e079570c9f5a95fa1a7f190c":[3,0,0,9,0,65,0],
 "structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,66],
@@ -249,5 +248,6 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1rand_1_1engine_1_1PhiloxParams.html#a1b85f534e6d3d1fc0a2f8b915fbb8598":[3,0,0,13,1,5,0],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxParams.html#a8608e41699cf4983e594d2c5d8d4f1ad":[3,0,0,13,1,5,1],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxParams.html#af432f5df95b918726a3d8f9e08365c08":[3,0,0,13,1,5,2],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html":[3,0,0,13,1,9]
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html":[3,0,0,13,1,9],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf":[3,0,0,13,1,9,5]
 };

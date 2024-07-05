@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DependentFalseType_8hpp_source.html":[4,0,0,0,15,3],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
 "DevCpu_8hpp.html":[4,0,0,0,4,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "PlatformGenericSycl_8hpp_source.html":[4,0,0,0,17,4],
 "PlatformGpuSyclIntel_8hpp.html":[4,0,0,0,17,5],
 "PlatformGpuSyclIntel_8hpp_source.html":[4,0,0,0,17,5],
-"PlatformHipRt_8hpp.html":[4,0,0,0,17,6]
+"PlatformHipRt_8hpp.html":[4,0,0,0,17,6],
+"PlatformHipRt_8hpp_source.html":[4,0,0,0,17,6]
 };

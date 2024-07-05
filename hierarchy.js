@@ -21,7 +21,6 @@ var hierarchy =
     [ "alpaka::BlockAnd", "structalpaka_1_1BlockAnd.html", null ],
     [ "alpaka::BlockCount", "structalpaka_1_1BlockCount.html", null ],
     [ "alpaka::BlockOr", "structalpaka_1_1BlockOr.html", null ],
-    [ "alpaka::Complex< T >", "classalpaka_1_1Complex.html", null ],
     [ "alpaka::ConceptAcc", "structalpaka_1_1ConceptAcc.html", null ],
     [ "alpaka::ConceptAtomicBlocks", "structalpaka_1_1ConceptAtomicBlocks.html", null ],
     [ "alpaka::ConceptAtomicGrids", "structalpaka_1_1ConceptAtomicGrids.html", null ],
@@ -139,6 +138,7 @@ var hierarchy =
       [ "alpaka::generic::detail::QueueGenericThreadsBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", null ],
       [ "alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html", null ]
     ] ],
+    [ "alpaka::internal::Complex< T >", "classalpaka_1_1internal_1_1Complex.html", null ],
     [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
     ] ],
