@@ -2,6 +2,7 @@ var kernel_2Traits_8hpp =
 [
     [ "CheckFnReturnType", "structalpaka_1_1detail_1_1CheckFnReturnType.html", "structalpaka_1_1detail_1_1CheckFnReturnType" ],
     [ "IsKernelArgumentTriviallyCopyable", "structalpaka_1_1IsKernelArgumentTriviallyCopyable.html", null ],
+    [ "IsKernelTriviallyCopyable", "structalpaka_1_1IsKernelTriviallyCopyable.html", null ],
     [ "BlockSharedMemDynSizeBytes", "structalpaka_1_1trait_1_1BlockSharedMemDynSizeBytes.html", "structalpaka_1_1trait_1_1BlockSharedMemDynSizeBytes" ],
     [ "FunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes.html", "structalpaka_1_1trait_1_1FunctionAttributes" ],
     [ "OmpSchedule", "structalpaka_1_1trait_1_1OmpSchedule.html", "structalpaka_1_1trait_1_1OmpSchedule" ],
@@ -13,5 +14,6 @@ var kernel_2Traits_8hpp =
     [ "getFunctionAttributes", "kernel_2Traits_8hpp.html#a26afd07a34e29c6979c42fbcf35e7443", null ],
     [ "getOmpSchedule", "kernel_2Traits_8hpp.html#a0e721375d8252b7512840abaca2a8739", null ],
     [ "isKernelArgumentTriviallyCopyable", "kernel_2Traits_8hpp.html#afb384c5764c94bb1f66b4eee1908cfd9", null ],
+    [ "isKernelTriviallyCopyable", "kernel_2Traits_8hpp.html#a06f03a4b6cb5d99d58df68b130439f76", null ],
     [ "warpSize", "kernel_2Traits_8hpp.html#a215ecdb62defcf56faf46d0405c9e8e1", null ]
 ];

@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html":[3,0,0,15,0,1],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#aa5a89c89818bf61fd4f689cd9f8ffc3d":[3,0,0,15,0,1,0],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html":[3,0,0,15,0,2],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#ad3db1a72e1bbc6dfba09d031f3329f1b":[3,0,0,15,0,2,0],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html":[3,0,0,15,0,3],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ac5a3f09546ba544e04cc73bec1905082":[3,0,0,15,0,3,0],

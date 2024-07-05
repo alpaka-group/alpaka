@@ -1182,6 +1182,7 @@ var annotated_dup =
       [ "IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", null ],
       [ "IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", null ],
       [ "IsKernelArgumentTriviallyCopyable", "structalpaka_1_1IsKernelArgumentTriviallyCopyable.html", null ],
+      [ "IsKernelTriviallyCopyable", "structalpaka_1_1IsKernelTriviallyCopyable.html", null ],
       [ "KernelBundle", "classalpaka_1_1KernelBundle.html", "classalpaka_1_1KernelBundle" ],
       [ "KernelFunctionAttributes", "structalpaka_1_1KernelFunctionAttributes.html", "structalpaka_1_1KernelFunctionAttributes" ],
       [ "MemFenceCpu", "classalpaka_1_1MemFenceCpu.html", null ],

@@ -1699,6 +1699,9 @@ var hierarchy =
       [ "alpaka::trait::WarpSize< TKernelFnObj, TAcc, TSfinae >", "structalpaka_1_1trait_1_1WarpSize.html", null ],
       [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ]
     ] ],
+    [ "std::is_trivially_copyable", null, [
+      [ "alpaka::IsKernelTriviallyCopyable< T, typename >", "structalpaka_1_1IsKernelTriviallyCopyable.html", null ]
+    ] ],
     [ "std::true_type", null, [
       [ "alpaka::AccIsEnabled< TTag, std::void_t< TagToAcc< TTag, alpaka::DimInt< 1 >, int > > >", "structalpaka_1_1AccIsEnabled_3_01TTag_00_01std_1_1void__t_3_01TagToAcc_3_01TTag_00_01alpaka_1_1D473bae86b2996702d97c9b5b18a64298.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
