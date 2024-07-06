@@ -200,10 +200,10 @@ namespace alpaka
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // std::size_t printfFifoSize;
                 // TApi::deviceGetLimit(&printfFifoSize, TApi::limitPrintfFifoSize);
-                // std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                // std::cout << __func__ << " INFO: printfFifoSize: " << printfFifoSize << std::endl;
                 // TApi::deviceSetLimit(TApi::limitPrintfFifoSize, printfFifoSize*10);
                 // TApi::deviceGetLimit(&printfFifoSize, TApi::limitPrintfFifoSize);
-                // std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                // std::cout << __func__ << " INFO: printfFifoSize: " << printfFifoSize << std::endl;
 #        endif
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
                 auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
@@ -214,8 +214,8 @@ namespace alpaka
                 uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__ << "gridDim: (" << gridDim.z << ", " << gridDim.y << ", " << gridDim.x << ")\n";
-                std::cout << __func__ << "blockDim: (" << blockDim.z << ", " << blockDim.y << ", " << blockDim.x
+                std::cout << __func__ << " gridDim: (" << gridDim.z << ", " << gridDim.y << ", " << gridDim.x << ")\n";
+                std::cout << __func__ << " blockDim: (" << blockDim.z << ", " << blockDim.y << ", " << blockDim.x
                           << ")\n";
 #        endif
 
