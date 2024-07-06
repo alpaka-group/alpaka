@@ -264,22 +264,34 @@ namespace alpaka
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(queue.m_spQueueImpl->m_dev.getNativeHandle()));
 
-                // Enqueue the kernel execution.
-                // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch
-                // language extension expects the arguments by value. This forces the type of a float argument given
-                // with std::forward to this function to be of type float instead of e.g. "float const & __ptr64"
-                // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
-                // value location.
-                std::apply(
-                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
-                    {
-                        kernelName<<<
-                            gridDim,
-                            blockDim,
-                            static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                            queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
-                    },
-                    task.m_args);
+                if(getExtentProduct(gridBlockExtent) == 0)
+                {
+                    // CUDA fails with cudaErrorInvalidConfiguration if the kernel launch grid is empty.
+                    // On the other hand the CPU backend simply does not do anything in this case.
+                    // To implement the same behaviour, skip the kernel launch if the grid is empty.
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    std::cout << __func__ << " The launch grid is empty, the kernel will not be submitted.\n";
+#        endif
+                }
+                else
+                {
+                    // Enqueue the kernel execution.
+                    // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch
+                    // language extension expects the arguments by value. This forces the type of a float argument
+                    // given with std::forward to this function to be of type float instead of e.g. "float const &
+                    // __ptr64" (MSVC). If not given by value, the kernel launch code does not copy the value but the
+                    // pointer to the value location.
+                    std::apply(
+                        [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
+                        {
+                            kernelName<<<
+                                gridDim,
+                                blockDim,
+                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                                queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
+                        },
+                        task.m_args);
+                }
 
                 if constexpr(TBlocking || ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
                 {
