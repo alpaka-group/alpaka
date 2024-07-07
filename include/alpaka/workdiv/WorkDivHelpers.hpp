@@ -473,11 +473,14 @@ namespace alpaka
             auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
             auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
 
-            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
+            for(typename Dim<TWorkDiv>::value_type i = 0; i < Dim<TWorkDiv>::value; ++i)
             {
-                // No extent is allowed to be zero or greater then the allowed maximum.
-                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
-                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
+                // The grid extent is allowed to be zero, indicating that no work should be done.
+                // The threads and elements extents are not allowed to be zero.
+                // No extent is allowed to be greater then the allowed maximum.
+                if((std::is_signed_v<TIdx> && gridBlockExtent[i] < 0) || (blockThreadExtent[i] < 1)
+                   || (threadElemExtent[i] < 1) || (gridBlockExtentMax[i] < gridBlockExtent[i])
+                   || (blockThreadExtentMax[i] < blockThreadExtent[i])
                    || (threadElemExtentMax[i] < threadElemExtent[i]))
                 {
                     return false;
