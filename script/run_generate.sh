@@ -7,6 +7,12 @@
 
 source ./script/set.sh
 
+# TODO(SimeonEhrig): should use CMAKE_C_COMPILER and CMAKE_CXX_COMPILER instead update-alternatives because it
+# is more relastic use case and less error prone approach
+#: "${CMAKE_C_COMPILER?'CMAKE_C_COMPILER must be specified'}"
+#: "${CMAKE_CXX_COMPILER?'CMAKE_CXX_COMPILER must be specified'}"
+: "${alpaka_CXX_STANDARD?'alpaka_CXX_STANDARD must be specified'}"
+
 #-------------------------------------------------------------------------------
 
 # create a cmake variable definition if an environment variable exists

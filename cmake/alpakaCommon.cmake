@@ -470,6 +470,10 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
         elseif(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
             message(STATUS "nvcc is used as CUDA compiler")
 
+            if(alpaka_CXX_STANDARD GREATER_EQUAL 20 AND CMAKE_VERSION VERSION_LESS "3.25.0")
+                message(FATAL_ERROR "CMake 3.24 and older does not support C++20 for nvcc")
+            endif()
+
             # nvcc sets no linux/__linux macros on OpenPOWER linux
             # nvidia bug id: 2448610
             if(CMAKE_SYSTEM_NAME STREQUAL "Linux")

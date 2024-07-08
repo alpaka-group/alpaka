@@ -55,6 +55,15 @@ then
         fi
     fi
 
+    # Workaround if clang uses the stdlibc++. The stdlibc++-9 does not support C++20, therefore we install the stdlibc++-11. Clang automatically uses the latest stdlibc++ version.
+    if [[ "$(cat /etc/os-release)" =~ "20.04" ]] && [ "${alpaka_CXX_STANDARD}" == "20" ];
+    then
+        travis_retry sudo apt install -y --no-install-recommends software-properties-common
+        sudo apt-add-repository ppa:ubuntu-toolchain-r/test -y
+        travis_retry sudo apt update
+        travis_retry sudo apt install -y --no-install-recommends g++-11
+    fi
+
     if [ "${alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ]
     then
         LIBOMP_PACKAGE=libomp-${ALPAKA_CI_CLANG_VER}-dev
