@@ -45,6 +45,15 @@ export HSA_PATH=$ROCM_PATH
 export PATH=${ROCM_PATH}/bin:$PATH
 export PATH=${ROCM_PATH}/llvm/bin:$PATH
 
+# Workaround if clang uses the stdlibc++. The stdlibc++-9 does not support C++20, therefore we install the stdlibc++-11. Clang automatically uses the latest stdlibc++ version.
+if [[ "$(cat /etc/os-release)" =~ "20.04" ]] && [ "${alpaka_CXX_STANDARD}" == "20" ];
+then
+    travis_retry sudo apt install -y --no-install-recommends software-properties-common
+    sudo apt-add-repository ppa:ubuntu-toolchain-r/test -y
+    travis_retry sudo apt update
+    travis_retry sudo apt install -y --no-install-recommends g++-11
+fi
+
 sudo update-alternatives --install /usr/bin/clang clang ${ROCM_PATH}/llvm/bin/clang 50
 sudo update-alternatives --install /usr/bin/clang++ clang++ ${ROCM_PATH}/llvm/bin/clang++ 50
 sudo update-alternatives --install /usr/bin/cc cc ${ROCM_PATH}/llvm/bin/clang 50

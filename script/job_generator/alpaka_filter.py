@@ -67,4 +67,20 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
+    # cmake 3.24 and older does not support C++20 for nvcc
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+        and row_check_version(row, CXX_STANDARD, ">=", "20")
+        and row_check_version(row, CMAKE, "<", "3.25")
+    ):
+        return False
+
+    # g++-12 is not available on the Ubuntu 20.04 ppa's
+    if (
+        row_check_name(row, HOST_COMPILER, "==", GCC)
+        and row_check_version(row, HOST_COMPILER, "==", "12")
+        and row_check_version(row, UBUNTU, "==", "20.04")
+    ):
+        return False
+
     return True
