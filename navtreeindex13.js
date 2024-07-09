@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf":[3,0,0,13,1,9,5],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a5e93e2b9f8cdfe14f13083188a1aa781":[3,0,0,13,1,9,1],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a600b3d1d89f401f4f96e77bfdf052db6":[3,0,0,13,1,9,0],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4":[3,0,0,13,1,9,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html":[3,0,0,15,85],
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html#ad461ea2446c74affc38ad2394d81bbdc":[3,0,0,15,85,0],
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html":[3,0,0,15,87],
-"structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#aa3119ae3e819bf9da45943ae0396ddf5":[3,0,0,15,87,0],
-"structalpaka_1_1trait_1_1DevType.html":[3,0,0,15,88]
+"structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#aa3119ae3e819bf9da45943ae0396ddf5":[3,0,0,15,87,0]
 };
