@@ -49,7 +49,7 @@ struct Box
     using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx>;
 
     Vec const extentRand; ///< size of the buffer of PRNG states
-    WorkDiv workdivRand; ///< work division for PRNG buffer initialization
+    WorkDiv workdivRand; ///< work division for PRNG buffer initialization // REMOVE THAT!!
     BufHostRand bufHostRand; ///< host side PRNG states buffer (can be used to check the state of the states)
     BufAccRand bufAccRand; ///< device side PRNG states buffer
 
@@ -58,7 +58,7 @@ struct Box
     using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
 
     Vec const extentResult; ///< size of the results buffer
-    WorkDiv workdivResult; ///< work division of the result calculation
+    WorkDiv workdivResult; ///< work division of the result calculation // REMOVE THAT!!
     BufHost bufHostResult; ///< host side results buffer
     BufAcc bufAccResult; ///< device side results buffer
 

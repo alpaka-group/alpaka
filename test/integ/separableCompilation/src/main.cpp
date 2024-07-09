@@ -90,13 +90,10 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     // The data extent.
     alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent(numElements);
 
-    // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        extent,
-        static_cast<Idx>(3u),
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+
+    auto const& bundeledKernel = alpaka::KernelBundle(kernel);
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, static_cast<Idx>(3u));
 
     std::cout << alpaka::core::demangled<decltype(kernel)> << "("
               << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
