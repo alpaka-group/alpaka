@@ -101,12 +101,18 @@ namespace mathtest
             Args args{devAcc};
             Results results{devAcc};
 
-            WorkDiv const workDiv = alpaka::getValidWorkDiv<TAcc>(
+
+            auto const& bundeledKernel
+                = alpaka::KernelBundle(kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
+            // Let alpaka calculate good block and grid sizes given our full problem extent
+            auto const workDiv = alpaka::getValidWorkDivForKernel<TAcc>(
                 devAcc,
+                bundeledKernel,
                 sizeExtent,
                 elementsPerThread,
                 false,
                 alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+
             // SETUP COMPLETED.
 
             // Fill the buffer with random test-numbers.

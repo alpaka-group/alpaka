@@ -130,13 +130,20 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     // Get a queue on this device.
     QueueAcc queue(devAcc);
 
-    // Set the grid blocks extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
+
+    auto blockRetValuesDummy = alpaka::allocBuf<Val, Idx>(devAcc, static_cast<Idx>(1));
+    // Kernel input during the runtim of kernel will be different and is chosen to depend on workdiv.
+    // Therefore initially a  workdiv is needed to find the parameter. Therefore in kernel bundle, we can not use the
+    // real input for the buffer pointer.
+    auto const& bundeledKernel = alpaka::KernelBundle(kernel, std::data(blockRetValuesDummy));
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
+        bundeledKernel,
         numElements,
         static_cast<Idx>(1u),
         false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     std::cout << "SharedMemKernel("
               << " accelerator: " << alpaka::getAccName<Acc>()
