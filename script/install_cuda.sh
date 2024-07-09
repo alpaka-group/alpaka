@@ -36,19 +36,7 @@ else
         fi
 
         # Set the correct CUDA downloads
-        if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
-        then
-            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-11-0-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.0.3-450.51.06-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.0.3/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-            ALPAKA_CUDA_OLD_KEYS=true
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.1" ]
-        then
-            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-11-1-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.1.1-455.32.00-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.1.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-            ALPAKA_CUDA_OLD_KEYS=true
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.2" ]
+        if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.2" ]
         then
             ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-11-2-local
             ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.2.2-460.32.03-1_amd64.deb
@@ -115,7 +103,7 @@ else
             ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
         else
-            echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2 and 12.3 are not currently supported on linux!
+            echo CUDA versions other than 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2 and 12.3 are not currently supported on linux!
         fi
 
         # First install the local repository.
