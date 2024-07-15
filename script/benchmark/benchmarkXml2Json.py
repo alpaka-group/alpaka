@@ -1,10 +1,3 @@
-# Script to convert XML benchmark results reported by XML reporter of Catch2 to JSON format. Json format is json LD format, the attributes start with @ signs.
-# The script changes the name of the "Warning" node to MetaBenchmarkTestData node. The field:value pairs of the Warning node are stored in a dictionary and converted to JSON format.
-# This script is called by 2 comman line arguments. 
-# The first one is input xml file and the output is json file.
-# e.g: benchmarkXml2Json BabelStreamBenchmarkResults.xml BabelStreamBenchmarkResults.json
-
-
 import xml.etree.ElementTree as ET
 import json
 import html
@@ -32,18 +25,22 @@ def convert_to_number(value):
 
 def xml_to_dict(element):
     node_dict = {}
-    # Prefix attributes with '@'
+    # Directly add attributes without '@'
     for key, value in element.attrib.items():
-        node_dict["@{}".format(key)] = convert_to_number(value)
+        node_dict[key] = convert_to_number(value)
 
     if element.text and element.text.strip():
         node_dict[element.tag] = convert_to_number(html.unescape(element.text.strip()))
 
-    for child in element:
+    special_tags = {'mean', 'standardDeviation', 'outliers'}
+
+    for child in list(element):
         child_dict = xml_to_dict(child)
         if child.tag == 'Warning':
             warning_dict = parse_warning_node(child.text)
             node_dict['MetaBenchmarkTestData'] = warning_dict
+        elif child.tag in special_tags:
+            node_dict[child.tag] = child_dict[child.tag]
         else:
             if child.tag not in node_dict:
                 node_dict[child.tag] = []
