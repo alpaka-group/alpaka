@@ -1,4 +1,4 @@
-# Script to convert XML benchmark results reported by XML reporter of Catch2 to JSON format.
+# Script to convert XML benchmark results reported by XML reporter of Catch2 to JSON format. Json format is json LD format, the attributes start with @ signs.
 # The script changes the name of the "Warning" node to MetaBenchmarkTestData node. The field:value pairs of the Warning node are stored in a dictionary and converted to JSON format.
 # This script is called by 2 comman line arguments. 
 # The first one is input xml file and the output is json file.
@@ -10,22 +10,34 @@ import json
 import html
 import sys
 import os
+import re
 
 def parse_warning_node(warning_text):
     warning_dict = {}
     for line in warning_text.strip().split('\n'):
         if ':' in line:
             field_name, value = line.split(':', 1)
-            warning_dict[field_name.strip()] = value.strip()
+            warning_dict[field_name.strip()] = convert_to_number(value.strip())
     return warning_dict
+
+def convert_to_number(value):
+    # Check if the value is an integer
+    if re.match(r'^-?\d+$', value):
+        return int(value)
+    # Check if the value is a real number
+    elif re.match(r'^-?\d*\.\d+$', value):
+        return float(value)
+    # Return the value as a string if it's neither an integer nor a real number
+    return value
 
 def xml_to_dict(element):
     node_dict = {}
-    if element.attrib:
-        node_dict.update(element.attrib)
+    # Prefix attributes with '@'
+    for key, value in element.attrib.items():
+        node_dict["@{}".format(key)] = convert_to_number(value)
 
     if element.text and element.text.strip():
-        node_dict[element.tag] = html.unescape(element.text.strip())
+        node_dict[element.tag] = convert_to_number(html.unescape(element.text.strip()))
 
     for child in element:
         child_dict = xml_to_dict(child)
@@ -84,5 +96,5 @@ if __name__ == "__main__":
     with open(output_file, 'w') as json_file:
         json_file.write(json_output)
 
-    print(f"XML content of '{input_file}' has been converted to JSON and saved as '{output_file}'")
-    
+    print(f"XML content has been converted to JSON and saved as '{output_file}'")
+
