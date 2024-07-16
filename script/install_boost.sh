@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
+echo_green "<INSTALL: boost>"
+
 source ./script/travis_retry.sh
 source ./script/set.sh
 
