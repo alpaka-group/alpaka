@@ -195,9 +195,9 @@ jobs:
       env:
         ALPAKA_CI_OS_NAME: ${{runner.os}}
       shell: bash
-      run: cd ${GITHUB_WORKSPACE} && ./script/setup_utilities.sh && ./script/ci.sh
+      run: cd ${GITHUB_WORKSPACE} && source ./script/setup_utilities.sh && ./script/ci.sh
     - name: build + test
       if: (runner.os == 'Linux' || runner.os == 'macOS')
       env:
         ALPAKA_CI_OS_NAME: ${{runner.os}}
-      run: cd ${GITHUB_WORKSPACE} && ./script/setup_utilities.sh && ./script/ci.sh
+      run: cd ${GITHUB_WORKSPACE} && source ./script/setup_utilities.sh && ./script/ci.sh
