@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('dev_2Traits_8hpp_source.html',''); ini
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">    //! True if TDev is a device, i.e. if it implements the ConceptDev concept.</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">   64</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">isDevice</a> = <a class="code" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept&lt;ConceptDev, TDev&gt;::value</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">   64</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">isDevice</a> = <a class="code" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept&lt;ConceptDev, std::decay_t&lt;TDev&gt;</a>&gt;::value;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    //! \return The device this object is bound to.</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('dev_2Traits_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="dev_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Jul 10 2024 09:38:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 17 2024 06:04:18 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

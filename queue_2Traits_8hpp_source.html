@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('queue_2Traits_8hpp_source.html',''); i
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">    //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TQueue&gt;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">   20</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">isQueue</a> = <a class="code" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept&lt;ConceptQueue, TQueue&gt;::value</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">   20</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">isQueue</a> = <a class="code" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept&lt;ConceptQueue, std::decay_t&lt;TQueue&gt;</a>&gt;::value;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">    //! The queue traits.</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>trait</div>
@@ -178,7 +178,7 @@ $(document).ready(function(){initNavTree('queue_2Traits_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="queue_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Jul 10 2024 09:38:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 17 2024 06:04:18 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
