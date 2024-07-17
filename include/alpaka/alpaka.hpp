@@ -9818,7 +9818,7 @@
 
 			    //! True if TDev is a device, i.e. if it implements the ConceptDev concept.
 			    template<typename TDev>
-			    inline constexpr bool isDevice = concepts::ImplementsConcept<ConceptDev, TDev>::value;
+			    inline constexpr bool isDevice = concepts::ImplementsConcept<ConceptDev, std::decay_t<TDev>>::value;
 
 			    //! \return The device this object is bound to.
 			    template<typename T>
@@ -10117,7 +10117,7 @@
 
 				    //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.
 				    template<typename TQueue>
-				    inline constexpr bool isQueue = concepts::ImplementsConcept<ConceptQueue, TQueue>::value;
+				    inline constexpr bool isQueue = concepts::ImplementsConcept<ConceptQueue, std::decay_t<TQueue>>::value;
 
 				    //! The queue traits.
 				    namespace trait
@@ -17426,6 +17426,9 @@
 
 					    template<typename TDev, bool TBlocking>
 					    class QueueGenericSyclBase
+					        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TDev, TBlocking>>
+					        , public concepts::Implements<ConceptQueue, QueueGenericSyclBase<TDev, TBlocking>>
+					        , public concepts::Implements<ConceptGetDev, QueueGenericSyclBase<TDev, TBlocking>>
 					    {
 					    public:
 					        QueueGenericSyclBase(TDev const& dev)
