@@ -13,7 +13,7 @@ echo_green() {
         echo -e "\e[1;32m$1\e[0m"
     else
         echo "$1"
-    if
+    fi
 }
 
 # display a message in yellow
@@ -22,7 +22,7 @@ echo_yellow() {
         echo -e "\e[1;33m$1\e[0m"
     else
         echo "$1"
-    if
+    fi
 }
 
 # display a message in red
@@ -31,5 +31,5 @@ echo_red() {
         echo -e "\e[1;31m$1\e[0m"
     else
         echo "$1"
-    if
+    fi
 }
