@@ -1,0 +1,1582 @@
+[
+    {
+        "id": "f7e25eb8d1b146e52d271039f989483d",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Bechmark DotKernel Test-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamDotKernelTest.cpp",
+            "line": "188",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:38",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds"
+            }
+        },
+        "name": "DotKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "309408",
+        "mean": {
+            "value": "171410",
+            "lowerBound": "149170",
+            "upperBound": "171410",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "22240.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.383985",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "65bce41c65b0fa85401690a9e96e3998",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Bechmark DotKernel Test-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamDotKernelTest.cpp",
+            "line": "198",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:41",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds"
+            }
+        },
+        "name": "DotKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "659236",
+        "mean": {
+            "value": "352676",
+            "lowerBound": "329799",
+            "upperBound": "352676",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "22877.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.25",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "5b88e2275115817a27590b8d3b4dc950",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:42",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "InitKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "233802",
+        "mean": {
+            "value": "333750",
+            "lowerBound": "236143",
+            "upperBound": "333750",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "97607",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.477164",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "733ddd1dc133ea8ce845cd1838ca957d",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:42",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "CopyKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "343392",
+        "mean": {
+            "value": "438985",
+            "lowerBound": "326398",
+            "upperBound": "438985",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "112587",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.470307",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "12c8e78c88d11b35f5519e9cb0aeea95",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:42",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "ScalingKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "345536",
+        "mean": {
+            "value": "489504",
+            "lowerBound": "435460",
+            "upperBound": "489504",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "54043.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.339766",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "d392dc5259b29c25300993ed2f67b241",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:42",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "AddKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "494478",
+        "mean": {
+            "value": "660886",
+            "lowerBound": "580261",
+            "upperBound": "660886",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "80624.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.368765",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "96394b73f36092b42574afb977615cfd",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:42",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "TriadKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "506568",
+        "mean": {
+            "value": "491779",
+            "lowerBound": "455825",
+            "upperBound": "491779",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "35954",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.25",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "c61e199f3a2ab75efa75c5d7ead8becc",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:45",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "InitKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "99842",
+        "mean": {
+            "value": "73254.5",
+            "lowerBound": "49879",
+            "upperBound": "73254.5",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "23375.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.480819",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "dbe4884ef7309776d9de296d7665670a",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:45",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "CopyKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "196838",
+        "mean": {
+            "value": "124066",
+            "lowerBound": "98691",
+            "upperBound": "124066",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "25375",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.45331",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "efdc34db37aedf2066cbcbbfcce59e05",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:45",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "ScalingKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "196950",
+        "mean": {
+            "value": "123282",
+            "lowerBound": "98517",
+            "upperBound": "123282",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "24765",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.451599",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "99d0143de1a618b49987de42f6cbd7d8",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:45",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "AddKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "290568",
+        "mean": {
+            "value": "171094",
+            "lowerBound": "144515",
+            "upperBound": "171094",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "26579.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.41907",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "0717594210316807600409bfedd9d424",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "332",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:45",
+                "DataArraySize": "1048576",
+                "DataType": "single-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
+            }
+        },
+        "name": "TriadKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "290546",
+        "mean": {
+            "value": "169588",
+            "lowerBound": "145757",
+            "upperBound": "169588",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "23830.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.401087",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "f1cd4f709a603d2b2558c2ef1b47fb6d",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:48",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "InitKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "471258",
+        "mean": {
+            "value": "726485",
+            "lowerBound": "638444",
+            "upperBound": "726485",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "88041",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.367012",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "f89f6eafb56bc835894bf0388cd93153",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:48",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "CopyKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "855794",
+        "mean": {
+            "value": "1.06774e+06",
+            "lowerBound": "1.00084e+06",
+            "upperBound": "1.06774e+06",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "66902.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.25",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "2fea85a2c38b43400e809a7891d73523",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:48",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "ScalingKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "848576",
+        "mean": {
+            "value": "1.04264e+06",
+            "lowerBound": "949439",
+            "upperBound": "1.04264e+06",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "93198",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.255554",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "b13365876f0ad8408ad983cbf3908c81",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:48",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "AddKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "1.46116e+06",
+        "mean": {
+            "value": "1.21464e+06",
+            "lowerBound": "953837",
+            "upperBound": "1.21464e+06",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "260802",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.457635",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "71eeacd811eaf8b538612a46b7ad78bd",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:48",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "TriadKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "1.44147e+06",
+        "mean": {
+            "value": "1.24149e+06",
+            "lowerBound": "1.00889e+06",
+            "upperBound": "1.24149e+06",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "232600",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.444359",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "5192e77ca942b7e81ba7add6eedde786",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:51",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "InitKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "189006",
+        "mean": {
+            "value": "117008",
+            "lowerBound": "95302",
+            "upperBound": "117008",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "21706.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.443247",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "ee2f4c6851b56bed41c011bf91512918",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:51",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "CopyKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "386516",
+        "mean": {
+            "value": "216752",
+            "lowerBound": "193281",
+            "upperBound": "216752",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "23470.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.333425",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "3b7c19c33d478f16d10d9f9c94c7ce0c",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:51",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "ScalingKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "399406",
+        "mean": {
+            "value": "224864",
+            "lowerBound": "193497",
+            "upperBound": "224864",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "31367",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.399625",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "75eeaef86874cb2d8e7fb54fee408e31",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:51",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "AddKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "570158",
+        "mean": {
+            "value": "311486",
+            "lowerBound": "285865",
+            "upperBound": "311486",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "25620.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.25",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    },
+    {
+        "id": "8c78cafdbcfce09529ea542e790f7636",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "type": "Catch2TestRun",
+            "kind": "babelstream",
+            "rng-seed": "1458339043",
+            "catch2-version": "3.5.2",
+            "OverallResults": {
+                "successes": "14",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            },
+            "OverallResultsCases": {
+                "successes": "8",
+                "failures": "0",
+                "expectedFailures": "0",
+                "skips": "0"
+            }
+        },
+        "TestCase": {
+            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
+            "tags": "[benchmark-test]",
+            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
+            "line": "339",
+            "OverallResult": {
+                "success": "true",
+                "skips": "0"
+            },
+            "MetaBenchmarkTestData": {
+                "TimeStamp": "2024-07-19 16:39:51",
+                "DataArraySize": "1048576",
+                "DataType": "double-precision",
+                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
+                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
+                "TimeUnitForXMLReport": "Nano Seconds",
+                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
+                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
+            }
+        },
+        "name": "TriadKernel",
+        "samples": "2",
+        "resamples": "100000",
+        "iterations": "1",
+        "clockResolution": "18.0074",
+        "estimatedDuration": "570314",
+        "mean": {
+            "value": "325860",
+            "lowerBound": "286753",
+            "upperBound": "325860",
+            "ci": "0.95"
+        },
+        "standardDeviation": {
+            "value": "39106.5",
+            "lowerBound": "0",
+            "upperBound": "0",
+            "ci": "0.95"
+        },
+        "outliers": {
+            "variance": "0.36439",
+            "lowMild": "0",
+            "lowSevere": "0",
+            "highMild": "0",
+            "highSevere": "0"
+        }
+    }
+]
