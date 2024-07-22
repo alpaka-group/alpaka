@@ -108,7 +108,6 @@ using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
 TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     Idx const numElements = 1u << 16u;
