@@ -213,7 +213,8 @@ namespace alpaka
 #        endif
 
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+                // This checks for a valid work division that is also compliant with the hardware maxima of the
+                // accelerator.
                 if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                 {
                     throw std::runtime_error(

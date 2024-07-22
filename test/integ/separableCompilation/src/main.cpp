@@ -90,15 +90,6 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     // The data extent.
     alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent(numElements);
 
-
-    auto const& bundeledKernel = alpaka::KernelBundle(kernel);
-    // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, static_cast<Idx>(3u));
-
-    std::cout << alpaka::core::demangled<decltype(kernel)> << "("
-              << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
-              << ", numElements:" << numElements << ")" << std::endl;
-
     // Allocate host memory buffers, potentially pinned for faster copy to/from the accelerator.
     auto memBufHostA = alpaka::allocMappedBufIfSupported<Val, Idx>(devHost, platformAcc, extent);
     auto memBufHostB = alpaka::allocMappedBufIfSupported<Val, Idx>(devHost, platformAcc, extent);
@@ -119,6 +110,15 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     // Copy Host -> Acc.
     alpaka::memcpy(queueAcc, memBufAccA, memBufHostA);
     alpaka::memcpy(queueAcc, memBufAccB, memBufHostB);
+
+    auto const& bundeledKernel
+        = alpaka::KernelBundle(kernel, memBufAccA.data(), memBufAccB.data(), memBufAccC.data(), numElements);
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, static_cast<Idx>(3u));
+
+    std::cout << alpaka::core::demangled<decltype(kernel)> << "("
+              << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
+              << ", numElements:" << numElements << ")" << std::endl;
 
     // Create the executor task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
