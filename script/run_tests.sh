@@ -34,10 +34,10 @@ then
 
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
     then
-        ctest -V
+        ctest --output-on-failure
     elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
-        ctest -V -C ${CMAKE_BUILD_TYPE}
+        ctest --output-on-failure -C ${CMAKE_BUILD_TYPE}
     fi
 
     cd ..
