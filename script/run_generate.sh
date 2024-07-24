@@ -5,7 +5,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-source ./script/set.sh
+set +xv
+source ./script/setup_utilities.sh
 
 # TODO(SimeonEhrig): should use CMAKE_C_COMPILER and CMAKE_CXX_COMPILER instead update-alternatives because it
 # is more relastic use case and less error prone approach
