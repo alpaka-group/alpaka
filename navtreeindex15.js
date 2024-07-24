@@ -1,6 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1trait_1_1FunctionAttributes.html":[3,0,0,15,217],
 "structalpaka_1_1trait_1_1FunctionAttributes.html#a6c83d752966463f8ef95edb432078aeb":[3,0,0,15,217,0],
 "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3.html":[3,0,0,15,218],
 "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3.html#afc775ad6f6f1f1c4cffebd1edb908db7":[3,0,0,15,218,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html":[3,0,0,15,342],
 "structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html#a9458b59d20909b731568e9e8127c4941":[3,0,0,15,342,0],
 "structalpaka_1_1trait_1_1HasAsyncBufSupport.html":[3,0,0,15,343],
-"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevCpu_01_4.html":[3,0,0,15,344]
+"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevCpu_01_4.html":[3,0,0,15,344],
+"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,15,345]
 };

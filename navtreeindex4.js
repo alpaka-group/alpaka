@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3":[3,0,0,2,2,1,1],
 "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html":[3,0,0,2,2,2],
 "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226":[3,0,0,2,2,2,0],
 "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545":[3,0,0,2,2,2,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2b2e394be006104220af1c8d65a2f6a0":[3,0,0,13,1,11,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2c0361690aebc1a4a7f9a46f56520b20":[3,0,0,13,1,11,4],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a65ba3fd37abddb6d953f8165778a3b26":[3,0,0,13,1,11,2],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a6e4df1fcb2d83314870d746cde46aec6":[3,0,0,13,1,11,7]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a6e4df1fcb2d83314870d746cde46aec6":[3,0,0,13,1,11,7],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9dea952c5ad734497f5302d4c3f5a7dc":[3,0,0,13,1,11,0]
 };
