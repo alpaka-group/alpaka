@@ -5,7 +5,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-source ./script/set.sh
+set +xv
+source ./script/setup_utilities.sh
 
 : "${alpaka_ACC_GPU_CUDA_ENABLE?'alpaka_ACC_GPU_CUDA_ENABLE must be specified'}"
 : "${alpaka_ACC_GPU_HIP_ENABLE?'alpaka_ACC_GPU_HIP_ENABLE must be specified'}"

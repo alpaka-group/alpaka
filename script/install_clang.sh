@@ -5,9 +5,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-source ./script/travis_retry.sh
-
-source ./script/set.sh
+set +xv
+source ./script/setup_utilities.sh
 
 : "${ALPAKA_CI_CLANG_VER?'ALPAKA_CI_CLANG_VER must be specified'}"
 : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"

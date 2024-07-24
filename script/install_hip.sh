@@ -5,9 +5,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-source ./script/travis_retry.sh
-
-source ./script/set.sh
+set +xv
+source ./script/setup_utilities.sh
 
 : "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
 : "${ALPAKA_CI_HIP_VERSION?'ALPAKA_CI_HIP_VERSION must be specified'}"
