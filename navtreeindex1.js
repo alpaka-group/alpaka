@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DependentFalseType_8hpp_source.html":[4,0,0,0,15,3],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
 "DevCpu_8hpp.html":[4,0,0,0,4,2],
@@ -172,7 +171,7 @@ var NAVTREEINDEX1 =
 "Iterator_8hpp.html#adbab173d7dd9ddda3603e4c57679c6b4":[4,0,0,0,21,4,0,0,5],
 "Iterator_8hpp_source.html":[4,0,0,0,21,4,0,0],
 "KernelBundle_8hpp.html":[4,0,0,0,12,0],
-"KernelBundle_8hpp.html#a5d8b59145bf3945a2b499d77b09d052b":[4,0,0,0,12,0,1],
+"KernelBundle_8hpp.html#a2ee3b02b44d397e14c1b63f0f36ca087":[4,0,0,0,12,0,1],
 "KernelBundle_8hpp_source.html":[4,0,0,0,12,0],
 "KernelExecutionFixture_8hpp.html":[4,0,0,0,21,9],
 "KernelExecutionFixture_8hpp_source.html":[4,0,0,0,21,9],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "PlatformGenericSycl_8hpp_source.html":[4,0,0,0,17,4],
 "PlatformGpuSyclIntel_8hpp.html":[4,0,0,0,17,5],
 "PlatformGpuSyclIntel_8hpp_source.html":[4,0,0,0,17,5],
-"PlatformHipRt_8hpp.html":[4,0,0,0,17,6]
+"PlatformHipRt_8hpp.html":[4,0,0,0,17,6],
+"PlatformHipRt_8hpp_source.html":[4,0,0,0,17,6]
 };

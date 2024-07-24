@@ -1,7 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"WorkDivHelpers_8hpp.html#ae27dd1d17e2324e71dc1677f5f4a49fa":[4,0,0,0,26,2,3],
-"WorkDivHelpers_8hpp.html#aeeb203c11f29a926f5f2739bd9b7f704":[4,0,0,0,26,2,10],
 "WorkDivHelpers_8hpp_source.html":[4,0,0,0,26,2],
 "WorkDivMembers_8hpp.html":[4,0,0,0,26,3],
 "WorkDivMembers_8hpp.html#a3134a01468d2e3d6d7010fc308d72e59":[4,0,0,0,26,3,6],
@@ -144,11 +142,9 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1IntrinsicFallback.html":[3,0,0,79],
 "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html":[3,0,0,80],
 "classalpaka_1_1KernelBundle.html":[3,0,0,83],
+"classalpaka_1_1KernelBundle.html#a0090706508293e5afc81f0662cac7234":[3,0,0,83,0],
 "classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01":[3,0,0,83,1],
-"classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe":[3,0,0,83,0],
-"classalpaka_1_1KernelBundle.html#a28016ca64dda0416886880b3ca86fbfd":[3,0,0,83,2],
-"classalpaka_1_1KernelBundle.html#a3b9539e109d47f4adcecb461f55495d4":[3,0,0,83,4],
-"classalpaka_1_1KernelBundle.html#acbf8bda87406b19f8b1b2ce067cd9d6a":[3,0,0,83,3],
+"classalpaka_1_1KernelBundle.html#a34329cd11f5fd48ccb451d44bb65b035":[3,0,0,83,2],
 "classalpaka_1_1MemFenceCpu.html":[3,0,0,85],
 "classalpaka_1_1MemFenceCpuSerial.html":[3,0,0,86],
 "classalpaka_1_1MemFenceOmp2Blocks.html":[3,0,0,87],
@@ -249,5 +245,9 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1":[3,0,0,2,1,4,2],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d":[3,0,0,2,1,4,3],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1":[3,0,0,2,1,4,1],
-"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876":[3,0,0,2,1,4,4]
+"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876":[3,0,0,2,1,4,4],
+"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b":[3,0,0,2,1,4,5],
+"classalpaka_1_1core_1_1threads_1_1BarrierThread.html":[3,0,0,2,2,1],
+"classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5":[3,0,0,2,2,1,0],
+"classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3":[3,0,0,2,2,1,1]
 };

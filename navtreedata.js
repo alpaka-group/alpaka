@@ -64,24 +64,24 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"DependentFalseType_8hpp_source.html",
-"PlatformHipRt_8hpp_source.html",
-"WorkDivHelpers_8hpp.html#ae27dd1d17e2324e71dc1677f5f4a49fa",
-"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b",
-"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2c0361690aebc1a4a7f9a46f56520b20",
-"functions_func_s.html",
-"namespacealpaka.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5",
-"namespacealpaka_1_1internal.html#af76b8c5336d8258eeaab712a9a813927",
-"platform_2Traits_8hpp.html",
-"structalpaka_1_1AtomicMax.html#a60857019d7be86cee38d76b13c36d2eb",
-"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#aff6fac79788674a45c30cdcc0198418f",
-"structalpaka_1_1math_1_1trait_1_1Log2.html#ae8a9b91d3992010678a02ac0693a02b6",
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf",
-"structalpaka_1_1trait_1_1DevType.html",
-"structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html",
-"structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html",
-"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html"
+"AccCpuOmp2Blocks_8hpp.html",
+"DevCpuSycl_8hpp.html",
+"PlatformUniformCudaHipRt_8hpp.html",
+"WorkDivHelpers_8hpp_source.html",
+"classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html",
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ab8e3595cd7b93b12c1d2c41839ed36ea",
+"functions_func_w.html",
+"namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e",
+"namespacealpaka_1_1math.html#a158e580fff64a969502abc640d51ea45",
+"platform_2Traits_8hpp.html#aec2e8bbefd54fa3bcb2da600f5184f96",
+"structalpaka_1_1AtomicSub.html",
+"structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a329c95557672f07ae882c69b8335a65a",
+"structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__58a8dc598c994ee681d1178d132c69a9.html",
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#af87f4cd5d2203fc47f4024937be99987",
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html",
+"structalpaka_1_1trait_1_1FunctionAttributes.html#a6c83d752966463f8ef95edb432078aeb",
+"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a2517b7f53c0a333dee4cf2b56445f04b",
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ac5a3f09546ba544e04cc73bec1905082"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

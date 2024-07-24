@@ -86,7 +86,6 @@ $(document).ready(function(){initNavTree('classalpaka_1_1KernelBundle.html','');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1KernelBundle-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::KernelBundle&lt; TKernelFn, TArgs &gt; Class Template Reference</div>  </div>
@@ -100,24 +99,17 @@ $(document).ready(function(){initNavTree('classalpaka_1_1KernelBundle.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1096f37f973a0be4dcc16920006eb8fe"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe">ArgTuple</a> = std::tuple&lt; <a class="el" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt; std::decay_t&lt; TArgs &gt; &gt;... &gt;</td></tr>
-<tr class="memdesc:a1096f37f973a0be4dcc16920006eb8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuple type to encapsulate kernel function argument types and argument values.  <a href="classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe">More...</a><br /></td></tr>
-<tr class="separator:a1096f37f973a0be4dcc16920006eb8fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0090706508293e5afc81f0662cac7234"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a0090706508293e5afc81f0662cac7234">ArgTuple</a> = std::tuple&lt; std::decay_t&lt; TArgs &gt;... &gt;</td></tr>
+<tr class="memdesc:a0090706508293e5afc81f0662cac7234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuple type to encapsulate kernel function argument types and argument values.  <a href="classalpaka_1_1KernelBundle.html#a0090706508293e5afc81f0662cac7234">More...</a><br /></td></tr>
+<tr class="separator:a0090706508293e5afc81f0662cac7234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a098974dc2514c751d837a96872173e01"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">KernelFn</a> = TKernelFn</td></tr>
 <tr class="memdesc:a098974dc2514c751d837a96872173e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function object type.  <a href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">More...</a><br /></td></tr>
 <tr class="separator:a098974dc2514c751d837a96872173e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a28016ca64dda0416886880b3ca86fbfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a28016ca64dda0416886880b3ca86fbfd">KernelBundle</a> (TKernelFn const &amp;kernelFn, TArgs &amp;&amp;... args)</td></tr>
-<tr class="separator:a28016ca64dda0416886880b3ca86fbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:acbf8bda87406b19f8b1b2ce067cd9d6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe">ArgTuple</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#acbf8bda87406b19f8b1b2ce067cd9d6a">m_args</a></td></tr>
-<tr class="separator:acbf8bda87406b19f8b1b2ce067cd9d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b9539e109d47f4adcecb461f55495d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">KernelFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a3b9539e109d47f4adcecb461f55495d4">m_kernelFn</a></td></tr>
-<tr class="separator:a3b9539e109d47f4adcecb461f55495d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34329cd11f5fd48ccb451d44bb65b035"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1KernelBundle.html#a34329cd11f5fd48ccb451d44bb65b035">KernelBundle</a> (<a class="el" href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">KernelFn</a> kernelFn, TArgs &amp;&amp;... args)</td></tr>
+<tr class="separator:a34329cd11f5fd48ccb451d44bb65b035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TKernelFn, typename... TArgs&gt;<br />
@@ -132,10 +124,10 @@ class alpaka::KernelBundle&lt; TKernelFn, TArgs &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00019">19</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00020">20</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a1096f37f973a0be4dcc16920006eb8fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1096f37f973a0be4dcc16920006eb8fe">&#9670;&nbsp;</a></span>ArgTuple</h2>
+<a id="a0090706508293e5afc81f0662cac7234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0090706508293e5afc81f0662cac7234">&#9670;&nbsp;</a></span>ArgTuple</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,14 +135,14 @@ class alpaka::KernelBundle&lt; TKernelFn, TArgs &gt;</h3>
 template&lt;typename TKernelFn , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a>&lt; TKernelFn, TArgs &gt;::<a class="el" href="classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe">ArgTuple</a> =  std::tuple&lt;<a class="el" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt; &gt;...&gt;</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a>&lt; TKernelFn, TArgs &gt;::<a class="el" href="classalpaka_1_1KernelBundle.html#a0090706508293e5afc81f0662cac7234">ArgTuple</a> =  std::tuple&lt;std::decay_t&lt;TArgs&gt;...&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Tuple type to encapsulate kernel function argument types and argument values. </p>
 
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00041">41</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00026">26</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
 
 </div>
 </div>
@@ -170,13 +162,13 @@ template&lt;typename TKernelFn , typename... TArgs&gt; </div>
 
 <p>The function object type. </p>
 
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00039">39</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00024">24</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a28016ca64dda0416886880b3ca86fbfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28016ca64dda0416886880b3ca86fbfd">&#9670;&nbsp;</a></span>KernelBundle()</h2>
+<a id="a34329cd11f5fd48ccb451d44bb65b035"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34329cd11f5fd48ccb451d44bb65b035">&#9670;&nbsp;</a></span>KernelBundle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,7 +181,7 @@ template&lt;typename TKernelFn , typename... TArgs&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a>&lt; TKernelFn, TArgs &gt;::<a class="el" href="classalpaka_1_1KernelBundle.html">KernelBundle</a> </td>
           <td>(</td>
-          <td class="paramtype">TKernelFn const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">KernelFn</a>&#160;</td>
           <td class="paramname"><em>kernelFn</em>, </td>
         </tr>
         <tr>
@@ -210,52 +202,8 @@ template&lt;typename TKernelFn , typename... TArgs&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">kernelFn</td><td>The kernel function-object </td></tr>
-    <tr><td class="paramname">args,...</td><td>The kernel invocation arguments. </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00032">32</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="acbf8bda87406b19f8b1b2ce067cd9d6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbf8bda87406b19f8b1b2ce067cd9d6a">&#9670;&nbsp;</a></span>m_args</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TKernelFn , typename... TArgs&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1KernelBundle.html#a1096f37f973a0be4dcc16920006eb8fe">ArgTuple</a> <a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a>&lt; TKernelFn, TArgs &gt;::m_args</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00044">44</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a3b9539e109d47f4adcecb461f55495d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b9539e109d47f4adcecb461f55495d4">&#9670;&nbsp;</a></span>m_kernelFn</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TKernelFn , typename... TArgs&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1KernelBundle.html#a098974dc2514c751d837a96872173e01">KernelFn</a> <a class="el" href="classalpaka_1_1KernelBundle.html">alpaka::KernelBundle</a>&lt; TKernelFn, TArgs &gt;::m_kernelFn</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00043">43</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="KernelBundle_8hpp_source.html#l00029">29</a> of file <a class="el" href="KernelBundle_8hpp_source.html">KernelBundle.hpp</a>.</p>
 
 </div>
 </div>
@@ -268,7 +216,7 @@ template&lt;typename TKernelFn , typename... TArgs&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1KernelBundle.html">KernelBundle</a></li>
-    <li class="footer">Generated on Wed Jul 17 2024 06:04:18 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 24 2024 08:04:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

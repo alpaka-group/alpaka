@@ -1,10 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf":[3,0,0,13,1,9,5],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a5e93e2b9f8cdfe14f13083188a1aa781":[3,0,0,13,1,9,1],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a600b3d1d89f401f4f96e77bfdf052db6":[3,0,0,13,1,9,0],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4":[3,0,0,13,1,9,3],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#abd52ce5279c239863287ec8d78694cda":[3,0,0,13,1,9,4],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#af87f4cd5d2203fc47f4024937be99987":[3,0,0,13,1,9,2],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html":[3,0,0,13,1,10],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a21eba2c6dfb0a17ad7db2bac9a3c12c0":[3,0,0,13,1,10,1],
@@ -249,5 +244,10 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html":[3,0,0,15,85],
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html#ad461ea2446c74affc38ad2394d81bbdc":[3,0,0,15,85,0],
 "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html":[3,0,0,15,87],
-"structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#aa3119ae3e819bf9da45943ae0396ddf5":[3,0,0,15,87,0]
+"structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#aa3119ae3e819bf9da45943ae0396ddf5":[3,0,0,15,87,0],
+"structalpaka_1_1trait_1_1DevType.html":[3,0,0,15,88],
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,89],
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a3d16ede308f5c24809d9a0d6e7475261":[3,0,0,15,89,0],
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,90],
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a7f6ac0e300cc165f82ff8077f1babf14":[3,0,0,15,90,0]
 };

@@ -1,10 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html":[3,0,0,15,342],
-"structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html#a9458b59d20909b731568e9e8127c4941":[3,0,0,15,342,0],
-"structalpaka_1_1trait_1_1HasAsyncBufSupport.html":[3,0,0,15,343],
-"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevCpu_01_4.html":[3,0,0,15,344],
-"structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,15,345],
 "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a2517b7f53c0a333dee4cf2b56445f04b":[3,0,0,15,345,3],
 "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a398d004da3fadb9085a6b66b6c519cf5":[3,0,0,15,345,1],
 "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650":[3,0,0,15,345,4],
@@ -249,5 +244,10 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html":[3,0,0,15,471],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html#ab5fa6484509b1908a071d37bc1dcea1e":[3,0,0,15,471,0],
 "structalpaka_1_1trait_1_1WarpSize.html":[3,0,0,15,479],
-"structalpaka_1_1trait_1_1detail_1_1AtomicOp.html":[3,0,0,15,0,0]
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp.html":[3,0,0,15,0,0],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html":[3,0,0,15,0,1],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#aa5a89c89818bf61fd4f689cd9f8ffc3d":[3,0,0,15,0,1,0],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html":[3,0,0,15,0,2],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#ad3db1a72e1bbc6dfba09d031f3329f1b":[3,0,0,15,0,2,0],
+"structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html":[3,0,0,15,0,3]
 };

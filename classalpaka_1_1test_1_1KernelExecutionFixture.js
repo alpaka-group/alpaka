@@ -11,5 +11,5 @@ var classalpaka_1_1test_1_1KernelExecutionFixture =
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#adb153f13bb0abe25f5c2c8be21ded3ef", null ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a7341ce56443f40211ecab0992fea466e", null ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#ada917e1cf951833d44d56b0c535c4097", null ],
-    [ "operator()", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a67710b8945cdb6a7d71fcdd9fdf9cab4", null ]
+    [ "operator()", "classalpaka_1_1test_1_1KernelExecutionFixture.html#aedc80908f43a02b4fa79bfe8767f0f4e", null ]
 ];

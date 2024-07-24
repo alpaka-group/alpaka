@@ -1,10 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1AtomicMax.html#a60857019d7be86cee38d76b13c36d2eb":[3,0,0,36,0],
-"structalpaka_1_1AtomicMin.html":[3,0,0,37],
-"structalpaka_1_1AtomicMin.html#a155ad724edc391891a1bed0d8ef435b8":[3,0,0,37,0],
-"structalpaka_1_1AtomicOr.html":[3,0,0,40],
-"structalpaka_1_1AtomicOr.html#a8ca40859762c63ae60a2e98db6112720":[3,0,0,40,0],
 "structalpaka_1_1AtomicSub.html":[3,0,0,41],
 "structalpaka_1_1AtomicSub.html#af29fdb842c21c4c961627c069446a29e":[3,0,0,41,0],
 "structalpaka_1_1AtomicXor.html":[3,0,0,43],
@@ -249,5 +244,10 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a6450570f8ad0e154a4ab70d1f4beb814":[3,0,0,4,43,4],
 "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a80c3f8e09aa73b507292f31e38d85f4f":[3,0,0,4,43,5],
 "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a951a858f570f81c1caeb13a7b76c78ff":[3,0,0,4,43,1],
-"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ab26acf3e7643a4b3987458ea0c3bfd4a":[3,0,0,4,43,2]
+"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ab26acf3e7643a4b3987458ea0c3bfd4a":[3,0,0,4,43,2],
+"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#aff6fac79788674a45c30cdcc0198418f":[3,0,0,4,43,3],
+"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html":[3,0,0,4,44],
+"structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a834cbc216a2f4e2357485648aa38d593":[3,0,0,4,44,0],
+"structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html":[3,0,0,4,46],
+"structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html":[3,0,0,4,47]
 };

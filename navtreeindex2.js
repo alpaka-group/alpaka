@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"PlatformHipRt_8hpp_source.html":[4,0,0,0,17,6],
 "PlatformUniformCudaHipRt_8hpp.html":[4,0,0,0,17,7],
 "PlatformUniformCudaHipRt_8hpp_source.html":[4,0,0,0,17,7],
 "Positioning_8hpp.html":[4,0,0,0,3,18],
@@ -238,16 +237,17 @@ var NAVTREEINDEX2 =
 "WorkDivGenericSycl_8hpp.html":[4,0,0,0,26,1],
 "WorkDivGenericSycl_8hpp_source.html":[4,0,0,0,26,1],
 "WorkDivHelpers_8hpp.html":[4,0,0,0,26,2],
-"WorkDivHelpers_8hpp.html#a336492ddbb304d87f082dd90164f8f30":[4,0,0,0,26,2,2],
-"WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a":[4,0,0,0,26,2,9],
-"WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c":[4,0,0,0,26,2,6],
-"WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043":[4,0,0,0,26,2,4],
+"WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a":[4,0,0,0,26,2,8],
+"WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c":[4,0,0,0,26,2,5],
+"WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043":[4,0,0,0,26,2,3],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27":[4,0,0,0,26,2,0],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870":[4,0,0,0,26,2,0,2],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a9cb04f2b32708185e3d3cb6b812912ec":[4,0,0,0,26,2,0,1],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27ae79087692afdec020e4de5e524f6b8e4":[4,0,0,0,26,2,0,0],
-"WorkDivHelpers_8hpp.html#a97e152630160dfc73adccf8b2ff85d5b":[4,0,0,0,26,2,7],
+"WorkDivHelpers_8hpp.html#a97e152630160dfc73adccf8b2ff85d5b":[4,0,0,0,26,2,6],
 "WorkDivHelpers_8hpp.html#ab1d31914161c1f5c4cf6f71e7d1bfe50":[4,0,0,0,26,2,1],
-"WorkDivHelpers_8hpp.html#ab2b849f4367cf6163a6a287b546f725d":[4,0,0,0,26,2,8],
-"WorkDivHelpers_8hpp.html#abe4c3a3b90386720d53c5a5fc9426ce1":[4,0,0,0,26,2,5]
+"WorkDivHelpers_8hpp.html#ab2b849f4367cf6163a6a287b546f725d":[4,0,0,0,26,2,7],
+"WorkDivHelpers_8hpp.html#abe4c3a3b90386720d53c5a5fc9426ce1":[4,0,0,0,26,2,4],
+"WorkDivHelpers_8hpp.html#ae27dd1d17e2324e71dc1677f5f4a49fa":[4,0,0,0,26,2,2],
+"WorkDivHelpers_8hpp.html#aeeb203c11f29a926f5f2739bd9b7f704":[4,0,0,0,26,2,9]
 };
