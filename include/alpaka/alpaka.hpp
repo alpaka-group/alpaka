@@ -96,7 +96,7 @@
 			// HIP compiler detection
 			#if !defined(BOOST_COMP_HIP)
 			#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
-			// #        include <hip/hip_version.h>    // amalgamate: file already included
+			#        include <hip/hip_version.h>
 			// HIP doesn't give us a patch level for the last entry, just a gitdate
 			#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
 			#    else
@@ -722,7 +722,7 @@
 					 */
 
 					// #pragma once
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka::concepts
 					{
@@ -843,7 +843,7 @@
 					// ============================================================================
 
 
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka
 				{
@@ -1144,7 +1144,7 @@
 
 			#include <array>
 			#include <atomic>
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
 			#    ifndef ALPAKA_HAS_STD_ATOMIC_REF
@@ -1536,7 +1536,7 @@
 			 */
 
 			// #pragma once
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka::meta
 			{
@@ -2013,7 +2013,7 @@
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka
 			{
@@ -2063,7 +2063,7 @@
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			#include <cassert>
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			//! The assert can be explicit disabled by defining NDEBUG
 			#define ALPAKA_ASSERT(...) assert(__VA_ARGS__)
@@ -2530,7 +2530,7 @@
 
 		// #include <array>    // amalgamate: file already included
 		// #include <cstdint>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		namespace alpaka
 		{
@@ -2653,7 +2653,7 @@
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka
 			{
@@ -2723,7 +2723,7 @@
 			// #include <cstdint>    // amalgamate: file already included
 			#include <functional>
 			#include <limits>
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka::detail
 			{
@@ -2863,7 +2863,7 @@
 
 		// #include <algorithm>    // amalgamate: file already included
 		// #include <cstdint>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		namespace alpaka
 		{
@@ -2932,7 +2932,7 @@
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka
 			{
@@ -3118,7 +3118,7 @@
 			 */
 
 			// #pragma once
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
 			namespace alpaka
@@ -3180,7 +3180,7 @@
 				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka::core
 				{
@@ -3309,7 +3309,7 @@
 					// ============================================================================
 
 
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka
 				{
@@ -3465,7 +3465,7 @@
 
 
 				// #include <cstddef>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 				// #include <utility>    // amalgamate: file already included
 
 				namespace alpaka::meta
@@ -3700,7 +3700,7 @@
 			// #include <limits>    // amalgamate: file already included
 			#include <ostream>
 			// #include <tuple>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
 			namespace alpaka
@@ -4618,7 +4618,7 @@
 				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka
 				{
@@ -4872,7 +4872,7 @@
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka
 			{
@@ -6834,7 +6834,7 @@
 
 				// #include <functional>    // amalgamate: file already included
 				#include <numeric>
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 				#include <vector>
 
 				namespace alpaka::meta
@@ -7547,7 +7547,7 @@
 				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka::rand
 				{
@@ -7645,7 +7645,7 @@
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <limits>    // amalgamate: file already included
 			#include <random>
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka::rand
 			{
@@ -7839,7 +7839,7 @@
 
 		// #include <algorithm>    // amalgamate: file already included
 		// #include <limits>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		namespace alpaka::rand
 		{
@@ -8567,7 +8567,7 @@
 		// #include <cstdint>    // amalgamate: file already included
 		// #include <limits>    // amalgamate: file already included
 		// #include <random>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		namespace alpaka::rand
 		{
@@ -8857,7 +8857,7 @@
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka::warp
 			{
@@ -9311,7 +9311,7 @@
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			// #include <functional>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
 			namespace alpaka
@@ -9479,7 +9479,7 @@
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
 			namespace alpaka
@@ -10108,7 +10108,7 @@
 					// ============================================================================
 
 
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 				// #include <utility>    // amalgamate: file already included
 
 				namespace alpaka
@@ -10176,7 +10176,7 @@
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			//! The alpaka accelerator library.
 			namespace alpaka
@@ -10554,7 +10554,7 @@
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <vector>    // amalgamate: file already included
 
 			namespace alpaka
@@ -10644,7 +10644,7 @@
 		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <string>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 		#include <typeinfo>
 
 		namespace alpaka
@@ -10762,7 +10762,7 @@
 		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		// #include <iostream>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		#define CREATE_ACC_TAG(tag_name)                                                                                      \
 		    struct tag_name                                                                                                   \
@@ -11180,7 +11180,7 @@
 					 */
 
 					// #pragma once
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka
 					{
@@ -11221,7 +11221,7 @@
 					 */
 
 					// #pragma once
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka::meta
 					{
@@ -11288,7 +11288,7 @@
 					// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka
 					{
@@ -11420,7 +11420,7 @@
 				// #include <array>    // amalgamate: file already included
 				// #include <cstddef>    // amalgamate: file already included
 				// #include <iosfwd>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 				// #include <vector>    // amalgamate: file already included
 				#ifdef ALPAKA_USE_MDSPAN
 				#    include <experimental/mdspan>
@@ -12496,7 +12496,7 @@
 					// #pragma once
 					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 					// #include <utility>    // amalgamate: file already included
 
 					namespace alpaka::core
@@ -12755,7 +12755,7 @@
 					// #include <mutex>    // amalgamate: file already included
 					// #include <thread>    // amalgamate: file already included
 					// #include <tuple>    // amalgamate: file already included
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka
 					{
@@ -12898,7 +12898,7 @@
 
 				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
-				// #include <condition_variable>    // amalgamate: file already included
+				#include <condition_variable>
 				// #include <future>    // amalgamate: file already included
 				// #include <mutex>    // amalgamate: file already included
 				// #include <utility>    // amalgamate: file already included
@@ -13993,7 +13993,7 @@
 			// #include "alpaka/vec/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			namespace alpaka
 			{
@@ -14802,7 +14802,7 @@
 				 */
 
 				// #pragma once
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka::meta
 				{
@@ -14819,7 +14819,7 @@
 
 
 			// #include <cstdint>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -15361,7 +15361,7 @@
 				// #include <iostream>    // amalgamate: file already included
 				// #include <stdexcept>    // amalgamate: file already included
 				// #include <string>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 				// #include <utility>    // amalgamate: file already included
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
@@ -15791,7 +15791,7 @@
 					// #pragma once
 					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					namespace alpaka
 					{
@@ -15841,7 +15841,7 @@
 				// #include <cmath>    // amalgamate: file already included
 				// #include <complex>    // amalgamate: file already included
 				// #include <iostream>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka
 				{
@@ -16417,7 +16417,7 @@
 
 			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -17274,7 +17274,7 @@
 					// #include <memory>    // amalgamate: file already included
 					// #include <mutex>    // amalgamate: file already included
 					#include <shared_mutex>
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 					// #include <utility>    // amalgamate: file already included
 					// #include <vector>    // amalgamate: file already included
 
@@ -17553,7 +17553,7 @@
 				// #include <functional>    // amalgamate: file already included
 				// #include <memory>    // amalgamate: file already included
 				// #include <mutex>    // amalgamate: file already included
-				// #include <shared_mutex>    // amalgamate: file already included
+				#include <shared_mutex>
 				// #include <string>    // amalgamate: file already included
 				// #include <utility>    // amalgamate: file already included
 				// #include <vector>    // amalgamate: file already included
@@ -17817,7 +17817,7 @@
 			#        pragma clang diagnostic pop
 			#    endif
 
-			// #    include <type_traits>    // amalgamate: file already included
+			#    include <type_traits>
 
 			namespace alpaka::rand
 			{
@@ -18334,7 +18334,7 @@
 
 		// #include <cstddef>    // amalgamate: file already included
 		// #include <string>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -19312,10 +19312,11 @@
 				 */
 
 				// #pragma once
+				#include <alpaka/core/Common.hpp>
 				#include <alpaka/core/RemoveRestrict.hpp>
 
 				// #include <tuple>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				namespace alpaka
 				{
@@ -19327,29 +19328,21 @@
 				    class KernelBundle
 				    {
 				    public:
-				#if BOOST_COMP_CLANG
-				#    pragma clang diagnostic push
-				#    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
-				                                                       // arguments "args,...". Ignore the error.
-				#endif
-				        //! \param kernelFn The kernel function-object
-				        //! \param args,... The kernel invocation arguments.
-				#if BOOST_COMP_CLANG
-				#    pragma clang diagnostic pop
-				#endif
-				        KernelBundle(TKernelFn const& kernelFn, TArgs&&... args)
-				            : m_kernelFn(kernelFn)
+				        //! The function object type
+				        using KernelFn = TKernelFn;
+				        //! Tuple type to encapsulate kernel function argument types and argument values
+				        using ArgTuple = std::tuple<std::decay_t<TArgs>...>;
+
+				        // Constructor
+				        KernelBundle(KernelFn kernelFn, TArgs&&... args)
+				            : m_kernelFn(std::move(kernelFn))
 				            , m_args(std::forward<TArgs>(args)...)
 				        {
 				        }
 
-				        //! The function object type
-				        using KernelFn = TKernelFn;
-				        //! Tuple type to encapsulate kernel function argument types and argument values
-				        using ArgTuple = std::tuple<remove_restrict_t<std::decay_t<TArgs>>...>;
-
+				    private:
 				        KernelFn m_kernelFn;
-				        ArgTuple m_args;
+				        ArgTuple m_args; // Store the argument types without const and reference
 				    };
 
 				    //! \brief User defined deduction guide with trailing return type. For CTAD during the construction.
@@ -19368,7 +19361,10 @@
 				    //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
 				    //! arguments.
 				    template<typename TKernelFn, typename... TArgs>
-				    KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
+				    ALPAKA_FN_HOST KernelBundle(TKernelFn, TArgs&&...) -> KernelBundle<TKernelFn, TArgs...>;
+				    // template<typename TKernelFn, typename... TArgs>
+				    // ALPAKA_FN_HOST KernelBundle(TKernelFn kernelFn, TArgs&&... args) -> KernelBundle<std::decay_t<TKernelFn>,
+				    // std::decay_t<TArgs>...>;
 
 				} // namespace alpaka
 				// ==
@@ -19491,7 +19487,7 @@
 			// #include <memory>    // amalgamate: file already included
 			// #include <stdexcept>    // amalgamate: file already included
 			// #include <tuple>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
@@ -20207,7 +20203,7 @@
 			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
-			// #include <condition_variable>    // amalgamate: file already included
+			#include <condition_variable>
 			// #include <mutex>    // amalgamate: file already included
 			#ifndef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 			// #    include <atomic>    // amalgamate: file already included
@@ -20998,7 +20994,7 @@
 				// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
 
-				// #include <type_traits>    // amalgamate: file already included
+				#include <type_traits>
 
 				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -21510,7 +21506,7 @@
 			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 
 			// #include <limits>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -21834,7 +21830,7 @@
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -21897,7 +21893,7 @@
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -22154,7 +22150,7 @@
 
 						// #pragma once
 						// #include <tuple>    // amalgamate: file already included
-						// #include <type_traits>    // amalgamate: file already included
+						#include <type_traits>
 
 						namespace alpaka::meta
 						{
@@ -22259,7 +22255,7 @@
 					#    endif
 
 					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-					// #        include <hip/hip_runtime.h>    // amalgamate: file already included
+					#        include <hip/hip_runtime.h>
 					#    endif
 
 					namespace alpaka
@@ -22483,7 +22479,7 @@
 					// #include <stdexcept>    // amalgamate: file already included
 					// #include <string>    // amalgamate: file already included
 					// #include <tuple>    // amalgamate: file already included
-					// #include <type_traits>    // amalgamate: file already included
+					#include <type_traits>
 
 					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -22855,7 +22851,7 @@
 			// #include "alpaka/math/Complex.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -23114,7 +23110,7 @@
 			#        endif
 
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDA_ARCH__)
-			// #            include <cuda_runtime.h>    // amalgamate: file already included
+			#            include <cuda_runtime.h>
 			#        endif
 
 			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && defined(__HIP_DEVICE_COMPILE__)
@@ -24719,257 +24715,7 @@
 				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
-					// ============================================================================
-					// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
-					// ==
-					/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
-					 * Antonio Di Pilato
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/core/CallbackThread.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
-
-					// #include <condition_variable>    // amalgamate: file already included
-					// #include <functional>    // amalgamate: file already included
-					// #include <future>    // amalgamate: file already included
-					// #include <memory>    // amalgamate: file already included
-					// #include <mutex>    // amalgamate: file already included
-					// #include <thread>    // amalgamate: file already included
-
-					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-					namespace alpaka
-					{
-					    template<typename TApi>
-					    class EventUniformCudaHipRt;
-
-					    template<typename TApi>
-					    class DevUniformCudaHipRt;
-
-					    namespace uniform_cuda_hip::detail
-					    {
-					        //! The CUDA/HIP RT queue implementation.
-					        template<typename TApi>
-					        class QueueUniformCudaHipRtImpl final
-					        {
-					        public:
-					            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(DevUniformCudaHipRt<TApi> const& dev)
-					                : m_dev(dev)
-					                , m_UniformCudaHipQueue()
-					            {
-					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-					                // Set the current device.
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(m_dev.getNativeHandle()));
-
-					                // - [cuda/hip]StreamDefault: Default queue creation flag.
-					                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run
-					                // concurrently with work in queue 0 (the NULL queue),
-					                //   and that the created queue should perform no implicit synchronization with queue 0.
-					                // Create the queue on the current device.
-					                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka
-					                // CPU queue. It would be too much work to implement implicit default queue synchronization on CPU.
-
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-					                    TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
-					            }
-
-					            QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
-					            auto operator=(QueueUniformCudaHipRtImpl&&) -> QueueUniformCudaHipRtImpl& = delete;
-
-					            ALPAKA_FN_HOST ~QueueUniformCudaHipRtImpl()
-					            {
-					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-					                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
-					                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
-					                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
-					            }
-
-					            [[nodiscard]] auto getNativeHandle() const noexcept
-					            {
-					                return m_UniformCudaHipQueue;
-					            }
-
-					        public:
-					            DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
-					            core::CallbackThread m_callbackThread;
-
-					        private:
-					            typename TApi::Stream_t m_UniformCudaHipQueue;
-					        };
-
-					        //! The CUDA/HIP RT queue.
-					        template<typename TApi, bool TBlocking>
-					        class QueueUniformCudaHipRt
-					            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt<TApi, TBlocking>>
-					            , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRt<TApi, TBlocking>>
-					            , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					        public:
-					            ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev)
-					                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
-					            {
-					                dev.registerQueue(m_spQueueImpl);
-					            }
-
-					            ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
-					            {
-					                return (m_spQueueImpl == rhs.m_spQueueImpl);
-					            }
-
-					            ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRt const& rhs) const -> bool
-					            {
-					                return !((*this) == rhs);
-					            }
-
-					            [[nodiscard]] auto getNativeHandle() const noexcept
-					            {
-					                return m_spQueueImpl->getNativeHandle();
-					            }
-
-					            auto getCallbackThread() -> core::CallbackThread&
-					            {
-					                return m_spQueueImpl->m_callbackThread;
-					            }
-
-					        public:
-					            std::shared_ptr<QueueUniformCudaHipRtImpl<TApi>> m_spQueueImpl;
-					        };
-					    } // namespace uniform_cuda_hip::detail
-
-					    namespace trait
-					    {
-					        //! The CUDA/HIP RT queue device get trait specialization.
-					        template<typename TApi, bool TBlocking>
-					        struct GetDev<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            ALPAKA_FN_HOST static auto getDev(
-					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
-					                -> DevUniformCudaHipRt<TApi>
-					            {
-					                return queue.m_spQueueImpl->m_dev;
-					            }
-					        };
-
-					        //! The CUDA/HIP RT queue test trait specialization.
-					        template<typename TApi, bool TBlocking>
-					        struct Empty<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            ALPAKA_FN_HOST static auto empty(
-					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> bool
-					            {
-					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-					                // Query is allowed even for queues on non current device.
-					                typename TApi::Error_t ret = TApi::success;
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-					                    ret = TApi::streamQuery(queue.getNativeHandle()),
-					                    TApi::errorNotReady);
-					                return (ret == TApi::success);
-					            }
-					        };
-
-					        //! The CUDA/HIP RT queue thread wait trait specialization.
-					        //!
-					        //! Blocks execution of the calling thread until the queue has finished processing all previously requested
-					        //! tasks (kernels, data copies, ...)
-					        template<typename TApi, bool TBlocking>
-					        struct CurrentThreadWaitFor<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            ALPAKA_FN_HOST static auto currentThreadWaitFor(
-					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> void
-					            {
-					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-					                // Sync is allowed even for queues on non current device.
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
-					            }
-					        };
-
-					        //! The CUDA/HIP RT blocking queue device type trait specialization.
-					        template<typename TApi, bool TBlocking>
-					        struct DevType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            using type = DevUniformCudaHipRt<TApi>;
-					        };
-
-					        //! The CUDA/HIP RT blocking queue event type trait specialization.
-					        template<typename TApi, bool TBlocking>
-					        struct EventType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            using type = EventUniformCudaHipRt<TApi>;
-					        };
-
-					        //! The CUDA/HIP RT blocking queue enqueue trait specialization.
-					        template<typename TApi, bool TBlocking, typename TTask>
-					        struct Enqueue<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>, TTask>
-					        {
-					            using QueueImpl = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
-
-					            struct HostFuncData
-					            {
-					                // We don't need to keep the queue alive, because in it's dtor it will synchronize with the CUDA/HIP
-					                // stream and wait until all host functions and the CallbackThread are done. It's actually an error to
-					                // copy the queue into the host function. Destroying it here would call CUDA/HIP APIs from the host
-					                // function. Passing it further to the Callback thread, would make the Callback thread hold a task
-					                // containing the queue with the CallbackThread itself. Destroying the task if no other queue instance
-					                // exists will make the CallbackThread join itself and crash.
-					                QueueImpl& q;
-					                TTask t;
-					            };
-
-					            ALPAKA_FN_HOST static void uniformCudaHipRtHostFunc(void* arg)
-					            {
-					                auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
-					                auto& queue = data->q;
-					                auto f = queue.m_callbackThread.submit([d = std::move(data)] { d->t(); });
-					                f.wait();
-					            }
-
-					            ALPAKA_FN_HOST static auto enqueue(
-					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-					                TTask const& task) -> void
-					            {
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchHostFunc(
-					                    queue.getNativeHandle(),
-					                    uniformCudaHipRtHostFunc,
-					                    new HostFuncData{*queue.m_spQueueImpl, task}));
-					                if constexpr(TBlocking)
-					                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
-					            }
-					        };
-
-					        //! The CUDA/HIP RT blocking queue native handle trait specialization.
-					        template<typename TApi, bool TBlocking>
-					        struct NativeHandle<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-					        {
-					            [[nodiscard]] static auto getNativeHandle(
-					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
-					            {
-					                return queue.getNativeHandle();
-					            }
-					        };
-					    } // namespace trait
-					} // namespace alpaka
-
-					#endif
-					// ==
-					// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
-					// ============================================================================
-
+				#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
@@ -25227,7 +24973,7 @@
 
 			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)) && !defined(ALPAKA_DISABLE_VENDOR_RNG)
 
@@ -26162,7 +25908,7 @@
 		#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 		#    include <hip/hip_runtime_api.h>
-		// #    include <hip/hip_version.h>    // amalgamate: file already included
+		#    include <hip/hip_version.h>
 
 		namespace alpaka
 		{
@@ -26843,7 +26589,7 @@
 		// #pragma once
 		// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
 
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		namespace alpaka::meta
 		{
@@ -26884,7 +26630,7 @@
 		// ============================================================================
 
 
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 
 	namespace alpaka
 	{
@@ -27224,7 +26970,7 @@
 	// #pragma once
 	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
 
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 
 	namespace alpaka::trait
 	{
@@ -27507,7 +27253,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+			#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -27532,7 +27278,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+			#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -28024,6 +27770,7 @@
 // #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
 // #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
 // kernel
+// #include "alpaka/kernel/KernelBundle.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp ==
 	// ==
@@ -28128,7 +27875,7 @@
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	// #include <utility>    // amalgamate: file already included
 	#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 	// #    include <iostream>    // amalgamate: file already included
@@ -29210,7 +28957,7 @@
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 	// #    include <iostream>    // amalgamate: file already included
 	#endif
@@ -29448,7 +29195,7 @@
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	// #include <utility>    // amalgamate: file already included
 	#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 	// #    include <iostream>    // amalgamate: file already included
@@ -29634,7 +29381,7 @@
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 	// #    include <iostream>    // amalgamate: file already included
 	#endif
@@ -29832,7 +29579,7 @@
 	// #include <future>    // amalgamate: file already included
 	// #include <thread>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	// #include <vector>    // amalgamate: file already included
 	#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 	// #    include <iostream>    // amalgamate: file already included
@@ -30110,7 +29857,7 @@
 			// #include <cmath>    // amalgamate: file already included
 			// #include <functional>    // amalgamate: file already included
 			#include <set>
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			//! The alpaka library.
 			namespace alpaka
@@ -30390,67 +30137,7 @@
 			            }
 			        }
 
-
 			        return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
-			    }
-
-			    //! \tparam TAcc The accelerator for which this work division has to be valid.
-			    //! \tparam TDev The type of the device.
-			    //! \tparam TGridElemExtent The type of the grid element extent.
-			    //! \tparam TThreadElemExtent The type of the thread element extent.
-			    //! \param dev The device the work division should be valid for.
-			    //! \param gridElemExtent The full extent of elements in the grid.
-			    //! \param threadElemExtents the number of elements computed per thread.
-			    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
-			    //! corresponding block thread extent.
-			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the
-			    //!     block-thread extent will be one in this dimension.
-			    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
-			    //! \return The work division.
-			    template<
-			        typename TAcc,
-			        typename TDev,
-			        typename TGridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>,
-			        typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
-			    ALPAKA_FN_HOST auto getValidWorkDiv(
-			        [[maybe_unused]] TDev const& dev,
-			        [[maybe_unused]] TGridElemExtent const& gridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
-			        [[maybe_unused]] TThreadElemExtent const& threadElemExtents = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
-			        [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent = true,
-			        [[maybe_unused]] GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
-			        = GridBlockExtentSubDivRestrictions::Unrestricted)
-			        -> WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>
-			    {
-			        static_assert(
-			            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
-			            "The dimension of TAcc and the dimension of TGridElemExtent have to be identical!");
-			        static_assert(
-			            Dim<TThreadElemExtent>::value == Dim<TAcc>::value,
-			            "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
-			        static_assert(
-			            std::is_same_v<Idx<TGridElemExtent>, Idx<TAcc>>,
-			            "The idx type of TAcc and the idx type of TGridElemExtent have to be identical!");
-			        static_assert(
-			            std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
-			            "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
-
-			        if constexpr(Dim<TGridElemExtent>::value == 0)
-			        {
-			            auto const zero = Vec<DimInt<0>, Idx<TAcc>>{};
-			            ALPAKA_ASSERT(gridElemExtent == zero);
-			            ALPAKA_ASSERT(threadElemExtents == zero);
-			            return WorkDivMembers<DimInt<0>, Idx<TAcc>>{zero, zero, zero};
-			        }
-			        else
-			            return subDivideGridElems(
-			                getExtents(gridElemExtent),
-			                getExtents(threadElemExtents),
-			                getAccDevProps<TAcc>(dev),
-			                static_cast<Idx<TAcc>>(0u),
-			                blockThreadMustDivideGridThreadExtent,
-			                gridBlockExtentSubDivRestrictions);
-			        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
-			        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
 			    }
 
 			    //! \tparam TDev The type of the device.
@@ -30681,7 +30368,7 @@
 
 		// #include <stdexcept>    // amalgamate: file already included
 		// #include <tuple>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 		// #    include <iostream>    // amalgamate: file already included
 		#endif
@@ -30865,7 +30552,8 @@
 		#        endif
 
 		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-		                // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+		                // This checks for a valid work division that is also compliant with the hardware maxima of the
+		                // accelerator.
 		                if(!isValidWorkDiv<TAcc>(getDev(queue), task))
 		                {
 		                    throw std::runtime_error(
@@ -31368,7 +31056,7 @@
 		// #include <cstdint>    // amalgamate: file already included
 		// #include <sstream>    // amalgamate: file already included
 		// #include <stdexcept>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 		// #include <utility>    // amalgamate: file already included
 
 		namespace alpaka::internal
@@ -31516,7 +31204,7 @@
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <memory>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	// #include <utility>    // amalgamate: file already included
 
 	namespace alpaka
@@ -32256,7 +31944,7 @@
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// #include <memory>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -32585,7 +32273,7 @@
 			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
 			// #include <memory>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -33079,7 +32767,7 @@
 		// #include <cstddef>    // amalgamate: file already included
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 
 		#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -33500,7 +33188,7 @@
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <set>    // amalgamate: file already included
 			// #include <tuple>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
+			#include <type_traits>
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -34694,7 +34382,7 @@
 		// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
-		// #include <type_traits>    // amalgamate: file already included
+		#include <type_traits>
 		// #include <utility>    // amalgamate: file already included
 
 		namespace alpaka
@@ -34877,7 +34565,7 @@
 		// ============================================================================
 
 
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 
 	// memcpy specialization for device global variables
 	namespace alpaka
@@ -35134,7 +34822,7 @@
 	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/view/ViewPlainPtr.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+	#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 
 	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -35650,7 +35338,7 @@
 	// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 	// #include <utility>    // amalgamate: file already included
 
 	namespace alpaka
@@ -36046,7 +35734,7 @@
 	 */
 
 	// #pragma once
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 
 	namespace alpaka::meta
 	{
@@ -36068,7 +35756,7 @@
 	 */
 
 	// #pragma once
-	// #include <type_traits>    // amalgamate: file already included
+	#include <type_traits>
 
 	namespace alpaka::meta
 	{
