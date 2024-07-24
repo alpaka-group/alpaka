@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"PlatformHipRt_8hpp_source.html":[4,0,0,0,17,6],
 "PlatformUniformCudaHipRt_8hpp.html":[4,0,0,0,17,7],
 "PlatformUniformCudaHipRt_8hpp_source.html":[4,0,0,0,17,7],
 "Positioning_8hpp.html":[4,0,0,0,3,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "WorkDivHelpers_8hpp.html#ab1d31914161c1f5c4cf6f71e7d1bfe50":[4,0,0,0,26,2,1],
 "WorkDivHelpers_8hpp.html#ab2b849f4367cf6163a6a287b546f725d":[4,0,0,0,26,2,7],
 "WorkDivHelpers_8hpp.html#abe4c3a3b90386720d53c5a5fc9426ce1":[4,0,0,0,26,2,4],
-"WorkDivHelpers_8hpp.html#ae27dd1d17e2324e71dc1677f5f4a49fa":[4,0,0,0,26,2,2],
-"WorkDivHelpers_8hpp.html#aeeb203c11f29a926f5f2739bd9b7f704":[4,0,0,0,26,2,9]
+"WorkDivHelpers_8hpp.html#ae27dd1d17e2324e71dc1677f5f4a49fa":[4,0,0,0,26,2,2]
 };
