@@ -23,7 +23,7 @@ namespace alpaka
         //! The function object type
         using KernelFn = TKernelFn;
         //! Tuple type to encapsulate kernel function argument types and argument values
-        using ArgTuple = std::tuple<std::decay_t<TArgs>...>;
+        using ArgTuple = std::tuple<remove_restrict_t<std::decay_t<TArgs>>...>;
 
         // Constructor
         KernelBundle(KernelFn kernelFn, TArgs&&... args)
@@ -54,8 +54,5 @@ namespace alpaka
     //! arguments.
     template<typename TKernelFn, typename... TArgs>
     ALPAKA_FN_HOST KernelBundle(TKernelFn, TArgs&&...) -> KernelBundle<TKernelFn, TArgs...>;
-    // template<typename TKernelFn, typename... TArgs>
-    // ALPAKA_FN_HOST KernelBundle(TKernelFn kernelFn, TArgs&&... args) -> KernelBundle<std::decay_t<TKernelFn>,
-    // std::decay_t<TArgs>...>;
 
 } // namespace alpaka
