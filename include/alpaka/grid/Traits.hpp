@@ -22,11 +22,9 @@ namespace alpaka
 
     } // namespace trait
 
-    // TODO: investigate lock-ups with cuda clang
-
     //! Synchronizes all threads within the current grid. Works only for cooperative kernels.
-    //! NOTE: when compiled with CUDA Clang locks up if numberOfBlocks > 2 * multiProcessorCount.
-    //! Consider switching to nvcc.
+    //! NOTE: when compiled with CUDA Clang default build type locks up if numberOfBlocks > 2 * multiProcessorCount.
+    //! https://github.com/llvm/llvm-project/issues/98886
     //!
     //! \tparam TGridSync The grid synchronization implementation type.
     //! \param gridSync The grid synchronization implementation.
