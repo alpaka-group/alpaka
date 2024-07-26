@@ -255,7 +255,7 @@ namespace alpaka
                 if constexpr (TCooperative) {
                     // This checks if requested number of blocks is compliant with the maxima of the accelerator.
                     int numBlocksPerSm = 0;
-                    cudaOccupancyMaxActiveBlocksPerMultiprocessor(
+                    TApi::occupancyMaxActiveBlocksPerMultiprocessor(
                         &numBlocksPerSm,
                         kernelName,
                         blockThreadExtent.prod(),
@@ -314,7 +314,7 @@ namespace alpaka
                         {
                             void const* kernelArgs[] = {&threadElemExtent, &task.m_kernelFnObj, &args...};
 
-                            cudaLaunchCooperativeKernel(
+                            TApi::launchCooperativeKernel(
                                 reinterpret_cast<void*>(kernelName),
                                 gridDim,
                                 blockDim,

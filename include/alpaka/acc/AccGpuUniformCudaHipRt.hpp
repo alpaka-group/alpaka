@@ -11,7 +11,7 @@
 #include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"
 #include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
-#include "alpaka/grid/GridSyncGpuCuda.hpp"
+#include "alpaka/grid/GridSyncGpuCudaHip.hpp"
 #include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"
 #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
 #include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
@@ -60,7 +60,7 @@ namespace alpaka
         , public BlockSharedMemDynUniformCudaHipBuiltIn
         , public BlockSharedMemStUniformCudaHipBuiltIn
         , public BlockSyncUniformCudaHipBuiltIn
-        , public GridSyncCudaBuiltIn
+        , public GridSyncCudaHipBuiltIn
         , public IntrinsicUniformCudaHipBuiltIn
         , public MemFenceUniformCudaHipBuiltIn
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG

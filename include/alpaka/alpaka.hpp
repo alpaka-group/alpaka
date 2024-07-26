@@ -34,7 +34,7 @@
 #include "alpaka/atomic/Op.hpp"
 #include "alpaka/atomic/Traits.hpp"
 // grid
-#include "alpaka/grid/GridSyncGpuCuda.hpp"
+#include "alpaka/grid/GridSyncGpuCudaHip.hpp"
 #include "alpaka/grid/Traits.hpp"
 // block
 // shared

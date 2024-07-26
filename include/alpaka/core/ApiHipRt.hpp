@@ -278,6 +278,11 @@ namespace alpaka
             return ::hipHostUnregister(ptr);
         }
 
+        static inline Error_t launchCooperativeKernel(const void* func, dim3 gridDim, dim3 blockDim, void** args, size_t sharedMem, Stream_t stream)
+        {
+            return ::hipLaunchCooperativeKernel(func, gridDim, blockDim, args, sharedMem, stream);
+        }
+
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
         {
             // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
@@ -433,6 +438,12 @@ namespace alpaka
         static inline Extent_t makeExtent(size_t w, size_t h, size_t d)
         {
             return ::make_hipExtent(w, h, d);
+        }
+
+        template<class T>
+        static inline Error_t occupancyMaxActiveBlocksPerMultiprocessor (int* numBlocks, T func, int  blockSize, size_t dynamicSMemSize)
+        {
+            return ::hipOccupancyMaxActiveBlocksPerMultiprocessor(numBlocks, func, blockSize, dynamicSMemSize);
         }
     };
 
