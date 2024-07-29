@@ -542,9 +542,12 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
         endif()
 
+        # Link the CUDA Runtime library
+        target_link_libraries(alpaka INTERFACE CUDA::cudart)
+
         if(NOT alpaka_DISABLE_VENDOR_RNG)
             # Use cuRAND random number generators
-            target_link_libraries(alpaka INTERFACE CUDA::cudart CUDA::curand)
+            target_link_libraries(alpaka INTERFACE CUDA::curand)
         endif()
     else()
         message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
