@@ -163,6 +163,12 @@ namespace alpaka
                     TApi::deviceAttributeMaxSharedMemoryPerBlock,
                     dev.getNativeHandle()));
 
+                int cooperativeLaunch = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::deviceGetAttribute(
+                    &cooperativeLaunch,
+                    TApi::deviceAttributeCooperativeLaunch,
+                    dev.getNativeHandle()));
+
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
                         // m_gridBlockExtentMax
@@ -186,7 +192,9 @@ namespace alpaka
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(sharedMemSizeBytes),
                         // m_globalMemSizeBytes
-                        getMemBytes(dev)};
+                        getMemBytes(dev),
+                        //m_cooperativeLaunch
+                        static_cast<bool>(cooperativeLaunch)};
 
 #    else
                 typename TApi::DeviceProp_t properties;
@@ -215,7 +223,9 @@ namespace alpaka
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(properties.sharedMemPerBlock),
                         // m_globalMemSizeBytes
-                        getMemBytes(dev)};
+                        getMemBytes(dev),
+                        //m_cooperativeLaunch
+                        static_cast<bool>(properties.cooperativeLaunch)};
 #    endif
             }
         };

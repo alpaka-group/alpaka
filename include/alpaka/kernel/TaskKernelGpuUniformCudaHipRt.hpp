@@ -206,6 +206,18 @@ namespace alpaka
                 // TApi::deviceGetLimit(&printfFifoSize, TApi::limitPrintfFifoSize);
                 // std::cout << __func__ << " INFO: printfFifoSize: " << printfFifoSize << std::endl;
 #        endif
+
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                // This checks if the device supports cooperative kernel launch
+                if constexpr (TCooperative)
+                {
+                    if(!trait::GetAccDevProps<TAcc>::getAccDevProps(getDev(queue)).m_cooperativeLaunch)
+                    {
+                        throw std::runtime_error("This accelerator doesn't support cooperative gropus functionality!");
+                    } else std::cout << "This accelerator supports cooperative gropus functionality!";
+                }
+#        endif
+
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
                 auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
                 auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);

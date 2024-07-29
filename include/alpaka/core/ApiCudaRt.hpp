@@ -76,6 +76,7 @@ namespace alpaka
         static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::cudaDevAttrMaxThreadsPerBlock;
         static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::cudaDevAttrMultiProcessorCount;
         static constexpr DeviceAttr_t deviceAttributeWarpSize = ::cudaDevAttrWarpSize;
+        static constexpr DeviceAttr_t deviceAttributeCooperativeLaunch = ::cudaDevAttrCooperativeLaunch;
 
         static constexpr Limit_t limitPrintfFifoSize = ::cudaLimitPrintfFifoSize;
         static constexpr Limit_t limitMallocHeapSize = ::cudaLimitMallocHeapSize;

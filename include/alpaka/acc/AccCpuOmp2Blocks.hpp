@@ -152,7 +152,9 @@ namespace alpaka
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes()),
                         // m_globalMemSizeBytes
-                        getMemBytes(dev)};
+                        getMemBytes(dev),
+                        //m_cooperativeLaunch
+                        std::false_type()};
             }
         };
 
