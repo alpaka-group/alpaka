@@ -1,11 +1,10 @@
-/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
+/* Copyright 2024 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
 #include "alpaka/acc/Traits.hpp"
-#include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/Traits.hpp"
