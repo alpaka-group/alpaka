@@ -191,12 +191,14 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.2D", "[workDivKernel]", TestAc
         = WorkDiv{Vec{8, threadsPerGridTestValue / threadsPerBlock / 8}, Vec{1, threadsPerBlock}, Vec{1, 1}};
     CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, validWorkDiv));
 
+
     std::cout << "- Acc: " << alpaka::getAccName<Acc>() << ", ";
     // Check that using too many threads per block is not valid.
     auto const invalidWorkDiv
         = WorkDiv{Vec{8, threadsPerGridTestValue / threadsPerBlock / 8}, Vec{2, threadsPerBlock}, Vec{1, 1}};
     std::cout << "invalidWorkDiv: " << invalidWorkDiv << std::endl;
-
+    std::cout << "threadsPerBlock:" << threadsPerBlock << ", threadsPerBlockLimit:" << threadsPerBlockLimit
+              << std::endl;
 
     CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, invalidWorkDiv));
 
