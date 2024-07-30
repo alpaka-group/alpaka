@@ -105,6 +105,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D", "[workDivKernel]", TestAc
                      alpaka::TagGpuHipRt,
                      alpaka::TagCpuThreads,
                      alpaka::TagCpuOmp2Threads,
+                     alpaka::TagCpuSycl,
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGpuSyclIntel,
                      alpaka::TagGenericSycl>)
@@ -116,12 +117,8 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D", "[workDivKernel]", TestAc
 
         CHECK(threadsPerBlock <= static_cast<Idx>(threadsPerBlockLimit));
     }
-    else if constexpr(alpaka::accMatchesTags<
-                          Acc,
-                          alpaka::TagCpuSerial,
-                          alpaka::TagCpuOmp2Blocks,
-                          alpaka::TagCpuTbbBlocks,
-                          alpaka::TagCpuSycl>)
+    else if constexpr(alpaka::
+                          accMatchesTags<Acc, alpaka::TagCpuSerial, alpaka::TagCpuOmp2Blocks, alpaka::TagCpuTbbBlocks>)
     {
         // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
         CHECK(workDiv == WorkDiv{Vec{threadsPerGridTestValue}, Vec{1}, Vec{1}});
@@ -178,6 +175,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.2D", "[workDivKernel]", TestAc
                      alpaka::TagGpuHipRt,
                      alpaka::TagCpuThreads,
                      alpaka::TagCpuOmp2Threads,
+                     alpaka::TagCpuSycl,
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGpuSyclIntel,
                      alpaka::TagGenericSycl>)
@@ -197,12 +195,8 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.2D", "[workDivKernel]", TestAc
         auto const invalidWorkDiv = WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{20, threadsPerBlock}, Vec{1, 1}};
         CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, invalidWorkDiv));
     }
-    else if constexpr(alpaka::accMatchesTags<
-                          Acc,
-                          alpaka::TagCpuSerial,
-                          alpaka::TagCpuOmp2Blocks,
-                          alpaka::TagCpuTbbBlocks,
-                          alpaka::TagCpuSycl>)
+    else if constexpr(alpaka::
+                          accMatchesTags<Acc, alpaka::TagCpuSerial, alpaka::TagCpuOmp2Blocks, alpaka::TagCpuTbbBlocks>)
     {
         // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
         CHECK(workDiv == WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{1, 1}, Vec{1, 1}});
