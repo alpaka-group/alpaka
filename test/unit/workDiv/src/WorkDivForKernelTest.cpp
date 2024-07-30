@@ -86,55 +86,65 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D", "[workDivKernel]", TestAc
     auto const dev = alpaka::getDevByIdx(platform, 0);
 
     TestKernelWithManyRegisters kernel;
-    auto const bundeledKernel = alpaka::KernelBundle(kernel, 200ul);
+    auto const kernelBundle = alpaka::KernelBundle(kernel, 200ul);
 
-    // Get hard limits for test
-    auto const props = alpaka::getAccDevProps<Acc, decltype(dev)>(dev);
+    // Get the device properties and hard limits
+    auto const props = alpaka::getAccDevProps<Acc>(dev);
     Idx const threadsPerGridTestValue = props.m_blockThreadCountMax * props.m_gridBlockCountMax;
 
-    // Test getValidWorkDivForKernel for threadsPerGridTestValue threads per grid
+    // Test the getValidWorkDivForKernel function for threadsPerGridTestValue threads per grid.
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(dev, bundeledKernel, Vec{threadsPerGridTestValue}, Vec{1});
-    // Test validity
-    auto const isValid = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, workDiv);
-    CHECK(isValid == true);
+        = alpaka::getValidWorkDivForKernel<Acc>(dev, kernelBundle, Vec{threadsPerGridTestValue}, Vec{1});
 
+    // Test the isValidWorkDivKernel function
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, workDiv));
+
+    // Get calculated threads per block from the workDiv that was found by examining the kernel function.
+    Idx const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
+
+    // Get the device limit.
+    Idx const threadsPerBlockLimit = props.m_blockThreadCountMax;
+
+    // Check that the number of threads per block is within the device limit.
+    CHECK(threadsPerBlock <= threadsPerBlockLimit);
+
+    // Check that using the maximum number of threads per block is valid.
+    auto const validWorkDiv = WorkDiv{Vec{threadsPerGridTestValue / threadsPerBlock}, Vec{threadsPerBlock}, Vec{1}};
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, validWorkDiv));
+
+    // Check that using too many threads per block is not valid.
+    auto const invalidWorkDiv
+        = WorkDiv{Vec{threadsPerGridTestValue / threadsPerBlock}, Vec{2 * threadsPerBlock}, Vec{1}};
+    CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, invalidWorkDiv));
+
+    // Check that a work division with a single block, thread and element is always valid
+    auto const serialWorkDiv = WorkDiv{Vec{1}, Vec{1}, Vec{1}};
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, serialWorkDiv));
+
+    // Some accelerators support only one thread per block:
+    if constexpr(alpaka::isSingleThreadAcc<Acc>)
+    {
+        // Check that the compute work division uses a single thread per block.
+        auto const expectedWorkDiv = WorkDiv{Vec{threadsPerGridTestValue}, Vec{1}, Vec{1}};
+        CHECK(workDiv == expectedWorkDiv);
+
+        // Check that a work division with more than one thread per block is not valid.
+        auto const parallelWorkDiv = WorkDiv{Vec{1}, Vec{2}, Vec{1}};
+        CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, parallelWorkDiv));
+    }
+
+    // Check the maxDynamicSharedSizeBytes for CPU backends
     if constexpr(alpaka::accMatchesTags<
                      Acc,
-                     alpaka::TagGpuCudaRt,
-                     alpaka::TagGpuHipRt,
+                     alpaka::TagCpuSerial,
                      alpaka::TagCpuThreads,
+                     alpaka::TagCpuOmp2Blocks,
                      alpaka::TagCpuOmp2Threads,
-                     alpaka::TagCpuSycl,
-                     alpaka::TagFpgaSyclIntel,
-                     alpaka::TagGpuSyclIntel,
-                     alpaka::TagGenericSycl>)
+                     alpaka::TagCpuTbbBlocks>)
     {
-        // Get calculated threads per block from the workDiv found by examining kernel function
-        auto const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
-        // Get hard limits
-        auto const threadsPerBlockLimit = props.m_blockThreadCountMax;
-
-        CHECK(threadsPerBlock <= static_cast<Idx>(threadsPerBlockLimit));
-    }
-    else if constexpr(alpaka::
-                          accMatchesTags<Acc, alpaka::TagCpuSerial, alpaka::TagCpuOmp2Blocks, alpaka::TagCpuTbbBlocks>)
-    {
-        // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
-        CHECK(workDiv == WorkDiv{Vec{threadsPerGridTestValue}, Vec{1}, Vec{1}});
-        // Test a new 1D workdiv. Threads per block can not be larger than 1 for CPU. Hence 2 is not valid.
-        auto const workDiv1DUsingInitList = WorkDiv{Vec{threadsPerGridTestValue / 2}, Vec{2}, Vec{1}};
-        auto const isWorkDivValidForCPU
-            = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, workDiv1DUsingInitList);
-        CHECK(isWorkDivValidForCPU == false);
-        // Check maxDynamicSharedSizeBytes for CPU backends
-        auto const funcAttributes = alpaka::getFunctionAttributes<Acc>(dev, bundeledKernel);
-        CHECK(
-            funcAttributes.maxDynamicSharedSizeBytes == static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024));
-    }
-    else
-    {
-        throw std::invalid_argument("Acc type is not among tested Accs.");
+        int const maxDynamicSharedSizeBytes
+            = alpaka::getFunctionAttributes<Acc>(dev, kernelBundle).maxDynamicSharedSizeBytes;
+        CHECK(maxDynamicSharedSizeBytes == static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024));
     }
 }
 
@@ -151,67 +161,68 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.2D", "[workDivKernel]", TestAc
     auto const dev = alpaka::getDevByIdx(platform, 0);
 
     TestKernelWithManyRegisters kernel;
-    // A random value
-    size_t val(200ul);
-    auto const bundeledKernel = alpaka::KernelBundle(kernel, val);
+    auto const kernelBundle = alpaka::KernelBundle(kernel, 200ul);
 
-    // Get hard limits for test
+    // Get the device properties and hard limits
     auto const props = alpaka::getAccDevProps<Acc>(dev);
     Idx const threadsPerGridTestValue = props.m_blockThreadCountMax * props.m_gridBlockCountMax;
 
     // Test getValidWorkDivForKernel function for threadsPerGridTestValue threads per grid.
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(dev, bundeledKernel, Vec{8, threadsPerGridTestValue / 8}, Vec{1, 1});
+        = alpaka::getValidWorkDivForKernel<Acc>(dev, kernelBundle, Vec{8, threadsPerGridTestValue / 8}, Vec{1, 1});
 
-    // Test isValidWorkDivKernel function
-    auto const isValid = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, workDiv);
-    CHECK(isValid == true);
+    // Test the isValidWorkDivKernel function
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, workDiv));
 
-    // The valid workdiv values for this kernel might change depending on the GPU type and compiler.
+    // The valid workdiv values for the kernel may change depending on the GPU type and compiler.
     // Therefore the generated workdiv is not compared to a specific workdiv in this test.
+
+    // Get calculated threads per block from the workDiv that was found by examining the kernel function.
+    Idx const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
+
+    // Get the device limit.
+    Idx const threadsPerBlockLimit = props.m_blockThreadCountMax;
+
+    // Check that the number of threads per block is within the device limit.
+    CHECK(threadsPerBlock <= threadsPerBlockLimit);
+
+    // Check that using the maximum number of threads per block is valid.
+    auto const validWorkDiv
+        = WorkDiv{Vec{8, threadsPerGridTestValue / threadsPerBlock / 8}, Vec{1, threadsPerBlock}, Vec{1, 1}};
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, validWorkDiv));
+
+    // Check that using too many threads per block is not valid.
+    auto const invalidWorkDiv
+        = WorkDiv{Vec{8, threadsPerGridTestValue / threadsPerBlock / 8}, Vec{2, threadsPerBlock}, Vec{1, 1}};
+    CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, invalidWorkDiv));
+
+    // Check that a work division with a single block, thread and element is always valid
+    auto const serialWorkDiv = WorkDiv{Vec{1, 1}, Vec{1, 1}, Vec{1, 1}};
+    CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, serialWorkDiv));
+
+    // Some accelerators support only one thread per block:
+    if constexpr(alpaka::isSingleThreadAcc<Acc>)
+    {
+        // Check that the compute work division uses a single thread per block.
+        auto const expectedWorkDiv = WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{1, 1}, Vec{1, 1}};
+        CHECK(workDiv == expectedWorkDiv);
+
+        // Check that a work division with more than one thread per block is not valid.
+        auto const parallelWorkDiv = WorkDiv{Vec{1, 1}, Vec{1, 2}, Vec{1, 1}};
+        CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, kernelBundle, parallelWorkDiv));
+    }
+
+    // Check the maxDynamicSharedSizeBytes for CPU backends
     if constexpr(alpaka::accMatchesTags<
                      Acc,
-                     alpaka::TagGpuCudaRt,
-                     alpaka::TagGpuHipRt,
+                     alpaka::TagCpuSerial,
                      alpaka::TagCpuThreads,
+                     alpaka::TagCpuOmp2Blocks,
                      alpaka::TagCpuOmp2Threads,
-                     alpaka::TagCpuSycl,
-                     alpaka::TagFpgaSyclIntel,
-                     alpaka::TagGpuSyclIntel,
-                     alpaka::TagGenericSycl>)
+                     alpaka::TagCpuTbbBlocks>)
     {
-        // Get calculated threads per block from the workDiv that was found by examining the kernel function
-        auto const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
-        // Get hard limits
-        auto const threadsPerBlockLimit = props.m_blockThreadCountMax;
-        // Check that the number of threads per block is within the device limit.
-        CHECK(threadsPerBlock <= static_cast<Idx>(threadsPerBlockLimit));
-
-        // Check that using the maximum number of threads per block is valid.
-        auto const validWorkDiv = WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{1, threadsPerBlock}, Vec{1, 1}};
-        CHECK(alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, validWorkDiv));
-
-        // Check that using too many threads per block is not valid.
-        auto const invalidWorkDiv = WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{20, threadsPerBlock}, Vec{1, 1}};
-        CHECK(not alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, invalidWorkDiv));
-    }
-    else if constexpr(alpaka::
-                          accMatchesTags<Acc, alpaka::TagCpuSerial, alpaka::TagCpuOmp2Blocks, alpaka::TagCpuTbbBlocks>)
-    {
-        // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
-        CHECK(workDiv == WorkDiv{Vec{8, threadsPerGridTestValue / 8}, Vec{1, 1}, Vec{1, 1}});
-        // Test a new 2D workdiv. Threads per block can not be larger than 1 for CPU. Hence 2x1 threads is not valid.
-        auto const invalidWorkDiv2D = WorkDiv{Vec{1, 2048}, Vec{1, 2}, Vec{1, 1}};
-        auto const isWorkDivValidForCpu = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, invalidWorkDiv2D);
-        CHECK(isWorkDivValidForCpu == false);
-
-        // Check maxDynamicSharedSizeBytes for CPU backends
-        CHECK(
-            alpaka::getFunctionAttributes<Acc>(dev, bundeledKernel).maxDynamicSharedSizeBytes
-            == static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024));
-    }
-    else
-    {
-        throw std::invalid_argument("Acc type is not among tested Accs.");
+        int const maxDynamicSharedSizeBytes
+            = alpaka::getFunctionAttributes<Acc>(dev, kernelBundle).maxDynamicSharedSizeBytes;
+        CHECK(maxDynamicSharedSizeBytes == static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024));
     }
 }
