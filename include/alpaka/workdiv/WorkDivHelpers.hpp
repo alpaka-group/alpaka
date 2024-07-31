@@ -430,31 +430,25 @@ namespace alpaka
 
     //! \tparam TDim The dimensionality of the accelerator device properties.
     //! \tparam TIdx The idx type of the accelerator device properties.
-    //! \tparam TKernelBundle The type of the bundle of kernel and the arguments. Kernel is used to get number of
-    //! threads per block, this number could be less than or equal to the number of threads per block according to
-    //! device properties.
     //! \tparam TWorkDiv The type of the work division.
     //! \param accDevProps The maxima for the work division.
-    //! \param kernelBundle An instance of a class consisting Kernel function and its arguments.
+    //! \param kernelFunctionAttributes Kernel attributes, including the maximum number of threads per block that can
+    //! be used by this kernel on the given device. This number can be equal to or smaller than the the number of
+    //! threads per block supported by the device.
     //! \param workDiv The work division to test for validity.
     //! \return Returns true if the work division is valid for the given accelerator device properties and for the
     //! given kernel. Otherwise returns false.
-    template<typename TAcc, typename TDim, typename TIdx, typename TKernelBundle, typename TWorkDiv>
+    template<typename TAcc, typename TDim, typename TIdx, typename TWorkDiv>
     ALPAKA_FN_HOST auto isValidWorkDivKernel(
         AccDevProps<TDim, TIdx> const& accDevProps,
-        TKernelBundle const& kernelBundle,
+        KernelFunctionAttributes const& kernelFunctionAttributes,
         TWorkDiv const& workDiv) -> bool
-
     {
-        auto const platformAcc = alpaka::Platform<TAcc>{};
-        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
-
         // Get the extents of grid, blocks and threads of the work division to check.
         auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
         auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
         auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
         // Use kernel properties to find the max threads per block for the kernel
-        auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<TAcc>(dev, kernelBundle);
         auto const threadsPerBlockForKernel = kernelFunctionAttributes.maxThreadsPerBlock;
         // Select the minimum to find the upper bound for the threads per block
         auto const allowedThreadsPerBlock = std::min(
@@ -511,7 +505,10 @@ namespace alpaka
         TKernelBundle const& kernelBundle,
         TWorkDiv const& workDiv) -> bool
     {
-        return isValidWorkDivKernel<TAcc>(getAccDevProps<TAcc>(dev), kernelBundle, workDiv);
+        return isValidWorkDivKernel<TAcc>(
+            getAccDevProps<TAcc>(dev),
+            getFunctionAttributes<TAcc>(dev, kernelBundle),
+            workDiv);
     }
 
     //! \tparam TAcc The accelerator to test the validity on.
