@@ -98,7 +98,9 @@
 #include "alpaka/event/EventHipRt.hpp"
 #include "alpaka/event/Traits.hpp"
 // exec
+#include "alpaka/exec/ElementIndex.hpp"
 #include "alpaka/exec/Once.hpp"
+#include "alpaka/exec/UniformElements.hpp"
 // extent
 #include "alpaka/extent/Traits.hpp"
 // idx
