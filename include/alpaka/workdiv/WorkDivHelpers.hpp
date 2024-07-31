@@ -492,6 +492,11 @@ namespace alpaka
                     return false;
                 }
             }
+            if(gridBlockExtent.prod() * blockThreadExtent.prod()
+               > accDevProps.m_gridBlockCountMax * accDevProps.m_blockThreadCountMax)
+            {
+                return false;
+            }
         }
 
         return true;
