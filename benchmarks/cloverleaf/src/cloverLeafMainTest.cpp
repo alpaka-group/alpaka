@@ -114,7 +114,7 @@ void testKernels()
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
     // Simulation parameters
     float totalTime = 0.0f; // Total simulation time
-    float endTime = 1.0f; // End time of the simulation
+    float endTime = 0.50f; // End time of the simulation
 
     // Exec the initialization kernel
     alpaka::exec<Acc>(

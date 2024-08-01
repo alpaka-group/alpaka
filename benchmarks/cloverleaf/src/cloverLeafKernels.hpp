@@ -8,8 +8,8 @@ using Data = float;
 using Dim3 = alpaka::DimInt<3u>;
 using Idx = std::uint32_t;
 
-const Idx nx = 16; // Number of cells in x direction
-const Idx ny = 128; // Number of cells in y direction
+const Idx nx = 512; // Number of cells in x direction
+const Idx ny = 512; // Number of cells in y direction
 const Idx nz = 512; // Number of cells in z direction
 
 // Kernel to update the halo regions
