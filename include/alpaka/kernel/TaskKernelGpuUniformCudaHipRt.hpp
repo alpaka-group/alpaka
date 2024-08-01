@@ -213,8 +213,8 @@ namespace alpaka
                 {
                     if(!trait::GetAccDevProps<TAcc>::getAccDevProps(getDev(queue)).m_cooperativeLaunch)
                     {
-                        throw std::runtime_error("This accelerator doesn't support cooperative gropus functionality!");
-                    } else std::cout << "This accelerator supports cooperative gropus functionality!";
+                        throw std::runtime_error("This accelerator doesn't support cooperative groups functionality!");
+                    }
                 }
 #        endif
 

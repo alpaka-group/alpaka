@@ -172,7 +172,7 @@ namespace alpaka
                         // m_globalMemSizeBytes
                         memBytes,
                         //m_cooperativeLaunch
-                        std::false_type()};
+                        false};
             }
         };
 
