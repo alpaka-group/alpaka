@@ -33,26 +33,24 @@ void testKernels()
 
     Queue queue(devAcc);
 
-    // Define the 3D extent (dimensions)
-    alpaka::Vec<Dim3, Idx> const extent3D(static_cast<Idx>(nx), static_cast<Idx>(ny), static_cast<Idx>(nz));
+    // Define the 2D extent (dimensions)
+    alpaka::Vec<Dim2, Idx> const extent2D(static_cast<Idx>(nx), static_cast<Idx>(ny));
 
     // Allocate host memory
-    auto hDensity = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hEnergy = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hPressure = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hVelocityX = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hVelocityY = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hVelocityZ = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hSoundspeed = alpaka::allocBuf<DataType, Idx>(devHost, extent3D); // Additional buffer for soundspeed
+    auto hDensity = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hEnergy = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hPressure = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hVelocityX = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hVelocityY = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hSoundspeed = alpaka::allocBuf<DataType, Idx>(devHost, extent2D); // Additional buffer for soundspeed
 
     // Allocate device memory
-    auto dDensity = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dEnergy = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dPressure = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dVelocityX = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dVelocityY = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dVelocityZ = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dSoundspeed = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D); // Additional buffer for soundspeed
+    auto dDensity = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dEnergy = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dPressure = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dVelocityX = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dVelocityY = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dSoundspeed = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D); // Additional buffer for soundspeed
 
     // Convert directly to mdspan
     auto mdDensity = alpaka::experimental::getMdSpan(dDensity);
@@ -60,84 +58,63 @@ void testKernels()
     auto mdPressure = alpaka::experimental::getMdSpan(dPressure);
     auto mdVelocityX = alpaka::experimental::getMdSpan(dVelocityX);
     auto mdVelocityY = alpaka::experimental::getMdSpan(dVelocityY);
-    auto mdVelocityZ = alpaka::experimental::getMdSpan(dVelocityZ);
     auto mdSoundspeed = alpaka::experimental::getMdSpan(dSoundspeed); // Additional mdspan for soundspeed
 
-    auto hFluxDensity = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hFluxEnergy = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hFluxVelocityX = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hFluxVelocityY = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
-    auto hFluxVelocityZ = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
+    auto hFluxDensity = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hFluxEnergy = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hFluxVelocityX = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
+    auto hFluxVelocityY = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
 
-    auto dFluxDensity = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dFluxEnergy = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dFluxVelocityX = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dFluxVelocityY = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
-    auto dFluxVelocityZ = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
+    auto dFluxDensity = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dFluxEnergy = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dFluxVelocityX = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
+    auto dFluxVelocityY = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
 
     auto mdFluxDensity = alpaka::experimental::getMdSpan(dFluxDensity);
     auto mdFluxEnergy = alpaka::experimental::getMdSpan(dFluxEnergy);
     auto mdFluxVelocityX = alpaka::experimental::getMdSpan(dFluxVelocityX);
     auto mdFluxVelocityY = alpaka::experimental::getMdSpan(dFluxVelocityY);
-    auto mdFluxVelocityZ = alpaka::experimental::getMdSpan(dFluxVelocityZ);
 
     // Allocate host memory for viscosity
-    auto hViscosity = alpaka::allocBuf<DataType, Idx>(devHost, extent3D);
+    auto hViscosity = alpaka::allocBuf<DataType, Idx>(devHost, extent2D);
 
     // Allocate device memory for viscosity
-    auto dViscosity = alpaka::allocBuf<DataType, Idx>(devAcc, extent3D);
+    auto dViscosity = alpaka::allocBuf<DataType, Idx>(devAcc, extent2D);
 
     // Create mdspan view for viscosity using alpaka::experimental::getMdSpan
     auto mdViscosity = alpaka::experimental::getMdSpan(dViscosity);
 
     // Define work divisions
-    const alpaka::Vec<Dim3, Idx> size{nx, ny, nz};
+    const alpaka::Vec<Dim2, Idx> size{nx, ny};
 
-    // Define work divisions
-
-
-    auto const bundeledInitKernel = alpaka::KernelBundle(
-        InitializerKernel{},
-        mdDensity,
-        mdEnergy,
-        mdPressure,
-        mdVelocityX,
-        mdVelocityY,
-        mdVelocityZ);
+    auto const bundledInitKernel
+        = alpaka::KernelBundle(InitializerKernel{}, mdDensity, mdEnergy, mdPressure, mdVelocityX, mdVelocityY);
 
     auto workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledInitKernel,
+        bundledInitKernel,
         size,
-        alpaka::Vec<Dim3, Idx>::ones(),
+        alpaka::Vec<Dim2, Idx>::ones(),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+
     // Simulation parameters
     float totalTime = 0.0f; // Total simulation time
-    float endTime = 0.50f; // End time of the simulation
+    float endTime = 16.0f; // End time of the simulation
 
     // Exec the initialization kernel
-    alpaka::exec<Acc>(
-        queue,
-        workDiv,
-        InitializerKernel{},
-        mdDensity,
-        mdEnergy,
-        mdPressure,
-        mdVelocityX,
-        mdVelocityY,
-        mdVelocityZ);
-    //  std::cout << "InitializerKernel finished" << std::endl;
+    alpaka::exec<Acc>(queue, workDiv, InitializerKernel{}, mdDensity, mdEnergy, mdPressure, mdVelocityX, mdVelocityY);
+
+    std::cout << "InitializerKernel finished" << std::endl;
+
     // Wait for the kernel to finish
     alpaka::wait(queue);
 
     // Variables to calculate the dt at each step
-    float dx = 0.01f;
-    float dy = 0.01f;
-    float dz = 0.01f;
+    float dx = 10.0f / nx;
+    float dy = 10.0f / ny;
     float cMax = 0.5f;
-    float dt = 0.01f;
-
+    float dt = 0.04f;
 
     alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent1D = alpaka::Vec<alpaka::DimInt<1u>, Idx>::all(1u);
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, extent1D);
@@ -146,6 +123,9 @@ void testKernels()
     alpaka::memcpy(queue, outputDeviceMemory, resultGpuHost);
     std::cout << "Workdiv:" << workDiv << std::endl;
     std::cout << "Running cloverleaf loop." << std::endl;
+
+    int iteration = 0;
+
     while(totalTime < endTime)
     {
         // Calculate the time step (dt), max velocity is needed.
@@ -156,25 +136,25 @@ void testKernels()
             MaxVelocityKernel{},
             mdVelocityX,
             mdVelocityY,
-            mdVelocityZ,
             std::data(outputDeviceMemory));
 
         // Copy result from device memory to host
         alpaka::memcpy(queue, resultGpuHost, outputDeviceMemory, extent1D);
 
-        //  std::cout << "MaxVelocityKernel finished" << std::endl;
+        // std::cout << "MaxVelocityKernel finished" << std::endl;
 
         alpaka::wait(queue);
 
         // Now use maxVelocity to compute the time step
-        dt = calculateTimeStep(dx, dy, dz, resultGpuHost[0], cMax);
+        dt = calculateTimeStep(dx, dy, resultGpuHost[0], cMax);
 
         // Exec the halo update kernel
         alpaka::exec<Acc>(queue, workDiv, UpdateHaloKernel{}, mdDensity);
 
+        // std::cout << "Halo kernel finished" << std::endl;
+
         // Wait for the halo update kernel to finish
         alpaka::wait(queue);
-        //  std::cout << "Halo kernel finished" << std::endl;
 
         // Exec the ideal gas kernel
         alpaka::exec<Acc>(
@@ -187,26 +167,17 @@ void testKernels()
             mdSoundspeed,
             1.4f); // gamma
 
-        //  std::cout << "IdealGasKernel finished" << std::endl;
+        // std::cout << "IdealGasKernel finished" << std::endl;
 
         // Wait for the ideal gas kernel to finish
         alpaka::wait(queue);
 
         // Exec the EOS kernel
         float gamma = 1.4f; // Specific heat ratio
-        alpaka::exec<Acc>(
-            queue,
-            workDiv,
-            EOSKernel{},
-            mdDensity,
-            mdEnergy,
-            mdPressure,
-            mdVelocityX,
-            mdVelocityY,
-            mdVelocityZ,
-            gamma);
+        alpaka::exec<
+            Acc>(queue, workDiv, EOSKernel{}, mdDensity, mdEnergy, mdPressure, mdVelocityX, mdVelocityY, gamma);
 
-        //  std::cout << "EOSKernel finished" << std::endl;
+        // std::cout << "EOSKernel finished" << std::endl;
 
         // Wait for the EOS kernel to finish
         alpaka::wait(queue);
@@ -221,22 +192,20 @@ void testKernels()
             mdPressure,
             mdVelocityX,
             mdVelocityY,
-            mdVelocityZ,
             mdFluxDensity,
             mdFluxEnergy,
             mdFluxVelocityX,
-            mdFluxVelocityY,
-            mdFluxVelocityZ);
+            mdFluxVelocityY);
 
-        //  std::cout << "FluxKernel finished" << std::endl;
+        // std::cout << "FluxKernel finished" << std::endl;
 
         // Wait for the Flux kernel to finish
         alpaka::wait(queue);
 
         // Exec the advection kernel (fourth step)
-        alpaka::exec<Acc>(queue, workDiv, AdvectionKernel{}, mdDensity, mdVelocityX, mdVelocityY, mdVelocityZ);
+        alpaka::exec<Acc>(queue, workDiv, AdvectionKernel{}, mdDensity, mdVelocityX, mdVelocityY);
 
-        //  std::cout << "AdvectionKernel finished" << std::endl;
+        // std::cout << "AdvectionKernel finished" << std::endl;
 
         // Wait for the Advection kernel to finish
         alpaka::wait(queue);
@@ -247,14 +216,12 @@ void testKernels()
         alpaka::memcpy(queue, hPressure, dPressure);
         alpaka::memcpy(queue, hVelocityX, dVelocityX);
         alpaka::memcpy(queue, hVelocityY, dVelocityY);
-        alpaka::memcpy(queue, hVelocityZ, dVelocityZ);
 
         // Flux densities
         alpaka::memcpy(queue, hFluxDensity, dFluxDensity);
         alpaka::memcpy(queue, hFluxEnergy, dFluxEnergy);
         alpaka::memcpy(queue, hFluxVelocityX, dFluxVelocityX);
         alpaka::memcpy(queue, hFluxVelocityY, dFluxVelocityY);
-        alpaka::memcpy(queue, hFluxVelocityZ, dFluxVelocityZ);
 
         // Wait for data transfer to complete
         alpaka::wait(queue);
@@ -268,54 +235,53 @@ void testKernels()
             mdEnergy,
             mdVelocityX,
             mdVelocityY,
-            mdVelocityZ,
             mdFluxDensity,
             mdFluxEnergy,
             mdFluxVelocityX,
-            mdFluxVelocityY,
-            mdFluxVelocityZ);
+            mdFluxVelocityY);
 
-        //  std::cout << "LagrangianKernel finished" << std::endl;
+        // std::cout << "LagrangianKernel finished" << std::endl;
 
         // Wait for the Lagrangian kernel to finish
         alpaka::wait(queue);
 
         // Exec the Viscosity kernel
-        alpaka::exec<Acc>(
-            queue,
-            workDiv,
-            ViscosityKernel{},
-            mdDensity,
-            mdVelocityX,
-            mdVelocityY,
-            mdVelocityZ,
-            mdPressure,
-            mdViscosity);
+        alpaka::exec<
+            Acc>(queue, workDiv, ViscosityKernel{}, mdDensity, mdVelocityX, mdVelocityY, mdPressure, mdViscosity);
 
-        //  std::cout << "ViscosityKernel finished" << std::endl;
+        // std::cout << "ViscosityKernel finished" << std::endl;
 
         // Wait for the Viscosity kernel to finish
         alpaka::wait(queue);
 
         // Update the simulation time
         totalTime += dt;
+
+        if(iteration % 2000 == 0)
+        {
+            std::cout << "Current Time: " << totalTime << ", End Time: " << endTime << ", Step Size: " << dt
+                      << ", iteration: " << iteration << std::endl;
+        }
+
+        iteration++;
     }
+
     std::cout << "Copying results back." << std::endl;
+
     // Copy final data back to host for verification
     alpaka::memcpy(queue, hDensity, dDensity);
     alpaka::memcpy(queue, hEnergy, dEnergy);
     alpaka::memcpy(queue, hPressure, dPressure);
     alpaka::memcpy(queue, hVelocityX, dVelocityX);
     alpaka::memcpy(queue, hVelocityY, dVelocityY);
-    alpaka::memcpy(queue, hVelocityZ, dVelocityZ);
     alpaka::memcpy(queue, hFluxDensity, dFluxDensity);
     alpaka::memcpy(queue, hFluxEnergy, dFluxEnergy);
     alpaka::memcpy(queue, hFluxVelocityX, dFluxVelocityX);
     alpaka::memcpy(queue, hFluxVelocityY, dFluxVelocityY);
-    alpaka::memcpy(queue, hFluxVelocityZ, dFluxVelocityZ);
     alpaka::memcpy(queue, hViscosity, dViscosity);
 
-    std::cout << "Data copy to host  finished" << std::endl;
+    std::cout << "Data copy to host finished" << std::endl;
+
     // Wait for all data transfers to complete
     alpaka::wait(queue);
 
@@ -325,25 +291,20 @@ void testKernels()
     auto mdHostPressure = alpaka::experimental::getMdSpan(hPressure);
     auto mdHostVelocityX = alpaka::experimental::getMdSpan(hVelocityX);
     auto mdHostVelocityY = alpaka::experimental::getMdSpan(hVelocityY);
-    auto mdHostVelocityZ = alpaka::experimental::getMdSpan(hVelocityZ);
 
     bool success = true;
     for(Idx i = 0; i < nx; ++i)
     {
         for(Idx j = 0; j < ny; ++j)
         {
-            for(Idx k = 0; k < nz; ++k)
+            if(std::isnan(mdHostDensity(i, j)) || std::isinf(mdHostDensity(i, j)) || std::isnan(mdHostEnergy(i, j))
+               || std::isinf(mdHostEnergy(i, j)) || std::isnan(mdHostPressure(i, j))
+               || std::isinf(mdHostPressure(i, j)) || std::isnan(mdHostVelocityX(i, j))
+               || std::isinf(mdHostVelocityX(i, j)) || std::isnan(mdHostVelocityY(i, j))
+               || std::isinf(mdHostVelocityY(i, j)))
             {
-                if(std::isnan(mdHostDensity(i, j, k)) || std::isinf(mdHostDensity(i, j, k))
-                   || std::isnan(mdHostEnergy(i, j, k)) || std::isinf(mdHostEnergy(i, j, k))
-                   || std::isnan(mdHostPressure(i, j, k)) || std::isinf(mdHostPressure(i, j, k))
-                   || std::isnan(mdHostVelocityX(i, j, k)) || std::isinf(mdHostVelocityX(i, j, k))
-                   || std::isnan(mdHostVelocityY(i, j, k)) || std::isinf(mdHostVelocityY(i, j, k))
-                   || std::isnan(mdHostVelocityZ(i, j, k)) || std::isinf(mdHostVelocityZ(i, j, k)))
-                {
-                    success = false;
-                    break;
-                }
+                success = false;
+                break;
             }
         }
     }
@@ -358,9 +319,9 @@ void testKernels()
     }
 }
 
-using TestAccs3D = alpaka::test::EnabledAccs<alpaka::DimInt<3u>, std::uint32_t>;
+using TestAccs2D = alpaka::test::EnabledAccs<alpaka::DimInt<2u>, std::uint32_t>;
 
-TEMPLATE_LIST_TEST_CASE("TEST: Cloverleaf", "[benchmark-test]", TestAccs3D)
+TEMPLATE_LIST_TEST_CASE("TEST: Cloverleaf", "[benchmark-test]", TestAccs2D)
 {
     using Acc = TestType;
     if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuCudaRt>)
