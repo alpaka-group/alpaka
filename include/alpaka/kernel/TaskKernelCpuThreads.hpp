@@ -51,11 +51,12 @@ namespace alpaka
 
     public:
         template<typename TWorkDiv>
-        ALPAKA_FN_HOST TaskKernelCpuThreads(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        ALPAKA_FN_HOST TaskKernelCpuThreads(
+            TWorkDiv&& workDiv,
+            KernelBundle<TKernelFnObj, TArgs...> const& KernelBundle)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
-            , m_kernelFnObj(kernelFnObj)
-            , m_args(std::forward<TArgs>(
-                  args)...) // FIXME(bgruber): this does not forward, since TArgs is not a deduced template parameter
+            , m_kernelFnObj(KernelBundle.m_kernelFn)
+            , m_args(KernelBundle.m_args)
         {
             static_assert(
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,

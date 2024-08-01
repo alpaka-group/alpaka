@@ -11,6 +11,7 @@
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/DevFpgaSyclIntel.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
@@ -57,15 +58,20 @@ namespace alpaka::trait
     };
 
     //! The Intel FPGA SYCL accelerator execution task type trait specialization.
+    //!
+    //! \tparam TDim The dimensionality of the accelerator device properties.
+    //! \tparam TIdx The idx type of the accelerator device properties.
+    //! \tparam TWorkDiv The type of the work division.
+    //! \tparam TKernelFnObj Kernel function object type.
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
     template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    struct CreateTaskKernel<AccFpgaSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    struct CreateTaskKernel<AccFpgaSyclIntel<TDim, TIdx>, TWorkDiv, KernelBundle<TKernelFnObj, TArgs...>>
     {
-        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        ALPAKA_FN_HOST static auto createTaskKernel(
+            TWorkDiv const& workDiv,
+            KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle)
         {
-            return TaskKernelFpgaSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
-                workDiv,
-                kernelFnObj,
-                std::forward<TArgs>(args)...};
+            return TaskKernelFpgaSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>(workDiv, kernelBundle);
         }
     };
 

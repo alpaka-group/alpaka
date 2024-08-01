@@ -125,11 +125,10 @@ namespace alpaka
         template<typename TWorkDiv>
         ALPAKA_FN_HOST TaskKernelGpuUniformCudaHipRt(
             TWorkDiv&& workDiv,
-            TKernelFnObj const& kernelFnObj,
-            TArgs&&... args)
+            KernelBundle<TKernelFnObj, TArgs...> const& KernelBundle)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
-            , m_kernelFnObj(kernelFnObj)
-            , m_args(std::forward<TArgs>(args)...)
+            , m_kernelFnObj(KernelBundle.m_kernelFn)
+            , m_args(KernelBundle.m_args)
         {
             static_assert(
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,

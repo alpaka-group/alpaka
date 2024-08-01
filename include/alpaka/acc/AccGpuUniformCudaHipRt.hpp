@@ -14,6 +14,7 @@
 #include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"
 #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
 #include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
 #include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"
 #include "alpaka/rand/RandDefault.hpp"
@@ -264,6 +265,13 @@ namespace alpaka
     namespace trait
     {
         //! The GPU CUDA accelerator execution task type trait specialization.
+        //!
+        //! \tparam TApi The type the API of the GPU accelerator backend. Currently Cuda or Hip.
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
+        //! \tparam TWorkDiv The type of the work division.
+        //! \tparam TKernelFnObj Kernel function object type.
+        //! \tparam TArgs Kernel function object argument types as a parameter pack.
         template<
             typename TApi,
             typename TDim,
@@ -271,12 +279,15 @@ namespace alpaka
             typename TWorkDiv,
             typename TKernelFnObj,
             typename... TArgs>
-        struct CreateTaskKernel<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
-                TKernelFnObj const& kernelFnObj,
-                TArgs&&... args)
+
+                KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle)
             {
                 return TaskKernelGpuUniformCudaHipRt<
                     TApi,
@@ -284,7 +295,7 @@ namespace alpaka
                     TDim,
                     TIdx,
                     TKernelFnObj,
-                    TArgs...>(workDiv, kernelFnObj, std::forward<TArgs>(args)...);
+                    TArgs...>(workDiv, kernelBundle);
             }
         };
 
