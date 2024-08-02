@@ -32,8 +32,8 @@
 
 // Implementation details.
 #include "alpaka/acc/Tag.hpp"
-#include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Concepts.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 
 #include <limits>

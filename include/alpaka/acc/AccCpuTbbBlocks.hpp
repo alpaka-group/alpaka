@@ -32,8 +32,8 @@
 
 // Implementation details.
 #include "alpaka/acc/Tag.hpp"
-#include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Concepts.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 
 #include <memory>
@@ -41,7 +41,7 @@
 
 #ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
 
-#include <tbb/tbb.h>
+#    include <tbb/tbb.h>
 
 namespace alpaka
 {
