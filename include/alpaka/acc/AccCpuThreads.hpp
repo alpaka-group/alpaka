@@ -171,7 +171,7 @@ namespace alpaka
                         memBytes,
                         // m_globalMemSizeBytes
                         memBytes,
-                        //m_cooperativeLaunch
+                        // m_cooperativeLaunch
                         false};
             }
         };

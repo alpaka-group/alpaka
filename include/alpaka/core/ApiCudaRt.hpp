@@ -254,7 +254,13 @@ namespace alpaka
             return ::cudaHostUnregister(ptr);
         }
 
-        static inline Error_t launchCooperativeKernel(const void* func, dim3 gridDim, dim3 blockDim, void** args, size_t sharedMem, Stream_t stream)
+        static inline Error_t launchCooperativeKernel(
+            void const* func,
+            dim3 gridDim,
+            dim3 blockDim,
+            void** args,
+            size_t sharedMem,
+            Stream_t stream)
         {
             return ::cudaLaunchCooperativeKernel(func, gridDim, blockDim, args, sharedMem, stream);
         }
@@ -403,7 +409,11 @@ namespace alpaka
         }
 
         template<class T>
-        static inline Error_t occupancyMaxActiveBlocksPerMultiprocessor (int* numBlocks, T func, int  blockSize, size_t dynamicSMemSize)
+        static inline Error_t occupancyMaxActiveBlocksPerMultiprocessor(
+            int* numBlocks,
+            T func,
+            int blockSize,
+            size_t dynamicSMemSize)
         {
             return ::cudaOccupancyMaxActiveBlocksPerMultiprocessor(numBlocks, func, blockSize, dynamicSMemSize);
         }

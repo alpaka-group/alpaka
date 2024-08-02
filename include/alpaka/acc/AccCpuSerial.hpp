@@ -146,7 +146,7 @@ namespace alpaka
                         static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes()),
                         // m_globalMemSizeBytes
                         getMemBytes(dev),
-                        //m_cooperativeLaunch
+                        // m_cooperativeLaunch
                         false};
             }
         };

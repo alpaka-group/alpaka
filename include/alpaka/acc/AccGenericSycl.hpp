@@ -154,7 +154,7 @@ namespace alpaka::trait
                     device.template get_info<sycl::info::device::local_mem_size>(),
                     // m_globalMemSizeBytes
                     getMemBytes(dev),
-                    //m_cooperativeLaunch
+                    // m_cooperativeLaunch
                     false};
         }
     };

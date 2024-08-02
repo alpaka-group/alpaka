@@ -4,27 +4,25 @@
 
 #pragma once
 
-#include "alpaka/grid//Traits.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Concepts.hpp"
+#include "alpaka/grid//Traits.hpp"
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#   if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#       include <cooperative_groups.h>
-#   endif
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        include <cooperative_groups.h>
+#    endif
 
-#   if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#       include <hip/hip_cooperative_groups.h>
-#   endif
-
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#        include <hip/hip_cooperative_groups.h>
+#    endif
 
 
 namespace alpaka
 {
     //! The GPU CUDA/HIP grid synchronization.
-    class GridSyncCudaHipBuiltIn
-        : public concepts::Implements<ConceptGridSync, GridSyncCudaHipBuiltIn>
+    class GridSyncCudaHipBuiltIn : public concepts::Implements<ConceptGridSync, GridSyncCudaHipBuiltIn>
     {
     };
 

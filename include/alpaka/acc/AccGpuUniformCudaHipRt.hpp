@@ -41,7 +41,14 @@
 
 namespace alpaka
 {
-    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+    template<
+        typename TApi,
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        bool TCooperative,
+        typename... TArgs>
     class TaskKernelGpuUniformCudaHipRt;
 
     //! The GPU CUDA accelerator.
@@ -193,7 +200,7 @@ namespace alpaka
                         static_cast<size_t>(sharedMemSizeBytes),
                         // m_globalMemSizeBytes
                         getMemBytes(dev),
-                        //m_cooperativeLaunch
+                        // m_cooperativeLaunch
                         static_cast<bool>(cooperativeLaunch)};
 
 #    else
@@ -224,7 +231,7 @@ namespace alpaka
                         static_cast<size_t>(properties.sharedMemPerBlock),
                         // m_globalMemSizeBytes
                         getMemBytes(dev),
-                        //m_cooperativeLaunch
+                        // m_cooperativeLaunch
                         static_cast<bool>(properties.cooperativeLaunch)};
 #    endif
             }

@@ -29,7 +29,7 @@ TEMPLATE_LIST_TEST_CASE("getAccDevProps", "[acc]", alpaka::test::TestAccs)
 
 TEST_CASE("AccDevProps.aggregate_init", "[acc]")
 {
-    auto const props = alpaka::AccDevProps<alpaka::DimInt<1>, int>{1, {2}, 3, {4}, 5, {6}, 7, 8, 9, std::true_type()};
+    auto const props = alpaka::AccDevProps<alpaka::DimInt<1>, int>{1, {2}, 3, {4}, 5, {6}, 7, 8, 9, true};
 
     CHECK(props.m_multiProcessorCount == 1);
     CHECK(props.m_gridBlockExtentMax == alpaka::Vec{2});
@@ -55,8 +55,8 @@ TEST_CASE("AccDevProps.designated_initializers", "[acc]")
         .m_threadElemExtentMax = {60},
         .m_threadElemCountMax = 70,
         .m_sharedMemSizeBytes = 80,
-        .m_globalMemSizeBytes = 90
-        .m_cooperativeLaunch = std::false_type()};
+        .m_globalMemSizeBytes = 90,
+        .m_cooperativeLaunch = false};
 
     CHECK(props.m_multiProcessorCount == 10);
     CHECK(props.m_gridBlockExtentMax == alpaka::Vec{20});
