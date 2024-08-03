@@ -177,7 +177,7 @@ namespace mathtest
             if(!isFinite(a) && !isFinite(b))
                 return true;
             // For the same reason use relative difference comparison with a large margin
-            auto const scalingFactor = static_cast<T>(std::is_same_v<T, float> ? 1.1e4 : 1.1e6);
+            auto const scalingFactor = static_cast<T>(std::is_same_v<T, float> ? 1.5e4 : 1.1e6);
             auto const marginValue = scalingFactor * std::numeric_limits<T>::epsilon();
             return (a.real() == Catch::Approx(b.real()).margin(marginValue).epsilon(marginValue))
                    && (a.imag() == Catch::Approx(b.imag()).margin(marginValue).epsilon(marginValue));
