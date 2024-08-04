@@ -97,6 +97,8 @@
 #include "alpaka/event/EventGpuSyclIntel.hpp"
 #include "alpaka/event/EventHipRt.hpp"
 #include "alpaka/event/Traits.hpp"
+// exec
+#include "alpaka/exec/Once.hpp"
 // extent
 #include "alpaka/extent/Traits.hpp"
 // idx
