@@ -10829,6 +10829,100 @@
 		// == ./include/alpaka/acc/Tag.hpp ==
 		// ============================================================================
 
+		// ============================================================================
+		// == ./include/alpaka/core/ClipCast.hpp ==
+		// ==
+		/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+			// ============================================================================
+			// == ./include/alpaka/meta/Integral.hpp ==
+			// ==
+			/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			#include <type_traits>
+
+			namespace alpaka::meta
+			{
+			    //! The trait is true if all values of TSubset are contained in TSuperset.
+			    template<typename TSuperset, typename TSubset>
+			    using IsIntegralSuperset = std::integral_constant<
+			        bool,
+			        std::is_integral_v<TSuperset> && std::is_integral_v<TSubset>
+			            && (
+			                // If the signdness is equal, the sizes have to be greater or equal to be a superset.
+			                ((std::is_unsigned_v<TSuperset>
+			                  == std::is_unsigned_v<TSubset>) &&(sizeof(TSuperset) >= sizeof(TSubset)))
+			                // If the signdness is non-equal, the superset has to have at least one bit more.
+			                || ((std::is_unsigned_v<TSuperset> != std::is_unsigned_v<TSubset>) &&(
+			                    sizeof(TSuperset) > sizeof(TSubset))))>;
+
+			    //! The type that has the higher max value.
+			    template<typename T0, typename T1>
+			    using HigherMax = std::conditional_t<
+			        (sizeof(T0) > sizeof(T1)),
+			        T0,
+			        std::conditional_t<((sizeof(T0) == sizeof(T1)) && std::is_unsigned_v<T0> && std::is_signed_v<T1>), T0, T1>>;
+
+			    //! The type that has the lower max value.
+			    template<typename T0, typename T1>
+			    using LowerMax = std::conditional_t<
+			        (sizeof(T0) < sizeof(T1)),
+			        T0,
+			        std::conditional_t<((sizeof(T0) == sizeof(T1)) && std::is_signed_v<T0> && std::is_unsigned_v<T1>), T0, T1>>;
+
+			    //! The type that has the higher min value. If both types have the same min value, the type with the wider
+			    //! range is chosen.
+			    template<typename T0, typename T1>
+			    using HigherMin = std::conditional_t<
+			        (std::is_unsigned_v<T0> == std::is_unsigned_v<T1>),
+			        std::conditional_t<
+			            std::is_unsigned_v<T0>,
+			            std::conditional_t<(sizeof(T0) < sizeof(T1)), T1, T0>,
+			            std::conditional_t<(sizeof(T0) < sizeof(T1)), T0, T1>>,
+			        std::conditional_t<std::is_unsigned_v<T0>, T0, T1>>;
+
+			    //! The type that has the lower min value. If both types have the same min value, the type with the wider range
+			    //! is chosen.
+			    template<typename T0, typename T1>
+			    using LowerMin = std::conditional_t<
+			        (std::is_unsigned_v<T0> == std::is_unsigned_v<T1>),
+			        std::conditional_t<(sizeof(T0) > sizeof(T1)), T0, T1>,
+			        std::conditional_t<std::is_signed_v<T0>, T0, T1>>;
+			} // namespace alpaka::meta
+			// ==
+			// == ./include/alpaka/meta/Integral.hpp ==
+			// ============================================================================
+
+
+		// #include <algorithm>    // amalgamate: file already included
+		// #include <limits>    // amalgamate: file already included
+
+		namespace alpaka::core
+		{
+		    //! \return The input casted and clipped to T.
+		    template<typename T, typename V>
+		    auto clipCast(V const& val) -> T
+		    {
+		        static_assert(
+		            std::is_integral_v<T> && std::is_integral_v<V>,
+		            "clipCast can not be called with non-integral types!");
+
+		        constexpr auto max = static_cast<V>(std::numeric_limits<alpaka::meta::LowerMax<T, V>>::max());
+		        constexpr auto min = static_cast<V>(std::numeric_limits<alpaka::meta::HigherMin<T, V>>::min());
+
+		        return static_cast<T>(std::max(min, std::min(max, val)));
+		    }
+		} // namespace alpaka::core
+		// ==
+		// == ./include/alpaka/core/ClipCast.hpp ==
+		// ============================================================================
+
 	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevCpu.hpp ==
@@ -11213,68 +11307,7 @@
 
 				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already inlined
-					// ============================================================================
-					// == ./include/alpaka/meta/Integral.hpp ==
-					// ==
-					/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					#include <type_traits>
-
-					namespace alpaka::meta
-					{
-					    //! The trait is true if all values of TSubset are contained in TSuperset.
-					    template<typename TSuperset, typename TSubset>
-					    using IsIntegralSuperset = std::integral_constant<
-					        bool,
-					        std::is_integral_v<TSuperset> && std::is_integral_v<TSubset>
-					            && (
-					                // If the signdness is equal, the sizes have to be greater or equal to be a superset.
-					                ((std::is_unsigned_v<TSuperset>
-					                  == std::is_unsigned_v<TSubset>) &&(sizeof(TSuperset) >= sizeof(TSubset)))
-					                // If the signdness is non-equal, the superset has to have at least one bit more.
-					                || ((std::is_unsigned_v<TSuperset> != std::is_unsigned_v<TSubset>) &&(
-					                    sizeof(TSuperset) > sizeof(TSubset))))>;
-
-					    //! The type that has the higher max value.
-					    template<typename T0, typename T1>
-					    using HigherMax = std::conditional_t<
-					        (sizeof(T0) > sizeof(T1)),
-					        T0,
-					        std::conditional_t<((sizeof(T0) == sizeof(T1)) && std::is_unsigned_v<T0> && std::is_signed_v<T1>), T0, T1>>;
-
-					    //! The type that has the lower max value.
-					    template<typename T0, typename T1>
-					    using LowerMax = std::conditional_t<
-					        (sizeof(T0) < sizeof(T1)),
-					        T0,
-					        std::conditional_t<((sizeof(T0) == sizeof(T1)) && std::is_signed_v<T0> && std::is_unsigned_v<T1>), T0, T1>>;
-
-					    //! The type that has the higher min value. If both types have the same min value, the type with the wider
-					    //! range is chosen.
-					    template<typename T0, typename T1>
-					    using HigherMin = std::conditional_t<
-					        (std::is_unsigned_v<T0> == std::is_unsigned_v<T1>),
-					        std::conditional_t<
-					            std::is_unsigned_v<T0>,
-					            std::conditional_t<(sizeof(T0) < sizeof(T1)), T1, T0>,
-					            std::conditional_t<(sizeof(T0) < sizeof(T1)), T0, T1>>,
-					        std::conditional_t<std::is_unsigned_v<T0>, T0, T1>>;
-
-					    //! The type that has the lower min value. If both types have the same min value, the type with the wider range
-					    //! is chosen.
-					    template<typename T0, typename T1>
-					    using LowerMin = std::conditional_t<
-					        (std::is_unsigned_v<T0> == std::is_unsigned_v<T1>),
-					        std::conditional_t<(sizeof(T0) > sizeof(T1)), T0, T1>,
-					        std::conditional_t<std::is_signed_v<T0>, T0, T1>>;
-					} // namespace alpaka::meta
-					// ==
-					// == ./include/alpaka/meta/Integral.hpp ==
-					// ============================================================================
-
+				// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/offset/Traits.hpp ==
 					// ==
@@ -13627,7 +13660,7 @@
 	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> alpaka::AccDevProps<TDim, TIdx>
 	            {
 	                return {// m_multiProcessorCount
-	                        static_cast<TIdx>(1),
+	                        alpaka::core::clipCast<TIdx>(omp_get_max_threads()),
 	                        // m_gridBlockExtentMax
 	                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
 	                        // m_gridBlockCountMax
@@ -14246,39 +14279,7 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/core/ClipCast.hpp ==
-		// ==
-		/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
-
-		// #include <algorithm>    // amalgamate: file already included
-		// #include <limits>    // amalgamate: file already included
-
-		namespace alpaka::core
-		{
-		    //! \return The input casted and clipped to T.
-		    template<typename T, typename V>
-		    auto clipCast(V const& val) -> T
-		    {
-		        static_assert(
-		            std::is_integral_v<T> && std::is_integral_v<V>,
-		            "clipCast can not be called with non-integral types!");
-
-		        constexpr auto max = static_cast<V>(std::numeric_limits<alpaka::meta::LowerMax<T, V>>::max());
-		        constexpr auto min = static_cast<V>(std::numeric_limits<alpaka::meta::HigherMin<T, V>>::min());
-
-		        return static_cast<T>(std::max(min, std::min(max, val)));
-		    }
-		} // namespace alpaka::core
-		// ==
-		// == ./include/alpaka/core/ClipCast.hpp ==
-		// ============================================================================
-
+	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
@@ -19975,6 +19976,7 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
@@ -19982,6 +19984,8 @@
 	// #include <typeinfo>    // amalgamate: file already included
 
 	#ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
+
+	#    include <tbb/tbb.h>
 
 	namespace alpaka
 	{
@@ -20070,7 +20074,7 @@
 	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
 	            {
 	                return {// m_multiProcessorCount
-	                        static_cast<TIdx>(1),
+	                        alpaka::core::clipCast<TIdx>(tbb::this_task_arena::max_concurrency()),
 	                        // m_gridBlockExtentMax
 	                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
 	                        // m_gridBlockCountMax
