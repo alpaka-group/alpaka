@@ -44,13 +44,20 @@ namespace alpaka::test
         {
         }
 
-        KernelExecutionFixture(Queue queue, WorkDiv workDiv) : m_queue{std::move(queue)}, m_workDiv{std::move(workDiv)}
+        KernelExecutionFixture(Queue queue, WorkDiv workDiv)
+            : m_platform{} // if the platform is not stateless, this is wrong; we ignore it because it is not be used
+            , m_device{alpaka::getDev(queue)}
+            , m_queue{std::move(queue)}
+            , m_workDiv{std::move(workDiv)}
         {
         }
 
         template<typename TExtent>
-        KernelExecutionFixture(Queue queue, TExtent const& extent) : m_queue{std::move(queue)}
-                                                                   , m_extent{extent}
+        KernelExecutionFixture(Queue queue, TExtent const& extent)
+            : m_platform{} // if the platform is not stateless, this is wrong; we ignore it because it is not be used
+            , m_device{alpaka::getDev(queue)}
+            , m_queue{std::move(queue)}
+            , m_extent{extent}
         {
         }
 
