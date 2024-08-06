@@ -202,15 +202,16 @@ auto example(TAccTag const&) -> int
 
     auto pitchBufAccRandV = alpaka::getPitchesInBytes(bufAccRandV)[0];
 
-    auto const& bundeledKernelInitRandom
+    auto const& kernelBundleInitRandom
         = alpaka::KernelBundle(initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDivInitRandom
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernelInitRandom, extent, Vec(perThreadY, perThreadX));
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundleInitRandom, extent, Vec(perThreadY, perThreadX));
 
-    alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+    alpaka::exec<Acc>(queue, workDivInitRandom, kernelBundleInitRandom);
     alpaka::wait(queue);
 
+    // execute the same kernel with different pointers
     alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
     alpaka::wait(queue);
 
@@ -230,7 +231,7 @@ auto example(TAccTag const&) -> int
     alpaka::memcpy(queue, bufAccS, bufHostS);
     RunTimestepKernelSingle runTimestepKernelSingle;
 
-    auto const& bundeledKernelRuntimeStep = alpaka::KernelBundle(
+    auto const& kernelBundleRuntimeStep = alpaka::KernelBundle(
         runTimestepKernelSingle,
         extent,
         ptrBufAccRandS,
@@ -239,21 +240,10 @@ auto example(TAccTag const&) -> int
         pitchBufAccS);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDivRuntimeStep = alpaka::getValidWorkDivForKernel<Acc>(
-        devAcc,
-        bundeledKernelRuntimeStep,
-        extent,
-        Vec(perThreadY, perThreadX));
+    auto const workDivRuntimeStep
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundleRuntimeStep, extent, Vec(perThreadY, perThreadX));
 
-    alpaka::exec<Acc>(
-        queue,
-        workDivRuntimeStep,
-        runTimestepKernelSingle,
-        extent,
-        ptrBufAccRandS,
-        ptrBufAccS,
-        pitchBufAccRandS,
-        pitchBufAccS);
+    alpaka::exec<Acc>(queue, workDivRuntimeStep, kernelBundleRuntimeStep);
     alpaka::memcpy(queue, bufHostS, bufAccS);
 
     auto pitchBufAccV = alpaka::getPitchesInBytes(bufAccV)[0];

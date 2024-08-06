@@ -244,7 +244,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     std::cout << "pitchesC " << alpaka::getPitchesInBytes(bufCAcc) << " ldc: " << ldc << "\n";
 
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         kernel,
         m,
         n,
@@ -260,7 +260,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledKernel,
+        kernelBundle,
         extentC,
         alpaka::Vec<Dim, Idx>::ones(),
         false,
@@ -272,22 +272,8 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
               << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
               << std::endl;
 
-
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        m,
-        n,
-        k,
-        static_cast<Val>(1),
-        std::data(bufAAcc),
-        lda,
-        std::data(bufBAcc),
-        ldb,
-        static_cast<Val>(1),
-        std::data(bufCAcc),
-        ldc);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernelBundle);
 
     // Profile the kernel execution.
     std::cout << "Execution time:   " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"

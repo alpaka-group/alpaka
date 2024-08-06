@@ -79,15 +79,14 @@ auto example(TAccTag const&) -> int
     // Define the work division
     std::size_t const threadsPerGrid = 16u;
     std::size_t const elementsPerThread = 1u;
-    Kernel kernel;
+    alpaka::KernelBundle kernelBundle = Kernel{};
 
-    auto const& bundeledKernel = alpaka::KernelBundle(kernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, kernel);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

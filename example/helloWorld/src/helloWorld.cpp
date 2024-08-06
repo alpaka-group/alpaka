@@ -133,12 +133,11 @@ auto example(TAccTag const&) -> int
     // Kernels can be everything that is trivially copyable, has a
     // callable operator() and takes the accelerator as first
     // argument. So a kernel can be a class or struct, a lambda, etc.
-    HelloWorldKernel helloWorldKernel;
+    alpaka::KernelBundle kernelBundle = HelloWorldKernel{};
 
-    auto const& bundeledKernel = alpaka::KernelBundle(helloWorldKernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
     //
@@ -149,11 +148,7 @@ auto example(TAccTag const&) -> int
     // The queue can be blocking or non-blocking
     // depending on the chosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
-    alpaka::exec<Acc>(
-        queue,
-        workDiv,
-        helloWorldKernel
-        /* put kernel arguments here */);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

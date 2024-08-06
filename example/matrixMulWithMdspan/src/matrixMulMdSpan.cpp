@@ -147,19 +147,19 @@ auto example(TAccTag const&) -> int
     auto mdDevC = alpaka::experimental::getMdSpan(bufDevC);
 
     MatrixMulKernel kernel;
-    auto const& bundeledKernel = alpaka::KernelBundle(kernel, mdDevA, mdDevB, mdDevC);
+    auto const& kernelBundle = alpaka::KernelBundle(kernel, mdDevA, mdDevB, mdDevC);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledKernel,
+        kernelBundle,
         extentC,
         Vec::ones(),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Execute the kernel
-    alpaka::exec<Acc>(queue, workDiv, MatrixMulKernel{}, mdDevA, mdDevB, mdDevC);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
 
     // Copy result back to host
     alpaka::memcpy(queue, bufHostC, bufDevC);

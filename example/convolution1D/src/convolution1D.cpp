@@ -140,7 +140,7 @@ auto example(TAccTag const&) -> int
     DataType* nativeInputDeviceMemory = std::data(inputDeviceMemory);
     DataType* nativeOutputDeviceMemory = std::data(outputDeviceMemory);
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         convolutionKernel,
         nativeInputDeviceMemory,
         nativeFilterDeviceMemory,
@@ -150,17 +150,9 @@ auto example(TAccTag const&) -> int
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
     // Run the kernel
-    alpaka::exec<DevAcc>(
-        queue,
-        workDiv,
-        convolutionKernel,
-        nativeInputDeviceMemory,
-        nativeFilterDeviceMemory,
-        nativeOutputDeviceMemory,
-        inputSize,
-        filterSize);
+    alpaka::exec<DevAcc>(queue, workDiv, kernelBundle);
 
     // Allocate memory on host
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, inputSize);

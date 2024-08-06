@@ -131,14 +131,14 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
 
 
     auto blockRetValuesDummy = alpaka::allocBuf<Val, Idx>(devAcc, static_cast<Idx>(1));
-    // Kernel input during the runtim of kernel will be different and is chosen to depend on workdiv.
+    // Kernel input during the runtime of kernel will be different and is chosen to depend on workdiv.
     // Therefore initially a  workdiv is needed to find the parameter. Therefore in kernel bundle, we can not use the
     // real input for the buffer pointer.
-    auto const& bundeledKernel = alpaka::KernelBundle(kernel, std::data(blockRetValuesDummy));
+    auto const& kernelBundle = alpaka::KernelBundle(kernel, std::data(blockRetValuesDummy));
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledKernel,
+        kernelBundle,
         numElements,
         static_cast<Idx>(1u),
         false,
@@ -149,6 +149,7 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
               << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
               << std::endl;
 
+    // Data size depends on workdiv
     Idx const gridBlocksCount(alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
     Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
@@ -160,8 +161,10 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     auto blockRetValsAcc = alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount);
     alpaka::memcpy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
+
     // Create the kernel execution task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, std::data(blockRetValsAcc));
+
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

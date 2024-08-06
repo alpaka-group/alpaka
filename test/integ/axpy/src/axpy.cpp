@@ -91,7 +91,6 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);
-
     alpaka::Vec<Dim, Idx> const extent(numElements);
 
     // Allocate host memory buffers in pinned memory.
@@ -146,13 +145,12 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     std::cout << std::endl;
 #endif
 
-
-    auto const& bundeledKernel
+    auto const& kernelBundle
         = alpaka::KernelBundle(kernel, numElements, alpha, std::data(memBufAccX), std::data(memBufAccY));
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledKernel,
+        kernelBundle,
         extent,
         static_cast<Idx>(3u),
         false,
@@ -164,13 +162,7 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
               << std::endl;
 
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        numElements,
-        alpha,
-        std::data(memBufAccX),
-        std::data(memBufAccY));
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernelBundle);
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

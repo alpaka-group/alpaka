@@ -117,12 +117,12 @@ auto example(TAccTag const&) -> int
         printf("\n");
     };
 
-    auto const& bundeledKernel = alpaka::KernelBundle(kernelLambda, nExclamationMarks);
+    auto const& kernelBundle = alpaka::KernelBundle(kernelLambda, nExclamationMarks);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
 
-    alpaka::exec<Acc>(queue, workDiv, kernelLambda, nExclamationMarks);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

@@ -164,12 +164,11 @@ auto example(TAccTag const&) -> int
 
     FillBufferKernel fillBufferKernel;
 
-    auto const& bundeledFillBufferKernel = alpaka::KernelBundle(fillBufferKernel, hostViewPlainPtrMdSpan);
+    auto const& fillBufferKernelBundle = alpaka::KernelBundle(fillBufferKernel, hostViewPlainPtrMdSpan);
     auto const hostWorkDiv
-        = alpaka::getValidWorkDivForKernel<Host>(devHost, bundeledFillBufferKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Host>(devHost, fillBufferKernelBundle, threadsPerGrid, elementsPerThread);
 
-    alpaka::exec<Host>(hostQueue, hostWorkDiv, fillBufferKernel,
-                       hostViewPlainPtrMdSpan); // 1st kernel argument
+    alpaka::exec<Host>(hostQueue, hostWorkDiv, fillBufferKernelBundle); // 1st kernel argument
 
     // Copy host to device Buffer
     //
@@ -203,14 +202,17 @@ auto example(TAccTag const&) -> int
     auto deviceBufferMdSpan2 = alpaka::experimental::getMdSpan(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
-    auto const& bundeledTestBufferKernel = alpaka::KernelBundle(testBufferKernel, deviceBufferMdSpan1);
+    auto const& restBufferKernelBundle1 = alpaka::KernelBundle(testBufferKernel, deviceBufferMdSpan1);
+    auto const& restBufferKernelBundle2 = alpaka::KernelBundle(testBufferKernel, deviceBufferMdSpan2);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const devWorkDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledTestBufferKernel, threadsPerGrid, elementsPerThread);
+    auto const devWorkDiv1
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, restBufferKernelBundle1, threadsPerGrid, elementsPerThread);
+    auto const devWorkDiv2
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, restBufferKernelBundle2, threadsPerGrid, elementsPerThread);
 
-    alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan1);
-    alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan2);
+    alpaka::exec<Acc>(devQueue, devWorkDiv1, restBufferKernelBundle1);
+    alpaka::exec<Acc>(devQueue, devWorkDiv2, restBufferKernelBundle2);
 
     // Print device Buffer
     //
@@ -223,11 +225,11 @@ auto example(TAccTag const&) -> int
     // completely distorted.
 
     PrintBufferKernel printBufferKernel;
-    alpaka::exec<Acc>(devQueue, devWorkDiv, printBufferKernel, deviceBufferMdSpan1);
+    alpaka::exec<Acc>(devQueue, devWorkDiv1, printBufferKernel, deviceBufferMdSpan1);
     alpaka::wait(devQueue);
     std::cout << std::endl;
 
-    alpaka::exec<Acc>(devQueue, devWorkDiv, printBufferKernel, deviceBufferMdSpan2);
+    alpaka::exec<Acc>(devQueue, devWorkDiv2, printBufferKernel, deviceBufferMdSpan2);
     alpaka::wait(devQueue);
     std::cout << std::endl;
 

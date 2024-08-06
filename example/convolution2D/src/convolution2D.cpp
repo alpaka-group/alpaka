@@ -265,7 +265,7 @@ auto example(TAccTag const&) -> int
     alpaka::wait(queueAcc);
 
     // Calculate the allocated width, due to padding it might be larger then the matrix width
-    auto const intputWidthAllocated = [&]() -> const Idx
+    auto const intputWidthAllocated = [&]() -> Idx const
     {
         // Calculate pitch: The size of one line in bytes including padding.
         auto const rowPitchInput{alpaka::getPitchesInBytes(bufInputAcc)[0]};
@@ -294,7 +294,7 @@ auto example(TAccTag const&) -> int
     alpaka::wait(queueAcc);
 
     // Calculate the allocated width, due to padding it might be larger then the matrix width
-    auto const filterWidthAllocated = [&]() -> const Idx
+    auto const filterWidthAllocated = [&]() -> Idx const
     {
         // Calculate pitch: The size of one line in bytes including padding.
         auto const rowPitchFilter{alpaka::getPitchesInBytes(bufFilterAcc)[0]};
@@ -305,7 +305,7 @@ auto example(TAccTag const&) -> int
     //  ConvolutionKernel2DSharedMemory
     ConvolutionKernel2DSharedMemory convolutionKernel2D;
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         convolutionKernel2D,
         alpaka::getPtrNative(bufInputAcc),
         alpaka::getPtrNative(outputDeviceMemory),
@@ -317,21 +317,10 @@ auto example(TAccTag const&) -> int
         filterWidthAllocated);
 
     //   Let alpaka calculate good block and grid sizes given our full problem extent.
-    auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, extent, Vec::ones());
+    auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, kernelBundle, extent, Vec::ones());
 
     // Run the kernel
-    alpaka::exec<DevAcc>(
-        queueAcc,
-        workDiv,
-        convolutionKernel2D,
-        std::data(bufInputAcc),
-        std::data(outputDeviceMemory),
-        matrixWidth,
-        matrixHeight,
-        std::data(bufFilterAcc),
-        filterWidth,
-        intputWidthAllocated,
-        filterWidthAllocated);
+    alpaka::exec<DevAcc>(queueAcc, workDiv, kernelBundle);
 
     // Allocate memory on host to receive the resulting matrix as an array
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, extent1D);

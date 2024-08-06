@@ -148,24 +148,18 @@ auto example(TAccTag const&) -> int
     ConvolutionKernelMdspan2D convolutionKernel2D;
 
     // Make a bundle
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         convolutionKernel2D,
         alpaka::experimental::getMdSpan(bufInputAcc),
         alpaka::experimental::getMdSpan(outputDeviceMemory),
         alpaka::experimental::getMdSpan(bufFilterAcc));
 
     //   Let alpaka calculate good block and grid sizes given our full problem extent.
-    auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, extent, Vec::ones());
+    auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, kernelBundle, extent, Vec::ones());
 
 
     // Run the kernel, pass 3 arrays as 2D mdspans
-    alpaka::exec<DevAcc>(
-        queueAcc,
-        workDiv,
-        convolutionKernel2D,
-        alpaka::experimental::getMdSpan(bufInputAcc),
-        alpaka::experimental::getMdSpan(outputDeviceMemory),
-        alpaka::experimental::getMdSpan(bufFilterAcc));
+    alpaka::exec<DevAcc>(queueAcc, workDiv, kernelBundle);
 
     // Allocate memory on host to receive the resulting matrix as an array
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, extent);

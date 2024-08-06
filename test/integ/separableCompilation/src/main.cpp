@@ -111,23 +111,21 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     alpaka::memcpy(queueAcc, memBufAccA, memBufHostA);
     alpaka::memcpy(queueAcc, memBufAccB, memBufHostB);
 
-    auto const& bundeledKernel
-        = alpaka::KernelBundle(kernel, memBufAccA.data(), memBufAccB.data(), memBufAccC.data(), numElements);
+    auto const& kernelBundle = alpaka::KernelBundle(
+        kernel,
+        std::data(memBufAccA),
+        std::data(memBufAccB),
+        std::data(memBufAccC),
+        numElements);
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, static_cast<Idx>(3u));
+    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, extent, static_cast<Idx>(3u));
 
     std::cout << alpaka::core::demangled<decltype(kernel)> << "("
               << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
               << ", numElements:" << numElements << ")" << std::endl;
 
     // Create the executor task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        memBufAccA.data(),
-        memBufAccB.data(),
-        memBufAccC.data(),
-        numElements);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernelBundle);
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"

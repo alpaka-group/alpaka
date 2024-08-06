@@ -107,25 +107,25 @@ auto main() -> int
     Idx const threadsPerGrid = 16u;
     Idx const elementsPerThread = 1u;
 
-    OpenMPScheduleDefaultKernel openMPScheduleDefaultKernel;
-    auto const& bundeledKernel = alpaka::KernelBundle(openMPScheduleDefaultKernel);
+    alpaka::KernelBundle kernelBundle = OpenMPScheduleDefaultKernel{};
+
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
 
     // Run the kernel setting no schedule explicitly.
     std::cout << "OpenMPScheduleDefaultKernel setting no schedule explicitly:\n";
-    alpaka::exec<Acc>(queue, workDiv, openMPScheduleDefaultKernel);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     // Run the kernel setting the schedule via a trait
     std::cout << "\n\nOpenMPScheduleMemberKernel setting the schedule via a static member:\n";
-    alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleMemberKernel{});
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     // Run the kernel setting the schedule via a trait
     std::cout << "\n\nOpenMPScheduleTraitKernel setting the schedule via trait:\n";
-    alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleTraitKernel{});
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

@@ -307,7 +307,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     auto const [rowPitch, _] = alpaka::getPitchesInBytes(bufColorAcc);
     CHECK(rowPitch % sizeof(Val) == 0);
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         kernel,
         std::data(bufColorAcc),
         numRows,
@@ -321,7 +321,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
-        bundeledKernel,
+        kernelBundle,
         extent,
         alpaka::Vec<Dim, Idx>::ones(),
         false,
@@ -334,19 +334,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
               << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
               << std::endl;
 
-
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        std::data(bufColorAcc),
-        numRows,
-        numCols,
-        rowPitch,
-        fMinR,
-        fMaxR,
-        fMinI,
-        fMaxI,
-        maxIterations);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernelBundle);
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

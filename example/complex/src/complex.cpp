@@ -56,15 +56,14 @@ auto example(TAccTag const&) -> int
     Idx const threadsPerGrid = 1u;
     Idx const elementsPerThread = 1u;
 
-    ComplexKernel complexKernel;
+    alpaka::KernelBundle kernelBundle = ComplexKernel{};
 
-    auto const& bundeledKernel = alpaka::KernelBundle(complexKernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, kernelBundle, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, complexKernel);
+    alpaka::exec<Acc>(queue, workDiv, kernelBundle);
     alpaka::wait(queue);
 
     // Usage of alpaka::Complex<T> on the host side is the same as inside kernels, except math functions are not

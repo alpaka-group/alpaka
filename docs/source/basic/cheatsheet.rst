@@ -181,7 +181,7 @@ Prepare Kernel Bundle
 
      HeatEquationKernel heatEqKernel;
      // Arguments of KernelBundle: The kernel instance and the kernel arguments
-     auto const& bundeledKernel = alpaka::KernelBundle(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+     auto const& kernelBundle = alpaka::KernelBundle(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
 
 Automatically select a valid kernel launch configuration
   .. code-block:: c++
@@ -191,7 +191,7 @@ Automatically select a valid kernel launch configuration
 
      auto autoWorkDiv = getValidWorkDivForKernel<Acc>(
        device,
-       bundeledKernel,
+       kernelBundle,
        globalThreadExtent, elementsPerThread,
        false,
        GridBlockExtentSubDivRestrictions::Unrestricted);

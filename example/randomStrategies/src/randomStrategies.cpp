@@ -247,7 +247,7 @@ void runStrategy(Box<TAccTag>& box)
     // the initial parameters solely from the thread index
 
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    auto const& kernelBundle = alpaka::KernelBundle(
         initRandomKernel,
         box.extentRand,
         ptrBufAccRand,
@@ -256,21 +256,14 @@ void runStrategy(Box<TAccTag>& box)
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDivRand = alpaka::getValidWorkDivForKernel<typename Box<TAccTag>::Acc>(
         alpaka::getDevByIdx(box.accPlatform, 0),
-        bundeledKernel,
+        kernelBundle,
         box.extentRand,
         typename Box<TAccTag>::Vec(typename Box<TAccTag>::Idx{1}),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
 
-    alpaka::exec<typename Box<TAccTag>::Acc>(
-        box.queue,
-        workDivRand,
-        initRandomKernel,
-        box.extentRand,
-        ptrBufAccRand,
-        static_cast<unsigned>(
-            box.extentResult[0] / box.extentRand[0])); // == NUM_ROLLS; amount of work to be performed by each thread
+    alpaka::exec<typename Box<TAccTag>::Acc>(box.queue, workDivRand, kernelBundle);
 
     alpaka::wait(box.queue);
 
@@ -291,27 +284,20 @@ void runStrategy(Box<TAccTag>& box)
     alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
 
-    auto const& bundeledKernelFill
-        = alpaka::KernelBundle(fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+    auto const& kernelBundleFill = alpaka::KernelBundle(fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workdivResult = alpaka::getValidWorkDivForKernel<typename Box<TAccTag>::Acc>(
         alpaka::getDevByIdx(box.accPlatform, 0),
-        bundeledKernelFill,
+        kernelBundleFill,
         box.extentResult,
-        typename Box<TAccTag>::Vec(static_cast<typename Box<TAccTag>::Idx>(
-            NUM_ROLLS)), // One thread per "point"; each performs NUM_ROLLS "rolls"
+        // One thread per "point"; each performs NUM_ROLLS "rolls"
+        typename Box<TAccTag>::Vec(static_cast<typename Box<TAccTag>::Idx>(NUM_ROLLS)),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
 
-    alpaka::exec<typename Box<TAccTag>::Acc>(
-        box.queue,
-        workdivResult,
-        fillKernel,
-        box.extentResult,
-        ptrBufAccRand,
-        ptrBufAccResult);
+    alpaka::exec<typename Box<TAccTag>::Acc>(box.queue, workdivResult, kernelBundleFill);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 
