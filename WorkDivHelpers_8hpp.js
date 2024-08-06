@@ -10,7 +10,7 @@ var WorkDivHelpers_8hpp =
     [ "isValidAccDevProps", "WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043", null ],
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#abe4c3a3b90386720d53c5a5fc9426ce1", null ],
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c", null ],
-    [ "isValidWorkDivKernel", "WorkDivHelpers_8hpp.html#a97e152630160dfc73adccf8b2ff85d5b", null ],
+    [ "isValidWorkDivKernel", "WorkDivHelpers_8hpp.html#a69e5454cdeed24e172db1bc4ca5f7498", null ],
     [ "isValidWorkDivKernel", "WorkDivHelpers_8hpp.html#ab2b849f4367cf6163a6a287b546f725d", null ],
     [ "nextDivisorLowerOrEqual", "WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a", null ],
     [ "subDivideGridElems", "WorkDivHelpers_8hpp.html#aeeb203c11f29a926f5f2739bd9b7f704", null ]

@@ -107,9 +107,8 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp.htm
 <code>#include &quot;<a class="el" href="KernelFunctionAttributes_8hpp_source.html">alpaka/kernel/KernelFunctionAttributes.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="platform_2Traits_8hpp_source.html">alpaka/platform/Traits.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtBlocking.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="QueueUniformCudaHipRt_8hpp_source.html">alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="WorkDivHelpers_8hpp_source.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="WorkDivMembers_8hpp_source.html">alpaka/workdiv/WorkDivMembers.hpp</a>&quot;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
@@ -133,11 +132,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_d937d18cc35a2c3a9b92b7f6271c43f1.html">alpaka::trait::DimType&lt; TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP execution task dimension getter trait specialization.  <a href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_d937d18cc35a2c3a9b92b7f6271c43f1.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01TaskKernelc6360c0fc744d397d00b5014e3524b9c.html">alpaka::trait::Enqueue&lt; QueueUniformCudaHipRtBlocking&lt; TApi &gt;, TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP synchronous kernel enqueue trait specialization.  <a href="structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01TaskKernelc6360c0fc744d397d00b5014e3524b9c.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01TaskKercda831e3343a928a98cd81e7d01f0f88.html">alpaka::trait::Enqueue&lt; QueueUniformCudaHipRtNonBlocking&lt; TApi &gt;, TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP non-blocking kernel enqueue trait specialization.  <a href="structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01TaskKercda831e3343a928a98cd81e7d01f0f88.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Tcf5f0cfca5b539ecd63517c701535324.html">alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;, TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP kernel enqueue trait specialization.  <a href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Tcf5f0cfca5b539ecd63517c701535324.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1FunctionAttributes_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01T7bdc4bf4826d0074b8f696585956398a.html">alpaka::trait::FunctionAttributes&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt;, TDev, KernelBundle&lt; TKernelFn, TArgs... &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialisation of the class template <a class="el" href="structalpaka_1_1trait_1_1FunctionAttributes.html" title="The structure template to access to the functions attributes of a kernel function object.">FunctionAttributes</a>.  <a href="structalpaka_1_1trait_1_1FunctionAttributes_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01T7bdc4bf4826d0074b8f696585956398a.html#details">More...</a><br /></td></tr>
@@ -183,7 +179,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp.html">TaskKernelGpuUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Wed Jul 24 2024 15:19:43 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 6 2024 17:41:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

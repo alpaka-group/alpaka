@@ -163,7 +163,7 @@ var NAVTREEINDEX8 =
 "namespacealpaka_1_1test_1_1uniform__cuda__hip.html":[2,0,0,17,4],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,17,4,0],
 "namespacealpaka_1_1trait.html":[2,0,0,18],
-"namespacealpaka_1_1trait.html#a215ecdb62defcf56faf46d0405c9e8e1":[2,0,0,18,481],
+"namespacealpaka_1_1trait.html#a215ecdb62defcf56faf46d0405c9e8e1":[2,0,0,18,480],
 "namespacealpaka_1_1trait_1_1detail.html":[2,0,0,18,0],
 "namespacealpaka_1_1trait_1_1detail.html#a103c83a3115216746d6c45d9705310fe":[2,0,0,18,0,13],
 "namespacealpaka_1_1trait_1_1generic.html":[2,0,0,18,1],

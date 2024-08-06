@@ -253,7 +253,7 @@ var namespacealpaka =
     [ "isValidAccDevProps", "namespacealpaka.html#a49da61db606743ad5f75c6db33cfc043", null ],
     [ "isValidWorkDiv", "namespacealpaka.html#abe4c3a3b90386720d53c5a5fc9426ce1", null ],
     [ "isValidWorkDiv", "namespacealpaka.html#a378a4ed1bdce40639b3204d84a004d1c", null ],
-    [ "isValidWorkDivKernel", "namespacealpaka.html#a97e152630160dfc73adccf8b2ff85d5b", null ],
+    [ "isValidWorkDivKernel", "namespacealpaka.html#a69e5454cdeed24e172db1bc4ca5f7498", null ],
     [ "isValidWorkDivKernel", "namespacealpaka.html#ab2b849f4367cf6163a6a287b546f725d", null ],
     [ "KernelBundle", "namespacealpaka.html#a2ee3b02b44d397e14c1b63f0f36ca087", null ],
     [ "malloc", "namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c", null ],

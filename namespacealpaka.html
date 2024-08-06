@@ -880,9 +880,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a378a4ed1bdce40639b3204d84a004d1c">isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
 <tr class="separator:a378a4ed1bdce40639b3204d84a004d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97e152630160dfc73adccf8b2ff85d5b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBundle , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a97e152630160dfc73adccf8b2ff85d5b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a97e152630160dfc73adccf8b2ff85d5b">isValidWorkDivKernel</a> (<a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, TKernelBundle const &amp;kernelBundle, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:a97e152630160dfc73adccf8b2ff85d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a69e5454cdeed24e172db1bc4ca5f7498">isValidWorkDivKernel</a> (<a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, <a class="el" href="structalpaka_1_1KernelFunctionAttributes.html">KernelFunctionAttributes</a> const &amp;kernelFunctionAttributes, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
+<tr class="separator:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab2b849f4367cf6163a6a287b546f725d">isValidWorkDivKernel</a> (TDev const &amp;dev, TKernelBundle const &amp;kernelBundle, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
 <tr class="separator:ab2b849f4367cf6163a6a287b546f725d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5394,17 +5394,17 @@ template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00522">522</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00519">519</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a97e152630160dfc73adccf8b2ff85d5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97e152630160dfc73adccf8b2ff85d5b">&#9670;&nbsp;</a></span>isValidWorkDivKernel() <span class="overload">[1/2]</span></h2>
+<a id="a69e5454cdeed24e172db1bc4ca5f7498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e5454cdeed24e172db1bc4ca5f7498">&#9670;&nbsp;</a></span>isValidWorkDivKernel() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBundle , typename TWorkDiv &gt; </div>
+template&lt;typename TAcc , typename TDim , typename TIdx , typename TWorkDiv &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::isValidWorkDivKernel </td>
@@ -5415,8 +5415,8 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBund
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TKernelBundle const &amp;&#160;</td>
-          <td class="paramname"><em>kernelBundle</em>, </td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1KernelFunctionAttributes.html">KernelFunctionAttributes</a> const &amp;&#160;</td>
+          <td class="paramname"><em>kernelFunctionAttributes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -5428,7 +5428,6 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBund
           <td></td>
           <td>)</td>
           <td></td><td> -&gt; bool
-
     </td>
         </tr>
       </table>
@@ -5437,7 +5436,6 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBund
   <table class="tparams">
     <tr><td class="paramname">TDim</td><td>The dimensionality of the accelerator device properties. </td></tr>
     <tr><td class="paramname">TIdx</td><td>The idx type of the accelerator device properties. </td></tr>
-    <tr><td class="paramname">TKernelBundle</td><td>The type of the bundle of kernel and the arguments. Kernel is used to get number of threads per block, this number could be less than or equal to the number of threads per block according to device properties. </td></tr>
     <tr><td class="paramname">TWorkDiv</td><td>The type of the work division. </td></tr>
   </table>
   </dd>
@@ -5445,14 +5443,14 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelBund
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
-    <tr><td class="paramname">kernelBundle</td><td>An instance of a class consisting Kernel function and its arguments. </td></tr>
+    <tr><td class="paramname">kernelFunctionAttributes</td><td>Kernel attributes, including the maximum number of threads per block that can be used by this kernel on the given device. This number can be equal to or smaller than the the number of threads per block supported by the device. </td></tr>
     <tr><td class="paramname">workDiv</td><td>The work division to test for validity. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the work division is valid for the given accelerator device properties and for the given kernel. Otherwise returns false. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00443">443</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00442">442</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -5509,7 +5507,7 @@ template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TW
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns the value of isValidWorkDivKernel function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00509">509</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00503">503</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -7372,7 +7370,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Jul 24 2024 15:19:43 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 6 2024 17:41:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
