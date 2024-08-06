@@ -12,6 +12,7 @@
 #include "alpaka/core/OmpSchedule.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/KernelFunctionAttributes.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
@@ -356,25 +357,53 @@ namespace alpaka
             std::forward<TArgs>(args)...);
     }
 
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored                                                                                  \
-        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
-#endif
-//! Executes the given kernel in the given queue.
-//!
-//! \tparam TAcc The accelerator type.
-//! \param queue The queue to enqueue the view copy task into.
-//! \param workDiv The index domain work division.
-//! \param kernelFnObj The kernel function object which should be executed.
-//! \param args,... The kernel invocation arguments.
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
+    //! \param workDiv The index domain work division.
+    //! \param kernelBundle contains the kernel function and all arguments
+    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto createTaskKernel(
+        TWorkDiv const& workDiv,
+        KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle)
+    {
+        return std::apply(
+            [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
+            { return createTaskKernel<TAcc>(workDiv, kernelBundle.m_kernelFn, args...); },
+            kernelBundle.m_args);
+    }
+
+    //! @}
+
+    //! Executes the given kernel in the given queue.
+    //!
+    //! \tparam TAcc The accelerator type.
+    //! \tparam TQueue The queue type for work to be submitted to.
+    //! \tparam TWorkDiv The type of the work division.
+    //! \tparam TArgs The kernel invocation argument types pack.
+    //! \param queue The queue to enqueue the view copy task into.
+    //! \param workDiv The index domain work division.
+    // !@{
+
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+    //! \param kernelFnObj The kernel function object which should be executed.
+    //! \param args The kernel invocation arguments.
     template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
     ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         -> void
     {
         enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
     }
+
+    //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
+    //! invocation arguments.
+    //!
+    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto exec(
+        TQueue& queue,
+        TWorkDiv const& workDiv,
+        KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle) -> void
+    {
+        enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelBundle));
+    }
+
+    //! @}
+
 } // namespace alpaka

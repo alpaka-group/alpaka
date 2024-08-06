@@ -32,7 +32,6 @@ namespace alpaka
         {
         }
 
-    private:
         KernelFn m_kernelFn;
         ArgTuple m_args; // Store the argument types without const and reference
     };
