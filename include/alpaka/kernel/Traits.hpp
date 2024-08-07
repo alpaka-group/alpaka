@@ -43,6 +43,10 @@ namespace alpaka
             typename TSfinae = void*/>
         struct CreateTaskCooperativeKernel;
 
+        //! Get maximum requested blocks for cooperative kernel trait.
+        template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+        struct maxActiveBlocks;
+
         //! The trait for getting the size of the block shared dynamic memory of a kernel.
         //!
         //! \tparam TKernelFnObj The kernel function object.
@@ -185,6 +189,7 @@ namespace alpaka
 #endif
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
+
     ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
         TKernelFnObj const& kernelFnObj,
         Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
@@ -214,6 +219,77 @@ namespace alpaka
         -> alpaka::KernelFunctionAttributes
     {
         return trait::FunctionAttributes<TAcc, TDev, TKernelBundle>::getFunctionAttributes(dev, kernelBundle);
+    }
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+    //! \tparam TAcc The accelerator type.
+    //! \param device The device for which the maximum block count should be calculated.
+    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+    //! \param blockThreadExtent The block thread extent.
+    //! \param threadElemExtent The thread element extent.
+    //! \param args... The kernel invocation arguments.
+    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+    //! specified extents.
+    //!
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+        TDev const& device,
+        TKernelFnObj const& kernelFnObj,
+        alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+        alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+        TArgs const&... args) -> int
+    {
+        return trait::maxActiveBlocks<TAcc, TDev, TKernelFnObj, TDim, TIdx, TArgs...>::getMaxActiveBlocks(
+            kernelFnObj,
+            device,
+            blockThreadExtent,
+            threadElemExtent,
+            args...);
+    }
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+    //! \tparam TAcc The accelerator type.
+    //! \param device The device for which the maximum block count should be calculated.
+    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+    //! \param blockThreadExtent The block thread extent.
+    //! \param threadElemExtent The thread element extent.
+    //! \param args... The kernel invocation arguments.
+    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+    //! specified extents.
+    //!
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TIdx, typename... TArgs>
+
+    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+        TDev const& device,
+        TKernelFnObj const& kernelFnObj,
+        TIdx const& blockThreadExtent,
+        TIdx const& threadElemExtent,
+        TArgs const&... args) -> int
+    {
+        auto const v_blockThreadExtent = Vec<DimInt<1>, TIdx>(blockThreadExtent);
+        auto const v_threadElemExtent = Vec<DimInt<1>, TIdx>(threadElemExtent);
+        return trait::maxActiveBlocks<TAcc, TDev, TKernelFnObj, DimInt<1>, TIdx, TArgs...>::getMaxActiveBlocks(
+            kernelFnObj,
+            device,
+            v_blockThreadExtent,
+            v_threadElemExtent,
+            args...);
     }
 
 #if BOOST_COMP_CLANG

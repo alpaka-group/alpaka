@@ -1,5 +1,5 @@
 /* Copyright 2024 Mykhailo Varvarin
-* SPDX-License-Identifier: MPL-2.0
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 #include <alpaka/alpaka.hpp>
@@ -17,7 +17,7 @@ struct HelloWorldKernel
     ALPAKA_FN_ACC void operator()(Acc const& acc, uint32_t* data) const
     {
         // Get index of the current thread in the grid and the total number of threads.
-        uint32_t gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];;
+        uint32_t gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
         uint32_t gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0];
 
         printf("Hello, World from alpaka thread %u!\n", gridThreadIdx);
@@ -71,6 +71,7 @@ auto main() -> int
     Idx blocksPerGrid = 10;
     Idx threadsPerBlock = 1;
     Idx elementsPerThread = 1;
+
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     auto workDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
 
@@ -81,10 +82,19 @@ auto main() -> int
     // Instantiate the kernel object.
     HelloWorldKernel helloWorldKernel;
 
+    int maxBlocks = alpaka::getMaxActiveBlocks<Acc>(
+        devAcc,
+        helloWorldKernel,
+        threadsPerBlock,
+        elementsPerThread,
+        getPtrNative(deviceMemory));
+    std::cout << "Maximum blocks for the kernel: " << maxBlocks << std::endl;
+
     // Create a task to run the kernel.
     // Note the cooperative kernel specification.
     // Only cooperative kernels can perform grid synchronization.
-    auto taskRunKernel = alpaka::createTaskCooperativeKernel<Acc>(workDiv, helloWorldKernel, getPtrNative(deviceMemory));
+    auto taskRunKernel
+        = alpaka::createTaskCooperativeKernel<Acc>(workDiv, helloWorldKernel, getPtrNative(deviceMemory));
 
     // Enqueue the kernel execution task..
     alpaka::enqueue(queue, taskRunKernel);
