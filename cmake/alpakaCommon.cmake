@@ -542,19 +542,30 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
         endif()
 
+        # Use the Shared CUDA Runtime library by default
+        if(NOT DEFINED CMAKE_CUDA_RUNTIME_LIBRARY)
+            set(CMAKE_CUDA_RUNTIME_LIBRARY "Shared")
+        endif()
+
         # Link the CUDA Runtime library
         if(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "Shared")
             target_link_libraries(alpaka INTERFACE CUDA::cudart)
-        else()
+        elseif(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "Static")
             target_link_libraries(alpaka INTERFACE CUDA::cudart_static)
+        elseif(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "None")
+            message(WARNING "Building alpaka applications with CMAKE_CUDA_RUNTIME_LIBRARY=None is not supported.")
+        else()
+            message(FATAL_ERROR "Invalid setting for CMAKE_CUDA_RUNTIME_LIBRARY.")
         endif()
 
         if(NOT alpaka_DISABLE_VENDOR_RNG)
             # Use cuRAND random number generators
             if(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "Shared")
                 target_link_libraries(alpaka INTERFACE CUDA::curand)
-            else()
+            elseif(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "Static")
                 target_link_libraries(alpaka INTERFACE CUDA::curand_static)
+            elseif(CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL "None")
+                message(FATAL_ERROR "cuRAND requires the CUDA runtime library.")
             endif()
         endif()
     else()
