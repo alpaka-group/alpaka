@@ -39,6 +39,8 @@ namespace alpaka
 
                 return is_intel_fpga ? 1 : -1;
             }
+
+            static constexpr char name[] = "FpgaSyclIntel";
         };
 #    if BOOST_COMP_CLANG
 #        pragma clang diagnostic pop

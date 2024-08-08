@@ -27,6 +27,8 @@ namespace alpaka
 
                 return is_intel_gpu ? 1 : -1;
             }
+
+            static constexpr char name[] = "GpuSyclIntel";
         };
     } // namespace detail
 

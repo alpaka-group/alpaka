@@ -24,6 +24,8 @@ namespace alpaka
             {
                 return dev.is_cpu() ? 1 : -1;
             }
+
+            static constexpr char name[] = "CpuSycl";
         };
     } // namespace detail
 

@@ -10,11 +10,13 @@
 #include "alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp"
 #include "alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp"
 #include "alpaka/block/sync/BlockSyncGenericSycl.hpp"
+#include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/idx/bt/IdxBtGenericSycl.hpp"
 #include "alpaka/idx/gb/IdxGbGenericSycl.hpp"
 #include "alpaka/intrinsic/IntrinsicGenericSycl.hpp"
 #include "alpaka/math/MathGenericSycl.hpp"
 #include "alpaka/mem/fence/MemFenceGenericSycl.hpp"
+#include "alpaka/platform/PlatformGenericSycl.hpp"
 #include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandGenericSycl.hpp"
 #include "alpaka/warp/WarpGenericSycl.hpp"
@@ -31,6 +33,7 @@
 // Implementation details.
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/Sycl.hpp"
 
 #include <cstddef>
@@ -43,10 +46,13 @@
 
 namespace alpaka
 {
+    template<typename TSelector, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    class TaskKernelGenericSycl;
+
     //! The SYCL accelerator.
     //!
     //! This accelerator allows parallel kernel execution on SYCL devices.
-    template<typename TDim, typename TIdx>
+    template<typename TSelector, typename TDim, typename TIdx>
     class AccGenericSycl
         : public WorkDivGenericSycl<TDim, TIdx>
         , public gb::IdxGbGenericSycl<TDim, TIdx>
@@ -64,6 +70,7 @@ namespace alpaka
         , public rand::RandGenericSycl<TDim>
 #    endif
         , public warp::WarpGenericSycl<TDim>
+        , public concepts::Implements<ConceptAcc, AccGenericSycl<TTag, TDim, TIdx>>
     {
         static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
 
@@ -96,35 +103,30 @@ namespace alpaka
 namespace alpaka::trait
 {
     //! The SYCL accelerator type trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct AccType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct AccType<AccGenericSycl<TSelector, TDim, TIdx>>
     {
-        using type = TAcc<TDim, TIdx>;
+        using type = AccGenericSycl<TSelector, TDim, TIdx>;
     };
 
     //! The SYCL single thread accelerator type trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct IsSingleThreadAcc<
-        TAcc<TDim, TIdx>,
-        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::false_type
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct IsSingleThreadAcc<AccGenericSycl<TSelector, TDim, TIdx>> : std::false_type
     {
     };
 
     //! The SYCL multi thread accelerator type trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct IsMultiThreadAcc<
-        TAcc<TDim, TIdx>,
-        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::true_type
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct IsMultiThreadAcc<AccGenericSycl<TSelector, TDim, TIdx>> : std::true_type
     {
     };
 
     //! The SYCL accelerator device properties get trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct GetAccDevProps<
-        TAcc<TDim, TIdx>,
-        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct GetAccDevProps<AccGenericSycl<TSelector, TDim, TIdx>>
     {
-        static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
+        static auto getAccDevProps(DevGenericSycl<PlatformGenericSycl<TSelector>> const& dev)
+            -> AccDevProps<TDim, TIdx>
         {
             auto const device = dev.getNativeHandle().first;
             auto const max_threads_dim
@@ -157,16 +159,64 @@ namespace alpaka::trait
         }
     };
 
+    //! The SYCL accelerator name trait specialization.
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct GetAccName<AccGenericSycl<TSelector, TDim, TIdx>>
+    {
+        static auto getAccName() -> std::string
+        {
+            // TODO implement TSelector::name
+            return std::string("Acc") + TSelector::name + "<" + std::to_string(TDim::value) + ","
+                   + core::demangled<TIdx> + ">";
+        }
+    };
+
+    //! The SYCL accelerator device type trait specialization.
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct DevType<AccGenericSycl<TSelector, TDim, TIdx>>
+    {
+        using type = DevGenericSycl<PlatformGenericSycl<TSelector>>;
+    };
+
     //! The SYCL accelerator dimension getter trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct DimType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct DimType<AccGenericSycl<TSelector, TDim, TIdx>>
     {
         using type = TDim;
     };
 
+    //! The SYCL accelerator execution task type trait specialization.
+    template<
+        typename TSelector,
+        typename TDim,
+        typename TIdx,
+        typename TWorkDiv,
+        typename TKernelFnObj,
+        typename... TArgs>
+    struct CreateTaskKernel<AccGenericSycl<TSelector, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    {
+        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        {
+            return TaskKernelGenericSycl<
+                TSelector,
+                AccGenericSycl<TSelector, TDim, TIdx>,
+                TDim,
+                TIdx,
+                TKernelFnObj,
+                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
+        }
+    };
+
+    //! The SYCL execution task platform type trait specialization.
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct PlatformType<AccGenericSycl<TSelector, TDim, TIdx>>
+    {
+        using type = PlatformGenericSycl<TSelector>;
+    };
+
     //! The SYCL accelerator idx type trait specialization.
-    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-    struct IdxType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+    template<typename TSelector, typename TDim, typename TIdx>
+    struct IdxType<AccGenericSycl<TSelector, TDim, TIdx>>
     {
         using type = TIdx;
     };

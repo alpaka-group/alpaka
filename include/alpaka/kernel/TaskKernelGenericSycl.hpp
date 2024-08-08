@@ -70,7 +70,7 @@
 namespace alpaka
 {
     //! The SYCL accelerator execution task.
-    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<typename TSelector, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
     {
     public:
