@@ -78,7 +78,7 @@ auto example(TAccTag const&) -> int
     auto const threadsPerGrid = Vec{4, 2, 4};
 
 
-    const size_t nExclamationMarks = 10;
+    size_t const nExclamationMarks = 10;
 
     // Run "Hello World" kernel with a lambda function
     //
@@ -117,10 +117,10 @@ auto example(TAccTag const&) -> int
         printf("\n");
     };
 
-    auto const& bundeledKernel = alpaka::KernelBundle(kernelLambda, nExclamationMarks);
+    alpaka::KernelCfg<Acc> const kernelCfg = {threadsPerGrid, elementsPerThread};
+
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, devAcc, kernelLambda, nExclamationMarks);
 
     alpaka::exec<Acc>(queue, workDiv, kernelLambda, nExclamationMarks);
     alpaka::wait(queue);

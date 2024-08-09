@@ -118,7 +118,7 @@ auto example(TAccTag const&) -> int
     using Data = std::uint32_t;
     constexpr Idx nElementsPerDim = 2;
 
-    const Vec extents(Vec::all(static_cast<Idx>(nElementsPerDim)));
+    Vec const extents(Vec::all(static_cast<Idx>(nElementsPerDim)));
 
     // Allocate host memory buffers
     //
@@ -164,9 +164,8 @@ auto example(TAccTag const&) -> int
 
     FillBufferKernel fillBufferKernel;
 
-    auto const& bundeledFillBufferKernel = alpaka::KernelBundle(fillBufferKernel, hostViewPlainPtrMdSpan);
-    auto const hostWorkDiv
-        = alpaka::getValidWorkDivForKernel<Host>(devHost, bundeledFillBufferKernel, threadsPerGrid, elementsPerThread);
+    alpaka::KernelCfg<Host> const hostKernelCfg = {threadsPerGrid, elementsPerThread};
+    auto const hostWorkDiv = alpaka::getValidWorkDiv(hostKernelCfg, devHost, fillBufferKernel, hostViewPlainPtrMdSpan);
 
     alpaka::exec<Host>(hostQueue, hostWorkDiv, fillBufferKernel,
                        hostViewPlainPtrMdSpan); // 1st kernel argument
@@ -203,11 +202,10 @@ auto example(TAccTag const&) -> int
     auto deviceBufferMdSpan2 = alpaka::experimental::getMdSpan(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
-    auto const& bundeledTestBufferKernel = alpaka::KernelBundle(testBufferKernel, deviceBufferMdSpan1);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const devWorkDiv
-        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledTestBufferKernel, threadsPerGrid, elementsPerThread);
+    alpaka::KernelCfg<Acc> const devKernelCfg = {threadsPerGrid, elementsPerThread};
+    auto const devWorkDiv = alpaka::getValidWorkDiv(devKernelCfg, devAcc, testBufferKernel, deviceBufferMdSpan1);
 
     alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan1);
     alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan2);

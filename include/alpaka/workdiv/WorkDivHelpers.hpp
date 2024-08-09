@@ -303,7 +303,7 @@ namespace alpaka
         return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
     }
 
-    //! Kernel start configuration to datamine a valid work division
+    //! Kernel start configuration to determine a valid work division
     //!
     //! \tparam TGridElemExtent The type of the grid element extent.
     //! \tparam TThreadElemExtent The type of the thread element extent.
@@ -314,8 +314,6 @@ namespace alpaka
     struct KernelCfg
     {
         //! The full extent of elements in the grid.
-        using Dimension = Dim<TGridElemExtent>;
-
         TGridElemExtent const gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
         //! The number of elements computed per thread.
         TThreadElemExtent const threadElemExtents = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
@@ -329,16 +327,16 @@ namespace alpaka
             = GridBlockExtentSubDivRestrictions::Unrestricted;
 
         static_assert(
-            Dimension::value == Dim<Acc>::value,
+            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
             "The dimension of Acc and the dimension of TGridElemExtent have to be identical!");
         static_assert(
-            Dimension::value == Dim<Acc>::value,
+            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
             "The dimension of Acc and the dimension of TThreadElemExtent have to be identical!");
         static_assert(
-            std::is_same_v<Idx<TGridElemExtent>, Idx<Acc>>,
+            std::is_same_v<Idx<TGridElemExtent>, Idx<TAcc>>,
             "The idx type of Acc and the idx type of TGridElemExtent have to be identical!");
         static_assert(
-            std::is_same_v<Idx<TThreadElemExtent>, Idx<Acc>>,
+            std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
             "The idx type of Acc and the idx type of TThreadElemExtent have to be identical!");
     };
 
