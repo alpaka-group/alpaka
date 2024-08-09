@@ -10,7 +10,6 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
-#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/KernelFunctionAttributes.hpp"
 #include "alpaka/kernel/SyclSubgroupSize.hpp"
 #include "alpaka/kernel/Traits.hpp"
