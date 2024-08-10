@@ -45,7 +45,7 @@ namespace alpaka
 
         //! Get maximum requested blocks for cooperative kernel trait.
         template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
-        struct maxActiveBlocks;
+        struct MaxActiveBlocks;
 
         //! The trait for getting the size of the block shared dynamic memory of a kernel.
         //!
@@ -247,7 +247,7 @@ namespace alpaka
         alpaka::Vec<TDim, TIdx> const& threadElemExtent,
         TArgs const&... args) -> int
     {
-        return trait::maxActiveBlocks<TAcc, TDev, TKernelFnObj, TDim, TIdx, TArgs...>::getMaxActiveBlocks(
+        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, TDim, TIdx, TArgs...>::getMaxActiveBlocks(
             kernelFnObj,
             device,
             blockThreadExtent,
@@ -284,7 +284,7 @@ namespace alpaka
     {
         auto const v_blockThreadExtent = Vec<DimInt<1>, TIdx>(blockThreadExtent);
         auto const v_threadElemExtent = Vec<DimInt<1>, TIdx>(threadElemExtent);
-        return trait::maxActiveBlocks<TAcc, TDev, TKernelFnObj, DimInt<1>, TIdx, TArgs...>::getMaxActiveBlocks(
+        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, DimInt<1>, TIdx, TArgs...>::getMaxActiveBlocks(
             kernelFnObj,
             device,
             v_blockThreadExtent,
