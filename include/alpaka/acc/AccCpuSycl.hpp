@@ -7,7 +7,6 @@
 #include "alpaka/acc/AccGenericSycl.hpp"
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/core/Sycl.hpp"
-#include "alpaka/platform/PlatformCpuSycl.hpp"
 
 #include <string>
 #include <utility>
@@ -20,7 +19,7 @@ namespace alpaka
     //!
     //! This accelerator allows parallel kernel execution on a oneAPI-capable CPU target device.
     template<typename TDim, typename TIdx>
-    using AccCpuSycl = AccGenericSycl<detail::SyclCpuSelector, TDim, TIdx>;
+    using AccCpuSycl = AccGenericSycl<TagCpuSycl, TDim, TIdx>;
 
     namespace trait
     {

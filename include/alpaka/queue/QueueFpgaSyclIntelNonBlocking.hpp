@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "alpaka/dev/DevFpgaSyclIntel.hpp"
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 namespace alpaka
 {
-    using QueueFpgaSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevFpgaSyclIntel>;
+    using QueueFpgaSyclIntelNonBlocking = QueueGenericSyclNonBlocking<TagFpgaSyclIntel>;
 } // namespace alpaka
 
 #endif

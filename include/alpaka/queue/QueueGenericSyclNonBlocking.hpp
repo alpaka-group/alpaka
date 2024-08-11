@@ -10,8 +10,8 @@
 
 namespace alpaka
 {
-    template<typename TDev>
-    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TDev, false>;
+    template<typename TTag>
+    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TTag, false>;
 } // namespace alpaka
 
 #endif

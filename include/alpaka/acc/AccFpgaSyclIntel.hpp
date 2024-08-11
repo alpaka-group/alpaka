@@ -7,7 +7,6 @@
 #include "alpaka/acc/AccGenericSycl.hpp"
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/core/Sycl.hpp"
-#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
 
 #include <string>
 #include <utility>
@@ -20,7 +19,7 @@ namespace alpaka
     //!
     //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel FPGA target device.
     template<typename TDim, typename TIdx>
-    using AccFpgaSyclIntel = AccGenericSycl<detail::IntelFpgaSelector, TDim, TIdx>;
+    using AccFpgaSyclIntel = AccGenericSycl<TagFpgaSyclIntel, TDim, TIdx>;
 
     namespace trait
     {

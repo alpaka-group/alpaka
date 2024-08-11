@@ -4,14 +4,14 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
-#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 namespace alpaka
 {
-    using DevFpgaSyclIntel = DevGenericSycl<PlatformFpgaSyclIntel>;
+    using DevFpgaSyclIntel = DevGenericSycl<TagFpgaSyclIntel>;
 } // namespace alpaka
 
 #endif

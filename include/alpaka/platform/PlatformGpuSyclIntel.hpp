@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/platform/PlatformGenericSycl.hpp"
@@ -18,7 +19,8 @@ namespace alpaka
 {
     namespace detail
     {
-        struct IntelGpuSelector
+        template<>
+        struct SYCLDeviceSelector<TagGpuSyclIntel>
         {
             auto operator()(sycl::device const& dev) const -> int
             {
@@ -33,17 +35,7 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device manager.
-    using PlatformGpuSyclIntel = PlatformGenericSycl<detail::IntelGpuSelector>;
+    using PlatformGpuSyclIntel = PlatformGenericSycl<TagGpuSyclIntel>;
 } // namespace alpaka
-
-namespace alpaka::trait
-{
-    //! The SYCL device manager device type trait specialization.
-    template<>
-    struct DevType<PlatformGpuSyclIntel>
-    {
-        using type = DevGenericSycl<PlatformGpuSyclIntel>; // = DevGpuSyclIntel
-    };
-} // namespace alpaka::trait
 
 #endif

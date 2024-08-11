@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "alpaka/acc/Traits.hpp"
 #include "alpaka/acc/AccGenericSycl.hpp"
+#include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/Traits.hpp"
@@ -71,7 +71,7 @@
 namespace alpaka
 {
     //! The SYCL accelerator execution task.
-    template<typename TSelector, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
     {
     public:
@@ -280,7 +280,7 @@ namespace alpaka::trait
     };
 
     //! \brief Specialisation of the class template FunctionAttributes
-	//! \tparam TSelector The SYCL device selector.
+    //! \tparam TTag The SYCL device selector.
     //! \tparam TDev The device type.
     //! \tparam TDim The dimensionality of the accelerator device properties.
     //! \tparam TIdx The idx type of the accelerator device properties.
@@ -302,7 +302,7 @@ namespace alpaka::trait
             alpaka::KernelFunctionAttributes kernelFunctionAttributes;
 
             // set function properties for maxThreadsPerBlock to device properties
-            auto const& props = alpaka::getAccDevProps<AccGenericSycl<TSelector, TDim, TIdx>>(dev);
+            auto const& props = alpaka::getAccDevProps<AccGenericSycl<TTag, TDim, TIdx>>(dev);
             kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
             return kernelFunctionAttributes;
         }

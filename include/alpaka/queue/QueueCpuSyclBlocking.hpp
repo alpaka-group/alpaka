@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "alpaka/dev/DevCpuSycl.hpp"
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/queue/QueueGenericSyclBlocking.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 namespace alpaka
 {
-    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<DevCpuSycl>;
+    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<TagCpuSycl>;
 } // namespace alpaka
 
 #endif

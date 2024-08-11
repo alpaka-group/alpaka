@@ -18,7 +18,8 @@ namespace alpaka
 {
     namespace detail
     {
-        struct SyclCpuSelector
+        template<>
+        struct SYCLDeviceSelector<TagCpuSycl>
         {
             auto operator()(sycl::device const& dev) const -> int
             {
@@ -30,17 +31,7 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device manager.
-    using PlatformCpuSycl = PlatformGenericSycl<detail::SyclCpuSelector>;
+    using PlatformCpuSycl = PlatformGenericSycl<TagCpuSycl>;
 } // namespace alpaka
-
-namespace alpaka::trait
-{
-    //! The SYCL device manager device type trait specialization.
-    template<>
-    struct DevType<PlatformCpuSycl>
-    {
-        using type = DevGenericSycl<PlatformCpuSycl>; // = DevCpuSycl
-    };
-} // namespace alpaka::trait
 
 #endif

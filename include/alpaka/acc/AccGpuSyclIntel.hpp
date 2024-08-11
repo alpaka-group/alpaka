@@ -7,7 +7,6 @@
 #include "alpaka/acc/AccGenericSycl.hpp"
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/core/Sycl.hpp"
-#include "alpaka/platform/PlatformGpuSyclIntel.hpp"
 
 #include <string>
 #include <utility>
@@ -20,7 +19,7 @@ namespace alpaka
     //!
     //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel GPU target device.
     template<typename TDim, typename TIdx>
-    using AccGpuSyclIntel = AccGenericSycl<detail::IntelGpuSelector, TDim, TIdx>;
+    using AccGpuSyclIntel = AccGenericSycl<TagGpuSyclIntel, TDim, TIdx>;
 
     namespace trait
     {

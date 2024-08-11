@@ -4,8 +4,8 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/kernel/TaskKernelGenericSycl.hpp"
-#include "alpaka/platform/PlatformGpuSyclIntel.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
@@ -13,7 +13,7 @@ namespace alpaka
 {
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     using TaskKernelGpuSyclIntel
-        = TaskKernelGenericSycl<detail::IntelGpuSelector, AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+        = TaskKernelGenericSycl<TagGpuSyclIntel, AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
 
 } // namespace alpaka
 

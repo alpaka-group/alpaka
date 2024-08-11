@@ -46,13 +46,13 @@
 
 namespace alpaka
 {
-    template<typename TSelector, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGenericSycl;
 
     //! The SYCL accelerator.
     //!
     //! This accelerator allows parallel kernel execution on SYCL devices.
-    template<typename TSelector, typename TDim, typename TIdx>
+    template<typename TTag, typename TDim, typename TIdx>
     class AccGenericSycl
         : public WorkDivGenericSycl<TDim, TIdx>
         , public gb::IdxGbGenericSycl<TDim, TIdx>
@@ -103,30 +103,29 @@ namespace alpaka
 namespace alpaka::trait
 {
     //! The SYCL accelerator type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct AccType<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct AccType<AccGenericSycl<TTag, TDim, TIdx>>
     {
-        using type = AccGenericSycl<TSelector, TDim, TIdx>;
+        using type = AccGenericSycl<TTag, TDim, TIdx>;
     };
 
     //! The SYCL single thread accelerator type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct IsSingleThreadAcc<AccGenericSycl<TSelector, TDim, TIdx>> : std::false_type
+    template<typename TTag, typename TDim, typename TIdx>
+    struct IsSingleThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::false_type
     {
     };
 
     //! The SYCL multi thread accelerator type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct IsMultiThreadAcc<AccGenericSycl<TSelector, TDim, TIdx>> : std::true_type
+    template<typename TTag, typename TDim, typename TIdx>
+    struct IsMultiThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::true_type
     {
     };
 
     //! The SYCL accelerator device properties get trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct GetAccDevProps<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct GetAccDevProps<AccGenericSycl<TTag, TDim, TIdx>>
     {
-        static auto getAccDevProps(DevGenericSycl<PlatformGenericSycl<TSelector>> const& dev)
-            -> AccDevProps<TDim, TIdx>
+        static auto getAccDevProps(DevGenericSycl<TTag> const& dev) -> AccDevProps<TDim, TIdx>
         {
             auto const device = dev.getNativeHandle().first;
             auto const max_threads_dim
@@ -160,63 +159,53 @@ namespace alpaka::trait
     };
 
     //! The SYCL accelerator name trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct GetAccName<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct GetAccName<AccGenericSycl<TTag, TDim, TIdx>>
     {
         static auto getAccName() -> std::string
         {
-            // TODO implement TSelector::name
-            return std::string("Acc") + TSelector::name + "<" + std::to_string(TDim::value) + ","
-                   + core::demangled<TIdx> + ">";
+            return std::string("Acc") + detail::SYCLDeviceSelector<TTag>::name + "<" + std::to_string(TDim::value)
+                   + "," + core::demangled<TIdx> + ">";
         }
     };
 
     //! The SYCL accelerator device type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct DevType<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct DevType<AccGenericSycl<TTag, TDim, TIdx>>
     {
-        using type = DevGenericSycl<PlatformGenericSycl<TSelector>>;
+        using type = DevGenericSycl<TTag>;
     };
 
     //! The SYCL accelerator dimension getter trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct DimType<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct DimType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = TDim;
     };
 
     //! The SYCL accelerator execution task type trait specialization.
-    template<
-        typename TSelector,
-        typename TDim,
-        typename TIdx,
-        typename TWorkDiv,
-        typename TKernelFnObj,
-        typename... TArgs>
-    struct CreateTaskKernel<AccGenericSycl<TSelector, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    template<typename TTag, typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    struct CreateTaskKernel<AccGenericSycl<TTag, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
     {
         static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         {
-            return TaskKernelGenericSycl<
-                TSelector,
-                AccGenericSycl<TSelector, TDim, TIdx>,
-                TDim,
-                TIdx,
-                TKernelFnObj,
-                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
+            return TaskKernelGenericSycl<TTag, AccGenericSycl<TTag, TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>{
+                workDiv,
+                kernelFnObj,
+                std::forward<TArgs>(args)...};
         }
     };
 
     //! The SYCL execution task platform type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct PlatformType<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct PlatformType<AccGenericSycl<TTag, TDim, TIdx>>
     {
-        using type = PlatformGenericSycl<TSelector>;
+        using type = PlatformGenericSycl<TTag>;
     };
 
     //! The SYCL accelerator idx type trait specialization.
-    template<typename TSelector, typename TDim, typename TIdx>
-    struct IdxType<AccGenericSycl<TSelector, TDim, TIdx>>
+    template<typename TTag, typename TDim, typename TIdx>
+    struct IdxType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = TIdx;
     };
