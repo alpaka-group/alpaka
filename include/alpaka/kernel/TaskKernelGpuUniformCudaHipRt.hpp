@@ -469,6 +469,34 @@ namespace alpaka
                 return kernelFunctionAttributes;
             }
         };
+
+        //! The CUDA/HIP get max active blocks for cooperative kernel specialization.
+        template<typename TAcc, typename TKernelFnObj, typename TApi, typename TDim, typename TIdx, typename... TArgs>
+        struct MaxActiveBlocks<TAcc, DevUniformCudaHipRt<TApi>, TKernelFnObj, TDim, TIdx, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+                TKernelFnObj const& kernelFnObj,
+                DevUniformCudaHipRt<TApi> const& device,
+                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+                TArgs const&... args) -> int
+            {
+                auto const blockSharedMemDynSizeBytes
+                    = getBlockSharedMemDynSizeBytes<TAcc>(kernelFnObj, blockThreadExtent, threadElemExtent, args...);
+
+                int numBlocksPerSm = 0;
+                TApi::occupancyMaxActiveBlocksPerMultiprocessor(
+                    &numBlocksPerSm,
+                    alpaka::detail::
+                        gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>,
+                    blockThreadExtent.prod(),
+                    static_cast<std::size_t>(blockSharedMemDynSizeBytes));
+
+                auto multiProcessorCount = trait::GetAccDevProps<TAcc>::getAccDevProps(device).m_multiProcessorCount;
+
+                return numBlocksPerSm * multiProcessorCount;
+            }
+        };
     } // namespace trait
 } // namespace alpaka
 

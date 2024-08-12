@@ -11,9 +11,9 @@
 
 namespace alpaka
 {
-    template<typename TAcc, typename TDev, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
     using TaskKernelGpuCudaRt
-        = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDev, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>;
+        = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>;
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_CUDA_ENABLED
