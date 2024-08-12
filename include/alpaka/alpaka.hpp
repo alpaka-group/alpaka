@@ -34715,6 +34715,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
 
