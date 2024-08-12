@@ -171,6 +171,21 @@ namespace alpaka
                 return kernelFunctionAttributes;
             }
         };
+
+        //! The CPU serial get max active blocks for cooperative kernel specialization.
+        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+        struct MaxActiveBlocks<AccCpuSerial<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+                TKernelFnObj const& kernelFnObj,
+                TDev const& device,
+                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+                TArgs const&... args) -> int
+            {
+                return 1;
+            }
+        };
     } // namespace trait
 } // namespace alpaka
 

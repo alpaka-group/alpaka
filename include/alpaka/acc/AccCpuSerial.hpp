@@ -12,6 +12,7 @@
 #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"
 #include "alpaka/block/sync/BlockSyncNoOp.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/grid/GridSyncNoOp.hpp"
 #include "alpaka/idx/bt/IdxBtZero.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
@@ -61,6 +62,7 @@ namespace alpaka
         , public BlockSharedMemDynMember<>
         , public BlockSharedMemStMember<>
         , public BlockSyncNoOp
+        , public GridSyncNoOp
         , public IntrinsicCpu
         , public MemFenceCpuSerial
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -184,6 +186,29 @@ namespace alpaka
                 TKernelFnObj const& kernelFnObj,
                 TArgs&&... args)
             {
+                return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
+                    workDiv,
+                    kernelFnObj,
+                    std::forward<TArgs>(args)...);
+            }
+        };
+
+        //! The CPU serial accelerator execution cooperative task type trait specialization.
+        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+        struct CreateTaskCooperativeKernel<AccCpuSerial<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+                TWorkDiv const& workDiv,
+                TKernelFnObj const& kernelFnObj,
+                TArgs&&... args)
+            {
+                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+                if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
+                {
+                    throw std::runtime_error("Serial accelerator supports only a single block operation with cooperative kernel!\n"
+                                             "Consider useing a different CPU accelerator.");
+                }
+
                 return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
                     workDiv,
                     kernelFnObj,
