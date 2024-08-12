@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a7f6ac0e300cc165f82ff8077f1babf14":[3,0,0,15,90,0],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,91],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#afeeb2438e36746bda2dd912e276c60ca":[3,0,0,15,91,0],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,92],
@@ -249,5 +248,6 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html":[3,0,0,15,211],
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html#a4fdd3212b86c37f264f82ed382993589":[3,0,0,15,211,0],
 "structalpaka_1_1trait_1_1FunctionAttributes.html":[3,0,0,15,216],
-"structalpaka_1_1trait_1_1FunctionAttributes.html#a6c83d752966463f8ef95edb432078aeb":[3,0,0,15,216,0]
+"structalpaka_1_1trait_1_1FunctionAttributes.html#a6c83d752966463f8ef95edb432078aeb":[3,0,0,15,216,0],
+"structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3.html":[3,0,0,15,217]
 };
