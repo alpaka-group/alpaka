@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: install_gcc>"
+
 : "${ALPAKA_CI_GCC_VER?'ALPAKA_CI_GCC_VER must be specified'}"
 : "${ALPAKA_CI_SANITIZERS?'ALPAKA_CI_SANITIZERS must be specified'}"
 : "${CXX?'CXX must be specified'}"

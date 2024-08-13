@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: install_tbb>"
+
 : "${ALPAKA_CI_TBB_VERSION?'ALPAKA_CI_TBB_VERSION must be specified'}"
 
 if ! agc-manager -e tbb@${ALPAKA_CI_TBB_VERSION}

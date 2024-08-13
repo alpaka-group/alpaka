@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-ANSI_RED="\033[31m"
-ANSI_RESET="\033[0m"
 set +xv
 source ./script/setup_utilities.sh
 
@@ -18,7 +16,7 @@ docker_retry() {
   local count=1
   while [ $count -le 3 ]; do
     [ $result -eq 125 ] && {
-      echo -e "\n${ANSI_RED}The command \"$*\" failed. Retrying, $count of 3.${ANSI_RESET}\n" >&2
+    echo_red "\nThe command \"$*\" failed. Retrying, $count of 3.\n" >&2
     }
     "$@"
     result=$?
@@ -27,7 +25,7 @@ docker_retry() {
     sleep 30
   done
   [ $count -gt 3 ] && {
-    echo -e "\n${ANSI_RED}The command \"$*\" failed 3 times.${ANSI_RESET}\n" >&2
+    echo_red "\nThe command \"$*\" failed 3 times.\n" >&2
   }
   return $result
 }

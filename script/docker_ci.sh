@@ -16,6 +16,8 @@ set +xv
 source ./script/setup_utilities/set.sh
 source ./script/docker_retry.sh
 
+echo_green "<SCRIPT: docker_ci>"
+
 ALPAKA_CI_BOOST_BRANCH="boost-${ALPAKA_BOOST_VERSION}"
 
 # runtime and compile time options

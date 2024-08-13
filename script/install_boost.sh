@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: install boost>"
+
 : "${BOOST_ROOT?'BOOST_ROOT must be specified'}"
 : "${ALPAKA_BOOST_VERSION?'ALPAKA_BOOST_VERSION must be specified'}"
 : "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"
