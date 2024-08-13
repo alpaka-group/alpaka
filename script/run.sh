@@ -103,7 +103,14 @@ then
     then
         set +eu
         which ${CXX} || source /opt/intel/oneapi/setvars.sh
-        set -eu
+
+        # exit by default if the command does not return 0
+        # can be deactivated by setting the environment variable alpaka_DISABLE_EXIT_FAILURE
+        # for example for local debugging in a Docker container
+        if [ -z ${alpaka_DISABLE_EXIT_FAILURE+x} ]; then
+            set -e
+        fi
+        set -u
     fi
 
     which "${CXX}"
