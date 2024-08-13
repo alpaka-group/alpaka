@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: run_generate>"
+
 # TODO(SimeonEhrig): should use CMAKE_C_COMPILER and CMAKE_CXX_COMPILER instead update-alternatives because it
 # is more relastic use case and less error prone approach
 #: "${CMAKE_C_COMPILER?'CMAKE_C_COMPILER must be specified'}"

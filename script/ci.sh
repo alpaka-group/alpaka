@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: ci>"
+
 ./script/print_env.sh
 source ./script/before_install.sh
 if [ -n "$GITHUB_ACTIONS" ] && [ "$ALPAKA_CI_OS_NAME" = "Linux" ]; then

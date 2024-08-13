@@ -8,6 +8,8 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: install_clang>"
+
 : "${ALPAKA_CI_CLANG_VER?'ALPAKA_CI_CLANG_VER must be specified'}"
 : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
 : "${CXX?'CXX must be specified'}"
