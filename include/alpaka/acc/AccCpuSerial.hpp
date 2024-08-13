@@ -205,8 +205,9 @@ namespace alpaka
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
                 if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
                 {
-                    throw std::runtime_error("Serial accelerator supports only a single block operation with cooperative kernel!\n"
-                                             "Consider useing a different CPU accelerator.");
+                    throw std::runtime_error(
+                        "Serial accelerator supports only a single block operation with cooperative kernel!\n"
+                        "Consider useing a different CPU accelerator.");
                 }
 
                 return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
