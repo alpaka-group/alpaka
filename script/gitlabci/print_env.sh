@@ -7,7 +7,9 @@
 
 # set exit on error manually instead using setup_utilities because
 # otherwise the begin of the job log looks not helpful
-set -e
+if [ -z ${alpaka_DISABLE_EXIT_FAILURE+x} ]; then
+    set -e
+fi
 
 # display output with yellow color
 echo -e "\033[0;33mSteps to setup containter locally"
@@ -41,6 +43,8 @@ printenv | grep -E 'alpaka_*|ALPAKA_*|CMAKE_*|BOOST_|CC|CXX|CUDA_' | while read 
     echo "export $line \\"
 done
 
+# the variable is not set, but should be set if a job is debugged locally in a container
+echo 'export alpaka_DISABLE_EXIT_FAILURE=true \'
 echo 'export GITLAB_CI=true'
 echo ""
 
