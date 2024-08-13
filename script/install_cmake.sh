@@ -9,6 +9,7 @@ set +xv
 source ./script/setup_utilities.sh
 
 echo_green "<SCRIPT: install_cmake>"
+false
 
 : "${ALPAKA_CI_CMAKE_DIR?'ALPAKA_CI_CMAKE_DIR must be specified'}"
 : "${ALPAKA_CI_CMAKE_VER?'ALPAKA_CI_CMAKE_VER must be specified'}"
