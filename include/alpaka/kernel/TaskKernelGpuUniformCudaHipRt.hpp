@@ -220,7 +220,7 @@ namespace alpaka
             using type = TIdx;
         };
 
-        //! The CUDA/HIP non-blocking kernel enqueue trait specialization.
+        //! The CUDA/HIP kernel enqueue trait specialization.
         template<
             typename TApi,
             bool TBlocking,
