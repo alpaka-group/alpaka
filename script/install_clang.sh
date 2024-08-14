@@ -52,11 +52,6 @@ else
         travis_retry sudo apt-get -y --quiet update
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-${ALPAKA_CI_CLANG_VER}-dev
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-${ALPAKA_CI_CLANG_VER}-dev
-        if [ "${ALPAKA_CI_CLANG_VER}" -ge 12 ]
-        then
-            # Starting from LLVM 12 libunwind is required when using libc++. For some reason this isn't installed by default
-            travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libunwind-${ALPAKA_CI_CLANG_VER}-dev
-        fi
     fi
 
     # Workaround if clang uses the stdlibc++. The stdlibc++-9 does not support C++20, therefore we install the stdlibc++-11. Clang automatically uses the latest stdlibc++ version.
