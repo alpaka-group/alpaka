@@ -14,8 +14,12 @@ echo_green "<SCRIPT: install_gcc>"
 : "${ALPAKA_CI_SANITIZERS?'ALPAKA_CI_SANITIZERS must be specified'}"
 : "${CXX?'CXX must be specified'}"
 
-if ! agc-manager -e gcc@${ALPAKA_CI_GCC_VER}
+if agc-manager -e gcc@${ALPAKA_CI_GCC_VER}
 then
+    echo_green "<USE: preinstalled GCC ${ALPAKA_CI_GCC_VER}>"
+else
+    echo_yellow "<INSTALL: GCC ${ALPAKA_CI_GCC_VER}>"
+
     travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/ppa # Contains gcc 10.4 (Ubuntu 20.04)
     travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test # Contains gcc 11 (Ubuntu 20.04)
     travis_retry sudo apt-get -y --quiet update

@@ -20,8 +20,11 @@ then
     sudo rm /etc/apt/sources.list.d/llvm.list
 fi
 
-if ! agc-manager -e clang@${ALPAKA_CI_CLANG_VER}
+if agc-manager -e clang@${ALPAKA_CI_CLANG_VER}
 then
+    echo_green "<USE preinstalled Clang ${ALPAKA_CI_CLANG_VER}>"
+else
+    echo_yellow "<INSTALL: Clang ${ALPAKA_CI_CLANG_VER}>"
     # Install from LLVM repository (if available); otherwise install LLVM from official Ubuntu repositories
     ALPAKA_CI_UBUNTU_NAME=`lsb_release -c | awk '{print $2}'`
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -

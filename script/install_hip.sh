@@ -16,8 +16,11 @@ echo_green "<SCRIPT: install_hip>"
 function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
 
 if agc-manager -e rocm@${ALPAKA_CI_HIP_VERSION} ; then
+    echo_green "<USE: preinstalled ROCm ${ALPAKA_CI_HIP_VERSION}>"
     export ROCM_PATH=$(agc-manager -b rocm@${ALPAKA_CI_HIP_VERSION})
 else
+    echo_yellow "<INSTALL: ROCm ${ALPAKA_CI_HIP_VERSION}>"
+
     travis_retry apt-get -y --quiet update
     travis_retry apt-get -y --quiet install wget gnupg2
     # AMD container keys are outdated and must be updated

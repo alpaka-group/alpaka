@@ -24,10 +24,12 @@ fi
 
 if agc-manager -e cuda@${ALPAKA_CI_CUDA_VERSION}
 then
+    echo_green "<USE: preinstalled CUDA ${ALPAKA_CI_CUDA_VERSION}>"
     ALPAKA_CI_CUDA_PATH=$(agc-manager -b cuda@${ALPAKA_CI_CUDA_VERSION})
     export PATH=${ALPAKA_CI_CUDA_PATH}/bin:${PATH}
     export LD_LIBRARY_PATH=${ALPAKA_CI_CUDA_PATH}/lib64:${LD_LIBRARY_PATH}
 else
+    echo_yellow "<INSTALL: CUDA ${ALPAKA_CI_CUDA_VERSION}>"
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
         : "${ALPAKA_CI_CUDA_DIR?'ALPAKA_CI_CUDA_DIR must be specified'}"
