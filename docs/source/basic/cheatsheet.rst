@@ -197,7 +197,6 @@ Automatically select a valid kernel launch configuration
        kernelCfg,
        device,
        heatEqKernel,
-       heatEqKernel,
        pCurrAcc,
        pNextAcc,
        numNodesX,
