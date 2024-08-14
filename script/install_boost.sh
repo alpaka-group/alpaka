@@ -34,11 +34,14 @@ fi
 if [ "${CXX}" != "icpc" ] && [ "${ALPAKA_CI_STDLIB}" != "libc++" ]
 then
     if agc-manager -e boost@${ALPAKA_BOOST_VERSION} ; then
+        echo_green "<USE: preinstalled BOOST ${ALPAKA_BOOST_VERSION}>"
         export BOOST_ROOT=$(agc-manager -b boost@${ALPAKA_BOOST_VERSION})
         export ALPAKA_CI_BOOST_LIB_DIR=${BOOST_ROOT}
         return
     fi
 fi
+
+echo_yellow "<INSTALL: BOOST ${ALPAKA_BOOST_VERSION}>"
 
 ALPAKA_CI_BOOST_BRANCH="boost-${ALPAKA_BOOST_VERSION}"
 

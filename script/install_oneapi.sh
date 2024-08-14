@@ -12,8 +12,12 @@ echo_green "<SCRIPT: install_oneapi>"
 : "${CXX?'CXX must be specified'}"
 
 
-if ! agc-manager -e oneapi
+if agc-manager -e oneapi
 then
+    echo_green "<USE: preinstalled OneAPI ${ALPAKA_CI_ONEAPI_VERSION}>"
+else
+    echo_yellow "<INSTALL: Intel OneAPI ${ALPAKA_CI_ONEAPI_VERSION}>"
+
     # Ref.: https://github.com/rscohn2/oneapi-ci
     # intel-basekit intel-hpckit are too large in size
 
