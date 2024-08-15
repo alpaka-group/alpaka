@@ -9,9 +9,6 @@ source ./script/setup_utilities.sh
 
 echo_green "<SCRIPT: install_oneapi>"
 
-: "${CXX?'CXX must be specified'}"
-
-
 if agc-manager -e oneapi
 then
     echo_green "<USE: preinstalled OneAPI ${ALPAKA_CI_ONEAPI_VERSION}>"
@@ -55,10 +52,11 @@ else
         travis_retry sudo apt update
         travis_retry sudo apt install -y --no-install-recommends g++-11
     fi
+
+    # path depends on the SDK version
+    export CMAKE_CXX_COMPILER=$(which icpx)
 fi
 
-which "${CXX}"
-${CXX} --version
-which "${CC}"
-${CC} --version
+which "${CMAKE_CXX_COMPILER}"
+${CMAKE_CXX_COMPILER} --version
 sycl-ls

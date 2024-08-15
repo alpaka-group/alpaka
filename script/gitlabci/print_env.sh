@@ -39,7 +39,7 @@ fi
 echo -e "2. Run the following export commands in the container to setup enviroment\n"
 
 # take all env variables, filter it and display it with a `export` prefix
-printenv | grep -E 'alpaka_*|ALPAKA_*|CMAKE_*|BOOST_|CC|CXX|CUDA_' | while read -r line ; do
+printenv | grep -E 'alpaka_*|ALPAKA_*|CMAKE_*|BOOST_|CUDA_' | while read -r line ; do
     echo "export $line \\"
 done
 

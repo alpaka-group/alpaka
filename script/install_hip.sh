@@ -101,3 +101,6 @@ hipconfig
 rocm-smi
 # print newline as previous command does not do this
 echo
+
+# use the clang++ of the HIP SDK as C++ compiler
+export CMAKE_CXX_COMPILER=$(which clang++)

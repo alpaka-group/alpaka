@@ -12,7 +12,6 @@ echo_green "<SCRIPT: install_clang>"
 
 : "${ALPAKA_CI_CLANG_VER?'ALPAKA_CI_CLANG_VER must be specified'}"
 : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
-: "${CXX?'CXX must be specified'}"
 
 #TODO(SimeonEhrig): remove this statement, if ppa's are fixed in alpaka-group-container
 if [[ -f "/etc/apt/sources.list.d/llvm.list" ]];
@@ -69,11 +68,14 @@ else
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install "${LIBOMP_PACKAGE}"
     fi
 
-    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-"${ALPAKA_CI_CLANG_VER}" 50
-    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-"${ALPAKA_CI_CLANG_VER}" 50
-    sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-"${ALPAKA_CI_CLANG_VER}" 50
-    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-"${ALPAKA_CI_CLANG_VER}" 50
+    which clang++-${ALPAKA_CI_CLANG_VER}
+    export CMAKE_CXX_COMPILER=$(which clang++-${ALPAKA_CI_CLANG_VER})
+
+    # create soft link clang and clang++ to the actual executable
+    # the boost build script requires that the executable clang++ exist
+    ln -s $(which clang-${ALPAKA_CI_CLANG_VER}) $(dirname $(which clang-${ALPAKA_CI_CLANG_VER}))/clang
+    ln -s $(which clang++-${ALPAKA_CI_CLANG_VER}) $(dirname $(which clang++-${ALPAKA_CI_CLANG_VER}))/clang++
 fi
 
-which "${CXX}"
-${CXX} --version
+which "${CMAKE_CXX_COMPILER}"
+${CMAKE_CXX_COMPILER} --version
