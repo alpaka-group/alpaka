@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01Te70d0d1d64a7daa427d1883e12442313 =
+[
+    [ "getFunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01Te70d0d1d64a7daa427d1883e12442313.html#abc99c8438b27002045de9b10c7b93282", null ]
+];

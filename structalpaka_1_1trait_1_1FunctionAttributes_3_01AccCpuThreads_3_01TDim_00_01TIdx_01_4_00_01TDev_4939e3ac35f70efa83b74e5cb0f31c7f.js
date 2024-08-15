@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TDev_4939e3ac35f70efa83b74e5cb0f31c7f =
-[
-    [ "getFunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TDev_4939e3ac35f70efa83b74e5cb0f31c7f.html#a67edee1b85a4b9421e48f7e0d6192164", null ]
-];

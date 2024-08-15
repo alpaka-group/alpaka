@@ -1,9 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a7f6ac0e300cc165f82ff8077f1babf14":[3,0,0,15,90,0],
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,91],
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#afeeb2438e36746bda2dd912e276c60ca":[3,0,0,15,91,0],
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,92],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#ab98ce76bbb03c2c74385d83badb1c3c7":[3,0,0,15,92,0],
 "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,93],
 "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a9a84e59a655af5136414beaeac81687e":[3,0,0,15,93,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html":[3,0,0,15,211],
 "structalpaka_1_1trait_1_1Free_3_01T_00_01AllocCpuNew_01_4.html#a4fdd3212b86c37f264f82ed382993589":[3,0,0,15,211,0],
 "structalpaka_1_1trait_1_1FunctionAttributes.html":[3,0,0,15,216],
-"structalpaka_1_1trait_1_1FunctionAttributes.html#a6c83d752966463f8ef95edb432078aeb":[3,0,0,15,216,0]
+"structalpaka_1_1trait_1_1FunctionAttributes.html#ae65472df0fcbec06eb436387bad93b11":[3,0,0,15,216,0],
+"structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TDba3fa11f1b079ed93b80342d2e3e4c1d.html":[3,0,0,15,217],
+"structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TDba3fa11f1b079ed93b80342d2e3e4c1d.html#a7e846e2d0b38b5b32fbe8a21518fb336":[3,0,0,15,217,0],
+"structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01Te70d0d1d64a7daa427d1883e12442313.html":[3,0,0,15,218],
+"structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01Te70d0d1d64a7daa427d1883e12442313.html#abc99c8438b27002045de9b10c7b93282":[3,0,0,15,218,0]
 };

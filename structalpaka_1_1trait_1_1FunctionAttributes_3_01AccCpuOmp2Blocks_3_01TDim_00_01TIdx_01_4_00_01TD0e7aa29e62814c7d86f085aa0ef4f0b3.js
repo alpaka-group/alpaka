@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3 =
-[
-    [ "getFunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TD0e7aa29e62814c7d86f085aa0ef4f0b3.html#afc775ad6f6f1f1c4cffebd1edb908db7", null ]
-];

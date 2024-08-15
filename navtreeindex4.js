@@ -1,12 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3":[3,0,0,2,2,1,1],
-"classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html":[3,0,0,2,2,2],
-"classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226":[3,0,0,2,2,2,0],
-"classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545":[3,0,0,2,2,2,1],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html":[3,0,0,4,5],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a97c8f604d04702b11e13f1c9efb601b4":[3,0,0,4,5,1],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ab0b0a1794b3e5b2a14dbfb480dd95c7d":[3,0,0,4,5,3],
 "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8":[3,0,0,4,5,0],
 "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#af14ad17349beb10f28f5a8d0bb10ffc1":[3,0,0,4,5,2],
 "classalpaka_1_1detail_1_1BufCpuImpl.html":[3,0,0,4,6],
@@ -249,5 +242,12 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2b2e394be006104220af1c8d65a2f6a0":[3,0,0,13,1,11,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2c0361690aebc1a4a7f9a46f56520b20":[3,0,0,13,1,11,4],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a65ba3fd37abddb6d953f8165778a3b26":[3,0,0,13,1,11,2],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a6e4df1fcb2d83314870d746cde46aec6":[3,0,0,13,1,11,7]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a6e4df1fcb2d83314870d746cde46aec6":[3,0,0,13,1,11,7],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9dea952c5ad734497f5302d4c3f5a7dc":[3,0,0,13,1,11,0],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ab8e3595cd7b93b12c1d2c41839ed36ea":[3,0,0,13,1,11,8],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abb91536038eac17244a5875ddeca79fa":[3,0,0,13,1,11,3],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abde3441823a0f622d7fa4d3debbfadfc":[3,0,0,13,1,11,6],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ad6c8fe6d349849d93b5137b3b985c22c":[3,0,0,13,1,11,9],
+"classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html":[3,0,0,13,1,0,0],
+"classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html#a0bbfb5568101154d2d3309f5040c8eb6":[3,0,0,13,1,0,0,0]
 };

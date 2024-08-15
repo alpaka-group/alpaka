@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp.html',''); initRes
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -97,7 +98,6 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp.html',''); initRes
 <code>#include &quot;<a class="el" href="Utility_8hpp_source.html">alpaka/core/Utility.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="KernelBundle_8hpp_source.html">alpaka/kernel/KernelBundle.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="KernelFunctionAttributes_8hpp_source.html">alpaka/kernel/KernelFunctionAttributes.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&quot;</code><br />
@@ -111,6 +111,12 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp.html',''); initRes
 </div>
 <p><a href="WorkDivHelpers_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1KernelCfg.html">alpaka::KernelCfg&lt; TAcc, TGridElemExtent, TThreadElemExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel start configuration to determine a valid work division.  <a href="structalpaka_1_1KernelCfg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
@@ -137,24 +143,28 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral_v&lt;T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50">alpaka::detail::allDivisorsLessOrEqual</a> (T const &amp;val, T const &amp;maxDivisor) -&gt; std::set&lt; T &gt;</td></tr>
 <tr class="separator:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt; </td></tr>
-<tr class="memitem:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae27dd1d17e2324e71dc1677f5f4a49fa">alpaka::getValidWorkDivForKernel</a> ([[maybe_unused]] TDev const &amp;dev, TKernelBundle const &amp;kernelBundle, [[maybe_unused]] TGridElemExtent const &amp;gridElemExtent=<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; Dim&lt; TAcc &gt;, Idx&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] TThreadElemExtent const &amp;threadElemExtents=<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; Dim&lt; TAcc &gt;, Idx&lt; TAcc &gt;&gt;::ones(), [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent=true, [[maybe_unused]] GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions=GridBlockExtentSubDivRestrictions::Unrestricted) -&gt; WorkDivMembers&lt; Dim&lt; TAcc &gt;, Idx&lt; TAcc &gt;&gt;</td></tr>
-<tr class="separator:ae27dd1d17e2324e71dc1677f5f4a49fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49f4ea0ae555cb6928941fc6e233ab82"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TGridElemExtent , typename TThreadElemExtent , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a49f4ea0ae555cb6928941fc6e233ab82"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a49f4ea0ae555cb6928941fc6e233ab82">alpaka::getValidWorkDiv</a> (KernelCfg&lt; TAcc, TGridElemExtent, TThreadElemExtent &gt; const &amp;kernelCfg, [[maybe_unused]] TDev const &amp;dev, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; WorkDivMembers&lt; Dim&lt; TAcc &gt;, Idx&lt; TAcc &gt;&gt;</td></tr>
+<tr class="separator:a49f4ea0ae555cb6928941fc6e233ab82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49da61db606743ad5f75c6db33cfc043"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a49da61db606743ad5f75c6db33cfc043"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a49da61db606743ad5f75c6db33cfc043">alpaka::isValidAccDevProps</a> (AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps) -&gt; bool</td></tr>
 <tr class="separator:a49da61db606743ad5f75c6db33cfc043"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe4c3a3b90386720d53c5a5fc9426ce1"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:abe4c3a3b90386720d53c5a5fc9426ce1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abe4c3a3b90386720d53c5a5fc9426ce1">alpaka::isValidWorkDiv</a> (AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:abe4c3a3b90386720d53c5a5fc9426ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a378a4ed1bdce40639b3204d84a004d1c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a378a4ed1bdce40639b3204d84a004d1c">alpaka::isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:a378a4ed1bdce40639b3204d84a004d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a69e5454cdeed24e172db1bc4ca5f7498">alpaka::isValidWorkDivKernel</a> (AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps, KernelFunctionAttributes const &amp;kernelFunctionAttributes, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:a69e5454cdeed24e172db1bc4ca5f7498"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TKernelBundle , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:ab2b849f4367cf6163a6a287b546f725d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab2b849f4367cf6163a6a287b546f725d">alpaka::isValidWorkDivKernel</a> (TDev const &amp;dev, TKernelBundle const &amp;kernelBundle, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:ab2b849f4367cf6163a6a287b546f725d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54ad05f798922660ad0705ea2a7736c3"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a54ad05f798922660ad0705ea2a7736c3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a54ad05f798922660ad0705ea2a7736c3">alpaka::isValidWorkDiv</a> (TWorkDiv const &amp;workDiv, AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps) -&gt; bool</td></tr>
+<tr class="memdesc:a54ad05f798922660ad0705ea2a7736c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the work division is supported.  <a href="namespacealpaka.html#a54ad05f798922660ad0705ea2a7736c3">More...</a><br /></td></tr>
+<tr class="separator:a54ad05f798922660ad0705ea2a7736c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa22fc7fcef73932f63831e0be6b12f7d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TWorkDiv , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:aa22fc7fcef73932f63831e0be6b12f7d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa22fc7fcef73932f63831e0be6b12f7d">alpaka::isValidWorkDiv</a> (TWorkDiv const &amp;workDiv, AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps, KernelFunctionAttributes const &amp;kernelFunctionAttributes) -&gt; bool</td></tr>
+<tr class="memdesc:aa22fc7fcef73932f63831e0be6b12f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the work division is supported.  <a href="namespacealpaka.html#aa22fc7fcef73932f63831e0be6b12f7d">More...</a><br /></td></tr>
+<tr class="separator:aa22fc7fcef73932f63831e0be6b12f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bc46238308144edaae517b5ddd4a502"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TWorkDiv , typename TDev &gt; </td></tr>
+<tr class="memitem:a2bc46238308144edaae517b5ddd4a502"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2bc46238308144edaae517b5ddd4a502">alpaka::isValidWorkDiv</a> (TWorkDiv const &amp;workDiv, TDev const &amp;dev) -&gt; bool</td></tr>
+<tr class="memdesc:a2bc46238308144edaae517b5ddd4a502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the work division is supported by the device.  <a href="namespacealpaka.html#a2bc46238308144edaae517b5ddd4a502">More...</a><br /></td></tr>
+<tr class="separator:a2bc46238308144edaae517b5ddd4a502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4060892706546d467a3e260d0ae9601"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TWorkDiv , typename TDev , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:aa4060892706546d467a3e260d0ae9601"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa4060892706546d467a3e260d0ae9601">alpaka::isValidWorkDiv</a> (TWorkDiv const &amp;workDiv, TDev const &amp;dev, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; bool</td></tr>
+<tr class="memdesc:aa4060892706546d467a3e260d0ae9601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the work division is supported for the kernel on the device.  <a href="namespacealpaka.html#aa4060892706546d467a3e260d0ae9601">More...</a><br /></td></tr>
+<tr class="separator:aa4060892706546d467a3e260d0ae9601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36eeeef4bfe30fe8892e2ca2c2aa682a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral_v&lt;T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a36eeeef4bfe30fe8892e2ca2c2aa682a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a36eeeef4bfe30fe8892e2ca2c2aa682a">alpaka::detail::nextDivisorLowerOrEqual</a> (T const &amp;dividend, T const &amp;maxDivisor) -&gt; T</td></tr>
 <tr class="memdesc:a36eeeef4bfe30fe8892e2ca2c2aa682a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the largest divisor where divident % divisor == 0.  <a href="namespacealpaka_1_1detail.html#a36eeeef4bfe30fe8892e2ca2c2aa682a">More...</a><br /></td></tr>
@@ -170,7 +180,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_43271bcfd261ba185a35bd5280ac7ea9.html">workdiv</a></li><li class="navelem"><a class="el" href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 15 2024 04:20:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 15 2024 10:51:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

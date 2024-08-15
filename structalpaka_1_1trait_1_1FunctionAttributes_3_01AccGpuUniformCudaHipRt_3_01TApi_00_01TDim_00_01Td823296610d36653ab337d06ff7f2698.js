@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1FunctionAttributes_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01Td823296610d36653ab337d06ff7f2698 =
+[
+    [ "getFunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01Td823296610d36653ab337d06ff7f2698.html#a6270e8acef72cf392e5be9089a23f5ae", null ]
+];

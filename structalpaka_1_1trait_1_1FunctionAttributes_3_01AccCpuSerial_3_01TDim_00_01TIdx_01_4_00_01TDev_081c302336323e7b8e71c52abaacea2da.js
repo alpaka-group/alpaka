@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_00_01TDev_081c302336323e7b8e71c52abaacea2da =
+[
+    [ "getFunctionAttributes", "structalpaka_1_1trait_1_1FunctionAttributes_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_00_01TDev_081c302336323e7b8e71c52abaacea2da.html#aadb76dfe6f15db2d6f5c80514c30c990", null ]
+];
