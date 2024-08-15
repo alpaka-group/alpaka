@@ -130,14 +130,17 @@ auto example(TAccTag const&) -> int
     // Instantiate the kernel function object
     VectorAddKernel kernel;
 
-    auto const& bundeledKernel = alpaka::KernelBundle(
+    alpaka::KernelCfg<Acc> const kernelCfg = {extent, elementsPerThread};
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDiv(
+        kernelCfg,
+        devAcc,
         kernel,
         alpaka::getPtrNative(bufAccA),
         alpaka::getPtrNative(bufAccB),
         alpaka::getPtrNative(bufAccC),
         numElements);
-    // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, elementsPerThread);
 
     // Create the kernel execution task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(

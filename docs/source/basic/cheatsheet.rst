@@ -180,8 +180,6 @@ Prepare Kernel Bundle
   .. code-block:: c++
 
      HeatEquationKernel heatEqKernel;
-     // Arguments of KernelBundle: The kernel instance and the kernel arguments
-     auto const& bundeledKernel = alpaka::KernelBundle(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
 
 Automatically select a valid kernel launch configuration
   .. code-block:: c++
@@ -189,12 +187,21 @@ Automatically select a valid kernel launch configuration
      Vec<Dim, Idx> const globalThreadExtent = vectorValue;
      Vec<Dim, Idx> const elementsPerThread = vectorValue;
 
-     auto autoWorkDiv = getValidWorkDivForKernel<Acc>(
-       device,
-       bundeledKernel,
-       globalThreadExtent, elementsPerThread,
+     KernelCfg<Acc> const kernelCfg = {
+       globalThreadExtent,
+       elementsPerThread,
        false,
-       GridBlockExtentSubDivRestrictions::Unrestricted);
+       GridBlockExtentSubDivRestrictions::Unrestricted};
+
+     auto autoWorkDiv = getValidWorkDiv(
+       kernelCfg,
+       device,
+       heatEqKernel,
+       pCurrAcc,
+       pNextAcc,
+       numNodesX,
+       dx,
+       dt);
 
 Manually set a kernel launch configuration
   .. code-block:: c++
@@ -204,9 +211,10 @@ Manually set a kernel launch configuration
      Vec<Dim, Idx> const elementsPerThread = vectorValue;
 
      using WorkDiv = WorkDivMembers<Dim, Idx>;
-     auto manualWorkDiv = WorkDiv{blocksPerGrid,
-                                  threadsPerBlock,
-				  elementsPerThread};
+     auto manualWorkDiv = WorkDiv{
+       blocksPerGrid,
+       threadsPerBlock,
+       elementsPerThread};
 
 Instantiate a kernel and create a task that will run it (does not launch it yet)
   .. code-block:: c++

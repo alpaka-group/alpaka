@@ -98,17 +98,16 @@ namespace mathtest
             Args args{devAcc};
             Results results{devAcc};
 
-
-            auto const& bundeledKernel
-                = alpaka::KernelBundle(kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
             // Let alpaka calculate good block and grid sizes given our full problem extent
-            auto const workDiv = alpaka::getValidWorkDivForKernel<TAcc>(
+            alpaka::KernelCfg<TAcc> const kernelCfg
+                = {sizeExtent, elementsPerThread, false, alpaka::GridBlockExtentSubDivRestrictions::Unrestricted};
+            auto const workDiv = alpaka::getValidWorkDiv(
+                kernelCfg,
                 devAcc,
-                bundeledKernel,
-                sizeExtent,
-                elementsPerThread,
-                false,
-                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+                kernel,
+                results.pDevBuffer,
+                wrappedFunctor,
+                args.pDevBuffer);
 
             // SETUP COMPLETED.
 
