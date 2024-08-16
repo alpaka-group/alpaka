@@ -53,12 +53,12 @@ auto example(TAccTag const&) -> int
     Queue queue(devAcc);
 
     // Define the work division
-    Idx const threadsPerGrid = 1u;
+    Idx const elementsPerGrid = 1u;
     Idx const elementsPerThread = 1u;
 
     ComplexKernel complexKernel;
 
-    alpaka::KernelCfg<Acc> const kernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<Acc> const kernelCfg = {elementsPerGrid, elementsPerThread};
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, devAcc, complexKernel);

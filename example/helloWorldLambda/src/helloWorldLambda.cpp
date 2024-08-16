@@ -75,7 +75,7 @@ auto example(TAccTag const&) -> int
     // Define the work division
     using Vec = alpaka::Vec<Dim, Idx>;
     auto const elementsPerThread = Vec::all(static_cast<Idx>(1));
-    auto const threadsPerGrid = Vec{4, 2, 4};
+    auto const elementsPerGrid = Vec{4, 2, 4};
 
 
     size_t const nExclamationMarks = 10;
@@ -117,7 +117,7 @@ auto example(TAccTag const&) -> int
         printf("\n");
     };
 
-    alpaka::KernelCfg<Acc> const kernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<Acc> const kernelCfg = {elementsPerGrid, elementsPerThread};
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, devAcc, kernelLambda, nExclamationMarks);
