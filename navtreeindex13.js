@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a50b9f830431378939733167bfdd9f271":[3,0,0,13,1,10,0],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a9e0c1f598cdeb0079e49144809716e75":[3,0,0,13,1,10,3],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#ae66d3425611327ffbd3032ec820f265d":[3,0,0,13,1,10,2],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStatelessKeyedBase.html":[3,0,0,13,1,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a7f6ac0e300cc165f82ff8077f1babf14":[3,0,0,15,90,0],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,91],
 "structalpaka_1_1trait_1_1DevType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#afeeb2438e36746bda2dd912e276c60ca":[3,0,0,15,91,0],
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,92],
-"structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#ab98ce76bbb03c2c74385d83badb1c3c7":[3,0,0,15,92,0]
+"structalpaka_1_1trait_1_1DevType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,92]
 };
