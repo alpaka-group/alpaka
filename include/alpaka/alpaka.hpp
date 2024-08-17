@@ -99,6 +99,7 @@
 #include "alpaka/event/Traits.hpp"
 // exec
 #include "alpaka/exec/ElementIndex.hpp"
+#include "alpaka/exec/IndependentElements.hpp"
 #include "alpaka/exec/Once.hpp"
 #include "alpaka/exec/UniformElements.hpp"
 // extent
