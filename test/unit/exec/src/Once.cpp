@@ -33,6 +33,13 @@ public:
     }
 };
 
+// MSVC does not seem to recognize as "true" a value set to "true" in device code,
+// so force all object representations different from zero to evaluate as "true".
+inline void fixBooleanValue(bool& value)
+{
+    value = reinterpret_cast<char const&>(value) == 0x00 ? false : true;
+}
+
 TEMPLATE_LIST_TEST_CASE("oncePerGrid", "[exec]", alpaka::test::TestAccs)
 {
     using Host = alpaka::DevCpu;
@@ -66,6 +73,7 @@ TEMPLATE_LIST_TEST_CASE("oncePerGrid", "[exec]", alpaka::test::TestAccs)
     alpaka::exec<Acc>(queue, workDiv, kernel, std::data(status), std::data(value));
     alpaka::wait(queue);
 
+    fixBooleanValue(*status);
     REQUIRE(*status == true);
     REQUIRE(*value == 1);
 }
@@ -130,6 +138,7 @@ TEMPLATE_LIST_TEST_CASE("oncePerBlock", "[exec]", alpaka::test::TestAccs)
     alpaka::exec<Acc>(queue, workDiv, kernel, std::data(status), std::data(value));
     alpaka::wait(queue);
 
+    fixBooleanValue(*status);
     REQUIRE(*status == true);
     REQUIRE(*value == blocks);
 }
