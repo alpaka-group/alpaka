@@ -33,6 +33,13 @@ public:
     }
 };
 
+// The host and device compiler and libraries may use a different representation for boolean values. Reasonably enough,
+// all implementations seem to agree that "false" is "0", so we force a comparison with 0 to "fix" the value.
+inline void fixBooleanValue(bool& value)
+{
+    value = (reinterpret_cast<char&>(value) != 0x00);
+}
+
 TEMPLATE_LIST_TEST_CASE("oncePerGrid", "[exec]", alpaka::test::TestAccs)
 {
     using Host = alpaka::DevCpu;
@@ -66,6 +73,7 @@ TEMPLATE_LIST_TEST_CASE("oncePerGrid", "[exec]", alpaka::test::TestAccs)
     alpaka::exec<Acc>(queue, workDiv, kernel, std::data(status), std::data(value));
     alpaka::wait(queue);
 
+    fixBooleanValue(*status);
     REQUIRE(*status == true);
     REQUIRE(*value == 1);
 }
@@ -130,6 +138,7 @@ TEMPLATE_LIST_TEST_CASE("oncePerBlock", "[exec]", alpaka::test::TestAccs)
     alpaka::exec<Acc>(queue, workDiv, kernel, std::data(status), std::data(value));
     alpaka::wait(queue);
 
+    fixBooleanValue(*status);
     REQUIRE(*status == true);
     REQUIRE(*value == blocks);
 }
