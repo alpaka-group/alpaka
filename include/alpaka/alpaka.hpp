@@ -30175,7 +30175,7 @@
 			        //! The full extent of elements in the grid.
 			        TGridElemExtent const gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
 			        //! The number of elements computed per thread.
-			        TThreadElemExtent const threadElemExtents = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
+			        TThreadElemExtent const threadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
 			        //! If this is true, the grid thread extent will be multiples of
 			        //! the corresponding block thread extent.
 			        //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
@@ -30233,13 +30233,13 @@
 			        {
 			            auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
 			            ALPAKA_ASSERT(kernelCfg.gridElemExtent == zero);
-			            ALPAKA_ASSERT(kernelCfg.threadElemExtents == zero);
+			            ALPAKA_ASSERT(kernelCfg.threadElemExtent == zero);
 			            return WorkDivMembers<DimInt<0>, Idx<Acc>>{zero, zero, zero};
 			        }
 			        else
 			            return subDivideGridElems(
 			                getExtents(kernelCfg.gridElemExtent),
-			                getExtents(kernelCfg.threadElemExtents),
+			                getExtents(kernelCfg.threadElemExtent),
 			                getAccDevProps<Acc>(dev),
 			                static_cast<Idx<Acc>>(threadsPerBlock),
 			                kernelCfg.blockThreadMustDivideGridThreadExtent,
