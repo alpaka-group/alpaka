@@ -89,7 +89,7 @@ var searchData=
   ['testqueues_2189',['TestQueues',['../namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822',1,'alpaka::test']]],
   ['testviewimmutable_2190',['testViewImmutable',['../namespacealpaka_1_1test.html#a72adf94ec41fe458ea2ee43a3b70483c',1,'alpaka::test']]],
   ['testviewmutable_2191',['testViewMutable',['../namespacealpaka_1_1test.html#a4113677614d29718ffb0ce7c82d5d851',1,'alpaka::test']]],
-  ['threadelemextents_2192',['threadElemExtents',['../structalpaka_1_1KernelCfg.html#a6ae31738fa3fdac7993d7d8a4330ce19',1,'alpaka::KernelCfg']]],
+  ['threadelemextent_2192',['threadElemExtent',['../structalpaka_1_1KernelCfg.html#a90b276b80685536714d3976f64c38ec7',1,'alpaka::KernelCfg']]],
   ['threadidtoidxmap_2193',['ThreadIdToIdxMap',['../classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a3813547cff765efd6bb97e5b40e89321',1,'alpaka::bt::IdxBtRefThreadIdMap']]],
   ['threadpool_2194',['ThreadPool',['../structalpaka_1_1core_1_1detail_1_1ThreadPool.html',1,'alpaka::core::detail::ThreadPool'],['../structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a072fecfc4770accac092afbda3cad42a',1,'alpaka::core::detail::ThreadPool::ThreadPool()']]],
   ['threadpool_2ehpp_2195',['ThreadPool.hpp',['../ThreadPool_8hpp.html',1,'']]],

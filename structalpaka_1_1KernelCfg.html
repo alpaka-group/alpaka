@@ -107,9 +107,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a09be5039c0d0e4963fdd648012ebf563"><td class="memItemLeft" align="right" valign="top">TGridElemExtent const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1KernelCfg.html#a09be5039c0d0e4963fdd648012ebf563">gridElemExtent</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</td></tr>
 <tr class="memdesc:a09be5039c0d0e4963fdd648012ebf563"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full extent of elements in the grid.  <a href="structalpaka_1_1KernelCfg.html#a09be5039c0d0e4963fdd648012ebf563">More...</a><br /></td></tr>
 <tr class="separator:a09be5039c0d0e4963fdd648012ebf563"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ae31738fa3fdac7993d7d8a4330ce19"><td class="memItemLeft" align="right" valign="top">TThreadElemExtent const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1KernelCfg.html#a6ae31738fa3fdac7993d7d8a4330ce19">threadElemExtents</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</td></tr>
-<tr class="memdesc:a6ae31738fa3fdac7993d7d8a4330ce19"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of elements computed per thread.  <a href="structalpaka_1_1KernelCfg.html#a6ae31738fa3fdac7993d7d8a4330ce19">More...</a><br /></td></tr>
-<tr class="separator:a6ae31738fa3fdac7993d7d8a4330ce19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b276b80685536714d3976f64c38ec7"><td class="memItemLeft" align="right" valign="top">TThreadElemExtent const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1KernelCfg.html#a90b276b80685536714d3976f64c38ec7">threadElemExtent</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</td></tr>
+<tr class="memdesc:a90b276b80685536714d3976f64c38ec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of elements computed per thread.  <a href="structalpaka_1_1KernelCfg.html#a90b276b80685536714d3976f64c38ec7">More...</a><br /></td></tr>
+<tr class="separator:a90b276b80685536714d3976f64c38ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TAcc, typename TGridElemExtent = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt;<br />
@@ -186,8 +186,8 @@ template&lt;typename TAcc , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TA
 
 </div>
 </div>
-<a id="a6ae31738fa3fdac7993d7d8a4330ce19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ae31738fa3fdac7993d7d8a4330ce19">&#9670;&nbsp;</a></span>threadElemExtents</h2>
+<a id="a90b276b80685536714d3976f64c38ec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b276b80685536714d3976f64c38ec7">&#9670;&nbsp;</a></span>threadElemExtent</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +195,7 @@ template&lt;typename TAcc , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TA
 template&lt;typename TAcc , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;, typename TThreadElemExtent  = alpaka::Vec&lt;Dim&lt;TAcc&gt;, Idx&lt;TAcc&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">TThreadElemExtent const <a class="el" href="structalpaka_1_1KernelCfg.html">alpaka::KernelCfg</a>&lt; TAcc, TGridElemExtent, TThreadElemExtent &gt;::threadElemExtents = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</td>
+          <td class="memname">TThreadElemExtent const <a class="el" href="structalpaka_1_1KernelCfg.html">alpaka::KernelCfg</a>&lt; TAcc, TGridElemExtent, TThreadElemExtent &gt;::threadElemExtent = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;TAcc&gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a>&lt;TAcc&gt;&gt;::ones()</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -215,7 +215,7 @@ template&lt;typename TAcc , typename TGridElemExtent  = alpaka::Vec&lt;Dim&lt;TA
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="structalpaka_1_1KernelCfg.html">KernelCfg</a></li>
-    <li class="footer">Generated on Tue Aug 20 2024 07:02:51 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 20 2024 08:07:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
