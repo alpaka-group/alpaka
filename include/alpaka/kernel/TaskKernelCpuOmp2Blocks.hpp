@@ -981,6 +981,21 @@ namespace alpaka
             }
         };
 
+        //! The CPU CPU OMP2 blocks get max active blocks for cooperative kernel specialization.
+        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+        struct MaxActiveBlocks<AccCpuOmp2Blocks<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+                TKernelFnObj const& kernelFnObj,
+                TDev const& device,
+                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+                TArgs const&... args) -> int
+            {
+                return static_cast<int>(trait::GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
+            }
+        };
+
     } // namespace trait
 } // namespace alpaka
 

@@ -12,6 +12,7 @@
 #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
 #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"
 #include "alpaka/block/sync/BlockSyncNoOp.hpp"
+#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
 #include "alpaka/idx/bt/IdxBtZero.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
@@ -68,6 +69,7 @@ namespace alpaka
         , public BlockSharedMemDynMember<>
         , public BlockSharedMemStMember<>
         , public BlockSyncNoOp
+        , public GridSyncOmp
         , public IntrinsicCpu
         , public MemFenceOmp2Blocks
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -154,7 +156,7 @@ namespace alpaka
                         // m_globalMemSizeBytes
                         getMemBytes(dev),
                         // m_cooperativeLaunch
-                        false};
+                        true};
             }
         };
 
@@ -197,6 +199,35 @@ namespace alpaka
                     std::forward<TArgs>(args)...);
             }
         };
+
+
+        //! The CPU OpenMP 2.0 block accelerator execution cooperative task type trait specialization.
+        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+        struct CreateTaskCooperativeKernel<AccCpuOmp2Blocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+                TWorkDiv const& workDiv,
+                TKernelFnObj const& kernelFnObj,
+                TArgs&&... args)
+            {
+                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+                auto const maxBlocks = omp_get_max_threads();
+                if(gridBlockExtent.prod() != static_cast<TIdx>(maxBlocks))
+                {
+                    throw std::runtime_error(
+                    "The number of requested blocks is larger than maximuma of the device for OpenMP 2.0 blocks accelerator. Requested: "
+                    + std::to_string(gridBlockExtent.prod())
+                    + ", maximum allowed: " + std::to_string(maxBlocks) + ". Use getMaxActiveBlocks()."
+                        );
+                }
+
+                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+                    workDiv,
+                    kernelFnObj,
+                    std::forward<TArgs>(args)...);
+            }
+        };
+
 
         //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
         template<typename TDim, typename TIdx>

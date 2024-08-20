@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Concepts.hpp"
-#include "alpaka/grid//Traits.hpp"
+#include "alpaka/grid/Traits.hpp"
 
 namespace alpaka
 {
