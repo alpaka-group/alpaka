@@ -992,7 +992,8 @@ namespace alpaka
                 alpaka::Vec<TDim, TIdx> const& threadElemExtent,
                 TArgs const&... args) -> int
             {
-                return static_cast<int>(trait::GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
+                return static_cast<int>(
+                    trait::GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
             }
         };
 

@@ -1,5 +1,5 @@
 /* Copyright 2024 Mykhailo Varvarin
-* SPDX-License-Identifier: MPL-2.0
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once

@@ -11,8 +11,8 @@
 #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
 #include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"
 #include "alpaka/block/sync/BlockSyncBarrierOmp.hpp"
-#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/idx/bt/IdxBtOmp.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
@@ -222,9 +222,9 @@ namespace alpaka
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
                 if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
                 {
-                    throw std::runtime_error(
-                        "OpenMP 2.0 thread accelerator supports only a single block operation with cooperative kernel!\n"
-                        "Consider useing a different CPU accelerator.");
+                    throw std::runtime_error("OpenMP 2.0 thread accelerator supports only a single block operation "
+                                             "with cooperative kernel!\n"
+                                             "Consider useing a different CPU accelerator.");
                 }
 
                 return TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>(

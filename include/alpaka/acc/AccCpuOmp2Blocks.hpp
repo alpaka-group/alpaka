@@ -12,8 +12,8 @@
 #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
 #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"
 #include "alpaka/block/sync/BlockSyncNoOp.hpp"
-#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/idx/bt/IdxBtZero.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
@@ -200,7 +200,6 @@ namespace alpaka
             }
         };
 
-
         //! The CPU OpenMP 2.0 block accelerator execution cooperative task type trait specialization.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
         struct CreateTaskCooperativeKernel<AccCpuOmp2Blocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
@@ -215,10 +214,10 @@ namespace alpaka
                 if(gridBlockExtent.prod() != static_cast<TIdx>(maxBlocks))
                 {
                     throw std::runtime_error(
-                    "The number of requested blocks is larger than maximuma of the device for OpenMP 2.0 blocks accelerator. Requested: "
-                    + std::to_string(gridBlockExtent.prod())
-                    + ", maximum allowed: " + std::to_string(maxBlocks) + ". Use getMaxActiveBlocks()."
-                        );
+                        "The number of requested blocks is larger than maximuma of the device for OpenMP 2.0 blocks "
+                        "accelerator. Requested: "
+                        + std::to_string(gridBlockExtent.prod()) + ", maximum allowed: " + std::to_string(maxBlocks)
+                        + ". Use getMaxActiveBlocks().");
                 }
 
                 return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
@@ -227,7 +226,6 @@ namespace alpaka
                     std::forward<TArgs>(args)...);
             }
         };
-
 
         //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
         template<typename TDim, typename TIdx>
