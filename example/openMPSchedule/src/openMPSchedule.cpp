@@ -104,13 +104,13 @@ auto main() -> int
     Queue queue(devAcc);
 
     // Define the work division
-    Idx const threadsPerGrid = 16u;
+    Idx const elementsPerGrid = 16u;
     Idx const elementsPerThread = 1u;
 
     OpenMPScheduleDefaultKernel openMPScheduleDefaultKernel;
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::KernelCfg<Acc> kernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<Acc> kernelCfg = {elementsPerGrid, elementsPerThread};
     auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, devAcc, openMPScheduleDefaultKernel);
 
     // Run the kernel setting no schedule explicitly.

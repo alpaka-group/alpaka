@@ -105,7 +105,7 @@ auto example(TAccTag const&) -> int
     // Define the work division for kernels to be run on devAcc and devHost
     using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
+    Vec const elementsPerGrid(Vec::all(static_cast<Idx>(10)));
 
     // Create host and device buffers
     //
@@ -164,7 +164,7 @@ auto example(TAccTag const&) -> int
 
     FillBufferKernel fillBufferKernel;
 
-    alpaka::KernelCfg<Host> const hostKernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<Host> const hostKernelCfg = {elementsPerGrid, elementsPerThread};
     auto const hostWorkDiv = alpaka::getValidWorkDiv(hostKernelCfg, devHost, fillBufferKernel, hostViewPlainPtrMdSpan);
 
     alpaka::exec<Host>(hostQueue, hostWorkDiv, fillBufferKernel,
@@ -204,7 +204,7 @@ auto example(TAccTag const&) -> int
     TestBufferKernel testBufferKernel;
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::KernelCfg<Acc> const devKernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<Acc> const devKernelCfg = {elementsPerGrid, elementsPerThread};
     auto const devWorkDiv = alpaka::getValidWorkDiv(devKernelCfg, devAcc, testBufferKernel, deviceBufferMdSpan1);
 
     alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan1);

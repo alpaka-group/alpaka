@@ -130,7 +130,7 @@ auto example(TAccTag const&) -> int
 
     auto const elementsPerThread = Vec::all(static_cast<Idx>(1));
     // Grid size
-    auto const threadsPerGrid = inputSize;
+    auto const elementsPerGrid = inputSize;
 
     // Instantiate the kernel (gpu code) function-object
     ConvolutionKernel convolutionKernel;
@@ -140,7 +140,7 @@ auto example(TAccTag const&) -> int
     DataType* nativeInputDeviceMemory = std::data(inputDeviceMemory);
     DataType* nativeOutputDeviceMemory = std::data(outputDeviceMemory);
 
-    alpaka::KernelCfg<DevAcc> const kernelCfg = {threadsPerGrid, elementsPerThread};
+    alpaka::KernelCfg<DevAcc> const kernelCfg = {elementsPerGrid, elementsPerThread};
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDiv(
