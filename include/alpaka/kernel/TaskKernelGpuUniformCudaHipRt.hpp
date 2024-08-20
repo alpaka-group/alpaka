@@ -331,8 +331,8 @@ namespace alpaka
                             "The number of requested blocks is larger than maximuma of the device for the kernel "
                             + core::demangled<TKernelFnObj>
                             + "! Device: " + getAccName<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>()
-                            + ", requested: " + std::to_string(gridBlockExtent.prod())
-                            + ", maximum allowed: " + std::to_string(multiProcessorCount * numBlocksPerSm) + ".");
+                            + ", requested: " + std::to_string(gridBlockExtent.prod()) + ", maximum allowed: "
+                            + std::to_string(multiProcessorCount * numBlocksPerSm) + ". Use getMaxActiveBlocks().");
                     }
                 }
 

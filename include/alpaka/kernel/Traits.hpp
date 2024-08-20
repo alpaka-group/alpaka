@@ -255,6 +255,9 @@ namespace alpaka
             args...);
     }
 
+    //! Returns the maximum block aount for cooperative kernle launch on the device.
+    //!  Note that grid sync and other cooperative launch fucntioanlity is not guaranteed to work if you don't use
+    //!  createTaskCooperativeKernel()
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
