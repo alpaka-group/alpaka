@@ -11,6 +11,13 @@ source ./script/setup_utilities.sh
 echo_green "<SCRIPT: prepare_sanitizers>"
 
 #-------------------------------------------------------------------------------
+# Configure the leak sanitizer to gnore memory leaks in the clang OpenMP library
+cat > lsan.supp <<@EOF
+leak:libomp.so
+@EOF
+LSAN_SUPPRESSIONS="suppressions=$PWD/lsan.supp"
+
+#-------------------------------------------------------------------------------
 # Exports the CMAKE_CXX_FLAGS and CMAKE_EXE_LINKER_FLAGS to enable the sanitizers listed in ALPAKA_CI_SANITIZERS.
 if [ -z "${CMAKE_CXX_FLAGS+x}" ]
 then
@@ -26,7 +33,9 @@ then
 fi
 if [ -z "${LSAN_OPTIONS+x}" ]
 then
-    export LSAN_OPTIONS=
+    export LSAN_OPTIONS="$LSAN_SUPPRESSIONS"
+else
+    export LSAN_OPTIONS="$LSAN_OPTIONS,$LSAN_SUPPRESSIONS"
 fi
 
 #-------------------------------------------------------------------------------
