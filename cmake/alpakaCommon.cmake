@@ -757,7 +757,7 @@ if(alpaka_ACC_SYCL_ENABLE)
             target_link_options(alpaka INTERFACE "-fno-sycl-rdc")
         endif()
     else()
-        message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
+        message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI: ${CMAKE_CXX_COMPILER_ID}.")
     endif()
 
     if(NOT alpaka_DISABLE_VENDOR_RNG)
