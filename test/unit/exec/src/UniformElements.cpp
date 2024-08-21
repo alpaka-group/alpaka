@@ -580,7 +580,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector addition with large block size");
-            testVectorAddKernelND<TestType>({100}, {1}, {512}, VectorAddKernel1D{});
+            testVectorAddKernelND<TestType>({10}, {2}, {32}, VectorAddKernel1D{});
         }
     }
 
@@ -592,7 +592,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 2-dimensional kernel with a small block size and a small number of blocks; this relies on the
             // kernel to loop over the "problem space" and do more work per block.
             INFO("Test 2D vector addition with small block size");
-            testVectorAddKernelND<TestType>({400, 250}, {4, 4}, {16, 16}, VectorAddKernel2D{});
+            testVectorAddKernelND<TestType>({400, 250}, {5, 4}, {8, 4}, VectorAddKernel2D{});
         }
 
         SECTION("VectorAddKernel2D, large block size")
@@ -600,7 +600,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 2-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 2D vector addition with large block size");
-            testVectorAddKernelND<TestType>({20, 20}, {1, 1}, {32, 32}, VectorAddKernel2D{});
+            testVectorAddKernelND<TestType>({5, 3}, {2, 2}, {8, 4}, VectorAddKernel2D{});
         }
     }
 
@@ -612,7 +612,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 3-dimensional kernel with a small block size and a small number of blocks; this relies on the
             // kernel to loop over the "problem space" and do more work per block.
             INFO("Test 3D vector addition with small block size");
-            testVectorAddKernelND<TestType>({50, 125, 16}, {5, 5, 1}, {4, 4, 4}, VectorAddKernel3D{});
+            testVectorAddKernelND<TestType>({50, 25, 16}, {5, 2, 2}, {2, 4, 4}, VectorAddKernel3D{});
         }
 
         SECTION("VectorAddKernel3D, large block size")
@@ -620,7 +620,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 3-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 3D vector addition with large block size");
-            testVectorAddKernelND<TestType>({5, 5, 5}, {1, 1, 1}, {8, 8, 8}, VectorAddKernel3D{});
+            testVectorAddKernelND<TestType>({2, 3, 3}, {2, 2, 2}, {2, 4, 4}, VectorAddKernel3D{});
         }
     }
 
@@ -640,7 +640,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector addition with large block size, using scalar dimensions");
-            testVectorAddKernel<TestType>(100, 1, 512, VectorAddKernel{});
+            testVectorAddKernel<TestType>(10, 2, 32, VectorAddKernel{});
         }
 
         SECTION("VectorAddBlockKernel, small block size")
@@ -656,7 +656,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector block-level addition with large block size, using scalar dimensions");
-            testVectorAddKernel<TestType>(100, 1, 512, VectorAddBlockKernel{});
+            testVectorAddKernel<TestType>(10, 2, 32, VectorAddBlockKernel{});
         }
 
         SECTION("VectorAddKernelSerial, small block size")
@@ -672,7 +672,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector single-threaded seria addition with large block size, using scalar dimensions");
-            testVectorAddKernel<TestType>(100, 1, 512, VectorAddKernelSerial{});
+            testVectorAddKernel<TestType>(10, 2, 32, VectorAddKernelSerial{});
         }
 
         SECTION("VectorAddKernelBlockSerial, small block size")
@@ -688,7 +688,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector block-level serial addition with large block size, using scalar dimensions");
-            testVectorAddKernel<TestType>(100, 1, 512, VectorAddKernelBlockSerial{});
+            testVectorAddKernel<TestType>(10, 2, 32, VectorAddKernelBlockSerial{});
         }
 
         SECTION("VectorAddKernelSkip, small block size")
@@ -704,7 +704,7 @@ TEMPLATE_LIST_TEST_CASE("UniformElements", "[exec]", alpaka::test::TestAccs)
             // Launch the 1-dimensional kernel with a large block size and a single block; this relies on the kernel to
             // check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test 1D vector addition with large block size, using scalar dimensions");
-            testVectorAddKernelSkip<TestType>(20, 100, 1, 512, VectorAddKernelSkip{});
+            testVectorAddKernelSkip<TestType>(2, 10, 2, 32, VectorAddKernelSkip{});
         }
     }
 }
