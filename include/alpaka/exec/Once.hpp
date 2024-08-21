@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/acc/Traits.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/idx/Accessors.hpp"
@@ -25,7 +26,18 @@ namespace alpaka
     template<typename TAcc, typename = std::enable_if_t<isAccelerator<TAcc>>>
     ALPAKA_FN_ACC inline constexpr bool oncePerGrid(TAcc const& acc)
     {
-        return getIdx<Grid, Threads>(acc) == Vec<Dim<TAcc>, Idx<TAcc>>::zeros();
+        using Dim = alpaka::Dim<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
+        using Vec = alpaka::Vec<Dim, Idx>;
+
+        // Workaround for a weird bug in oneAPI 2024.x targetting the CPU backend and FPGA emulator.
+        if constexpr(accMatchesTags<TAcc, TagCpuSycl, TagFpgaSyclIntel>)
+        {
+            // SYCL accelerator specific code
+            return acc.m_item_workdiv.get_global_linear_id() == 0;
+        }
+
+        return getIdx<Grid, Threads>(acc) == Vec::zeros();
     }
 
     /* oncePerBlock
