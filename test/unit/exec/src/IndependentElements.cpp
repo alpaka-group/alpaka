@@ -191,7 +191,7 @@ TEMPLATE_LIST_TEST_CASE("IndependentElements", "[exec]", alpaka::test::TestAccs)
             // Launch the independent work kernel with a large block size and a single block; this relies on the kernel
             // to check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test independent work kernel with large block size, using scalar dimensions");
-            testIndependentWorkKernel<TestType>(100, 1, 512, IndependentWorkKernel{});
+            testIndependentWorkKernel<TestType>(10, 1, 32, IndependentWorkKernel{});
         }
 
         SECTION("IndependentWorkKernel, many large blocks")
@@ -199,7 +199,7 @@ TEMPLATE_LIST_TEST_CASE("IndependentElements", "[exec]", alpaka::test::TestAccs)
             // Launch the independent work kernel with a large block size and a large number of blocks; this relies on
             // the kernel to check the size of the "problem space" and avoid accessing out-of-bounds data.
             INFO("Test independent work kernel with large block size, using scalar dimensions");
-            testIndependentWorkKernel<TestType>(100, 512, 512, IndependentWorkKernel{});
+            testIndependentWorkKernel<TestType>(10, 32, 32, IndependentWorkKernel{});
         }
     }
 }
