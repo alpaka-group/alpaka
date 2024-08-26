@@ -1,5 +1,5 @@
-/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Luca Ferragina,
- *                Aurora Perego
+/* Copyright 2024 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Luca Ferragina,
+ *                Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: ISC
  */
 
@@ -35,21 +35,11 @@ public:
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
-        TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
-        TIdx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
-
-        if(threadFirstElemIdx < numElements)
+        // The uniformElements range for loop takes care automatically of the blocks, threads and elements in the
+        // kernel launch grid.
+        for(auto i : alpaka::uniformElements(acc, numElements))
         {
-            // Calculate the number of elements to compute in this thread.
-            // The result is uniform for all but the last thread.
-            TIdx const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
-            TIdx const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
-
-            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
-            {
-                C[i] = A[i] + B[i];
-            }
+            C[i] = A[i] + B[i];
         }
     }
 };
@@ -88,7 +78,6 @@ auto example(TAccTag const&) -> int
     Idx const numElements(123456);
     Idx const elementsPerThread(8u);
     alpaka::Vec<Dim, Idx> const extent(numElements);
-
 
     // Define the buffer element type
     using Data = std::uint32_t;
