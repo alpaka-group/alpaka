@@ -20,6 +20,11 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wswitch-default"
+#    endif
+
 #    include <sycl/sycl.hpp>
 
 namespace alpaka
@@ -719,5 +724,9 @@ namespace alpaka::trait
 #    endif
     };
 } // namespace alpaka::trait
+
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
 
 #endif

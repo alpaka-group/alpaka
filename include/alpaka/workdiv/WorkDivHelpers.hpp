@@ -23,6 +23,11 @@
 #include <set>
 #include <type_traits>
 
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wswitch-default"
+#endif
+
 //! The alpaka library.
 namespace alpaka
 {
@@ -521,3 +526,7 @@ namespace alpaka
         return isValidWorkDiv(getAccDevProps<TAcc>(dev), workDiv);
     }
 } // namespace alpaka
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
