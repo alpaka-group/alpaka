@@ -9,7 +9,7 @@ var indexSectionsWithContent =
   6: "abcdefhiklmnpqrstuvw",
   7: "gk",
   8: "acdeginrsu",
-  9: ":dot",
+  9: ":diotu",
   10: "abcmptu",
   11: "<t"
 };

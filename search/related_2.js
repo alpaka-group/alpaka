@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['operator_3c_3c_4737',['operator&lt;&lt;',['../classalpaka_1_1WorkDivMembers.html#a125eeb8043cb6abcf353878bdf567286',1,'alpaka::WorkDivMembers']]],
-  ['operator_3d_3d_4738',['operator==',['../classalpaka_1_1WorkDivMembers.html#aaa43d3a18bb7056403ff194e7915f8de',1,'alpaka::WorkDivMembers']]]
+  ['independentgroupelementsalong_4841',['IndependentGroupElementsAlong',['../classalpaka_1_1detail_1_1IndependentGroupElementsAlong_1_1const__iterator.html#a20951af93318133bed8deb4d7f99b39c',1,'alpaka::detail::IndependentGroupElementsAlong::const_iterator']]],
+  ['independentgroupsalong_4842',['IndependentGroupsAlong',['../classalpaka_1_1detail_1_1IndependentGroupsAlong_1_1const__iterator.html#ae3d5b55658bfb5a5f70bc0cd4b918729',1,'alpaka::detail::IndependentGroupsAlong::const_iterator']]]
 ];

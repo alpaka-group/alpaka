@@ -79,6 +79,8 @@ var annotated_dup =
         [ "DevGlobalTrait< TagCpuThreads, T >", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagCpuThreads_00_01T_01_4.html", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagCpuThreads_00_01T_01_4" ],
         [ "DevGlobalTrait< TagGpuCudaRt, T >", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagGpuCudaRt_00_01T_01_4.html", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagGpuCudaRt_00_01T_01_4" ],
         [ "DevGlobalTrait< TagGpuHipRt, T >", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagGpuHipRt_00_01T_01_4.html", "structalpaka_1_1detail_1_1DevGlobalTrait_3_01TagGpuHipRt_00_01T_01_4" ],
+        [ "IndependentGroupElementsAlong", "classalpaka_1_1detail_1_1IndependentGroupElementsAlong.html", "classalpaka_1_1detail_1_1IndependentGroupElementsAlong" ],
+        [ "IndependentGroupsAlong", "classalpaka_1_1detail_1_1IndependentGroupsAlong.html", "classalpaka_1_1detail_1_1IndependentGroupsAlong" ],
         [ "ParallelFor", "structalpaka_1_1detail_1_1ParallelFor.html", "structalpaka_1_1detail_1_1ParallelFor" ],
         [ "ParallelFor< TKernel, omp::Schedule >", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4.html", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4" ],
         [ "ParallelFor< TKernel, TSchedule, UseScheduleKind< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01UseScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4.html", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01UseScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4" ],
@@ -121,7 +123,11 @@ var annotated_dup =
         [ "TaskSetUniformCudaHip< TApi, DimInt< 1u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4" ],
         [ "TaskSetUniformCudaHip< TApi, DimInt< 2u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4" ],
         [ "TaskSetUniformCudaHip< TApi, DimInt< 3u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4" ],
-        [ "TaskSetUniformCudaHipBase", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase" ]
+        [ "TaskSetUniformCudaHipBase", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase" ],
+        [ "UniformElementsAlong", "classalpaka_1_1detail_1_1UniformElementsAlong.html", "classalpaka_1_1detail_1_1UniformElementsAlong" ],
+        [ "UniformElementsND", "classalpaka_1_1detail_1_1UniformElementsND.html", "classalpaka_1_1detail_1_1UniformElementsND" ],
+        [ "UniformGroupElementsAlong", "classalpaka_1_1detail_1_1UniformGroupElementsAlong.html", "classalpaka_1_1detail_1_1UniformGroupElementsAlong" ],
+        [ "UniformGroupsAlong", "classalpaka_1_1detail_1_1UniformGroupsAlong.html", "classalpaka_1_1detail_1_1UniformGroupsAlong" ]
       ] ],
       [ "gb", "namespacealpaka_1_1gb.html", [
         [ "IdxGbLinear", "classalpaka_1_1gb_1_1IdxGbLinear.html", "classalpaka_1_1gb_1_1IdxGbLinear" ],
@@ -1174,6 +1180,7 @@ var annotated_dup =
       [ "ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
       [ "DevCpu", "classalpaka_1_1DevCpu.html", "classalpaka_1_1DevCpu" ],
       [ "DevUniformCudaHipRt", "classalpaka_1_1DevUniformCudaHipRt.html", "classalpaka_1_1DevUniformCudaHipRt" ],
+      [ "ElementIndex", "structalpaka_1_1ElementIndex.html", "structalpaka_1_1ElementIndex" ],
       [ "EventGenericThreads", "classalpaka_1_1EventGenericThreads.html", "classalpaka_1_1EventGenericThreads" ],
       [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],
       [ "IGenericThreadsQueue", "classalpaka_1_1IGenericThreadsQueue.html", "classalpaka_1_1IGenericThreadsQueue" ],

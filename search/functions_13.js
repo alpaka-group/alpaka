@@ -1,6 +1,29 @@
 var searchData=
 [
-  ['uniformcudahiprthostfunc_4364',['uniformCudaHipRtHostFunc',['../structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01T9dbb58e551c44567a74899d54e5680a4.html#a7a888efb1346bcb3e6a06cc449a6aaa9',1,'alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;, TTask &gt;']]],
-  ['uniformreal_4365',['UniformReal',['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html#a9534ff47dc8fcf125917c887b1cf72b4',1,'alpaka::rand::distribution::gpu::UniformReal::UniformReal()'],['../classalpaka_1_1rand_1_1UniformReal.html#a62cd5ef78dd95304c072c67838821da1',1,'alpaka::rand::UniformReal::UniformReal()'],['../classalpaka_1_1rand_1_1UniformReal.html#a888420e38f954c83c61aa03bddcaebd5',1,'alpaka::rand::UniformReal::UniformReal(T min, T max)']]],
-  ['uniformuint_4366',['UniformUint',['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html#a3e286896ff3c9d8ab6eb70cb67617ac6',1,'alpaka::rand::distribution::gpu::UniformUint']]]
+  ['uniformcudahiprthostfunc_4441',['uniformCudaHipRtHostFunc',['../structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01T9dbb58e551c44567a74899d54e5680a4.html#a7a888efb1346bcb3e6a06cc449a6aaa9',1,'alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;, TTask &gt;']]],
+  ['uniformelements_4442',['uniformElements',['../namespacealpaka.html#a53e96689ac837744b1b2f50ae90c9e20',1,'alpaka']]],
+  ['uniformelementsalong_4443',['UniformElementsAlong',['../classalpaka_1_1detail_1_1UniformElementsAlong.html#a4d6db776420368b60ded2f1a3c3cfc7c',1,'alpaka::detail::UniformElementsAlong']]],
+  ['uniformelementsalong_4444',['uniformElementsAlong',['../namespacealpaka.html#aff0ab08e362f13d9a656c47c2ae5567b',1,'alpaka']]],
+  ['uniformelementsalong_4445',['UniformElementsAlong',['../classalpaka_1_1detail_1_1UniformElementsAlong.html#ac49aeba2673ffd709a3ed984e130c090',1,'alpaka::detail::UniformElementsAlong::UniformElementsAlong(TAcc const &amp;acc, Idx extent)'],['../classalpaka_1_1detail_1_1UniformElementsAlong.html#a32331c120476e2fb00191e4657e03b87',1,'alpaka::detail::UniformElementsAlong::UniformElementsAlong(TAcc const &amp;acc, Idx first, Idx extent)']]],
+  ['uniformelementsnd_4446',['UniformElementsND',['../classalpaka_1_1detail_1_1UniformElementsND.html#ab9423d208ca1ec22f96e697edae01c9f',1,'alpaka::detail::UniformElementsND']]],
+  ['uniformelementsnd_4447',['uniformElementsND',['../namespacealpaka.html#ab822810c9a957252392d38b6e17bacfb',1,'alpaka::uniformElementsND(TAcc const &amp;acc, alpaka::Vec&lt; alpaka::Dim&lt; TAcc &gt;, alpaka::Idx&lt; TAcc &gt;&gt; extent)'],['../namespacealpaka.html#a9b4886c580058dd034c9b0c741a12f36',1,'alpaka::uniformElementsND(TAcc const &amp;acc)']]],
+  ['uniformelementsnd_4448',['UniformElementsND',['../classalpaka_1_1detail_1_1UniformElementsND.html#a0b4ca71c84ff02cefe395c7d183218a6',1,'alpaka::detail::UniformElementsND']]],
+  ['uniformelementsx_4449',['uniformElementsX',['../namespacealpaka.html#a106496fdb1795c887166d57aa0422e0c',1,'alpaka']]],
+  ['uniformelementsy_4450',['uniformElementsY',['../namespacealpaka.html#a699c51ff7602f6b70a33a76b682ac0be',1,'alpaka']]],
+  ['uniformelementsz_4451',['uniformElementsZ',['../namespacealpaka.html#ab95c43396dc7f1b09e3ee26ee13a5e37',1,'alpaka']]],
+  ['uniformgroupelements_4452',['uniformGroupElements',['../namespacealpaka.html#adc871dde1280223e5fe59c5c8e330f31',1,'alpaka']]],
+  ['uniformgroupelementsalong_4453',['uniformGroupElementsAlong',['../namespacealpaka.html#a44bab9b1fdbaad6d086ce150f437f4f5',1,'alpaka']]],
+  ['uniformgroupelementsalong_4454',['UniformGroupElementsAlong',['../classalpaka_1_1detail_1_1UniformGroupElementsAlong.html#a9118fe9ff84fa169f2059537a7676d08',1,'alpaka::detail::UniformGroupElementsAlong::UniformGroupElementsAlong(TAcc const &amp;acc, Idx block, Idx extent)'],['../classalpaka_1_1detail_1_1UniformGroupElementsAlong.html#a8a3f8960cf09e42a41447f83afe9e4b3',1,'alpaka::detail::UniformGroupElementsAlong::UniformGroupElementsAlong(TAcc const &amp;acc, Idx block)']]],
+  ['uniformgroupelementsx_4455',['uniformGroupElementsX',['../namespacealpaka.html#a83552bccc588befa58299842bda1d774',1,'alpaka']]],
+  ['uniformgroupelementsy_4456',['uniformGroupElementsY',['../namespacealpaka.html#a118820f8f181b6e8377a2b260644e232',1,'alpaka']]],
+  ['uniformgroupelementsz_4457',['uniformGroupElementsZ',['../namespacealpaka.html#a1fb3915d5f2469ddf3d7948ffa79dc5d',1,'alpaka']]],
+  ['uniformgroups_4458',['uniformGroups',['../namespacealpaka.html#a2f0e94023e3a8121f0ae324de2a5dd63',1,'alpaka']]],
+  ['uniformgroupsalong_4459',['UniformGroupsAlong',['../classalpaka_1_1detail_1_1UniformGroupsAlong.html#af52bee5a24bc17a9443d2fa14125e809',1,'alpaka::detail::UniformGroupsAlong']]],
+  ['uniformgroupsalong_4460',['uniformGroupsAlong',['../namespacealpaka.html#a8d6f446be425afd35f7954fbcc4660b3',1,'alpaka']]],
+  ['uniformgroupsalong_4461',['UniformGroupsAlong',['../classalpaka_1_1detail_1_1UniformGroupsAlong.html#a134ba4fd6f24e08b38651347f2598a72',1,'alpaka::detail::UniformGroupsAlong']]],
+  ['uniformgroupsx_4462',['uniformGroupsX',['../namespacealpaka.html#a4e11e39aad6a450731796f587509e193',1,'alpaka']]],
+  ['uniformgroupsy_4463',['uniformGroupsY',['../namespacealpaka.html#a8791358da5a1055a5cee5176a7a94f9c',1,'alpaka']]],
+  ['uniformgroupsz_4464',['uniformGroupsZ',['../namespacealpaka.html#aea3ed7b79fcb5dfd6a1ebfd1c1d438fe',1,'alpaka']]],
+  ['uniformreal_4465',['UniformReal',['../classalpaka_1_1rand_1_1UniformReal.html#a888420e38f954c83c61aa03bddcaebd5',1,'alpaka::rand::UniformReal::UniformReal(T min, T max)'],['../classalpaka_1_1rand_1_1UniformReal.html#a62cd5ef78dd95304c072c67838821da1',1,'alpaka::rand::UniformReal::UniformReal()'],['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html#a9534ff47dc8fcf125917c887b1cf72b4',1,'alpaka::rand::distribution::gpu::UniformReal::UniformReal()']]],
+  ['uniformuint_4466',['UniformUint',['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html#a3e286896ff3c9d8ab6eb70cb67617ac6',1,'alpaka::rand::distribution::gpu::UniformUint']]]
 ];
