@@ -100,6 +100,7 @@
 // extent
 #include "alpaka/extent/Traits.hpp"
 // grid
+#include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"
 #include "alpaka/grid/GridSyncGpuCudaHip.hpp"
 #include "alpaka/grid/GridSyncNoOp.hpp"
 #include "alpaka/grid/Traits.hpp"
