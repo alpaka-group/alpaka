@@ -95,8 +95,8 @@ namespace mathtest
 
             TestKernel<capacity> kernel;
             TFunctor functor;
-            Args args{devAcc};
-            Results results{devAcc};
+            Args args{devAcc, platformHost, platformAcc};
+            Results results{devAcc, platformHost, platformAcc};
 
             // Let alpaka calculate good block and grid sizes given our full problem extent
             alpaka::KernelCfg<TAcc> const kernelCfg
