@@ -18539,6 +18539,11 @@
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
 
+				#    if BOOST_COMP_CLANG
+				#        pragma clang diagnostic push
+				#        pragma clang diagnostic ignored "-Wswitch-default"
+				#    endif
+
 				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 				namespace alpaka
@@ -19238,6 +19243,10 @@
 				#    endif
 				    };
 				} // namespace alpaka::trait
+
+				#    if BOOST_COMP_CLANG
+				#        pragma clang diagnostic pop
+				#    endif
 
 				#endif
 				// ==
@@ -31587,6 +31596,11 @@
 			#include <set>
 			#include <type_traits>
 
+			#if BOOST_COMP_CLANG
+			#    pragma clang diagnostic push
+			#    pragma clang diagnostic ignored "-Wswitch-default"
+			#endif
+
 			//! The alpaka library.
 			namespace alpaka
 			{
@@ -32108,6 +32122,10 @@
 			        return isValidWorkDiv(workDiv, getAccDevProps<TAcc>(dev));
 			    }
 			} // namespace alpaka
+
+			#if BOOST_COMP_CLANG
+			#    pragma clang diagnostic pop
+			#endif
 			// ==
 			// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
 			// ============================================================================
