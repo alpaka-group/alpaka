@@ -237,6 +237,12 @@ namespace alpaka::trait
         }
     };
 
+    //! The pinned/mapped memory allocation capability trait specialization.
+    template<typename TTag>
+    struct HasMappedBufSupport<PlatformGenericSycl<TTag>> : public std::true_type
+    {
+    };
+
     //! The BufGenericSycl idx type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
     struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
