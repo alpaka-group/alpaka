@@ -4,6 +4,7 @@
 #include "alpaka/idx/Accessors.hpp"
 
 #include <algorithm>
+#include <ciso646> // workaround for MSVC in c++17 mode - TODO: remove once we move to c++20
 #include <cstddef>
 #include <type_traits>
 
