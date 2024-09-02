@@ -1,15 +1,12 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
-#include "alpaka/acc/Tag.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/platform/PlatformGenericSycl.hpp"
-
-#include <string>
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
@@ -29,8 +26,6 @@ namespace alpaka
 
                 return is_intel_gpu ? 1 : -1;
             }
-
-            static constexpr char name[] = "GpuSyclIntel";
         };
     } // namespace detail
 

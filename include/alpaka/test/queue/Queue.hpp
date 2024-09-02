@@ -1,4 +1,5 @@
-/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
+/* Copyright 2024 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci,
+ * Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 

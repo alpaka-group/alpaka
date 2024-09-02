@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -11,8 +11,6 @@
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 #    include <sycl/sycl.hpp>
-
-#    include <string>
 
 namespace alpaka
 {
@@ -40,8 +38,6 @@ namespace alpaka
 
                 return is_intel_fpga ? 1 : -1;
             }
-
-            static constexpr char name[] = "FpgaSyclIntel";
         };
 #    if BOOST_COMP_CLANG
 #        pragma clang diagnostic pop

@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -227,8 +227,8 @@ namespace alpaka::trait
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            // Allocate SYCL page-locked memory on the host, mapped into the PlatformGenericSycl address space and
-            // accessible to all devices in the PlatformGenericSycl.
+            // Allocate SYCL page-locked memory on the host, mapped into the SYCL platform's address space and
+            // accessible to all devices in the SYCL platform.
             auto ctx = platform.syclContext();
             TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
             auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };

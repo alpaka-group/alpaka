@@ -164,8 +164,8 @@ namespace alpaka::trait
     {
         static auto getAccName() -> std::string
         {
-            return std::string("Acc") + detail::SYCLDeviceSelector<TTag>::name + "<" + std::to_string(TDim::value)
-                   + "," + core::demangled<TIdx> + ">";
+            return std::string("Acc") + core::demangled<TTag>.substr(__builtin_strlen("alpaka::Tag")) + "<"
+                   + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
         }
     };
 

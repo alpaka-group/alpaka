@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 

@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -7,9 +7,6 @@
 #include "alpaka/acc/AccGenericSycl.hpp"
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/core/Sycl.hpp"
-
-#include <string>
-#include <utility>
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
