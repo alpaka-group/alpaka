@@ -33,6 +33,11 @@
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wswitch-default"
+#    endif
+
 #    if _OPENMP < 200203
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
@@ -982,5 +987,9 @@ namespace alpaka
 
     } // namespace trait
 } // namespace alpaka
+
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
 
 #endif
