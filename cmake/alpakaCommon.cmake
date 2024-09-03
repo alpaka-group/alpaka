@@ -859,7 +859,7 @@ if(TARGET alpaka)
 
     # the alpaka library itself
     # SYSTEM voids showing warnings produced by alpaka when used in user applications.
-    if(BUILD_TESTING)
+    if(BUILD_TESTING OR alpaka_BUILD_BENCHMARK)
         target_include_directories(alpaka INTERFACE ${_alpaka_INCLUDE_DIRECTORY})
     else()
         target_include_directories(alpaka SYSTEM INTERFACE ${_alpaka_INCLUDE_DIRECTORY})

@@ -44,6 +44,8 @@ if(alpaka_CHECK_HEADERS)
         PRIVATE common)
 
     set_target_properties(headerCheckTest PROPERTIES FOLDER "test/analysis")
+    # Catch2 benchmark macros must be defined, otherwise the benchmarking headers will not pass the check.
+    target_compile_definitions(${_TARGET_NAME} PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING)	 
 
     add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_alpaka_TEST_OPTIONS})
 
