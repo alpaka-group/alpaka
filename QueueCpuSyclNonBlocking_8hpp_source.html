@@ -87,25 +87,25 @@ $(document).ready(function(){initNavTree('QueueCpuSyclNonBlocking_8hpp_source.ht
 <div class="title">QueueCpuSyclNonBlocking.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="QueueCpuSyclNonBlocking_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci</span></div>
+<a href="QueueCpuSyclNonBlocking_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevCpuSycl_8hpp.html">alpaka/dev/DevCpuSycl.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Tag_8hpp.html">alpaka/acc/Tag.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QueueGenericSyclNonBlocking_8hpp.html">alpaka/queue/QueueGenericSyclNonBlocking.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_SYCL_ENABLED) &amp;&amp; defined(ALPAKA_SYCL_ONEAPI_CPU)</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">using</span> QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking&lt;DevCpuSycl&gt;;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">using</span> QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking&lt;TagCpuSycl&gt;;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aDevCpuSycl_8hpp_html"><div class="ttname"><a href="DevCpuSycl_8hpp.html">DevCpuSycl.hpp</a></div></div>
 <div class="ttc" id="aQueueGenericSyclNonBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericSyclNonBlocking_8hpp.html">QueueGenericSyclNonBlocking.hpp</a></div></div>
+<div class="ttc" id="aTag_8hpp_html"><div class="ttname"><a href="Tag_8hpp.html">Tag.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00048">AccCpuOmp2Blocks.hpp:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('QueueCpuSyclNonBlocking_8hpp_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="QueueCpuSyclNonBlocking_8hpp.html">QueueCpuSyclNonBlocking.hpp</a></li>
-    <li class="footer">Generated on Mon Sep 2 2024 19:47:33 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 05:06:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
