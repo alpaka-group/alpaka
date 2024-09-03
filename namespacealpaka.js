@@ -313,7 +313,7 @@ var namespacealpaka =
     [ "uniformGroupsX", "namespacealpaka.html#a4e11e39aad6a450731796f587509e193", null ],
     [ "uniformGroupsY", "namespacealpaka.html#a8791358da5a1055a5cee5176a7a94f9c", null ],
     [ "uniformGroupsZ", "namespacealpaka.html#aea3ed7b79fcb5dfd6a1ebfd1c1d438fe", null ],
-    [ "Vec", "namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74", null ],
+    [ "Vec", "namespacealpaka.html#abc4b415f6e9996b6ecb9e50c9fe62403", null ],
     [ "ViewConst", "namespacealpaka.html#a2be994b379106bbd50e768e825321768", null ],
     [ "wait", "namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806", null ],
     [ "wait", "namespacealpaka.html#a751547dd588408ae790584281af1775f", null ],

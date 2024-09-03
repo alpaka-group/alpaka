@@ -12,7 +12,7 @@ var Vec_8hpp =
     [ "elementwise_max", "Vec_8hpp.html#a05ded3e1760e87f4b377803a98f98885", null ],
     [ "elementwise_min", "Vec_8hpp.html#a9ee3ba1ec1a52cf177f41bb81e03b798", null ],
     [ "toArray", "Vec_8hpp.html#a63c859c606d0495e06f07eaaedec8b43", null ],
-    [ "Vec", "Vec_8hpp.html#ab339d2982f7e28701dd0c359855ffa74", null ],
+    [ "Vec", "Vec_8hpp.html#abc4b415f6e9996b6ecb9e50c9fe62403", null ],
     [ "isVec", "Vec_8hpp.html#a6703cc95ff0ca87f388b702c93018b95", null ],
     [ "isVec< Vec< TDim, TVal > >", "Vec_8hpp.html#af4ebdbe15a3b59640abcfb7bd5a82d85", null ]
 ];

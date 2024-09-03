@@ -1079,9 +1079,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
 <tr class="memitem:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aea3ed7b79fcb5dfd6a1ebfd1c1d438fe">uniformGroupsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
-<tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
-<tr class="separator:ab339d2982f7e28701dd0c359855ffa74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
+<tr class="memitem:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abc4b415f6e9996b6ecb9e50c9fe62403">Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
+<tr class="separator:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2be994b379106bbd50e768e825321768">ViewConst</a> (TView) -&gt; <a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a>&lt; std::decay_t&lt; TView &gt;&gt;</td></tr>
 <tr class="separator:a2be994b379106bbd50e768e825321768"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3489,7 +3489,7 @@ template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::e
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise maximum of one or more vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00649">649</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00650">650</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -3531,7 +3531,7 @@ template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::e
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise minimum of one or more vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00627">627</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00628">628</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -7296,7 +7296,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 
 <p>Converts a <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> to a std::array. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00605">605</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00606">606</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -7970,8 +7970,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="ab339d2982f7e28701dd0c359855ffa74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab339d2982f7e28701dd0c359855ffa74">&#9670;&nbsp;</a></span>Vec()</h2>
+<a id="abc4b415f6e9996b6ecb9e50c9fe62403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc4b415f6e9996b6ecb9e50c9fe62403">&#9670;&nbsp;</a></span>Vec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7979,7 +7979,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 template&lt;typename TFirstIndex , typename... TRestIndices&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a> </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a> </td>
           <td>(</td>
           <td class="paramtype">TFirstIndex &amp;&amp;&#160;</td>
           <td class="paramname">, </td>
@@ -8510,7 +8510,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00598">598</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00599">599</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -8536,7 +8536,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00601">601</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00602">602</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -8546,7 +8546,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Sep 3 2024 05:06:30 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 05:09:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
