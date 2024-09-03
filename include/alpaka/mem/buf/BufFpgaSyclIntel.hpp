@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan
+/* Copyright 2024 Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -6,6 +6,7 @@
 
 #include "alpaka/dev/DevFpgaSyclIntel.hpp"
 #include "alpaka/mem/buf/BufGenericSycl.hpp"
+#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
