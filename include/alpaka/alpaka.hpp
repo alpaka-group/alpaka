@@ -14785,7 +14785,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuSycl.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -15347,15 +15347,15 @@
 			// ============================================================================
 
 			// ============================================================================
-			// == ./include/alpaka/idx/bt/IdxBtGenericSycl.hpp ==
+			// == ./include/alpaka/dev/DevGenericSycl.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Aurora Perego
+			/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Sycl.hpp ==
 				// ==
@@ -15561,6 +15561,585 @@
 				// == ./include/alpaka/core/Sycl.hpp ==
 				// ============================================================================
 
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
+				// ==
+				/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
+
+				// #include <algorithm>    // amalgamate: file already included
+				#include <exception>
+				// #include <memory>    // amalgamate: file already included
+				// #include <mutex>    // amalgamate: file already included
+				#include <shared_mutex>
+				#include <type_traits>
+				// #include <utility>    // amalgamate: file already included
+				// #include <vector>    // amalgamate: file already included
+
+				#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+				    template<typename TTag>
+				    class DevGenericSycl;
+
+				    template<typename TTag>
+				    class EventGenericSycl;
+
+				    namespace detail
+				    {
+				        template<typename T, typename = void>
+				        inline constexpr auto is_sycl_task = false;
+
+				        template<typename T>
+				        inline constexpr auto is_sycl_task<T, std::void_t<decltype(T::is_sycl_task)>> = true;
+
+				        template<typename T, typename = void>
+				        inline constexpr auto is_sycl_kernel = false;
+
+				        template<typename T>
+				        inline constexpr auto is_sycl_kernel<T, std::void_t<decltype(T::is_sycl_kernel)>> = true;
+
+				        class QueueGenericSyclImpl
+				        {
+				        public:
+				            QueueGenericSyclImpl(sycl::context context, sycl::device device)
+				                : m_queue{
+				                    std::move(context), // This is important. In SYCL a device can belong to multiple contexts.
+				                    std::move(device),
+				                    {sycl::property::queue::enable_profiling{}, sycl::property::queue::in_order{}}}
+				            {
+				            }
+
+				            // This class will only exist as a pointer. We don't care about copy and move semantics.
+				            QueueGenericSyclImpl(QueueGenericSyclImpl const& other) = delete;
+				            auto operator=(QueueGenericSyclImpl const& rhs) -> QueueGenericSyclImpl& = delete;
+
+				            QueueGenericSyclImpl(QueueGenericSyclImpl&& other) noexcept = delete;
+				            auto operator=(QueueGenericSyclImpl&& rhs) noexcept -> QueueGenericSyclImpl& = delete;
+
+				            ~QueueGenericSyclImpl()
+				            {
+				                try
+				                {
+				                    m_queue.wait_and_throw();
+				                }
+				                catch(sycl::exception const& err)
+				                {
+				                    std::cerr << "Caught SYCL exception while destructing a SYCL queue: " << err.what() << " ("
+				                              << err.code() << ')' << std::endl;
+				                }
+				                catch(std::exception const& err)
+				                {
+				                    std::cerr << "The following runtime error(s) occured while destructing a SYCL queue:" << err.what()
+				                              << std::endl;
+				                }
+				            }
+
+				            // Don't call this without locking first!
+				            auto clean_dependencies() -> void
+				            {
+				                // Clean up completed events
+				                auto const start = std::begin(m_dependencies);
+				                auto const old_end = std::end(m_dependencies);
+				                auto const new_end = std::remove_if(
+				                    start,
+				                    old_end,
+				                    [](sycl::event ev) {
+				                        return ev.get_info<sycl::info::event::command_execution_status>()
+				                               == sycl::info::event_command_status::complete;
+				                    });
+
+				                m_dependencies.erase(new_end, old_end);
+				            }
+
+				            auto register_dependency(sycl::event event) -> void
+				            {
+				                std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+				                clean_dependencies();
+				                m_dependencies.push_back(event);
+				            }
+
+				            auto empty() const -> bool
+				            {
+				                std::shared_lock<std::shared_mutex> lock{m_mutex};
+				                return m_last_event.get_info<sycl::info::event::command_execution_status>()
+				                       == sycl::info::event_command_status::complete;
+				            }
+
+				            auto wait() -> void
+				            {
+				                // SYCL queues are thread-safe.
+				                m_queue.wait_and_throw();
+				            }
+
+				            auto get_last_event() const -> sycl::event
+				            {
+				                std::shared_lock<std::shared_mutex> lock{m_mutex};
+				                return m_last_event;
+				            }
+
+				            template<bool TBlocking, typename TTask>
+				            auto enqueue(TTask const& task) -> void
+				            {
+				                {
+				                    std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+				                    clean_dependencies();
+
+				                    // Execute task
+				                    if constexpr(is_sycl_task<TTask> && !is_sycl_kernel<TTask>) // Copy / Fill
+				                    {
+				                        m_last_event = task(m_queue, m_dependencies); // Will call queue.{copy, fill} internally
+				                    }
+				                    else
+				                    {
+				                        m_last_event = m_queue.submit(
+				                            [this, &task](sycl::handler& cgh)
+				                            {
+				                                if(!m_dependencies.empty())
+				                                    cgh.depends_on(m_dependencies);
+
+				                                if constexpr(is_sycl_kernel<TTask>) // Kernel
+				                                    task(cgh); // Will call cgh.parallel_for internally
+				                                else // Host
+				                                    cgh.host_task(task);
+				                            });
+				                    }
+
+				                    m_dependencies.clear();
+				                }
+
+				                if constexpr(TBlocking)
+				                    wait();
+				            }
+
+				            [[nodiscard]] auto getNativeHandle() const noexcept
+				            {
+				                return m_queue;
+				            }
+
+				            std::vector<sycl::event> m_dependencies;
+				            sycl::event m_last_event;
+				            std::shared_mutex mutable m_mutex;
+
+				        private:
+				            sycl::queue m_queue;
+				        };
+
+				        template<typename TTag, bool TBlocking>
+				        class QueueGenericSyclBase
+				            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
+				            , public concepts::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
+				            , public concepts::Implements<ConceptGetDev, QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				        public:
+				            QueueGenericSyclBase(DevGenericSycl<TTag> const& dev)
+				                : m_dev{dev}
+				                , m_spQueueImpl{std::make_shared<detail::QueueGenericSyclImpl>(
+				                      dev.getNativeHandle().second,
+				                      dev.getNativeHandle().first)}
+				            {
+				                m_dev.m_impl->register_queue(m_spQueueImpl);
+				            }
+
+				            friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
+				            {
+				                return (lhs.m_dev == rhs.m_dev) && (lhs.m_spQueueImpl == rhs.m_spQueueImpl);
+				            }
+
+				            friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
+				            {
+				                return !(lhs == rhs);
+				            }
+
+				            [[nodiscard]] auto getNativeHandle() const noexcept
+				            {
+				                return m_spQueueImpl->getNativeHandle();
+				            }
+
+				            DevGenericSycl<TTag> m_dev;
+				            std::shared_ptr<detail::QueueGenericSyclImpl> m_spQueueImpl;
+				        };
+				    } // namespace detail
+
+				    namespace trait
+				    {
+				        //! The SYCL blocking queue device type trait specialization.
+				        template<typename TTag, bool TBlocking>
+				        struct DevType<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            using type = DevGenericSycl<TTag>;
+				        };
+
+				        //! The SYCL blocking queue device get trait specialization.
+				        template<typename TTag, bool TBlocking>
+				        struct GetDev<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            static auto getDev(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+				            {
+				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+				                return queue.m_dev;
+				            }
+				        };
+
+				        //! The SYCL blocking queue event type trait specialization.
+				        template<typename TTag, bool TBlocking>
+				        struct EventType<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            using type = EventGenericSycl<TTag>;
+				        };
+
+				        //! The SYCL blocking queue enqueue trait specialization.
+				        template<typename TTag, bool TBlocking, typename TTask>
+				        struct Enqueue<detail::QueueGenericSyclBase<TTag, TBlocking>, TTask>
+				        {
+				            static auto enqueue(detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task) -> void
+				            {
+				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+				                queue.m_spQueueImpl->template enqueue<TBlocking>(task);
+				            }
+				        };
+
+				        //! The SYCL blocking queue test trait specialization.
+				        template<typename TTag, bool TBlocking>
+				        struct Empty<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            static auto empty(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> bool
+				            {
+				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+				                return queue.m_spQueueImpl->empty();
+				            }
+				        };
+
+				        //! The SYCL blocking queue thread wait trait specialization.
+				        //!
+				        //! Blocks execution of the calling thread until the queue has finished processing all previously requested
+				        //! tasks (kernels, data copies, ...)
+				        template<typename TTag, bool TBlocking>
+				        struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> void
+				            {
+				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+				                queue.m_spQueueImpl->wait();
+				            }
+				        };
+
+				        //! The SYCL queue native handle trait specialization.
+				        template<typename TTag, bool TBlocking>
+				        struct NativeHandle<detail::QueueGenericSyclBase<TTag, TBlocking>>
+				        {
+				            [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+				            {
+				                return queue.getNativeHandle();
+				            }
+				        };
+				    } // namespace trait
+				} // namespace alpaka
+				#endif
+				// ==
+				// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
+				// ============================================================================
+
+			// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
+
+			// #include <algorithm>    // amalgamate: file already included
+			// #include <cstddef>    // amalgamate: file already included
+			// #include <functional>    // amalgamate: file already included
+			// #include <memory>    // amalgamate: file already included
+			// #include <mutex>    // amalgamate: file already included
+			#include <shared_mutex>
+			// #include <string>    // amalgamate: file already included
+			// #include <utility>    // amalgamate: file already included
+			// #include <vector>    // amalgamate: file already included
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    namespace trait
+			    {
+			        template<typename TPlatform, typename TSfinae>
+			        struct GetDevByIdx;
+			    } // namespace trait
+
+			    template<typename TTag>
+			    using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TTag, true>;
+
+			    template<typename TTag>
+			    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TTag, false>;
+
+			    template<typename TTag>
+			    struct PlatformGenericSycl;
+
+			    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+			    class BufGenericSycl;
+
+			    namespace detail
+			    {
+			        class DevGenericSyclImpl
+			        {
+			        public:
+			            DevGenericSyclImpl(sycl::device device, sycl::context context)
+			                : m_device{std::move(device)}
+			                , m_context{std::move(context)}
+			            {
+			            }
+
+			            // Don't call this without locking first!
+			            auto clean_queues() -> void
+			            {
+			                // Clean up dead queues
+			                auto const start = std::begin(m_queues);
+			                auto const old_end = std::end(m_queues);
+			                auto const new_end = std::remove_if(start, old_end, [](auto q_ptr) { return q_ptr.expired(); });
+			                m_queues.erase(new_end, old_end);
+			            }
+
+			            auto register_queue(std::shared_ptr<QueueGenericSyclImpl> const& queue) -> void
+			            {
+			                std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+			                clean_queues();
+			                m_queues.emplace_back(queue);
+			            }
+
+			            auto register_dependency(sycl::event event) -> void
+			            {
+			                std::shared_lock<std::shared_mutex> lock{m_mutex};
+
+			                for(auto& q_ptr : m_queues)
+			                {
+			                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
+			                        ptr->register_dependency(event);
+			                }
+			            }
+
+			            auto wait()
+			            {
+			                std::shared_lock<std::shared_mutex> lock{m_mutex};
+
+			                for(auto& q_ptr : m_queues)
+			                {
+			                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
+			                        ptr->wait();
+			                }
+			            }
+
+			            auto get_device() const -> sycl::device
+			            {
+			                return m_device;
+			            }
+
+			            auto get_context() const -> sycl::context
+			            {
+			                return m_context;
+			            }
+
+			        private:
+			            sycl::device m_device;
+			            sycl::context m_context;
+			            std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
+			            std::shared_mutex mutable m_mutex;
+			        };
+			    } // namespace detail
+
+			    //! The SYCL device handle.
+			    template<typename TTag>
+			    class DevGenericSycl
+			        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
+			        , public concepts::Implements<ConceptDev, DevGenericSycl<TTag>>
+			    {
+			        friend struct trait::GetDevByIdx<PlatformGenericSycl<TTag>>;
+
+			    public:
+			        DevGenericSycl(sycl::device device, sycl::context context)
+			            : m_impl{std::make_shared<detail::DevGenericSyclImpl>(std::move(device), std::move(context))}
+			        {
+			        }
+
+			        friend auto operator==(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
+			        {
+			            return (lhs.m_impl == rhs.m_impl);
+			        }
+
+			        friend auto operator!=(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
+			        {
+			            return !(lhs == rhs);
+			        }
+
+			        [[nodiscard]] auto getNativeHandle() const -> std::pair<sycl::device, sycl::context>
+			        {
+			            return std::make_pair(m_impl->get_device(), m_impl->get_context());
+			        }
+
+			        std::shared_ptr<detail::DevGenericSyclImpl> m_impl;
+			    };
+
+			    namespace trait
+			    {
+			        //! The SYCL device name get trait specialization.
+			        template<typename TTag>
+			        struct GetName<DevGenericSycl<TTag>>
+			        {
+			            static auto getName(DevGenericSycl<TTag> const& dev) -> std::string
+			            {
+			                auto const device = dev.getNativeHandle().first;
+			                return device.template get_info<sycl::info::device::name>();
+			            }
+			        };
+
+			        //! The SYCL device available memory get trait specialization.
+			        template<typename TTag>
+			        struct GetMemBytes<DevGenericSycl<TTag>>
+			        {
+			            static auto getMemBytes(DevGenericSycl<TTag> const& dev) -> std::size_t
+			            {
+			                auto const device = dev.getNativeHandle().first;
+			                return device.template get_info<sycl::info::device::global_mem_size>();
+			            }
+			        };
+
+			        //! The SYCL device free memory get trait specialization.
+			        template<typename TTag>
+			        struct GetFreeMemBytes<DevGenericSycl<TTag>>
+			        {
+			            static auto getFreeMemBytes(DevGenericSycl<TTag> const& /* dev */) -> std::size_t
+			            {
+			                static_assert(
+			                    !sizeof(PlatformGenericSycl<TTag>),
+			                    "Querying free device memory not supported for SYCL devices.");
+			                return std::size_t{};
+			            }
+			        };
+
+			        //! The SYCL device warp size get trait specialization.
+			        template<typename TTag>
+			        struct GetWarpSizes<DevGenericSycl<TTag>>
+			        {
+			            static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
+			            {
+			                auto const device = dev.getNativeHandle().first;
+			                std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
+			                // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently does not
+			                auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+			                if(find64 != warp_sizes.end())
+			                    warp_sizes.erase(find64);
+			                // Sort the warp sizes in decreasing order
+			                std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
+			                return warp_sizes;
+			            }
+			        };
+
+			        //! The SYCL device preferred warp size get trait specialization.
+			        template<typename TTag>
+			        struct GetPreferredWarpSize<DevGenericSycl<TTag>>
+			        {
+			            static auto getPreferredWarpSize(DevGenericSycl<TTag> const& dev) -> std::size_t
+			            {
+			                return GetWarpSizes<DevGenericSycl<TTag>>::getWarpSizes(dev).front();
+			            }
+			        };
+
+			        //! The SYCL device reset trait specialization.
+			        template<typename TTag>
+			        struct Reset<DevGenericSycl<TTag>>
+			        {
+			            static auto reset(DevGenericSycl<TTag> const&) -> void
+			            {
+			                static_assert(
+			                    !sizeof(PlatformGenericSycl<TTag>),
+			                    "Explicit device reset not supported for SYCL devices");
+			            }
+			        };
+
+			        //! The SYCL device native handle trait specialization.
+			        template<typename TTag>
+			        struct NativeHandle<DevGenericSycl<TTag>>
+			        {
+			            [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TTag> const& dev)
+			            {
+			                return dev.getNativeHandle();
+			            }
+			        };
+
+			        //! The SYCL device memory buffer type trait specialization.
+			        template<typename TElem, typename TDim, typename TIdx, typename TTag>
+			        struct BufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
+			        {
+			            using type = BufGenericSycl<TElem, TDim, TIdx, TTag>;
+			        };
+
+			        //! The SYCL device platform type trait specialization.
+			        template<typename TTag>
+			        struct PlatformType<DevGenericSycl<TTag>>
+			        {
+			            using type = PlatformGenericSycl<TTag>;
+			        };
+
+			        //! The thread SYCL device wait specialization.
+			        template<typename TTag>
+			        struct CurrentThreadWaitFor<DevGenericSycl<TTag>>
+			        {
+			            static auto currentThreadWaitFor(DevGenericSycl<TTag> const& dev) -> void
+			            {
+			                dev.m_impl->wait();
+			            }
+			        };
+
+			        //! The SYCL blocking queue trait specialization.
+			        template<typename TTag>
+			        struct QueueType<DevGenericSycl<TTag>, Blocking>
+			        {
+			            using type = QueueGenericSyclBlocking<TTag>;
+			        };
+
+			        //! The SYCL non-blocking queue trait specialization.
+			        template<typename TTag>
+			        struct QueueType<DevGenericSycl<TTag>, NonBlocking>
+			        {
+			            using type = QueueGenericSyclNonBlocking<TTag>;
+			        };
+
+			    } // namespace trait
+			} // namespace alpaka
+
+			#endif
+			// ==
+			// == ./include/alpaka/dev/DevGenericSycl.hpp ==
+			// ============================================================================
+
+			// ============================================================================
+			// == ./include/alpaka/idx/bt/IdxBtGenericSycl.hpp ==
+			// ==
+			/* Copyright 2023 Jan Stephan, Aurora Perego
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
@@ -17244,6 +17823,758 @@
 			// == ./include/alpaka/mem/fence/MemFenceGenericSycl.hpp ==
 			// ============================================================================
 
+			// ============================================================================
+			// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
+			// ==
+			/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+
+			// #include <cstddef>    // amalgamate: file already included
+			// #include <exception>    // amalgamate: file already included
+			#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+			// #    include <iostream>    // amalgamate: file already included
+			#endif
+			#include <sstream>
+			// #include <stdexcept>    // amalgamate: file already included
+			// #include <vector>    // amalgamate: file already included
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic push
+			#        pragma clang diagnostic ignored "-Wswitch-default"
+			#    endif
+
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    namespace detail
+			    {
+			        template<typename TTag>
+			        struct SYCLDeviceSelector;
+			    } // namespace detail
+
+			    //! The SYCL device manager.
+			    template<typename TTag>
+			    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
+			    {
+			        PlatformGenericSycl()
+			            : platform{detail::SYCLDeviceSelector<TTag>{}}
+			            , devices(platform.get_devices())
+			            , context{sycl::context{
+			                  devices,
+			                  [](sycl::exception_list exceptions)
+			                  {
+			                      auto ss_err = std::stringstream{};
+			                      ss_err << "Caught asynchronous SYCL exception(s):\n";
+			                      for(std::exception_ptr e : exceptions)
+			                      {
+			                          try
+			                          {
+			                              std::rethrow_exception(e);
+			                          }
+			                          catch(sycl::exception const& err)
+			                          {
+			                              ss_err << err.what() << " (" << err.code() << ")\n";
+			                          }
+			                      }
+			                      throw std::runtime_error(ss_err.str());
+			                  }}}
+			        {
+			        }
+
+			        [[nodiscard]] auto syclPlatform() -> sycl::platform&
+			        {
+			            return platform;
+			        }
+
+			        [[nodiscard]] auto syclPlatform() const -> sycl::platform const&
+			        {
+			            return platform;
+			        }
+
+			        [[nodiscard]] auto syclDevices() -> std::vector<sycl::device>&
+			        {
+			            return devices;
+			        }
+
+			        [[nodiscard]] auto syclDevices() const -> std::vector<sycl::device> const&
+			        {
+			            return devices;
+			        }
+
+			        [[nodiscard]] auto syclContext() -> sycl::context&
+			        {
+			            return context;
+			        }
+
+			        [[nodiscard]] auto syclContext() const -> sycl::context const&
+			        {
+			            return context;
+			        }
+
+			    private:
+			        sycl::platform platform;
+			        std::vector<sycl::device> devices;
+			        sycl::context context;
+			    };
+
+			    namespace trait
+			    {
+			        //! The SYCL platform device type trait specialization.
+			        template<typename TTag>
+			        struct DevType<PlatformGenericSycl<TTag>>
+			        {
+			            using type = DevGenericSycl<TTag>;
+			        };
+
+			        //! The SYCL platform device count get trait specialization.
+			        template<typename TTag>
+			        struct GetDevCount<PlatformGenericSycl<TTag>>
+			        {
+			            static auto getDevCount(PlatformGenericSycl<TTag> const& platform) -> std::size_t
+			            {
+			                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+			                return platform.syclDevices().size();
+			            }
+			        };
+
+			        //! The SYCL platform device get trait specialization.
+			        template<typename TTag>
+			        struct GetDevByIdx<PlatformGenericSycl<TTag>>
+			        {
+			            static auto getDevByIdx(PlatformGenericSycl<TTag> const& platform, std::size_t const& devIdx)
+			            {
+			                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+			                auto const& devices = platform.syclDevices();
+			                if(devIdx >= devices.size())
+			                {
+			                    auto ss_err = std::stringstream{};
+			                    ss_err << "Unable to return device handle for device " << devIdx << ". There are only "
+			                           << devices.size() << " SYCL devices!";
+			                    throw std::runtime_error(ss_err.str());
+			                }
+
+			                auto sycl_dev = devices.at(devIdx);
+
+			                // Log this device.
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                printDeviceProperties(sycl_dev);
+			#    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+			                std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
+			#    endif
+			                using SyclPlatform = alpaka::PlatformGenericSycl<TTag>;
+			                return typename DevType<SyclPlatform>::type{sycl_dev, platform.syclContext()};
+			            }
+
+			        private:
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            //! Prints all the device properties to std::cout.
+			            static auto printDeviceProperties(sycl::device const& device) -> void
+			            {
+			                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+			                constexpr auto KiB = std::size_t{1024};
+			                constexpr auto MiB = KiB * KiB;
+
+			                std::cout << "Device type: ";
+			                switch(device.get_info<sycl::info::device::device_type>())
+			                {
+			                case sycl::info::device_type::cpu:
+			                    std::cout << "CPU";
+			                    break;
+
+			                case sycl::info::device_type::gpu:
+			                    std::cout << "GPU";
+			                    break;
+
+			                case sycl::info::device_type::accelerator:
+			                    std::cout << "Accelerator";
+			                    break;
+
+			                case sycl::info::device_type::custom:
+			                    std::cout << "Custom";
+			                    break;
+
+			                case sycl::info::device_type::automatic:
+			                    std::cout << "Automatic";
+			                    break;
+
+			                case sycl::info::device_type::host:
+			                    std::cout << "Host";
+			                    break;
+
+			                // The SYCL spec forbids the return of device_type::all
+			                // Including this here to prevent warnings because of
+			                // missing cases
+			                case sycl::info::device_type::all:
+			                    std::cout << "All";
+			                    break;
+			                }
+			                std::cout << '\n';
+
+			                std::cout << "Name: " << device.get_info<sycl::info::device::name>() << '\n';
+
+			                std::cout << "Vendor: " << device.get_info<sycl::info::device::vendor>() << '\n';
+
+			                std::cout << "Vendor ID: " << device.get_info<sycl::info::device::vendor_id>() << '\n';
+
+			                std::cout << "Driver version: " << device.get_info<sycl::info::device::driver_version>() << '\n';
+
+			                std::cout << "SYCL version: " << device.get_info<sycl::info::device::version>() << '\n';
+
+			#        if !defined(BOOST_COMP_ICPX)
+			                // Not defined by Level Zero back-end
+			                std::cout << "Backend version: " << device.get_info<sycl::info::device::backend_version>() << '\n';
+			#        endif
+
+			                std::cout << "Aspects: " << '\n';
+
+			#        if defined(BOOST_COMP_ICPX)
+			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			                // These aspects are missing from oneAPI versions < 2023.2.0
+			                if(device.has(sycl::aspect::emulated))
+			                    std::cout << "\t* emulated\n";
+
+			                if(device.has(sycl::aspect::host_debuggable))
+			                    std::cout << "\t* debuggable using standard debuggers\n";
+			#            endif
+			#        endif
+
+			                if(device.has(sycl::aspect::fp16))
+			                    std::cout << "\t* supports sycl::half precision\n";
+
+			                if(device.has(sycl::aspect::fp64))
+			                    std::cout << "\t* supports double precision\n";
+
+			                if(device.has(sycl::aspect::atomic64))
+			                    std::cout << "\t* supports 64-bit atomics\n";
+
+			                if(device.has(sycl::aspect::image))
+			                    std::cout << "\t* supports images\n";
+
+			                if(device.has(sycl::aspect::online_compiler))
+			                    std::cout << "\t* supports online compilation of device code\n";
+
+			                if(device.has(sycl::aspect::online_linker))
+			                    std::cout << "\t* supports online linking of device code\n";
+
+			                if(device.has(sycl::aspect::queue_profiling))
+			                    std::cout << "\t* supports queue profiling\n";
+
+			                if(device.has(sycl::aspect::usm_device_allocations))
+			                    std::cout << "\t* supports explicit USM allocations\n";
+
+			                if(device.has(sycl::aspect::usm_host_allocations))
+			                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
+
+			                if(device.has(sycl::aspect::usm_atomic_host_allocations))
+			                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
+
+			                if(device.has(sycl::aspect::usm_shared_allocations))
+			                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
+
+			                if(device.has(sycl::aspect::usm_atomic_shared_allocations))
+			                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
+
+			                if(device.has(sycl::aspect::usm_system_allocations))
+			                    std::cout << "\t* can access memory allocated by the system allocator\n";
+
+			                std::cout << "Available compute units: " << device.get_info<sycl::info::device::max_compute_units>()
+			                          << '\n';
+
+			                std::cout << "Maximum work item dimensions: ";
+			                auto dims = device.get_info<sycl::info::device::max_work_item_dimensions>();
+			                std::cout << dims << std::endl;
+
+			                std::cout << "Maximum number of work items:\n";
+			                auto const wi_1D = device.get_info<sycl::info::device::max_work_item_sizes<1>>();
+			                auto const wi_2D = device.get_info<sycl::info::device::max_work_item_sizes<2>>();
+			                auto const wi_3D = device.get_info<sycl::info::device::max_work_item_sizes<3>>();
+			                std::cout << "\t* 1D: (" << wi_1D.get(0) << ")\n";
+			                std::cout << "\t* 2D: (" << wi_2D.get(0) << ", " << wi_2D.get(1) << ")\n";
+			                std::cout << "\t* 3D: (" << wi_3D.get(0) << ", " << wi_3D.get(1) << ", " << wi_3D.get(2) << ")\n";
+
+			                std::cout << "Maximum number of work items per work-group: "
+			                          << device.get_info<sycl::info::device::max_work_group_size>() << '\n';
+
+			                std::cout << "Maximum number of sub-groups per work-group: "
+			                          << device.get_info<sycl::info::device::max_num_sub_groups>() << '\n';
+
+			                std::cout << "Supported sub-group sizes: ";
+			                auto const sg_sizes = device.get_info<sycl::info::device::sub_group_sizes>();
+			                for(auto const& sz : sg_sizes)
+			                    std::cout << sz << ", ";
+			                std::cout << '\n';
+
+			                std::cout << "Preferred native vector width (char): "
+			                          << device.get_info<sycl::info::device::preferred_vector_width_char>() << '\n';
+
+			                std::cout << "Native ISA vector width (char): "
+			                          << device.get_info<sycl::info::device::native_vector_width_char>() << '\n';
+
+			                std::cout << "Preferred native vector width (short): "
+			                          << device.get_info<sycl::info::device::preferred_vector_width_short>() << '\n';
+
+			                std::cout << "Native ISA vector width (short): "
+			                          << device.get_info<sycl::info::device::native_vector_width_short>() << '\n';
+
+			                std::cout << "Preferred native vector width (int): "
+			                          << device.get_info<sycl::info::device::preferred_vector_width_int>() << '\n';
+
+			                std::cout << "Native ISA vector width (int): "
+			                          << device.get_info<sycl::info::device::native_vector_width_int>() << '\n';
+
+			                std::cout << "Preferred native vector width (long): "
+			                          << device.get_info<sycl::info::device::preferred_vector_width_long>() << '\n';
+
+			                std::cout << "Native ISA vector width (long): "
+			                          << device.get_info<sycl::info::device::native_vector_width_long>() << '\n';
+
+			                std::cout << "Preferred native vector width (float): "
+			                          << device.get_info<sycl::info::device::preferred_vector_width_float>() << '\n';
+
+			                std::cout << "Native ISA vector width (float): "
+			                          << device.get_info<sycl::info::device::native_vector_width_float>() << '\n';
+
+			                if(device.has(sycl::aspect::fp64))
+			                {
+			                    std::cout << "Preferred native vector width (double): "
+			                              << device.get_info<sycl::info::device::preferred_vector_width_double>() << '\n';
+
+			                    std::cout << "Native ISA vector width (double): "
+			                              << device.get_info<sycl::info::device::native_vector_width_double>() << '\n';
+			                }
+
+			                if(device.has(sycl::aspect::fp16))
+			                {
+			                    std::cout << "Preferred native vector width (half): "
+			                              << device.get_info<sycl::info::device::preferred_vector_width_half>() << '\n';
+
+			                    std::cout << "Native ISA vector width (half): "
+			                              << device.get_info<sycl::info::device::native_vector_width_half>() << '\n';
+			                }
+
+			                std::cout << "Maximum clock frequency: " << device.get_info<sycl::info::device::max_clock_frequency>()
+			                          << " MHz\n";
+
+			                std::cout << "Address space size: " << device.get_info<sycl::info::device::address_bits>() << "-bit\n";
+
+			                std::cout << "Maximum size of memory object allocation: "
+			                          << device.get_info<sycl::info::device::max_mem_alloc_size>() << " bytes\n";
+
+			                if(device.has(sycl::aspect::image))
+			                {
+			                    std::cout << "Maximum number of simultaneous image object reads per kernel: "
+			                              << device.get_info<sycl::info::device::max_read_image_args>() << '\n';
+
+			                    std::cout << "Maximum number of simultaneous image writes per kernel: "
+			                              << device.get_info<sycl::info::device::max_write_image_args>() << '\n';
+
+			                    std::cout << "Maximum 1D/2D image width: "
+			                              << device.get_info<sycl::info::device::image2d_max_width>() << " px\n";
+
+			                    std::cout << "Maximum 2D image height: "
+			                              << device.get_info<sycl::info::device::image2d_max_height>() << " px\n";
+
+			                    std::cout << "Maximum 3D image width: " << device.get_info<sycl::info::device::image3d_max_width>()
+			                              << " px\n";
+
+			                    std::cout << "Maximum 3D image height: "
+			                              << device.get_info<sycl::info::device::image3d_max_height>() << " px\n";
+
+			                    std::cout << "Maximum 3D image depth: " << device.get_info<sycl::info::device::image3d_max_depth>()
+			                              << " px\n";
+
+			                    std::cout << "Maximum number of samplers per kernel: "
+			                              << device.get_info<sycl::info::device::max_samplers>() << '\n';
+			                }
+
+			                std::cout << "Maximum kernel argument size: "
+			                          << device.get_info<sycl::info::device::max_parameter_size>() << " bytes\n";
+
+			                std::cout << "Memory base address alignment: "
+			                          << device.get_info<sycl::info::device::mem_base_addr_align>() << " bit\n";
+
+			                auto print_fp_config = [](std::string const& fp, std::vector<sycl::info::fp_config> const& conf)
+			                {
+			                    std::cout << fp << " precision floating-point capabilities:\n";
+
+			                    auto find_and_print = [&](sycl::info::fp_config val)
+			                    {
+			                        auto it = std::find(begin(conf), end(conf), val);
+			                        std::cout << (it == std::end(conf) ? "No" : "Yes") << '\n';
+			                    };
+
+			                    std::cout << "\t* denorm support: ";
+			                    find_and_print(sycl::info::fp_config::denorm);
+
+			                    std::cout << "\t* INF & quiet NaN support: ";
+			                    find_and_print(sycl::info::fp_config::inf_nan);
+
+			                    std::cout << "\t* round to nearest even support: ";
+			                    find_and_print(sycl::info::fp_config::round_to_nearest);
+
+			                    std::cout << "\t* round to zero support: ";
+			                    find_and_print(sycl::info::fp_config::round_to_zero);
+
+			                    std::cout << "\t* round to infinity support: ";
+			                    find_and_print(sycl::info::fp_config::round_to_inf);
+
+			                    std::cout << "\t* IEEE754-2008 FMA support: ";
+			                    find_and_print(sycl::info::fp_config::fma);
+
+			                    std::cout << "\t* correctly rounded divide/sqrt support: ";
+			                    find_and_print(sycl::info::fp_config::correctly_rounded_divide_sqrt);
+
+			                    std::cout << "\t* software-implemented floating point operations: ";
+			                    find_and_print(sycl::info::fp_config::soft_float);
+			                };
+
+			                if(device.has(sycl::aspect::fp16))
+			                {
+			                    auto const fp16_conf = device.get_info<sycl::info::device::half_fp_config>();
+			                    print_fp_config("Half", fp16_conf);
+			                }
+
+			                auto const fp32_conf = device.get_info<sycl::info::device::single_fp_config>();
+			                print_fp_config("Single", fp32_conf);
+
+			                if(device.has(sycl::aspect::fp64))
+			                {
+			                    auto const fp64_conf = device.get_info<sycl::info::device::double_fp_config>();
+			                    print_fp_config("Double", fp64_conf);
+			                }
+
+			                std::cout << "Global memory cache type: ";
+			                auto has_global_mem_cache = false;
+			                switch(device.get_info<sycl::info::device::global_mem_cache_type>())
+			                {
+			                case sycl::info::global_mem_cache_type::none:
+			                    std::cout << "none";
+			                    break;
+
+			                case sycl::info::global_mem_cache_type::read_only:
+			                    std::cout << "read-only";
+			                    has_global_mem_cache = true;
+			                    break;
+
+			                case sycl::info::global_mem_cache_type::read_write:
+			                    std::cout << "read-write";
+			                    has_global_mem_cache = true;
+			                    break;
+			                }
+			                std::cout << '\n';
+
+			                if(has_global_mem_cache)
+			                {
+			                    std::cout << "Global memory cache line size: "
+			                              << device.get_info<sycl::info::device::global_mem_cache_line_size>() << " bytes\n";
+
+			                    std::cout << "Global memory cache size: "
+			                              << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n";
+			                }
+
+			                std::cout << "Global memory size: " << device.get_info<sycl::info::device::global_mem_size>() / MiB
+			                          << " MiB" << std::endl;
+
+			                std::cout << "Local memory type: ";
+			                auto has_local_memory = false;
+			                switch(device.get_info<sycl::info::device::local_mem_type>())
+			                {
+			                case sycl::info::local_mem_type::none:
+			                    std::cout << "none";
+			                    break;
+
+			                case sycl::info::local_mem_type::local:
+			                    std::cout << "local";
+			                    has_local_memory = true;
+			                    break;
+
+			                case sycl::info::local_mem_type::global:
+			                    std::cout << "global";
+			                    has_local_memory = true;
+			                    break;
+			                }
+			                std::cout << '\n';
+
+			                if(has_local_memory)
+			                    std::cout << "Local memory size: " << device.get_info<sycl::info::device::local_mem_size>() / KiB
+			                              << " KiB\n";
+
+			                std::cout << "Error correction support: "
+			                          << (device.get_info<sycl::info::device::error_correction_support>() ? "Yes" : "No") << '\n';
+
+			                auto print_memory_orders = [](std::vector<sycl::memory_order> const& mem_orders)
+			                {
+			                    for(auto const& cap : mem_orders)
+			                    {
+			                        switch(cap)
+			                        {
+			                        case sycl::memory_order::relaxed:
+			                            std::cout << "relaxed";
+			                            break;
+
+			                        case sycl::memory_order::acquire:
+			                            std::cout << "acquire";
+			                            break;
+
+			                        case sycl::memory_order::release:
+			                            std::cout << "release";
+			                            break;
+
+			                        case sycl::memory_order::acq_rel:
+			                            std::cout << "acq_rel";
+			                            break;
+
+			                        case sycl::memory_order::seq_cst:
+			                            std::cout << "seq_cst";
+			                            break;
+			#        if defined(BOOST_COMP_ICPX)
+			                        // Stop icpx from complaining about its own internals.
+			                        case sycl::memory_order::__consume_unsupported:
+			                            break;
+			#        endif
+			                        }
+			                        std::cout << ", ";
+			                    }
+			                    std::cout << '\n';
+			                };
+
+			                std::cout << "Supported memory orderings for atomic operations: ";
+			                auto const mem_orders = device.get_info<sycl::info::device::atomic_memory_order_capabilities>();
+			                print_memory_orders(mem_orders);
+
+			#        if defined(BOOST_COMP_ICPX)
+			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			                // Not implemented in oneAPI < 2023.2.0
+			                std::cout << "Supported memory orderings for sycl::atomic_fence: ";
+			                auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
+			                print_memory_orders(fence_orders);
+			#            endif
+			#        endif
+
+			                auto print_memory_scopes = [](std::vector<sycl::memory_scope> const& mem_scopes)
+			                {
+			                    for(auto const& cap : mem_scopes)
+			                    {
+			                        switch(cap)
+			                        {
+			                        case sycl::memory_scope::work_item:
+			                            std::cout << "work-item";
+			                            break;
+
+			                        case sycl::memory_scope::sub_group:
+			                            std::cout << "sub-group";
+			                            break;
+
+			                        case sycl::memory_scope::work_group:
+			                            std::cout << "work-group";
+			                            break;
+
+			                        case sycl::memory_scope::device:
+			                            std::cout << "device";
+			                            break;
+
+			                        case sycl::memory_scope::system:
+			                            std::cout << "system";
+			                            break;
+			                        }
+			                        std::cout << ", ";
+			                    }
+			                    std::cout << '\n';
+			                };
+
+			                std::cout << "Supported memory scopes for atomic operations: ";
+			                auto const mem_scopes = device.get_info<sycl::info::device::atomic_memory_scope_capabilities>();
+			                print_memory_scopes(mem_scopes);
+
+			#        if defined(BOOST_COMP_ICPX)
+			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			                // Not implemented in oneAPI < 2023.2.0
+			                std::cout << "Supported memory scopes for sycl::atomic_fence: ";
+			                auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
+			                print_memory_scopes(fence_scopes);
+			#            endif
+			#        endif
+
+			                std::cout << "Device timer resolution: "
+			                          << device.get_info<sycl::info::device::profiling_timer_resolution>() << " ns\n";
+
+			                std::cout << "Built-in kernels: ";
+			                auto const builtins = device.get_info<sycl::info::device::built_in_kernel_ids>();
+			                for(auto const& b : builtins)
+			                    std::cout << b.get_name() << ", ";
+			                std::cout << '\n';
+
+			                std::cout << "Maximum number of subdevices: ";
+			                auto const max_subs = device.get_info<sycl::info::device::partition_max_sub_devices>();
+			                std::cout << max_subs << '\n';
+
+			                if(max_subs > 1)
+			                {
+			                    std::cout << "Supported partition properties: ";
+			                    auto const part_props = device.get_info<sycl::info::device::partition_properties>();
+			                    auto has_affinity_domains = false;
+			                    for(auto const& prop : part_props)
+			                    {
+			                        switch(prop)
+			                        {
+			                        case sycl::info::partition_property::no_partition:
+			                            std::cout << "no partition";
+			                            break;
+
+			                        case sycl::info::partition_property::partition_equally:
+			                            std::cout << "equally";
+			                            break;
+
+			                        case sycl::info::partition_property::partition_by_counts:
+			                            std::cout << "by counts";
+			                            break;
+
+			                        case sycl::info::partition_property::partition_by_affinity_domain:
+			                            std::cout << "by affinity domain";
+			                            has_affinity_domains = true;
+			                            break;
+			#        if defined(BOOST_COMP_ICPX)
+			                        case sycl::info::partition_property::ext_intel_partition_by_cslice:
+			                            std::cout << "by compute slice (Intel extension; deprecated)";
+			                            break;
+			#        endif
+			                        }
+			                        std::cout << ", ";
+			                    }
+			                    std::cout << '\n';
+
+			                    if(has_affinity_domains)
+			                    {
+			                        std::cout << "Supported partition affinity domains: ";
+			                        auto const aff_doms = device.get_info<sycl::info::device::partition_affinity_domains>();
+			                        for(auto const& dom : aff_doms)
+			                        {
+			                            switch(dom)
+			                            {
+			                            case sycl::info::partition_affinity_domain::not_applicable:
+			                                std::cout << "not applicable";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::numa:
+			                                std::cout << "NUMA";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::L4_cache:
+			                                std::cout << "L4 cache";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::L3_cache:
+			                                std::cout << "L3 cache";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::L2_cache:
+			                                std::cout << "L2 cache";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::L1_cache:
+			                                std::cout << "L1 cache";
+			                                break;
+
+			                            case sycl::info::partition_affinity_domain::next_partitionable:
+			                                std::cout << "next partitionable";
+			                                break;
+			                            }
+			                            std::cout << ", ";
+			                        }
+			                        std::cout << '\n';
+			                    }
+
+			                    std::cout << "Current partition property: ";
+			                    switch(device.get_info<sycl::info::device::partition_type_property>())
+			                    {
+			                    case sycl::info::partition_property::no_partition:
+			                        std::cout << "no partition";
+			                        break;
+
+			                    case sycl::info::partition_property::partition_equally:
+			                        std::cout << "partitioned equally";
+			                        break;
+
+			                    case sycl::info::partition_property::partition_by_counts:
+			                        std::cout << "partitioned by counts";
+			                        break;
+
+			                    case sycl::info::partition_property::partition_by_affinity_domain:
+			                        std::cout << "partitioned by affinity domain";
+			                        break;
+
+			#        if defined(BOOST_COMP_ICPX)
+			                    case sycl::info::partition_property::ext_intel_partition_by_cslice:
+			                        std::cout << "partitioned by compute slice (Intel extension; deprecated)";
+			                        break;
+			#        endif
+			                    }
+			                    std::cout << '\n';
+
+			                    std::cout << "Current partition affinity domain: ";
+			                    switch(device.get_info<sycl::info::device::partition_type_affinity_domain>())
+			                    {
+			                    case sycl::info::partition_affinity_domain::not_applicable:
+			                        std::cout << "not applicable";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::numa:
+			                        std::cout << "NUMA";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::L4_cache:
+			                        std::cout << "L4 cache";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::L3_cache:
+			                        std::cout << "L3 cache";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::L2_cache:
+			                        std::cout << "L2 cache";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::L1_cache:
+			                        std::cout << "L1 cache";
+			                        break;
+
+			                    case sycl::info::partition_affinity_domain::next_partitionable:
+			                        std::cout << "next partitionable";
+			                        break;
+			                    }
+			                    std::cout << '\n';
+			                }
+
+			                std::cout.flush();
+			            }
+			#    endif
+			        };
+			    } // namespace trait
+			} // namespace alpaka
+
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic pop
+			#    endif
+
+			#endif
+			// ==
+			// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
+			// ============================================================================
+
 		// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/rand/RandGenericSycl.hpp ==
@@ -17255,561 +18586,7 @@
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-				// ============================================================================
-				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
-				// ==
-				/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
-					// ============================================================================
-					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
-					// ==
-					/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
-
-					// #include <algorithm>    // amalgamate: file already included
-					#include <exception>
-					// #include <memory>    // amalgamate: file already included
-					// #include <mutex>    // amalgamate: file already included
-					#include <shared_mutex>
-					#include <type_traits>
-					// #include <utility>    // amalgamate: file already included
-					// #include <vector>    // amalgamate: file already included
-
-					#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-					// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-					namespace alpaka::detail
-					{
-					    template<typename T, typename = void>
-					    inline constexpr auto is_sycl_task = false;
-
-					    template<typename T>
-					    inline constexpr auto is_sycl_task<T, std::void_t<decltype(T::is_sycl_task)>> = true;
-
-					    template<typename T, typename = void>
-					    inline constexpr auto is_sycl_kernel = false;
-
-					    template<typename T>
-					    inline constexpr auto is_sycl_kernel<T, std::void_t<decltype(T::is_sycl_kernel)>> = true;
-
-					    class QueueGenericSyclImpl
-					    {
-					    public:
-					        QueueGenericSyclImpl(sycl::context context, sycl::device device)
-					            : m_queue{
-					                std::move(context), // This is important. In SYCL a device can belong to multiple contexts.
-					                std::move(device),
-					                {sycl::property::queue::enable_profiling{}, sycl::property::queue::in_order{}}}
-					        {
-					        }
-
-					        // This class will only exist as a pointer. We don't care about copy and move semantics.
-					        QueueGenericSyclImpl(QueueGenericSyclImpl const& other) = delete;
-					        auto operator=(QueueGenericSyclImpl const& rhs) -> QueueGenericSyclImpl& = delete;
-
-					        QueueGenericSyclImpl(QueueGenericSyclImpl&& other) noexcept = delete;
-					        auto operator=(QueueGenericSyclImpl&& rhs) noexcept -> QueueGenericSyclImpl& = delete;
-
-					        ~QueueGenericSyclImpl()
-					        {
-					            try
-					            {
-					                m_queue.wait_and_throw();
-					            }
-					            catch(sycl::exception const& err)
-					            {
-					                std::cerr << "Caught SYCL exception while destructing a SYCL queue: " << err.what() << " ("
-					                          << err.code() << ')' << std::endl;
-					            }
-					            catch(std::exception const& err)
-					            {
-					                std::cerr << "The following runtime error(s) occured while destructing a SYCL queue:" << err.what()
-					                          << std::endl;
-					            }
-					        }
-
-					        // Don't call this without locking first!
-					        auto clean_dependencies() -> void
-					        {
-					            // Clean up completed events
-					            auto const start = std::begin(m_dependencies);
-					            auto const old_end = std::end(m_dependencies);
-					            auto const new_end = std::remove_if(
-					                start,
-					                old_end,
-					                [](sycl::event ev) {
-					                    return ev.get_info<sycl::info::event::command_execution_status>()
-					                           == sycl::info::event_command_status::complete;
-					                });
-
-					            m_dependencies.erase(new_end, old_end);
-					        }
-
-					        auto register_dependency(sycl::event event) -> void
-					        {
-					            std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-					            clean_dependencies();
-					            m_dependencies.push_back(event);
-					        }
-
-					        auto empty() const -> bool
-					        {
-					            std::shared_lock<std::shared_mutex> lock{m_mutex};
-					            return m_last_event.get_info<sycl::info::event::command_execution_status>()
-					                   == sycl::info::event_command_status::complete;
-					        }
-
-					        auto wait() -> void
-					        {
-					            // SYCL queues are thread-safe.
-					            m_queue.wait_and_throw();
-					        }
-
-					        auto get_last_event() const -> sycl::event
-					        {
-					            std::shared_lock<std::shared_mutex> lock{m_mutex};
-					            return m_last_event;
-					        }
-
-					        template<bool TBlocking, typename TTask>
-					        auto enqueue(TTask const& task) -> void
-					        {
-					            {
-					                std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-					                clean_dependencies();
-
-					                // Execute task
-					                if constexpr(is_sycl_task<TTask> && !is_sycl_kernel<TTask>) // Copy / Fill
-					                {
-					                    m_last_event = task(m_queue, m_dependencies); // Will call queue.{copy, fill} internally
-					                }
-					                else
-					                {
-					                    m_last_event = m_queue.submit(
-					                        [this, &task](sycl::handler& cgh)
-					                        {
-					                            if(!m_dependencies.empty())
-					                                cgh.depends_on(m_dependencies);
-
-					                            if constexpr(is_sycl_kernel<TTask>) // Kernel
-					                                task(cgh); // Will call cgh.parallel_for internally
-					                            else // Host
-					                                cgh.host_task(task);
-					                        });
-					                }
-
-					                m_dependencies.clear();
-					            }
-
-					            if constexpr(TBlocking)
-					                wait();
-					        }
-
-					        [[nodiscard]] auto getNativeHandle() const noexcept
-					        {
-					            return m_queue;
-					        }
-
-					        std::vector<sycl::event> m_dependencies;
-					        sycl::event m_last_event;
-					        std::shared_mutex mutable m_mutex;
-
-					    private:
-					        sycl::queue m_queue;
-					    };
-
-					    template<typename TDev, bool TBlocking>
-					    class QueueGenericSyclBase
-					        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TDev, TBlocking>>
-					        , public concepts::Implements<ConceptQueue, QueueGenericSyclBase<TDev, TBlocking>>
-					        , public concepts::Implements<ConceptGetDev, QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					    public:
-					        QueueGenericSyclBase(TDev const& dev)
-					            : m_dev{dev}
-					            , m_spQueueImpl{std::make_shared<detail::QueueGenericSyclImpl>(
-					                  dev.getNativeHandle().second,
-					                  dev.getNativeHandle().first)}
-					        {
-					            m_dev.m_impl->register_queue(m_spQueueImpl);
-					        }
-
-					        friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
-					        {
-					            return (lhs.m_dev == rhs.m_dev) && (lhs.m_spQueueImpl == rhs.m_spQueueImpl);
-					        }
-
-					        friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
-					        {
-					            return !(lhs == rhs);
-					        }
-
-					        [[nodiscard]] auto getNativeHandle() const noexcept
-					        {
-					            return m_spQueueImpl->getNativeHandle();
-					        }
-
-					        TDev m_dev;
-					        std::shared_ptr<detail::QueueGenericSyclImpl> m_spQueueImpl;
-					    };
-					} // namespace alpaka::detail
-
-					namespace alpaka
-					{
-					    template<typename TDev>
-					    class EventGenericSycl;
-					} // namespace alpaka
-
-					namespace alpaka::trait
-					{
-					    //! The SYCL blocking queue device type trait specialization.
-					    template<typename TDev, bool TBlocking>
-					    struct DevType<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        using type = TDev;
-					    };
-
-					    //! The SYCL blocking queue device get trait specialization.
-					    template<typename TDev, bool TBlocking>
-					    struct GetDev<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        static auto getDev(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
-					        {
-					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-					            return queue.m_dev;
-					        }
-					    };
-
-					    //! The SYCL blocking queue event type trait specialization.
-					    template<typename TDev, bool TBlocking>
-					    struct EventType<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        using type = EventGenericSycl<TDev>;
-					    };
-
-					    //! The SYCL blocking queue enqueue trait specialization.
-					    template<typename TDev, bool TBlocking, typename TTask>
-					    struct Enqueue<detail::QueueGenericSyclBase<TDev, TBlocking>, TTask>
-					    {
-					        static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
-					        {
-					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-					            queue.m_spQueueImpl->template enqueue<TBlocking>(task);
-					        }
-					    };
-
-					    //! The SYCL blocking queue test trait specialization.
-					    template<typename TDev, bool TBlocking>
-					    struct Empty<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        static auto empty(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
-					        {
-					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-					            return queue.m_spQueueImpl->empty();
-					        }
-					    };
-
-					    //! The SYCL blocking queue thread wait trait specialization.
-					    //!
-					    //! Blocks execution of the calling thread until the queue has finished processing all previously requested
-					    //! tasks (kernels, data copies, ...)
-					    template<typename TDev, bool TBlocking>
-					    struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> void
-					        {
-					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-					            queue.m_spQueueImpl->wait();
-					        }
-					    };
-
-					    //! The SYCL queue native handle trait specialization.
-					    template<typename TDev, bool TBlocking>
-					    struct NativeHandle<detail::QueueGenericSyclBase<TDev, TBlocking>>
-					    {
-					        [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
-					        {
-					            return queue.getNativeHandle();
-					        }
-					    };
-					} // namespace alpaka::trait
-
-					#endif
-					// ==
-					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
-					// ============================================================================
-
-				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
-
-				// #include <algorithm>    // amalgamate: file already included
-				// #include <cstddef>    // amalgamate: file already included
-				// #include <functional>    // amalgamate: file already included
-				// #include <memory>    // amalgamate: file already included
-				// #include <mutex>    // amalgamate: file already included
-				#include <shared_mutex>
-				// #include <string>    // amalgamate: file already included
-				// #include <utility>    // amalgamate: file already included
-				// #include <vector>    // amalgamate: file already included
-
-				#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-				namespace alpaka
-				{
-				    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-				    class BufGenericSycl;
-
-				    namespace detail
-				    {
-				        class DevGenericSyclImpl
-				        {
-				        public:
-				            DevGenericSyclImpl(sycl::device device, sycl::context context)
-				                : m_device{std::move(device)}
-				                , m_context{std::move(context)}
-				            {
-				            }
-
-				            // Don't call this without locking first!
-				            auto clean_queues() -> void
-				            {
-				                // Clean up dead queues
-				                auto const start = std::begin(m_queues);
-				                auto const old_end = std::end(m_queues);
-				                auto const new_end = std::remove_if(start, old_end, [](auto q_ptr) { return q_ptr.expired(); });
-				                m_queues.erase(new_end, old_end);
-				            }
-
-				            auto register_queue(std::shared_ptr<QueueGenericSyclImpl> const& queue) -> void
-				            {
-				                std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-				                clean_queues();
-				                m_queues.emplace_back(queue);
-				            }
-
-				            auto register_dependency(sycl::event event) -> void
-				            {
-				                std::shared_lock<std::shared_mutex> lock{m_mutex};
-
-				                for(auto& q_ptr : m_queues)
-				                {
-				                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
-				                        ptr->register_dependency(event);
-				                }
-				            }
-
-				            auto wait()
-				            {
-				                std::shared_lock<std::shared_mutex> lock{m_mutex};
-
-				                for(auto& q_ptr : m_queues)
-				                {
-				                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
-				                        ptr->wait();
-				                }
-				            }
-
-				            auto get_device() const -> sycl::device
-				            {
-				                return m_device;
-				            }
-
-				            auto get_context() const -> sycl::context
-				            {
-				                return m_context;
-				            }
-
-				        private:
-				            sycl::device m_device;
-				            sycl::context m_context;
-				            std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
-				            std::shared_mutex mutable m_mutex;
-				        };
-				    } // namespace detail
-
-				    //! The SYCL device handle.
-				    template<typename TPlatform>
-				    class DevGenericSycl
-				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TPlatform>>
-				        , public concepts::Implements<ConceptDev, DevGenericSycl<TPlatform>>
-				    {
-				    public:
-				        DevGenericSycl(sycl::device device, sycl::context context)
-				            : m_impl{std::make_shared<detail::DevGenericSyclImpl>(std::move(device), std::move(context))}
-				        {
-				        }
-
-				        friend auto operator==(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
-				        {
-				            return (lhs.m_impl == rhs.m_impl);
-				        }
-
-				        friend auto operator!=(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
-				        {
-				            return !(lhs == rhs);
-				        }
-
-				        [[nodiscard]] auto getNativeHandle() const -> std::pair<sycl::device, sycl::context>
-				        {
-				            return std::make_pair(m_impl->get_device(), m_impl->get_context());
-				        }
-
-				        std::shared_ptr<detail::DevGenericSyclImpl> m_impl;
-				    };
-				} // namespace alpaka
-
-				namespace alpaka::trait
-				{
-				    //! The SYCL device name get trait specialization.
-				    template<typename TPlatform>
-				    struct GetName<DevGenericSycl<TPlatform>>
-				    {
-				        static auto getName(DevGenericSycl<TPlatform> const& dev) -> std::string
-				        {
-				            auto const device = dev.getNativeHandle().first;
-				            return device.template get_info<sycl::info::device::name>();
-				        }
-				    };
-
-				    //! The SYCL device available memory get trait specialization.
-				    template<typename TPlatform>
-				    struct GetMemBytes<DevGenericSycl<TPlatform>>
-				    {
-				        static auto getMemBytes(DevGenericSycl<TPlatform> const& dev) -> std::size_t
-				        {
-				            auto const device = dev.getNativeHandle().first;
-				            return device.template get_info<sycl::info::device::global_mem_size>();
-				        }
-				    };
-
-				    //! The SYCL device free memory get trait specialization.
-				    template<typename TPlatform>
-				    struct GetFreeMemBytes<DevGenericSycl<TPlatform>>
-				    {
-				        static auto getFreeMemBytes(DevGenericSycl<TPlatform> const& /* dev */) -> std::size_t
-				        {
-				            static_assert(!sizeof(TPlatform), "Querying free device memory not supported for SYCL devices.");
-				            return std::size_t{};
-				        }
-				    };
-
-				    //! The SYCL device warp size get trait specialization.
-				    template<typename TPlatform>
-				    struct GetWarpSizes<DevGenericSycl<TPlatform>>
-				    {
-				        static auto getWarpSizes(DevGenericSycl<TPlatform> const& dev) -> std::vector<std::size_t>
-				        {
-				            auto const device = dev.getNativeHandle().first;
-				            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
-				            // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently does not
-				            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-				            if(find64 != warp_sizes.end())
-				                warp_sizes.erase(find64);
-				            // Sort the warp sizes in decreasing order
-				            std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-				            return warp_sizes;
-				        }
-				    };
-
-				    //! The SYCL device preferred warp size get trait specialization.
-				    template<typename TPlatform>
-				    struct GetPreferredWarpSize<DevGenericSycl<TPlatform>>
-				    {
-				        static auto getPreferredWarpSize(DevGenericSycl<TPlatform> const& dev) -> std::size_t
-				        {
-				            return GetWarpSizes<DevGenericSycl<TPlatform>>::getWarpSizes(dev).front();
-				        }
-				    };
-
-				    //! The SYCL device reset trait specialization.
-				    template<typename TPlatform>
-				    struct Reset<DevGenericSycl<TPlatform>>
-				    {
-				        static auto reset(DevGenericSycl<TPlatform> const&) -> void
-				        {
-				            static_assert(!sizeof(TPlatform), "Explicit device reset not supported for SYCL devices");
-				        }
-				    };
-
-				    //! The SYCL device native handle trait specialization.
-				    template<typename TPlatform>
-				    struct NativeHandle<DevGenericSycl<TPlatform>>
-				    {
-				        [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TPlatform> const& dev)
-				        {
-				            return dev.getNativeHandle();
-				        }
-				    };
-
-				    //! The SYCL device memory buffer type trait specialization.
-				    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-				    struct BufType<DevGenericSycl<TPlatform>, TElem, TDim, TIdx>
-				    {
-				        using type = BufGenericSycl<TElem, TDim, TIdx, TPlatform>;
-				    };
-
-				    //! The SYCL device platform type trait specialization.
-				    template<typename TPlatform>
-				    struct PlatformType<DevGenericSycl<TPlatform>>
-				    {
-				        using type = TPlatform;
-				    };
-
-				    //! The thread SYCL device wait specialization.
-				    template<typename TPlatform>
-				    struct CurrentThreadWaitFor<DevGenericSycl<TPlatform>>
-				    {
-				        static auto currentThreadWaitFor(DevGenericSycl<TPlatform> const& dev) -> void
-				        {
-				            dev.m_impl->wait();
-				        }
-				    };
-
-				    //! The SYCL blocking queue trait specialization.
-				    template<typename TPlatform>
-				    struct QueueType<DevGenericSycl<TPlatform>, Blocking>
-				    {
-				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPlatform>, true>;
-				    };
-
-				    //! The SYCL non-blocking queue trait specialization.
-				    template<typename TPlatform>
-				    struct QueueType<DevGenericSycl<TPlatform>, NonBlocking>
-				    {
-				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPlatform>, false>;
-				    };
-				} // namespace alpaka::trait
-
-				#endif
-				// ==
-				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
-				// ============================================================================
-
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && !defined(ALPAKA_DISABLE_VENDOR_RNG)
@@ -18346,6 +19123,7 @@
 		// Implementation details.
 		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 
 		// #include <cstddef>    // amalgamate: file already included
@@ -18358,10 +19136,13 @@
 
 		namespace alpaka
 		{
+		    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    class TaskKernelGenericSycl;
+
 		    //! The SYCL accelerator.
 		    //!
 		    //! This accelerator allows parallel kernel execution on SYCL devices.
-		    template<typename TDim, typename TIdx>
+		    template<typename TTag, typename TDim, typename TIdx>
 		    class AccGenericSycl
 		        : public WorkDivGenericSycl<TDim, TIdx>
 		        , public gb::IdxGbGenericSycl<TDim, TIdx>
@@ -18379,6 +19160,7 @@
 		        , public rand::RandGenericSycl<TDim>
 		#    endif
 		        , public warp::WarpGenericSycl<TDim>
+		        , public concepts::Implements<ConceptAcc, AccGenericSycl<TTag, TDim, TIdx>>
 		    {
 		        static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
 
@@ -18411,35 +19193,29 @@
 		namespace alpaka::trait
 		{
 		    //! The SYCL accelerator type trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct AccType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct AccType<AccGenericSycl<TTag, TDim, TIdx>>
 		    {
-		        using type = TAcc<TDim, TIdx>;
+		        using type = AccGenericSycl<TTag, TDim, TIdx>;
 		    };
 
 		    //! The SYCL single thread accelerator type trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct IsSingleThreadAcc<
-		        TAcc<TDim, TIdx>,
-		        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::false_type
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct IsSingleThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::false_type
 		    {
 		    };
 
 		    //! The SYCL multi thread accelerator type trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct IsMultiThreadAcc<
-		        TAcc<TDim, TIdx>,
-		        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::true_type
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct IsMultiThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::true_type
 		    {
 		    };
 
 		    //! The SYCL accelerator device properties get trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct GetAccDevProps<
-		        TAcc<TDim, TIdx>,
-		        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct GetAccDevProps<AccGenericSycl<TTag, TDim, TIdx>>
 		    {
-		        static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
+		        static auto getAccDevProps(DevGenericSycl<TTag> const& dev) -> AccDevProps<TDim, TIdx>
 		        {
 		            auto const device = dev.getNativeHandle().first;
 		            auto const max_threads_dim
@@ -18472,16 +19248,54 @@
 		        }
 		    };
 
+		    //! The SYCL accelerator name trait specialization.
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct GetAccName<AccGenericSycl<TTag, TDim, TIdx>>
+		    {
+		        static auto getAccName() -> std::string
+		        {
+		            return std::string("Acc") + core::demangled<TTag>.substr(__builtin_strlen("alpaka::Tag")) + "<"
+		                   + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
+		        }
+		    };
+
+		    //! The SYCL accelerator device type trait specialization.
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct DevType<AccGenericSycl<TTag, TDim, TIdx>>
+		    {
+		        using type = DevGenericSycl<TTag>;
+		    };
+
 		    //! The SYCL accelerator dimension getter trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct DimType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct DimType<AccGenericSycl<TTag, TDim, TIdx>>
 		    {
 		        using type = TDim;
 		    };
 
+		    //! The SYCL accelerator execution task type trait specialization.
+		    template<typename TTag, typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+		    struct CreateTaskKernel<AccGenericSycl<TTag, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+		    {
+		        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+		        {
+		            return TaskKernelGenericSycl<TTag, AccGenericSycl<TTag, TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>{
+		                workDiv,
+		                kernelFnObj,
+		                std::forward<TArgs>(args)...};
+		        }
+		    };
+
+		    //! The SYCL execution task platform type trait specialization.
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct PlatformType<AccGenericSycl<TTag, TDim, TIdx>>
+		    {
+		        using type = PlatformGenericSycl<TTag>;
+		    };
+
 		    //! The SYCL accelerator idx type trait specialization.
-		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
-		    struct IdxType<TAcc<TDim, TIdx>, std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
+		    template<typename TTag, typename TDim, typename TIdx>
+		    struct IdxType<AccGenericSycl<TTag, TDim, TIdx>>
 		    {
 		        using type = TIdx;
 		    };
@@ -18493,1276 +19307,7 @@
 		// ============================================================================
 
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
-		// ==
-		/* Copyright 2023 Jan Stephan, Andrea Bocci
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// ============================================================================
-			// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
-			// ==
-			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-				// ============================================================================
-				// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
-				// ==
-				/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-
-				// #include <cstddef>    // amalgamate: file already included
-				// #include <exception>    // amalgamate: file already included
-				#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-				// #    include <iostream>    // amalgamate: file already included
-				#endif
-				#include <sstream>
-				// #include <stdexcept>    // amalgamate: file already included
-				// #include <vector>    // amalgamate: file already included
-
-				#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-				#    if BOOST_COMP_CLANG
-				#        pragma clang diagnostic push
-				#        pragma clang diagnostic ignored "-Wswitch-default"
-				#    endif
-
-				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-				namespace alpaka
-				{
-				    //! The SYCL device manager.
-				    template<typename TSelector>
-				    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TSelector>>
-				    {
-				        PlatformGenericSycl()
-				            : platform{TSelector{}}
-				            , devices(platform.get_devices())
-				            , context{sycl::context{
-				                  devices,
-				                  [](sycl::exception_list exceptions)
-				                  {
-				                      auto ss_err = std::stringstream{};
-				                      ss_err << "Caught asynchronous SYCL exception(s):\n";
-				                      for(std::exception_ptr e : exceptions)
-				                      {
-				                          try
-				                          {
-				                              std::rethrow_exception(e);
-				                          }
-				                          catch(sycl::exception const& err)
-				                          {
-				                              ss_err << err.what() << " (" << err.code() << ")\n";
-				                          }
-				                      }
-				                      throw std::runtime_error(ss_err.str());
-				                  }}}
-				        {
-				        }
-
-				        [[nodiscard]] auto syclPlatform() -> sycl::platform&
-				        {
-				            return platform;
-				        }
-
-				        [[nodiscard]] auto syclPlatform() const -> sycl::platform const&
-				        {
-				            return platform;
-				        }
-
-				        [[nodiscard]] auto syclDevices() -> std::vector<sycl::device>&
-				        {
-				            return devices;
-				        }
-
-				        [[nodiscard]] auto syclDevices() const -> std::vector<sycl::device> const&
-				        {
-				            return devices;
-				        }
-
-				        [[nodiscard]] auto syclContext() -> sycl::context&
-				        {
-				            return context;
-				        }
-
-				        [[nodiscard]] auto syclContext() const -> sycl::context const&
-				        {
-				            return context;
-				        }
-
-				    private:
-				        sycl::platform platform;
-				        std::vector<sycl::device> devices;
-				        sycl::context context;
-				    };
-				} // namespace alpaka
-
-				namespace alpaka::trait
-				{
-				    //! The SYCL platform device count get trait specialization.
-				    template<typename TSelector>
-				    struct GetDevCount<PlatformGenericSycl<TSelector>>
-				    {
-				        static auto getDevCount(PlatformGenericSycl<TSelector> const& platform) -> std::size_t
-				        {
-				            ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-				            return platform.syclDevices().size();
-				        }
-				    };
-
-				    //! The SYCL platform device get trait specialization.
-				    template<typename TSelector>
-				    struct GetDevByIdx<alpaka::PlatformGenericSycl<TSelector>>
-				    {
-				        static auto getDevByIdx(PlatformGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
-				        {
-				            ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-				            auto const& devices = platform.syclDevices();
-				            if(devIdx >= devices.size())
-				            {
-				                auto ss_err = std::stringstream{};
-				                ss_err << "Unable to return device handle for device " << devIdx << ". There are only "
-				                       << devices.size() << " SYCL devices!";
-				                throw std::runtime_error(ss_err.str());
-				            }
-
-				            auto sycl_dev = devices.at(devIdx);
-
-				            // Log this device.
-				#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-				            printDeviceProperties(sycl_dev);
-				#    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-				            std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
-				#    endif
-				            using SyclPlatform = alpaka::PlatformGenericSycl<TSelector>;
-				            return typename DevType<SyclPlatform>::type{sycl_dev, platform.syclContext()};
-				        }
-
-				    private:
-				#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-				        //! Prints all the device properties to std::cout.
-				        static auto printDeviceProperties(sycl::device const& device) -> void
-				        {
-				            ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-				            constexpr auto KiB = std::size_t{1024};
-				            constexpr auto MiB = KiB * KiB;
-
-				            std::cout << "Device type: ";
-				            switch(device.get_info<sycl::info::device::device_type>())
-				            {
-				            case sycl::info::device_type::cpu:
-				                std::cout << "CPU";
-				                break;
-
-				            case sycl::info::device_type::gpu:
-				                std::cout << "GPU";
-				                break;
-
-				            case sycl::info::device_type::accelerator:
-				                std::cout << "Accelerator";
-				                break;
-
-				            case sycl::info::device_type::custom:
-				                std::cout << "Custom";
-				                break;
-
-				            case sycl::info::device_type::automatic:
-				                std::cout << "Automatic";
-				                break;
-
-				            case sycl::info::device_type::host:
-				                std::cout << "Host";
-				                break;
-
-				            // The SYCL spec forbids the return of device_type::all
-				            // Including this here to prevent warnings because of
-				            // missing cases
-				            case sycl::info::device_type::all:
-				                std::cout << "All";
-				                break;
-				            }
-				            std::cout << '\n';
-
-				            std::cout << "Name: " << device.get_info<sycl::info::device::name>() << '\n';
-
-				            std::cout << "Vendor: " << device.get_info<sycl::info::device::vendor>() << '\n';
-
-				            std::cout << "Vendor ID: " << device.get_info<sycl::info::device::vendor_id>() << '\n';
-
-				            std::cout << "Driver version: " << device.get_info<sycl::info::device::driver_version>() << '\n';
-
-				            std::cout << "SYCL version: " << device.get_info<sycl::info::device::version>() << '\n';
-
-				#        if !defined(BOOST_COMP_ICPX)
-				            // Not defined by Level Zero back-end
-				            std::cout << "Backend version: " << device.get_info<sycl::info::device::backend_version>() << '\n';
-				#        endif
-
-				            std::cout << "Aspects: " << '\n';
-
-				#        if defined(BOOST_COMP_ICPX)
-				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
-				            // These aspects are missing from oneAPI versions < 2023.2.0
-				            if(device.has(sycl::aspect::emulated))
-				                std::cout << "\t* emulated\n";
-
-				            if(device.has(sycl::aspect::host_debuggable))
-				                std::cout << "\t* debuggable using standard debuggers\n";
-				#            endif
-				#        endif
-
-				            if(device.has(sycl::aspect::fp16))
-				                std::cout << "\t* supports sycl::half precision\n";
-
-				            if(device.has(sycl::aspect::fp64))
-				                std::cout << "\t* supports double precision\n";
-
-				            if(device.has(sycl::aspect::atomic64))
-				                std::cout << "\t* supports 64-bit atomics\n";
-
-				            if(device.has(sycl::aspect::image))
-				                std::cout << "\t* supports images\n";
-
-				            if(device.has(sycl::aspect::online_compiler))
-				                std::cout << "\t* supports online compilation of device code\n";
-
-				            if(device.has(sycl::aspect::online_linker))
-				                std::cout << "\t* supports online linking of device code\n";
-
-				            if(device.has(sycl::aspect::queue_profiling))
-				                std::cout << "\t* supports queue profiling\n";
-
-				            if(device.has(sycl::aspect::usm_device_allocations))
-				                std::cout << "\t* supports explicit USM allocations\n";
-
-				            if(device.has(sycl::aspect::usm_host_allocations))
-				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
-
-				            if(device.has(sycl::aspect::usm_atomic_host_allocations))
-				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
-
-				            if(device.has(sycl::aspect::usm_shared_allocations))
-				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
-
-				            if(device.has(sycl::aspect::usm_atomic_shared_allocations))
-				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
-
-				            if(device.has(sycl::aspect::usm_system_allocations))
-				                std::cout << "\t* can access memory allocated by the system allocator\n";
-
-				            std::cout << "Available compute units: " << device.get_info<sycl::info::device::max_compute_units>()
-				                      << '\n';
-
-				            std::cout << "Maximum work item dimensions: ";
-				            auto dims = device.get_info<sycl::info::device::max_work_item_dimensions>();
-				            std::cout << dims << std::endl;
-
-				            std::cout << "Maximum number of work items:\n";
-				            auto const wi_1D = device.get_info<sycl::info::device::max_work_item_sizes<1>>();
-				            auto const wi_2D = device.get_info<sycl::info::device::max_work_item_sizes<2>>();
-				            auto const wi_3D = device.get_info<sycl::info::device::max_work_item_sizes<3>>();
-				            std::cout << "\t* 1D: (" << wi_1D.get(0) << ")\n";
-				            std::cout << "\t* 2D: (" << wi_2D.get(0) << ", " << wi_2D.get(1) << ")\n";
-				            std::cout << "\t* 3D: (" << wi_3D.get(0) << ", " << wi_3D.get(1) << ", " << wi_3D.get(2) << ")\n";
-
-				            std::cout << "Maximum number of work items per work-group: "
-				                      << device.get_info<sycl::info::device::max_work_group_size>() << '\n';
-
-				            std::cout << "Maximum number of sub-groups per work-group: "
-				                      << device.get_info<sycl::info::device::max_num_sub_groups>() << '\n';
-
-				            std::cout << "Supported sub-group sizes: ";
-				            auto const sg_sizes = device.get_info<sycl::info::device::sub_group_sizes>();
-				            for(auto const& sz : sg_sizes)
-				                std::cout << sz << ", ";
-				            std::cout << '\n';
-
-				            std::cout << "Preferred native vector width (char): "
-				                      << device.get_info<sycl::info::device::preferred_vector_width_char>() << '\n';
-
-				            std::cout << "Native ISA vector width (char): "
-				                      << device.get_info<sycl::info::device::native_vector_width_char>() << '\n';
-
-				            std::cout << "Preferred native vector width (short): "
-				                      << device.get_info<sycl::info::device::preferred_vector_width_short>() << '\n';
-
-				            std::cout << "Native ISA vector width (short): "
-				                      << device.get_info<sycl::info::device::native_vector_width_short>() << '\n';
-
-				            std::cout << "Preferred native vector width (int): "
-				                      << device.get_info<sycl::info::device::preferred_vector_width_int>() << '\n';
-
-				            std::cout << "Native ISA vector width (int): "
-				                      << device.get_info<sycl::info::device::native_vector_width_int>() << '\n';
-
-				            std::cout << "Preferred native vector width (long): "
-				                      << device.get_info<sycl::info::device::preferred_vector_width_long>() << '\n';
-
-				            std::cout << "Native ISA vector width (long): "
-				                      << device.get_info<sycl::info::device::native_vector_width_long>() << '\n';
-
-				            std::cout << "Preferred native vector width (float): "
-				                      << device.get_info<sycl::info::device::preferred_vector_width_float>() << '\n';
-
-				            std::cout << "Native ISA vector width (float): "
-				                      << device.get_info<sycl::info::device::native_vector_width_float>() << '\n';
-
-				            if(device.has(sycl::aspect::fp64))
-				            {
-				                std::cout << "Preferred native vector width (double): "
-				                          << device.get_info<sycl::info::device::preferred_vector_width_double>() << '\n';
-
-				                std::cout << "Native ISA vector width (double): "
-				                          << device.get_info<sycl::info::device::native_vector_width_double>() << '\n';
-				            }
-
-				            if(device.has(sycl::aspect::fp16))
-				            {
-				                std::cout << "Preferred native vector width (half): "
-				                          << device.get_info<sycl::info::device::preferred_vector_width_half>() << '\n';
-
-				                std::cout << "Native ISA vector width (half): "
-				                          << device.get_info<sycl::info::device::native_vector_width_half>() << '\n';
-				            }
-
-				            std::cout << "Maximum clock frequency: " << device.get_info<sycl::info::device::max_clock_frequency>()
-				                      << " MHz\n";
-
-				            std::cout << "Address space size: " << device.get_info<sycl::info::device::address_bits>() << "-bit\n";
-
-				            std::cout << "Maximum size of memory object allocation: "
-				                      << device.get_info<sycl::info::device::max_mem_alloc_size>() << " bytes\n";
-
-				            if(device.has(sycl::aspect::image))
-				            {
-				                std::cout << "Maximum number of simultaneous image object reads per kernel: "
-				                          << device.get_info<sycl::info::device::max_read_image_args>() << '\n';
-
-				                std::cout << "Maximum number of simultaneous image writes per kernel: "
-				                          << device.get_info<sycl::info::device::max_write_image_args>() << '\n';
-
-				                std::cout << "Maximum 1D/2D image width: " << device.get_info<sycl::info::device::image2d_max_width>()
-				                          << " px\n";
-
-				                std::cout << "Maximum 2D image height: " << device.get_info<sycl::info::device::image2d_max_height>()
-				                          << " px\n";
-
-				                std::cout << "Maximum 3D image width: " << device.get_info<sycl::info::device::image3d_max_width>()
-				                          << " px\n";
-
-				                std::cout << "Maximum 3D image height: " << device.get_info<sycl::info::device::image3d_max_height>()
-				                          << " px\n";
-
-				                std::cout << "Maximum 3D image depth: " << device.get_info<sycl::info::device::image3d_max_depth>()
-				                          << " px\n";
-
-				                std::cout << "Maximum number of samplers per kernel: "
-				                          << device.get_info<sycl::info::device::max_samplers>() << '\n';
-				            }
-
-				            std::cout << "Maximum kernel argument size: " << device.get_info<sycl::info::device::max_parameter_size>()
-				                      << " bytes\n";
-
-				            std::cout << "Memory base address alignment: "
-				                      << device.get_info<sycl::info::device::mem_base_addr_align>() << " bit\n";
-
-				            auto print_fp_config = [](std::string const& fp, std::vector<sycl::info::fp_config> const& conf)
-				            {
-				                std::cout << fp << " precision floating-point capabilities:\n";
-
-				                auto find_and_print = [&](sycl::info::fp_config val)
-				                {
-				                    auto it = std::find(begin(conf), end(conf), val);
-				                    std::cout << (it == std::end(conf) ? "No" : "Yes") << '\n';
-				                };
-
-				                std::cout << "\t* denorm support: ";
-				                find_and_print(sycl::info::fp_config::denorm);
-
-				                std::cout << "\t* INF & quiet NaN support: ";
-				                find_and_print(sycl::info::fp_config::inf_nan);
-
-				                std::cout << "\t* round to nearest even support: ";
-				                find_and_print(sycl::info::fp_config::round_to_nearest);
-
-				                std::cout << "\t* round to zero support: ";
-				                find_and_print(sycl::info::fp_config::round_to_zero);
-
-				                std::cout << "\t* round to infinity support: ";
-				                find_and_print(sycl::info::fp_config::round_to_inf);
-
-				                std::cout << "\t* IEEE754-2008 FMA support: ";
-				                find_and_print(sycl::info::fp_config::fma);
-
-				                std::cout << "\t* correctly rounded divide/sqrt support: ";
-				                find_and_print(sycl::info::fp_config::correctly_rounded_divide_sqrt);
-
-				                std::cout << "\t* software-implemented floating point operations: ";
-				                find_and_print(sycl::info::fp_config::soft_float);
-				            };
-
-				            if(device.has(sycl::aspect::fp16))
-				            {
-				                auto const fp16_conf = device.get_info<sycl::info::device::half_fp_config>();
-				                print_fp_config("Half", fp16_conf);
-				            }
-
-				            auto const fp32_conf = device.get_info<sycl::info::device::single_fp_config>();
-				            print_fp_config("Single", fp32_conf);
-
-				            if(device.has(sycl::aspect::fp64))
-				            {
-				                auto const fp64_conf = device.get_info<sycl::info::device::double_fp_config>();
-				                print_fp_config("Double", fp64_conf);
-				            }
-
-				            std::cout << "Global memory cache type: ";
-				            auto has_global_mem_cache = false;
-				            switch(device.get_info<sycl::info::device::global_mem_cache_type>())
-				            {
-				            case sycl::info::global_mem_cache_type::none:
-				                std::cout << "none";
-				                break;
-
-				            case sycl::info::global_mem_cache_type::read_only:
-				                std::cout << "read-only";
-				                has_global_mem_cache = true;
-				                break;
-
-				            case sycl::info::global_mem_cache_type::read_write:
-				                std::cout << "read-write";
-				                has_global_mem_cache = true;
-				                break;
-				            }
-				            std::cout << '\n';
-
-				            if(has_global_mem_cache)
-				            {
-				                std::cout << "Global memory cache line size: "
-				                          << device.get_info<sycl::info::device::global_mem_cache_line_size>() << " bytes\n";
-
-				                std::cout << "Global memory cache size: "
-				                          << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n";
-				            }
-
-				            std::cout << "Global memory size: " << device.get_info<sycl::info::device::global_mem_size>() / MiB
-				                      << " MiB" << std::endl;
-
-				            std::cout << "Local memory type: ";
-				            auto has_local_memory = false;
-				            switch(device.get_info<sycl::info::device::local_mem_type>())
-				            {
-				            case sycl::info::local_mem_type::none:
-				                std::cout << "none";
-				                break;
-
-				            case sycl::info::local_mem_type::local:
-				                std::cout << "local";
-				                has_local_memory = true;
-				                break;
-
-				            case sycl::info::local_mem_type::global:
-				                std::cout << "global";
-				                has_local_memory = true;
-				                break;
-				            }
-				            std::cout << '\n';
-
-				            if(has_local_memory)
-				                std::cout << "Local memory size: " << device.get_info<sycl::info::device::local_mem_size>() / KiB
-				                          << " KiB\n";
-
-				            std::cout << "Error correction support: "
-				                      << (device.get_info<sycl::info::device::error_correction_support>() ? "Yes" : "No") << '\n';
-
-				            auto print_memory_orders = [](std::vector<sycl::memory_order> const& mem_orders)
-				            {
-				                for(auto const& cap : mem_orders)
-				                {
-				                    switch(cap)
-				                    {
-				                    case sycl::memory_order::relaxed:
-				                        std::cout << "relaxed";
-				                        break;
-
-				                    case sycl::memory_order::acquire:
-				                        std::cout << "acquire";
-				                        break;
-
-				                    case sycl::memory_order::release:
-				                        std::cout << "release";
-				                        break;
-
-				                    case sycl::memory_order::acq_rel:
-				                        std::cout << "acq_rel";
-				                        break;
-
-				                    case sycl::memory_order::seq_cst:
-				                        std::cout << "seq_cst";
-				                        break;
-				#        if defined(BOOST_COMP_ICPX)
-				                    // Stop icpx from complaining about its own internals.
-				                    case sycl::memory_order::__consume_unsupported:
-				                        break;
-				#        endif
-				                    }
-				                    std::cout << ", ";
-				                }
-				                std::cout << '\n';
-				            };
-
-				            std::cout << "Supported memory orderings for atomic operations: ";
-				            auto const mem_orders = device.get_info<sycl::info::device::atomic_memory_order_capabilities>();
-				            print_memory_orders(mem_orders);
-
-				#        if defined(BOOST_COMP_ICPX)
-				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
-				            // Not implemented in oneAPI < 2023.2.0
-				            std::cout << "Supported memory orderings for sycl::atomic_fence: ";
-				            auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
-				            print_memory_orders(fence_orders);
-				#            endif
-				#        endif
-
-				            auto print_memory_scopes = [](std::vector<sycl::memory_scope> const& mem_scopes)
-				            {
-				                for(auto const& cap : mem_scopes)
-				                {
-				                    switch(cap)
-				                    {
-				                    case sycl::memory_scope::work_item:
-				                        std::cout << "work-item";
-				                        break;
-
-				                    case sycl::memory_scope::sub_group:
-				                        std::cout << "sub-group";
-				                        break;
-
-				                    case sycl::memory_scope::work_group:
-				                        std::cout << "work-group";
-				                        break;
-
-				                    case sycl::memory_scope::device:
-				                        std::cout << "device";
-				                        break;
-
-				                    case sycl::memory_scope::system:
-				                        std::cout << "system";
-				                        break;
-				                    }
-				                    std::cout << ", ";
-				                }
-				                std::cout << '\n';
-				            };
-
-				            std::cout << "Supported memory scopes for atomic operations: ";
-				            auto const mem_scopes = device.get_info<sycl::info::device::atomic_memory_scope_capabilities>();
-				            print_memory_scopes(mem_scopes);
-
-				#        if defined(BOOST_COMP_ICPX)
-				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
-				            // Not implemented in oneAPI < 2023.2.0
-				            std::cout << "Supported memory scopes for sycl::atomic_fence: ";
-				            auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
-				            print_memory_scopes(fence_scopes);
-				#            endif
-				#        endif
-
-				            std::cout << "Device timer resolution: "
-				                      << device.get_info<sycl::info::device::profiling_timer_resolution>() << " ns\n";
-
-				            std::cout << "Built-in kernels: ";
-				            auto const builtins = device.get_info<sycl::info::device::built_in_kernel_ids>();
-				            for(auto const& b : builtins)
-				                std::cout << b.get_name() << ", ";
-				            std::cout << '\n';
-
-				            std::cout << "Maximum number of subdevices: ";
-				            auto const max_subs = device.get_info<sycl::info::device::partition_max_sub_devices>();
-				            std::cout << max_subs << '\n';
-
-				            if(max_subs > 1)
-				            {
-				                std::cout << "Supported partition properties: ";
-				                auto const part_props = device.get_info<sycl::info::device::partition_properties>();
-				                auto has_affinity_domains = false;
-				                for(auto const& prop : part_props)
-				                {
-				                    switch(prop)
-				                    {
-				                    case sycl::info::partition_property::no_partition:
-				                        std::cout << "no partition";
-				                        break;
-
-				                    case sycl::info::partition_property::partition_equally:
-				                        std::cout << "equally";
-				                        break;
-
-				                    case sycl::info::partition_property::partition_by_counts:
-				                        std::cout << "by counts";
-				                        break;
-
-				                    case sycl::info::partition_property::partition_by_affinity_domain:
-				                        std::cout << "by affinity domain";
-				                        has_affinity_domains = true;
-				                        break;
-				#        if defined(BOOST_COMP_ICPX)
-				                    case sycl::info::partition_property::ext_intel_partition_by_cslice:
-				                        std::cout << "by compute slice (Intel extension; deprecated)";
-				                        break;
-				#        endif
-				                    }
-				                    std::cout << ", ";
-				                }
-				                std::cout << '\n';
-
-				                if(has_affinity_domains)
-				                {
-				                    std::cout << "Supported partition affinity domains: ";
-				                    auto const aff_doms = device.get_info<sycl::info::device::partition_affinity_domains>();
-				                    for(auto const& dom : aff_doms)
-				                    {
-				                        switch(dom)
-				                        {
-				                        case sycl::info::partition_affinity_domain::not_applicable:
-				                            std::cout << "not applicable";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::numa:
-				                            std::cout << "NUMA";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::L4_cache:
-				                            std::cout << "L4 cache";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::L3_cache:
-				                            std::cout << "L3 cache";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::L2_cache:
-				                            std::cout << "L2 cache";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::L1_cache:
-				                            std::cout << "L1 cache";
-				                            break;
-
-				                        case sycl::info::partition_affinity_domain::next_partitionable:
-				                            std::cout << "next partitionable";
-				                            break;
-				                        }
-				                        std::cout << ", ";
-				                    }
-				                    std::cout << '\n';
-				                }
-
-				                std::cout << "Current partition property: ";
-				                switch(device.get_info<sycl::info::device::partition_type_property>())
-				                {
-				                case sycl::info::partition_property::no_partition:
-				                    std::cout << "no partition";
-				                    break;
-
-				                case sycl::info::partition_property::partition_equally:
-				                    std::cout << "partitioned equally";
-				                    break;
-
-				                case sycl::info::partition_property::partition_by_counts:
-				                    std::cout << "partitioned by counts";
-				                    break;
-
-				                case sycl::info::partition_property::partition_by_affinity_domain:
-				                    std::cout << "partitioned by affinity domain";
-				                    break;
-
-				#        if defined(BOOST_COMP_ICPX)
-				                case sycl::info::partition_property::ext_intel_partition_by_cslice:
-				                    std::cout << "partitioned by compute slice (Intel extension; deprecated)";
-				                    break;
-				#        endif
-				                }
-				                std::cout << '\n';
-
-				                std::cout << "Current partition affinity domain: ";
-				                switch(device.get_info<sycl::info::device::partition_type_affinity_domain>())
-				                {
-				                case sycl::info::partition_affinity_domain::not_applicable:
-				                    std::cout << "not applicable";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::numa:
-				                    std::cout << "NUMA";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::L4_cache:
-				                    std::cout << "L4 cache";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::L3_cache:
-				                    std::cout << "L3 cache";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::L2_cache:
-				                    std::cout << "L2 cache";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::L1_cache:
-				                    std::cout << "L1 cache";
-				                    break;
-
-				                case sycl::info::partition_affinity_domain::next_partitionable:
-				                    std::cout << "next partitionable";
-				                    break;
-				                }
-				                std::cout << '\n';
-				            }
-
-				            std::cout.flush();
-				        }
-				#    endif
-				    };
-				} // namespace alpaka::trait
-
-				#    if BOOST_COMP_CLANG
-				#        pragma clang diagnostic pop
-				#    endif
-
-				#endif
-				// ==
-				// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
-				// ============================================================================
-
-
-			// #include <string>    // amalgamate: file already included
-
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
-
-			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-			namespace alpaka
-			{
-			    namespace detail
-			    {
-			        struct SyclCpuSelector
-			        {
-			            auto operator()(sycl::device const& dev) const -> int
-			            {
-			                return dev.is_cpu() ? 1 : -1;
-			            }
-			        };
-			    } // namespace detail
-
-			    //! The SYCL device manager.
-			    using PlatformCpuSycl = PlatformGenericSycl<detail::SyclCpuSelector>;
-			} // namespace alpaka
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL device manager device type trait specialization.
-			    template<>
-			    struct DevType<PlatformCpuSycl>
-			    {
-			        using type = DevGenericSycl<PlatformCpuSycl>; // = DevCpuSycl
-			    };
-			} // namespace alpaka::trait
-
-			#endif
-			// ==
-			// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
-			// ============================================================================
-
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
-
-		namespace alpaka
-		{
-		    using DevCpuSycl = DevGenericSycl<PlatformCpuSycl>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
-		// ==
-		/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-			// ============================================================================
-			// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
-			// ==
-			/* Copyright 2024 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
-				// ============================================================================
-				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
-				// ==
-				/* Copyright 2023 Andrea Bocci, Aurora Perego
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-				#    ifdef __SYCL_DEVICE_ONLY__
-
-				#        if defined(__SYCL_TARGET_INTEL_GPU_BDW__) || /* Broadwell Intel graphics architecture */                     \
-				            defined(__SYCL_TARGET_INTEL_GPU_SKL__) || /* Skylake Intel graphics architecture */                       \
-				            defined(__SYCL_TARGET_INTEL_GPU_KBL__) || /* Kaby Lake Intel graphics architecture */                     \
-				            defined(__SYCL_TARGET_INTEL_GPU_CFL__) || /* Coffee Lake Intel graphics architecture */                   \
-				            defined(__SYCL_TARGET_INTEL_GPU_APL__) || /* Apollo Lake Intel graphics architecture */                   \
-				            defined(__SYCL_TARGET_INTEL_GPU_GLK__) || /* Gemini Lake Intel graphics architecture */                   \
-				            defined(__SYCL_TARGET_INTEL_GPU_WHL__) || /* Whiskey Lake Intel graphics architecture */                  \
-				            defined(__SYCL_TARGET_INTEL_GPU_AML__) || /* Amber Lake Intel graphics architecture */                    \
-				            defined(__SYCL_TARGET_INTEL_GPU_CML__) || /* Comet Lake Intel graphics architecture */                    \
-				            defined(__SYCL_TARGET_INTEL_GPU_ICLLP__) || /* Ice Lake Intel graphics architecture */                    \
-				            defined(__SYCL_TARGET_INTEL_GPU_TGLLP__) || /* Tiger Lake Intel graphics architecture */                  \
-				            defined(__SYCL_TARGET_INTEL_GPU_RKL__) || /* Rocket Lake Intel graphics architecture */                   \
-				            defined(__SYCL_TARGET_INTEL_GPU_ADL_S__) || /* Alder Lake S Intel graphics architecture */                \
-				            defined(__SYCL_TARGET_INTEL_GPU_RPL_S__) || /* Raptor Lake Intel graphics architecture */                 \
-				            defined(__SYCL_TARGET_INTEL_GPU_ADL_P__) || /* Alder Lake P Intel graphics architecture */                \
-				            defined(__SYCL_TARGET_INTEL_GPU_ADL_N__) || /* Alder Lake N Intel graphics architecture */                \
-				            defined(__SYCL_TARGET_INTEL_GPU_DG1__) || /* DG1 Intel graphics architecture */                           \
-				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G10__) || /* Alchemist G10 Intel graphics architecture */             \
-				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G11__) || /* Alchemist G11 Intel graphics architecture */             \
-				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G12__) /* Alchemist G12 Intel graphics architecture */
-
-				#            define SYCL_SUBGROUP_SIZE (8 | 16 | 32)
-
-				#        elif defined(__SYCL_TARGET_INTEL_GPU_PVC__) /* Ponte Vecchio Intel graphics architecture */
-
-				#            define SYCL_SUBGROUP_SIZE (16 | 32)
-
-				#        elif defined(__SYCL_TARGET_INTEL_X86_64__) /* generate code ahead of time for x86_64 CPUs */
-
-				#            define SYCL_SUBGROUP_SIZE (4 | 8 | 16 | 32 | 64)
-
-				#        elif defined(__SYCL_TARGET_NVIDIA_GPU_SM_50__) || /* NVIDIA Maxwell architecture (compute capability 5.0) */ \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_52__) || /* NVIDIA Maxwell architecture (compute capability 5.2) */   \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_53__) || /* NVIDIA Jetson TX1 / Nano (compute capability 5.3) */      \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_60__) || /* NVIDIA Pascal architecture (compute capability 6.0) */    \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_61__) || /* NVIDIA Pascal architecture (compute capability 6.1) */    \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_62__) || /* NVIDIA Jetson TX2 (compute capability 6.2) */             \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_70__) || /* NVIDIA Volta architecture (compute capability 7.0) */     \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_72__) || /* NVIDIA Jetson AGX (compute capability 7.2) */             \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_75__) || /* NVIDIA Turing architecture (compute capability 7.5) */    \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_80__) || /* NVIDIA Ampere architecture (compute capability 8.0) */    \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_86__) || /* NVIDIA Ampere architecture (compute capability 8.6) */    \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_87__) || /* NVIDIA Jetson/Drive AGX Orin (compute capability 8.7) */  \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_89__) || /* NVIDIA Ada Lovelace arch. (compute capability 8.9) */     \
-				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_90__) /* NVIDIA Hopper architecture (compute capability 9.0) */
-
-				#            define SYCL_SUBGROUP_SIZE (32)
-
-				#        elif defined(__SYCL_TARGET_AMD_GPU_GFX700__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */         \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX701__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX702__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX801__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX802__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX803__) || /* AMD GCN 4.0 Arctic Islands architecture (gfx 8.0) */        \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX805__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX810__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.1) */      \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX900__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX902__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX904__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX906__) || /* AMD GCN 5.1 Vega II architecture (gfx 9.0) */               \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX908__) || /* AMD CDNA 1.0 Arcturus architecture (gfx 9.0) */             \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX90A__) /* AMD CDNA 2.0 Aldebaran architecture (gfx 9.0) */
-
-				#            define SYCL_SUBGROUP_SIZE (64)
-
-				#        elif defined(__SYCL_TARGET_AMD_GPU_GFX1010__) || /* AMD RDNA 1.0 Navi 10 architecture (gfx 10.1) */          \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1011__) || /* AMD RDNA 1.0 Navi 12 architecture (gfx 10.1) */            \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1012__) || /* AMD RDNA 1.0 Navi 14 architecture (gfx 10.1) */            \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1013__) || /* AMD RDNA 2.0 Oberon architecture (gfx 10.1) */             \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1030__) || /* AMD RDNA 2.0 Navi 21 architecture (gfx 10.3) */            \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1031__) || /* AMD RDNA 2.0 Navi 22 architecture (gfx 10.3) */            \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1032__) || /* AMD RDNA 2.0 Navi 23 architecture (gfx 10.3) */            \
-				            defined(__SYCL_TARGET_AMD_GPU_GFX1034__) /* AMD RDNA 2.0 Navi 24 architecture (gfx 10.3) */
-
-				#            define SYCL_SUBGROUP_SIZE (32 | 64)
-
-				#        else // __SYCL_TARGET_*
-
-				#            define SYCL_SUBGROUP_SIZE (0) /* unknown target */
-
-				#        endif // __SYCL_TARGET_*
-
-				#    else
-
-				#        define SYCL_SUBGROUP_SIZE (0) /* host compilation */
-
-				#    endif // __SYCL_DEVICE_ONLY__
-
-				#endif // ALPAKA_ACC_SYCL_ENABLED
-				// ==
-				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
-				// ============================================================================
-
-			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
-
-			// #include <cassert>    // amalgamate: file already included
-			// #include <functional>    // amalgamate: file already included
-			// #include <memory>    // amalgamate: file already included
-			// #include <stdexcept>    // amalgamate: file already included
-			// #include <tuple>    // amalgamate: file already included
-			#include <type_traits>
-			// #include <utility>    // amalgamate: file already included
-
-			#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic push
-			#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
-			#        pragma clang diagnostic ignored "-Wunused-parameter"
-			#    endif
-
-			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-			#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
-			        cgh.parallel_for(                                                                                             \
-			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-			                sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
-			            {                                                                                                         \
-			                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
-			                std::apply(                                                                                           \
-			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
-			                    k_args);                                                                                          \
-			            });
-
-			#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
-			        cgh.parallel_for(                                                                                             \
-			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-			                sycl::nd_item<TDim::value> work_item)                                                                 \
-			            {                                                                                                         \
-			                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
-			                std::apply(                                                                                           \
-			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
-			                    k_args);                                                                                          \
-			            });
-
-			#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
-			        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
-			        cgh.parallel_for(                                                                                             \
-			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-			                sycl::nd_item<TDim::value> work_item) {});
-
-			namespace alpaka
-			{
-			    //! The SYCL accelerator execution task.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
-			    {
-			    public:
-			        static_assert(TDim::value > 0 && TDim::value <= 3, "Invalid kernel dimensionality");
-
-			        template<typename TWorkDiv>
-			        TaskKernelGenericSycl(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-			            : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
-			            , m_kernelFnObj{kernelFnObj}
-			            , m_args{std::forward<TArgs>(args)...}
-			        {
-			        }
-
-			        auto operator()(sycl::handler& cgh) const -> void
-			        {
-			            auto const work_groups = WorkDivMembers<TDim, TIdx>::m_gridBlockExtent;
-			            auto const group_items = WorkDivMembers<TDim, TIdx>::m_blockThreadExtent;
-			            auto const item_elements = WorkDivMembers<TDim, TIdx>::m_threadElemExtent;
-
-			            auto const global_size = get_global_size(work_groups, group_items);
-			            auto const local_size = get_local_size(group_items);
-
-			            // allocate dynamic shared memory -- needs at least 1 byte to make the Xilinx Runtime happy
-			            auto const dyn_shared_mem_bytes = std::max(
-			                1ul,
-			                std::apply(
-			                    [&](std::decay_t<TArgs> const&... args) {
-			                        return getBlockSharedMemDynSizeBytes<TAcc>(m_kernelFnObj, group_items, item_elements, args...);
-			                    },
-			                    m_args));
-
-			            auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
-
-			            // allocate static shared memory -- value comes from the build system
-			            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
-			            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
-
-			            // copy-by-value so we don't access 'this' on the device
-			            auto k_func = m_kernelFnObj;
-			            auto k_args = m_args;
-
-			            constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
-			            bool supported = false;
-
-			            if constexpr(sub_group_size == 0)
-			            {
-			                // no explicit subgroup size requirement
-			                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE
-			                supported = true;
-			            }
-			            else
-			            {
-			#    if(SYCL_SUBGROUP_SIZE == 0)
-			                // no explicit SYCL target, assume JIT compilation
-			                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)
-			                supported = true;
-			#    else
-			                // check if the kernel should be launched with a subgroup size of 4
-			                if constexpr(sub_group_size == 4)
-			                {
-			#        if(SYCL_SUBGROUP_SIZE & 4)
-			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4)
-			                    supported = true;
-			#        else
-			                    // empty kernel, required to keep SYCL happy
-			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
-			#        endif
-			                }
-
-			                // check if the kernel should be launched with a subgroup size of 8
-			                if constexpr(sub_group_size == 8)
-			                {
-			#        if(SYCL_SUBGROUP_SIZE & 8)
-			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8)
-			                    supported = true;
-			#        else
-			                    // empty kernel, required to keep SYCL happy
-			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
-			#        endif
-			                }
-
-			                // check if the kernel should be launched with a subgroup size of 16
-			                if constexpr(sub_group_size == 16)
-			                {
-			#        if(SYCL_SUBGROUP_SIZE & 16)
-			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16)
-			                    supported = true;
-			#        else
-			                    // empty kernel, required to keep SYCL happy
-			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
-			#        endif
-			                }
-
-			                // check if the kernel should be launched with a subgroup size of 32
-			                if constexpr(sub_group_size == 32)
-			                {
-			#        if(SYCL_SUBGROUP_SIZE & 32)
-			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32)
-			                    supported = true;
-			#        else
-			                    // empty kernel, required to keep SYCL happy
-			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
-			#        endif
-			                }
-
-			                // check if the kernel should be launched with a subgroup size of 64
-			                if constexpr(sub_group_size == 64)
-			                {
-			#        if(SYCL_SUBGROUP_SIZE & 64)
-			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64)
-			                    supported = true;
-			#        else
-			                    // empty kernel, required to keep SYCL happy
-			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
-			#        endif
-			                }
-			#    endif
-
-			                // this subgroup size is not supported, raise an exception
-			                if(not supported)
-			                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
-			            }
-			        }
-
-			        static constexpr auto is_sycl_task = true;
-			        // Distinguish from other tasks
-			        static constexpr auto is_sycl_kernel = true;
-
-			    private:
-			        auto get_global_size(Vec<TDim, TIdx> const& work_groups, Vec<TDim, TIdx> const& group_items) const
-			        {
-			            if constexpr(TDim::value == 1)
-			                return sycl::range<1>{static_cast<std::size_t>(work_groups[0] * group_items[0])};
-			            else if constexpr(TDim::value == 2)
-			                return sycl::range<2>{
-			                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
-			                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
-			            else
-			                return sycl::range<3>{
-			                    static_cast<std::size_t>(work_groups[2] * group_items[2]),
-			                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
-			                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
-			        }
-
-			        auto get_local_size(Vec<TDim, TIdx> const& group_items) const
-			        {
-			            if constexpr(TDim::value == 1)
-			                return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
-			            else if constexpr(TDim::value == 2)
-			                return sycl::range<2>{
-			                    static_cast<std::size_t>(group_items[1]),
-			                    static_cast<std::size_t>(group_items[0])};
-			            else
-			                return sycl::range<3>{
-			                    static_cast<std::size_t>(group_items[2]),
-			                    static_cast<std::size_t>(group_items[1]),
-			                    static_cast<std::size_t>(group_items[0])};
-			        }
-
-			    public:
-			        TKernelFnObj m_kernelFnObj;
-			        std::tuple<std::decay_t<TArgs>...> m_args;
-			    };
-
-			} // namespace alpaka
-
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic pop
-			#    endif
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL execution task accelerator type trait specialization.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct AccType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-			    {
-			        using type = TAcc;
-			    };
-
-			    //! The SYCL execution task device type trait specialization.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct DevType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-			    {
-			        using type = typename DevType<TAcc>::type;
-			    };
-
-			    //! The SYCL execution task platform type trait specialization.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct PlatformType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-			    {
-			        using type = typename PlatformType<TAcc>::type;
-			    };
-
-			    //! The SYCL execution task dimension getter trait specialization.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct DimType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-			    {
-			        using type = TDim;
-			    };
-
-			    //! The SYCL execution task idx type trait specialization.
-			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct IdxType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-			    {
-			        using type = TIdx;
-			    };
-
-			} // namespace alpaka::trait
-
-			#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
-
-			#endif
-			// ==
-			// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
-			// ============================================================================
-
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
-
-		namespace alpaka
-		{
-		    template<typename TDim, typename TIdx>
-		    class AccCpuSycl;
-
-		    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		    using TaskKernelCpuSycl = TaskKernelGenericSycl<AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
-
-		    namespace trait
-		    {
-		        //! \brief Specialisation of the class template FunctionAttributes
-		        //! \tparam TDev The device type.
-		        //! \tparam TDim The dimensionality of the accelerator device properties.
-		        //! \tparam TIdx The idx type of the accelerator device properties.
-		        //! \tparam TKernelFn Kernel function object type.
-		        //! \tparam TArgs Kernel function object argument types as a parameter pack.
-		        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
-		        struct FunctionAttributes<AccCpuSycl<TDim, TIdx>, TDev, TKernelFn, TArgs...>
-		        {
-		            //! \param dev The device instance
-		            //! \param kernelFn The kernel function object which should be executed.
-		            //! \param args The kernel invocation arguments.
-		            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
-		            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
-		            ALPAKA_FN_HOST static auto getFunctionAttributes(
-		                TDev const& dev,
-		                [[maybe_unused]] TKernelFn const& kernelFn,
-		                [[maybe_unused]] TArgs&&... args) -> alpaka::KernelFunctionAttributes
-		            {
-		                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
-
-		                // set function properties for maxThreadsPerBlock to device properties
-		                auto const& props = alpaka::getAccDevProps<AccCpuSycl<TDim, TIdx>>(dev);
-		                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
-		                return kernelFunctionAttributes;
-		            }
-		        };
-		    } // namespace trait
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-
-	// #include <string>    // amalgamate: file already included
-	// #include <utility>    // amalgamate: file already included
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
@@ -19772,66 +19317,24 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a oneAPI-capable CPU target device.
 	    template<typename TDim, typename TIdx>
-	    class AccCpuSycl final
-	        : public AccGenericSycl<TDim, TIdx>
-	        , public concepts::Implements<ConceptAcc, AccCpuSycl<TDim, TIdx>>
+	    using AccCpuSycl = AccGenericSycl<TagCpuSycl, TDim, TIdx>;
+
+	    namespace trait
 	    {
-	    public:
-	        using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
-	    };
+	        template<typename TDim, typename TIdx>
+	        struct AccToTag<alpaka::AccCpuSycl<TDim, TIdx>>
+	        {
+	            using type = alpaka::TagCpuSycl;
+	        };
+
+	        template<typename TDim, typename TIdx>
+	        struct TagToAcc<alpaka::TagCpuSycl, TDim, TIdx>
+	        {
+	            using type = alpaka::AccCpuSycl<TDim, TIdx>;
+	        };
+	    } // namespace trait
+
 	} // namespace alpaka
-
-	namespace alpaka::trait
-	{
-	    //! The CPU SYCL accelerator name trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct GetAccName<AccCpuSycl<TDim, TIdx>>
-	    {
-	        static auto getAccName() -> std::string
-	        {
-	            return "AccCpuSycl<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
-	        }
-	    };
-
-	    //! The CPU SYCL accelerator device type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct DevType<AccCpuSycl<TDim, TIdx>>
-	    {
-	        using type = DevCpuSycl;
-	    };
-
-	    //! The CPU SYCL accelerator execution task type trait specialization.
-	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-	    struct CreateTaskKernel<AccCpuSycl<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
-	    {
-	        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-	        {
-	            return TaskKernelCpuSycl<TDim, TIdx, TKernelFnObj, TArgs...>{
-	                workDiv,
-	                kernelFnObj,
-	                std::forward<TArgs>(args)...};
-	        }
-	    };
-
-	    //! The CPU SYCL execution task platform type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct PlatformType<AccCpuSycl<TDim, TIdx>>
-	    {
-	        using type = PlatformCpuSycl;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct AccToTag<alpaka::AccCpuSycl<TDim, TIdx>>
-	    {
-	        using type = alpaka::TagCpuSycl;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct TagToAcc<alpaka::TagCpuSycl, TDim, TIdx>
-	    {
-	        using type = alpaka::AccCpuSycl<TDim, TIdx>;
-	    };
-	} // namespace alpaka::trait
 
 	#endif
 	// ==
@@ -20708,172 +20211,14 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Aurora Perego
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
 	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
-		// ==
-		/* Copyright 2023 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// ============================================================================
-			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
-			// ==
-			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
-
-			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-			// #    include <string>    // amalgamate: file already included
-
-			namespace alpaka
-			{
-			    namespace detail
-			    {
-			        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-			        // linker anyway.
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic push
-			#        pragma clang diagnostic ignored "-Wweak-vtables"
-			#    endif
-			        struct IntelFpgaSelector final
-			        {
-			#    ifdef ALPAKA_FPGA_EMULATION
-			            static constexpr auto platform_name = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
-			#    else
-			            static constexpr auto platform_name = "Intel(R) FPGA SDK for OpenCL(TM)";
-			#    endif
-
-			            auto operator()(sycl::device const& dev) const -> int
-			            {
-			                auto const& platform = dev.get_platform().get_info<sycl::info::platform::name>();
-			                auto const is_intel_fpga = dev.is_accelerator() && (platform == platform_name);
-
-			                return is_intel_fpga ? 1 : -1;
-			            }
-			        };
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic pop
-			#    endif
-			    } // namespace detail
-
-			    //! The SYCL device manager.
-			    using PlatformFpgaSyclIntel = PlatformGenericSycl<detail::IntelFpgaSelector>;
-			} // namespace alpaka
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL device manager device type trait specialization.
-			    template<>
-			    struct DevType<PlatformFpgaSyclIntel>
-			    {
-			        using type = DevGenericSycl<PlatformFpgaSyclIntel>; // = DevFpgaSyclIntel
-			    };
-			} // namespace alpaka::trait
-
-			#endif
-			// ==
-			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
-			// ============================================================================
-
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
-
-		namespace alpaka
-		{
-		    using DevFpgaSyclIntel = DevGenericSycl<PlatformFpgaSyclIntel>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
-		// ==
-		/* Copyright 2022 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
-
-		namespace alpaka
-		{
-		    template<typename TDim, typename TIdx>
-		    class AccFpgaSyclIntel;
-
-		    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		    using TaskKernelFpgaSyclIntel
-		        = TaskKernelGenericSycl<AccFpgaSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
-
-		    namespace trait
-		    {
-		        //! \brief Specialisation of the class template FunctionAttributes
-		        //! \tparam TDev The device type.
-		        //! \tparam TDim The dimensionality of the accelerator device properties.
-		        //! \tparam TIdx The idx type of the accelerator device properties.
-		        //! \tparam TKernelFn Kernel function object type.
-		        //! \tparam TArgs Kernel function object argument types as a parameter pack.
-		        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
-		        struct FunctionAttributes<AccFpgaSyclIntel<TDim, TIdx>, TDev, TKernelFn, TArgs...>
-		        {
-		            //! \param dev The device instance
-		            //! \param kernelFn The kernel function object which should be executed.
-		            //! \param args The kernel invocation arguments.
-		            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
-		            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
-		            ALPAKA_FN_HOST static auto getFunctionAttributes(
-		                TDev const& dev,
-		                [[maybe_unused]] TKernelFn const& kernelFn,
-		                [[maybe_unused]] TArgs&&... args) -> alpaka::KernelFunctionAttributes
-		            {
-		                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
-
-		                // set function properties for maxThreadsPerBlock to device properties
-		                auto const& props = alpaka::getAccDevProps<AccFpgaSyclIntel<TDim, TIdx>>(dev);
-		                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
-		                return kernelFunctionAttributes;
-		            }
-		        };
-		    } // namespace trait
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-
-	// #include <string>    // amalgamate: file already included
-	// #include <utility>    // amalgamate: file already included
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
@@ -20883,66 +20228,24 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel FPGA target device.
 	    template<typename TDim, typename TIdx>
-	    class AccFpgaSyclIntel final
-	        : public AccGenericSycl<TDim, TIdx>
-	        , public concepts::Implements<ConceptAcc, AccFpgaSyclIntel<TDim, TIdx>>
+	    using AccFpgaSyclIntel = AccGenericSycl<TagFpgaSyclIntel, TDim, TIdx>;
+
+	    namespace trait
 	    {
-	    public:
-	        using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
-	    };
+	        template<typename TDim, typename TIdx>
+	        struct AccToTag<alpaka::AccFpgaSyclIntel<TDim, TIdx>>
+	        {
+	            using type = alpaka::TagFpgaSyclIntel;
+	        };
+
+	        template<typename TDim, typename TIdx>
+	        struct TagToAcc<alpaka::TagFpgaSyclIntel, TDim, TIdx>
+	        {
+	            using type = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
+	        };
+	    } // namespace trait
+
 	} // namespace alpaka
-
-	namespace alpaka::trait
-	{
-	    //! The Intel FPGA SYCL accelerator name trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct GetAccName<AccFpgaSyclIntel<TDim, TIdx>>
-	    {
-	        static auto getAccName() -> std::string
-	        {
-	            return "AccFpgaSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
-	        }
-	    };
-
-	    //! The Intel FPGA SYCL accelerator device type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct DevType<AccFpgaSyclIntel<TDim, TIdx>>
-	    {
-	        using type = DevFpgaSyclIntel;
-	    };
-
-	    //! The Intel FPGA SYCL accelerator execution task type trait specialization.
-	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-	    struct CreateTaskKernel<AccFpgaSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
-	    {
-	        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-	        {
-	            return TaskKernelFpgaSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
-	                workDiv,
-	                kernelFnObj,
-	                std::forward<TArgs>(args)...};
-	        }
-	    };
-
-	    //! The Intel FPGA SYCL execution task platform type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct PlatformType<AccFpgaSyclIntel<TDim, TIdx>>
-	    {
-	        using type = PlatformFpgaSyclIntel;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct AccToTag<alpaka::AccFpgaSyclIntel<TDim, TIdx>>
-	    {
-	        using type = alpaka::TagFpgaSyclIntel;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct TagToAcc<alpaka::TagFpgaSyclIntel, TDim, TIdx>
-	    {
-	        using type = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
-	    };
-	} // namespace alpaka::trait
 
 	#endif
 	// ==
@@ -26376,157 +25679,14 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
 	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
-		// ==
-		/* Copyright 2023 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// ============================================================================
-			// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
-			// ==
-			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-
-			// #include <string>    // amalgamate: file already included
-
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
-
-			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-			namespace alpaka
-			{
-			    namespace detail
-			    {
-			        struct IntelGpuSelector
-			        {
-			            auto operator()(sycl::device const& dev) const -> int
-			            {
-			                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-			                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
-
-			                return is_intel_gpu ? 1 : -1;
-			            }
-			        };
-			    } // namespace detail
-
-			    //! The SYCL device manager.
-			    using PlatformGpuSyclIntel = PlatformGenericSycl<detail::IntelGpuSelector>;
-			} // namespace alpaka
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL device manager device type trait specialization.
-			    template<>
-			    struct DevType<PlatformGpuSyclIntel>
-			    {
-			        using type = DevGenericSycl<PlatformGpuSyclIntel>; // = DevGpuSyclIntel
-			    };
-			} // namespace alpaka::trait
-
-			#endif
-			// ==
-			// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
-			// ============================================================================
-
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
-
-		namespace alpaka
-		{
-		    using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
-		// ==
-		/* Copyright 2022 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
-
-		namespace alpaka
-		{
-		    template<typename TDim, typename TIdx>
-		    class AccGpuSyclIntel;
-
-		    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		    using TaskKernelGpuSyclIntel
-		        = TaskKernelGenericSycl<AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
-
-		    namespace trait
-		    {
-		        //! \brief Specialisation of the class template FunctionAttributes
-		        //! \tparam TDev The device type.
-		        //! \tparam TDim The dimensionality of the accelerator device properties.
-		        //! \tparam TIdx The idx type of the accelerator device properties.
-		        //! \tparam TKernelFn Kernel function object type.
-		        //! \tparam TArgs Kernel function object argument types as a parameter pack.
-		        template<typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
-		        struct FunctionAttributes<AccGpuSyclIntel<TDim, TIdx>, TDev, TKernelFn, TArgs...>
-		        {
-		            //! \param dev The device instance
-		            //! \param kernelFn The kernel function object which should be executed.
-		            //! \param args The kernel invocation arguments.
-		            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
-		            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
-		            ALPAKA_FN_HOST static auto getFunctionAttributes(
-		                TDev const& dev,
-		                [[maybe_unused]] TKernelFn const& kernelFn,
-		                [[maybe_unused]] TArgs&&... args) -> alpaka::KernelFunctionAttributes
-		            {
-		                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
-
-		                // set function properties for maxThreadsPerBlock to device properties
-		                auto const& props = alpaka::getAccDevProps<AccGpuSyclIntel<TDim, TIdx>>(dev);
-		                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
-		                return kernelFunctionAttributes;
-		            }
-		        };
-		    } // namespace trait
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-
-	// #include <string>    // amalgamate: file already included
-	// #include <utility>    // amalgamate: file already included
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
@@ -26536,66 +25696,24 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel GPU target device.
 	    template<typename TDim, typename TIdx>
-	    class AccGpuSyclIntel final
-	        : public AccGenericSycl<TDim, TIdx>
-	        , public concepts::Implements<ConceptAcc, AccGpuSyclIntel<TDim, TIdx>>
+	    using AccGpuSyclIntel = AccGenericSycl<TagGpuSyclIntel, TDim, TIdx>;
+
+	    namespace trait
 	    {
-	    public:
-	        using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
-	    };
+	        template<typename TDim, typename TIdx>
+	        struct AccToTag<alpaka::AccGpuSyclIntel<TDim, TIdx>>
+	        {
+	            using type = alpaka::TagGpuSyclIntel;
+	        };
+
+	        template<typename TDim, typename TIdx>
+	        struct TagToAcc<alpaka::TagGpuSyclIntel, TDim, TIdx>
+	        {
+	            using type = alpaka::AccGpuSyclIntel<TDim, TIdx>;
+	        };
+	    } // namespace trait
+
 	} // namespace alpaka
-
-	namespace alpaka::trait
-	{
-	    //! The Intel GPU SYCL accelerator name trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct GetAccName<AccGpuSyclIntel<TDim, TIdx>>
-	    {
-	        static auto getAccName() -> std::string
-	        {
-	            return "AccGpuSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
-	        }
-	    };
-
-	    //! The Intel GPU SYCL accelerator device type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct DevType<AccGpuSyclIntel<TDim, TIdx>>
-	    {
-	        using type = DevGpuSyclIntel;
-	    };
-
-	    //! The Intel GPU SYCL accelerator execution task type trait specialization.
-	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-	    struct CreateTaskKernel<AccGpuSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
-	    {
-	        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-	        {
-	            return TaskKernelGpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
-	                workDiv,
-	                kernelFnObj,
-	                std::forward<TArgs>(args)...};
-	        }
-	    };
-
-	    //! The Intel GPU SYCL execution task platform type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct PlatformType<AccGpuSyclIntel<TDim, TIdx>>
-	    {
-	        using type = PlatformGpuSyclIntel;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct AccToTag<alpaka::AccGpuSyclIntel<TDim, TIdx>>
-	    {
-	        using type = alpaka::TagGpuSyclIntel;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct TagToAcc<alpaka::TagGpuSyclIntel, TDim, TIdx>
-	    {
-	        using type = alpaka::AccGpuSyclIntel<TDim, TIdx>;
-	    };
-	} // namespace alpaka::trait
 
 	#endif
 	// ==
@@ -26895,7 +26013,29 @@
 // #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
 // dev
 // #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
-// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/dev/DevCpuSycl.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Andrea Bocci, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+
+	namespace alpaka
+	{
+	    using DevCpuSycl = DevGenericSycl<TagCpuSycl>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/dev/DevCpuSycl.hpp ==
+	// ============================================================================
+
 	// ============================================================================
 	// == ./include/alpaka/dev/DevCudaRt.hpp ==
 	// ==
@@ -26920,9 +26060,53 @@
 	// == ./include/alpaka/dev/DevCudaRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+
+	namespace alpaka
+	{
+	    using DevFpgaSyclIntel = DevGenericSycl<TagFpgaSyclIntel>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
+	// ============================================================================
+
 // #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+
+	namespace alpaka
+	{
+	    using DevGpuSyclIntel = DevGenericSycl<TagGpuSyclIntel>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
+	// ============================================================================
+
 	// ============================================================================
 	// == ./include/alpaka/dev/DevHipRt.hpp ==
 	// ==
@@ -27032,16 +26216,16 @@
 	// ============================================================================
 	// == ./include/alpaka/event/EventCpuSycl.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Andrea Bocci
+	/* Copyright 2024 Jan Stephan, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/event/EventGenericSycl.hpp ==
 		// ==
-		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Aurora Perego
+		/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -27052,7 +26236,7 @@
 			// ============================================================================
 			// == ./include/alpaka/queue/QueueGenericSyclBlocking.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2024 Jan Stephan, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -27063,8 +26247,8 @@
 
 			namespace alpaka
 			{
-			    template<typename TDev>
-			    using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TDev, true>;
+			    template<typename TTag>
+			    using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TTag, true>;
 			} // namespace alpaka
 
 			#endif
@@ -27075,7 +26259,7 @@
 			// ============================================================================
 			// == ./include/alpaka/queue/QueueGenericSyclNonBlocking.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2024 Jan Stephan, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -27086,8 +26270,8 @@
 
 			namespace alpaka
 			{
-			    template<typename TDev>
-			    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TDev, false>;
+			    template<typename TTag>
+			    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TTag, false>;
 			} // namespace alpaka
 
 			#endif
@@ -27108,11 +26292,11 @@
 		namespace alpaka
 		{
 		    //! The SYCL device event.
-		    template<typename TDev>
+		    template<typename TTag>
 		    class EventGenericSycl final
 		    {
 		    public:
-		        explicit EventGenericSycl(TDev const& dev) : m_dev{dev}
+		        explicit EventGenericSycl(DevGenericSycl<TTag> const& dev) : m_dev{dev}
 		        {
 		        }
 
@@ -27136,7 +26320,7 @@
 		            m_event = event;
 		        }
 
-		        TDev m_dev;
+		        DevGenericSycl<TTag> m_dev;
 
 		    private:
 		        sycl::event m_event{};
@@ -27146,20 +26330,20 @@
 		namespace alpaka::trait
 		{
 		    //! The SYCL device event device get trait specialization.
-		    template<typename TDev>
-		    struct GetDev<EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct GetDev<EventGenericSycl<TTag>>
 		    {
-		        static auto getDev(EventGenericSycl<TDev> const& event) -> TDev
+		        static auto getDev(EventGenericSycl<TTag> const& event) -> DevGenericSycl<TTag>
 		        {
 		            return event.m_dev;
 		        }
 		    };
 
 		    //! The SYCL device event test trait specialization.
-		    template<typename TDev>
-		    struct IsComplete<EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct IsComplete<EventGenericSycl<TTag>>
 		    {
-		        static auto isComplete(EventGenericSycl<TDev> const& event)
+		        static auto isComplete(EventGenericSycl<TTag> const& event)
 		        {
 		            auto const status
 		                = event.getNativeHandle().template get_info<sycl::info::event::command_execution_status>();
@@ -27168,20 +26352,20 @@
 		    };
 
 		    //! The SYCL queue enqueue trait specialization.
-		    template<typename TDev>
-		    struct Enqueue<QueueGenericSyclNonBlocking<TDev>, EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct Enqueue<QueueGenericSyclNonBlocking<TTag>, EventGenericSycl<TTag>>
 		    {
-		        static auto enqueue(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
+		        static auto enqueue(QueueGenericSyclNonBlocking<TTag>& queue, EventGenericSycl<TTag>& event)
 		        {
 		            event.setEvent(queue.m_spQueueImpl->get_last_event());
 		        }
 		    };
 
 		    //! The SYCL queue enqueue trait specialization.
-		    template<typename TDev>
-		    struct Enqueue<QueueGenericSyclBlocking<TDev>, EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct Enqueue<QueueGenericSyclBlocking<TTag>, EventGenericSycl<TTag>>
 		    {
-		        static auto enqueue(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
+		        static auto enqueue(QueueGenericSyclBlocking<TTag>& queue, EventGenericSycl<TTag>& event)
 		        {
 		            event.setEvent(queue.m_spQueueImpl->get_last_event());
 		        }
@@ -27191,30 +26375,30 @@
 		    //!
 		    //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been
 		    //! completed. If the event is not enqueued to a queue the method returns immediately.
-		    template<typename TDev>
-		    struct CurrentThreadWaitFor<EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct CurrentThreadWaitFor<EventGenericSycl<TTag>>
 		    {
-		        static auto currentThreadWaitFor(EventGenericSycl<TDev> const& event)
+		        static auto currentThreadWaitFor(EventGenericSycl<TTag> const& event)
 		        {
 		            event.getNativeHandle().wait_and_throw();
 		        }
 		    };
 
 		    //! The SYCL queue event wait trait specialization.
-		    template<typename TDev>
-		    struct WaiterWaitFor<QueueGenericSyclNonBlocking<TDev>, EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct WaiterWaitFor<QueueGenericSyclNonBlocking<TTag>, EventGenericSycl<TTag>>
 		    {
-		        static auto waiterWaitFor(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
+		        static auto waiterWaitFor(QueueGenericSyclNonBlocking<TTag>& queue, EventGenericSycl<TTag> const& event)
 		        {
 		            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
 		        }
 		    };
 
 		    //! The SYCL queue event wait trait specialization.
-		    template<typename TDev>
-		    struct WaiterWaitFor<QueueGenericSyclBlocking<TDev>, EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct WaiterWaitFor<QueueGenericSyclBlocking<TTag>, EventGenericSycl<TTag>>
 		    {
-		        static auto waiterWaitFor(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
+		        static auto waiterWaitFor(QueueGenericSyclBlocking<TTag>& queue, EventGenericSycl<TTag> const& event)
 		        {
 		            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
 		        }
@@ -27224,20 +26408,20 @@
 		    //!
 		    //! Any future work submitted in any queue of this device will wait for event to complete before beginning
 		    //! execution.
-		    template<typename TDev>
-		    struct WaiterWaitFor<TDev, EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct WaiterWaitFor<DevGenericSycl<TTag>, EventGenericSycl<TTag>>
 		    {
-		        static auto waiterWaitFor(TDev& dev, EventGenericSycl<TDev> const& event)
+		        static auto waiterWaitFor(DevGenericSycl<TTag>& dev, EventGenericSycl<TTag> const& event)
 		        {
 		            dev.m_impl->register_dependency(event.getNativeHandle());
 		        }
 		    };
 
 		    //! The SYCL device event native handle trait specialization.
-		    template<typename TDev>
-		    struct NativeHandle<EventGenericSycl<TDev>>
+		    template<typename TTag>
+		    struct NativeHandle<EventGenericSycl<TTag>>
 		    {
-		        [[nodiscard]] static auto getNativeHandle(EventGenericSycl<TDev> const& event)
+		        [[nodiscard]] static auto getNativeHandle(EventGenericSycl<TTag> const& event)
 		        {
 		            return event.getNativeHandle();
 		        }
@@ -27254,7 +26438,7 @@
 
 	namespace alpaka
 	{
-	    using EventCpuSycl = EventGenericSycl<DevCpuSycl>;
+	    using EventCpuSycl = EventGenericSycl<TagCpuSycl>;
 	} // namespace alpaka
 
 	#endif
@@ -27605,19 +26789,19 @@
 	// ============================================================================
 	// == ./include/alpaka/event/EventFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
-	    using EventFpgaSyclIntel = EventGenericSycl<DevFpgaSyclIntel>;
+	    using EventFpgaSyclIntel = EventGenericSycl<TagFpgaSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -27629,19 +26813,19 @@
 	// ============================================================================
 	// == ./include/alpaka/event/EventGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
-	    using EventGpuSyclIntel = EventGenericSycl<DevGpuSyclIntel>;
+	    using EventGpuSyclIntel = EventGenericSycl<TagGpuSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -31092,7 +30276,454 @@
 	// == ./include/alpaka/kernel/TaskKernelCpuSerial.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelCpuSycl.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
+		// ==
+		/* Copyright 2024 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
+			// ==
+			/* Copyright 2023 Andrea Bocci, Aurora Perego
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			#    ifdef __SYCL_DEVICE_ONLY__
+
+			#        if defined(__SYCL_TARGET_INTEL_GPU_BDW__) || /* Broadwell Intel graphics architecture */                     \
+			            defined(__SYCL_TARGET_INTEL_GPU_SKL__) || /* Skylake Intel graphics architecture */                       \
+			            defined(__SYCL_TARGET_INTEL_GPU_KBL__) || /* Kaby Lake Intel graphics architecture */                     \
+			            defined(__SYCL_TARGET_INTEL_GPU_CFL__) || /* Coffee Lake Intel graphics architecture */                   \
+			            defined(__SYCL_TARGET_INTEL_GPU_APL__) || /* Apollo Lake Intel graphics architecture */                   \
+			            defined(__SYCL_TARGET_INTEL_GPU_GLK__) || /* Gemini Lake Intel graphics architecture */                   \
+			            defined(__SYCL_TARGET_INTEL_GPU_WHL__) || /* Whiskey Lake Intel graphics architecture */                  \
+			            defined(__SYCL_TARGET_INTEL_GPU_AML__) || /* Amber Lake Intel graphics architecture */                    \
+			            defined(__SYCL_TARGET_INTEL_GPU_CML__) || /* Comet Lake Intel graphics architecture */                    \
+			            defined(__SYCL_TARGET_INTEL_GPU_ICLLP__) || /* Ice Lake Intel graphics architecture */                    \
+			            defined(__SYCL_TARGET_INTEL_GPU_TGLLP__) || /* Tiger Lake Intel graphics architecture */                  \
+			            defined(__SYCL_TARGET_INTEL_GPU_RKL__) || /* Rocket Lake Intel graphics architecture */                   \
+			            defined(__SYCL_TARGET_INTEL_GPU_ADL_S__) || /* Alder Lake S Intel graphics architecture */                \
+			            defined(__SYCL_TARGET_INTEL_GPU_RPL_S__) || /* Raptor Lake Intel graphics architecture */                 \
+			            defined(__SYCL_TARGET_INTEL_GPU_ADL_P__) || /* Alder Lake P Intel graphics architecture */                \
+			            defined(__SYCL_TARGET_INTEL_GPU_ADL_N__) || /* Alder Lake N Intel graphics architecture */                \
+			            defined(__SYCL_TARGET_INTEL_GPU_DG1__) || /* DG1 Intel graphics architecture */                           \
+			            defined(__SYCL_TARGET_INTEL_GPU_ACM_G10__) || /* Alchemist G10 Intel graphics architecture */             \
+			            defined(__SYCL_TARGET_INTEL_GPU_ACM_G11__) || /* Alchemist G11 Intel graphics architecture */             \
+			            defined(__SYCL_TARGET_INTEL_GPU_ACM_G12__) /* Alchemist G12 Intel graphics architecture */
+
+			#            define SYCL_SUBGROUP_SIZE (8 | 16 | 32)
+
+			#        elif defined(__SYCL_TARGET_INTEL_GPU_PVC__) /* Ponte Vecchio Intel graphics architecture */
+
+			#            define SYCL_SUBGROUP_SIZE (16 | 32)
+
+			#        elif defined(__SYCL_TARGET_INTEL_X86_64__) /* generate code ahead of time for x86_64 CPUs */
+
+			#            define SYCL_SUBGROUP_SIZE (4 | 8 | 16 | 32 | 64)
+
+			#        elif defined(__SYCL_TARGET_NVIDIA_GPU_SM_50__) || /* NVIDIA Maxwell architecture (compute capability 5.0) */ \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_52__) || /* NVIDIA Maxwell architecture (compute capability 5.2) */   \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_53__) || /* NVIDIA Jetson TX1 / Nano (compute capability 5.3) */      \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_60__) || /* NVIDIA Pascal architecture (compute capability 6.0) */    \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_61__) || /* NVIDIA Pascal architecture (compute capability 6.1) */    \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_62__) || /* NVIDIA Jetson TX2 (compute capability 6.2) */             \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_70__) || /* NVIDIA Volta architecture (compute capability 7.0) */     \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_72__) || /* NVIDIA Jetson AGX (compute capability 7.2) */             \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_75__) || /* NVIDIA Turing architecture (compute capability 7.5) */    \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_80__) || /* NVIDIA Ampere architecture (compute capability 8.0) */    \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_86__) || /* NVIDIA Ampere architecture (compute capability 8.6) */    \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_87__) || /* NVIDIA Jetson/Drive AGX Orin (compute capability 8.7) */  \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_89__) || /* NVIDIA Ada Lovelace arch. (compute capability 8.9) */     \
+			            defined(__SYCL_TARGET_NVIDIA_GPU_SM_90__) /* NVIDIA Hopper architecture (compute capability 9.0) */
+
+			#            define SYCL_SUBGROUP_SIZE (32)
+
+			#        elif defined(__SYCL_TARGET_AMD_GPU_GFX700__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */         \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX701__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX702__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX801__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX802__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX803__) || /* AMD GCN 4.0 Arctic Islands architecture (gfx 8.0) */        \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX805__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX810__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.1) */      \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX900__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX902__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX904__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX906__) || /* AMD GCN 5.1 Vega II architecture (gfx 9.0) */               \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX908__) || /* AMD CDNA 1.0 Arcturus architecture (gfx 9.0) */             \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX90A__) /* AMD CDNA 2.0 Aldebaran architecture (gfx 9.0) */
+
+			#            define SYCL_SUBGROUP_SIZE (64)
+
+			#        elif defined(__SYCL_TARGET_AMD_GPU_GFX1010__) || /* AMD RDNA 1.0 Navi 10 architecture (gfx 10.1) */          \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1011__) || /* AMD RDNA 1.0 Navi 12 architecture (gfx 10.1) */            \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1012__) || /* AMD RDNA 1.0 Navi 14 architecture (gfx 10.1) */            \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1013__) || /* AMD RDNA 2.0 Oberon architecture (gfx 10.1) */             \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1030__) || /* AMD RDNA 2.0 Navi 21 architecture (gfx 10.3) */            \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1031__) || /* AMD RDNA 2.0 Navi 22 architecture (gfx 10.3) */            \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1032__) || /* AMD RDNA 2.0 Navi 23 architecture (gfx 10.3) */            \
+			            defined(__SYCL_TARGET_AMD_GPU_GFX1034__) /* AMD RDNA 2.0 Navi 24 architecture (gfx 10.3) */
+
+			#            define SYCL_SUBGROUP_SIZE (32 | 64)
+
+			#        else // __SYCL_TARGET_*
+
+			#            define SYCL_SUBGROUP_SIZE (0) /* unknown target */
+
+			#        endif // __SYCL_TARGET_*
+
+			#    else
+
+			#        define SYCL_SUBGROUP_SIZE (0) /* host compilation */
+
+			#    endif // __SYCL_DEVICE_ONLY__
+
+			#endif // ALPAKA_ACC_SYCL_ENABLED
+			// ==
+			// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
+			// ============================================================================
+
+		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
+
+		// #include <cassert>    // amalgamate: file already included
+		// #include <functional>    // amalgamate: file already included
+		// #include <memory>    // amalgamate: file already included
+		// #include <stdexcept>    // amalgamate: file already included
+		// #include <tuple>    // amalgamate: file already included
+		#include <type_traits>
+		// #include <utility>    // amalgamate: file already included
+
+		#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+		#    if BOOST_COMP_CLANG
+		#        pragma clang diagnostic push
+		#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
+		#        pragma clang diagnostic ignored "-Wunused-parameter"
+		#    endif
+
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+		#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
+		        cgh.parallel_for(                                                                                             \
+		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+		                sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
+		            {                                                                                                         \
+		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+		                std::apply(                                                                                           \
+		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+		                    k_args);                                                                                          \
+		            });
+
+		#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
+		        cgh.parallel_for(                                                                                             \
+		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+		                sycl::nd_item<TDim::value> work_item)                                                                 \
+		            {                                                                                                         \
+		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+		                std::apply(                                                                                           \
+		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+		                    k_args);                                                                                          \
+		            });
+
+		#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
+		        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
+		        cgh.parallel_for(                                                                                             \
+		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+		                sycl::nd_item<TDim::value> work_item) {});
+
+		namespace alpaka
+		{
+		    //! The SYCL accelerator execution task.
+		    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
+		    {
+		    public:
+		        static_assert(TDim::value > 0 && TDim::value <= 3, "Invalid kernel dimensionality");
+
+		        template<typename TWorkDiv>
+		        TaskKernelGenericSycl(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+		            : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
+		            , m_kernelFnObj{kernelFnObj}
+		            , m_args{std::forward<TArgs>(args)...}
+		        {
+		        }
+
+		        auto operator()(sycl::handler& cgh) const -> void
+		        {
+		            auto const work_groups = WorkDivMembers<TDim, TIdx>::m_gridBlockExtent;
+		            auto const group_items = WorkDivMembers<TDim, TIdx>::m_blockThreadExtent;
+		            auto const item_elements = WorkDivMembers<TDim, TIdx>::m_threadElemExtent;
+
+		            auto const global_size = get_global_size(work_groups, group_items);
+		            auto const local_size = get_local_size(group_items);
+
+		            // allocate dynamic shared memory -- needs at least 1 byte to make the Xilinx Runtime happy
+		            auto const dyn_shared_mem_bytes = std::max(
+		                1ul,
+		                std::apply(
+		                    [&](std::decay_t<TArgs> const&... args) {
+		                        return getBlockSharedMemDynSizeBytes<TAcc>(m_kernelFnObj, group_items, item_elements, args...);
+		                    },
+		                    m_args));
+
+		            auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
+
+		            // allocate static shared memory -- value comes from the build system
+		            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
+		            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
+
+		            // copy-by-value so we don't access 'this' on the device
+		            auto k_func = m_kernelFnObj;
+		            auto k_args = m_args;
+
+		            constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
+		            bool supported = false;
+
+		            if constexpr(sub_group_size == 0)
+		            {
+		                // no explicit subgroup size requirement
+		                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE
+		                supported = true;
+		            }
+		            else
+		            {
+		#    if(SYCL_SUBGROUP_SIZE == 0)
+		                // no explicit SYCL target, assume JIT compilation
+		                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)
+		                supported = true;
+		#    else
+		                // check if the kernel should be launched with a subgroup size of 4
+		                if constexpr(sub_group_size == 4)
+		                {
+		#        if(SYCL_SUBGROUP_SIZE & 4)
+		                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4)
+		                    supported = true;
+		#        else
+		                    // empty kernel, required to keep SYCL happy
+		                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+		#        endif
+		                }
+
+		                // check if the kernel should be launched with a subgroup size of 8
+		                if constexpr(sub_group_size == 8)
+		                {
+		#        if(SYCL_SUBGROUP_SIZE & 8)
+		                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8)
+		                    supported = true;
+		#        else
+		                    // empty kernel, required to keep SYCL happy
+		                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+		#        endif
+		                }
+
+		                // check if the kernel should be launched with a subgroup size of 16
+		                if constexpr(sub_group_size == 16)
+		                {
+		#        if(SYCL_SUBGROUP_SIZE & 16)
+		                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16)
+		                    supported = true;
+		#        else
+		                    // empty kernel, required to keep SYCL happy
+		                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+		#        endif
+		                }
+
+		                // check if the kernel should be launched with a subgroup size of 32
+		                if constexpr(sub_group_size == 32)
+		                {
+		#        if(SYCL_SUBGROUP_SIZE & 32)
+		                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32)
+		                    supported = true;
+		#        else
+		                    // empty kernel, required to keep SYCL happy
+		                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+		#        endif
+		                }
+
+		                // check if the kernel should be launched with a subgroup size of 64
+		                if constexpr(sub_group_size == 64)
+		                {
+		#        if(SYCL_SUBGROUP_SIZE & 64)
+		                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64)
+		                    supported = true;
+		#        else
+		                    // empty kernel, required to keep SYCL happy
+		                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+		#        endif
+		                }
+		#    endif
+
+		                // this subgroup size is not supported, raise an exception
+		                if(not supported)
+		                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
+		            }
+		        }
+
+		        static constexpr auto is_sycl_task = true;
+		        // Distinguish from other tasks
+		        static constexpr auto is_sycl_kernel = true;
+
+		    private:
+		        auto get_global_size(Vec<TDim, TIdx> const& work_groups, Vec<TDim, TIdx> const& group_items) const
+		        {
+		            if constexpr(TDim::value == 1)
+		                return sycl::range<1>{static_cast<std::size_t>(work_groups[0] * group_items[0])};
+		            else if constexpr(TDim::value == 2)
+		                return sycl::range<2>{
+		                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
+		                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+		            else
+		                return sycl::range<3>{
+		                    static_cast<std::size_t>(work_groups[2] * group_items[2]),
+		                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
+		                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+		        }
+
+		        auto get_local_size(Vec<TDim, TIdx> const& group_items) const
+		        {
+		            if constexpr(TDim::value == 1)
+		                return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
+		            else if constexpr(TDim::value == 2)
+		                return sycl::range<2>{
+		                    static_cast<std::size_t>(group_items[1]),
+		                    static_cast<std::size_t>(group_items[0])};
+		            else
+		                return sycl::range<3>{
+		                    static_cast<std::size_t>(group_items[2]),
+		                    static_cast<std::size_t>(group_items[1]),
+		                    static_cast<std::size_t>(group_items[0])};
+		        }
+
+		    public:
+		        TKernelFnObj m_kernelFnObj;
+		        std::tuple<std::decay_t<TArgs>...> m_args;
+		    };
+
+		} // namespace alpaka
+
+		#    if BOOST_COMP_CLANG
+		#        pragma clang diagnostic pop
+		#    endif
+
+		namespace alpaka::trait
+		{
+		    //! The SYCL execution task accelerator type trait specialization.
+		    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    struct AccType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		    {
+		        using type = TAcc;
+		    };
+
+		    //! The SYCL execution task device type trait specialization.
+		    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    struct DevType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		    {
+		        using type = typename DevType<TAcc>::type;
+		    };
+
+		    //! The SYCL execution task platform type trait specialization.
+		    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    struct PlatformType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		    {
+		        using type = typename PlatformType<TAcc>::type;
+		    };
+
+		    //! The SYCL execution task dimension getter trait specialization.
+		    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    struct DimType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		    {
+		        using type = TDim;
+		    };
+
+		    //! The SYCL execution task idx type trait specialization.
+		    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    struct IdxType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		    {
+		        using type = TIdx;
+		    };
+
+		    //! \brief Specialisation of the class template FunctionAttributes
+		    //! \tparam TTag The SYCL device selector.
+		    //! \tparam TDev The device type.
+		    //! \tparam TDim The dimensionality of the accelerator device properties.
+		    //! \tparam TIdx The idx type of the accelerator device properties.
+		    //! \tparam TKernelFn Kernel function object type.
+		    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+		    template<typename TTag, typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+		    struct FunctionAttributes<AccGenericSycl<TTag, TDim, TIdx>, TDev, TKernelFn, TArgs...>
+		    {
+		        //! \param dev The device instance
+		        //! \param kernelFn The kernel function object which should be executed.
+		        //! \param args The kernel invocation arguments.
+		        //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+		        //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+		        ALPAKA_FN_HOST static auto getFunctionAttributes(
+		            TDev const& dev,
+		            [[maybe_unused]] TKernelFn const& kernelFn,
+		            [[maybe_unused]] TArgs&&... args) -> alpaka::KernelFunctionAttributes
+		        {
+		            alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+
+		            // set function properties for maxThreadsPerBlock to device properties
+		            auto const& props = alpaka::getAccDevProps<AccGenericSycl<TTag, TDim, TIdx>>(dev);
+		            kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+		            return kernelFunctionAttributes;
+		        }
+		    };
+		} // namespace alpaka::trait
+
+		#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
+
+		#endif
+		// ==
+		// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
+		// ============================================================================
+
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+
+	namespace alpaka
+	{
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelCpuSycl
+	        = TaskKernelGenericSycl<TagCpuSycl, AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
+	// ============================================================================
+
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuTbbBlocks.hpp ==
 	// ==
@@ -31533,7 +31164,32 @@
 	// == ./include/alpaka/kernel/TaskKernelCpuThreads.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+
+	namespace alpaka
+	{
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelFpgaSyclIntel
+	        = TaskKernelGenericSycl<TagFpgaSyclIntel, AccFpgaSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
+	// ============================================================================
+
 // #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuCudaRt.hpp ==
@@ -32521,7 +32177,32 @@
 	// == ./include/alpaka/kernel/TaskKernelGpuHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+
+	namespace alpaka
+	{
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelGpuSyclIntel
+	        = TaskKernelGenericSycl<TagGpuSyclIntel, AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
+	// ============================================================================
+
 // #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 // math
 // #include "alpaka/math/Complex.hpp"    // amalgamate: file already inlined
@@ -33594,7 +33275,7 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufCpuSycl.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -33603,7 +33284,7 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
 		// ==
-		/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
+		/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -33628,8 +33309,8 @@
 		namespace alpaka
 		{
 		    //! The SYCL memory buffer.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    class BufGenericSycl : public internal::ViewAccessOps<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    class BufGenericSycl : public internal::ViewAccessOps<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
 		    public:
 		        static_assert(
@@ -33640,7 +33321,7 @@
 
 		        //! Constructor
 		        template<typename TExtent, typename Deleter>
-		        BufGenericSycl(DevGenericSycl<TPlatform> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
+		        BufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
 		            : m_dev{dev}
 		            , m_extentElements{getExtentVecEnd<TDim>(extent)}
 		            , m_spMem(pMem, std::move(deleter))
@@ -33657,7 +33338,7 @@
 		                "The idx type of TExtent and the TIdx template parameter have to be identical!");
 		        }
 
-		        DevGenericSycl<TPlatform> m_dev;
+		        DevGenericSycl<TTag> m_dev;
 		        Vec<TDim, TIdx> m_extentElements;
 		        std::shared_ptr<TElem> m_spMem;
 		    };
@@ -33666,68 +33347,67 @@
 		namespace alpaka::trait
 		{
 		    //! The BufGenericSycl device type trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct DevType<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct DevType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
-		        using type = DevGenericSycl<TPlatform>;
+		        using type = DevGenericSycl<TTag>;
 		    };
 
 		    //! The BufGenericSycl device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
-		        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf)
+		        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
 		        {
 		            return buf.m_dev;
 		        }
 		    };
 
 		    //! The BufGenericSycl dimension getter trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct DimType<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct DimType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
 		        using type = TDim;
 		    };
 
 		    //! The BufGenericSycl memory element type get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct ElemType<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct ElemType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
 		        using type = TElem;
 		    };
 
 		    //! The BufGenericSycl extent get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetExtents<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetExtents<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
-		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) const
+		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const
 		        {
 		            return buf.m_extentElements;
 		        }
 		    };
 
 		    //! The BufGenericSycl native pointer get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
-		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) -> TElem const*
+		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) -> TElem const*
 		        {
 		            return buf.m_spMem.get();
 		        }
 
-		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPlatform>& buf) -> TElem*
+		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag>& buf) -> TElem*
 		        {
 		            return buf.m_spMem.get();
 		        }
 		    };
 
 		    //! The BufGenericSycl pointer on device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TPlatform>, DevGenericSycl<TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>
 		    {
-		        static auto getPtrDev(
-		            BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf,
-		            DevGenericSycl<TPlatform> const& dev) -> TElem const*
+		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf, DevGenericSycl<TTag> const& dev)
+		            -> TElem const*
 		        {
 		            if(dev == getDev(buf))
 		            {
@@ -33739,8 +33419,7 @@
 		            }
 		        }
 
-		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TPlatform>& buf, DevGenericSycl<TPlatform> const& dev)
-		            -> TElem*
+		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TTag>& buf, DevGenericSycl<TTag> const& dev) -> TElem*
 		        {
 		            if(dev == getDev(buf))
 		            {
@@ -33754,12 +33433,12 @@
 		    };
 
 		    //! The SYCL memory allocation trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TTag>>
 		    {
 		        template<typename TExtent>
-		        static auto allocBuf(DevGenericSycl<TPlatform> const& dev, TExtent const& extent)
-		            -> BufGenericSycl<TElem, TDim, TIdx, TPlatform>
+		        static auto allocBuf(DevGenericSycl<TTag> const& dev, TExtent const& extent)
+		            -> BufGenericSycl<TElem, TDim, TIdx, TTag>
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -33801,38 +33480,40 @@
 		                nativeContext);
 		            auto deleter = [ctx = nativeContext](TElem* ptr) { sycl::free(ptr, ctx); };
 
-		            return BufGenericSycl<TElem, TDim, TIdx, TPlatform>(dev, memPtr, std::move(deleter), extent);
+		            return BufGenericSycl<TElem, TDim, TIdx, TTag>(dev, memPtr, std::move(deleter), extent);
 		        }
 		    };
 
 		    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
-		    template<typename TDim, typename TPlatform>
-		    struct HasAsyncBufSupport<TDim, DevGenericSycl<TPlatform>> : std::false_type
+		    template<typename TDim, typename TTag>
+		    struct HasAsyncBufSupport<TDim, DevGenericSycl<TTag>> : std::false_type
 		    {
 		    };
 
 		    //! The BufGenericSycl offset get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
-		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const&) const -> Vec<TDim, TIdx>
+		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const&) const -> Vec<TDim, TIdx>
 		        {
 		            return Vec<TDim, TIdx>::zeros();
 		        }
 		    };
 
 		    //! The pinned/mapped memory allocation trait specialization for the SYCL devices.
-		    template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
-		    struct BufAllocMapped
+		    template<typename TTag, typename TElem, typename TDim, typename TIdx>
+		    struct BufAllocMapped<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>
 		    {
 		        template<typename TExtent>
-		        static auto allocMappedBuf(DevCpu const& host, TPlatform const& platform, TExtent const& extent)
-		            -> BufCpu<TElem, TDim, TIdx>
+		        static auto allocMappedBuf(
+		            DevCpu const& host,
+		            PlatformGenericSycl<TTag> const& platform,
+		            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-		            // Allocate SYCL page-locked memory on the host, mapped into the TPlatform address space and
-		            // accessible to all devices in the TPlatform.
+		            // Allocate SYCL page-locked memory on the host, mapped into the SYCL platform's address space and
+		            // accessible to all devices in the SYCL platform.
 		            auto ctx = platform.syclContext();
 		            TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
 		            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
@@ -33848,22 +33529,22 @@
 		    };
 
 		    //! The BufGenericSycl idx type trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
 		        using type = TIdx;
 		    };
 
 		    //! The BufCpu pointer on SYCL device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+		    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TTag>>
 		    {
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPlatform> const&) -> TElem const*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TTag> const&) -> TElem const*
 		        {
 		            return getPtrNative(buf);
 		        }
 
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPlatform> const&) -> TElem*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TTag> const&) -> TElem*
 		        {
 		            return getPtrNative(buf);
 		        }
@@ -33873,7 +33554,7 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/Copy.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego, Andrea Bocci
+			/* Copyright 2024 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -34131,8 +33812,8 @@
 			namespace alpaka::trait
 			{
 			    //! The SYCL host-to-device memory copy trait specialization.
-			    template<typename TPlatform, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatform>, DevCpu>
+			    template<typename TTag, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TTag>, DevCpu>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -34145,8 +33826,8 @@
 			    };
 
 			    //! The SYCL device-to-host memory copy trait specialization.
-			    template<typename TPlatform, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPlatform>>
+			    template<typename TTag, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TTag>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -34159,8 +33840,8 @@
 			    };
 
 			    //! The SYCL device-to-device memory copy trait specialization.
-			    template<typename TPlatformDst, typename TPlatformSrc, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatformDst>, DevGenericSycl<TPlatformSrc>>
+			    template<typename TTagDst, typename TTagSrc, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TTagDst>, DevGenericSycl<TTagSrc>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -34400,6 +34081,45 @@
 		#endif
 		// ==
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
+		// ============================================================================
+
+		// ============================================================================
+		// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
+		// ==
+		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    namespace detail
+		    {
+		        template<>
+		        struct SYCLDeviceSelector<TagCpuSycl>
+		        {
+		            auto operator()(sycl::device const& dev) const -> int
+		            {
+		                return dev.is_cpu() ? 1 : -1;
+		            }
+		        };
+		    } // namespace detail
+
+		    //! The SYCL device manager.
+		    using PlatformCpuSycl = PlatformGenericSycl<TagCpuSycl>;
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
 		// ============================================================================
 
 
@@ -35908,13 +35628,70 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
 	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
+		// ==
+		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    namespace detail
+		    {
+		        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
+		        // linker anyway.
+		#    if BOOST_COMP_CLANG
+		#        pragma clang diagnostic push
+		#        pragma clang diagnostic ignored "-Wweak-vtables"
+		#    endif
+		        template<>
+		        struct SYCLDeviceSelector<TagFpgaSyclIntel>
+		        {
+		#    ifdef ALPAKA_FPGA_EMULATION
+		            static constexpr auto platform_name = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
+		#    else
+		            static constexpr auto platform_name = "Intel(R) FPGA SDK for OpenCL(TM)";
+		#    endif
+
+		            auto operator()(sycl::device const& dev) const -> int
+		            {
+		                auto const& platform = dev.get_platform().get_info<sycl::info::platform::name>();
+		                auto const is_intel_fpga = dev.is_accelerator() && (platform == platform_name);
+
+		                return is_intel_fpga ? 1 : -1;
+		            }
+		        };
+		#    if BOOST_COMP_CLANG
+		#        pragma clang diagnostic pop
+		#    endif
+		    } // namespace detail
+
+		    //! The SYCL device manager.
+		    using PlatformFpgaSyclIntel = PlatformGenericSycl<TagFpgaSyclIntel>;
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
+		// ============================================================================
+
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
@@ -35933,13 +35710,55 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Luca Ferragina
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
 	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
+		// ==
+		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    namespace detail
+		    {
+		        template<>
+		        struct SYCLDeviceSelector<TagGpuSyclIntel>
+		        {
+		            auto operator()(sycl::device const& dev) const -> int
+		            {
+		                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+		                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
+
+		                return is_intel_gpu ? 1 : -1;
+		            }
+		        };
+		    } // namespace detail
+
+		    //! The SYCL device manager.
+		    using PlatformGpuSyclIntel = PlatformGenericSycl<TagGpuSyclIntel>;
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
+		// ============================================================================
+
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
@@ -36049,7 +35868,7 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
 		// ==
-		/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
+		/* Copyright 2024 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
 		 *                Jan Stephan, Andrea Bocci, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
@@ -36204,22 +36023,21 @@
 
 		#if defined(ALPAKA_ACC_SYCL_ENABLED)
 		        //! The SYCL device CreateViewPlainPtr trait specialization.
-		        template<typename TPlatform>
-		        struct CreateViewPlainPtr<DevGenericSycl<TPlatform>>
+		        template<typename TTag>
+		        struct CreateViewPlainPtr<DevGenericSycl<TTag>>
 		        {
 		            template<typename TElem, typename TExtent, typename TPitch>
 		            static auto createViewPlainPtr(
-		                DevGenericSycl<TPlatform> const& dev,
+		                DevGenericSycl<TTag> const& dev,
 		                TElem* pMem,
 		                TExtent const& extent,
 		                TPitch pitch)
 		            {
-		                return alpaka::
-		                    ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-		                        pMem,
-		                        dev,
-		                        extent,
-		                        pitch);
+		                return alpaka::ViewPlainPtr<DevGenericSycl<TTag>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+		                    pMem,
+		                    dev,
+		                    extent,
+		                    pitch);
 		            }
 		        };
 		#endif
@@ -37871,19 +37689,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueCpuSyclBlocking.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
-	    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<DevCpuSycl>;
+	    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<TagCpuSycl>;
 	} // namespace alpaka
 
 	#endif
@@ -37894,19 +37712,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueCpuSyclNonBlocking.hpp ==
 	// ==
-	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
-	    using QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking<DevCpuSycl>;
+	    using QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking<TagCpuSycl>;
 	} // namespace alpaka
 
 	#endif
@@ -37965,19 +37783,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueFpgaSyclIntelBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
-	    using QueueFpgaSyclIntelBlocking = QueueGenericSyclBlocking<DevFpgaSyclIntel>;
+	    using QueueFpgaSyclIntelBlocking = QueueGenericSyclBlocking<TagFpgaSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -37988,19 +37806,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueFpgaSyclIntelNonBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
-	    using QueueFpgaSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevFpgaSyclIntel>;
+	    using QueueFpgaSyclIntelNonBlocking = QueueGenericSyclNonBlocking<TagFpgaSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -38011,19 +37829,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueGpuSyclIntelBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
-	    using QueueGpuSyclIntelBlocking = QueueGenericSyclBlocking<DevGpuSyclIntel>;
+	    using QueueGpuSyclIntelBlocking = QueueGenericSyclBlocking<TagGpuSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -38034,19 +37852,19 @@
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueGpuSyclIntelNonBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2024 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
-	    using QueueGpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevGpuSyclIntel>;
+	    using QueueGpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<TagGpuSyclIntel>;
 	} // namespace alpaka
 
 	#endif
