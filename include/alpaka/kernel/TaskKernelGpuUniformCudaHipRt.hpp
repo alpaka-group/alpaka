@@ -312,11 +312,11 @@ namespace alpaka
                 {
                     // This checks if requested number of blocks is compliant with the maxima of the accelerator.
                     int numBlocksPerSm = 0;
-                    TApi::occupancyMaxActiveBlocksPerMultiprocessor(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::occupancyMaxActiveBlocksPerMultiprocessor(
                         &numBlocksPerSm,
                         kernelName,
                         blockThreadExtent.prod(),
-                        static_cast<std::size_t>(blockSharedMemDynSizeBytes));
+                        static_cast<std::size_t>(blockSharedMemDynSizeBytes)));
                     auto multiProcessorCount
                         = trait::GetAccDevProps<TAcc>::getAccDevProps(getDev(queue)).m_multiProcessorCount;
 
@@ -367,13 +367,13 @@ namespace alpaka
                         {
                             void const* kernelArgs[] = {&threadElemExtent, &task.m_kernelFnObj, &args...};
 
-                            TApi::launchCooperativeKernel(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchCooperativeKernel(
                                 reinterpret_cast<void*>(kernelName),
                                 gridDim,
                                 blockDim,
                                 const_cast<void**>(kernelArgs),
                                 static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                                queue.getNativeHandle());
+                                queue.getNativeHandle()));
                         }
                         else
                         {
@@ -486,12 +486,12 @@ namespace alpaka
                     = getBlockSharedMemDynSizeBytes<TAcc>(kernelFnObj, blockThreadExtent, threadElemExtent, args...);
 
                 int numBlocksPerSm = 0;
-                TApi::occupancyMaxActiveBlocksPerMultiprocessor(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::occupancyMaxActiveBlocksPerMultiprocessor(
                     &numBlocksPerSm,
                     alpaka::detail::
                         gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>,
                     blockThreadExtent.prod(),
-                    static_cast<std::size_t>(blockSharedMemDynSizeBytes));
+                    static_cast<std::size_t>(blockSharedMemDynSizeBytes)));
 
                 auto multiProcessorCount = trait::GetAccDevProps<TAcc>::getAccDevProps(device).m_multiProcessorCount;
 

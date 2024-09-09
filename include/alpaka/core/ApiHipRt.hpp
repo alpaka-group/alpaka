@@ -287,7 +287,7 @@ namespace alpaka
             size_t sharedMem,
             Stream_t stream)
         {
-            return ::hipLaunchCooperativeKernel(func, gridDim, blockDim, args, sharedMem, stream);
+            return ::hipLaunchCooperativeKernel(func, gridDim, blockDim, args, static_cast<uint>(sharedMem), stream);
         }
 
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
