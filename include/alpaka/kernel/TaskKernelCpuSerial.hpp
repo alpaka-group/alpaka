@@ -177,11 +177,11 @@ namespace alpaka
         struct MaxActiveBlocks<AccCpuSerial<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
         {
             ALPAKA_FN_HOST static auto getMaxActiveBlocks(
-                TKernelFnObj const& kernelFnObj,
-                TDev const& device,
-                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
-                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
-                TArgs const&... args) -> int
+                TKernelFnObj const& /*kernelFnObj*/,
+                TDev const& /*device*/,
+                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+                TArgs const&... /*args*/) -> int
             {
                 return 1;
             }

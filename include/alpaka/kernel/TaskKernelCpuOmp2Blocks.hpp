@@ -986,11 +986,11 @@ namespace alpaka
         struct MaxActiveBlocks<AccCpuOmp2Blocks<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
         {
             ALPAKA_FN_HOST static auto getMaxActiveBlocks(
-                TKernelFnObj const& kernelFnObj,
+                TKernelFnObj const& /*kernelFnObj*/,
                 TDev const& device,
-                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
-                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
-                TArgs const&... args) -> int
+                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+                TArgs const&... /*args*/) -> int
             {
                 return static_cast<int>(
                     trait::GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
