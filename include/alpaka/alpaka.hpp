@@ -97,6 +97,11 @@
 #include "alpaka/event/EventGpuSyclIntel.hpp"
 #include "alpaka/event/EventHipRt.hpp"
 #include "alpaka/event/Traits.hpp"
+// exec
+#include "alpaka/exec/ElementIndex.hpp"
+#include "alpaka/exec/IndependentElements.hpp"
+#include "alpaka/exec/Once.hpp"
+#include "alpaka/exec/UniformElements.hpp"
 // extent
 #include "alpaka/extent/Traits.hpp"
 // grid
@@ -118,7 +123,6 @@
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
 // kernel
-#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp"
 #include "alpaka/kernel/TaskKernelCpuOmp2Threads.hpp"
 #include "alpaka/kernel/TaskKernelCpuSerial.hpp"

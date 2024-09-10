@@ -8,23 +8,32 @@
 set +xv
 source ./script/setup_utilities.sh
 
+echo_green "<SCRIPT: install_cuda>"
+
 : "${ALPAKA_CI_CUDA_VERSION?'ALPAKA_CI_CUDA_VERSION must be specified'}"
 
 ALPAKA_CUDA_VER_SEMANTIC=( ${ALPAKA_CI_CUDA_VERSION//./ } )
 ALPAKA_CUDA_VER_MAJOR="${ALPAKA_CUDA_VER_SEMANTIC[0]}"
 echo ALPAKA_CUDA_VER_MAJOR: "${ALPAKA_CUDA_VER_MAJOR}"
 
+# if LD_LIBRARY_PATH is not set, the following statement will throw an unbound variable error
+# export LD_LIBRARY_PATH=/path/to/lib:${LD_LIBRARY_PATH} 
+if [ -z ${LD_LIBRARY_PATH+x} ]; then
+    export LD_LIBRARY_PATH=""
+fi
 
 if agc-manager -e cuda@${ALPAKA_CI_CUDA_VERSION}
 then
+    echo_green "<USE: preinstalled CUDA ${ALPAKA_CI_CUDA_VERSION}>"
     ALPAKA_CI_CUDA_PATH=$(agc-manager -b cuda@${ALPAKA_CI_CUDA_VERSION})
     export PATH=${ALPAKA_CI_CUDA_PATH}/bin:${PATH}
     export LD_LIBRARY_PATH=${ALPAKA_CI_CUDA_PATH}/lib64:${LD_LIBRARY_PATH}
 else
+    echo_yellow "<INSTALL: CUDA ${ALPAKA_CI_CUDA_VERSION}>"
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
         : "${ALPAKA_CI_CUDA_DIR?'ALPAKA_CI_CUDA_DIR must be specified'}"
-        : "${CMAKE_CUDA_COMPILER?'CMAKE_CUDA_COMPILER must be specified'}"
+        : "${ALPAKA_CI_CUDA_COMPILER?'ALPAKA_CI_CUDA_COMPILER must be specified'}"
 
         if [[ "$(cat /etc/os-release)" == *"20.04"* ]]
         then
@@ -148,7 +157,7 @@ else
         export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
         export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
 
-        if [ "${CMAKE_CUDA_COMPILER}" == "clang++" ]
+        if [ "${ALPAKA_CI_CUDA_COMPILER}" == "clang++" ]
         then
             travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-multilib
         fi
@@ -170,4 +179,15 @@ else
         # The 'thrust' package contains the CUDA C++ Core Compute Libraries (CCCL) which are required for cuRAND. The installer doesn't do dependency management so we have to install them manually.
         ./cuda_installer.exe -s "nvcc_${ALPAKA_CI_CUDA_VERSION}" "curand_dev_${ALPAKA_CI_CUDA_VERSION}" "cudart_${ALPAKA_CI_CUDA_VERSION}" "thrust_${ALPAKA_CI_CUDA_VERSION}" "visual_studio_integration_${ALPAKA_CI_CUDA_VERSION}"
     fi
+fi
+
+if [ "${ALPAKA_CI_CUDA_COMPILER}" == "nvcc" ]
+then
+    export CMAKE_CUDA_COMPILER=$(which nvcc)
+elif [ "${ALPAKA_CI_CUDA_COMPILER}" == "clang++" ]
+then
+    export CMAKE_CUDA_COMPILER=$(which clang++-${ALPAKA_CI_CLANG_VER})
+else
+    echo_red "unknown ALPAKA_CI_CUDA_COMPILER: ${ALPAKA_CI_CUDA_COMPILER}"
+    exit 1
 fi
