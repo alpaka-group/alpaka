@@ -39,6 +39,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagGpuCudaRt);
     CREATE_ACC_TAG(TagGpuHipRt);
     CREATE_ACC_TAG(TagGpuSyclIntel);
+    CREATE_ACC_TAG(TagGpuSyclNvidia);
 
     namespace concepts
     {
@@ -87,7 +88,8 @@ namespace alpaka
         alpaka::TagGpuHipRt,
         alpaka::TagCpuSycl,
         alpaka::TagFpgaSyclIntel,
-        alpaka::TagGpuSyclIntel>;
+        alpaka::TagGpuSyclIntel,
+        alpaka::TagGpuSyclNvidia>;
 
     //!  \brief Function to print the names of each tag in the given tuple of tags
     //!  \tparam TTuple is the type of the tuple of tags

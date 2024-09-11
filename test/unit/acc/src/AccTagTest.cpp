@@ -1,4 +1,4 @@
-/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
+/* Copyright 2025 Simeon Ehrig, Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -28,7 +28,8 @@ using TagList = std::tuple<
     alpaka::TagGpuHipRt,
     alpaka::TagCpuSycl,
     alpaka::TagFpgaSyclIntel,
-    alpaka::TagGpuSyclIntel>;
+    alpaka::TagGpuSyclIntel,
+    alpaka::TagGpuSyclNvidia>;
 
 using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuSerialIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSerial>,
@@ -40,7 +41,8 @@ using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccGpuHipRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuHipRt>,
     std::pair<alpaka::test::detail::AccCpuSyclIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSycl>,
     std::pair<alpaka::test::detail::AccFpgaSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclIntel>,
-    std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>>;
+    std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>,
+    std::pair<alpaka::test::detail::AccGpuSyclNvidiaIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclNvidia>>;
 
 using AccTagTestMatrix = alpaka::meta::CartesianProduct<std::tuple, AccToTagMap, TagList>;
 

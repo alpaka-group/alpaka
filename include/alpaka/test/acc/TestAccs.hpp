@@ -1,4 +1,4 @@
-/* Copyright 2024 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+/* Copyright 2025 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
  * Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -99,6 +99,13 @@ namespace alpaka::test
         template<typename TDim, typename TIdx>
         using AccGpuSyclIntelIfAvailableElseInt = int;
 #endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_GPU_NVIDIA)
+        template<typename TDim, typename TIdx>
+        using AccGpuSyclNvidiaIfAvailableElseInt = AccGpuSyclNvidia<TDim, TIdx>;
+#else
+        template<typename TDim, typename TIdx>
+        using AccGpuSyclNvidiaIfAvailableElseInt = int;
+#endif
 
         //! A vector containing all available accelerators and int's.
         template<typename TDim, typename TIdx>
@@ -112,7 +119,8 @@ namespace alpaka::test
             AccGpuHipRtIfAvailableElseInt<TDim, TIdx>,
             AccCpuSyclIfAvailableElseInt<TDim, TIdx>,
             AccFpgaSyclIntelIfAvailableElseInt<TDim, TIdx>,
-            AccGpuSyclIntelIfAvailableElseInt<TDim, TIdx>>;
+            AccGpuSyclIntelIfAvailableElseInt<TDim, TIdx>,
+            AccGpuSyclNvidiaIfAvailableElseInt<TDim, TIdx>>;
     } // namespace detail
 
     //! A vector containing all available accelerators.

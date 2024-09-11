@@ -1,4 +1,4 @@
-/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci, Aurora Perego
+/* Copyright 2025 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -72,6 +72,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
                      Acc,
                      alpaka::TagCpuSycl,
                      alpaka::TagGpuSyclIntel,
+                     alpaka::TagGpuSyclNvidia,
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {

@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan
+/* Copyright 2025 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan,
+ *                Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -53,6 +54,13 @@ namespace buftest
 #if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocBuf(alpaka::DevGpuSyclIntel dev, TExtent extent) -> alpaka::BufGpuSyclIntel<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevGpuSyclNvidia dev, TExtent extent) -> alpaka::BufGpuSyclNvidia<TElem, TDim, TIdx>
     {
         return alpaka::allocBuf<TElem, TIdx>(dev, extent);
     }

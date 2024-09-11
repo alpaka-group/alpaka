@@ -1,4 +1,4 @@
-/* Copyright 2024 Aurora Perego
+/* Copyright 2025 Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -26,6 +26,13 @@ namespace alpaka
 
         template<typename T>
         struct DevGlobalTrait<TagGpuSyclIntel, T>
+        {
+            // SYCL GPU implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagGpuSyclNvidia, T>
         {
             // SYCL GPU implementation
             using Type = sycl::ext::oneapi::experimental::device_global<T>;
