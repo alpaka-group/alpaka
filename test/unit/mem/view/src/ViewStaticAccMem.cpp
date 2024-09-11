@@ -72,6 +72,12 @@ using EnabledAccsElseInt = std::tuple<alpaka::AccGpuSyclNvidia<TDim, TIdx>>;
 template<typename TDim, typename TIdx>
 using EnabledAccs = typename alpaka::meta::Filter<EnabledAccsElseInt<TDim, TIdx>, std::is_class>;
 using TestAccs = EnabledAccs<Dim, Idx>;
+#elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_GPU_AMD)
+template<typename TDim, typename TIdx>
+using EnabledAccsElseInt = std::tuple<alpaka::AccGpuSyclAmd<TDim, TIdx>>;
+template<typename TDim, typename TIdx>
+using EnabledAccs = typename alpaka::meta::Filter<EnabledAccsElseInt<TDim, TIdx>, std::is_class>;
+using TestAccs = EnabledAccs<Dim, Idx>;
 #else
 using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
 #endif

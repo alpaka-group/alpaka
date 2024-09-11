@@ -625,6 +625,7 @@ if(alpaka_ACC_SYCL_ENABLE)
         cmake_dependent_option(alpaka_SYCL_ONEAPI_FPGA "Enable oneAPI FPGA targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
         cmake_dependent_option(alpaka_SYCL_ONEAPI_GPU "Enable oneAPI GPU targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
         cmake_dependent_option(alpaka_SYCL_ONEAPI_GPU_NVIDIA "Enable NVIDIA GPU targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
+        cmake_dependent_option(alpaka_SYCL_ONEAPI_GPU_AMD "Enable AMD GPU targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
         # Intel FPGA emulation / simulation
         if(alpaka_SYCL_ONEAPI_FPGA)
             set(alpaka_SYCL_ONEAPI_FPGA_MODE "emulation" CACHE STRING "Synthesis type for oneAPI FPGA targets")
@@ -649,7 +650,7 @@ if(alpaka_ACC_SYCL_ENABLE)
             list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_ONEAPI_FPGA_TARGET})
         endif()
 
-        if(alpaka_SYCL_ONEAPI_GPU OR alpaka_SYCL_ONEAPI_GPU_NVIDIA)
+        if(alpaka_SYCL_ONEAPI_GPU OR alpaka_SYCL_ONEAPI_GPU_NVIDIA OR alpaka_SYCL_ONEAPI_GPU_AMD)
             list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_ONEAPI_GPU_TARGET})
         endif()
 
@@ -718,6 +719,18 @@ if(alpaka_ACC_SYCL_ENABLE)
             string(REPLACE ";" "," alpaka_SYCL_ONEAPI_GPU_DEVICES "${alpaka_SYCL_ONEAPI_GPU_DEVICES}")
 
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU_NVIDIA")
+        endif()
+
+        if(alpaka_SYCL_ONEAPI_GPU_AMD)
+            # Create a drop-down list (in cmake-gui) of valid Intel GPU targets. On the command line the user can specifiy
+            # additional targets, such as ranges: "Gen8-Gen12LP" or lists: "icllp;skl".
+            set(alpaka_SYCL_ONEAPI_GPU_DEVICES "amd_gpu_gfx1200" CACHE STRING "AMD GPU devices / generations to compile for")
+            set_property(CACHE alpaka_SYCL_ONEAPI_GPU_DEVICES
+                        PROPERTY STRINGS "amd_gpu_gfx700;amd_gpu_gfx701;amd_gpu_gfx702;amd_gpu_gfx801;amd_gpu_gfx802;amd_gpu_gfx803;amd_gpu_gfx805;amd_gpu_gfx810;amd_gpu_gfx900;amd_gpu_gfx902;amd_gpu_gfx904;amd_gpu_gfx906;amd_gpu_gfx908;amd_gpu_gfx909;amd_gpu_gfx90a;amd_gpu_gfx90c;amd_gpu_gfx940;amd_gpu_gfx941;amd_gpu_gfx942;amd_gpu_gfx1010;amd_gpu_gfx1011;amd_gpu_gfx1012;amd_gpu_gfx1013;amd_gpu_gfx1030;amd_gpu_gfx1031;amd_gpu_gfx1032;amd_gpu_gfx1033;amd_gpu_gfx1034;amd_gpu_gfx1035;amd_gpu_gfx1036;amd_gpu_gfx1100;amd_gpu_gfx1101;amd_gpu_gfx1102;amd_gpu_gfx1103;amd_gpu_gfx1150;amd_gpu_gfx1151;amd_gpu_gfx1200;amd_gpu_gfx1201")
+            # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
+            string(REPLACE ";" "," alpaka_SYCL_ONEAPI_GPU_DEVICES "${alpaka_SYCL_ONEAPI_GPU_DEVICES}")
+
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU_AMD")
         endif()
 
         #-----------------------------------------------------------------------------------------------------------------
@@ -798,6 +811,9 @@ if(alpaka_ACC_SYCL_ENABLE)
     endif()
     if(alpaka_SYCL_ONEAPI_GPU_NVIDIA)
         target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_GPU_NVIDIA")
+    endif()
+    if(alpaka_SYCL_ONEAPI_GPU_AMD)
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_GPU_AMD")
     endif()
 
     message(STATUS alpaka_ACC_SYCL_ENABLED)

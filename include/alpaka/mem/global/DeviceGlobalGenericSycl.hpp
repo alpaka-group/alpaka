@@ -39,6 +39,13 @@ namespace alpaka
         };
 
         template<typename T>
+        struct DevGlobalTrait<TagGpuSyclAmd, T>
+        {
+            // SYCL GPU implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+
+        template<typename T>
         struct DevGlobalTrait<TagFpgaSyclIntel, T>
         {
             // SYCL FPGA implementation

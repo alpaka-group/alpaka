@@ -29,7 +29,8 @@ using TagList = std::tuple<
     alpaka::TagCpuSycl,
     alpaka::TagFpgaSyclIntel,
     alpaka::TagGpuSyclIntel,
-    alpaka::TagGpuSyclNvidia>;
+    alpaka::TagGpuSyclNvidia,
+    alpaka::TagGpuSyclAmd>;
 
 using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuSerialIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSerial>,
@@ -42,7 +43,8 @@ using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuSyclIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSycl>,
     std::pair<alpaka::test::detail::AccFpgaSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclIntel>,
     std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>,
-    std::pair<alpaka::test::detail::AccGpuSyclNvidiaIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclNvidia>>;
+    std::pair<alpaka::test::detail::AccGpuSyclNvidiaIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclNvidia>,
+    std::pair<alpaka::test::detail::AccGpuSyclAmdIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclAmd>>;
 
 using AccTagTestMatrix = alpaka::meta::CartesianProduct<std::tuple, AccToTagMap, TagList>;
 

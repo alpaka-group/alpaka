@@ -1,4 +1,4 @@
-/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
+/* Copyright 2025 Simeon Ehrig, Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -40,6 +40,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagGpuHipRt);
     CREATE_ACC_TAG(TagGpuSyclIntel);
     CREATE_ACC_TAG(TagGpuSyclNvidia);
+    CREATE_ACC_TAG(TagGpuSyclAmd);
 
     namespace concepts
     {
@@ -89,7 +90,8 @@ namespace alpaka
         alpaka::TagCpuSycl,
         alpaka::TagFpgaSyclIntel,
         alpaka::TagGpuSyclIntel,
-        alpaka::TagGpuSyclNvidia>;
+        alpaka::TagGpuSyclNvidia,
+        alpaka::TagGpuSyclAmd>;
 
     //!  \brief Function to print the names of each tag in the given tuple of tags
     //!  \tparam TTuple is the type of the tuple of tags

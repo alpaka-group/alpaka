@@ -106,6 +106,13 @@ namespace alpaka::test
         template<typename TDim, typename TIdx>
         using AccGpuSyclNvidiaIfAvailableElseInt = int;
 #endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_GPU_AMD)
+        template<typename TDim, typename TIdx>
+        using AccGpuSyclAmdIfAvailableElseInt = AccGpuSyclAmd<TDim, TIdx>;
+#else
+        template<typename TDim, typename TIdx>
+        using AccGpuSyclAmdIfAvailableElseInt = int;
+#endif
 
         //! A vector containing all available accelerators and int's.
         template<typename TDim, typename TIdx>
@@ -120,7 +127,8 @@ namespace alpaka::test
             AccCpuSyclIfAvailableElseInt<TDim, TIdx>,
             AccFpgaSyclIntelIfAvailableElseInt<TDim, TIdx>,
             AccGpuSyclIntelIfAvailableElseInt<TDim, TIdx>,
-            AccGpuSyclNvidiaIfAvailableElseInt<TDim, TIdx>>;
+            AccGpuSyclNvidiaIfAvailableElseInt<TDim, TIdx>,
+            AccGpuSyclAmdIfAvailableElseInt<TDim, TIdx>>;
     } // namespace detail
 
     //! A vector containing all available accelerators.

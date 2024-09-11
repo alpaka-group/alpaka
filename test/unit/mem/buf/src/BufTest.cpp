@@ -65,6 +65,13 @@ namespace buftest
         return alpaka::allocBuf<TElem, TIdx>(dev, extent);
     }
 #endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevGpuSyclAmd dev, TExtent extent) -> alpaka::BufGpuSyclAmd<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocBuf(alpaka::DevFpgaSyclIntel dev, TExtent extent) -> alpaka::BufFpgaSyclIntel<TElem, TDim, TIdx>
