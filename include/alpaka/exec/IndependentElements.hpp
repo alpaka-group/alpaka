@@ -28,7 +28,7 @@ namespace alpaka
          *
          * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
          * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-         * when converting CUDA or HIP code, `independentGroupsX(acc, ...)`, `Y` and `Z` are shorthands for
+         * when converting CUDA or HIP code, `independentGroupsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
          * `IndependentGroupsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
          *
          * `independentGroupsAlong<Dim>(acc, ...)` should be called consistently by all the threads in a block. All
@@ -183,8 +183,8 @@ namespace alpaka
      * Note that `independentGroups(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
      * use
      *   - `independentGroupsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
-     *   - `independentGroupsX(acc, ...)`, `independentGroupsY(acc, ...)`, or `independentGroupsZ(acc, ...)` to
-     * loop along the fastest, second-fastest, or third-fastest dimension.
+     *   - `independentGroupsAlongX(acc, ...)`, `independentGroupsAlongY(acc, ...)`, or `independentGroupsAlongZ(acc,
+     *     ...)` to loop along the fastest, second-fastest, or third-fastest dimension.
      */
 
     template<
@@ -214,7 +214,7 @@ namespace alpaka
         return detail::IndependentGroupsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
     }
 
-    /* independentGroupsX, Y, Z
+    /* independentGroupsAlongX, Y, Z
      *
      * Like `independentGroups` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
      * dimensions.
@@ -224,7 +224,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 0)>>
-    ALPAKA_FN_ACC inline auto independentGroupsX(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupsAlongX(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
@@ -234,7 +234,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 1)>>
-    ALPAKA_FN_ACC inline auto independentGroupsY(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupsAlongY(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
@@ -244,7 +244,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 2)>>
-    ALPAKA_FN_ACC inline auto independentGroupsZ(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupsAlongZ(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
@@ -415,7 +415,7 @@ namespace alpaka
         return detail::IndependentGroupElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
     }
 
-    /* independentGroupElementsX, Y, Z
+    /* independentGroupElementsAlongX, Y, Z
      *
      * Like `independentGroupElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
      * dimensions.
@@ -425,7 +425,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 0)>>
-    ALPAKA_FN_ACC inline auto independentGroupElementsX(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupElementsAlongX(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(
@@ -437,7 +437,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 1)>>
-    ALPAKA_FN_ACC inline auto independentGroupElementsY(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupElementsAlongY(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(
@@ -449,7 +449,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 2)>>
-    ALPAKA_FN_ACC inline auto independentGroupElementsZ(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto independentGroupElementsAlongZ(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::IndependentGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(
