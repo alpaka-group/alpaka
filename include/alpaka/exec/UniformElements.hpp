@@ -277,8 +277,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformElementsAlong(TAcc const& acc, TArgs... args)
@@ -834,8 +834,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformGroupsAlong(TAcc const& acc, TArgs... args)
@@ -1101,8 +1101,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformGroupElementsAlong(TAcc const& acc, TArgs... args)
