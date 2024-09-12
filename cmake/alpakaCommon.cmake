@@ -584,7 +584,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
         find_package(hip REQUIRED)
 
         set(_alpaka_HIP_MIN_VER 5.1)
-        set(_alpaka_HIP_MAX_VER 6.0)
+        set(_alpaka_HIP_MAX_VER 6.2)
 
         # construct hip version only with major and minor level
         # cannot use hip_VERSION because of the patch level
