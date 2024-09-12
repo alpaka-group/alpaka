@@ -22,7 +22,7 @@ concurrency:
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0, 1.80.0, 1.81.0, 1.82.0}
-# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.4, 3.25.3, 3.26.4}
+# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.4, 3.25.3, 3.26.4, 3.27.9, 3.28.6, 3.29.8, 3.30.3}
 # ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
