@@ -869,33 +869,33 @@ Functions</h2></td></tr>
 <tr class="memitem:a65e7ebae161feac957b9d25d66aa18fd"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value == 1&gt;&gt; </td></tr>
 <tr class="memitem:a65e7ebae161feac957b9d25d66aa18fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a65e7ebae161feac957b9d25d66aa18fd">independentGroupElements</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a65e7ebae161feac957b9d25d66aa18fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e27d603a38edfbdccb5fd77ca9fe0e"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
+<tr class="memitem:a91e27d603a38edfbdccb5fd77ca9fe0e"><td class="memTemplParams" colspan="2">template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
 <tr class="memitem:a91e27d603a38edfbdccb5fd77ca9fe0e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a91e27d603a38edfbdccb5fd77ca9fe0e">independentGroupElementsAlong</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a91e27d603a38edfbdccb5fd77ca9fe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a686c0b35e64ce9515ebb6695f20d8aad"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
-<tr class="memitem:a686c0b35e64ce9515ebb6695f20d8aad"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a686c0b35e64ce9515ebb6695f20d8aad">independentGroupElementsX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a686c0b35e64ce9515ebb6695f20d8aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa57c555e3d00849bad4eecdc0a76da4b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
-<tr class="memitem:aa57c555e3d00849bad4eecdc0a76da4b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa57c555e3d00849bad4eecdc0a76da4b">independentGroupElementsY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:aa57c555e3d00849bad4eecdc0a76da4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb6aeaf20572f124fc8932f826b1ff62"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
-<tr class="memitem:afb6aeaf20572f124fc8932f826b1ff62"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afb6aeaf20572f124fc8932f826b1ff62">independentGroupElementsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:afb6aeaf20572f124fc8932f826b1ff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89bc92cf484d95fd7495e2b63c5c2ec2"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
+<tr class="memitem:a89bc92cf484d95fd7495e2b63c5c2ec2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a89bc92cf484d95fd7495e2b63c5c2ec2">independentGroupElementsAlongX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:a89bc92cf484d95fd7495e2b63c5c2ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4efe416a61a6097e2f52c9756cbbe63"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
+<tr class="memitem:aa4efe416a61a6097e2f52c9756cbbe63"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa4efe416a61a6097e2f52c9756cbbe63">independentGroupElementsAlongY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:aa4efe416a61a6097e2f52c9756cbbe63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada3d4c7a052131e9c0eaebd25dcc9a78"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
+<tr class="memitem:ada3d4c7a052131e9c0eaebd25dcc9a78"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ada3d4c7a052131e9c0eaebd25dcc9a78">independentGroupElementsAlongZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:ada3d4c7a052131e9c0eaebd25dcc9a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63257dc14147e77132a164e12815becb"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value == 1&gt;&gt; </td></tr>
 <tr class="memitem:a63257dc14147e77132a164e12815becb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a63257dc14147e77132a164e12815becb">independentGroups</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a63257dc14147e77132a164e12815becb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3149c5d65f23b6e92139d6ed70f57e3"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
+<tr class="memitem:ac3149c5d65f23b6e92139d6ed70f57e3"><td class="memTemplParams" colspan="2">template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
 <tr class="memitem:ac3149c5d65f23b6e92139d6ed70f57e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac3149c5d65f23b6e92139d6ed70f57e3">independentGroupsAlong</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:ac3149c5d65f23b6e92139d6ed70f57e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abca6340190eb3c331959b503d1008ec0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
-<tr class="memitem:abca6340190eb3c331959b503d1008ec0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abca6340190eb3c331959b503d1008ec0">independentGroupsX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:abca6340190eb3c331959b503d1008ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ebc75d3f7cbdc8614276b284b1ac18e"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
-<tr class="memitem:a5ebc75d3f7cbdc8614276b284b1ac18e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5ebc75d3f7cbdc8614276b284b1ac18e">independentGroupsY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a5ebc75d3f7cbdc8614276b284b1ac18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11c5c2f5b84a760e2363782ad28306d5"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
-<tr class="memitem:a11c5c2f5b84a760e2363782ad28306d5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a11c5c2f5b84a760e2363782ad28306d5">independentGroupsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a11c5c2f5b84a760e2363782ad28306d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd34092a44dd673b9c908bf3665791e"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
+<tr class="memitem:a8fd34092a44dd673b9c908bf3665791e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8fd34092a44dd673b9c908bf3665791e">independentGroupsAlongX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:a8fd34092a44dd673b9c908bf3665791e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe6374992d506441fd5c7b1c0b1c3065"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
+<tr class="memitem:abe6374992d506441fd5c7b1c0b1c3065"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abe6374992d506441fd5c7b1c0b1c3065">independentGroupsAlongY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:abe6374992d506441fd5c7b1c0b1c3065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a125b7507c2c6c57dc5eba0aa3fae2fb0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
+<tr class="memitem:a125b7507c2c6c57dc5eba0aa3fae2fb0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a125b7507c2c6c57dc5eba0aa3fae2fb0">independentGroupsAlongZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:a125b7507c2c6c57dc5eba0aa3fae2fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5906c3e845cdb7c70e581d378c212e81"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
 <tr class="memitem:a5906c3e845cdb7c70e581d378c212e81"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">isComplete</a> (TEvent const &amp;event) -&gt; bool</td></tr>
 <tr class="memdesc:a5906c3e845cdb7c70e581d378c212e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already been completed.  <a href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">More...</a><br /></td></tr>
@@ -1031,54 +1031,54 @@ Functions</h2></td></tr>
 <tr class="memitem:a53e96689ac837744b1b2f50ae90c9e20"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value == 1&gt;&gt; </td></tr>
 <tr class="memitem:a53e96689ac837744b1b2f50ae90c9e20"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a53e96689ac837744b1b2f50ae90c9e20">uniformElements</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a53e96689ac837744b1b2f50ae90c9e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff0ab08e362f13d9a656c47c2ae5567b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
+<tr class="memitem:aff0ab08e362f13d9a656c47c2ae5567b"><td class="memTemplParams" colspan="2">template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
 <tr class="memitem:aff0ab08e362f13d9a656c47c2ae5567b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aff0ab08e362f13d9a656c47c2ae5567b">uniformElementsAlong</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:aff0ab08e362f13d9a656c47c2ae5567b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a022b338e7c71400aeba14a7b6978e6d6"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
+<tr class="memitem:a022b338e7c71400aeba14a7b6978e6d6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a022b338e7c71400aeba14a7b6978e6d6">uniformElementsAlongX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:a022b338e7c71400aeba14a7b6978e6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab253cf1e90d7dd5f366dd1950aa3f750"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
+<tr class="memitem:ab253cf1e90d7dd5f366dd1950aa3f750"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab253cf1e90d7dd5f366dd1950aa3f750">uniformElementsAlongY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:ab253cf1e90d7dd5f366dd1950aa3f750"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5573442c6662aa6b44ec6be206dfb8"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
+<tr class="memitem:aef5573442c6662aa6b44ec6be206dfb8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aef5573442c6662aa6b44ec6be206dfb8">uniformElementsAlongZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:aef5573442c6662aa6b44ec6be206dfb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b4886c580058dd034c9b0c741a12f36"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
 <tr class="memitem:a9b4886c580058dd034c9b0c741a12f36"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9b4886c580058dd034c9b0c741a12f36">uniformElementsND</a> (TAcc const &amp;acc)</td></tr>
 <tr class="separator:a9b4886c580058dd034c9b0c741a12f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab822810c9a957252392d38b6e17bacfb"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
 <tr class="memitem:ab822810c9a957252392d38b6e17bacfb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab822810c9a957252392d38b6e17bacfb">uniformElementsND</a> (TAcc const &amp;acc, <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx</a>&lt; TAcc &gt;&gt; extent)</td></tr>
 <tr class="separator:ab822810c9a957252392d38b6e17bacfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106496fdb1795c887166d57aa0422e0c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
-<tr class="memitem:a106496fdb1795c887166d57aa0422e0c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a106496fdb1795c887166d57aa0422e0c">uniformElementsX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a106496fdb1795c887166d57aa0422e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a699c51ff7602f6b70a33a76b682ac0be"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
-<tr class="memitem:a699c51ff7602f6b70a33a76b682ac0be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a699c51ff7602f6b70a33a76b682ac0be">uniformElementsY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a699c51ff7602f6b70a33a76b682ac0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab95c43396dc7f1b09e3ee26ee13a5e37"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
-<tr class="memitem:ab95c43396dc7f1b09e3ee26ee13a5e37"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab95c43396dc7f1b09e3ee26ee13a5e37">uniformElementsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:ab95c43396dc7f1b09e3ee26ee13a5e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc871dde1280223e5fe59c5c8e330f31"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value == 1&gt;&gt; </td></tr>
 <tr class="memitem:adc871dde1280223e5fe59c5c8e330f31"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#adc871dde1280223e5fe59c5c8e330f31">uniformGroupElements</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:adc871dde1280223e5fe59c5c8e330f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44bab9b1fdbaad6d086ce150f437f4f5"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
+<tr class="memitem:a44bab9b1fdbaad6d086ce150f437f4f5"><td class="memTemplParams" colspan="2">template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
 <tr class="memitem:a44bab9b1fdbaad6d086ce150f437f4f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a44bab9b1fdbaad6d086ce150f437f4f5">uniformGroupElementsAlong</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a44bab9b1fdbaad6d086ce150f437f4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83552bccc588befa58299842bda1d774"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
-<tr class="memitem:a83552bccc588befa58299842bda1d774"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a83552bccc588befa58299842bda1d774">uniformGroupElementsX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a83552bccc588befa58299842bda1d774"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a118820f8f181b6e8377a2b260644e232"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
-<tr class="memitem:a118820f8f181b6e8377a2b260644e232"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a118820f8f181b6e8377a2b260644e232">uniformGroupElementsY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a118820f8f181b6e8377a2b260644e232"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fb3915d5f2469ddf3d7948ffa79dc5d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
-<tr class="memitem:a1fb3915d5f2469ddf3d7948ffa79dc5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1fb3915d5f2469ddf3d7948ffa79dc5d">uniformGroupElementsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a1fb3915d5f2469ddf3d7948ffa79dc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7bfa46ef13afa59cce26bde4ccea247"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
+<tr class="memitem:ab7bfa46ef13afa59cce26bde4ccea247"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab7bfa46ef13afa59cce26bde4ccea247">uniformGroupElementsAlongX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:ab7bfa46ef13afa59cce26bde4ccea247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe80317749ff06fcb47c81fa5024fc1c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
+<tr class="memitem:afe80317749ff06fcb47c81fa5024fc1c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afe80317749ff06fcb47c81fa5024fc1c">uniformGroupElementsAlongY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:afe80317749ff06fcb47c81fa5024fc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a274c38a3f7c79c471ed5da3827f834ee"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
+<tr class="memitem:a274c38a3f7c79c471ed5da3827f834ee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a274c38a3f7c79c471ed5da3827f834ee">uniformGroupElementsAlongZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:a274c38a3f7c79c471ed5da3827f834ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f0e94023e3a8121f0ae324de2a5dd63"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value == 1&gt;&gt; </td></tr>
 <tr class="memitem:a2f0e94023e3a8121f0ae324de2a5dd63"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2f0e94023e3a8121f0ae324de2a5dd63">uniformGroups</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a2f0e94023e3a8121f0ae324de2a5dd63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d6f446be425afd35f7954fbcc4660b3"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
+<tr class="memitem:a8d6f446be425afd35f7954fbcc4660b3"><td class="memTemplParams" colspan="2">template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </td></tr>
 <tr class="memitem:a8d6f446be425afd35f7954fbcc4660b3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8d6f446be425afd35f7954fbcc4660b3">uniformGroupsAlong</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
 <tr class="separator:a8d6f446be425afd35f7954fbcc4660b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e11e39aad6a450731796f587509e193"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
-<tr class="memitem:a4e11e39aad6a450731796f587509e193"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4e11e39aad6a450731796f587509e193">uniformGroupsX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a4e11e39aad6a450731796f587509e193"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8791358da5a1055a5cee5176a7a94f9c"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
-<tr class="memitem:a8791358da5a1055a5cee5176a7a94f9c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8791358da5a1055a5cee5176a7a94f9c">uniformGroupsY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:a8791358da5a1055a5cee5176a7a94f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
-<tr class="memitem:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aea3ed7b79fcb5dfd6a1ebfd1c1d438fe">uniformGroupsZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
-<tr class="separator:aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa7427483b7e2bb4a4e3181e7e0aa34d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </td></tr>
+<tr class="memitem:aaa7427483b7e2bb4a4e3181e7e0aa34d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aaa7427483b7e2bb4a4e3181e7e0aa34d">uniformGroupsAlongX</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:aaa7427483b7e2bb4a4e3181e7e0aa34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07c2780fa37d50930debc56af393948"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </td></tr>
+<tr class="memitem:ab07c2780fa37d50930debc56af393948"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab07c2780fa37d50930debc56af393948">uniformGroupsAlongY</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:ab07c2780fa37d50930debc56af393948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa754ff0c81c9d873e19e9e38592c5649"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </td></tr>
+<tr class="memitem:aa754ff0c81c9d873e19e9e38592c5649"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa754ff0c81c9d873e19e9e38592c5649">uniformGroupsAlongZ</a> (TAcc const &amp;acc, TArgs... args)</td></tr>
+<tr class="separator:aa754ff0c81c9d873e19e9e38592c5649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
 <tr class="memitem:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abc4b415f6e9996b6ecb9e50c9fe62403">Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
 <tr class="separator:abc4b415f6e9996b6ecb9e50c9fe62403"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5342,7 +5342,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
+template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -5376,8 +5376,8 @@ template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std:
 
 </div>
 </div>
-<a id="a686c0b35e64ce9515ebb6695f20d8aad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a686c0b35e64ce9515ebb6695f20d8aad">&#9670;&nbsp;</a></span>independentGroupElementsX()</h2>
+<a id="a89bc92cf484d95fd7495e2b63c5c2ec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89bc92cf484d95fd7495e2b63c5c2ec2">&#9670;&nbsp;</a></span>independentGroupElementsAlongX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5388,7 +5388,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsX </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsAlongX </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -5416,8 +5416,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="aa57c555e3d00849bad4eecdc0a76da4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa57c555e3d00849bad4eecdc0a76da4b">&#9670;&nbsp;</a></span>independentGroupElementsY()</h2>
+<a id="aa4efe416a61a6097e2f52c9756cbbe63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4efe416a61a6097e2f52c9756cbbe63">&#9670;&nbsp;</a></span>independentGroupElementsAlongY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5428,7 +5428,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsY </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsAlongY </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -5456,8 +5456,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="afb6aeaf20572f124fc8932f826b1ff62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb6aeaf20572f124fc8932f826b1ff62">&#9670;&nbsp;</a></span>independentGroupElementsZ()</h2>
+<a id="ada3d4c7a052131e9c0eaebd25dcc9a78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada3d4c7a052131e9c0eaebd25dcc9a78">&#9670;&nbsp;</a></span>independentGroupElementsAlongZ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5468,7 +5468,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsZ </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupElementsAlongZ </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -5542,7 +5542,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
+template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -5576,8 +5576,8 @@ template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std:
 
 </div>
 </div>
-<a id="abca6340190eb3c331959b503d1008ec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abca6340190eb3c331959b503d1008ec0">&#9670;&nbsp;</a></span>independentGroupsX()</h2>
+<a id="a8fd34092a44dd673b9c908bf3665791e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fd34092a44dd673b9c908bf3665791e">&#9670;&nbsp;</a></span>independentGroupsAlongX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5588,7 +5588,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsX </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsAlongX </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -5616,8 +5616,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="a5ebc75d3f7cbdc8614276b284b1ac18e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ebc75d3f7cbdc8614276b284b1ac18e">&#9670;&nbsp;</a></span>independentGroupsY()</h2>
+<a id="abe6374992d506441fd5c7b1c0b1c3065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe6374992d506441fd5c7b1c0b1c3065">&#9670;&nbsp;</a></span>independentGroupsAlongY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5628,7 +5628,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsY </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsAlongY </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -5656,8 +5656,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="a11c5c2f5b84a760e2363782ad28306d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11c5c2f5b84a760e2363782ad28306d5">&#9670;&nbsp;</a></span>independentGroupsZ()</h2>
+<a id="a125b7507c2c6c57dc5eba0aa3fae2fb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a125b7507c2c6c57dc5eba0aa3fae2fb0">&#9670;&nbsp;</a></span>independentGroupsAlongZ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5668,7 +5668,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsZ </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::independentGroupsAlongZ </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7346,7 +7346,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
+template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -7377,6 +7377,126 @@ template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std:
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00284">284</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a022b338e7c71400aeba14a7b6978e6d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a022b338e7c71400aeba14a7b6978e6d6">&#9670;&nbsp;</a></span>uniformElementsAlongX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsAlongX </td>
+          <td>(</td>
+          <td class="paramtype">TAcc const &amp;&#160;</td>
+          <td class="paramname"><em>acc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00300">300</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab253cf1e90d7dd5f366dd1950aa3f750"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab253cf1e90d7dd5f366dd1950aa3f750">&#9670;&nbsp;</a></span>uniformElementsAlongY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsAlongY </td>
+          <td>(</td>
+          <td class="paramtype">TAcc const &amp;&#160;</td>
+          <td class="paramname"><em>acc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00310">310</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aef5573442c6662aa6b44ec6be206dfb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef5573442c6662aa6b44ec6be206dfb8">&#9670;&nbsp;</a></span>uniformElementsAlongZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsAlongZ </td>
+          <td>(</td>
+          <td class="paramtype">TAcc const &amp;&#160;</td>
+          <td class="paramname"><em>acc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00320">320</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
@@ -7450,126 +7570,6 @@ template&lt;typename TAcc , typename  = std::enable_if_t&lt;alpaka::isAccelerato
 
 </div>
 </div>
-<a id="a106496fdb1795c887166d57aa0422e0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a106496fdb1795c887166d57aa0422e0c">&#9670;&nbsp;</a></span>uniformElementsX()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 0)&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsX </td>
-          <td>(</td>
-          <td class="paramtype">TAcc const &amp;&#160;</td>
-          <td class="paramname"><em>acc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00300">300</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a699c51ff7602f6b70a33a76b682ac0be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a699c51ff7602f6b70a33a76b682ac0be">&#9670;&nbsp;</a></span>uniformElementsY()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 1)&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsY </td>
-          <td>(</td>
-          <td class="paramtype">TAcc const &amp;&#160;</td>
-          <td class="paramname"><em>acc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00310">310</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ab95c43396dc7f1b09e3ee26ee13a5e37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab95c43396dc7f1b09e3ee26ee13a5e37">&#9670;&nbsp;</a></span>uniformElementsZ()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and (alpaka::Dim&lt;TAcc&gt;::value &gt; 2)&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformElementsZ </td>
-          <td>(</td>
-          <td class="paramtype">TAcc const &amp;&#160;</td>
-          <td class="paramname"><em>acc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l00320">320</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
-
-</div>
-</div>
 <a id="adc871dde1280223e5fe59c5c8e330f31"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adc871dde1280223e5fe59c5c8e330f31">&#9670;&nbsp;</a></span>uniformGroupElements()</h2>
 
@@ -7606,7 +7606,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01090">1090</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01091">1091</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
@@ -7616,7 +7616,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
+template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -7646,12 +7646,12 @@ template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01107">1107</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01108">1108</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a83552bccc588befa58299842bda1d774"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83552bccc588befa58299842bda1d774">&#9670;&nbsp;</a></span>uniformGroupElementsX()</h2>
+<a id="ab7bfa46ef13afa59cce26bde4ccea247"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7bfa46ef13afa59cce26bde4ccea247">&#9670;&nbsp;</a></span>uniformGroupElementsAlongX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7662,7 +7662,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsX </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsAlongX </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7686,12 +7686,12 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01123">1123</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01124">1124</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a118820f8f181b6e8377a2b260644e232"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a118820f8f181b6e8377a2b260644e232">&#9670;&nbsp;</a></span>uniformGroupElementsY()</h2>
+<a id="afe80317749ff06fcb47c81fa5024fc1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe80317749ff06fcb47c81fa5024fc1c">&#9670;&nbsp;</a></span>uniformGroupElementsAlongY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7702,7 +7702,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsY </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsAlongY </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7726,12 +7726,12 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01133">1133</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01134">1134</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a1fb3915d5f2469ddf3d7948ffa79dc5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fb3915d5f2469ddf3d7948ffa79dc5d">&#9670;&nbsp;</a></span>uniformGroupElementsZ()</h2>
+<a id="a274c38a3f7c79c471ed5da3827f834ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a274c38a3f7c79c471ed5da3827f834ee">&#9670;&nbsp;</a></span>uniformGroupElementsAlongZ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7742,7 +7742,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsZ </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupElementsAlongZ </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7766,7 +7766,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01143">1143</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformElements_8hpp_source.html#l01144">1144</a> of file <a class="el" href="UniformElements_8hpp_source.html">UniformElements.hpp</a>.</p>
 
 </div>
 </div>
@@ -7816,7 +7816,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
+template&lt;std::size_t Dim, typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;alpaka::isAccelerator&lt;TAcc&gt; and alpaka::Dim&lt;TAcc&gt;::value &gt;= Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -7850,8 +7850,8 @@ template&lt;typename TAcc , std::size_t Dim, typename... TArgs, typename  = std:
 
 </div>
 </div>
-<a id="a4e11e39aad6a450731796f587509e193"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e11e39aad6a450731796f587509e193">&#9670;&nbsp;</a></span>uniformGroupsX()</h2>
+<a id="aaa7427483b7e2bb4a4e3181e7e0aa34d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa7427483b7e2bb4a4e3181e7e0aa34d">&#9670;&nbsp;</a></span>uniformGroupsAlongX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7862,7 +7862,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsX </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsAlongX </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7890,8 +7890,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="a8791358da5a1055a5cee5176a7a94f9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8791358da5a1055a5cee5176a7a94f9c">&#9670;&nbsp;</a></span>uniformGroupsY()</h2>
+<a id="ab07c2780fa37d50930debc56af393948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab07c2780fa37d50930debc56af393948">&#9670;&nbsp;</a></span>uniformGroupsAlongY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7902,7 +7902,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsY </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsAlongY </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -7930,8 +7930,8 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
 
 </div>
 </div>
-<a id="aea3ed7b79fcb5dfd6a1ebfd1c1d438fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea3ed7b79fcb5dfd6a1ebfd1c1d438fe">&#9670;&nbsp;</a></span>uniformGroupsZ()</h2>
+<a id="aa754ff0c81c9d873e19e9e38592c5649"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa754ff0c81c9d873e19e9e38592c5649">&#9670;&nbsp;</a></span>uniformGroupsAlongZ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7942,7 +7942,7 @@ template&lt;typename TAcc , typename... TArgs, typename  = std::enable_if_t&lt;a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsZ </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::uniformGroupsAlongZ </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -8546,7 +8546,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Sep 11 2024 07:15:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Sep 16 2024 07:24:41 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

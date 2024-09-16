@@ -72,7 +72,7 @@ var NAVTREEINDEX =
 "classalpaka_1_1math_1_1MinStdLib.html",
 "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943",
 "math_2Traits_8hpp.html#aab46c7252772bedb6798b33155240936",
-"namespacealpaka.html#ad3079297a886e6434a3ab3750585d033",
+"namespacealpaka.html#ad6916b2c7fe787745a0381f2c33f0fe2",
 "namespacealpaka_1_1rand_1_1distribution.html",
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html",
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82",
