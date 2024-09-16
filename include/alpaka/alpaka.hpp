@@ -36339,6 +36339,14 @@
 
 	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
+	#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+	// #        include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
+	#    endif
+
+	#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+	// #        include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	#    endif
+
 	namespace alpaka
 	{
 
@@ -37576,7 +37584,7 @@
 		                    std::cout << "clockInstructionRate: " << devProp.clockInstructionRate << "kHz" << std::endl;
 		                    std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / KiB
 		                              << " KiB" << std::endl;
-		                    std::cout << "gcnArch: " << devProp.gcnArch << std::endl;
+		                    std::cout << "gcnArchName: " << devProp.gcnArchName << std::endl;
 		                    std::cout << "arch: " << std::endl;
 		                    std::cout << "    hasGlobalInt32Atomics: " << devProp.arch.hasGlobalInt32Atomics << std::endl;
 		                    std::cout << "    hasGlobalFloatAtomicExch: " << devProp.arch.hasGlobalFloatAtomicExch
