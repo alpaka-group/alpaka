@@ -1,6 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"namespacealpaka_1_1rand_1_1distribution.html":[2,0,0,16,0],
 "namespacealpaka_1_1rand_1_1distribution.html#a3d2a8e74bda83320942609c09c227f46":[2,0,0,16,0,4],
 "namespacealpaka_1_1rand_1_1distribution.html#a8cef848378b79fc7f8f522531198723f":[2,0,0,16,0,6],
 "namespacealpaka_1_1rand_1_1distribution.html#af6fb809c7467ff1d92f3983e7f621991":[2,0,0,16,0,5],
@@ -173,8 +172,8 @@ var NAVTREEINDEX9 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01THierarchy_00_01tyf014699f259ef2883f1093a17ac973a1.html":[3,0,5],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01THierarchy_00_01tyf014699f259ef2883f1093a17ac973a1.html#a8627dbe33b8cb52a48f779eeff08b032":[3,0,1,2,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01THierarchy_00_01tyf014699f259ef2883f1093a17ac973a1.html#a8627dbe33b8cb52a48f779eeff08b032":[3,0,5,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html":[3,0,1,1],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html":[3,0,4],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html":[3,0,1,1],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html#a2fb6439818493244c87c70c5c5f9cb3a":[3,0,1,1,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html#a2fb6439818493244c87c70c5c5f9cb3a":[3,0,4,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAnd_00_01T_00_01THierarchy_00_01tya8e1ffb41b0efac358b3940bfdcb38ba.html":[3,0,1,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,1,19,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,22,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22]
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,25]
 };

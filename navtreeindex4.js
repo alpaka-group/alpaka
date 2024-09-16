@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333":[3,0,0,119,3],
 "classalpaka_1_1WorkDivMembers.html#adfb7963f224f827a7ef13c1cd4cc0e16":[3,0,0,119,5],
 "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html":[3,0,0,120],
 "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a797880b0a7bdaa8e2d9e146dc4e5d8c1":[3,0,0,120,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1math_1_1MathStdLib.html":[3,0,0,9,92],
 "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html":[3,0,0,9,93],
 "classalpaka_1_1math_1_1MaxStdLib.html":[3,0,0,9,94],
-"classalpaka_1_1math_1_1MaxUniformCudaHipBuiltIn.html":[3,0,0,9,95]
+"classalpaka_1_1math_1_1MaxUniformCudaHipBuiltIn.html":[3,0,0,9,95],
+"classalpaka_1_1math_1_1MinStdLib.html":[3,0,0,9,96]
 };
