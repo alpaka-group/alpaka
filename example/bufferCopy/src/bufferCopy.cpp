@@ -95,7 +95,7 @@ auto example(TAccTag const&) -> int
 
     // Define the work division for kernels to be run on devAcc and devHost
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
+    Vec const elementsPerThread(Vec::all(static_cast<Idx>(3)));
     Vec const elementsPerGrid(Vec::all(static_cast<Idx>(10)));
 
     // Create host and device buffers
