@@ -153,7 +153,7 @@ namespace alpaka
                     ++index_;
                     if(indexElem_ >= elements_)
                     {
-                        indexElem_ = Idx{0};
+                        indexElem_ = 0;
                         index_ += stride_;
                     }
                     if(index_ >= extent_)
@@ -187,7 +187,7 @@ namespace alpaka
                 Idx extent_;
                 // modified by the pre/post-increment operator
                 Idx index_;
-                Idx indexElem_ = {0};
+                Idx indexElem_ = 0;
             };
 
         private:
