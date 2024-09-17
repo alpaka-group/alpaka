@@ -35,6 +35,7 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
       [ "Threads", "structalpaka_1_1hierarchy_1_1Threads.html", null ]
     ] ],
     [ "RemoveRestrict.hpp", "RemoveRestrict_8hpp.html", "RemoveRestrict_8hpp" ],
+    [ "RuntimeMacros.hpp", "RuntimeMacros_8hpp.html", "RuntimeMacros_8hpp" ],
     [ "Sycl.hpp", "Sycl_8hpp.html", null ],
     [ "ThreadPool.hpp", "ThreadPool_8hpp.html", "ThreadPool_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],

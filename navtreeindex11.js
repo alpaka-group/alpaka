@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,5],
+"structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,2,1,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,2,1,1],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html#a05ac5d22cd7bf5947c87848005ff242c":[3,0,0,2,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html":[3,0,0,2,1,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,9,32],
 "structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,9,33],
 "structalpaka_1_1math_1_1ConceptMathConj.html":[3,0,0,9,34],
-"structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35],
-"structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,9,36],
-"structalpaka_1_1math_1_1ConceptMathCosh.html":[3,0,0,9,37],
-"structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,9,38],
-"structalpaka_1_1math_1_1ConceptMathExp.html":[3,0,0,9,39]
+"structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35]
 };
