@@ -55,16 +55,17 @@ auto example(TAccTag const&) -> int
     constexpr alpaka::Vec<Dim, Idx> haloSize{2, 2};
     constexpr alpaka::Vec<Dim, Idx> extent = numNodes + haloSize;
 
-    constexpr uint32_t numTimeSteps = 100;
-    constexpr double tMax = 0.001;
+    constexpr uint32_t numTimeSteps = 4000;
+    constexpr double tMax = 0.1;
+
     // x, y in [0, 1], t in [0, tMax]
     constexpr double dx = 1.0 / static_cast<double>(extent[1] - 1);
     constexpr double dy = 1.0 / static_cast<double>(extent[0] - 1);
     constexpr double dt = tMax / static_cast<double>(numTimeSteps);
 
     // Check the stability condition
-    constexpr double r = dt / std::min(dx * dx, dy * dy);
-    if constexpr(r > 0.5)
+    double r = 2 * dt / ((dx * dx * dy * dy) / (dx * dx + dy * dy));
+    if(r > 1.)
     {
         std::cerr << "Stability condition check failed: dt/min(dx^2,dy^2) = " << r
                   << ", it is required to be <= 0.5\n";
@@ -169,6 +170,7 @@ auto example(TAccTag const&) -> int
 #ifdef PNGWRITER_ENABLED
         if((step - 1) % 100 == 0)
         {
+            alpaka::wait(computeQueue);
             alpaka::memcpy(dumpQueue, uBufHost, uCurrBufAcc);
             alpaka::wait(dumpQueue);
             writeImage(step - 1, uBufHost);
