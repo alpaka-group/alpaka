@@ -240,7 +240,8 @@ namespace alpaka
         template<typename TTag, bool TBlocking, typename TTask>
         struct Enqueue<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>, TTask>
         {
-            static auto enqueue(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task) -> void
+            static auto enqueue(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task)
+                -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 queue.m_spQueueImpl->template enqueue<TBlocking>(task);
@@ -265,7 +266,8 @@ namespace alpaka
         template<typename TTag, bool TBlocking>
         struct CurrentThreadWaitFor<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            static auto currentThreadWaitFor(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> void
+            static auto currentThreadWaitFor(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+                -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 queue.m_spQueueImpl->wait();
@@ -276,7 +278,8 @@ namespace alpaka
         template<typename TTag, bool TBlocking>
         struct NativeHandle<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            [[nodiscard]] static auto getNativeHandle(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+            [[nodiscard]] static auto getNativeHandle(
+                alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
             {
                 return queue.getNativeHandle();
             }
