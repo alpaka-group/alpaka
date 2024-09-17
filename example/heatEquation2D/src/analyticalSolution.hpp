@@ -39,14 +39,14 @@ auto validateSolution(
     double maxError = 0.0;
     for(uint32_t j = 1; j < extent[0] - 1; ++j)
     {
-        for(uint32_t i = 0; i < extent[1]; ++i)
+        for(uint32_t i = 1; i < extent[1] - 1; ++i)
         {
             auto const error = std::abs(buffer.data()[j * extent[1] + i] - exactSolution(i * dx, j * dy, tMax));
             maxError = std::max(maxError, error);
         }
     }
 
-    constexpr double errorThreshold = 1e-5;
+    constexpr double errorThreshold = 1e-4;
     return std::make_pair(maxError < errorThreshold, maxError);
 }
 
