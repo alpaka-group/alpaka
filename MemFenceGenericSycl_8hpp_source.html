@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('MemFenceGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46">mem_fence</a>(MemFenceGenericSycl <span class="keyword">const</span>&amp;, TMemScope <span class="keyword">const</span>&amp;)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> scope = detail::SyclFenceProps&lt;TMemScope&gt;::scope;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> scope = alpaka::detail::SyclFenceProps&lt;TMemScope&gt;::scope;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            sycl::atomic_fence(sycl::memory_order::acq_rel, scope);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    };</div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('MemFenceGenericSycl_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceGenericSycl_8hpp.html">MemFenceGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Sep 19 2024 07:22:27 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Sep 19 2024 07:53:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
