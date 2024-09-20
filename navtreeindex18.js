@@ -1,6 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"tinymt32_8h.html#ad76f76a71e9ffc13963ee895d1828b2c":[4,0,0,0,20,1,1,9],
 "tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498":[4,0,0,0,20,1,1,1],
 "tinymt32_8h.html#ae3012cf9080c25d473c7c05b65621e2d":[4,0,0,0,20,1,1,7],
 "tinymt32_8h.html#ae3691626ade6db3de17c3be3b1be9556":[4,0,0,0,20,1,1,20],
@@ -48,5 +47,6 @@ var NAVTREEINDEX18 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,27,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,27,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0],
+"":[2,0,2]
 };
