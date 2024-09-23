@@ -8,6 +8,7 @@
 
 #include <pngwriter.h>
 
+#include <cmath>
 #include <cstdint>
 #include <iomanip>
 #include <sstream>
@@ -31,7 +32,12 @@ auto writeImage(uint32_t const currentStep, T_Buffer const& buffer) -> void
         for(uint32_t x = 0; x < extents[1]; ++x)
         {
             auto p = buffer.data()[y * extents[1] + x];
-            png.plot(x + 1, extents[0] - y, p, 0., 1. - p);
+            png.plot(
+                x + 1,
+                extents[0] - y,
+                2 * std::exp(std::sqrt(p)) / std::exp(std::sqrt(2)) - 1,
+                0.4,
+                2 - 2 * std::exp(std::sqrt(p)) / std::exp(std::sqrt(2)));
         }
     }
     png.close();

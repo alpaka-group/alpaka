@@ -213,16 +213,16 @@ namespace alpaka
     {
         //! The SYCL blocking queue device type trait specialization.
         template<typename TTag, bool TBlocking>
-        struct DevType<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct DevType<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             using type = DevGenericSycl<TTag>;
         };
 
         //! The SYCL blocking queue device get trait specialization.
         template<typename TTag, bool TBlocking>
-        struct GetDev<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct GetDev<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            static auto getDev(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+            static auto getDev(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 return queue.m_dev;
@@ -231,16 +231,17 @@ namespace alpaka
 
         //! The SYCL blocking queue event type trait specialization.
         template<typename TTag, bool TBlocking>
-        struct EventType<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct EventType<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             using type = EventGenericSycl<TTag>;
         };
 
         //! The SYCL blocking queue enqueue trait specialization.
         template<typename TTag, bool TBlocking, typename TTask>
-        struct Enqueue<detail::QueueGenericSyclBase<TTag, TBlocking>, TTask>
+        struct Enqueue<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>, TTask>
         {
-            static auto enqueue(detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task) -> void
+            static auto enqueue(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task)
+                -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 queue.m_spQueueImpl->template enqueue<TBlocking>(task);
@@ -249,9 +250,9 @@ namespace alpaka
 
         //! The SYCL blocking queue test trait specialization.
         template<typename TTag, bool TBlocking>
-        struct Empty<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct Empty<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            static auto empty(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> bool
+            static auto empty(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> bool
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 return queue.m_spQueueImpl->empty();
@@ -263,9 +264,10 @@ namespace alpaka
         //! Blocks execution of the calling thread until the queue has finished processing all previously requested
         //! tasks (kernels, data copies, ...)
         template<typename TTag, bool TBlocking>
-        struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct CurrentThreadWaitFor<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> void
+            static auto currentThreadWaitFor(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+                -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 queue.m_spQueueImpl->wait();
@@ -274,9 +276,10 @@ namespace alpaka
 
         //! The SYCL queue native handle trait specialization.
         template<typename TTag, bool TBlocking>
-        struct NativeHandle<detail::QueueGenericSyclBase<TTag, TBlocking>>
+        struct NativeHandle<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
-            [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
+            [[nodiscard]] static auto getNativeHandle(
+                alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
             {
                 return queue.getNativeHandle();
             }

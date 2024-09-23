@@ -21,8 +21,8 @@ concurrency:
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [ALPAKA_CI_CXX==clang++]:libc++}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # alpaka_CI                                     : {GITHUB}
-# ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0, 1.80.0, 1.81.0, 1.82.0}
-# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.4, 3.25.3, 3.26.4}
+# ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0, 1.80.0, 1.81.0, 1.82.0, 1.83.0, 1.84.0, 1.85.0, 1.86.0}
+# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.4, 3.25.3, 3.26.4, 3.27.9, 3.28.6, 3.29.8, 3.30.3}
 # ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -39,7 +39,7 @@ concurrency:
 # alpaka_ACC_ANY_BT_OMP5_ENABLE                 : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # alpaka_ACC_GPU_CUDA_ENABLE                    : {ON, OFF}
-#   [ON] ALPAKA_CI_CUDA_VERSION                 : {11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2 12.3}
+#   [ON] ALPAKA_CI_CUDA_VERSION                 : {11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6}
 #   [ON] ALPAKA_CI_CUDA_COMPILER                : {nvcc, [ALPAKA_CI_CXX==clang++]:clang++}
 # alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE             : {ON, OFF}
 # alpaka_ACC_GPU_HIP_ENABLE                     : {ON, OFF}

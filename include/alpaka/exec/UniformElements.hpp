@@ -31,7 +31,7 @@ namespace alpaka
          *
          * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
          * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-         * when converting CUDA or HIP code, `uniformElementsX(acc, ...)`, `Y` and `Z` are shorthands for
+         * when converting CUDA or HIP code, `uniformElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
          * `UniformElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
          *
          * To cover the problem space, different threads may execute a different number of iterations. As a result, it
@@ -130,11 +130,12 @@ namespace alpaka
 
                 ALPAKA_FN_ACC inline const_iterator(Idx elements, Idx stride, Idx extent, Idx first)
                     : elements_{elements}
-                    , stride_{stride}
+                    ,
+                    // we need to reduce the stride by on element range because index_ is later increased with each
+                    // increment
+                    stride_{stride - elements}
                     , extent_{extent}
-                    , first_{std::min(first, extent)}
-                    , index_{first_}
-                    , range_{std::min(first + elements, extent)}
+                    , index_{std::min(first, extent)}
                 {
                 }
 
@@ -148,21 +149,16 @@ namespace alpaka
                 ALPAKA_FN_ACC inline const_iterator& operator++()
                 {
                     // increment the index along the elements processed by the current thread
+                    ++indexElem_;
                     ++index_;
-                    if(index_ < range_)
-                        return *this;
+                    if(indexElem_ >= elements_)
+                    {
+                        indexElem_ = 0;
+                        index_ += stride_;
+                    }
+                    if(index_ >= extent_)
+                        index_ = extent_;
 
-                    // increment the thread index with the grid stride
-                    first_ += stride_;
-                    index_ = first_;
-                    range_ = std::min(first_ + elements_, extent_);
-                    if(index_ < extent_)
-                        return *this;
-
-                    // the iterator has reached or passed the end of the extent, clamp it to the extent
-                    first_ = extent_;
-                    index_ = extent_;
-                    range_ = extent_;
                     return *this;
                 }
 
@@ -176,7 +172,7 @@ namespace alpaka
 
                 ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
                 {
-                    return (index_ == other.index_) and (first_ == other.first_);
+                    return (*(*this) == *other);
                 }
 
                 ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
@@ -190,16 +186,15 @@ namespace alpaka
                 Idx stride_;
                 Idx extent_;
                 // modified by the pre/post-increment operator
-                Idx first_;
                 Idx index_;
-                Idx range_;
+                Idx indexElem_ = 0;
             };
 
         private:
-            const Idx elements_;
-            const Idx first_;
-            const Idx stride_;
-            const Idx extent_;
+            Idx const elements_;
+            Idx const first_;
+            Idx const stride_;
+            Idx const extent_;
         };
 
     } // namespace detail
@@ -256,8 +251,8 @@ namespace alpaka
      * use
      *   - `uniformElementsND(acc, ...)` to cover an N-dimensional problem space with a single loop;
      *   - `uniformElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
-     *   - `uniformElementsX(acc, ...)`, `uniformElementsY(acc, ...)`, or `uniformElementsZ(acc, ...)` to loop
-     *     along the fastest, second-fastest, or third-fastest dimension.
+     *   - `uniformElementsAlongX(acc, ...)`, `uniformElementsAlongY(acc, ...)`, or `uniformElementsAlongZ(acc, ...)`
+     *     to loop along the fastest, second-fastest, or third-fastest dimension.
      */
 
     template<
@@ -277,8 +272,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformElementsAlong(TAcc const& acc, TArgs... args)
@@ -287,7 +282,7 @@ namespace alpaka
         return detail::UniformElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
     }
 
-    /* uniformElementsX, Y, Z
+    /* uniformElementsAlongX, Y, Z
      *
      * Like `uniformElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
      * dimensions.
@@ -297,7 +292,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 0)>>
-    ALPAKA_FN_ACC inline auto uniformElementsX(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformElementsAlongX(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
@@ -307,7 +302,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 1)>>
-    ALPAKA_FN_ACC inline auto uniformElementsY(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformElementsAlongY(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
@@ -317,7 +312,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 2)>>
-    ALPAKA_FN_ACC inline auto uniformElementsZ(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformElementsAlongZ(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
@@ -581,10 +576,10 @@ namespace alpaka
             };
 
         private:
-            const Vec elements_;
-            const Vec thread_;
-            const Vec stride_;
-            const Vec extent_;
+            Vec const elements_;
+            Vec const thread_;
+            Vec const stride_;
+            Vec const extent_;
         };
 
     } // namespace detail
@@ -630,7 +625,7 @@ namespace alpaka
          *
          * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
          * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-         * when converting CUDA or HIP code, `uniformGroupsX(acc, ...)`, `Y` and `Z` are shorthands for
+         * when converting CUDA or HIP code, `uniformGroupsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
          * `UniformGroupsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
          *
          * `uniformGroupsAlong<Dim>(acc, ...)` should be called consistently by all the threads in a block. All
@@ -762,9 +757,9 @@ namespace alpaka
             };
 
         private:
-            const Idx first_;
-            const Idx stride_;
-            const Idx extent_;
+            Idx const first_;
+            Idx const stride_;
+            Idx const extent_;
         };
 
     } // namespace detail
@@ -813,7 +808,7 @@ namespace alpaka
      * Note that `uniformGroups(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
      * use
      *   - `uniformGroupsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
-     *   - `uniformGroupsX(acc, ...)`, `uniformGroupsY(acc, ...)`, or `uniformGroupsZ(acc, ...)` to loop
+     *   - `uniformGroupsAlongX(acc, ...)`, `uniformGroupsAlongY(acc, ...)`, or `uniformGroupsAlongZ(acc, ...)` to loop
      *     along the fastest, second-fastest, or third-fastest dimension.
      */
 
@@ -834,8 +829,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformGroupsAlong(TAcc const& acc, TArgs... args)
@@ -844,7 +839,7 @@ namespace alpaka
         return detail::UniformGroupsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
     }
 
-    /* uniformGroupsX, Y, Z
+    /* uniformGroupsAlongX, Y, Z
      *
      * Like `uniformGroups` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
      * dimensions.
@@ -854,7 +849,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 0)>>
-    ALPAKA_FN_ACC inline auto uniformGroupsX(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupsAlongX(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
@@ -864,7 +859,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 1)>>
-    ALPAKA_FN_ACC inline auto uniformGroupsY(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupsAlongY(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
@@ -874,7 +869,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 2)>>
-    ALPAKA_FN_ACC inline auto uniformGroupsZ(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupsAlongZ(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
@@ -898,7 +893,7 @@ namespace alpaka
          *
          * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
          * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-         * when converting CUDA or HIP code, `uniformGroupElementsX(acc, ...)`, `Y` and `Z` are shorthands for
+         * when converting CUDA or HIP code, `uniformGroupElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
          * `UniformGroupElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
          *
          * Iterating over the range yields values of type `ElementIndex`, that provide the `.global` and `.local`
@@ -1031,9 +1026,9 @@ namespace alpaka
             };
 
         private:
-            const Idx first_;
-            const Idx local_;
-            const Idx range_;
+            Idx const first_;
+            Idx const local_;
+            Idx const range_;
         };
 
     } // namespace detail
@@ -1078,9 +1073,10 @@ namespace alpaka
      * Note that `uniformGroupElements(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional
      * kernels, use
      *   - `detail::UniformGroupElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension
-     * `Dim`;
-     *   - `uniformGroupElementsX(acc, ...)`, `uniformGroupElementsY(acc, ...)`, or
-     *     `uniformGroupElementsZ(acc, ...)` to loop along the fastest, second-fastest, or third-fastest dimension.
+     *     `Dim`;
+     *   - `uniformGroupElementsAlongX(acc, ...)`, `uniformGroupElementsAlongY(acc, ...)`, or
+     *     `uniformGroupElementsAlongZ(acc, ...)` to loop along the fastest, second-fastest, or third-fastest
+     *     dimension.
      */
 
     template<
@@ -1100,8 +1096,8 @@ namespace alpaka
      */
 
     template<
-        typename TAcc,
         std::size_t Dim,
+        typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and alpaka::Dim<TAcc>::value >= Dim>>
     ALPAKA_FN_ACC inline auto uniformGroupElementsAlong(TAcc const& acc, TArgs... args)
@@ -1110,7 +1106,7 @@ namespace alpaka
         return detail::UniformGroupElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
     }
 
-    /* uniformGroupElementsX, Y, Z
+    /* uniformGroupElementsAlongX, Y, Z
      *
      * Like `uniformGroupElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
      * dimensions.
@@ -1120,7 +1116,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 0)>>
-    ALPAKA_FN_ACC inline auto uniformGroupElementsX(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongX(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
@@ -1130,7 +1126,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 1)>>
-    ALPAKA_FN_ACC inline auto uniformGroupElementsY(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongY(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
@@ -1140,7 +1136,7 @@ namespace alpaka
         typename TAcc,
         typename... TArgs,
         typename = std::enable_if_t<alpaka::isAccelerator<TAcc> and (alpaka::Dim<TAcc>::value > 2)>>
-    ALPAKA_FN_ACC inline auto uniformGroupElementsZ(TAcc const& acc, TArgs... args)
+    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongZ(TAcc const& acc, TArgs... args)
     {
         using Idx = alpaka::Idx<TAcc>;
         return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);

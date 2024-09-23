@@ -328,9 +328,13 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "17"
         elif job[DEVICE_COMPILER][VERSION] == "6.0":
             variables["ALPAKA_CI_CLANG_VER"] = "17"
+        elif job[DEVICE_COMPILER][VERSION] == "6.1":
+            variables["ALPAKA_CI_CLANG_VER"] = "17"
+        elif job[DEVICE_COMPILER][VERSION] == "6.2":
+            variables["ALPAKA_CI_CLANG_VER"] = "18"
         else:
             raise RuntimeError(
-                "generate_job_yaml.job_variables(): unknown hip version: " f"{job[DEVICE_COMPILER][VERSION]}"
+                "generate_job_yaml.job_variables(): unknown ROCm version: " f"{job[DEVICE_COMPILER][VERSION]}"
             )
         variables["ALPAKA_CI_HIP_VERSION"] = job[DEVICE_COMPILER][VERSION]
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
@@ -369,6 +373,10 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["ALPAKA_CI_CXX"] = "icpx"
         if job[DEVICE_COMPILER][VERSION] == "2024.0":
             variables["ALPAKA_CI_CLANG_VER"] = "17"
+        elif job[DEVICE_COMPILER][VERSION] == "2024.1":
+            variables["ALPAKA_CI_CLANG_VER"] = "18"
+        elif job[DEVICE_COMPILER][VERSION] == "2024.2":
+            variables["ALPAKA_CI_CLANG_VER"] = "19"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
         variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
