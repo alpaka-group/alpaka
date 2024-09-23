@@ -357,6 +357,11 @@ if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
     else()
         find_package(OpenMP REQUIRED COMPONENTS CXX)
         target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
+        # shown with CMake 3.29 and cray clang 17
+        # workaround: cmake is missing to add '-fopenmp' to the linker flags
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "CrayClang")
+            target_link_libraries(alpaka INTERFACE -fopenmp)
+        endif()
     endif()
 endif()
 
