@@ -100,4 +100,27 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
+    # Clang-CUDA 18 and 19 only supports up to CUDA SDK 12.1
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+        and row_check_version(row, DEVICE_COMPILER, ">=", "18")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.1")
+    ):
+        return False
+
+    if row_check_name(row, DEVICE_COMPILER, "==", NVCC) and row_check_name(
+        row, HOST_COMPILER, "==", CLANG
+    ):
+        # nvcc 12.5 is the minimum requirement for host compiler Clang 18
+        if row_check_version(row, HOST_COMPILER, "==", "18") and row_check_version(
+            row, DEVICE_COMPILER, "<=", "12.5"
+        ):
+            return False
+
+        # no released nvcc version supports Clang 19 yet (latest release was CUDA 12.6)
+        if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(
+            row, DEVICE_COMPILER, "<=", "12.6"
+        ):
+            return False
+
     return True

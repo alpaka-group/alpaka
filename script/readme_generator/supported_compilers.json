@@ -367,6 +367,68 @@
             "state": "no"
         }
     },
+    "clang 18 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes"
+        },
+        "OMPthread": {
+            "state": "yes"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "yes",
+            "comment": "(CUDA 12.4 - 15.5)"
+        },
+        "CUDAclang": {
+            "state": "yes",
+            "comment": "(CUDA 11.2 - 11.8)"
+        },
+        "hip": {
+            "state": "yes",
+            "comment": "(HIP 6.2)"
+        },
+        "sycl": {
+            "state": "no"
+        }
+    },
+    "clang 19 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes"
+        },
+        "OMPthread": {
+            "state": "yes"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "yes",
+            "comment": "(CUDA 11.2 - 12.1)"
+        },
+        "hip": {
+            "state": "no"
+        },
+        "sycl": {
+            "state": "no"
+        }
+    },
     "icpx 2024.2 (Linux)": {
         "serial": {
             "state": "yes"
