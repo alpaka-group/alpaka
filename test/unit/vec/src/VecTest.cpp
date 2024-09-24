@@ -10,6 +10,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <numeric>
+#include <tuple>
 #include <utility>
 
 namespace
@@ -469,7 +470,9 @@ TEST_CASE("accessByNameConstexpr", "[vec]")
     STATIC_REQUIRE(v4.w() == 4);
 }
 
-TEMPLATE_TEST_CASE("Vec generator constructor", "[vec]", std::size_t, int, unsigned, float, double)
+using VecGeneratorTestTypes = std::tuple<std::size_t, int, unsigned, float, double>;
+
+TEMPLATE_LIST_TEST_CASE("Vec generator constructor", "[vec]", VecGeneratorTestTypes)
 {
     // Define a generator function
     auto generator = [](auto index) { return static_cast<TestType>(index.value + 1); };
