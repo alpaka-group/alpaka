@@ -25709,16 +25709,16 @@
 		{
 		    namespace detail
 		    {
-		        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
+		        template<template<typename...> class TList, template<typename...> class TPred, typename... Ts>
 		        struct FilterImplHelper;
 
-		        template<template<typename...> class TList, template<typename> class TPred>
+		        template<template<typename...> class TList, template<typename...> class TPred>
 		        struct FilterImplHelper<TList, TPred>
 		        {
 		            using type = TList<>;
 		        };
 
-		        template<template<typename...> class TList, template<typename> class TPred, typename T, typename... Ts>
+		        template<template<typename...> class TList, template<typename...> class TPred, typename T, typename... Ts>
 		        struct FilterImplHelper<TList, TPred, T, Ts...>
 		        {
 		            using type = std::conditional_t<
@@ -25727,16 +25727,19 @@
 		                typename FilterImplHelper<TList, TPred, Ts...>::type>;
 		        };
 
-		        template<typename TList, template<typename> class TPred>
+		        template<typename TList, template<typename...> class TPred>
 		        struct FilterImpl;
 
-		        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
+		        template<template<typename...> class TList, template<typename...> class TPred, typename... Ts>
 		        struct FilterImpl<TList<Ts...>, TPred>
 		        {
 		            using type = typename detail::FilterImplHelper<TList, TPred, Ts...>::type;
 		        };
 		    } // namespace detail
-		    template<typename TList, template<typename> class TPred>
+
+		    /// \tparam TPred Only the first parameter is used, all other must be set by TPred to some default.
+		    ///               Using '...' instead of a single type is a workaround for CrayClang.
+		    template<typename TList, template<typename...> class TPred>
 		    using Filter = typename detail::FilterImpl<TList, TPred>::type;
 		} // namespace alpaka::meta
 		// ==
