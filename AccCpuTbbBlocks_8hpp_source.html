@@ -272,42 +272,49 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                TArgs&amp;&amp;... args)</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <span class="keywordflow">return</span> TaskKernelCpuTbbBlocks&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;(</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                    workDiv,</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    kernelFnObj,</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        };</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">        //! The CPU TBB block execution task platform type trait specialization.</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keyword">struct </span>PlatformType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keyword">using</span> type = PlatformCpu;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <span class="keywordflow">if</span>(workDiv.m_blockThreadExtent.prod() != <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(1u))</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                        <span class="stringliteral">&quot;The given work division is not valid for a single thread Acc: &quot;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                        + <a class="code" href="namespacealpaka.html#ac49b3c4b09c8a7455e8f88faa51484df">getAccName</a>&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;() + <span class="stringliteral">&quot;. Threads per block should be 1!&quot;</span>);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                <span class="keywordflow">return</span> TaskKernelCpuTbbBlocks&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;(</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    workDiv,</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                    kernelFnObj,</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            }</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        };</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">        //! The CPU TBB block accelerator idx type trait specialization.</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">        //! The CPU TBB block execution task platform type trait specialization.</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keyword">struct </span>IdxType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keyword">struct </span>PlatformType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <span class="keyword">using</span> type = TIdx;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <span class="keyword">using</span> type = PlatformCpu;</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        };</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">AccToTag</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keyword">using</span> type = <a class="code" href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        };</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">TagToAcc</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagCpuTbbBlocks, TDim, TIdx&gt;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keyword">using</span> type = alpaka::AccCpuTbbBlocks&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        };</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">        //! The CPU TBB block accelerator idx type trait specialization.</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">struct </span>IdxType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keyword">using</span> type = TIdx;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        };</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">AccToTag</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keyword">using</span> type = <a class="code" href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        };</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">TagToAcc</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagCpuTbbBlocks, TDim, TIdx&gt;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        {</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="keyword">using</span> type = alpaka::AccCpuTbbBlocks&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        };</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAtomicCpu_8hpp_html"><div class="ttname"><a href="AtomicCpu_8hpp.html">AtomicCpu.hpp</a></div></div>
 <div class="ttc" id="aAtomicHierarchy_8hpp_html"><div class="ttname"><a href="AtomicHierarchy_8hpp.html">AtomicHierarchy.hpp</a></div></div>
 <div class="ttc" id="aAtomicNoOp_8hpp_html"><div class="ttname"><a href="AtomicNoOp_8hpp.html">AtomicNoOp.hpp</a></div></div>
@@ -344,6 +351,7 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div class="ttc" id="anamespacealpaka_html_a69d68a30000dc80ea5a1c09139f2b789"><div class="ttname"><a href="namespacealpaka.html#a69d68a30000dc80ea5a1c09139f2b789">alpaka::getMemBytes</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getMemBytes(TDev const &amp;dev) -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00095">Traits.hpp:95</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_abc4b415f6e9996b6ecb9e50c9fe62403"><div class="ttname"><a href="namespacealpaka.html#abc4b415f6e9996b6ecb9e50c9fe62403">alpaka::Vec</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="anamespacealpaka_html_abe27c0dad6ddd453657dee8f0bb343ff"><div class="ttname"><a href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">alpaka::AtomicHierarchy</a></div><div class="ttdeci">alpaka::meta::InheritFromList&lt; alpaka::meta::Unique&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, concepts::Implements&lt; ConceptAtomicGrids, TGridAtomic &gt;, concepts::Implements&lt; ConceptAtomicBlocks, TBlockAtomic &gt;, concepts::Implements&lt; ConceptAtomicThreads, TThreadAtomic &gt; &gt;&gt; &gt; AtomicHierarchy</div><div class="ttdoc">build a single class to inherit from different atomic implementations</div><div class="ttdef"><b>Definition:</b> <a href="AtomicHierarchy_8hpp_source.html#l00027">AtomicHierarchy.hpp:33</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ac49b3c4b09c8a7455e8f88faa51484df"><div class="ttname"><a href="namespacealpaka.html#ac49b3c4b09c8a7455e8f88faa51484df">alpaka::getAccName</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00100">Traits.hpp:100</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_af5f5caddacfd0c5a7584d88a0a6c85dc"><div class="ttname"><a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a></div><div class="ttdeci">typename trait::AccToTag&lt; TAcc &gt;::type AccToTag</div><div class="ttdoc">maps an acc type to a tag type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00047">Tag.hpp:47</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_affc8849a6a5b20ced64d3f1248e24a0a"><div class="ttname"><a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">alpaka::TagToAcc</a></div><div class="ttdeci">typename trait::TagToAcc&lt; TTag, TDim, TIdx &gt;::type TagToAcc</div><div class="ttdoc">maps a tag type to an acc type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00054">Tag.hpp:54</a></div></div>
 <div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -355,7 +363,7 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuTbbBlocks_8hpp.html">AccCpuTbbBlocks.hpp</a></li>
-    <li class="footer">Generated on Tue Sep 24 2024 07:54:23 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 24 2024 11:01:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
