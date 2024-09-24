@@ -13729,6 +13729,13 @@
 	                TKernelFnObj const& kernelFnObj,
 	                TArgs&&... args)
 	            {
+	                if(workDiv.m_blockThreadExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "The given work division is not valid for a single thread Acc: "
+	                        + getAccName<AccCpuOmp2Blocks<TDim, TIdx>>() + ". Threads per block should be 1!");
+	                }
+
 	                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
 	                    workDiv,
 	                    kernelFnObj,
@@ -14743,6 +14750,13 @@
 	                TKernelFnObj const& kernelFnObj,
 	                TArgs&&... args)
 	            {
+	                if(workDiv.m_blockThreadExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "The given work division is not valid for a single thread Acc: "
+	                        + getAccName<AccCpuSerial<TDim, TIdx>>() + ". Threads per block should be 1!");
+	                }
+
 	                return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
 	                    workDiv,
 	                    kernelFnObj,
@@ -19550,6 +19564,13 @@
 	                TKernelFnObj const& kernelFnObj,
 	                TArgs&&... args)
 	            {
+	                if(workDiv.m_blockThreadExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "The given work division is not valid for a single thread Acc: "
+	                        + getAccName<AccCpuTbbBlocks<TDim, TIdx>>() + ". Threads per block should be 1!");
+	                }
+
 	                return TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>(
 	                    workDiv,
 	                    kernelFnObj,
@@ -29618,10 +29639,6 @@
 
 	            // The number of blocks in the grid.
 	            TIdx const numBlocksInGrid(gridBlockExtent.prod());
-	            if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
-	            {
-	                throw std::runtime_error("Only one thread per block allowed in the OpenMP 2.0 block accelerator!");
-	            }
 
 	            // Get the OpenMP schedule information for the given kernel and parameter types
 	            auto const schedule = std::apply(
@@ -30194,11 +30211,6 @@
 	            AccCpuSerial<TDim, TIdx> acc(
 	                *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
 	                blockSharedMemDynSizeBytes);
-
-	            if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
-	            {
-	                throw std::runtime_error("A block for the serial accelerator can only ever have one single thread!");
-	            }
 
 	            // Execute the blocks serially.
 	            meta::ndLoopIncIdx(
@@ -30851,11 +30863,6 @@
 
 	            // The number of blocks in the grid.
 	            TIdx const numBlocksInGrid = gridBlockExtent.prod();
-
-	            if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
-	            {
-	                throw std::runtime_error("A block for the TBB accelerator can only ever have one single thread!");
-	            }
 
 	            tbb::this_task_arena::isolate(
 	                [&]
