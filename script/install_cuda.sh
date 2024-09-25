@@ -17,7 +17,7 @@ ALPAKA_CUDA_VER_MAJOR="${ALPAKA_CUDA_VER_SEMANTIC[0]}"
 echo ALPAKA_CUDA_VER_MAJOR: "${ALPAKA_CUDA_VER_MAJOR}"
 
 # if LD_LIBRARY_PATH is not set, the following statement will throw an unbound variable error
-# export LD_LIBRARY_PATH=/path/to/lib:${LD_LIBRARY_PATH} 
+# export LD_LIBRARY_PATH=/path/to/lib:${LD_LIBRARY_PATH}
 if [ -z ${LD_LIBRARY_PATH+x} ]; then
     export LD_LIBRARY_PATH=""
 fi
