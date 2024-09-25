@@ -22,7 +22,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 travis_retry() {
-  # apply `set +euo pipefail` in a local scope so that the following script is not affected and 
+  # apply `set +euo pipefail` in a local scope so that the following script is not affected and
   # e.g. exit on failure is not deactivated
   (
     set +euo pipefail
