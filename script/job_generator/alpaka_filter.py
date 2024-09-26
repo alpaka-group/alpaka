@@ -102,11 +102,20 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
-    # Clang-CUDA 18 and 19 only supports up to CUDA SDK 12.1
+    # Clang-CUDA 18 only supports up to CUDA SDK 12.1
     if (
         row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
-        and row_check_version(row, DEVICE_COMPILER, ">=", "18")
+        and row_check_version(row, DEVICE_COMPILER, "==", "18")
         and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.1")
+    ):
+        return False
+
+    # TODO(SimeonEhrig): disable Clang 19 as Clang-CUDA because of several bugs
+    # will be fixed in alpaka 2.0.0
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+        and row_check_version(row, DEVICE_COMPILER, "==", "19")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=", OFF_VER)
     ):
         return False
 
