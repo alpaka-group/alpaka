@@ -389,7 +389,7 @@
         },
         "CUDAclang": {
             "state": "yes",
-            "comment": "(CUDA 11.2 - 11.8)"
+            "comment": "(CUDA 11.2 - 12.1)"
         },
         "hip": {
             "state": "yes",
@@ -419,8 +419,7 @@
             "state": "no"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 12.1)"
+            "state": "no"
         },
         "hip": {
             "state": "no"
