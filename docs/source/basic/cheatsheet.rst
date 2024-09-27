@@ -109,7 +109,11 @@ Allocate a buffer in host memory
   .. code-block:: c++
 
      // Use alpaka vector as a static array for the extents
+     // If Dim is DimInt<1>;
      Vec<Dim, Idx> extent = value;
+     // If Dim is DimInt<2>;
+     Vec<Dim, Idx> extent = {value1, value2};
+
      // Allocate memory for the alpaka buffer, which is a dynamic array
      using BufHost = Buf<DevHost, DataType, Dim, Idx>;
      BufHost bufHost = allocBuf<DataType, Idx>(devHost, extent);
@@ -149,6 +153,9 @@ Get a mdspan to a buffer or view initialization, etc.
   .. code-block:: c++
 
      auto bufOrViewMdSpan = experimental::getMdSpan(bufOrViewAcc)
+     // Accessing and setting the items of a 2D mdspan
+     auto value = bufOrViewMdSpan(i,j);
+     bufOrViewMdSpan(i,j) = value;
 
 Allocate a buffer in device memory
   .. code-block:: c++
