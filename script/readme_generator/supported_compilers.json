@@ -353,7 +353,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 12.4 - 15.5)"
+            "comment": "(CUDA 12.4 - 12.5)"
         },
         "CUDAclang": {
             "state": "yes",
@@ -385,11 +385,10 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 12.4 - 15.5)"
+            "comment": "(CUDA 12.4 - 12.5)"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 11.8)"
+            "state": "no"
         },
         "hip": {
             "state": "yes",
@@ -419,8 +418,7 @@
             "state": "no"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 12.1)"
+            "state": "no"
         },
         "hip": {
             "state": "no"
