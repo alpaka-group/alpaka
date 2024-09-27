@@ -137,20 +137,18 @@ Create a view to host std::array
 Get a raw pointer to a buffer or view initialization, etc.
   .. code-block:: c++
 
-     DataType* raw = view::getPtrNative(bufHost);
-     DataType* rawViewPtr = view::getPtrNative(hostView);
+     DataType* raw = view::getPtrNative(hostBufOrView);
 
-Get the pitches (memory in bytes to the next element in the buffer along the pitch dimension) of a buffer
+Get the pitches of a buffer or view
   .. code-block:: c++
 
-     auto pitchBufAcc = getPitchesInBytes(bufAcc)
-     auto pitchViewAcc = getPitchesInBytes(viewAcc)
+     // memory in bytes to the next element in the buffer/view along the pitch dimension
+     auto pitchBufOrViewAcc = getPitchesInBytes(accBufOrView)
 
 Get a mdspan to a buffer or view initialization, etc.
   .. code-block:: c++
 
-     auto bufMdSpan = experimental::getMdSpan(bufAcc)
-     auto viewMdSpan = experimental::getMdSpan(viewAcc)
+     auto bufOrViewMdSpan = experimental::getMdSpan(bufOrViewAcc)
 
 Allocate a buffer in device memory
   .. code-block:: c++
