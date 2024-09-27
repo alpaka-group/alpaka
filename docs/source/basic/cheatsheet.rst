@@ -39,16 +39,8 @@ Define accelerator type (CUDA, OpenMP,etc.)
   AcceleratorType:
      .. code-block:: c++
 
-	AccGpuCudaRt,
-	AccGpuHipRt,
-	AccCpuSycl,
-	AccFpgaSyclIntel,
-	AccGpuSyclIntel,
-	AccCpuOmp2Blocks,
-	AccCpuOmp2Threads,
-	AccCpuTbbBlocks,
-	AccCpuThreads,
-	AccCpuSerial
+	AccGpuCudaRt, AccGpuHipRt, AccCpuSycl, AccFpgaSyclIntel, AccGpuSyclIntel, AccCpuOmp2Blocks,
+	AccCpuOmp2Threads, AccCpuTbbBlocks, AccCpuThreads, AccCpuSerial
 
 
 Create platform and select a device by index
