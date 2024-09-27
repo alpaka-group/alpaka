@@ -110,6 +110,10 @@ TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::T
     alpaka::test::testViewPlainPtrOperators<TestType, float>();
 }
 
+// TODO(SimeonEhrig): if C++ 20 is minimum requirement, remove `using`
+// replace it with `TEMPLATE_TEST_CASE("Vec generator constructor", "[vec]", std::size_t, int, unsigned, float,
+// double)`
+// missing feature: parameter of a variadic macro is a C++20 extension
 using CreateViewTestTypes = std::tuple<std::array<float, 4>, std::vector<float>>;
 
 TEMPLATE_LIST_TEST_CASE("createView", "[memView]", CreateViewTestTypes)

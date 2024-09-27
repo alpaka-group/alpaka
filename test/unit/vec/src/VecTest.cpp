@@ -470,6 +470,10 @@ TEST_CASE("accessByNameConstexpr", "[vec]")
     STATIC_REQUIRE(v4.w() == 4);
 }
 
+// TODO(SimeonEhrig): if C++ 20 is minimum requirement, remove `using`
+// replace it with `TEMPLATE_TEST_CASE("Vec generator constructor", "[vec]", std::size_t, int, unsigned, float,
+// double)`
+// missing feature: parameter of a variadic macro is a C++20 extension
 using VecGeneratorTestTypes = std::tuple<std::size_t, int, unsigned, float, double>;
 
 TEMPLATE_LIST_TEST_CASE("Vec generator constructor", "[vec]", VecGeneratorTestTypes)
