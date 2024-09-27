@@ -117,17 +117,16 @@ Allocate a buffer in host memory
   .. code-block:: c++
 
      // Use alpaka vector as a static array for the extents
-     alpaka::Vec<Dim, Idx> extent = value;
+     Vec<Dim, Idx> extent = value;
      // Allocate memory for the alpaka buffer, which is a dynamic array
-     using BufHost = alpaka::Buf<DevHost, DataType, Dim, Idx>;
+     using BufHost = Buf<DevHost, DataType, Dim, Idx>;
      BufHost bufHost = allocBuf<DataType, Idx>(devHost, extent);
 
 Create a view to host memory represented by a pointer
   .. code-block:: c++
 
-     using Dim = alpaka::DimInt<1u>;
      // Create an alpaka vector which is a static array
-     alpaka::Vec<Dim, Idx> extent = size;
+     Vec<Dim, Idx> extent = size;
      DataType* ptr = ...;
      auto hostView = createView(devHost, ptr, extent);
 
@@ -152,14 +151,14 @@ Get a raw pointer to a buffer or view initialization, etc.
 Get the pitches (memory in bytes to the next element in the buffer along the pitch dimension) of a buffer
   .. code-block:: c++
 
-     auto pitchBufAcc = alpaka::getPitchesInBytes(bufAcc)
-     auto pitchViewAcc = alpaka::getPitchesInBytes(viewAcc)
+     auto pitchBufAcc = getPitchesInBytes(bufAcc)
+     auto pitchViewAcc = getPitchesInBytes(viewAcc)
 
 Get a mdspan to a buffer or view initialization, etc.
   .. code-block:: c++
 
-     auto bufMdSpan = alpaka::experimental::getMdSpan(bufAcc)
-     auto viewMdSpan = alpaka::experimental::getMdSpan(viewAcc)
+     auto bufMdSpan = experimental::getMdSpan(bufAcc)
+     auto viewMdSpan = experimental::getMdSpan(viewAcc)
 
 Allocate a buffer in device memory
   .. code-block:: c++
@@ -169,7 +168,7 @@ Allocate a buffer in device memory
 Enqueue a memory copy from host to device
   .. code-block:: c++
 
-     // arguments can be also alpaka::View instances instead of alpaka::Buf
+     // arguments can be also View instances instead of Buf
      memcpy(queue, bufDevice, bufHost, extent);
 
 Enqueue a memory copy from device to host
@@ -203,12 +202,8 @@ Automatically select a valid kernel launch configuration
      auto autoWorkDiv = getValidWorkDiv(
        kernelCfg,
        device,
-       heatEqKernel,
-       pCurrAcc,
-       pNextAcc,
-       numNodesX,
-       dx,
-       dt);
+       kernel,
+       kernelParams...);
 
 Manually set a kernel launch configuration
   .. code-block:: c++
@@ -218,10 +213,7 @@ Manually set a kernel launch configuration
      Vec<Dim, Idx> const elementsPerThread = vectorValue;
 
      using WorkDiv = WorkDivMembers<Dim, Idx>;
-     auto manualWorkDiv = WorkDiv{
-       blocksPerGrid,
-       threadsPerBlock,
-       elementsPerThread};
+     auto manualWorkDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
 
 Instantiate a kernel (does not launch it yet)
   .. code-block:: c++
@@ -233,7 +225,7 @@ acc parameter of the kernel is provided automatically, does not need to be speci
 Get information about the kernel from the device (size, maxThreadsPerBlock, sharedMemSize, registers, etc.)
   .. code-block:: c++
 
-     auto kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(devAcc, kernel, parameters...);
+     auto kernelFunctionAttributes = getFunctionAttributes<Acc>(devAcc, kernel, parameters...);
 
 
 Put the kernel for execution
@@ -276,7 +268,7 @@ Linearize multi-dimensional vectors
 More generally, index multi-dimensional vectors with a different dimensionality
   .. code-block:: c++
 
-     auto idxND = alpaka::mapIdx<N>(idxMD, extentMD);
+     auto idxND = mapIdx<N>(idxMD, extentMD);
 
 .. raw:: pdf
 
