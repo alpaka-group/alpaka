@@ -1,6 +1,10 @@
 Cheatsheet
 ==========
 
+.. raw:: pdf
+
+   Spacer 0,1
+
 .. only:: html
 
    Download pdf version :download:`here <../../cheatsheet/cheatsheet.pdf>`
@@ -17,10 +21,6 @@ General
 
      #include <alpaka/alpaka.hpp>
      using namespace alpaka;
-
-.. raw:: pdf
-
-   Spacer 0,5
 
 Accelerator, Platform and Device
 --------------------------------
@@ -61,8 +61,7 @@ Create a queue for a device
   Property:
      .. code-block:: c++
 
-	Blocking
-	NonBlocking
+	Blocking, NonBlocking
 
 Put a task for execution
   .. code-block:: c++
@@ -109,10 +108,8 @@ Allocate a buffer in host memory
   .. code-block:: c++
 
      // Use alpaka vector as a static array for the extents
-     // If Dim is DimInt<1>;
-     Vec<Dim, Idx> extent = value;
-     // If Dim is DimInt<2>;
-     Vec<Dim, Idx> extent = {value1, value2};
+     Vec<DimInt<1>, Idx> extent = value;
+     Vec<DimInt<2>, Idx> extent = {valueY, valueX};
 
      // Allocate memory for the alpaka buffer, which is a dynamic array
      using BufHost = Buf<DevHost, DataType, Dim, Idx>;
@@ -153,9 +150,8 @@ Get a mdspan to a buffer or view initialization, etc.
   .. code-block:: c++
 
      auto bufOrViewMdSpan = experimental::getMdSpan(bufOrViewAcc)
-     // Accessing and setting the items of a 2D mdspan
-     auto value = bufOrViewMdSpan(i,j);
-     bufOrViewMdSpan(i,j) = value;
+     auto value = bufOrViewMdSpan(y,x); // access 2D mdspan
+     bufOrViewMdSpan(y,x) = value; // assign item to 2D mdspan
 
 Allocate a buffer in device memory
   .. code-block:: c++
