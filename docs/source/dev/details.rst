@@ -181,7 +181,7 @@ This functionality can be accessed by the corresponding ``alpaka::enqueue`` and 
 
 Currently there is no native language support for describing and checking concepts in C++ at compile time.
 A study group (SG8) is working on the ISO `specification for concepts <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4377.pdf>`_ and compiler forks implementing them do exist.
-For usage in current C++ there are libraries like `Boost.ConceptCheck <https://www.boost.org/doc/libs/1_58_0/libs/concept_check/concept_check.htm>`_ which try to emulate requirement checking of concept types.
+For usage in current C++ there are libraries like `Boost.ConceptCheck <https://www.boost.org/doc/libs/1_74_0/libs/concept_check/concept_check.htm>`_ which try to emulate requirement checking of concept types.
 Those libraries often exploit the preprocessor and require non-trivial changes to the function declaration syntax.
 Therefore the *alpaka* library does not currently make use of *Boost.ConceptCheck*.
 Neither does it facilitate the proposed concept specification due to its dependency on non-standard compilers.

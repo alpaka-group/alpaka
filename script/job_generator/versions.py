@@ -11,16 +11,9 @@ from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-
 
 
 sw_versions: Dict[str, List[str]] = {
-    GCC: ["9", "10", "11", "12", "13"],
-    CLANG: ["9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"],
+    GCC: ["10", "11", "12", "13"],
+    CLANG: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"],
     NVCC: [
-        "11.2",
-        "11.3",
-        "11.4",
-        "11.5",
-        "11.6",
-        "11.7",
-        "11.8",
         "12.0",
         "12.1",
         "12.2",
@@ -29,7 +22,7 @@ sw_versions: Dict[str, List[str]] = {
         "12.5",
         "12.6",
     ],
-    HIPCC: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "6.0", "6.1", "6.2"],
+    HIPCC: ["6.0", "6.1", "6.2"],
     ICPX: ["2024.2"],
     # Contains all enabled back-ends.
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
@@ -75,7 +68,7 @@ sw_versions: Dict[str, List[str]] = {
         ],
     ],
     UBUNTU: ["20.04"],
-    CMAKE: ["3.22.6", "3.23.5", "3.24.4", "3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
+    CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
     BOOST: [
         "1.74.0",
         "1.75.0",
@@ -91,7 +84,7 @@ sw_versions: Dict[str, List[str]] = {
         "1.85.0",
         "1.86.0",
     ],
-    CXX_STANDARD: ["17", "20"],
+    CXX_STANDARD: ["20"],
     BUILD_TYPE: BUILD_TYPES,
     # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some
     # conditions later

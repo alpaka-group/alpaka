@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
 
 set(_COMMON_TARGET_NAME "common")
 set(_COMMON_COMPILE_OPTIONS_FILE "devCompileOptions.cmake")

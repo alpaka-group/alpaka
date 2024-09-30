@@ -10,7 +10,7 @@
 
 *alpaka - An Abstraction Library for Parallel Kernel Acceleration*
 
-The alpaka library is a header-only C++17 abstraction library for accelerator development.
+The alpaka library is a header-only C++20 abstraction library for accelerator development.
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
 
 .. CAUTION::

@@ -108,7 +108,7 @@ If user is going to create her/his own project/example outside the source tree a
 .. code-block::
 
   # Clone alpaka from github.com
-  git clone --branch 1.1.0 https://github.com/alpaka-group/alpaka.git
+  git clone --branch 1.2.0 https://github.com/alpaka-group/alpaka.git
   cd alpaka
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=/install/ ..

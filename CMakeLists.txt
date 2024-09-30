@@ -6,7 +6,7 @@
 ################################################################################
 # Required CMake version
 
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
 
 cmake_policy(SET CMP0091 NEW)
 
@@ -25,7 +25,7 @@ string(REGEX MATCH "([0-9]+)" alpaka_VERSION_PATCH  ${alpaka_VERSION_PATCH_HPP})
 set(PACKAGE_VERSION "${alpaka_VERSION_MAJOR}.${alpaka_VERSION_MINOR}.${alpaka_VERSION_PATCH}")
 
 project(alpaka VERSION      ${alpaka_VERSION_MAJOR}.${alpaka_VERSION_MINOR}.${alpaka_VERSION_PATCH}
-               DESCRIPTION  "The alpaka library is a header-only C++17 abstraction library for accelerator development."
+               DESCRIPTION  "The alpaka library is a header-only C++20 abstraction library for accelerator development."
                HOMEPAGE_URL "https://github.com/alpaka-group/alpaka"
                LANGUAGES    CXX)
 

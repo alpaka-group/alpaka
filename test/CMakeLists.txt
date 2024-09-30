@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
 
 if(NOT TARGET alpaka::alpaka)
     list(APPEND CMAKE_MODULE_PATH "${alpaka_ROOT}")
