@@ -85,9 +85,9 @@ Other compilers or combinations marked with :x: in the table above may work but 
 Dependencies
 ------------
 
-[Boost](https://boost.org/) 1.74.0+ is the only mandatory external dependency.
+[Boost](https://boost.org/) 1.74.0+ is an optional dependency. 
+Boost is used for demangle C++ object names and faster atomic operations on CPU backends in case the C++20 feature `std::atomic_ref` is not supported by the compiler. 
 The **alpaka** library itself just requires header-only libraries.
-However some of the accelerator back-end implementations require different boost libraries to be built.
 
 When an accelerator back-end using *CUDA* is enabled, version *11.2* (with nvcc as CUDA compiler) or version *11.2* (with clang as CUDA compiler) of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
