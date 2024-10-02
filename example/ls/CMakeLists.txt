@@ -1,7 +1,7 @@
 # Copyright 2023 Bernhard Manfred Gruber
 # SPDX-License-Identifier: ISC
 
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 project(alpaka-ls LANGUAGES CXX)

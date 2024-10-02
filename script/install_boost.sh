@@ -163,7 +163,7 @@ then
     fi
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
-        ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++17"
+        ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++20"
     fi
     ALPAKA_BOOST_B2+=" --with-atomic"
 

@@ -26,7 +26,7 @@ The following example shows a minimal example of a ``CMakeLists.txt`` that uses 
 .. code-block:: cmake
    :caption: CMakeLists.txt
 
-   cmake_minimum_required(VERSION 3.22)
+   cmake_minimum_required(VERSION 3.25)
    project("myexample" CXX)
 
    find_package(alpaka REQUIRED)
@@ -55,7 +55,7 @@ The ``add_subdirectory`` method does not require alpaka to be installed. Instead
 .. code-block:: cmake
    :caption: CMakeLists.txt
 
-   cmake_minimum_required(VERSION 3.22)
+   cmake_minimum_required(VERSION 3.25)
    project("myexample" CXX)
 
    add_subdirectory(thirdParty/alpaka)

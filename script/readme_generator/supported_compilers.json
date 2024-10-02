@@ -1,34 +1,4 @@
 {
-    "gcc 9.5 (Linux)": {
-        "serial": {
-            "state": "yes"
-        },
-        "OMPblock": {
-            "state": "yes"
-        },
-        "OMPthread": {
-            "state": "yes"
-        },
-        "thread": {
-            "state": "yes"
-        },
-        "tbb": {
-            "state": "yes"
-        },
-        "CUDAnvcc": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 12.5)[^2]"
-        },
-        "CUDAclang": {
-            "state": "none"
-        },
-        "hip": {
-            "state": "none"
-        },
-        "sycl": {
-            "state": "no"
-        }
-    },
     "gcc 10.4 / 11.1 (Linux)": {
         "serial": {
             "state": "yes"
@@ -47,7 +17,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 11.4 - 12.0)[^2]"
+            "comment": "(CUDA 12.0)"
         },
         "CUDAclang": {
             "state": "none"
@@ -119,36 +89,6 @@
             "state": "no"
         }
     },
-    "clang 9 (Linux)": {
-        "serial": {
-            "state": "yes"
-        },
-        "OMPblock": {
-            "state": "yes"
-        },
-        "OMPthread": {
-            "state": "yes"
-        },
-        "thread": {
-            "state": "yes"
-        },
-        "tbb": {
-            "state": "yes"
-        },
-        "CUDAnvcc": {
-            "state": "yes",
-            "comment": "(CUDA 11.6 - 12.0)[^2]"
-        },
-        "CUDAclang": {
-            "state": "no"
-        },
-        "hip": {
-            "state": "no"
-        },
-        "sycl": {
-            "state": "no"
-        }
-    },
     "clang 10/11 (Linux)": {
         "serial": {
             "state": "yes"
@@ -167,7 +107,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 11.2, 11.6 - 12.0)[^2]"
+            "comment": "(CUDA 12.0)"
         },
         "CUDAclang": {
             "state": "no"
@@ -197,7 +137,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 11.6 - 12.0)[^2]"
+            "comment": "(CUDA 12.0)"
         },
         "CUDAclang": {
             "state": "no"
@@ -227,7 +167,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 11.7 - 12.0)"
+            "comment": "(CUDA 12.0)"
         },
         "CUDAclang": {
             "state": "no"
@@ -257,15 +197,13 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 11.8 - 12.0)"
+            "comment": "(CUDA 12.0)"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 11.5)"
+            "state": "no"
         },
         "hip": {
-            "state": "yes",
-            "comment": "(HIP 5.1 - 5.2)"
+            "state": "no"
         },
         "sycl": {
             "state": "no"
@@ -292,12 +230,10 @@
             "comment": "(CUDA 12.2)"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 11.5)"
+            "state": "no"
         },
         "hip": {
-            "state": "yes",
-            "comment": "(HIP 5.3 - 5.4)"
+            "state": "no"
         },
         "sycl": {
             "state": "no"
@@ -324,12 +260,10 @@
             "comment": "(CUDA 12.3)"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 11.5)"
+            "state": "no"
         },
         "hip": {
-            "state": "yes",
-            "comment": "(HIP 5.5 - 5.6)"
+            "state": "no"
         },
         "sycl": {
             "state": "no"
@@ -356,12 +290,11 @@
             "comment": "(CUDA 12.4 - 12.5)"
         },
         "CUDAclang": {
-            "state": "yes",
-            "comment": "(CUDA 11.2 - 11.8)"
+            "state": "no"
         },
         "hip": {
             "state": "yes",
-            "comment": "(HIP 5.7 - 6.1)"
+            "comment": "(HIP 6.0 - 6.1)"
         },
         "sycl": {
             "state": "no"
@@ -456,7 +389,7 @@
         },
         "sycl": {
             "state": "yes",
-            "comment": "[^4]"
+            "comment": "[^2]"
         }
     },
     "Xcode 13.2.1 / 14.2 / 14.3.1 (macOS)": {

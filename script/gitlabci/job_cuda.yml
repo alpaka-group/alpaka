@@ -11,7 +11,7 @@ linux_nvcc12.0_gcc11_debug_relocatable_device_code_compile_only:
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.81.0
     ALPAKA_CI_CMAKE_VER: 3.26.5
-    alpaka_CXX_STANDARD: 17
+    alpaka_CXX_STANDARD: 20
     alpaka_RELOCATABLE_DEVICE_CODE: "ON"
 
 linux_nvcc12.0_gcc11_release_extended_lambda_off_compile_only:
@@ -24,6 +24,6 @@ linux_nvcc12.0_gcc11_release_extended_lambda_off_compile_only:
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.82.0
     ALPAKA_CI_CMAKE_VER: 3.27.1
-    alpaka_CXX_STANDARD: 17
+    alpaka_CXX_STANDARD: 20
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"

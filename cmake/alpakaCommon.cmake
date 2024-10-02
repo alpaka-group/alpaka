@@ -114,14 +114,14 @@ endif()
 set(alpaka_DEBUG "0" CACHE STRING "Debug level")
 set_property(CACHE alpaka_DEBUG PROPERTY STRINGS "0;1;2")
 
-set(alpaka_CXX_STANDARD_DEFAULT "17")
+set(alpaka_CXX_STANDARD_DEFAULT "20")
 # Check whether alpaka_CXX_STANDARD has already been defined as a non-cached variable.
 if(DEFINED alpaka_CXX_STANDARD)
     set(alpaka_CXX_STANDARD_DEFAULT ${alpaka_CXX_STANDARD})
 endif()
 
 set(alpaka_CXX_STANDARD ${alpaka_CXX_STANDARD_DEFAULT} CACHE STRING "C++ standard version")
-set_property(CACHE alpaka_CXX_STANDARD PROPERTY STRINGS "17;20")
+set_property(CACHE alpaka_CXX_STANDARD PROPERTY STRINGS "20")
 
 if(NOT TARGET alpaka)
     add_library(alpaka INTERFACE)
@@ -215,7 +215,7 @@ if(${alpaka_DEBUG} GREATER 1)
 endif()
 
 find_package(Boost ${_alpaka_BOOST_MIN_VER} REQUIRED
-             OPTIONAL_COMPONENTS atomic)
+        OPTIONAL_COMPONENTS atomic)
 
 target_link_libraries(alpaka INTERFACE Boost::headers)
 
@@ -468,10 +468,6 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
         elseif(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
             message(STATUS "nvcc is used as CUDA compiler")
 
-            if(alpaka_CXX_STANDARD GREATER_EQUAL 20 AND CMAKE_VERSION VERSION_LESS "3.25.0")
-                message(FATAL_ERROR "CMake 3.24 and older does not support C++20 for nvcc")
-            endif()
-
             # nvcc sets no linux/__linux macros on OpenPOWER linux
             # nvidia bug id: 2448610
             if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -483,7 +479,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             if(alpaka_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON)
                 alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--extended-lambda>")
             endif()
-            # This is mandatory because with C++17 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
+            # This is mandatory because with C++20 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--expt-relaxed-constexpr>")
 
             # CMake automatically sets '-g' in debug mode
