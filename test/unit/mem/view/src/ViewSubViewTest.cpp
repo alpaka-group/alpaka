@@ -16,7 +16,7 @@
 #include <numeric>
 #include <type_traits>
 
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored                                                                                    \
         "-Wcast-align" // "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
@@ -130,7 +130,7 @@ namespace alpaka::test
         alpaka::test::testViewSubViewImmutable<TAcc>(view, buf, dev, viewExtent, viewOffset);
     }
 } // namespace alpaka::test
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
 

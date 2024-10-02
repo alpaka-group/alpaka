@@ -275,12 +275,12 @@ namespace alpaka
         {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
             static_assert(
-                std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0),
+                std::is_same_v<TApi, ApiCudaRt> && TApi::version >= ALPAKA_VERSION_NUMBER(11, 2, 0),
                 "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
 #    endif
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             static_assert(
-                std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0),
+                std::is_same_v<TApi, ApiHipRt> && TApi::version >= ALPAKA_VERSION_NUMBER(5, 3, 0),
                 "Support for stream-ordered memory buffers requires HIP/ROCm 5.3 or higher.");
 #    endif
             static_assert(
@@ -324,9 +324,9 @@ namespace alpaka
                   TDim::value <= 1
                   && (
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
+                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= ALPAKA_VERSION_NUMBER(11, 2, 0)
 #    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-                      std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0)
+                      std::is_same_v<TApi, ApiHipRt> && TApi::version >= ALPAKA_VERSION_NUMBER(5, 3, 0)
 #    else
                       false
 #    endif

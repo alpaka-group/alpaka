@@ -38,11 +38,11 @@
 
 #        include "alpaka/core/BoostPredef.hpp"
 
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 #            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #        endif
 
-#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
@@ -50,7 +50,7 @@ namespace alpaka
 {
     namespace detail
     {
-#        if BOOST_COMP_CLANG
+#        if ALPAKA_COMP_CLANG
 #            pragma clang diagnostic push
 #            pragma clang diagnostic ignored "-Wunused-template"
 #        endif
@@ -67,14 +67,14 @@ namespace alpaka
             TAcc const acc(threadElemExtent);
 
 // with clang it is not possible to query std::result_of for a pure device lambda created on the host side
-#        if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+#        if !(ALPAKA_COMP_CLANG_CUDA && ALPAKA_COMP_CLANG)
             static_assert(
                 std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
                 "The TKernelFnObj is required to return void!");
 #        endif
             kernelFnObj(const_cast<TAcc const&>(acc), args...);
         }
-#        if BOOST_COMP_CLANG
+#        if ALPAKA_COMP_CLANG
 #            pragma clang diagnostic pop
 #        endif
     } // namespace detail
@@ -325,14 +325,14 @@ namespace alpaka
                     remove_restrict_t<std::decay_t<TArgs>>...>;
 
                 typename TApi::FuncAttributes_t funcAttrs;
-#        if BOOST_COMP_GNUC
+#        if ALPAKA_COMP_GNUC
                 // Disable and enable compile warnings for gcc
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconditionally-supported"
 #        endif
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     TApi::funcGetAttributes(&funcAttrs, reinterpret_cast<void const*>(kernelName)));
-#        if BOOST_COMP_GNUC
+#        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
 

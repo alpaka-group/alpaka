@@ -95,7 +95,7 @@ namespace alpaka::trait
             -> alpaka::Vec<DimInt<N>, TVal>
         {
             alpaka::Vec<DimInt<N>, TVal> v{};
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(DimInt<N>::value > 0)
 #else
             if constexpr(DimInt<N>::value > 0)

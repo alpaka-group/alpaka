@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <boost/predef.h>
+#include <alpaka/core/BoostPredef.hpp>
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #    include <cuda_runtime_api.h>
@@ -15,7 +15,7 @@ namespace alpaka
     {
         // Names
         static constexpr char name[] = "Cuda";
-        static constexpr auto version = BOOST_PREDEF_MAKE_10_VVRRP(CUDART_VERSION);
+        static constexpr auto version = ALPAKA_LANG_CUDA;
 
         // Types
         using DeviceAttr_t = ::cudaDeviceAttr;
@@ -182,12 +182,12 @@ namespace alpaka
         template<typename T>
         static inline Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)
         {
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wconditionally-supported"
 #    endif
             return ::cudaFuncGetAttributes(attr, reinterpret_cast<void const*>(func));
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic pop
 #    endif
         }

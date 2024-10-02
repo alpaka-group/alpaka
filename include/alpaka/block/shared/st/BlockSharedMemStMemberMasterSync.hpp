@@ -40,7 +40,7 @@ namespace alpaka
 
     namespace trait
     {
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored                                                                                    \
         "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
@@ -71,7 +71,7 @@ namespace alpaka
                 return *data;
             }
         };
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
         template<std::size_t TDataAlignBytes>

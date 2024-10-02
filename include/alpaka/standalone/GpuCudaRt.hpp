@@ -10,7 +10,7 @@
 
 #include "alpaka/core/BoostPredef.hpp"
 
-#if defined(BOOST_COMP_CLANG_CUDA) && (BOOST_COMP_CLANG_CUDA == BOOST_VERSION_NUMBER(14, 0, 0))
+#if defined(ALPAKA_COMP_CLANG_CUDA) && (ALPAKA_COMP_CLANG_CUDA == ALPAKA_VERSION_NUMBER(14, 0, 0))
 
 #    include <cuda.h>
 

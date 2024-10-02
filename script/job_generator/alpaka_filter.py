@@ -112,27 +112,18 @@ def alpaka_post_filter(row: List) -> bool:
     # several bugs will be fixed in alpaka 2.0.0
     if (
         row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
-        and (
-            row_check_version(row, DEVICE_COMPILER, "==", "18")
-            or row_check_version(row, DEVICE_COMPILER, "==", "19")
-        )
+        and (row_check_version(row, DEVICE_COMPILER, "==", "18") or row_check_version(row, DEVICE_COMPILER, "==", "19"))
         and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=", OFF_VER)
     ):
         return False
 
-    if row_check_name(row, DEVICE_COMPILER, "==", NVCC) and row_check_name(
-        row, HOST_COMPILER, "==", CLANG
-    ):
+    if row_check_name(row, DEVICE_COMPILER, "==", NVCC) and row_check_name(row, HOST_COMPILER, "==", CLANG):
         # nvcc 12.5 is the minimum requirement for host compiler Clang 18
-        if row_check_version(row, HOST_COMPILER, "==", "18") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.5"
-        ):
+        if row_check_version(row, HOST_COMPILER, "==", "18") and row_check_version(row, DEVICE_COMPILER, "<=", "12.5"):
             return False
 
         # no released nvcc version supports Clang 19 yet (latest release was CUDA 12.6)
-        if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.6"
-        ):
+        if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(row, DEVICE_COMPILER, "<=", "12.6"):
             return False
 
     return True

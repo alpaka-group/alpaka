@@ -19,7 +19,7 @@
 #include <cstdint>
 #include <limits>
 
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wstrict-overflow"
 #endif
@@ -170,6 +170,6 @@ TEMPLATE_LIST_TEST_CASE("shfl_down", "[warp]", alpaka::test::TestAccs)
     }
 }
 
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif

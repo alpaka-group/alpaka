@@ -21,11 +21,11 @@ namespace alpaka::warp
 
 #    if !defined(ALPAKA_HOST_ONLY)
 
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 #            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #        endif
 
-#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 

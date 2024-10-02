@@ -43,7 +43,7 @@ namespace alpaka
         template<typename TKernelFnObj, typename TAcc, typename TSfinae = void>
         struct BlockSharedMemDynSizeBytes
         {
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -55,7 +55,7 @@ namespace alpaka
             //! \param args,... The kernel invocation arguments.
             //! \return The size of the shared memory allocated for a block in bytes.
             //! The default version always returns zero.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
             ALPAKA_NO_HOST_ACC_WARNING
@@ -133,7 +133,7 @@ namespace alpaka
             };
 
         public:
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -145,7 +145,7 @@ namespace alpaka
             //! \param args,... The kernel invocation arguments.
             //! \return The OpenMP schedule information as an alpaka::omp::Schedule object,
             //!         returning an object of any other type is treated as if the trait is not specialized.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
             ALPAKA_NO_HOST_ACC_WARNING
@@ -161,7 +161,7 @@ namespace alpaka
         };
     } // namespace trait
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -173,7 +173,7 @@ namespace alpaka
 //! \param args,... The kernel invocation arguments.
 //! \return The size of the shared memory allocated for a block in bytes.
 //! The default implementation always returns zero.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
     ALPAKA_NO_HOST_ACC_WARNING
@@ -210,7 +210,7 @@ namespace alpaka
             std::forward<TArgs>(args)...);
     }
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -222,7 +222,7 @@ namespace alpaka
 //! \param args,... The kernel invocation arguments.
 //! \return The OpenMP schedule information as an alpaka::omp::Schedule object if the kernel specialized the
 //!         OmpSchedule trait, an object of another type if the kernel didn't specialize the trait.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
     template<typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
@@ -239,7 +239,7 @@ namespace alpaka
             args...);
     }
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -303,7 +303,7 @@ namespace alpaka
     //! @{
     template<typename T, typename = void>
     struct IsKernelTriviallyCopyable
-#if BOOST_COMP_NVCC
+#if ALPAKA_COMP_NVCC
         : std::bool_constant<
               std::is_trivially_copyable_v<T> || __nv_is_extended_device_lambda_closure_type(T)
               || __nv_is_extended_host_device_lambda_closure_type(T)>
@@ -325,7 +325,7 @@ namespace alpaka
 //! \param kernelFnObj The kernel function object which should be executed.
 //! \param args,... The kernel invocation arguments.
 //! \return The kernel execution task.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
     template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
@@ -334,7 +334,7 @@ namespace alpaka
         // check for void return type
         detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
-#if BOOST_COMP_NVCC
+#if ALPAKA_COMP_NVCC
         static_assert(
             isKernelTriviallyCopyable<TKernelFnObj>,
             "Kernels must be trivially copyable or an extended CUDA lambda expression!");
@@ -359,7 +359,7 @@ namespace alpaka
             std::forward<TArgs>(args)...);
     }
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -371,7 +371,7 @@ namespace alpaka
 //! \param workDiv The index domain work division.
 //! \param kernelFnObj The kernel function object which should be executed.
 //! \param args,... The kernel invocation arguments.
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
     template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>

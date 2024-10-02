@@ -342,7 +342,8 @@ public:
     }
 };
 
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_LANG_CUDA)                                                         \
+    || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_LANG_HIP)
 
 template<typename TApi, typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<

@@ -28,7 +28,7 @@ namespace alpaka
         };
     } // namespace detail
 
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4324) // warning C4324: structure was padded due to alignment specifier
 #endif
@@ -83,7 +83,7 @@ namespace alpaka
         mutable std::array<uint8_t, detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes> m_mem;
         std::uint32_t m_dynPitch;
     };
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(pop)
 #endif
 
@@ -92,7 +92,7 @@ namespace alpaka
         template<typename T, std::size_t TStaticAllocKiB>
         struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
         {
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored                                                                                    \
         "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
@@ -105,7 +105,7 @@ namespace alpaka
                     "defaultAlignment!");
                 return reinterpret_cast<T*>(mem.dynMemBegin());
             }
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
         };

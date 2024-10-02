@@ -11,10 +11,6 @@ alpaka_add_executable(
     ${_FILES_SOURCE}
     ${_FILES_HEADER})
 
-target_include_directories(
-    ${_TARGET_NAME}
-    PRIVATE ${Boost_INCLUDE_DIRS})
-
 target_link_libraries(
     ${_TARGET_NAME}
     PRIVATE common)
