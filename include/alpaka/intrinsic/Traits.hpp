@@ -37,7 +37,7 @@ namespace alpaka
     template<typename TIntrinsic>
     ALPAKA_FN_ACC auto popcount(TIntrinsic const& intrinsic, std::uint32_t value) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Popcount<ImplementationBase>::popcount(intrinsic, value);
     }
 
@@ -50,7 +50,7 @@ namespace alpaka
     template<typename TIntrinsic>
     ALPAKA_FN_ACC auto popcount(TIntrinsic const& intrinsic, std::uint64_t value) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Popcount<ImplementationBase>::popcount(intrinsic, value);
     }
 
@@ -64,7 +64,7 @@ namespace alpaka
     template<typename TIntrinsic>
     ALPAKA_FN_ACC auto ffs(TIntrinsic const& intrinsic, std::int32_t value) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Ffs<ImplementationBase>::ffs(intrinsic, value);
     }
 
@@ -78,7 +78,7 @@ namespace alpaka
     template<typename TIntrinsic>
     ALPAKA_FN_ACC auto ffs(TIntrinsic const& intrinsic, std::int64_t value) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Ffs<ImplementationBase>::ffs(intrinsic, value);
     }
 } // namespace alpaka

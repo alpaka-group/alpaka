@@ -26,7 +26,7 @@ namespace alpaka
 
     //! The CUDA/HIP RT platform.
     template<typename TApi>
-    struct PlatformUniformCudaHipRt : concepts::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
+    struct PlatformUniformCudaHipRt : interface::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
     {
 #    if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                 \
         && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)

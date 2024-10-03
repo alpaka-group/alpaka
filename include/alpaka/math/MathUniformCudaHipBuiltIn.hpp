@@ -21,200 +21,200 @@
 namespace alpaka::math
 {
     //! The CUDA built in abs.
-    class AbsUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
+    class AbsUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in acos.
-    class AcosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAcos, AcosUniformCudaHipBuiltIn>
+    class AcosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAcos, AcosUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in acosh.
-    class AcoshUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAcosh, AcoshUniformCudaHipBuiltIn>
+    class AcoshUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAcosh, AcoshUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in arg.
-    class ArgUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathArg, ArgUniformCudaHipBuiltIn>
+    class ArgUniformCudaHipBuiltIn : public interface::Implements<ConceptMathArg, ArgUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in asin.
-    class AsinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAsin, AsinUniformCudaHipBuiltIn>
+    class AsinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAsin, AsinUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in asinh.
-    class AsinhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAsinh, AsinhUniformCudaHipBuiltIn>
+    class AsinhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAsinh, AsinhUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in atan.
-    class AtanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtan, AtanUniformCudaHipBuiltIn>
+    class AtanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtan, AtanUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in atanh.
-    class AtanhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtanh, AtanhUniformCudaHipBuiltIn>
+    class AtanhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtanh, AtanhUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in atan2.
-    class Atan2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtan2, Atan2UniformCudaHipBuiltIn>
+    class Atan2UniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtan2, Atan2UniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in cbrt.
-    class CbrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCbrt, CbrtUniformCudaHipBuiltIn>
+    class CbrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCbrt, CbrtUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in ceil.
-    class CeilUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCeil, CeilUniformCudaHipBuiltIn>
+    class CeilUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCeil, CeilUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in conj.
-    class ConjUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
+    class ConjUniformCudaHipBuiltIn : public interface::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in copysign.
     class CopysignUniformCudaHipBuiltIn
-        : public concepts::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
+        : public interface::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in cos.
-    class CosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCos, CosUniformCudaHipBuiltIn>
+    class CosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCos, CosUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in cosh.
-    class CoshUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCosh, CoshUniformCudaHipBuiltIn>
+    class CoshUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCosh, CoshUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in erf.
-    class ErfUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathErf, ErfUniformCudaHipBuiltIn>
+    class ErfUniformCudaHipBuiltIn : public interface::Implements<ConceptMathErf, ErfUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in exp.
-    class ExpUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
+    class ExpUniformCudaHipBuiltIn : public interface::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in floor.
-    class FloorUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
+    class FloorUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in fma.
-    class FmaUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
+    class FmaUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in fmod.
-    class FmodUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFmod, FmodUniformCudaHipBuiltIn>
+    class FmodUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFmod, FmodUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in isfinite.
     class IsfiniteUniformCudaHipBuiltIn
-        : public concepts::Implements<ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn>
+        : public interface::Implements<ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in isinf.
-    class IsinfUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathIsinf, IsinfUniformCudaHipBuiltIn>
+    class IsinfUniformCudaHipBuiltIn : public interface::Implements<ConceptMathIsinf, IsinfUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in isnan.
-    class IsnanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathIsnan, IsnanUniformCudaHipBuiltIn>
+    class IsnanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathIsnan, IsnanUniformCudaHipBuiltIn>
     {
     };
 
     // ! The CUDA built in log.
-    class LogUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog, LogUniformCudaHipBuiltIn>
+    class LogUniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog, LogUniformCudaHipBuiltIn>
     {
     };
 
     // ! The CUDA built in log2.
-    class Log2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
+    class Log2UniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
     {
     };
 
     // ! The CUDA built in log10.
-    class Log10UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
+    class Log10UniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in max.
-    class MaxUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
+    class MaxUniformCudaHipBuiltIn : public interface::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in min.
-    class MinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMin, MinUniformCudaHipBuiltIn>
+    class MinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathMin, MinUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in pow.
-    class PowUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathPow, PowUniformCudaHipBuiltIn>
+    class PowUniformCudaHipBuiltIn : public interface::Implements<ConceptMathPow, PowUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA built in remainder.
     class RemainderUniformCudaHipBuiltIn
-        : public concepts::Implements<ConceptMathRemainder, RemainderUniformCudaHipBuiltIn>
+        : public interface::Implements<ConceptMathRemainder, RemainderUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA round.
-    class RoundUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathRound, RoundUniformCudaHipBuiltIn>
+    class RoundUniformCudaHipBuiltIn : public interface::Implements<ConceptMathRound, RoundUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA rsqrt.
-    class RsqrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn>
+    class RsqrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA sin.
-    class SinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSin, SinUniformCudaHipBuiltIn>
+    class SinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSin, SinUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA sinh.
-    class SinhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSinh, SinhUniformCudaHipBuiltIn>
+    class SinhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSinh, SinhUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA sincos.
-    class SinCosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSinCos, SinCosUniformCudaHipBuiltIn>
+    class SinCosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSinCos, SinCosUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA sqrt.
-    class SqrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSqrt, SqrtUniformCudaHipBuiltIn>
+    class SqrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSqrt, SqrtUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA tan.
-    class TanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTan, TanUniformCudaHipBuiltIn>
+    class TanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTan, TanUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA tanh.
-    class TanhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTanh, TanhUniformCudaHipBuiltIn>
+    class TanhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTanh, TanhUniformCudaHipBuiltIn>
     {
     };
 
     //! The CUDA trunc.
-    class TruncUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTrunc, TruncUniformCudaHipBuiltIn>
+    class TruncUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTrunc, TruncUniformCudaHipBuiltIn>
     {
     };
 

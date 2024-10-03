@@ -16,7 +16,7 @@
 namespace alpaka
 {
     //! The CPU OpenMP 2.0 block memory fence.
-    class MemFenceOmp2Blocks : public concepts::Implements<ConceptMemFence, MemFenceOmp2Blocks>
+    class MemFenceOmp2Blocks : public interface::Implements<ConceptMemFence, MemFenceOmp2Blocks>
     {
     };
 

@@ -19,7 +19,7 @@ namespace alpaka
     //! The GPU CUDA/HIP accelerator work division.
     template<typename TDim, typename TIdx>
     class WorkDivUniformCudaHipBuiltIn
-        : public concepts::Implements<ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
+        : public interface::Implements<ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
     {
     public:
         ALPAKA_FN_HOST_ACC WorkDivUniformCudaHipBuiltIn(Vec<TDim, TIdx> const& threadElemExtent)

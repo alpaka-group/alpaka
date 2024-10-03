@@ -175,9 +175,9 @@ namespace alpaka
 
         template<typename TTag, bool TBlocking>
         class QueueGenericSyclBase
-            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
-            , public concepts::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
-            , public concepts::Implements<ConceptGetDev, QueueGenericSyclBase<TTag, TBlocking>>
+            : public interface::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
+            , public interface::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
+            , public interface::Implements<ConceptGetDev, QueueGenericSyclBase<TTag, TBlocking>>
         {
         public:
             QueueGenericSyclBase(DevGenericSycl<TTag> const& dev)

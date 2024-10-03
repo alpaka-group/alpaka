@@ -54,8 +54,8 @@ namespace alpaka
     //! The CUDA/HIP RT device handle.
     template<typename TApi>
     class DevUniformCudaHipRt
-        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
-        , public concepts::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
+        : public interface::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
+        , public interface::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
     {
         friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 

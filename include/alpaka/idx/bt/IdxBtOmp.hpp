@@ -22,7 +22,7 @@ namespace alpaka
     {
         //! The OpenMP accelerator index provider.
         template<typename TDim, typename TIdx>
-        class IdxBtOmp : public concepts::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
+        class IdxBtOmp : public interface::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
         {
         };
     } // namespace bt

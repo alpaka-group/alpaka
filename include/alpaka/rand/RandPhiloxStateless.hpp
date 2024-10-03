@@ -22,7 +22,7 @@ namespace alpaka::rand
      */
     class PhiloxStateless4x32x10Vector
         : public alpaka::rand::engine::PhiloxStateless<engine::PhiloxParams<4, 32, 10>>
-        , public concepts::Implements<ConceptRand, PhiloxStateless4x32x10Vector>
+        , public interface::Implements<ConceptRand, PhiloxStateless4x32x10Vector>
     {
     public:
         using EngineParams = engine::PhiloxParams<4, 32, 10>;

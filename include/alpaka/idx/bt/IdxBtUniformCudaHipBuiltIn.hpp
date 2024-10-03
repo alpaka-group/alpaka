@@ -22,7 +22,7 @@ namespace alpaka
         //! The CUDA/HIP accelerator ND index provider.
         template<typename TDim, typename TIdx>
         class IdxBtUniformCudaHipBuiltIn
-            : public concepts::Implements<ConceptIdxBt, IdxBtUniformCudaHipBuiltIn<TDim, TIdx>>
+            : public interface::Implements<ConceptIdxBt, IdxBtUniformCudaHipBuiltIn<TDim, TIdx>>
         {
         };
     } // namespace bt

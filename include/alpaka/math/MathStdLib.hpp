@@ -11,197 +11,197 @@
 namespace alpaka::math
 {
     //! The standard library abs, implementation covered by the general template.
-    class AbsStdLib : public concepts::Implements<ConceptMathAbs, AbsStdLib>
+    class AbsStdLib : public interface::Implements<ConceptMathAbs, AbsStdLib>
     {
     };
 
     //! The standard library acos, implementation covered by the general template.
-    class AcosStdLib : public concepts::Implements<ConceptMathAcos, AcosStdLib>
+    class AcosStdLib : public interface::Implements<ConceptMathAcos, AcosStdLib>
     {
     };
 
     //! The standard library acos, implementation covered by the general template.
-    class AcoshStdLib : public concepts::Implements<ConceptMathAcosh, AcoshStdLib>
+    class AcoshStdLib : public interface::Implements<ConceptMathAcosh, AcoshStdLib>
     {
     };
 
     //! The standard library arg, implementation covered by the general template.
-    class ArgStdLib : public concepts::Implements<ConceptMathArg, ArgStdLib>
+    class ArgStdLib : public interface::Implements<ConceptMathArg, ArgStdLib>
     {
     };
 
     //! The standard library asin, implementation covered by the general template.
-    class AsinStdLib : public concepts::Implements<ConceptMathAsin, AsinStdLib>
+    class AsinStdLib : public interface::Implements<ConceptMathAsin, AsinStdLib>
     {
     };
 
     //! The standard library asinh, implementation covered by the general template.
-    class AsinhStdLib : public concepts::Implements<ConceptMathAsinh, AsinhStdLib>
+    class AsinhStdLib : public interface::Implements<ConceptMathAsinh, AsinhStdLib>
     {
     };
 
     //! The standard library atan, implementation covered by the general template.
-    class AtanStdLib : public concepts::Implements<ConceptMathAtan, AtanStdLib>
+    class AtanStdLib : public interface::Implements<ConceptMathAtan, AtanStdLib>
     {
     };
 
     //! The standard library atanh, implementation covered by the general template.
-    class AtanhStdLib : public concepts::Implements<ConceptMathAtanh, AtanhStdLib>
+    class AtanhStdLib : public interface::Implements<ConceptMathAtanh, AtanhStdLib>
     {
     };
 
     //! The standard library atan2, implementation covered by the general template.
-    class Atan2StdLib : public concepts::Implements<ConceptMathAtan2, Atan2StdLib>
+    class Atan2StdLib : public interface::Implements<ConceptMathAtan2, Atan2StdLib>
     {
     };
 
     //! The standard library cbrt, implementation covered by the general template.
-    class CbrtStdLib : public concepts::Implements<ConceptMathCbrt, CbrtStdLib>
+    class CbrtStdLib : public interface::Implements<ConceptMathCbrt, CbrtStdLib>
     {
     };
 
     //! The standard library ceil, implementation covered by the general template.
-    class CeilStdLib : public concepts::Implements<ConceptMathCeil, CeilStdLib>
+    class CeilStdLib : public interface::Implements<ConceptMathCeil, CeilStdLib>
     {
     };
 
     //! The standard library conj, implementation covered by the general template.
-    class ConjStdLib : public concepts::Implements<ConceptMathConj, ConjStdLib>
+    class ConjStdLib : public interface::Implements<ConceptMathConj, ConjStdLib>
     {
     };
 
     //! The standard library copysign, implementation covered by the general template.
-    class CopysignStdLib : public concepts::Implements<ConceptMathCopysign, CopysignStdLib>
+    class CopysignStdLib : public interface::Implements<ConceptMathCopysign, CopysignStdLib>
     {
     };
 
     //! The standard library cos, implementation covered by the general template.
-    class CosStdLib : public concepts::Implements<ConceptMathCos, CosStdLib>
+    class CosStdLib : public interface::Implements<ConceptMathCos, CosStdLib>
     {
     };
 
     //! The standard library cosh, implementation covered by the general template.
-    class CoshStdLib : public concepts::Implements<ConceptMathCosh, CoshStdLib>
+    class CoshStdLib : public interface::Implements<ConceptMathCosh, CoshStdLib>
     {
     };
 
     //! The standard library erf, implementation covered by the general template.
-    class ErfStdLib : public concepts::Implements<ConceptMathErf, ErfStdLib>
+    class ErfStdLib : public interface::Implements<ConceptMathErf, ErfStdLib>
     {
     };
 
     //! The standard library exp, implementation covered by the general template.
-    class ExpStdLib : public concepts::Implements<ConceptMathExp, ExpStdLib>
+    class ExpStdLib : public interface::Implements<ConceptMathExp, ExpStdLib>
     {
     };
 
     //! The standard library floor, implementation covered by the general template.
-    class FloorStdLib : public concepts::Implements<ConceptMathFloor, FloorStdLib>
+    class FloorStdLib : public interface::Implements<ConceptMathFloor, FloorStdLib>
     {
     };
 
     //! The standard library fma, implementation covered by the general template.
-    class FmaStdLib : public concepts::Implements<ConceptMathFma, FmaStdLib>
+    class FmaStdLib : public interface::Implements<ConceptMathFma, FmaStdLib>
     {
     };
 
     //! The standard library fmod, implementation covered by the general template.
-    class FmodStdLib : public concepts::Implements<ConceptMathFmod, FmodStdLib>
+    class FmodStdLib : public interface::Implements<ConceptMathFmod, FmodStdLib>
     {
     };
 
     //! The standard library isfinite, implementation covered by the general template.
-    class IsfiniteStdLib : public concepts::Implements<ConceptMathIsfinite, IsfiniteStdLib>
+    class IsfiniteStdLib : public interface::Implements<ConceptMathIsfinite, IsfiniteStdLib>
     {
     };
 
     //! The standard library isinf, implementation covered by the general template.
-    class IsinfStdLib : public concepts::Implements<ConceptMathIsinf, IsinfStdLib>
+    class IsinfStdLib : public interface::Implements<ConceptMathIsinf, IsinfStdLib>
     {
     };
 
     //! The standard library isnan, implementation covered by the general template.
-    class IsnanStdLib : public concepts::Implements<ConceptMathIsnan, IsnanStdLib>
+    class IsnanStdLib : public interface::Implements<ConceptMathIsnan, IsnanStdLib>
     {
     };
 
     //! The standard library log, implementation covered by the general template.
-    class LogStdLib : public concepts::Implements<ConceptMathLog, LogStdLib>
+    class LogStdLib : public interface::Implements<ConceptMathLog, LogStdLib>
     {
     };
 
     //! The standard library log2, implementation covered by the general template.
-    class Log2StdLib : public concepts::Implements<ConceptMathLog2, Log2StdLib>
+    class Log2StdLib : public interface::Implements<ConceptMathLog2, Log2StdLib>
     {
     };
 
     //! The standard library log10, implementation covered by the general template.
-    class Log10StdLib : public concepts::Implements<ConceptMathLog10, Log10StdLib>
+    class Log10StdLib : public interface::Implements<ConceptMathLog10, Log10StdLib>
     {
     };
 
     //! The standard library max.
-    class MaxStdLib : public concepts::Implements<ConceptMathMax, MaxStdLib>
+    class MaxStdLib : public interface::Implements<ConceptMathMax, MaxStdLib>
     {
     };
 
     //! The standard library min.
-    class MinStdLib : public concepts::Implements<ConceptMathMin, MinStdLib>
+    class MinStdLib : public interface::Implements<ConceptMathMin, MinStdLib>
     {
     };
 
     //! The standard library pow, implementation covered by the general template.
-    class PowStdLib : public concepts::Implements<ConceptMathPow, PowStdLib>
+    class PowStdLib : public interface::Implements<ConceptMathPow, PowStdLib>
     {
     };
 
     //! The standard library remainder, implementation covered by the general template.
-    class RemainderStdLib : public concepts::Implements<ConceptMathRemainder, RemainderStdLib>
+    class RemainderStdLib : public interface::Implements<ConceptMathRemainder, RemainderStdLib>
     {
     };
 
     //! The standard library round, implementation covered by the general template.
-    class RoundStdLib : public concepts::Implements<ConceptMathRound, RoundStdLib>
+    class RoundStdLib : public interface::Implements<ConceptMathRound, RoundStdLib>
     {
     };
 
     //! The standard library rsqrt, implementation covered by the general template.
-    class RsqrtStdLib : public concepts::Implements<ConceptMathRsqrt, RsqrtStdLib>
+    class RsqrtStdLib : public interface::Implements<ConceptMathRsqrt, RsqrtStdLib>
     {
     };
 
     //! The standard library sin, implementation covered by the general template.
-    class SinStdLib : public concepts::Implements<ConceptMathSin, SinStdLib>
+    class SinStdLib : public interface::Implements<ConceptMathSin, SinStdLib>
     {
     };
 
     //! The standard library sinh, implementation covered by the general template.
-    class SinhStdLib : public concepts::Implements<ConceptMathSinh, SinhStdLib>
+    class SinhStdLib : public interface::Implements<ConceptMathSinh, SinhStdLib>
     {
     };
 
     //! The standard library sincos, implementation covered by the general template.
-    class SinCosStdLib : public concepts::Implements<ConceptMathSinCos, SinCosStdLib>
+    class SinCosStdLib : public interface::Implements<ConceptMathSinCos, SinCosStdLib>
     {
     };
 
     //! The standard library sqrt, implementation covered by the general template.
-    class SqrtStdLib : public concepts::Implements<ConceptMathSqrt, SqrtStdLib>
+    class SqrtStdLib : public interface::Implements<ConceptMathSqrt, SqrtStdLib>
     {
     };
 
     //! The standard library tan, implementation covered by the general template.
-    class TanStdLib : public concepts::Implements<ConceptMathTan, TanStdLib>
+    class TanStdLib : public interface::Implements<ConceptMathTan, TanStdLib>
     {
     };
 
     //! The standard library tanh, implementation covered by the general template.
-    class TanhStdLib : public concepts::Implements<ConceptMathTanh, TanhStdLib>
+    class TanhStdLib : public interface::Implements<ConceptMathTanh, TanhStdLib>
     {
     };
 
     //! The standard library trunc, implementation covered by the general template.
-    class TruncStdLib : public concepts::Implements<ConceptMathTrunc, TruncStdLib>
+    class TruncStdLib : public interface::Implements<ConceptMathTrunc, TruncStdLib>
     {
     };
 

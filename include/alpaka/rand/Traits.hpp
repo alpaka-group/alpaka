@@ -42,7 +42,7 @@ namespace alpaka::rand
         {
             static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
-            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
         }
 
@@ -53,7 +53,7 @@ namespace alpaka::rand
         {
             static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
-            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
         }
 
@@ -66,7 +66,7 @@ namespace alpaka::rand
                 std::is_integral_v<T> && std::is_unsigned_v<T>,
                 "The value type T has to be a unsigned integral type!");
 
-            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
         }
     } // namespace distribution
@@ -93,7 +93,7 @@ namespace alpaka::rand
             std::uint32_t const& subsequence = 0,
             std::uint32_t const& offset = 0)
         {
-            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
         }
     } // namespace engine

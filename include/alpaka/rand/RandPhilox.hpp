@@ -28,7 +28,7 @@ namespace alpaka::rand
      * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
      * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
      */
-    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10>
+    class Philox4x32x10 : public interface::Implements<ConceptRand, Philox4x32x10>
     {
     public:
         /// Philox algorithm: 10 rounds, 4 numbers of size 32.
@@ -84,7 +84,7 @@ namespace alpaka::rand
      * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
      * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
      */
-    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector>
+    class Philox4x32x10Vector : public interface::Implements<ConceptRand, Philox4x32x10Vector>
     {
     public:
         using EngineParams = engine::PhiloxParams<4, 32, 10>;
@@ -142,7 +142,7 @@ namespace alpaka::rand
 
     /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
     template<typename TResult, typename TSfinae = void>
-    class UniformReal : public concepts::Implements<ConceptRand, UniformReal<TResult>>
+    class UniformReal : public interface::Implements<ConceptRand, UniformReal<TResult>>
     {
         template<typename TRes, typename TEnable = void>
         struct ResultType

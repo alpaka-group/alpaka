@@ -15,7 +15,7 @@
 
 namespace alpaka::rand
 {
-    class RandDefault : public concepts::Implements<ConceptRand, RandDefault>
+    class RandDefault : public interface::Implements<ConceptRand, RandDefault>
     {
     };
 

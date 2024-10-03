@@ -60,7 +60,7 @@ namespace alpaka
     template<typename TMemFence, typename TMemScope>
     ALPAKA_FN_ACC auto mem_fence(TMemFence const& fence, TMemScope const& scope) -> void
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMemFence, TMemFence>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMemFence, TMemFence>;
         trait::MemFence<ImplementationBase, TMemScope>::mem_fence(fence, scope);
     }
 } // namespace alpaka

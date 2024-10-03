@@ -64,7 +64,7 @@ namespace alpaka::warp
     template<typename TWarp>
     ALPAKA_FN_ACC auto getSize(TWarp const& warp) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::GetSize<ImplementationBase>::getSize(warp);
     }
 
@@ -88,9 +88,9 @@ namespace alpaka::warp
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
     ALPAKA_FN_ACC auto activemask(TWarp const& warp)
-        -> decltype(trait::Activemask<concepts::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
+        -> decltype(trait::Activemask<interface::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Activemask<ImplementationBase>::activemask(warp);
     }
 
@@ -113,7 +113,7 @@ namespace alpaka::warp
     template<typename TWarp>
     ALPAKA_FN_ACC auto all(TWarp const& warp, std::int32_t predicate) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::All<ImplementationBase>::all(warp, predicate);
     }
 
@@ -136,7 +136,7 @@ namespace alpaka::warp
     template<typename TWarp>
     ALPAKA_FN_ACC auto any(TWarp const& warp, std::int32_t predicate) -> std::int32_t
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Any<ImplementationBase>::any(warp, predicate);
     }
 
@@ -163,7 +163,7 @@ namespace alpaka::warp
     template<typename TWarp>
     ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Ballot<ImplementationBase>::ballot(warp, predicate);
     }
 
@@ -197,7 +197,7 @@ namespace alpaka::warp
     template<typename TWarp, typename T>
     ALPAKA_FN_ACC auto shfl(TWarp const& warp, T value, std::int32_t srcLane, std::int32_t width = 0)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
     }
 
@@ -235,7 +235,7 @@ namespace alpaka::warp
     template<typename TWarp, typename T>
     ALPAKA_FN_ACC auto shfl_up(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::ShflUp<ImplementationBase>::shfl_up(warp, value, offset, width ? width : getSize(warp));
     }
 
@@ -273,7 +273,7 @@ namespace alpaka::warp
     template<typename TWarp, typename T>
     ALPAKA_FN_ACC auto shfl_down(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::ShflDown<ImplementationBase>::shfl_down(warp, value, offset, width ? width : getSize(warp));
     }
 
@@ -311,7 +311,7 @@ namespace alpaka::warp
     template<typename TWarp, typename T>
     ALPAKA_FN_ACC auto shfl_xor(TWarp const& warp, T value, std::int32_t mask, std::int32_t width = 0)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::ShflXor<ImplementationBase>::shfl_xor(warp, value, mask, width ? width : getSize(warp));
     }
 } // namespace alpaka::warp

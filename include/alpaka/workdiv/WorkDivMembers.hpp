@@ -16,7 +16,7 @@ namespace alpaka
 {
     //! A basic class holding the work division as grid block extent, block thread and thread element extent.
     template<typename TDim, typename TIdx>
-    class WorkDivMembers : public concepts::Implements<ConceptWorkDiv, WorkDivMembers<TDim, TIdx>>
+    class WorkDivMembers : public interface::Implements<ConceptWorkDiv, WorkDivMembers<TDim, TIdx>>
     {
     public:
         ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;

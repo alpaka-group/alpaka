@@ -16,7 +16,7 @@ namespace alpaka
 {
     //! The SYCL accelerator work division.
     template<typename TDim, typename TIdx>
-    class WorkDivGenericSycl : public concepts::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
+    class WorkDivGenericSycl : public interface::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
     {
         static_assert(TDim::value > 0, "The SYCL work division must have a dimension greater than zero.");
 

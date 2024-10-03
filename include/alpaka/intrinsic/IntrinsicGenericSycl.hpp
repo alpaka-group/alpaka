@@ -16,7 +16,7 @@
 namespace alpaka
 {
     //! The SYCL intrinsic.
-    class IntrinsicGenericSycl : public concepts::Implements<ConceptIntrinsic, IntrinsicGenericSycl>
+    class IntrinsicGenericSycl : public interface::Implements<ConceptIntrinsic, IntrinsicGenericSycl>
     {
     };
 } // namespace alpaka

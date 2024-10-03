@@ -14,7 +14,7 @@ namespace alpaka
 {
     //! The GPU CUDA/HIP intrinsic.
     class IntrinsicUniformCudaHipBuiltIn
-        : public concepts::Implements<ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn>
+        : public interface::Implements<ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn>
     {
     };
 

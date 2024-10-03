@@ -13,7 +13,7 @@
 namespace alpaka
 {
     //! The GPU CUDA/HIP memory fence.
-    class MemFenceUniformCudaHipBuiltIn : public concepts::Implements<ConceptMemFence, MemFenceUniformCudaHipBuiltIn>
+    class MemFenceUniformCudaHipBuiltIn : public interface::Implements<ConceptMemFence, MemFenceUniformCudaHipBuiltIn>
     {
     };
 

@@ -23,7 +23,7 @@ namespace alpaka::warp
 {
     //! The SYCL warp.
     template<typename TDim>
-    class WarpGenericSycl : public concepts::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
+    class WarpGenericSycl : public interface::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
     {
     public:
         WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_warp{my_item}

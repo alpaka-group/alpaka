@@ -122,8 +122,8 @@ namespace alpaka
     //! The SYCL device handle.
     template<typename TTag>
     class DevGenericSycl
-        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
-        , public concepts::Implements<ConceptDev, DevGenericSycl<TTag>>
+        : public interface::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
+        , public interface::Implements<ConceptDev, DevGenericSycl<TTag>>
     {
         friend struct trait::GetDevByIdx<PlatformGenericSycl<TTag>>;
 

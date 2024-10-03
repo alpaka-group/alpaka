@@ -33,7 +33,7 @@ namespace alpaka
     template<typename TAwaited>
     ALPAKA_FN_HOST auto wait(TAwaited const& awaited) -> void
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptCurrentThreadWaitFor, TAwaited>;
+        using ImplementationBase = interface::ImplementationBase<ConceptCurrentThreadWaitFor, TAwaited>;
         trait::CurrentThreadWaitFor<ImplementationBase>::currentThreadWaitFor(awaited);
     }
 

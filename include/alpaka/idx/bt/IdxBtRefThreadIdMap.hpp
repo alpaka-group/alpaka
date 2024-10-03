@@ -21,7 +21,7 @@ namespace alpaka
     {
         //! The threads accelerator index provider.
         template<typename TDim, typename TIdx>
-        class IdxBtRefThreadIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
+        class IdxBtRefThreadIdMap : public interface::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
         {
         public:
             using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TIdx>>;

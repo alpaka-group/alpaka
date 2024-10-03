@@ -38,7 +38,7 @@ namespace alpaka
     template<typename T, typename TBlockSharedMemDyn>
     ALPAKA_FN_ACC auto getDynSharedMem(TBlockSharedMemDyn const& blockSharedMemDyn) -> T*
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedDyn, TBlockSharedMemDyn>;
+        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedDyn, TBlockSharedMemDyn>;
         return trait::GetDynSharedMem<T, ImplementationBase>::getMem(blockSharedMemDyn);
     }
 } // namespace alpaka

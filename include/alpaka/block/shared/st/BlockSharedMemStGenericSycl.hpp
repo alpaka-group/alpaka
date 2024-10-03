@@ -19,7 +19,7 @@ namespace alpaka
     //! The generic SYCL shared memory allocator.
     class BlockSharedMemStGenericSycl
         : public alpaka::detail::BlockSharedMemStMemberImpl<>
-        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
+        , public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
     {
     public:
         BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)

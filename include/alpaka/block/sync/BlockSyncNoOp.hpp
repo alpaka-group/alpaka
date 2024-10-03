@@ -10,7 +10,7 @@
 namespace alpaka
 {
     //! The no op block synchronization.
-    class BlockSyncNoOp : public concepts::Implements<ConceptBlockSync, BlockSyncNoOp>
+    class BlockSyncNoOp : public interface::Implements<ConceptBlockSync, BlockSyncNoOp>
     {
     };
 
