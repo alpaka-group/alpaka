@@ -863,7 +863,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto abs(T const& abs_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAbs, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAbs, T>;
         return trait::Abs<ImplementationBase, TArg>{}(abs_ctx, arg);
     }
 
@@ -880,7 +880,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto acos(T const& acos_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAcos, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAcos, T>;
         return trait::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
     }
 
@@ -897,7 +897,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto acosh(T const& acosh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAcosh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAcosh, T>;
         return trait::Acosh<ImplementationBase, TArg>{}(acosh_ctx, arg);
     }
 
@@ -911,7 +911,7 @@ namespace alpaka::math
     template<typename T, typename TArgument>
     ALPAKA_FN_HOST_ACC auto arg(T const& arg_ctx, TArgument const& argument)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathArg, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathArg, T>;
         return trait::Arg<ImplementationBase, TArgument>{}(arg_ctx, argument);
     }
 
@@ -928,7 +928,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto asin(T const& asin_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAsin, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAsin, T>;
         return trait::Asin<ImplementationBase, TArg>{}(asin_ctx, arg);
     }
 
@@ -941,7 +941,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto asinh(T const& asinh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAsinh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAsinh, T>;
         return trait::Asinh<ImplementationBase, TArg>{}(asinh_ctx, arg);
     }
 
@@ -954,7 +954,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto atan(T const& atan_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAtan, T>;
         return trait::Atan<ImplementationBase, TArg>{}(atan_ctx, arg);
     }
 
@@ -971,7 +971,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto atanh(T const& atanh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtanh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAtanh, T>;
         return trait::Atanh<ImplementationBase, TArg>{}(atanh_ctx, arg);
     }
 
@@ -987,7 +987,7 @@ namespace alpaka::math
     template<typename T, typename Ty, typename Tx>
     ALPAKA_FN_HOST_ACC auto atan2(T const& atan2_ctx, Ty const& y, Tx const& x)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan2, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathAtan2, T>;
         return trait::Atan2<ImplementationBase, Ty, Tx>{}(atan2_ctx, y, x);
     }
 
@@ -1001,7 +1001,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto cbrt(T const& cbrt_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathCbrt, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathCbrt, T>;
         return trait::Cbrt<ImplementationBase, TArg>{}(cbrt_ctx, arg);
     }
 
@@ -1015,7 +1015,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto ceil(T const& ceil_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathCeil, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathCeil, T>;
         return trait::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
     }
 
@@ -1029,7 +1029,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto conj(T const& conj_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathConj, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathConj, T>;
         return trait::Conj<ImplementationBase, TArg>{}(conj_ctx, arg);
     }
 
@@ -1045,7 +1045,7 @@ namespace alpaka::math
     template<typename T, typename TMag, typename TSgn>
     ALPAKA_FN_HOST_ACC auto copysign(T const& copysign_ctx, TMag const& mag, TSgn const& sgn)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathCopysign, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathCopysign, T>;
         return trait::Copysign<ImplementationBase, TMag, TSgn>{}(copysign_ctx, mag, sgn);
     }
 
@@ -1059,7 +1059,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto cos(T const& cos_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathCos, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathCos, T>;
         return trait::Cos<ImplementationBase, TArg>{}(cos_ctx, arg);
     }
 
@@ -1073,7 +1073,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto cosh(T const& cosh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathCosh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathCosh, T>;
         return trait::Cosh<ImplementationBase, TArg>{}(cosh_ctx, arg);
     }
 
@@ -1087,7 +1087,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto erf(T const& erf_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathErf, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathErf, T>;
         return trait::Erf<ImplementationBase, TArg>{}(erf_ctx, arg);
     }
 
@@ -1101,7 +1101,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto exp(T const& exp_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathExp, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathExp, T>;
         return trait::Exp<ImplementationBase, TArg>{}(exp_ctx, arg);
     }
 
@@ -1115,7 +1115,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto floor(T const& floor_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathFloor, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathFloor, T>;
         return trait::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
     }
 
@@ -1133,7 +1133,7 @@ namespace alpaka::math
     template<typename T, typename Tx, typename Ty, typename Tz>
     ALPAKA_FN_HOST_ACC auto fma(T const& fma_ctx, Tx const& x, Ty const& y, Tz const& z)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathFma, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathFma, T>;
         return trait::Fma<ImplementationBase, Tx, Ty, Tz>{}(fma_ctx, x, y, z);
     }
 
@@ -1149,7 +1149,7 @@ namespace alpaka::math
     template<typename T, typename Tx, typename Ty>
     ALPAKA_FN_HOST_ACC auto fmod(T const& fmod_ctx, Tx const& x, Ty const& y)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathFmod, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathFmod, T>;
         return trait::Fmod<ImplementationBase, Tx, Ty>{}(fmod_ctx, x, y);
     }
 
@@ -1163,7 +1163,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto isfinite(T const& ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsfinite, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathIsfinite, T>;
         return trait::Isfinite<ImplementationBase, TArg>{}(ctx, arg);
     }
 
@@ -1177,7 +1177,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto isinf(T const& ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsinf, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathIsinf, T>;
         return trait::Isinf<ImplementationBase, TArg>{}(ctx, arg);
     }
 
@@ -1191,7 +1191,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto isnan(T const& ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsnan, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathIsnan, T>;
         return trait::Isnan<ImplementationBase, TArg>{}(ctx, arg);
     }
 
@@ -1209,7 +1209,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto log(T const& log_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathLog, T>;
         return trait::Log<ImplementationBase, TArg>{}(log_ctx, arg);
     }
 
@@ -1227,7 +1227,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto log2(T const& log2_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog2, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathLog2, T>;
         return trait::Log2<ImplementationBase, TArg>{}(log2_ctx, arg);
     }
 
@@ -1245,7 +1245,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto log10(T const& log10_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog10, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathLog10, T>;
         return trait::Log10<ImplementationBase, TArg>{}(log10_ctx, arg);
     }
 
@@ -1262,7 +1262,7 @@ namespace alpaka::math
     template<typename T, typename Tx, typename Ty>
     ALPAKA_FN_HOST_ACC auto max(T const& max_ctx, Tx const& x, Ty const& y)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathMax, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathMax, T>;
         return trait::Max<ImplementationBase, Tx, Ty>{}(max_ctx, x, y);
     }
 
@@ -1279,7 +1279,7 @@ namespace alpaka::math
     template<typename T, typename Tx, typename Ty>
     ALPAKA_FN_HOST_ACC auto min(T const& min_ctx, Tx const& x, Ty const& y)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathMin, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathMin, T>;
         return trait::Min<ImplementationBase, Tx, Ty>{}(min_ctx, x, y);
     }
 
@@ -1299,7 +1299,7 @@ namespace alpaka::math
     template<typename T, typename TBase, typename TExp>
     ALPAKA_FN_HOST_ACC auto pow(T const& pow_ctx, TBase const& base, TExp const& exp)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathPow, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathPow, T>;
         return trait::Pow<ImplementationBase, TBase, TExp>{}(pow_ctx, base, exp);
     }
 
@@ -1315,7 +1315,7 @@ namespace alpaka::math
     template<typename T, typename Tx, typename Ty>
     ALPAKA_FN_HOST_ACC auto remainder(T const& remainder_ctx, Tx const& x, Ty const& y)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathRemainder, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathRemainder, T>;
         return trait::Remainder<ImplementationBase, Tx, Ty>{}(remainder_ctx, x, y);
     }
 
@@ -1330,7 +1330,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto round(T const& round_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
         return trait::Round<ImplementationBase, TArg>{}(round_ctx, arg);
     }
 
@@ -1345,7 +1345,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto lround(T const& lround_ctx, TArg const& arg) -> long int
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
         return trait::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
     }
 
@@ -1360,7 +1360,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto llround(T const& llround_ctx, TArg const& arg) -> long long int
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
         return trait::Llround<ImplementationBase, TArg>{}(llround_ctx, arg);
     }
 
@@ -1378,7 +1378,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto rsqrt(T const& rsqrt_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathRsqrt, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathRsqrt, T>;
         return trait::Rsqrt<ImplementationBase, TArg>{}(rsqrt_ctx, arg);
     }
 
@@ -1392,7 +1392,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto sin(T const& sin_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathSin, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathSin, T>;
         return trait::Sin<ImplementationBase, TArg>{}(sin_ctx, arg);
     }
 
@@ -1406,7 +1406,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto sinh(T const& sinh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathSinh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathSinh, T>;
         return trait::Sinh<ImplementationBase, TArg>{}(sinh_ctx, arg);
     }
 
@@ -1422,7 +1422,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto sincos(T const& sincos_ctx, TArg const& arg, TArg& result_sin, TArg& result_cos) -> void
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathSinCos, T>;
         trait::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
     }
 
@@ -1440,7 +1440,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto sqrt(T const& sqrt_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathSqrt, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathSqrt, T>;
         return trait::Sqrt<ImplementationBase, TArg>{}(sqrt_ctx, arg);
     }
 
@@ -1454,7 +1454,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto tan(T const& tan_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathTan, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathTan, T>;
         return trait::Tan<ImplementationBase, TArg>{}(tan_ctx, arg);
     }
 
@@ -1468,7 +1468,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto tanh(T const& tanh_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathTanh, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathTanh, T>;
         return trait::Tanh<ImplementationBase, TArg>{}(tanh_ctx, arg);
     }
 
@@ -1482,7 +1482,7 @@ namespace alpaka::math
     template<typename T, typename TArg>
     ALPAKA_FN_HOST_ACC auto trunc(T const& trunc_ctx, TArg const& arg)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMathTrunc, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMathTrunc, T>;
         return trait::Trunc<ImplementationBase, TArg>{}(trunc_ctx, arg);
     }
 } // namespace alpaka::math

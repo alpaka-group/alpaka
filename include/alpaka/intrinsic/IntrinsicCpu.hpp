@@ -25,7 +25,7 @@
 namespace alpaka
 {
     //! The CPU intrinsic.
-    class IntrinsicCpu : public concepts::Implements<ConceptIntrinsic, IntrinsicCpu>
+    class IntrinsicCpu : public interface::Implements<ConceptIntrinsic, IntrinsicCpu>
     {
     };
 

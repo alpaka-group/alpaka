@@ -17,7 +17,7 @@ namespace alpaka
 
     //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.
     template<typename TQueue>
-    inline constexpr bool isQueue = concepts::ImplementsConcept<ConceptQueue, std::decay_t<TQueue>>::value;
+    inline constexpr bool isQueue = interface::ImplementsInterface<ConceptQueue, std::decay_t<TQueue>>::value;
 
     //! The queue traits.
     namespace trait
@@ -57,7 +57,7 @@ namespace alpaka
     template<typename TQueue>
     ALPAKA_FN_HOST auto empty(TQueue const& queue) -> bool
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptQueue, TQueue>;
+        using ImplementationBase = interface::ImplementationBase<ConceptQueue, TQueue>;
         return trait::Empty<ImplementationBase>::empty(queue);
     }
 

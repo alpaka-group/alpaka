@@ -15,7 +15,7 @@ namespace alpaka
     {
         //! A zero block thread index provider.
         template<typename TDim, typename TIdx>
-        class IdxBtZero : public concepts::Implements<ConceptIdxBt, IdxBtZero<TDim, TIdx>>
+        class IdxBtZero : public interface::Implements<ConceptIdxBt, IdxBtZero<TDim, TIdx>>
         {
         };
     } // namespace bt

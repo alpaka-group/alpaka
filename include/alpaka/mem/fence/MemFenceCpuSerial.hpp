@@ -12,7 +12,7 @@
 namespace alpaka
 {
     //! The serial CPU memory fence.
-    class MemFenceCpuSerial : public concepts::Implements<ConceptMemFence, MemFenceCpuSerial>
+    class MemFenceCpuSerial : public interface::Implements<ConceptMemFence, MemFenceCpuSerial>
     {
     };
 

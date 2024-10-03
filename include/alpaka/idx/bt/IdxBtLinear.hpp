@@ -17,7 +17,7 @@ namespace alpaka
     {
         //! General ND bt index provider based on a linear index.
         template<typename TDim, typename TIdx>
-        class IdxBtLinear : public concepts::Implements<ConceptIdxBt, IdxBtLinear<TDim, TIdx>>
+        class IdxBtLinear : public interface::Implements<ConceptIdxBt, IdxBtLinear<TDim, TIdx>>
         {
         public:
             IdxBtLinear(TIdx blockThreadIdx) : m_blockThreadIdx(blockThreadIdx)

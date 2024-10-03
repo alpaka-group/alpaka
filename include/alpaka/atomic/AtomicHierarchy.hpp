@@ -28,7 +28,7 @@ namespace alpaka
         TGridAtomic,
         TBlockAtomic,
         TThreadAtomic,
-        concepts::Implements<ConceptAtomicGrids, TGridAtomic>,
-        concepts::Implements<ConceptAtomicBlocks, TBlockAtomic>,
-        concepts::Implements<ConceptAtomicThreads, TThreadAtomic>>>>;
+        interface::Implements<ConceptAtomicGrids, TGridAtomic>,
+        interface::Implements<ConceptAtomicBlocks, TBlockAtomic>,
+        interface::Implements<ConceptAtomicThreads, TThreadAtomic>>>>;
 } // namespace alpaka

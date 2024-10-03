@@ -84,7 +84,7 @@ namespace alpaka
     // was created.
     //
     // Outside of an OpenMP parallel region the queue behaves like QueueCpuBlocking.
-    struct QueueCpuOmp2Collective final : concepts::Implements<ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective>
+    struct QueueCpuOmp2Collective final : interface::Implements<ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective>
     {
         explicit QueueCpuOmp2Collective(DevCpu const& dev)
             : m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuOmp2CollectiveImpl>(dev))

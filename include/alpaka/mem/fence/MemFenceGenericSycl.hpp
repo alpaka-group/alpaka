@@ -39,7 +39,7 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL memory fence.
-    class MemFenceGenericSycl : public concepts::Implements<ConceptMemFence, MemFenceGenericSycl>
+    class MemFenceGenericSycl : public interface::Implements<ConceptMemFence, MemFenceGenericSycl>
     {
     };
 } // namespace alpaka

@@ -14,7 +14,7 @@
 namespace alpaka
 {
     //! The OpenMP barrier block synchronization.
-    class BlockSyncBarrierOmp : public concepts::Implements<ConceptBlockSync, BlockSyncBarrierOmp>
+    class BlockSyncBarrierOmp : public interface::Implements<ConceptBlockSync, BlockSyncBarrierOmp>
     {
     public:
         std::uint8_t mutable m_generation = 0u;

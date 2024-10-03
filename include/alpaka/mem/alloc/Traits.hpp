@@ -32,7 +32,7 @@ namespace alpaka
     template<typename T, typename TAlloc>
     ALPAKA_FN_HOST auto malloc(TAlloc const& alloc, std::size_t const& sizeElems) -> T*
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMemAlloc, TAlloc>;
         return trait::Malloc<T, ImplementationBase>::malloc(alloc, sizeElems);
     }
 
@@ -40,7 +40,7 @@ namespace alpaka
     template<typename TAlloc, typename T>
     ALPAKA_FN_HOST auto free(TAlloc const& alloc, T const* const ptr) -> void
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+        using ImplementationBase = interface::ImplementationBase<ConceptMemAlloc, TAlloc>;
         trait::Free<T, ImplementationBase>::free(alloc, ptr);
     }
 } // namespace alpaka

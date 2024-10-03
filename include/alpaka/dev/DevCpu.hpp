@@ -51,8 +51,8 @@ namespace alpaka
 
     //! The CPU device handle.
     class DevCpu
-        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevCpu>
-        , public concepts::Implements<ConceptDev, DevCpu>
+        : public interface::Implements<ConceptCurrentThreadWaitFor, DevCpu>
+        , public interface::Implements<ConceptDev, DevCpu>
     {
         friend struct trait::GetDevByIdx<PlatformCpu>;
 

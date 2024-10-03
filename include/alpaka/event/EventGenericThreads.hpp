@@ -27,7 +27,7 @@ namespace alpaka
         //! The CPU device event implementation.
         template<typename TDev>
         class EventGenericThreadsImpl final
-            : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
+            : public interface::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
         {
         public:
             EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
@@ -70,8 +70,8 @@ namespace alpaka
     //! The CPU device event.
     template<typename TDev>
     class EventGenericThreads final
-        : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
-        , public concepts::Implements<ConceptGetDev, EventGenericThreads<TDev>>
+        : public interface::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
+        , public interface::Implements<ConceptGetDev, EventGenericThreads<TDev>>
     {
     public:
         //! \param bBusyWaiting Unused. EventGenericThreads never does busy waiting.

@@ -38,7 +38,7 @@ namespace alpaka::rand
 {
     //! The CUDA/HIP rand implementation.
     template<typename TApi>
-    class RandUniformCudaHipRand : public concepts::Implements<ConceptRand, RandUniformCudaHipRand<TApi>>
+    class RandUniformCudaHipRand : public interface::Implements<ConceptRand, RandUniformCudaHipRand<TApi>>
     {
     };
 

@@ -14,7 +14,7 @@ namespace alpaka
 {
     //! The SYCL block synchronization.
     template<typename TDim>
-    class BlockSyncGenericSycl : public concepts::Implements<ConceptBlockSync, BlockSyncGenericSycl<TDim>>
+    class BlockSyncGenericSycl : public interface::Implements<ConceptBlockSync, BlockSyncGenericSycl<TDim>>
     {
     public:
         using BlockSyncBase = BlockSyncGenericSycl<TDim>;

@@ -16,19 +16,19 @@
 namespace alpaka::rand
 {
     //! "Tiny" state mersenne twister implementation
-    class TinyMersenneTwister : public concepts::Implements<ConceptRand, TinyMersenneTwister>
+    class TinyMersenneTwister : public interface::Implements<ConceptRand, TinyMersenneTwister>
     {
     };
 
     using RandStdLib = TinyMersenneTwister;
 
     //! The standard library mersenne twister implementation.
-    class MersenneTwister : public concepts::Implements<ConceptRand, MersenneTwister>
+    class MersenneTwister : public interface::Implements<ConceptRand, MersenneTwister>
     {
     };
 
     //! The standard library rand device implementation.
-    class RandomDevice : public concepts::Implements<ConceptRand, RandomDevice>
+    class RandomDevice : public interface::Implements<ConceptRand, RandomDevice>
     {
     };
 

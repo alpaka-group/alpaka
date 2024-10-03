@@ -18,197 +18,197 @@
 namespace alpaka::math
 {
     //! The SYCL abs.
-    class AbsGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAbs, AbsGenericSycl>
+    class AbsGenericSycl : public interface::Implements<alpaka::math::ConceptMathAbs, AbsGenericSycl>
     {
     };
 
     //! The SYCL acos.
-    class AcosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAcos, AcosGenericSycl>
+    class AcosGenericSycl : public interface::Implements<alpaka::math::ConceptMathAcos, AcosGenericSycl>
     {
     };
 
     //! The SYCL acosh.
-    class AcoshGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAcosh, AcoshGenericSycl>
+    class AcoshGenericSycl : public interface::Implements<alpaka::math::ConceptMathAcosh, AcoshGenericSycl>
     {
     };
 
     //! The SYCL arg.
-    class ArgGenericSycl : public concepts::Implements<alpaka::math::ConceptMathArg, ArgGenericSycl>
+    class ArgGenericSycl : public interface::Implements<alpaka::math::ConceptMathArg, ArgGenericSycl>
     {
     };
 
     //! The SYCL asin.
-    class AsinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAsin, AsinGenericSycl>
+    class AsinGenericSycl : public interface::Implements<alpaka::math::ConceptMathAsin, AsinGenericSycl>
     {
     };
 
     //! The SYCL asinh.
-    class AsinhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAsinh, AsinhGenericSycl>
+    class AsinhGenericSycl : public interface::Implements<alpaka::math::ConceptMathAsinh, AsinhGenericSycl>
     {
     };
 
     //! The SYCL atan.
-    class AtanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtan, AtanGenericSycl>
+    class AtanGenericSycl : public interface::Implements<alpaka::math::ConceptMathAtan, AtanGenericSycl>
     {
     };
 
     //! The SYCL atanh.
-    class AtanhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtanh, AtanhGenericSycl>
+    class AtanhGenericSycl : public interface::Implements<alpaka::math::ConceptMathAtanh, AtanhGenericSycl>
     {
     };
 
     //! The SYCL atan2.
-    class Atan2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtan2, Atan2GenericSycl>
+    class Atan2GenericSycl : public interface::Implements<alpaka::math::ConceptMathAtan2, Atan2GenericSycl>
     {
     };
 
     //! The SYCL cbrt.
-    class CbrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCbrt, CbrtGenericSycl>
+    class CbrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathCbrt, CbrtGenericSycl>
     {
     };
 
     //! The SYCL ceil.
-    class CeilGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCeil, CeilGenericSycl>
+    class CeilGenericSycl : public interface::Implements<alpaka::math::ConceptMathCeil, CeilGenericSycl>
     {
     };
 
     //! The SYCL conj.
-    class ConjGenericSycl : public concepts::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
+    class ConjGenericSycl : public interface::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
     {
     };
 
     //! The SYCL copysign.
-    class CopysignGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
+    class CopysignGenericSycl : public interface::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
     {
     };
 
     //! The SYCL cos.
-    class CosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCos, CosGenericSycl>
+    class CosGenericSycl : public interface::Implements<alpaka::math::ConceptMathCos, CosGenericSycl>
     {
     };
 
     //! The SYCL cosh.
-    class CoshGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCosh, CoshGenericSycl>
+    class CoshGenericSycl : public interface::Implements<alpaka::math::ConceptMathCosh, CoshGenericSycl>
     {
     };
 
     //! The SYCL erf.
-    class ErfGenericSycl : public concepts::Implements<alpaka::math::ConceptMathErf, ErfGenericSycl>
+    class ErfGenericSycl : public interface::Implements<alpaka::math::ConceptMathErf, ErfGenericSycl>
     {
     };
 
     //! The SYCL exp.
-    class ExpGenericSycl : public concepts::Implements<alpaka::math::ConceptMathExp, ExpGenericSycl>
+    class ExpGenericSycl : public interface::Implements<alpaka::math::ConceptMathExp, ExpGenericSycl>
     {
     };
 
     //! The SYCL floor.
-    class FloorGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFloor, FloorGenericSycl>
+    class FloorGenericSycl : public interface::Implements<alpaka::math::ConceptMathFloor, FloorGenericSycl>
     {
     };
 
     //! The SYCL fma.
-    class FmaGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
+    class FmaGenericSycl : public interface::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
     {
     };
 
     //! The SYCL fmod.
-    class FmodGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
+    class FmodGenericSycl : public interface::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
     {
     };
 
     //! The SYCL isfinite.
-    class IsfiniteGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsfinite, IsfiniteGenericSycl>
+    class IsfiniteGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsfinite, IsfiniteGenericSycl>
     {
     };
 
     //! The SYCL isfinite.
-    class IsinfGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsinf, IsinfGenericSycl>
+    class IsinfGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsinf, IsinfGenericSycl>
     {
     };
 
     //! The SYCL isnan.
-    class IsnanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsnan, IsnanGenericSycl>
+    class IsnanGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsnan, IsnanGenericSycl>
     {
     };
 
     //! The SYCL log.
-    class LogGenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog, LogGenericSycl>
+    class LogGenericSycl : public interface::Implements<alpaka::math::ConceptMathLog, LogGenericSycl>
     {
     };
 
     //! The SYCL log2.
-    class Log2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
+    class Log2GenericSycl : public interface::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
     {
     };
 
     //! The SYCL log10.
-    class Log10GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
+    class Log10GenericSycl : public interface::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
     {
     };
 
     //! The SYCL max.
-    class MaxGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
+    class MaxGenericSycl : public interface::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
     {
     };
 
     //! The SYCL min.
-    class MinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMin, MinGenericSycl>
+    class MinGenericSycl : public interface::Implements<alpaka::math::ConceptMathMin, MinGenericSycl>
     {
     };
 
     //! The SYCL pow.
-    class PowGenericSycl : public concepts::Implements<alpaka::math::ConceptMathPow, PowGenericSycl>
+    class PowGenericSycl : public interface::Implements<alpaka::math::ConceptMathPow, PowGenericSycl>
     {
     };
 
     //! The SYCL remainder.
-    class RemainderGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRemainder, RemainderGenericSycl>
+    class RemainderGenericSycl : public interface::Implements<alpaka::math::ConceptMathRemainder, RemainderGenericSycl>
     {
     };
 
     //! The SYCL round.
-    class RoundGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRound, RoundGenericSycl>
+    class RoundGenericSycl : public interface::Implements<alpaka::math::ConceptMathRound, RoundGenericSycl>
     {
     };
 
     //! The SYCL rsqrt.
-    class RsqrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRsqrt, RsqrtGenericSycl>
+    class RsqrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathRsqrt, RsqrtGenericSycl>
     {
     };
 
     //! The SYCL sin.
-    class SinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSin, SinGenericSycl>
+    class SinGenericSycl : public interface::Implements<alpaka::math::ConceptMathSin, SinGenericSycl>
     {
     };
 
     //! The SYCL sinh.
-    class SinhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSinh, SinhGenericSycl>
+    class SinhGenericSycl : public interface::Implements<alpaka::math::ConceptMathSinh, SinhGenericSycl>
     {
     };
 
     //! The SYCL sincos.
-    class SinCosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSinCos, SinCosGenericSycl>
+    class SinCosGenericSycl : public interface::Implements<alpaka::math::ConceptMathSinCos, SinCosGenericSycl>
     {
     };
 
     //! The SYCL sqrt.
-    class SqrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSqrt, SqrtGenericSycl>
+    class SqrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathSqrt, SqrtGenericSycl>
     {
     };
 
     //! The SYCL tan.
-    class TanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTan, TanGenericSycl>
+    class TanGenericSycl : public interface::Implements<alpaka::math::ConceptMathTan, TanGenericSycl>
     {
     };
 
     //! The SYCL tanh.
-    class TanhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTanh, TanhGenericSycl>
+    class TanhGenericSycl : public interface::Implements<alpaka::math::ConceptMathTanh, TanhGenericSycl>
     {
     };
 
     //! The SYCL trunc.
-    class TruncGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTrunc, TruncGenericSycl>
+    class TruncGenericSycl : public interface::Implements<alpaka::math::ConceptMathTrunc, TruncGenericSycl>
     {
     };
 

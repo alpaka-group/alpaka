@@ -41,7 +41,7 @@ namespace alpaka
     template<typename T, std::size_t TuniqueId, typename TBlockSharedMemSt>
     ALPAKA_FN_ACC auto declareSharedVar(TBlockSharedMemSt const& blockSharedMemSt) -> T&
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
+        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
         return trait::DeclareSharedVar<T, TuniqueId, ImplementationBase>::declareVar(blockSharedMemSt);
     }
 
@@ -53,7 +53,7 @@ namespace alpaka
     template<typename TBlockSharedMemSt>
     ALPAKA_FN_ACC auto freeSharedVars(TBlockSharedMemSt& blockSharedMemSt) -> void
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
+        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
         trait::FreeSharedVars<ImplementationBase>::freeVars(blockSharedMemSt);
     }
 } // namespace alpaka

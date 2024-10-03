@@ -38,7 +38,7 @@ namespace alpaka
 
     //! The SYCL device manager.
     template<typename TTag>
-    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
+    struct PlatformGenericSycl : interface::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
     {
         PlatformGenericSycl()
             : platform{detail::SYCLDeviceSelector<TTag>{}}

@@ -16,7 +16,7 @@ namespace alpaka
     {
         //! A IdxGbRef grid block index.
         template<typename TDim, typename TIdx>
-        class IdxGbRef : public concepts::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
+        class IdxGbRef : public interface::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
         {
         public:
             IdxGbRef(Vec<TDim, TIdx> const& gridBlockIdx) : m_gridBlockIdx(gridBlockIdx)

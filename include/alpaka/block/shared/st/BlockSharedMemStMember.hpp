@@ -22,7 +22,7 @@ namespace alpaka
     template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
     class BlockSharedMemStMember
         : public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>
-        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
+        , public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
     {
     public:
         using detail::BlockSharedMemStMemberImpl<TDataAlignBytes>::BlockSharedMemStMemberImpl;

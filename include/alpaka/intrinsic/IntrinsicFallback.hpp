@@ -40,7 +40,7 @@ namespace alpaka
     } // namespace detail
 
     //! The Fallback intrinsic.
-    class IntrinsicFallback : public concepts::Implements<ConceptIntrinsic, IntrinsicFallback>
+    class IntrinsicFallback : public interface::Implements<ConceptIntrinsic, IntrinsicFallback>
     {
     };
 

@@ -76,7 +76,7 @@ namespace alpaka
         T const& value,
         THierarchy const& = THierarchy()) -> T
     {
-        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+        using ImplementationBase = typename interface::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
         return trait::AtomicOp<TOp, ImplementationBase, T, THierarchy>::atomicOp(atomic, addr, value);
     }
 
@@ -98,7 +98,7 @@ namespace alpaka
         T const& value,
         THierarchy const& = THierarchy()) -> T
     {
-        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+        using ImplementationBase = typename interface::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
         return trait::AtomicOp<TOp, ImplementationBase, T, THierarchy>::atomicOp(atomic, addr, compare, value);
     }
 

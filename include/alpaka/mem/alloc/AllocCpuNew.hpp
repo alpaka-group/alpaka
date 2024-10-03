@@ -10,7 +10,7 @@
 namespace alpaka
 {
     //! The CPU new allocator.
-    class AllocCpuNew : public concepts::Implements<ConceptMemAlloc, AllocCpuNew>
+    class AllocCpuNew : public interface::Implements<ConceptMemAlloc, AllocCpuNew>
     {
     };
 

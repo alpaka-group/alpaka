@@ -67,7 +67,7 @@ namespace alpaka
         , public rand::RandUniformCudaHipRand<TApi>
 #    endif
         , public warp::WarpUniformCudaHipBuiltIn
-        , public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+        , public interface::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

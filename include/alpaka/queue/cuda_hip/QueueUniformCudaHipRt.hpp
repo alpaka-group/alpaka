@@ -91,9 +91,9 @@ namespace alpaka
         //! The CUDA/HIP RT queue.
         template<typename TApi, bool TBlocking>
         class QueueUniformCudaHipRt
-            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt<TApi, TBlocking>>
-            , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRt<TApi, TBlocking>>
-            , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRt<TApi, TBlocking>>
+            : public interface::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt<TApi, TBlocking>>
+            , public interface::Implements<ConceptQueue, QueueUniformCudaHipRt<TApi, TBlocking>>
+            , public interface::Implements<ConceptGetDev, QueueUniformCudaHipRt<TApi, TBlocking>>
         {
         public:
             ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev)

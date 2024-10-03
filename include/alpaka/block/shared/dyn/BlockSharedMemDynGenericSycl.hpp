@@ -15,7 +15,7 @@ namespace alpaka
 {
     //! The SYCL block shared memory allocator.
     class BlockSharedMemDynGenericSycl
-        : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynGenericSycl>
+        : public interface::Implements<ConceptBlockSharedDyn, BlockSharedMemDynGenericSycl>
     {
     public:
         using BlockSharedMemDynBase = BlockSharedMemDynGenericSycl;

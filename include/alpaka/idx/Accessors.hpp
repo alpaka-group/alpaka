@@ -39,7 +39,7 @@ namespace alpaka
         template<typename TIdxGb>
         struct GetIdx<TIdxGb, origin::Grid, unit::Blocks>
         {
-            using ImplementationBase = concepts::ImplementationBase<ConceptIdxGb, TIdxGb>;
+            using ImplementationBase = interface::ImplementationBase<ConceptIdxGb, TIdxGb>;
 
             //! \return The index of the current thread in the grid.
             ALPAKA_NO_HOST_ACC_WARNING
@@ -55,7 +55,7 @@ namespace alpaka
         template<typename TIdxBt>
         struct GetIdx<TIdxBt, origin::Block, unit::Threads>
         {
-            using ImplementationBase = concepts::ImplementationBase<ConceptIdxBt, TIdxBt>;
+            using ImplementationBase = interface::ImplementationBase<ConceptIdxBt, TIdxBt>;
 
             //! \return The index of the current thread in the grid.
             ALPAKA_NO_HOST_ACC_WARNING

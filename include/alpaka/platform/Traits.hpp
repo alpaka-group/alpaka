@@ -20,7 +20,7 @@ namespace alpaka
 
     //! True if TPlatform is a platform, i.e. if it implements the ConceptPlatform concept.
     template<typename TPlatform>
-    inline constexpr bool isPlatform = concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value;
+    inline constexpr bool isPlatform = interface::ImplementsInterface<ConceptPlatform, TPlatform>::value;
 
     //! The platform traits.
     namespace trait
@@ -32,9 +32,9 @@ namespace alpaka
         template<typename TPlatform>
         struct PlatformType<
             TPlatform,
-            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
+            std::enable_if_t<interface::ImplementsInterface<ConceptPlatform, TPlatform>::value>>
         {
-            using type = typename concepts::ImplementationBase<ConceptDev, TPlatform>;
+            using type = typename interface::ImplementationBase<ConceptDev, TPlatform>;
         };
 
         //! The device count get trait.
@@ -86,7 +86,7 @@ namespace alpaka
         struct QueueType<
             TPlatform,
             TProperty,
-            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
+            std::enable_if_t<interface::ImplementsInterface<ConceptPlatform, TPlatform>::value>>
         {
             using type = typename QueueType<typename alpaka::trait::DevType<TPlatform>::type, TProperty>::type;
         };

@@ -61,13 +61,13 @@ namespace alpaka
 
     //! True if TDev is a device, i.e. if it implements the ConceptDev concept.
     template<typename TDev>
-    inline constexpr bool isDevice = concepts::ImplementsConcept<ConceptDev, std::decay_t<TDev>>::value;
+    inline constexpr bool isDevice = interface::ImplementsInterface<ConceptDev, std::decay_t<TDev>>::value;
 
     //! \return The device this object is bound to.
     template<typename T>
     ALPAKA_FN_HOST auto getDev(T const& t)
     {
-        using ImplementationBase = concepts::ImplementationBase<ConceptGetDev, T>;
+        using ImplementationBase = interface::ImplementationBase<ConceptGetDev, T>;
         return trait::GetDev<ImplementationBase>::getDev(t);
     }
 
@@ -132,9 +132,9 @@ namespace alpaka
     {
         //! Get device type
         template<typename TDev>
-        struct DevType<TDev, std::enable_if_t<concepts::ImplementsConcept<ConceptDev, TDev>::value>>
+        struct DevType<TDev, std::enable_if_t<interface::ImplementsInterface<ConceptDev, TDev>::value>>
         {
-            using type = typename concepts::ImplementationBase<ConceptDev, TDev>;
+            using type = typename interface::ImplementationBase<ConceptDev, TDev>;
         };
     } // namespace trait
 } // namespace alpaka

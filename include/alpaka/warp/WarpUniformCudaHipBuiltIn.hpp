@@ -15,7 +15,7 @@
 namespace alpaka::warp
 {
     //! The GPU CUDA/HIP warp.
-    class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
+    class WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
     {
     };
 

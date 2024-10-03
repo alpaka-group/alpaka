@@ -12,7 +12,7 @@
 namespace alpaka
 {
     //! The default CPU memory fence.
-    class MemFenceCpu : public concepts::Implements<ConceptMemFence, MemFenceCpu>
+    class MemFenceCpu : public interface::Implements<ConceptMemFence, MemFenceCpu>
     {
     };
 
