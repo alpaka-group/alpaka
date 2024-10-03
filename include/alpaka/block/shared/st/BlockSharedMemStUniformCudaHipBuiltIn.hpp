@@ -6,7 +6,7 @@
 
 #include "alpaka/block/shared/st/Traits.hpp"
 #include "alpaka/core/BoostPredef.hpp"
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 
 #include <cstdint>
 #include <type_traits>

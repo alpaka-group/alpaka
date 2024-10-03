@@ -6,7 +6,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 
 #include <cmath>
 #include <complex>

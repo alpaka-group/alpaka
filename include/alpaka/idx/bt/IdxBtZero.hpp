@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/core/Positioning.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"

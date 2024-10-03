@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/platform/Traits.hpp"
 

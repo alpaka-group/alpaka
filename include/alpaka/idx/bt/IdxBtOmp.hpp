@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Assert.hpp"
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/core/Positioning.hpp"
 #include "alpaka/idx/MapIdx.hpp"
 #include "alpaka/idx/Traits.hpp"

@@ -6,8 +6,8 @@
 
 #include "alpaka/acc/AccDevProps.hpp"
 #include "alpaka/core/Common.hpp"
-#include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"

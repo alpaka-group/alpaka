@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/extent/Traits.hpp"

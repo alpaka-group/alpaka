@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/mem/fence/Traits.hpp"
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
