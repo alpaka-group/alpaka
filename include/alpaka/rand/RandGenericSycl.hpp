@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/BoostPredef.hpp"
-#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/rand/Traits.hpp"
 

@@ -6,9 +6,9 @@
 #pragma once
 
 #include "alpaka/core/CallbackThread.hpp"
-#include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Hip.hpp"
+#include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/event/Traits.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
