@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,9,36],
 "structalpaka_1_1math_1_1ConceptMathCosh.html":[3,0,0,9,37],
 "structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,9,38],
 "structalpaka_1_1math_1_1ConceptMathExp.html":[3,0,0,9,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html":[3,0,0,11,2],
 "structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html#acf79b9efc38d0c09275291563e5fd99f":[3,0,0,11,2,0],
 "structalpaka_1_1meta_1_1DependentFalseType.html":[3,0,0,11,3],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,11,6],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html":[3,0,0,11,7]
+"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,11,6]
 };
