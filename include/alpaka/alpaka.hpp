@@ -727,7 +727,7 @@
 
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 					// ============================================================================
-					// == ./include/alpaka/core/Concepts.hpp ==
+					// == ./include/alpaka/core/Interface.hpp ==
 					// ==
 					/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
 					 * SPDX-License-Identifier: MPL-2.0
@@ -736,21 +736,21 @@
 					// #pragma once
 					#include <type_traits>
 
-					namespace alpaka::concepts
+					namespace alpaka::interface
 					{
-					    //! Tag used in class inheritance hierarchies that describes that a specific concept (TConcept)
+					    //! Tag used in class inheritance hierarchies that describes that a specific interface (TInterface)
 					    //! is implemented by the given base class (TBase).
-					    template<typename TConcept, typename TBase>
+					    template<typename TInterface, typename TBase>
 					    struct Implements
 					    {
 					    };
 
-					    //! Checks whether the concept is implemented by the given class
-					    template<typename TConcept, typename TDerived>
-					    struct ImplementsConcept
+					    //! Checks whether the interface is implemented by the given class
+					    template<typename TInterface, typename TDerived>
+					    struct ImplementsInterface
 					    {
 					        template<typename TBase>
-					        static auto implements(Implements<TConcept, TBase>&) -> std::true_type;
+					        static auto implements(Implements<TInterface, TBase>&) -> std::true_type;
 					        static auto implements(...) -> std::false_type;
 
 					        static constexpr auto value = decltype(implements(std::declval<TDerived&>()))::value;
@@ -758,45 +758,45 @@
 
 					    namespace detail
 					    {
-					        //! Returns the type that implements the given concept in the inheritance hierarchy.
-					        template<typename TConcept, typename TDerived, typename Sfinae = void>
+					        //! Returns the type that implements the given interface in the inheritance hierarchy.
+					        template<typename TInterface, typename TDerived, typename Sfinae = void>
 					        struct ImplementationBaseType;
 
-					        //! Base case for types that do not inherit from "Implements<TConcept, ...>" is the type itself.
-					        template<typename TConcept, typename TDerived>
+					        //! Base case for types that do not inherit from "Implements<TInterface, ...>" is the type itself.
+					        template<typename TInterface, typename TDerived>
 					        struct ImplementationBaseType<
-					            TConcept,
+					            TInterface,
 					            TDerived,
-					            std::enable_if_t<!ImplementsConcept<TConcept, TDerived>::value>>
+					            std::enable_if_t<!ImplementsInterface<TInterface, TDerived>::value>>
 					        {
 					            using type = TDerived;
 					        };
 
-					        //! For types that inherit from "Implements<TConcept, ...>" it finds the base class (TBase) which
-					        //! implements the concept.
-					        template<typename TConcept, typename TDerived>
+					        //! For types that inherit from "Implements<TInterface, ...>" it finds the base class (TBase) which
+					        //! implements the interface.
+					        template<typename TInterface, typename TDerived>
 					        struct ImplementationBaseType<
-					            TConcept,
+					            TInterface,
 					            TDerived,
-					            std::enable_if_t<ImplementsConcept<TConcept, TDerived>::value>>
+					            std::enable_if_t<ImplementsInterface<TInterface, TDerived>::value>>
 					        {
 					            template<typename TBase>
-					            static auto implementer(Implements<TConcept, TBase>&) -> TBase;
+					            static auto implementer(Implements<TInterface, TBase>&) -> TBase;
 
 					            using type = decltype(implementer(std::declval<TDerived&>()));
 
 					            static_assert(
 					                std::is_base_of_v<type, TDerived>,
-					                "The type implementing the concept has to be a publicly accessible base class!");
+					                "The type implementing the interface has to be a publicly accessible base class!");
 					        };
 					    } // namespace detail
 
-					    //! Returns the type that implements the given concept in the inheritance hierarchy.
-					    template<typename TConcept, typename TDerived>
-					    using ImplementationBase = typename detail::ImplementationBaseType<TConcept, TDerived>::type;
-					} // namespace alpaka::concepts
+					    //! Returns the type that implements the given interface in the inheritance hierarchy.
+					    template<typename TInterface, typename TDerived>
+					    using ImplementationBase = typename detail::ImplementationBaseType<TInterface, TDerived>::type;
+					} // namespace alpaka::interface
 					// ==
-					// == ./include/alpaka/core/Concepts.hpp ==
+					// == ./include/alpaka/core/Interface.hpp ==
 					// ============================================================================
 
 					// ============================================================================
@@ -922,7 +922,7 @@
 				        T const& value,
 				        THierarchy const& = THierarchy()) -> T
 				    {
-				        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+				        using ImplementationBase = typename interface::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
 				        return trait::AtomicOp<TOp, ImplementationBase, T, THierarchy>::atomicOp(atomic, addr, value);
 				    }
 
@@ -944,7 +944,7 @@
 				        T const& value,
 				        THierarchy const& = THierarchy()) -> T
 				    {
-				        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+				        using ImplementationBase = typename interface::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
 				        return trait::AtomicOp<TOp, ImplementationBase, T, THierarchy>::atomicOp(atomic, addr, compare, value);
 				    }
 
@@ -1608,9 +1608,9 @@
 		        TGridAtomic,
 		        TBlockAtomic,
 		        TThreadAtomic,
-		        concepts::Implements<ConceptAtomicGrids, TGridAtomic>,
-		        concepts::Implements<ConceptAtomicBlocks, TBlockAtomic>,
-		        concepts::Implements<ConceptAtomicThreads, TThreadAtomic>>>>;
+		        interface::Implements<ConceptAtomicGrids, TGridAtomic>,
+		        interface::Implements<ConceptAtomicBlocks, TBlockAtomic>,
+		        interface::Implements<ConceptAtomicThreads, TThreadAtomic>>>>;
 		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/atomic/AtomicHierarchy.hpp ==
@@ -2023,7 +2023,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#include <type_traits>
 
@@ -2056,7 +2056,7 @@
 			    template<typename T, typename TBlockSharedMemDyn>
 			    ALPAKA_FN_ACC auto getDynSharedMem(TBlockSharedMemDyn const& blockSharedMemDyn) -> T*
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedDyn, TBlockSharedMemDyn>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedDyn, TBlockSharedMemDyn>;
 			        return trait::GetDynSharedMem<T, ImplementationBase>::getMem(blockSharedMemDyn);
 			    }
 			} // namespace alpaka
@@ -2568,7 +2568,7 @@
 		    //! memory.
 		    template<std::size_t TStaticAllocKiB = BlockSharedDynMemberAllocKiB>
 		    class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynMember
-		        : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
+		        : public interface::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
 		    {
 		    public:
 		        BlockSharedMemDynMember(std::size_t sizeBytes) : m_dynPitch(getPitch(sizeBytes))
@@ -2663,7 +2663,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#include <type_traits>
 
@@ -2699,7 +2699,7 @@
 			    template<typename T, std::size_t TuniqueId, typename TBlockSharedMemSt>
 			    ALPAKA_FN_ACC auto declareSharedVar(TBlockSharedMemSt const& blockSharedMemSt) -> T&
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
 			        return trait::DeclareSharedVar<T, TuniqueId, ImplementationBase>::declareVar(blockSharedMemSt);
 			    }
 
@@ -2711,7 +2711,7 @@
 			    template<typename TBlockSharedMemSt>
 			    ALPAKA_FN_ACC auto freeSharedVars(TBlockSharedMemSt& blockSharedMemSt) -> void
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
 			        trait::FreeSharedVars<ImplementationBase>::freeVars(blockSharedMemSt);
 			    }
 			} // namespace alpaka
@@ -2886,7 +2886,7 @@
 		    template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
 		    class BlockSharedMemStMember
 		        : public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>
-		        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
+		        , public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
 		    {
 		    public:
 		        using detail::BlockSharedMemStMemberImpl<TDataAlignBytes>::BlockSharedMemStMemberImpl;
@@ -2942,7 +2942,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#include <type_traits>
 
@@ -2972,7 +2972,7 @@
 			    template<typename TBlockSync>
 			    ALPAKA_FN_ACC auto syncBlockThreads(TBlockSync const& blockSync) -> void
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSync, TBlockSync>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptBlockSync, TBlockSync>;
 			        trait::SyncBlockThreads<ImplementationBase>::syncBlockThreads(blockSync);
 			    }
 
@@ -3036,7 +3036,7 @@
 			    template<typename TOp, typename TBlockSync>
 			    ALPAKA_FN_ACC auto syncBlockThreadsPredicate(TBlockSync const& blockSync, int predicate) -> int
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptBlockSync, TBlockSync>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptBlockSync, TBlockSync>;
 			        return trait::SyncBlockThreadsPredicate<TOp, ImplementationBase>::syncBlockThreadsPredicate(
 			            blockSync,
 			            predicate);
@@ -3051,7 +3051,7 @@
 		namespace alpaka
 		{
 		    //! The no op block synchronization.
-		    class BlockSyncNoOp : public concepts::Implements<ConceptBlockSync, BlockSyncNoOp>
+		    class BlockSyncNoOp : public interface::Implements<ConceptBlockSync, BlockSyncNoOp>
 		    {
 		    };
 
@@ -3120,7 +3120,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/idx/Traits.hpp ==
@@ -4496,7 +4496,7 @@
 		    {
 		        //! A zero block thread index provider.
 		        template<typename TDim, typename TIdx>
-		        class IdxBtZero : public concepts::Implements<ConceptIdxBt, IdxBtZero<TDim, TIdx>>
+		        class IdxBtZero : public interface::Implements<ConceptIdxBt, IdxBtZero<TDim, TIdx>>
 		        {
 		        };
 		    } // namespace bt
@@ -4544,7 +4544,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
@@ -4556,7 +4556,7 @@
 		    {
 		        //! A IdxGbRef grid block index.
 		        template<typename TDim, typename TIdx>
-		        class IdxGbRef : public concepts::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
+		        class IdxGbRef : public interface::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
 		        {
 		        public:
 		            IdxGbRef(Vec<TDim, TIdx> const& gridBlockIdx) : m_gridBlockIdx(gridBlockIdx)
@@ -4628,7 +4628,7 @@
 
 				// #pragma once
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
 				#include <type_traits>
@@ -4660,7 +4660,7 @@
 				    template<typename TIntrinsic>
 				    ALPAKA_FN_ACC auto popcount(TIntrinsic const& intrinsic, std::uint32_t value) -> std::int32_t
 				    {
-				        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+				        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
 				        return trait::Popcount<ImplementationBase>::popcount(intrinsic, value);
 				    }
 
@@ -4673,7 +4673,7 @@
 				    template<typename TIntrinsic>
 				    ALPAKA_FN_ACC auto popcount(TIntrinsic const& intrinsic, std::uint64_t value) -> std::int32_t
 				    {
-				        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+				        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
 				        return trait::Popcount<ImplementationBase>::popcount(intrinsic, value);
 				    }
 
@@ -4687,7 +4687,7 @@
 				    template<typename TIntrinsic>
 				    ALPAKA_FN_ACC auto ffs(TIntrinsic const& intrinsic, std::int32_t value) -> std::int32_t
 				    {
-				        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+				        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
 				        return trait::Ffs<ImplementationBase>::ffs(intrinsic, value);
 				    }
 
@@ -4701,7 +4701,7 @@
 				    template<typename TIntrinsic>
 				    ALPAKA_FN_ACC auto ffs(TIntrinsic const& intrinsic, std::int64_t value) -> std::int32_t
 				    {
-				        using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+				        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
 				        return trait::Ffs<ImplementationBase>::ffs(intrinsic, value);
 				    }
 				} // namespace alpaka
@@ -4744,7 +4744,7 @@
 			    } // namespace detail
 
 			    //! The Fallback intrinsic.
-			    class IntrinsicFallback : public concepts::Implements<ConceptIntrinsic, IntrinsicFallback>
+			    class IntrinsicFallback : public interface::Implements<ConceptIntrinsic, IntrinsicFallback>
 			    {
 			    };
 
@@ -4801,7 +4801,7 @@
 		namespace alpaka
 		{
 		    //! The CPU intrinsic.
-		    class IntrinsicCpu : public concepts::Implements<ConceptIntrinsic, IntrinsicCpu>
+		    class IntrinsicCpu : public interface::Implements<ConceptIntrinsic, IntrinsicCpu>
 		    {
 		    };
 
@@ -4907,7 +4907,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#include <cmath>
 			#include <complex>
@@ -5764,7 +5764,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto abs(T const& abs_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAbs, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAbs, T>;
 			        return trait::Abs<ImplementationBase, TArg>{}(abs_ctx, arg);
 			    }
 
@@ -5781,7 +5781,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto acos(T const& acos_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAcos, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAcos, T>;
 			        return trait::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
 			    }
 
@@ -5798,7 +5798,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto acosh(T const& acosh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAcosh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAcosh, T>;
 			        return trait::Acosh<ImplementationBase, TArg>{}(acosh_ctx, arg);
 			    }
 
@@ -5812,7 +5812,7 @@
 			    template<typename T, typename TArgument>
 			    ALPAKA_FN_HOST_ACC auto arg(T const& arg_ctx, TArgument const& argument)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathArg, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathArg, T>;
 			        return trait::Arg<ImplementationBase, TArgument>{}(arg_ctx, argument);
 			    }
 
@@ -5829,7 +5829,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto asin(T const& asin_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAsin, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAsin, T>;
 			        return trait::Asin<ImplementationBase, TArg>{}(asin_ctx, arg);
 			    }
 
@@ -5842,7 +5842,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto asinh(T const& asinh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAsinh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAsinh, T>;
 			        return trait::Asinh<ImplementationBase, TArg>{}(asinh_ctx, arg);
 			    }
 
@@ -5855,7 +5855,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto atan(T const& atan_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAtan, T>;
 			        return trait::Atan<ImplementationBase, TArg>{}(atan_ctx, arg);
 			    }
 
@@ -5872,7 +5872,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto atanh(T const& atanh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtanh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAtanh, T>;
 			        return trait::Atanh<ImplementationBase, TArg>{}(atanh_ctx, arg);
 			    }
 
@@ -5888,7 +5888,7 @@
 			    template<typename T, typename Ty, typename Tx>
 			    ALPAKA_FN_HOST_ACC auto atan2(T const& atan2_ctx, Ty const& y, Tx const& x)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan2, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathAtan2, T>;
 			        return trait::Atan2<ImplementationBase, Ty, Tx>{}(atan2_ctx, y, x);
 			    }
 
@@ -5902,7 +5902,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto cbrt(T const& cbrt_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCbrt, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathCbrt, T>;
 			        return trait::Cbrt<ImplementationBase, TArg>{}(cbrt_ctx, arg);
 			    }
 
@@ -5916,7 +5916,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto ceil(T const& ceil_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCeil, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathCeil, T>;
 			        return trait::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
 			    }
 
@@ -5930,7 +5930,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto conj(T const& conj_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathConj, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathConj, T>;
 			        return trait::Conj<ImplementationBase, TArg>{}(conj_ctx, arg);
 			    }
 
@@ -5946,7 +5946,7 @@
 			    template<typename T, typename TMag, typename TSgn>
 			    ALPAKA_FN_HOST_ACC auto copysign(T const& copysign_ctx, TMag const& mag, TSgn const& sgn)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCopysign, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathCopysign, T>;
 			        return trait::Copysign<ImplementationBase, TMag, TSgn>{}(copysign_ctx, mag, sgn);
 			    }
 
@@ -5960,7 +5960,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto cos(T const& cos_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCos, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathCos, T>;
 			        return trait::Cos<ImplementationBase, TArg>{}(cos_ctx, arg);
 			    }
 
@@ -5974,7 +5974,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto cosh(T const& cosh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCosh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathCosh, T>;
 			        return trait::Cosh<ImplementationBase, TArg>{}(cosh_ctx, arg);
 			    }
 
@@ -5988,7 +5988,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto erf(T const& erf_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathErf, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathErf, T>;
 			        return trait::Erf<ImplementationBase, TArg>{}(erf_ctx, arg);
 			    }
 
@@ -6002,7 +6002,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto exp(T const& exp_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathExp, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathExp, T>;
 			        return trait::Exp<ImplementationBase, TArg>{}(exp_ctx, arg);
 			    }
 
@@ -6016,7 +6016,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto floor(T const& floor_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathFloor, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathFloor, T>;
 			        return trait::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
 			    }
 
@@ -6034,7 +6034,7 @@
 			    template<typename T, typename Tx, typename Ty, typename Tz>
 			    ALPAKA_FN_HOST_ACC auto fma(T const& fma_ctx, Tx const& x, Ty const& y, Tz const& z)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathFma, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathFma, T>;
 			        return trait::Fma<ImplementationBase, Tx, Ty, Tz>{}(fma_ctx, x, y, z);
 			    }
 
@@ -6050,7 +6050,7 @@
 			    template<typename T, typename Tx, typename Ty>
 			    ALPAKA_FN_HOST_ACC auto fmod(T const& fmod_ctx, Tx const& x, Ty const& y)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathFmod, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathFmod, T>;
 			        return trait::Fmod<ImplementationBase, Tx, Ty>{}(fmod_ctx, x, y);
 			    }
 
@@ -6064,7 +6064,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto isfinite(T const& ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsfinite, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathIsfinite, T>;
 			        return trait::Isfinite<ImplementationBase, TArg>{}(ctx, arg);
 			    }
 
@@ -6078,7 +6078,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto isinf(T const& ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsinf, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathIsinf, T>;
 			        return trait::Isinf<ImplementationBase, TArg>{}(ctx, arg);
 			    }
 
@@ -6092,7 +6092,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto isnan(T const& ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathIsnan, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathIsnan, T>;
 			        return trait::Isnan<ImplementationBase, TArg>{}(ctx, arg);
 			    }
 
@@ -6110,7 +6110,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto log(T const& log_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathLog, T>;
 			        return trait::Log<ImplementationBase, TArg>{}(log_ctx, arg);
 			    }
 
@@ -6128,7 +6128,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto log2(T const& log2_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog2, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathLog2, T>;
 			        return trait::Log2<ImplementationBase, TArg>{}(log2_ctx, arg);
 			    }
 
@@ -6146,7 +6146,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto log10(T const& log10_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog10, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathLog10, T>;
 			        return trait::Log10<ImplementationBase, TArg>{}(log10_ctx, arg);
 			    }
 
@@ -6163,7 +6163,7 @@
 			    template<typename T, typename Tx, typename Ty>
 			    ALPAKA_FN_HOST_ACC auto max(T const& max_ctx, Tx const& x, Ty const& y)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathMax, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathMax, T>;
 			        return trait::Max<ImplementationBase, Tx, Ty>{}(max_ctx, x, y);
 			    }
 
@@ -6180,7 +6180,7 @@
 			    template<typename T, typename Tx, typename Ty>
 			    ALPAKA_FN_HOST_ACC auto min(T const& min_ctx, Tx const& x, Ty const& y)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathMin, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathMin, T>;
 			        return trait::Min<ImplementationBase, Tx, Ty>{}(min_ctx, x, y);
 			    }
 
@@ -6200,7 +6200,7 @@
 			    template<typename T, typename TBase, typename TExp>
 			    ALPAKA_FN_HOST_ACC auto pow(T const& pow_ctx, TBase const& base, TExp const& exp)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathPow, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathPow, T>;
 			        return trait::Pow<ImplementationBase, TBase, TExp>{}(pow_ctx, base, exp);
 			    }
 
@@ -6216,7 +6216,7 @@
 			    template<typename T, typename Tx, typename Ty>
 			    ALPAKA_FN_HOST_ACC auto remainder(T const& remainder_ctx, Tx const& x, Ty const& y)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRemainder, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathRemainder, T>;
 			        return trait::Remainder<ImplementationBase, Tx, Ty>{}(remainder_ctx, x, y);
 			    }
 
@@ -6231,7 +6231,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto round(T const& round_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
 			        return trait::Round<ImplementationBase, TArg>{}(round_ctx, arg);
 			    }
 
@@ -6246,7 +6246,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto lround(T const& lround_ctx, TArg const& arg) -> long int
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
 			        return trait::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
 			    }
 
@@ -6261,7 +6261,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto llround(T const& llround_ctx, TArg const& arg) -> long long int
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathRound, T>;
 			        return trait::Llround<ImplementationBase, TArg>{}(llround_ctx, arg);
 			    }
 
@@ -6279,7 +6279,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto rsqrt(T const& rsqrt_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRsqrt, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathRsqrt, T>;
 			        return trait::Rsqrt<ImplementationBase, TArg>{}(rsqrt_ctx, arg);
 			    }
 
@@ -6293,7 +6293,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto sin(T const& sin_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathSin, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathSin, T>;
 			        return trait::Sin<ImplementationBase, TArg>{}(sin_ctx, arg);
 			    }
 
@@ -6307,7 +6307,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto sinh(T const& sinh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathSinh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathSinh, T>;
 			        return trait::Sinh<ImplementationBase, TArg>{}(sinh_ctx, arg);
 			    }
 
@@ -6323,7 +6323,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto sincos(T const& sincos_ctx, TArg const& arg, TArg& result_sin, TArg& result_cos) -> void
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathSinCos, T>;
 			        trait::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
 			    }
 
@@ -6341,7 +6341,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto sqrt(T const& sqrt_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathSqrt, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathSqrt, T>;
 			        return trait::Sqrt<ImplementationBase, TArg>{}(sqrt_ctx, arg);
 			    }
 
@@ -6355,7 +6355,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto tan(T const& tan_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathTan, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathTan, T>;
 			        return trait::Tan<ImplementationBase, TArg>{}(tan_ctx, arg);
 			    }
 
@@ -6369,7 +6369,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto tanh(T const& tanh_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathTanh, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathTanh, T>;
 			        return trait::Tanh<ImplementationBase, TArg>{}(tanh_ctx, arg);
 			    }
 
@@ -6383,7 +6383,7 @@
 			    template<typename T, typename TArg>
 			    ALPAKA_FN_HOST_ACC auto trunc(T const& trunc_ctx, TArg const& arg)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMathTrunc, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMathTrunc, T>;
 			        return trait::Trunc<ImplementationBase, TArg>{}(trunc_ctx, arg);
 			    }
 			} // namespace alpaka::math
@@ -6395,197 +6395,197 @@
 		namespace alpaka::math
 		{
 		    //! The standard library abs, implementation covered by the general template.
-		    class AbsStdLib : public concepts::Implements<ConceptMathAbs, AbsStdLib>
+		    class AbsStdLib : public interface::Implements<ConceptMathAbs, AbsStdLib>
 		    {
 		    };
 
 		    //! The standard library acos, implementation covered by the general template.
-		    class AcosStdLib : public concepts::Implements<ConceptMathAcos, AcosStdLib>
+		    class AcosStdLib : public interface::Implements<ConceptMathAcos, AcosStdLib>
 		    {
 		    };
 
 		    //! The standard library acos, implementation covered by the general template.
-		    class AcoshStdLib : public concepts::Implements<ConceptMathAcosh, AcoshStdLib>
+		    class AcoshStdLib : public interface::Implements<ConceptMathAcosh, AcoshStdLib>
 		    {
 		    };
 
 		    //! The standard library arg, implementation covered by the general template.
-		    class ArgStdLib : public concepts::Implements<ConceptMathArg, ArgStdLib>
+		    class ArgStdLib : public interface::Implements<ConceptMathArg, ArgStdLib>
 		    {
 		    };
 
 		    //! The standard library asin, implementation covered by the general template.
-		    class AsinStdLib : public concepts::Implements<ConceptMathAsin, AsinStdLib>
+		    class AsinStdLib : public interface::Implements<ConceptMathAsin, AsinStdLib>
 		    {
 		    };
 
 		    //! The standard library asinh, implementation covered by the general template.
-		    class AsinhStdLib : public concepts::Implements<ConceptMathAsinh, AsinhStdLib>
+		    class AsinhStdLib : public interface::Implements<ConceptMathAsinh, AsinhStdLib>
 		    {
 		    };
 
 		    //! The standard library atan, implementation covered by the general template.
-		    class AtanStdLib : public concepts::Implements<ConceptMathAtan, AtanStdLib>
+		    class AtanStdLib : public interface::Implements<ConceptMathAtan, AtanStdLib>
 		    {
 		    };
 
 		    //! The standard library atanh, implementation covered by the general template.
-		    class AtanhStdLib : public concepts::Implements<ConceptMathAtanh, AtanhStdLib>
+		    class AtanhStdLib : public interface::Implements<ConceptMathAtanh, AtanhStdLib>
 		    {
 		    };
 
 		    //! The standard library atan2, implementation covered by the general template.
-		    class Atan2StdLib : public concepts::Implements<ConceptMathAtan2, Atan2StdLib>
+		    class Atan2StdLib : public interface::Implements<ConceptMathAtan2, Atan2StdLib>
 		    {
 		    };
 
 		    //! The standard library cbrt, implementation covered by the general template.
-		    class CbrtStdLib : public concepts::Implements<ConceptMathCbrt, CbrtStdLib>
+		    class CbrtStdLib : public interface::Implements<ConceptMathCbrt, CbrtStdLib>
 		    {
 		    };
 
 		    //! The standard library ceil, implementation covered by the general template.
-		    class CeilStdLib : public concepts::Implements<ConceptMathCeil, CeilStdLib>
+		    class CeilStdLib : public interface::Implements<ConceptMathCeil, CeilStdLib>
 		    {
 		    };
 
 		    //! The standard library conj, implementation covered by the general template.
-		    class ConjStdLib : public concepts::Implements<ConceptMathConj, ConjStdLib>
+		    class ConjStdLib : public interface::Implements<ConceptMathConj, ConjStdLib>
 		    {
 		    };
 
 		    //! The standard library copysign, implementation covered by the general template.
-		    class CopysignStdLib : public concepts::Implements<ConceptMathCopysign, CopysignStdLib>
+		    class CopysignStdLib : public interface::Implements<ConceptMathCopysign, CopysignStdLib>
 		    {
 		    };
 
 		    //! The standard library cos, implementation covered by the general template.
-		    class CosStdLib : public concepts::Implements<ConceptMathCos, CosStdLib>
+		    class CosStdLib : public interface::Implements<ConceptMathCos, CosStdLib>
 		    {
 		    };
 
 		    //! The standard library cosh, implementation covered by the general template.
-		    class CoshStdLib : public concepts::Implements<ConceptMathCosh, CoshStdLib>
+		    class CoshStdLib : public interface::Implements<ConceptMathCosh, CoshStdLib>
 		    {
 		    };
 
 		    //! The standard library erf, implementation covered by the general template.
-		    class ErfStdLib : public concepts::Implements<ConceptMathErf, ErfStdLib>
+		    class ErfStdLib : public interface::Implements<ConceptMathErf, ErfStdLib>
 		    {
 		    };
 
 		    //! The standard library exp, implementation covered by the general template.
-		    class ExpStdLib : public concepts::Implements<ConceptMathExp, ExpStdLib>
+		    class ExpStdLib : public interface::Implements<ConceptMathExp, ExpStdLib>
 		    {
 		    };
 
 		    //! The standard library floor, implementation covered by the general template.
-		    class FloorStdLib : public concepts::Implements<ConceptMathFloor, FloorStdLib>
+		    class FloorStdLib : public interface::Implements<ConceptMathFloor, FloorStdLib>
 		    {
 		    };
 
 		    //! The standard library fma, implementation covered by the general template.
-		    class FmaStdLib : public concepts::Implements<ConceptMathFma, FmaStdLib>
+		    class FmaStdLib : public interface::Implements<ConceptMathFma, FmaStdLib>
 		    {
 		    };
 
 		    //! The standard library fmod, implementation covered by the general template.
-		    class FmodStdLib : public concepts::Implements<ConceptMathFmod, FmodStdLib>
+		    class FmodStdLib : public interface::Implements<ConceptMathFmod, FmodStdLib>
 		    {
 		    };
 
 		    //! The standard library isfinite, implementation covered by the general template.
-		    class IsfiniteStdLib : public concepts::Implements<ConceptMathIsfinite, IsfiniteStdLib>
+		    class IsfiniteStdLib : public interface::Implements<ConceptMathIsfinite, IsfiniteStdLib>
 		    {
 		    };
 
 		    //! The standard library isinf, implementation covered by the general template.
-		    class IsinfStdLib : public concepts::Implements<ConceptMathIsinf, IsinfStdLib>
+		    class IsinfStdLib : public interface::Implements<ConceptMathIsinf, IsinfStdLib>
 		    {
 		    };
 
 		    //! The standard library isnan, implementation covered by the general template.
-		    class IsnanStdLib : public concepts::Implements<ConceptMathIsnan, IsnanStdLib>
+		    class IsnanStdLib : public interface::Implements<ConceptMathIsnan, IsnanStdLib>
 		    {
 		    };
 
 		    //! The standard library log, implementation covered by the general template.
-		    class LogStdLib : public concepts::Implements<ConceptMathLog, LogStdLib>
+		    class LogStdLib : public interface::Implements<ConceptMathLog, LogStdLib>
 		    {
 		    };
 
 		    //! The standard library log2, implementation covered by the general template.
-		    class Log2StdLib : public concepts::Implements<ConceptMathLog2, Log2StdLib>
+		    class Log2StdLib : public interface::Implements<ConceptMathLog2, Log2StdLib>
 		    {
 		    };
 
 		    //! The standard library log10, implementation covered by the general template.
-		    class Log10StdLib : public concepts::Implements<ConceptMathLog10, Log10StdLib>
+		    class Log10StdLib : public interface::Implements<ConceptMathLog10, Log10StdLib>
 		    {
 		    };
 
 		    //! The standard library max.
-		    class MaxStdLib : public concepts::Implements<ConceptMathMax, MaxStdLib>
+		    class MaxStdLib : public interface::Implements<ConceptMathMax, MaxStdLib>
 		    {
 		    };
 
 		    //! The standard library min.
-		    class MinStdLib : public concepts::Implements<ConceptMathMin, MinStdLib>
+		    class MinStdLib : public interface::Implements<ConceptMathMin, MinStdLib>
 		    {
 		    };
 
 		    //! The standard library pow, implementation covered by the general template.
-		    class PowStdLib : public concepts::Implements<ConceptMathPow, PowStdLib>
+		    class PowStdLib : public interface::Implements<ConceptMathPow, PowStdLib>
 		    {
 		    };
 
 		    //! The standard library remainder, implementation covered by the general template.
-		    class RemainderStdLib : public concepts::Implements<ConceptMathRemainder, RemainderStdLib>
+		    class RemainderStdLib : public interface::Implements<ConceptMathRemainder, RemainderStdLib>
 		    {
 		    };
 
 		    //! The standard library round, implementation covered by the general template.
-		    class RoundStdLib : public concepts::Implements<ConceptMathRound, RoundStdLib>
+		    class RoundStdLib : public interface::Implements<ConceptMathRound, RoundStdLib>
 		    {
 		    };
 
 		    //! The standard library rsqrt, implementation covered by the general template.
-		    class RsqrtStdLib : public concepts::Implements<ConceptMathRsqrt, RsqrtStdLib>
+		    class RsqrtStdLib : public interface::Implements<ConceptMathRsqrt, RsqrtStdLib>
 		    {
 		    };
 
 		    //! The standard library sin, implementation covered by the general template.
-		    class SinStdLib : public concepts::Implements<ConceptMathSin, SinStdLib>
+		    class SinStdLib : public interface::Implements<ConceptMathSin, SinStdLib>
 		    {
 		    };
 
 		    //! The standard library sinh, implementation covered by the general template.
-		    class SinhStdLib : public concepts::Implements<ConceptMathSinh, SinhStdLib>
+		    class SinhStdLib : public interface::Implements<ConceptMathSinh, SinhStdLib>
 		    {
 		    };
 
 		    //! The standard library sincos, implementation covered by the general template.
-		    class SinCosStdLib : public concepts::Implements<ConceptMathSinCos, SinCosStdLib>
+		    class SinCosStdLib : public interface::Implements<ConceptMathSinCos, SinCosStdLib>
 		    {
 		    };
 
 		    //! The standard library sqrt, implementation covered by the general template.
-		    class SqrtStdLib : public concepts::Implements<ConceptMathSqrt, SqrtStdLib>
+		    class SqrtStdLib : public interface::Implements<ConceptMathSqrt, SqrtStdLib>
 		    {
 		    };
 
 		    //! The standard library tan, implementation covered by the general template.
-		    class TanStdLib : public concepts::Implements<ConceptMathTan, TanStdLib>
+		    class TanStdLib : public interface::Implements<ConceptMathTan, TanStdLib>
 		    {
 		    };
 
 		    //! The standard library tanh, implementation covered by the general template.
-		    class TanhStdLib : public concepts::Implements<ConceptMathTanh, TanhStdLib>
+		    class TanhStdLib : public interface::Implements<ConceptMathTanh, TanhStdLib>
 		    {
 		    };
 
 		    //! The standard library trunc, implementation covered by the general template.
-		    class TruncStdLib : public concepts::Implements<ConceptMathTrunc, TruncStdLib>
+		    class TruncStdLib : public interface::Implements<ConceptMathTrunc, TruncStdLib>
 		    {
 		    };
 
@@ -6693,7 +6693,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/mem/fence/Traits.hpp ==
 			// ==
@@ -6703,7 +6703,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			namespace alpaka
 			{
@@ -6758,7 +6758,7 @@
 			    template<typename TMemFence, typename TMemScope>
 			    ALPAKA_FN_ACC auto mem_fence(TMemFence const& fence, TMemScope const& scope) -> void
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptMemFence, TMemFence>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptMemFence, TMemFence>;
 			        trait::MemFence<ImplementationBase, TMemScope>::mem_fence(fence, scope);
 			    }
 			} // namespace alpaka
@@ -6776,7 +6776,7 @@
 		namespace alpaka
 		{
 		    //! The CPU OpenMP 2.0 block memory fence.
-		    class MemFenceOmp2Blocks : public concepts::Implements<ConceptMemFence, MemFenceOmp2Blocks>
+		    class MemFenceOmp2Blocks : public interface::Implements<ConceptMemFence, MemFenceOmp2Blocks>
 		    {
 		    };
 
@@ -7557,7 +7557,7 @@
 
 				// #pragma once
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
 				#include <type_traits>
@@ -7594,7 +7594,7 @@
 				        {
 				            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
-				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
 				            return trait::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
 				        }
 
@@ -7605,7 +7605,7 @@
 				        {
 				            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
-				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
 				            return trait::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
 				        }
 
@@ -7618,7 +7618,7 @@
 				                std::is_integral_v<T> && std::is_unsigned_v<T>,
 				                "The value type T has to be a unsigned integral type!");
 
-				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
 				            return trait::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
 				        }
 				    } // namespace distribution
@@ -7645,7 +7645,7 @@
 				            std::uint32_t const& subsequence = 0,
 				            std::uint32_t const& offset = 0)
 				        {
-				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
 				            return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
 				        }
 				    } // namespace engine
@@ -7673,7 +7673,7 @@
 			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
 			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
 			     */
-			    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10>
+			    class Philox4x32x10 : public interface::Implements<ConceptRand, Philox4x32x10>
 			    {
 			    public:
 			        /// Philox algorithm: 10 rounds, 4 numbers of size 32.
@@ -7729,7 +7729,7 @@
 			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
 			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
 			     */
-			    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector>
+			    class Philox4x32x10Vector : public interface::Implements<ConceptRand, Philox4x32x10Vector>
 			    {
 			    public:
 			        using EngineParams = engine::PhiloxParams<4, 32, 10>;
@@ -7787,7 +7787,7 @@
 
 			    /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
 			    template<typename TResult, typename TSfinae = void>
-			    class UniformReal : public concepts::Implements<ConceptRand, UniformReal<TResult>>
+			    class UniformReal : public interface::Implements<ConceptRand, UniformReal<TResult>>
 			    {
 			        template<typename TRes, typename TEnable = void>
 			        struct ResultType
@@ -7856,7 +7856,7 @@
 
 		namespace alpaka::rand
 		{
-		    class RandDefault : public concepts::Implements<ConceptRand, RandDefault>
+		    class RandDefault : public interface::Implements<ConceptRand, RandDefault>
 		    {
 		    };
 
@@ -8585,19 +8585,19 @@
 		namespace alpaka::rand
 		{
 		    //! "Tiny" state mersenne twister implementation
-		    class TinyMersenneTwister : public concepts::Implements<ConceptRand, TinyMersenneTwister>
+		    class TinyMersenneTwister : public interface::Implements<ConceptRand, TinyMersenneTwister>
 		    {
 		    };
 
 		    using RandStdLib = TinyMersenneTwister;
 
 		    //! The standard library mersenne twister implementation.
-		    class MersenneTwister : public concepts::Implements<ConceptRand, MersenneTwister>
+		    class MersenneTwister : public interface::Implements<ConceptRand, MersenneTwister>
 		    {
 		    };
 
 		    //! The standard library rand device implementation.
-		    class RandomDevice : public concepts::Implements<ConceptRand, RandomDevice>
+		    class RandomDevice : public interface::Implements<ConceptRand, RandomDevice>
 		    {
 		    };
 
@@ -8867,7 +8867,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 			#include <type_traits>
@@ -8926,7 +8926,7 @@
 			    template<typename TWarp>
 			    ALPAKA_FN_ACC auto getSize(TWarp const& warp) -> std::int32_t
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::GetSize<ImplementationBase>::getSize(warp);
 			    }
 
@@ -8950,9 +8950,9 @@
 			    ALPAKA_NO_HOST_ACC_WARNING
 			    template<typename TWarp>
 			    ALPAKA_FN_ACC auto activemask(TWarp const& warp)
-			        -> decltype(trait::Activemask<concepts::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
+			        -> decltype(trait::Activemask<interface::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Activemask<ImplementationBase>::activemask(warp);
 			    }
 
@@ -8975,7 +8975,7 @@
 			    template<typename TWarp>
 			    ALPAKA_FN_ACC auto all(TWarp const& warp, std::int32_t predicate) -> std::int32_t
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::All<ImplementationBase>::all(warp, predicate);
 			    }
 
@@ -8998,7 +8998,7 @@
 			    template<typename TWarp>
 			    ALPAKA_FN_ACC auto any(TWarp const& warp, std::int32_t predicate) -> std::int32_t
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Any<ImplementationBase>::any(warp, predicate);
 			    }
 
@@ -9025,7 +9025,7 @@
 			    template<typename TWarp>
 			    ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Ballot<ImplementationBase>::ballot(warp, predicate);
 			    }
 
@@ -9059,7 +9059,7 @@
 			    template<typename TWarp, typename T>
 			    ALPAKA_FN_ACC auto shfl(TWarp const& warp, T value, std::int32_t srcLane, std::int32_t width = 0)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
 			    }
 
@@ -9097,7 +9097,7 @@
 			    template<typename TWarp, typename T>
 			    ALPAKA_FN_ACC auto shfl_up(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::ShflUp<ImplementationBase>::shfl_up(warp, value, offset, width ? width : getSize(warp));
 			    }
 
@@ -9135,7 +9135,7 @@
 			    template<typename TWarp, typename T>
 			    ALPAKA_FN_ACC auto shfl_down(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::ShflDown<ImplementationBase>::shfl_down(warp, value, offset, width ? width : getSize(warp));
 			    }
 
@@ -9173,7 +9173,7 @@
 			    template<typename TWarp, typename T>
 			    ALPAKA_FN_ACC auto shfl_xor(TWarp const& warp, T value, std::int32_t mask, std::int32_t width = 0)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::ShflXor<ImplementationBase>::shfl_xor(warp, value, mask, width ? width : getSize(warp));
 			    }
 			} // namespace alpaka::warp
@@ -9187,7 +9187,7 @@
 		namespace alpaka::warp
 		{
 		    //! The single-threaded warp to emulate it on CPUs.
-		    class WarpSingleThread : public concepts::Implements<ConceptWarp, WarpSingleThread>
+		    class WarpSingleThread : public interface::Implements<ConceptWarp, WarpSingleThread>
 		    {
 		    };
 
@@ -9487,7 +9487,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
@@ -9514,7 +9514,7 @@
 			    template<typename TOrigin, typename TUnit, typename TWorkDiv>
 			    ALPAKA_FN_HOST_ACC auto getWorkDiv(TWorkDiv const& workDiv) -> Vec<Dim<TWorkDiv>, Idx<TWorkDiv>>
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptWorkDiv, TWorkDiv>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptWorkDiv, TWorkDiv>;
 			        return trait::GetWorkDiv<ImplementationBase, TOrigin, TUnit>::getWorkDiv(workDiv);
 			    }
 
@@ -9568,7 +9568,7 @@
 		{
 		    //! A basic class holding the work division as grid block extent, block thread and thread element extent.
 		    template<typename TDim, typename TIdx>
-		    class WorkDivMembers : public concepts::Implements<ConceptWorkDiv, WorkDivMembers<TDim, TIdx>>
+		    class WorkDivMembers : public interface::Implements<ConceptWorkDiv, WorkDivMembers<TDim, TIdx>>
 		    {
 		    public:
 		        ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;
@@ -9764,8 +9764,8 @@
 			// ============================================================================
 
 		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/dev/Traits.hpp ==
 			// ==
@@ -9775,7 +9775,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <algorithm>    // amalgamate: file already included
 			#include <cctype>
@@ -9831,13 +9831,13 @@
 
 			    //! True if TDev is a device, i.e. if it implements the ConceptDev concept.
 			    template<typename TDev>
-			    inline constexpr bool isDevice = concepts::ImplementsConcept<ConceptDev, std::decay_t<TDev>>::value;
+			    inline constexpr bool isDevice = interface::ImplementsInterface<ConceptDev, std::decay_t<TDev>>::value;
 
 			    //! \return The device this object is bound to.
 			    template<typename T>
 			    ALPAKA_FN_HOST auto getDev(T const& t)
 			    {
-			        using ImplementationBase = concepts::ImplementationBase<ConceptGetDev, T>;
+			        using ImplementationBase = interface::ImplementationBase<ConceptGetDev, T>;
 			        return trait::GetDev<ImplementationBase>::getDev(t);
 			    }
 
@@ -9902,9 +9902,9 @@
 			    {
 			        //! Get device type
 			        template<typename TDev>
-			        struct DevType<TDev, std::enable_if_t<concepts::ImplementsConcept<ConceptDev, TDev>::value>>
+			        struct DevType<TDev, std::enable_if_t<interface::ImplementsInterface<ConceptDev, TDev>::value>>
 			        {
-			            using type = typename concepts::ImplementationBase<ConceptDev, TDev>;
+			            using type = typename interface::ImplementationBase<ConceptDev, TDev>;
 			        };
 			    } // namespace trait
 			} // namespace alpaka
@@ -10063,7 +10063,7 @@
 
 				// #pragma once
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/wait/Traits.hpp ==
 					// ==
@@ -10073,7 +10073,7 @@
 
 					// #pragma once
 					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-					// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 					namespace alpaka
 					{
@@ -10101,7 +10101,7 @@
 					    template<typename TAwaited>
 					    ALPAKA_FN_HOST auto wait(TAwaited const& awaited) -> void
 					    {
-					        using ImplementationBase = concepts::ImplementationBase<ConceptCurrentThreadWaitFor, TAwaited>;
+					        using ImplementationBase = interface::ImplementationBase<ConceptCurrentThreadWaitFor, TAwaited>;
 					        trait::CurrentThreadWaitFor<ImplementationBase>::currentThreadWaitFor(awaited);
 					    }
 
@@ -10130,7 +10130,7 @@
 
 				    //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.
 				    template<typename TQueue>
-				    inline constexpr bool isQueue = concepts::ImplementsConcept<ConceptQueue, std::decay_t<TQueue>>::value;
+				    inline constexpr bool isQueue = interface::ImplementsInterface<ConceptQueue, std::decay_t<TQueue>>::value;
 
 				    //! The queue traits.
 				    namespace trait
@@ -10170,7 +10170,7 @@
 				    template<typename TQueue>
 				    ALPAKA_FN_HOST auto empty(TQueue const& queue) -> bool
 				    {
-				        using ImplementationBase = concepts::ImplementationBase<ConceptQueue, TQueue>;
+				        using ImplementationBase = interface::ImplementationBase<ConceptQueue, TQueue>;
 				        return trait::Empty<ImplementationBase>::empty(queue);
 				    }
 
@@ -10566,7 +10566,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
@@ -10581,7 +10581,7 @@
 
 			    //! True if TPlatform is a platform, i.e. if it implements the ConceptPlatform concept.
 			    template<typename TPlatform>
-			    inline constexpr bool isPlatform = concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value;
+			    inline constexpr bool isPlatform = interface::ImplementsInterface<ConceptPlatform, TPlatform>::value;
 
 			    //! The platform traits.
 			    namespace trait
@@ -10593,9 +10593,9 @@
 			        template<typename TPlatform>
 			        struct PlatformType<
 			            TPlatform,
-			            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
+			            std::enable_if_t<interface::ImplementsInterface<ConceptPlatform, TPlatform>::value>>
 			        {
-			            using type = typename concepts::ImplementationBase<ConceptDev, TPlatform>;
+			            using type = typename interface::ImplementationBase<ConceptDev, TPlatform>;
 			        };
 
 			        //! The device count get trait.
@@ -10647,7 +10647,7 @@
 			        struct QueueType<
 			            TPlatform,
 			            TProperty,
-			            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
+			            std::enable_if_t<interface::ImplementsInterface<ConceptPlatform, TPlatform>::value>>
 			        {
 			            using type = typename QueueType<typename alpaka::trait::DevType<TPlatform>::type, TProperty>::type;
 			        };
@@ -10671,7 +10671,7 @@
 
 		    //! True if TAcc is an accelerator, i.e. if it implements the ConceptAcc concept.
 		    template<typename TAcc>
-		    inline constexpr bool isAccelerator = concepts::ImplementsConcept<ConceptAcc, TAcc>::value;
+		    inline constexpr bool isAccelerator = interface::ImplementsInterface<ConceptAcc, TAcc>::value;
 
 		    //! The accelerator traits.
 		    namespace trait
@@ -10733,7 +10733,7 @@
 		    template<typename TAcc, typename TDev>
 		    ALPAKA_FN_HOST auto getAccDevProps(TDev const& dev) -> AccDevProps<Dim<TAcc>, Idx<TAcc>>
 		    {
-		        using ImplementationBase = concepts::ImplementationBase<ConceptAcc, TAcc>;
+		        using ImplementationBase = interface::ImplementationBase<ConceptAcc, TAcc>;
 		        return trait::GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
 		    }
 
@@ -10749,7 +10749,7 @@
 		    namespace trait
 		    {
 		        template<typename TAcc, typename TProperty>
-		        struct QueueType<TAcc, TProperty, std::enable_if_t<concepts::ImplementsConcept<ConceptAcc, TAcc>::value>>
+		        struct QueueType<TAcc, TProperty, std::enable_if_t<interface::ImplementsInterface<ConceptAcc, TAcc>::value>>
 		        {
 		            using type = typename QueueType<typename alpaka::trait::PlatformType<TAcc>::type, TProperty>::type;
 		        };
@@ -10939,7 +10939,7 @@
 		// == ./include/alpaka/core/ClipCast.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevCpu.hpp ==
 		// ==
@@ -12432,9 +12432,9 @@
 			    //! The CPU device queue.
 			    template<typename TDev>
 			    class QueueGenericThreadsBlocking final
-			        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking<TDev>>
-			        , public concepts::Implements<ConceptQueue, QueueGenericThreadsBlocking<TDev>>
-			        , public concepts::Implements<ConceptGetDev, QueueGenericThreadsBlocking<TDev>>
+			        : public interface::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking<TDev>>
+			        , public interface::Implements<ConceptQueue, QueueGenericThreadsBlocking<TDev>>
+			        , public interface::Implements<ConceptGetDev, QueueGenericThreadsBlocking<TDev>>
 			    {
 			    public:
 			        explicit QueueGenericThreadsBlocking(TDev const& dev)
@@ -12864,9 +12864,9 @@
 					    //! The CPU device queue.
 					    template<typename TDev>
 					    class QueueGenericThreadsNonBlocking final
-					        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
-					        , public concepts::Implements<ConceptQueue, QueueGenericThreadsNonBlocking<TDev>>
-					        , public concepts::Implements<ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
+					        : public interface::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
+					        , public interface::Implements<ConceptQueue, QueueGenericThreadsNonBlocking<TDev>>
+					        , public interface::Implements<ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
 					    {
 					    public:
 					        explicit QueueGenericThreadsNonBlocking(TDev const& dev)
@@ -12962,7 +12962,7 @@
 				        //! The CPU device event implementation.
 				        template<typename TDev>
 				        class EventGenericThreadsImpl final
-				            : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
+				            : public interface::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
 				        {
 				        public:
 				            EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
@@ -13005,8 +13005,8 @@
 				    //! The CPU device event.
 				    template<typename TDev>
 				    class EventGenericThreads final
-				        : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
-				        , public concepts::Implements<ConceptGetDev, EventGenericThreads<TDev>>
+				        : public interface::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
+				        , public interface::Implements<ConceptGetDev, EventGenericThreads<TDev>>
 				    {
 				    public:
 				        //! \param bBusyWaiting Unused. EventGenericThreads never does busy waiting.
@@ -13417,8 +13417,8 @@
 
 		    //! The CPU device handle.
 		    class DevCpu
-		        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevCpu>
-		        , public concepts::Implements<ConceptDev, DevCpu>
+		        : public interface::Implements<ConceptCurrentThreadWaitFor, DevCpu>
+		        , public interface::Implements<ConceptDev, DevCpu>
 		    {
 		        friend struct trait::GetDevByIdx<PlatformCpu>;
 
@@ -13616,7 +13616,7 @@
 	        , public rand::RandStdLib
 	#    endif
 	        , public warp::WarpSingleThread
-	        , public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
+	        , public interface::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -13841,7 +13841,7 @@
 		    template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
 		    class BlockSharedMemStMemberMasterSync
 		        : public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>
-		        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMemberMasterSync<TDataAlignBytes>>
+		        , public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStMemberMasterSync<TDataAlignBytes>>
 		    {
 		    public:
 		        BlockSharedMemStMemberMasterSync(
@@ -13927,7 +13927,7 @@
 		namespace alpaka
 		{
 		    //! The OpenMP barrier block synchronization.
-		    class BlockSyncBarrierOmp : public concepts::Implements<ConceptBlockSync, BlockSyncBarrierOmp>
+		    class BlockSyncBarrierOmp : public interface::Implements<ConceptBlockSync, BlockSyncBarrierOmp>
 		    {
 		    public:
 		        std::uint8_t mutable m_generation = 0u;
@@ -14034,7 +14034,7 @@
 
 		// #pragma once
 		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/idx/MapIdx.hpp ==
@@ -14154,7 +14154,7 @@
 		    {
 		        //! The OpenMP accelerator index provider.
 		        template<typename TDim, typename TIdx>
-		        class IdxBtOmp : public concepts::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
+		        class IdxBtOmp : public interface::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
 		        {
 		        };
 		    } // namespace bt
@@ -14222,7 +14222,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
@@ -14234,7 +14234,7 @@
 		namespace alpaka
 		{
 		    //! The CPU OpenMP 2.0 block memory fence.
-		    class MemFenceOmp2Threads : public concepts::Implements<ConceptMemFence, MemFenceOmp2Threads>
+		    class MemFenceOmp2Threads : public interface::Implements<ConceptMemFence, MemFenceOmp2Threads>
 		    {
 		    };
 
@@ -14303,7 +14303,7 @@
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <limits>    // amalgamate: file already included
@@ -14347,7 +14347,7 @@
 	        , public rand::RandStdLib
 	#    endif
 	        , public warp::WarpSingleThread
-	        , public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
+	        , public interface::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -14538,7 +14538,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <atomic>    // amalgamate: file already included
@@ -14546,7 +14546,7 @@
 		namespace alpaka
 		{
 		    //! The serial CPU memory fence.
-		    class MemFenceCpuSerial : public concepts::Implements<ConceptMemFence, MemFenceCpuSerial>
+		    class MemFenceCpuSerial : public interface::Implements<ConceptMemFence, MemFenceCpuSerial>
 		    {
 		    };
 
@@ -14599,7 +14599,7 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
@@ -14637,7 +14637,7 @@
 	        , public rand::RandStdLib
 	#    endif
 	        , public warp::WarpSingleThread
-	        , public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
+	        , public interface::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -15125,7 +15125,7 @@
 			{
 			    //! The SYCL block shared memory allocator.
 			    class BlockSharedMemDynGenericSycl
-			        : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynGenericSycl>
+			        : public interface::Implements<ConceptBlockSharedDyn, BlockSharedMemDynGenericSycl>
 			    {
 			    public:
 			        using BlockSharedMemDynBase = BlockSharedMemDynGenericSycl;
@@ -15178,7 +15178,7 @@
 			    //! The generic SYCL shared memory allocator.
 			    class BlockSharedMemStGenericSycl
 			        : public alpaka::detail::BlockSharedMemStMemberImpl<>
-			        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
+			        , public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
 			    {
 			    public:
 			        BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)
@@ -15246,7 +15246,7 @@
 			{
 			    //! The SYCL block synchronization.
 			    template<typename TDim>
-			    class BlockSyncGenericSycl : public concepts::Implements<ConceptBlockSync, BlockSyncGenericSycl<TDim>>
+			    class BlockSyncGenericSycl : public interface::Implements<ConceptBlockSync, BlockSyncGenericSycl<TDim>>
 			    {
 			    public:
 			        using BlockSyncBase = BlockSyncGenericSycl<TDim>;
@@ -15712,9 +15712,9 @@
 
 				        template<typename TTag, bool TBlocking>
 				        class QueueGenericSyclBase
-				            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
-				            , public concepts::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
-				            , public concepts::Implements<ConceptGetDev, QueueGenericSyclBase<TTag, TBlocking>>
+				            : public interface::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
+				            , public interface::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
+				            , public interface::Implements<ConceptGetDev, QueueGenericSyclBase<TTag, TBlocking>>
 				        {
 				        public:
 				            QueueGenericSyclBase(DevGenericSycl<TTag> const& dev)
@@ -15937,8 +15937,8 @@
 			    //! The SYCL device handle.
 			    template<typename TTag>
 			    class DevGenericSycl
-			        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
-			        , public concepts::Implements<ConceptDev, DevGenericSycl<TTag>>
+			        : public interface::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
+			        , public interface::Implements<ConceptDev, DevGenericSycl<TTag>>
 			    {
 			        friend struct trait::GetDevByIdx<PlatformGenericSycl<TTag>>;
 
@@ -16107,7 +16107,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
@@ -16121,7 +16121,7 @@
 			{
 			    //! The SYCL accelerator ND index provider.
 			    template<typename TDim, typename TIdx>
-			    class IdxBtGenericSycl : public concepts::Implements<ConceptIdxBt, IdxBtGenericSycl<TDim, TIdx>>
+			    class IdxBtGenericSycl : public interface::Implements<ConceptIdxBt, IdxBtGenericSycl<TDim, TIdx>>
 			    {
 			    public:
 			        using IdxBtBase = IdxBtGenericSycl;
@@ -16190,7 +16190,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
@@ -16204,7 +16204,7 @@
 			{
 			    //! The SYCL accelerator ND index provider.
 			    template<typename TDim, typename TIdx>
-			    class IdxGbGenericSycl : public concepts::Implements<ConceptIdxGb, IdxGbGenericSycl<TDim, TIdx>>
+			    class IdxGbGenericSycl : public interface::Implements<ConceptIdxGb, IdxGbGenericSycl<TDim, TIdx>>
 			    {
 			    public:
 			        using IdxGbBase = IdxGbGenericSycl;
@@ -16285,7 +16285,7 @@
 			namespace alpaka
 			{
 			    //! The SYCL intrinsic.
-			    class IntrinsicGenericSycl : public concepts::Implements<ConceptIntrinsic, IntrinsicGenericSycl>
+			    class IntrinsicGenericSycl : public interface::Implements<ConceptIntrinsic, IntrinsicGenericSycl>
 			    {
 			    };
 			} // namespace alpaka
@@ -16336,7 +16336,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/math/Complex.hpp ==
 				// ==
@@ -16992,197 +16992,197 @@
 			namespace alpaka::math
 			{
 			    //! The SYCL abs.
-			    class AbsGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAbs, AbsGenericSycl>
+			    class AbsGenericSycl : public interface::Implements<alpaka::math::ConceptMathAbs, AbsGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL acos.
-			    class AcosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAcos, AcosGenericSycl>
+			    class AcosGenericSycl : public interface::Implements<alpaka::math::ConceptMathAcos, AcosGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL acosh.
-			    class AcoshGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAcosh, AcoshGenericSycl>
+			    class AcoshGenericSycl : public interface::Implements<alpaka::math::ConceptMathAcosh, AcoshGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL arg.
-			    class ArgGenericSycl : public concepts::Implements<alpaka::math::ConceptMathArg, ArgGenericSycl>
+			    class ArgGenericSycl : public interface::Implements<alpaka::math::ConceptMathArg, ArgGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL asin.
-			    class AsinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAsin, AsinGenericSycl>
+			    class AsinGenericSycl : public interface::Implements<alpaka::math::ConceptMathAsin, AsinGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL asinh.
-			    class AsinhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAsinh, AsinhGenericSycl>
+			    class AsinhGenericSycl : public interface::Implements<alpaka::math::ConceptMathAsinh, AsinhGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL atan.
-			    class AtanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtan, AtanGenericSycl>
+			    class AtanGenericSycl : public interface::Implements<alpaka::math::ConceptMathAtan, AtanGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL atanh.
-			    class AtanhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtanh, AtanhGenericSycl>
+			    class AtanhGenericSycl : public interface::Implements<alpaka::math::ConceptMathAtanh, AtanhGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL atan2.
-			    class Atan2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathAtan2, Atan2GenericSycl>
+			    class Atan2GenericSycl : public interface::Implements<alpaka::math::ConceptMathAtan2, Atan2GenericSycl>
 			    {
 			    };
 
 			    //! The SYCL cbrt.
-			    class CbrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCbrt, CbrtGenericSycl>
+			    class CbrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathCbrt, CbrtGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL ceil.
-			    class CeilGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCeil, CeilGenericSycl>
+			    class CeilGenericSycl : public interface::Implements<alpaka::math::ConceptMathCeil, CeilGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL conj.
-			    class ConjGenericSycl : public concepts::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
+			    class ConjGenericSycl : public interface::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL copysign.
-			    class CopysignGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
+			    class CopysignGenericSycl : public interface::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL cos.
-			    class CosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCos, CosGenericSycl>
+			    class CosGenericSycl : public interface::Implements<alpaka::math::ConceptMathCos, CosGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL cosh.
-			    class CoshGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCosh, CoshGenericSycl>
+			    class CoshGenericSycl : public interface::Implements<alpaka::math::ConceptMathCosh, CoshGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL erf.
-			    class ErfGenericSycl : public concepts::Implements<alpaka::math::ConceptMathErf, ErfGenericSycl>
+			    class ErfGenericSycl : public interface::Implements<alpaka::math::ConceptMathErf, ErfGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL exp.
-			    class ExpGenericSycl : public concepts::Implements<alpaka::math::ConceptMathExp, ExpGenericSycl>
+			    class ExpGenericSycl : public interface::Implements<alpaka::math::ConceptMathExp, ExpGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL floor.
-			    class FloorGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFloor, FloorGenericSycl>
+			    class FloorGenericSycl : public interface::Implements<alpaka::math::ConceptMathFloor, FloorGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL fma.
-			    class FmaGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
+			    class FmaGenericSycl : public interface::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL fmod.
-			    class FmodGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
+			    class FmodGenericSycl : public interface::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL isfinite.
-			    class IsfiniteGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsfinite, IsfiniteGenericSycl>
+			    class IsfiniteGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsfinite, IsfiniteGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL isfinite.
-			    class IsinfGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsinf, IsinfGenericSycl>
+			    class IsinfGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsinf, IsinfGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL isnan.
-			    class IsnanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathIsnan, IsnanGenericSycl>
+			    class IsnanGenericSycl : public interface::Implements<alpaka::math::ConceptMathIsnan, IsnanGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL log.
-			    class LogGenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog, LogGenericSycl>
+			    class LogGenericSycl : public interface::Implements<alpaka::math::ConceptMathLog, LogGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL log2.
-			    class Log2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
+			    class Log2GenericSycl : public interface::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
 			    {
 			    };
 
 			    //! The SYCL log10.
-			    class Log10GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
+			    class Log10GenericSycl : public interface::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
 			    {
 			    };
 
 			    //! The SYCL max.
-			    class MaxGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
+			    class MaxGenericSycl : public interface::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL min.
-			    class MinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMin, MinGenericSycl>
+			    class MinGenericSycl : public interface::Implements<alpaka::math::ConceptMathMin, MinGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL pow.
-			    class PowGenericSycl : public concepts::Implements<alpaka::math::ConceptMathPow, PowGenericSycl>
+			    class PowGenericSycl : public interface::Implements<alpaka::math::ConceptMathPow, PowGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL remainder.
-			    class RemainderGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRemainder, RemainderGenericSycl>
+			    class RemainderGenericSycl : public interface::Implements<alpaka::math::ConceptMathRemainder, RemainderGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL round.
-			    class RoundGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRound, RoundGenericSycl>
+			    class RoundGenericSycl : public interface::Implements<alpaka::math::ConceptMathRound, RoundGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL rsqrt.
-			    class RsqrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathRsqrt, RsqrtGenericSycl>
+			    class RsqrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathRsqrt, RsqrtGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL sin.
-			    class SinGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSin, SinGenericSycl>
+			    class SinGenericSycl : public interface::Implements<alpaka::math::ConceptMathSin, SinGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL sinh.
-			    class SinhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSinh, SinhGenericSycl>
+			    class SinhGenericSycl : public interface::Implements<alpaka::math::ConceptMathSinh, SinhGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL sincos.
-			    class SinCosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSinCos, SinCosGenericSycl>
+			    class SinCosGenericSycl : public interface::Implements<alpaka::math::ConceptMathSinCos, SinCosGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL sqrt.
-			    class SqrtGenericSycl : public concepts::Implements<alpaka::math::ConceptMathSqrt, SqrtGenericSycl>
+			    class SqrtGenericSycl : public interface::Implements<alpaka::math::ConceptMathSqrt, SqrtGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL tan.
-			    class TanGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTan, TanGenericSycl>
+			    class TanGenericSycl : public interface::Implements<alpaka::math::ConceptMathTan, TanGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL tanh.
-			    class TanhGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTanh, TanhGenericSycl>
+			    class TanhGenericSycl : public interface::Implements<alpaka::math::ConceptMathTanh, TanhGenericSycl>
 			    {
 			    };
 
 			    //! The SYCL trunc.
-			    class TruncGenericSycl : public concepts::Implements<alpaka::math::ConceptMathTrunc, TruncGenericSycl>
+			    class TruncGenericSycl : public interface::Implements<alpaka::math::ConceptMathTrunc, TruncGenericSycl>
 			    {
 			    };
 
@@ -17770,7 +17770,7 @@
 			    } // namespace detail
 
 			    //! The SYCL memory fence.
-			    class MemFenceGenericSycl : public concepts::Implements<ConceptMemFence, MemFenceGenericSycl>
+			    class MemFenceGenericSycl : public interface::Implements<ConceptMemFence, MemFenceGenericSycl>
 			    {
 			    };
 			} // namespace alpaka
@@ -17801,7 +17801,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
@@ -17835,7 +17835,7 @@
 
 			    //! The SYCL device manager.
 			    template<typename TTag>
-			    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
+			    struct PlatformGenericSycl : interface::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
 			    {
 			        PlatformGenericSycl()
 			            : platform{detail::SYCLDeviceSelector<TTag>{}}
@@ -18555,7 +18555,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
@@ -18586,7 +18586,7 @@
 			{
 			    //! The SYCL rand implementation.
 			    template<typename TDim>
-			    struct RandGenericSycl : concepts::Implements<ConceptRand, RandGenericSycl<TDim>>
+			    struct RandGenericSycl : interface::Implements<ConceptRand, RandGenericSycl<TDim>>
 			    {
 			        explicit RandGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_rand{my_item}
 			        {
@@ -18777,7 +18777,7 @@
 			{
 			    //! The SYCL warp.
 			    template<typename TDim>
-			    class WarpGenericSycl : public concepts::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
+			    class WarpGenericSycl : public interface::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
 			    {
 			    public:
 			        WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_warp{my_item}
@@ -18976,7 +18976,7 @@
 			{
 			    //! The SYCL accelerator work division.
 			    template<typename TDim, typename TIdx>
-			    class WorkDivGenericSycl : public concepts::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
+			    class WorkDivGenericSycl : public interface::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
 			    {
 			        static_assert(TDim::value > 0, "The SYCL work division must have a dimension greater than zero.");
 
@@ -19093,7 +19093,7 @@
 		// Implementation details.
 		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 
 		// #include <cstddef>    // amalgamate: file already included
@@ -19130,7 +19130,7 @@
 		        , public rand::RandGenericSycl<TDim>
 		#    endif
 		        , public warp::WarpGenericSycl<TDim>
-		        , public concepts::Implements<ConceptAcc, AccGenericSycl<TTag, TDim, TIdx>>
+		        , public interface::Implements<ConceptAcc, AccGenericSycl<TTag, TDim, TIdx>>
 		    {
 		        static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
 
@@ -19340,7 +19340,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <atomic>    // amalgamate: file already included
@@ -19348,7 +19348,7 @@
 		namespace alpaka
 		{
 		    //! The default CPU memory fence.
-		    class MemFenceCpu : public concepts::Implements<ConceptMemFence, MemFenceCpu>
+		    class MemFenceCpu : public interface::Implements<ConceptMemFence, MemFenceCpu>
 		    {
 		    };
 
@@ -19414,7 +19414,7 @@
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
@@ -19451,7 +19451,7 @@
 	        , public rand::RandStdLib
 	#    endif
 	        , public warp::WarpSingleThread
-	        , public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
+	        , public interface::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -19819,7 +19819,7 @@
 		{
 		    //! The thread id map barrier block synchronization.
 		    template<typename TIdx>
-		    class BlockSyncBarrierThread : public concepts::Implements<ConceptBlockSync, BlockSyncBarrierThread<TIdx>>
+		    class BlockSyncBarrierThread : public interface::Implements<ConceptBlockSync, BlockSyncBarrierThread<TIdx>>
 		    {
 		    public:
 		        using Barrier = core::threads::BarrierThread<TIdx>;
@@ -19875,7 +19875,7 @@
 
 		// #pragma once
 		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
@@ -19891,7 +19891,7 @@
 		    {
 		        //! The threads accelerator index provider.
 		        template<typename TDim, typename TIdx>
-		        class IdxBtRefThreadIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
+		        class IdxBtRefThreadIdMap : public interface::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
 		        {
 		        public:
 		            using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TIdx>>;
@@ -19969,7 +19969,7 @@
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
@@ -20008,7 +20008,7 @@
 	        , public rand::RandStdLib
 	#    endif
 	        , public warp::WarpSingleThread
-	        , public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
+	        , public interface::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -21102,7 +21102,7 @@
 			// #pragma once
 			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
 			#include <type_traits>
@@ -21113,7 +21113,7 @@
 			{
 			    //! The GPU CUDA/HIP block shared memory allocator.
 			    class BlockSharedMemDynUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -21165,7 +21165,7 @@
 			// #pragma once
 			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 			#include <type_traits>
@@ -21176,7 +21176,7 @@
 			{
 			    //! The GPU CUDA/HIP block shared memory allocator.
 			    class BlockSharedMemStUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -21231,7 +21231,7 @@
 			// #pragma once
 			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -21239,7 +21239,7 @@
 			{
 			    //! The GPU CUDA/HIP block synchronization.
 			    class BlockSyncUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -21360,7 +21360,6 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Cuda.hpp ==
 				// ==
@@ -21863,6 +21862,7 @@
 				// ============================================================================
 
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
@@ -21876,7 +21876,7 @@
 			        //! The CUDA/HIP accelerator ND index provider.
 			        template<typename TDim, typename TIdx>
 			        class IdxBtUniformCudaHipBuiltIn
-			            : public concepts::Implements<ConceptIdxBt, IdxBtUniformCudaHipBuiltIn<TDim, TIdx>>
+			            : public interface::Implements<ConceptIdxBt, IdxBtUniformCudaHipBuiltIn<TDim, TIdx>>
 			        {
 			        };
 			    } // namespace bt
@@ -21947,9 +21947,9 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
@@ -21963,7 +21963,7 @@
 			        //! The CUDA/HIP accelerator ND index provider.
 			        template<typename TDim, typename TIdx>
 			        class IdxGbUniformCudaHipBuiltIn
-			            : public concepts::Implements<ConceptIdxGb, IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
+			            : public interface::Implements<ConceptIdxGb, IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
 			        {
 			        };
 			    } // namespace gb
@@ -22033,7 +22033,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -22042,7 +22042,7 @@
 			{
 			    //! The GPU CUDA/HIP intrinsic.
 			    class IntrinsicUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -22120,9 +22120,9 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/math/Complex.hpp"    // amalgamate: file already inlined
@@ -22135,200 +22135,200 @@
 			namespace alpaka::math
 			{
 			    //! The CUDA built in abs.
-			    class AbsUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
+			    class AbsUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in acos.
-			    class AcosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAcos, AcosUniformCudaHipBuiltIn>
+			    class AcosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAcos, AcosUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in acosh.
-			    class AcoshUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAcosh, AcoshUniformCudaHipBuiltIn>
+			    class AcoshUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAcosh, AcoshUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in arg.
-			    class ArgUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathArg, ArgUniformCudaHipBuiltIn>
+			    class ArgUniformCudaHipBuiltIn : public interface::Implements<ConceptMathArg, ArgUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in asin.
-			    class AsinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAsin, AsinUniformCudaHipBuiltIn>
+			    class AsinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAsin, AsinUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in asinh.
-			    class AsinhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAsinh, AsinhUniformCudaHipBuiltIn>
+			    class AsinhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAsinh, AsinhUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in atan.
-			    class AtanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtan, AtanUniformCudaHipBuiltIn>
+			    class AtanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtan, AtanUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in atanh.
-			    class AtanhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtanh, AtanhUniformCudaHipBuiltIn>
+			    class AtanhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtanh, AtanhUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in atan2.
-			    class Atan2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAtan2, Atan2UniformCudaHipBuiltIn>
+			    class Atan2UniformCudaHipBuiltIn : public interface::Implements<ConceptMathAtan2, Atan2UniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in cbrt.
-			    class CbrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCbrt, CbrtUniformCudaHipBuiltIn>
+			    class CbrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCbrt, CbrtUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in ceil.
-			    class CeilUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCeil, CeilUniformCudaHipBuiltIn>
+			    class CeilUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCeil, CeilUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in conj.
-			    class ConjUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
+			    class ConjUniformCudaHipBuiltIn : public interface::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in copysign.
 			    class CopysignUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in cos.
-			    class CosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCos, CosUniformCudaHipBuiltIn>
+			    class CosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCos, CosUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in cosh.
-			    class CoshUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCosh, CoshUniformCudaHipBuiltIn>
+			    class CoshUniformCudaHipBuiltIn : public interface::Implements<ConceptMathCosh, CoshUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in erf.
-			    class ErfUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathErf, ErfUniformCudaHipBuiltIn>
+			    class ErfUniformCudaHipBuiltIn : public interface::Implements<ConceptMathErf, ErfUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in exp.
-			    class ExpUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
+			    class ExpUniformCudaHipBuiltIn : public interface::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in floor.
-			    class FloorUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
+			    class FloorUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in fma.
-			    class FmaUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
+			    class FmaUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in fmod.
-			    class FmodUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFmod, FmodUniformCudaHipBuiltIn>
+			    class FmodUniformCudaHipBuiltIn : public interface::Implements<ConceptMathFmod, FmodUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in isfinite.
 			    class IsfiniteUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in isinf.
-			    class IsinfUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathIsinf, IsinfUniformCudaHipBuiltIn>
+			    class IsinfUniformCudaHipBuiltIn : public interface::Implements<ConceptMathIsinf, IsinfUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in isnan.
-			    class IsnanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathIsnan, IsnanUniformCudaHipBuiltIn>
+			    class IsnanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathIsnan, IsnanUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    // ! The CUDA built in log.
-			    class LogUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog, LogUniformCudaHipBuiltIn>
+			    class LogUniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog, LogUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    // ! The CUDA built in log2.
-			    class Log2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
+			    class Log2UniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    // ! The CUDA built in log10.
-			    class Log10UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
+			    class Log10UniformCudaHipBuiltIn : public interface::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in max.
-			    class MaxUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
+			    class MaxUniformCudaHipBuiltIn : public interface::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in min.
-			    class MinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMin, MinUniformCudaHipBuiltIn>
+			    class MinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathMin, MinUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in pow.
-			    class PowUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathPow, PowUniformCudaHipBuiltIn>
+			    class PowUniformCudaHipBuiltIn : public interface::Implements<ConceptMathPow, PowUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA built in remainder.
 			    class RemainderUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptMathRemainder, RemainderUniformCudaHipBuiltIn>
+			        : public interface::Implements<ConceptMathRemainder, RemainderUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA round.
-			    class RoundUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathRound, RoundUniformCudaHipBuiltIn>
+			    class RoundUniformCudaHipBuiltIn : public interface::Implements<ConceptMathRound, RoundUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA rsqrt.
-			    class RsqrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn>
+			    class RsqrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA sin.
-			    class SinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSin, SinUniformCudaHipBuiltIn>
+			    class SinUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSin, SinUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA sinh.
-			    class SinhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSinh, SinhUniformCudaHipBuiltIn>
+			    class SinhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSinh, SinhUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA sincos.
-			    class SinCosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSinCos, SinCosUniformCudaHipBuiltIn>
+			    class SinCosUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSinCos, SinCosUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA sqrt.
-			    class SqrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSqrt, SqrtUniformCudaHipBuiltIn>
+			    class SqrtUniformCudaHipBuiltIn : public interface::Implements<ConceptMathSqrt, SqrtUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA tan.
-			    class TanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTan, TanUniformCudaHipBuiltIn>
+			    class TanUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTan, TanUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA tanh.
-			    class TanhUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTanh, TanhUniformCudaHipBuiltIn>
+			    class TanhUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTanh, TanhUniformCudaHipBuiltIn>
 			    {
 			    };
 
 			    //! The CUDA trunc.
-			    class TruncUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTrunc, TruncUniformCudaHipBuiltIn>
+			    class TruncUniformCudaHipBuiltIn : public interface::Implements<ConceptMathTrunc, TruncUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -23498,7 +23498,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -23506,7 +23506,7 @@
 			namespace alpaka
 			{
 			    //! The GPU CUDA/HIP memory fence.
-			    class MemFenceUniformCudaHipBuiltIn : public concepts::Implements<ConceptMemFence, MemFenceUniformCudaHipBuiltIn>
+			    class MemFenceUniformCudaHipBuiltIn : public interface::Implements<ConceptMemFence, MemFenceUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -23570,9 +23570,9 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/dev/DevUniformCudaHipRt.hpp ==
 				// ==
@@ -23990,9 +23990,9 @@
 					// == ./include/alpaka/core/ApiCudaRt.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/dev/common/QueueRegistry.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
@@ -24038,8 +24038,8 @@
 				    //! The CUDA/HIP RT device handle.
 				    template<typename TApi>
 				    class DevUniformCudaHipRt
-				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
-				        , public concepts::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
+				        : public interface::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
+				        , public interface::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
 				    {
 				        friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 
@@ -24284,7 +24284,7 @@
 			{
 			    //! The CUDA/HIP rand implementation.
 			    template<typename TApi>
-			    class RandUniformCudaHipRand : public concepts::Implements<ConceptRand, RandUniformCudaHipRand<TApi>>
+			    class RandUniformCudaHipRand : public interface::Implements<ConceptRand, RandUniformCudaHipRand<TApi>>
 			    {
 			    };
 
@@ -24540,7 +24540,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
@@ -24550,7 +24550,7 @@
 			namespace alpaka::warp
 			{
 			    //! The GPU CUDA/HIP warp.
-			    class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
+			    class WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -24735,9 +24735,9 @@
 
 			// #pragma once
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
@@ -24749,7 +24749,7 @@
 			    //! The GPU CUDA/HIP accelerator work division.
 			    template<typename TDim, typename TIdx>
 			    class WorkDivUniformCudaHipBuiltIn
-			        : public concepts::Implements<ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
+			        : public interface::Implements<ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
 			    {
 			    public:
 			        ALPAKA_FN_HOST_ACC WorkDivUniformCudaHipBuiltIn(Vec<TDim, TIdx> const& threadElemExtent)
@@ -24859,8 +24859,8 @@
 
 		// Implementation details.
 		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 		// #include <typeinfo>    // amalgamate: file already included
@@ -24896,7 +24896,7 @@
 		        , public rand::RandUniformCudaHipRand<TApi>
 		#    endif
 		        , public warp::WarpUniformCudaHipBuiltIn
-		        , public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+		        , public interface::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
 		    {
 		        static_assert(
 		            sizeof(TIdx) >= sizeof(int),
@@ -25831,10 +25831,10 @@
 // #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 	// ============================================================================
@@ -26503,9 +26503,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
@@ -26629,8 +26629,8 @@
 		    //! The CUDA/HIP RT device event.
 		    template<typename TApi>
 		    class EventUniformCudaHipRt final
-		        : public concepts::Implements<ConceptCurrentThreadWaitFor, EventUniformCudaHipRt<TApi>>
-		        , public concepts::Implements<ConceptGetDev, EventUniformCudaHipRt<TApi>>
+		        : public interface::Implements<ConceptCurrentThreadWaitFor, EventUniformCudaHipRt<TApi>>
+		        , public interface::Implements<ConceptGetDev, EventUniformCudaHipRt<TApi>>
 		    {
 		    public:
 		        ALPAKA_FN_HOST EventUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev, bool bBusyWait = true)
@@ -26937,7 +26937,7 @@
 
 		// #pragma once
 		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
@@ -26971,7 +26971,7 @@
 		        template<typename TIdxGb>
 		        struct GetIdx<TIdxGb, origin::Grid, unit::Blocks>
 		        {
-		            using ImplementationBase = concepts::ImplementationBase<ConceptIdxGb, TIdxGb>;
+		            using ImplementationBase = interface::ImplementationBase<ConceptIdxGb, TIdxGb>;
 
 		            //! \return The index of the current thread in the grid.
 		            ALPAKA_NO_HOST_ACC_WARNING
@@ -26987,7 +26987,7 @@
 		        template<typename TIdxBt>
 		        struct GetIdx<TIdxBt, origin::Block, unit::Threads>
 		        {
-		            using ImplementationBase = concepts::ImplementationBase<ConceptIdxBt, TIdxBt>;
+		            using ImplementationBase = interface::ImplementationBase<ConceptIdxBt, TIdxBt>;
 
 		            //! \return The index of the current thread in the grid.
 		            ALPAKA_NO_HOST_ACC_WARNING
@@ -28763,7 +28763,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
@@ -28773,7 +28773,7 @@
 		namespace alpaka
 		{
 		    //! The CPU device platform.
-		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
+		    struct PlatformCpu : interface::Implements<ConceptPlatform, PlatformCpu>
 		    {
 		#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
 		    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
@@ -32270,7 +32270,7 @@
 	// #pragma once
 	// #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/cpu/SysInfo.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/alloc/Traits.hpp ==
@@ -32281,7 +32281,7 @@
 
 		// #pragma once
 		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
@@ -32308,7 +32308,7 @@
 		    template<typename T, typename TAlloc>
 		    ALPAKA_FN_HOST auto malloc(TAlloc const& alloc, std::size_t const& sizeElems) -> T*
 		    {
-		        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+		        using ImplementationBase = interface::ImplementationBase<ConceptMemAlloc, TAlloc>;
 		        return trait::Malloc<T, ImplementationBase>::malloc(alloc, sizeElems);
 		    }
 
@@ -32316,7 +32316,7 @@
 		    template<typename TAlloc, typename T>
 		    ALPAKA_FN_HOST auto free(TAlloc const& alloc, T const* const ptr) -> void
 		    {
-		        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+		        using ImplementationBase = interface::ImplementationBase<ConceptMemAlloc, TAlloc>;
 		        trait::Free<T, ImplementationBase>::free(alloc, ptr);
 		    }
 		} // namespace alpaka
@@ -32333,7 +32333,7 @@
 	    //!
 	    //! \tparam TAlignment An integral constant containing the alignment.
 	    template<typename TAlignment>
-	    class AllocCpuAligned : public concepts::Implements<ConceptMemAlloc, AllocCpuAligned<TAlignment>>
+	    class AllocCpuAligned : public interface::Implements<ConceptMemAlloc, AllocCpuAligned<TAlignment>>
 	    {
 	    };
 
@@ -32398,7 +32398,7 @@
 	namespace alpaka
 	{
 	    //! The CPU new allocator.
-	    class AllocCpuNew : public concepts::Implements<ConceptMemAlloc, AllocCpuNew>
+	    class AllocCpuNew : public interface::Implements<ConceptMemAlloc, AllocCpuNew>
 	    {
 	    };
 
@@ -37392,9 +37392,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 
@@ -37413,7 +37413,7 @@
 
 		    //! The CUDA/HIP RT platform.
 		    template<typename TApi>
-		    struct PlatformUniformCudaHipRt : concepts::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
+		    struct PlatformUniformCudaHipRt : interface::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
 		    {
 		#    if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                 \
 		        && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
