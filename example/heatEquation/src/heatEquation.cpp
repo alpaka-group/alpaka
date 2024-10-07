@@ -186,6 +186,8 @@ auto example(TAccTag const&) -> int
 
 auto main() -> int
 {
+    std::cout << "Check enabled accelerator tags:" << std::endl;
+    alpaka::printTagNames<alpaka::EnabledAccTags>();
     // Execute the example once for each enabled accelerator.
     // If you would like to execute it for a single accelerator only you can use the following code.
     //  \code{.cpp}
