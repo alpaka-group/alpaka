@@ -1,6 +1,6 @@
 [
     {
-        "id": "f7e25eb8d1b146e52d271039f989483d",
+        "id_test": "2f0c9cddfe598198985975372af01dd7",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -8,69 +8,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Bechmark DotKernel Test-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamDotKernelTest.cpp",
-            "line": "188",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:38",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds"
-            }
-        },
-        "name": "DotKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "309408",
-        "mean": {
-            "value": "171410",
-            "lowerBound": "149170",
-            "upperBound": "171410",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "22240.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.383985",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Init",
+        "Bandwidth(GB/s)": "6.2681",
+        "MinTime(s)": "0.0013383",
+        "MaxTime(s)": "0.0013383",
+        "AvgTime(s)": "0.0013383",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "65bce41c65b0fa85401690a9e96e3998",
+        "id_test": "d4394804f2b1164c2e9f7e9d20cadd16",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -78,69 +37,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Bechmark DotKernel Test-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamDotKernelTest.cpp",
-            "line": "198",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:41",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds"
-            }
-        },
-        "name": "DotKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "659236",
-        "mean": {
-            "value": "352676",
-            "lowerBound": "329799",
-            "upperBound": "352676",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "22877.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.25",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Copy",
+        "Bandwidth(GB/s)": "13.683",
+        "MinTime(s)": "0.00061305",
+        "MaxTime(s)": "0.00061305",
+        "AvgTime(s)": "0.00061305",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "5b88e2275115817a27590b8d3b4dc950",
+        "id_test": "a100fcf101d3c95311f1d17d08c78816",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -148,71 +66,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:42",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "InitKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "233802",
-        "mean": {
-            "value": "333750",
-            "lowerBound": "236143",
-            "upperBound": "333750",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "97607",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.477164",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Mult",
+        "Bandwidth(GB/s)": "19.777",
+        "MinTime(s)": "0.00042416",
+        "MaxTime(s)": "0.00042416",
+        "AvgTime(s)": "0.00042416",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "733ddd1dc133ea8ce845cd1838ca957d",
+        "id_test": "f6dff215d76eb900604980d34dbba215",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -220,71 +95,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:42",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "CopyKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "343392",
-        "mean": {
-            "value": "438985",
-            "lowerBound": "326398",
-            "upperBound": "438985",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "112587",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.470307",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Add",
+        "Bandwidth(GB/s)": "19.95",
+        "MinTime(s)": "0.00063073",
+        "MaxTime(s)": "0.00063073",
+        "AvgTime(s)": "0.00063073",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "12c8e78c88d11b35f5519e9cb0aeea95",
+        "id_test": "352e83d09960eaf67aa1c413e42ac7da",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -292,71 +124,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:42",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "ScalingKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "345536",
-        "mean": {
-            "value": "489504",
-            "lowerBound": "435460",
-            "upperBound": "489504",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "54043.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.339766",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Triad",
+        "Bandwidth(GB/s)": "28.162",
+        "MinTime(s)": "0.0004468",
+        "MaxTime(s)": "0.0004468",
+        "AvgTime(s)": "0.0004468",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "d392dc5259b29c25300993ed2f67b241",
+        "id_test": "97a416c48ab2d41a35b774918653f901",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -364,71 +153,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:42",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "AddKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "494478",
-        "mean": {
-            "value": "660886",
-            "lowerBound": "580261",
-            "upperBound": "660886",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "80624.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.368765",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Init",
+        "Bandwidth(GB/s)": "0.0034765",
+        "MinTime(s)": "2.413",
+        "MaxTime(s)": "2.413",
+        "AvgTime(s)": "2.413",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "96394b73f36092b42574afb977615cfd",
+        "id_test": "6988c17657ef9109d0d10ce4c7c43298",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -436,71 +182,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:42",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "TriadKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "506568",
-        "mean": {
-            "value": "491779",
-            "lowerBound": "455825",
-            "upperBound": "491779",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "35954",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.25",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Copy",
+        "Bandwidth(GB/s)": "0.0034368",
+        "MinTime(s)": "2.4408",
+        "MaxTime(s)": "2.4408",
+        "AvgTime(s)": "2.4408",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "c61e199f3a2ab75efa75c5d7ead8becc",
+        "id_test": "af8a1e72ab7579033ff96c53ea42a861",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -508,71 +211,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:45",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "InitKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "99842",
-        "mean": {
-            "value": "73254.5",
-            "lowerBound": "49879",
-            "upperBound": "73254.5",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "23375.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.480819",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Mult",
+        "Bandwidth(GB/s)": "0.0039335",
+        "MinTime(s)": "2.1326",
+        "MaxTime(s)": "2.1326",
+        "AvgTime(s)": "2.1326",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "dbe4884ef7309776d9de296d7665670a",
+        "id_test": "b1ba5e6100a47081c01beae289465270",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -580,71 +240,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:45",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "CopyKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "196838",
-        "mean": {
-            "value": "124066",
-            "lowerBound": "98691",
-            "upperBound": "124066",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "25375",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.45331",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Add",
+        "Bandwidth(GB/s)": "0.0068308",
+        "MinTime(s)": "1.8421",
+        "MaxTime(s)": "1.8421",
+        "AvgTime(s)": "1.8421",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "efdc34db37aedf2066cbcbbfcce59e05",
+        "id_test": "3b1096f5b94d2caee9a9a2c46bb9fb14",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -652,71 +269,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:45",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "ScalingKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "196950",
-        "mean": {
-            "value": "123282",
-            "lowerBound": "98517",
-            "upperBound": "123282",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "24765",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.451599",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Triad",
+        "Bandwidth(GB/s)": "0.0061349",
+        "MinTime(s)": "2.051",
+        "MaxTime(s)": "2.051",
+        "AvgTime(s)": "2.051",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "99d0143de1a618b49987de42f6cbd7d8",
+        "id_test": "0b23ac52527a0766ccacb45ecda26fc4",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -724,71 +298,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:45",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "AddKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "290568",
-        "mean": {
-            "value": "171094",
-            "lowerBound": "144515",
-            "upperBound": "171094",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "26579.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.41907",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Init",
+        "Bandwidth(GB/s)": "15.833",
+        "MinTime(s)": "0.0010596",
+        "MaxTime(s)": "0.0010596",
+        "AvgTime(s)": "0.0010596",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "0717594210316807600409bfedd9d424",
+        "id_test": "b038ccb35ee809cd544a5826071612ef",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -796,71 +327,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Float - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "332",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:45",
-                "DataArraySize": "1048576",
-                "DataType": "single-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "8192,8192,8192,12288,12288"
-            }
-        },
-        "name": "TriadKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "290546",
-        "mean": {
-            "value": "169588",
-            "lowerBound": "145757",
-            "upperBound": "169588",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "23830.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.401087",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Copy",
+        "Bandwidth(GB/s)": "30.944",
+        "MinTime(s)": "0.00054218",
+        "MaxTime(s)": "0.00054218",
+        "AvgTime(s)": "0.00054218",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "f1cd4f709a603d2b2558c2ef1b47fb6d",
+        "id_test": "07c5a47ab273c89e6881bb37d3951342",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -868,71 +356,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:48",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "InitKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "471258",
-        "mean": {
-            "value": "726485",
-            "lowerBound": "638444",
-            "upperBound": "726485",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "88041",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.367012",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Mult",
+        "Bandwidth(GB/s)": "38.664",
+        "MinTime(s)": "0.00043392",
+        "MaxTime(s)": "0.00043392",
+        "AvgTime(s)": "0.00043392",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "f89f6eafb56bc835894bf0388cd93153",
+        "id_test": "6d5dccbc905e884417fe6d327a3de227",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -940,71 +385,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:48",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "CopyKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "855794",
-        "mean": {
-            "value": "1.06774e+06",
-            "lowerBound": "1.00084e+06",
-            "upperBound": "1.06774e+06",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "66902.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.25",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Add",
+        "Bandwidth(GB/s)": "32.626",
+        "MinTime(s)": "0.00077134",
+        "MaxTime(s)": "0.00077134",
+        "AvgTime(s)": "0.00077134",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "2fea85a2c38b43400e809a7891d73523",
+        "id_test": "e47ee3d587b9c613d9eb87044cefc34b",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1012,71 +414,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:48",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "ScalingKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "848576",
-        "mean": {
-            "value": "1.04264e+06",
-            "lowerBound": "949439",
-            "upperBound": "1.04264e+06",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "93198",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.255554",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Triad",
+        "Bandwidth(GB/s)": "32.052",
+        "MinTime(s)": "0.00078516",
+        "MaxTime(s)": "0.00078516",
+        "AvgTime(s)": "0.00078516",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "b13365876f0ad8408ad983cbf3908c81",
+        "id_test": "3a2bb0e1d0679c071c0f1e95c2932b3c",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1084,71 +443,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:48",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "AddKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "1.46116e+06",
-        "mean": {
-            "value": "1.21464e+06",
-            "lowerBound": "953837",
-            "upperBound": "1.21464e+06",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "260802",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.457635",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Init",
+        "Bandwidth(GB/s)": "0.010841",
+        "MinTime(s)": "1.5476",
+        "MaxTime(s)": "1.5476",
+        "AvgTime(s)": "1.5476",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "71eeacd811eaf8b538612a46b7ad78bd",
+        "id_test": "ee157f36d915557bcb5fda1d78ac189f",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1156,71 +472,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 0",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:48",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
-                "AcceleratorType": "AccCpuSerial<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "TriadKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "1.44147e+06",
-        "mean": {
-            "value": "1.24149e+06",
-            "lowerBound": "1.00889e+06",
-            "upperBound": "1.24149e+06",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "232600",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.444359",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Copy",
+        "Bandwidth(GB/s)": "0.0078898",
+        "MinTime(s)": "2.1265",
+        "MaxTime(s)": "2.1265",
+        "AvgTime(s)": "2.1265",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "5192e77ca942b7e81ba7add6eedde786",
+        "id_test": "68967e4349065afb76f7fb68f2ae55ed",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1228,71 +501,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:51",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "InitKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "189006",
-        "mean": {
-            "value": "117008",
-            "lowerBound": "95302",
-            "upperBound": "117008",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "21706.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.443247",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Mult",
+        "Bandwidth(GB/s)": "0.0076437",
+        "MinTime(s)": "2.1949",
+        "MaxTime(s)": "2.1949",
+        "AvgTime(s)": "2.1949",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "ee2f4c6851b56bed41c011bf91512918",
+        "id_test": "2878be3fd6f75c8359936d30a5a9704f",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1300,71 +530,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:51",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "CopyKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "386516",
-        "mean": {
-            "value": "216752",
-            "lowerBound": "193281",
-            "upperBound": "216752",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "23470.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.333425",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Add",
+        "Bandwidth(GB/s)": "0.01712",
+        "MinTime(s)": "1.47",
+        "MaxTime(s)": "1.47",
+        "AvgTime(s)": "1.47",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "3b7c19c33d478f16d10d9f9c94c7ce0c",
+        "id_test": "b6a2c2062d05783c69c56e500c6dc9b0",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1372,71 +559,28 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:51",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "ScalingKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "399406",
-        "mean": {
-            "value": "224864",
-            "lowerBound": "193497",
-            "upperBound": "224864",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "31367",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.399625",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "Triad",
+        "Bandwidth(GB/s)": "0.010144",
+        "MinTime(s)": "2.4808",
+        "MaxTime(s)": "2.4808",
+        "AvgTime(s)": "2.4808",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     },
     {
-        "id": "75eeaef86874cb2d8e7fb54fee408e31",
+        "id_test": "f0edcf6562e64167880ae4329592da4e",
         "meta": {
             "creator": "unknown",
             "datetime": "unknown",
@@ -1444,139 +588,24 @@
             "moreinterestingmetadata": "unknown"
         },
         "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
         },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:51",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "AddKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "570158",
-        "mean": {
-            "value": "311486",
-            "lowerBound": "285865",
-            "upperBound": "311486",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "25620.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.25",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
-    },
-    {
-        "id": "8c78cafdbcfce09529ea542e790f7636",
-        "meta": {
-            "creator": "unknown",
-            "datetime": "unknown",
-            "hostname": "unknown",
-            "moreinterestingmetadata": "unknown"
-        },
-        "env": {
-            "type": "Catch2TestRun",
-            "kind": "babelstream",
-            "rng-seed": "1458339043",
-            "catch2-version": "3.5.2",
-            "OverallResults": {
-                "successes": "14",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            },
-            "OverallResultsCases": {
-                "successes": "8",
-                "failures": "0",
-                "expectedFailures": "0",
-                "skips": "0"
-            }
-        },
-        "TestCase": {
-            "name": "TEST: Babelstream Copy,Add,Mull,Triad Kernels-Double - TestAccs1D - 1",
-            "tags": "[benchmark-test]",
-            "filename": "/home/yusufo81/projects/alpaka-dir/alpaka/benchmarks/babelstream/src/babelStreamMainTest.cpp",
-            "line": "339",
-            "OverallResult": {
-                "success": "true",
-                "skips": "0"
-            },
-            "MetaBenchmarkTestData": {
-                "TimeStamp": "2024-07-19 16:39:51",
-                "DataArraySize": "1048576",
-                "DataType": "double-precision",
-                "Work Division": "{gridBlockExtent: (1024), blockThreadExtent: (1024), threadElemExtent: (1)}",
-                "AcceleratorType": "AccGpuCudaRt<1,unsigned int>",
-                "TimeUnitForXMLReport": "Nano Seconds",
-                "KernelNames": "InitKernel,CopyKernel,ScalingKernel,AddKernel,TriadKernel",
-                "KernelDataUsageValues(KByte)": "16384,16384,16384,24576,24576"
-            }
-        },
-        "name": "TriadKernel",
-        "samples": "2",
-        "resamples": "100000",
-        "iterations": "1",
-        "clockResolution": "18.0074",
-        "estimatedDuration": "570314",
-        "mean": {
-            "value": "325860",
-            "lowerBound": "286753",
-            "upperBound": "325860",
-            "ci": "0.95"
-        },
-        "standardDeviation": {
-            "value": "39106.5",
-            "lowerBound": "0",
-            "upperBound": "0",
-            "ci": "0.95"
-        },
-        "outliers": {
-            "variance": "0.36439",
-            "lowMild": "0",
-            "lowSevere": "0",
-            "highMild": "0",
-            "highSevere": "0"
-        }
+        "name": "All",
+        "Bandwidth(GB/s)": "tests",
+        "MinTime(s)": "passed",
+        "MaxTime(s)": "(12",
+        "AvgTime(s)": "assertions",
+        "DataUsage(MB)": "in",
+        "WorkDiv": "",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
     }
 ]
