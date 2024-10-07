@@ -35,16 +35,6 @@ var hierarchy =
     [ "alpaka::ConceptMemAlloc", "structalpaka_1_1ConceptMemAlloc.html", null ],
     [ "alpaka::ConceptMemFence", "structalpaka_1_1ConceptMemFence.html", null ],
     [ "alpaka::ConceptPlatform", "structalpaka_1_1ConceptPlatform.html", null ],
-    [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, Sfinae >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType.html", null ],
-    [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t< ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html", null ],
-    [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t<!ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a.html", null ],
-    [ "alpaka::concepts::Implements< TConcept, TBase >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
-      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
-      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
-      [ "alpaka::WorkDivMembers< Dim, Idx >", "classalpaka_1_1WorkDivMembers.html", null ]
-    ] ],
-    [ "alpaka::concepts::ImplementsConcept< TConcept, TDerived >", "structalpaka_1_1concepts_1_1ImplementsConcept.html", null ],
     [ "alpaka::ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
     [ "alpaka::core::CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
@@ -152,6 +142,16 @@ var hierarchy =
       [ "alpaka::generic::detail::QueueGenericThreadsBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", null ],
       [ "alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html", null ]
     ] ],
+    [ "alpaka::interface::detail::ImplementationBaseType< TInterface, TDerived, Sfinae >", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType.html", null ],
+    [ "alpaka::interface::detail::ImplementationBaseType< TInterface, TDerived, std::enable_if_t< ImplementsInterface< TInterface, TDerived >::value > >", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542.html", null ],
+    [ "alpaka::interface::detail::ImplementationBaseType< TInterface, TDerived, std::enable_if_t<!ImplementsInterface< TInterface, TDerived >::value > >", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html", null ],
+    [ "alpaka::interface::Implements< TInterface, TBase >", "structalpaka_1_1interface_1_1Implements.html", [
+      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
+      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
+      [ "alpaka::QueueGenericThreadsBlocking< DevCpu >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ],
+      [ "alpaka::WorkDivMembers< Dim, Idx >", "classalpaka_1_1WorkDivMembers.html", null ]
+    ] ],
+    [ "alpaka::interface::ImplementsInterface< TInterface, TDerived >", "structalpaka_1_1interface_1_1ImplementsInterface.html", null ],
     [ "alpaka::internal::Complex< T >", "classalpaka_1_1internal_1_1Complex.html", null ],
     [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
@@ -599,7 +599,7 @@ var hierarchy =
     [ "alpaka::trait::DevType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::trait::DevType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::trait::DevType< TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_748136d18cba1bf097b4b40671af9556.html", null ],
-    [ "alpaka::trait::DevType< TDev, std::enable_if_t< concepts::ImplementsConcept< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html", null ],
+    [ "alpaka::trait::DevType< TDev, std::enable_if_t< interface::ImplementsInterface< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01interface_1_1ImplementsIfd4e0d0448eab41b4bca51d39aac746b.html", null ],
     [ "alpaka::trait::DevType< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1DevType_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html", null ],
     [ "alpaka::trait::DevType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::DevType< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -898,7 +898,7 @@ var hierarchy =
     [ "alpaka::trait::PlatformType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::trait::PlatformType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::trait::PlatformType< TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_010d3ab9faa5359f76890af49d5bc67568.html", null ],
-    [ "alpaka::trait::PlatformType< TPlatform, std::enable_if_t< concepts::ImplementsConcept< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e.html", null ],
+    [ "alpaka::trait::PlatformType< TPlatform, std::enable_if_t< interface::ImplementsInterface< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01interface_1_1Ifa8dd03f3298650dd2b1132904ef1152.html", null ],
     [ "alpaka::trait::Popcount< TWarp, TSfinae >", "structalpaka_1_1trait_1_1Popcount.html", null ],
     [ "alpaka::trait::Popcount< IntrinsicCpu >", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html", null ],
     [ "alpaka::trait::Popcount< IntrinsicFallback >", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html", null ],
@@ -908,8 +908,8 @@ var hierarchy =
     [ "alpaka::trait::QueueType< DevCpu, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html", null ],
     [ "alpaka::trait::QueueType< DevUniformCudaHipRt< TApi >, Blocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01Blocking_01_4.html", null ],
     [ "alpaka::trait::QueueType< DevUniformCudaHipRt< TApi >, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01NonBlocking_01_4.html", null ],
-    [ "alpaka::trait::QueueType< TAcc, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptAcc, TAcc >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html", null ],
-    [ "alpaka::trait::QueueType< TPlatform, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01cof2295b602ff1b86e835d3331331292eb.html", null ],
+    [ "alpaka::trait::QueueType< TAcc, TProperty, std::enable_if_t< interface::ImplementsInterface< ConceptAcc, TAcc >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01interfa302ce5bf0adeb5dce94e2b90cfdbcffe.html", null ],
+    [ "alpaka::trait::QueueType< TPlatform, TProperty, std::enable_if_t< interface::ImplementsInterface< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01ina24a7010ace4e4e9b0e0b69ba570cb9e.html", null ],
     [ "alpaka::trait::Reset< T, TSfinae >", "structalpaka_1_1trait_1_1Reset.html", null ],
     [ "alpaka::trait::Reset< DevCpu >", "structalpaka_1_1trait_1_1Reset_3_01DevCpu_01_4.html", null ],
     [ "alpaka::trait::Reset< DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1Reset_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ],
@@ -999,22 +999,22 @@ var hierarchy =
     [ "alpaka::trait::IdxType< TView >", "structalpaka_1_1trait_1_1IdxType.html", [
       [ "alpaka::trait::IdxType< ViewConst< TView > >", "structalpaka_1_1trait_1_1IdxType_3_01ViewConst_3_01TView_01_4_01_4.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptAcc, AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptAcc, AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptAcc, AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptAcc, AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptAcc, AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynMember< BlockSharedDynMemberAllocKiB > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSharedDyn, BlockSharedMemDynMember< BlockSharedDynMemberAllocKiB > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSharedMemDynMember< TStaticAllocKiB >", "classalpaka_1_1BlockSharedMemDynMember.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1022,119 +1022,119 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSharedMemDynUniformCudaHipBuiltIn", "classalpaka_1_1BlockSharedMemDynUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedSt, BlockSharedMemStMember< core::vectorization::defaultAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSharedSt, BlockSharedMemStMember< core::vectorization::defaultAlignment > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSharedMemStMember< TDataAlignBytes >", "classalpaka_1_1BlockSharedMemStMember.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedSt, BlockSharedMemStMemberMasterSync< core::vectorization::defaultAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSharedSt, BlockSharedMemStMemberMasterSync< core::vectorization::defaultAlignment > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSharedMemStMemberMasterSync< TDataAlignBytes >", "classalpaka_1_1BlockSharedMemStMemberMasterSync.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSharedMemStUniformCudaHipBuiltIn", "classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSync, BlockSyncBarrierOmp >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSync, BlockSyncBarrierOmp >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSyncBarrierOmp", "classalpaka_1_1BlockSyncBarrierOmp.html", [
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSync, BlockSyncBarrierThread< TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSync, BlockSyncBarrierThread< TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSyncBarrierThread< TIdx >", "classalpaka_1_1BlockSyncBarrierThread.html", [
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSync, BlockSyncNoOp >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSync, BlockSyncNoOp >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSyncNoOp", "classalpaka_1_1BlockSyncNoOp.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::BlockSyncUniformCudaHipBuiltIn", "classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, DevCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, DevCpu >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::DevCpu", "classalpaka_1_1DevCpu.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::DevUniformCudaHipRt< TApi >", "classalpaka_1_1DevUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, EventGenericThreads< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, EventGenericThreads< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::EventGenericThreads< TDev >", "classalpaka_1_1EventGenericThreads.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, EventGenericThreadsImpl< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, EventGenericThreadsImpl< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::generic::detail::EventGenericThreadsImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::EventUniformCudaHipRt< TApi >", "classalpaka_1_1EventUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueCpuOmp2Collective", "structalpaka_1_1QueueCpuOmp2Collective.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsNonBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptDev, DevCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptDev, DevCpu >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::DevCpu", "classalpaka_1_1DevCpu.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptDev, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptDev, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::DevUniformCudaHipRt< TApi >", "classalpaka_1_1DevUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptGetDev, EventGenericThreads< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptGetDev, EventGenericThreads< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::EventGenericThreads< TDev >", "classalpaka_1_1EventGenericThreads.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptGetDev, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptGetDev, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::EventUniformCudaHipRt< TApi >", "classalpaka_1_1EventUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptGetDev, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptGetDev, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptGetDev, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptGetDev, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsNonBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptGetDev, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptGetDev, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxBt, IdxBtLinear< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxBt, IdxBtLinear< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::bt::IdxBtLinear< TDim, TIdx >", "classalpaka_1_1bt_1_1IdxBtLinear.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxBt, IdxBtOmp< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxBt, IdxBtOmp< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::bt::IdxBtOmp< TDim, TIdx >", "classalpaka_1_1bt_1_1IdxBtOmp.html", [
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxBt, IdxBtRefThreadIdMap< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxBt, IdxBtRefThreadIdMap< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::bt::IdxBtRefThreadIdMap< TDim, TIdx >", "classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html", [
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxBt, IdxBtUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxBt, IdxBtUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::bt::IdxBtUniformCudaHipBuiltIn< TDim, TIdx >", "classalpaka_1_1bt_1_1IdxBtUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxBt, IdxBtZero< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxBt, IdxBtZero< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::bt::IdxBtZero< TDim, TIdx >", "classalpaka_1_1bt_1_1IdxBtZero.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxGb, IdxGbLinear< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxGb, IdxGbLinear< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::gb::IdxGbLinear< TDim, TIdx >", "classalpaka_1_1gb_1_1IdxGbLinear.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxGb, IdxGbRef< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxGb, IdxGbRef< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::gb::IdxGbRef< TDim, TIdx >", "classalpaka_1_1gb_1_1IdxGbRef.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1142,12 +1142,12 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIdxGb, IdxGbUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIdxGb, IdxGbUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::gb::IdxGbUniformCudaHipBuiltIn< TDim, TIdx >", "classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIntrinsic, IntrinsicCpu >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::IntrinsicCpu", "classalpaka_1_1IntrinsicCpu.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1155,15 +1155,15 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicFallback >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIntrinsic, IntrinsicFallback >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAbs, AbsStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAbs, AbsStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AbsStdLib", "classalpaka_1_1math_1_1AbsStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", [
           [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
@@ -1173,463 +1173,463 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAbs, AbsUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAbs, AbsUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AbsUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AbsUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", [
           [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
         ] ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAcos, AcosStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAcos, AcosStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AcosStdLib", "classalpaka_1_1math_1_1AcosStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAcos, AcosUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAcos, AcosUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AcosUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AcosUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAcosh, AcoshStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAcosh, AcoshStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AcoshStdLib", "classalpaka_1_1math_1_1AcoshStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAcosh, AcoshUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAcosh, AcoshUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AcoshUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AcoshUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathArg, ArgStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathArg, ArgStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ArgStdLib", "classalpaka_1_1math_1_1ArgStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathArg, ArgUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathArg, ArgUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ArgUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ArgUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAsin, AsinStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAsin, AsinStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AsinStdLib", "classalpaka_1_1math_1_1AsinStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAsin, AsinUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAsin, AsinUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AsinUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AsinUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAsinh, AsinhStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAsinh, AsinhStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AsinhStdLib", "classalpaka_1_1math_1_1AsinhStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAsinh, AsinhUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAsinh, AsinhUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AsinhUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AsinhUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtan, AtanStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtan, AtanStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AtanStdLib", "classalpaka_1_1math_1_1AtanStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtan, AtanUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtan, AtanUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AtanUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AtanUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtan2, Atan2StdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtan2, Atan2StdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Atan2StdLib", "classalpaka_1_1math_1_1Atan2StdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtan2, Atan2UniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtan2, Atan2UniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Atan2UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Atan2UniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtanh, AtanhStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtanh, AtanhStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AtanhStdLib", "classalpaka_1_1math_1_1AtanhStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathAtanh, AtanhUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathAtanh, AtanhUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::AtanhUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AtanhUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCbrt, CbrtStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCbrt, CbrtStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CbrtStdLib", "classalpaka_1_1math_1_1CbrtStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCbrt, CbrtUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCbrt, CbrtUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CbrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CbrtUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCeil, CeilStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCeil, CeilStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CeilStdLib", "classalpaka_1_1math_1_1CeilStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCeil, CeilUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCeil, CeilUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CeilUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CeilUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathConj, ConjStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathConj, ConjStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ConjStdLib", "classalpaka_1_1math_1_1ConjStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathConj, ConjUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathConj, ConjUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ConjUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ConjUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCopysign, CopysignStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCopysign, CopysignStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CopysignStdLib", "classalpaka_1_1math_1_1CopysignStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCopysign, CopysignUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCopysign, CopysignUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CopysignUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CopysignUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCos, CosStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCos, CosStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CosStdLib", "classalpaka_1_1math_1_1CosStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCos, CosUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCos, CosUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CosUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CosUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCosh, CoshStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCosh, CoshStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CoshStdLib", "classalpaka_1_1math_1_1CoshStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathCosh, CoshUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathCosh, CoshUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::CoshUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CoshUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathErf, ErfStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathErf, ErfStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ErfStdLib", "classalpaka_1_1math_1_1ErfStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathErf, ErfUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathErf, ErfUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ErfUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ErfUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathExp, ExpStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathExp, ExpStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ExpStdLib", "classalpaka_1_1math_1_1ExpStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathExp, ExpUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathExp, ExpUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::ExpUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ExpUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFloor, FloorStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFloor, FloorStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FloorStdLib", "classalpaka_1_1math_1_1FloorStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFloor, FloorUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFloor, FloorUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FloorUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1FloorUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFma, FmaStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFma, FmaStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FmaStdLib", "classalpaka_1_1math_1_1FmaStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFma, FmaUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFma, FmaUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FmaUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1FmaUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFmod, FmodStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFmod, FmodStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FmodStdLib", "classalpaka_1_1math_1_1FmodStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathFmod, FmodUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathFmod, FmodUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::FmodUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1FmodUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsfinite, IsfiniteStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsfinite, IsfiniteStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsfiniteStdLib", "classalpaka_1_1math_1_1IsfiniteStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsfiniteUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsfiniteUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsinf, IsinfStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsinf, IsinfStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsinfStdLib", "classalpaka_1_1math_1_1IsinfStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsinf, IsinfUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsinf, IsinfUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsinfUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsinfUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsnan, IsnanStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsnan, IsnanStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsnanStdLib", "classalpaka_1_1math_1_1IsnanStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathIsnan, IsnanUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathIsnan, IsnanUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::IsnanUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsnanUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog, LogStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog, LogStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::LogStdLib", "classalpaka_1_1math_1_1LogStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog, LogUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog, LogUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::LogUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1LogUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog10, Log10StdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog10, Log10StdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Log10StdLib", "classalpaka_1_1math_1_1Log10StdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog10, Log10UniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog10, Log10UniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Log10UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Log10UniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog2, Log2StdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog2, Log2StdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Log2StdLib", "classalpaka_1_1math_1_1Log2StdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathLog2, Log2UniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathLog2, Log2UniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::Log2UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Log2UniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathMax, MaxStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathMax, MaxStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::MaxStdLib", "classalpaka_1_1math_1_1MaxStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathMax, MaxUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathMax, MaxUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::MaxUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MaxUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathMin, MinStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathMin, MinStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::MinStdLib", "classalpaka_1_1math_1_1MinStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathMin, MinUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathMin, MinUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::MinUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MinUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathPow, PowStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathPow, PowStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::PowStdLib", "classalpaka_1_1math_1_1PowStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathPow, PowUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathPow, PowUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::PowUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1PowUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRemainder, RemainderStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRemainder, RemainderStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RemainderStdLib", "classalpaka_1_1math_1_1RemainderStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRemainder, RemainderUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRemainder, RemainderUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RemainderUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1RemainderUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRound, RoundStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRound, RoundStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RoundStdLib", "classalpaka_1_1math_1_1RoundStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRound, RoundUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRound, RoundUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RoundUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1RoundUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRsqrt, RsqrtStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRsqrt, RsqrtStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RsqrtStdLib", "classalpaka_1_1math_1_1RsqrtStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathRsqrt, RsqrtUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::RsqrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1RsqrtUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSin, SinStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSin, SinStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinStdLib", "classalpaka_1_1math_1_1SinStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSin, SinUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSin, SinUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SinUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSinCos, SinCosStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSinCos, SinCosStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinCosStdLib", "classalpaka_1_1math_1_1SinCosStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSinCos, SinCosUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSinCos, SinCosUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinCosUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SinCosUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSinh, SinhStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSinh, SinhStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinhStdLib", "classalpaka_1_1math_1_1SinhStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSinh, SinhUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSinh, SinhUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SinhUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SinhUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSqrt, SqrtStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSqrt, SqrtStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SqrtStdLib", "classalpaka_1_1math_1_1SqrtStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathSqrt, SqrtUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathSqrt, SqrtUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::SqrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SqrtUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTan, TanStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTan, TanStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TanStdLib", "classalpaka_1_1math_1_1TanStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTan, TanUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTan, TanUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TanUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1TanUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTanh, TanhStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTanh, TanhStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TanhStdLib", "classalpaka_1_1math_1_1TanhStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTanh, TanhUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTanh, TanhUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TanhUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1TanhUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTrunc, TruncStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTrunc, TruncStdLib >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TruncStdLib", "classalpaka_1_1math_1_1TruncStdLib.html", [
         [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMathTrunc, TruncUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMathTrunc, TruncUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::math::TruncUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuAligned< TAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemAlloc, AllocCpuAligned< TAlignment > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AllocCpuAligned< TAlignment >", "classalpaka_1_1AllocCpuAligned.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuNew >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemAlloc, AllocCpuNew >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::AllocCpuNew", "classalpaka_1_1AllocCpuNew.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemFence, MemFenceCpu >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::MemFenceCpu", "classalpaka_1_1MemFenceCpu.html", [
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceCpuSerial >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemFence, MemFenceCpuSerial >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::MemFenceCpuSerial", "classalpaka_1_1MemFenceCpuSerial.html", [
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceOmp2Blocks >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemFence, MemFenceOmp2Blocks >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::MemFenceOmp2Blocks", "classalpaka_1_1MemFenceOmp2Blocks.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceOmp2Threads >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemFence, MemFenceOmp2Threads >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::MemFenceOmp2Threads", "classalpaka_1_1MemFenceOmp2Threads.html", [
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptMemFence, MemFenceUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::MemFenceUniformCudaHipBuiltIn", "classalpaka_1_1MemFenceUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptPlatform, PlatformCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptPlatform, PlatformCpu >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::PlatformCpu", "structalpaka_1_1PlatformCpu.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptPlatform, PlatformUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptPlatform, PlatformUniformCudaHipRt< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::PlatformUniformCudaHipRt< TApi >", "structalpaka_1_1PlatformUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptQueue, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptQueue, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptQueue, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptQueue, QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsNonBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptQueue, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptQueue, QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, MersenneTwister >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, MersenneTwister >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::MersenneTwister", "classalpaka_1_1rand_1_1MersenneTwister.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10 >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, Philox4x32x10 >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::Philox4x32x10", "classalpaka_1_1rand_1_1Philox4x32x10.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10Vector >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, Philox4x32x10Vector >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, PhiloxStateless4x32x10Vector >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, PhiloxStateless4x32x10Vector >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::PhiloxStateless4x32x10Vector", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, RandDefault >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, RandDefault >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::RandDefault", "classalpaka_1_1rand_1_1RandDefault.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, RandomDevice >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, RandomDevice >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::RandomDevice", "classalpaka_1_1rand_1_1RandomDevice.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, RandUniformCudaHipRand< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, RandUniformCudaHipRand< TApi > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::RandUniformCudaHipRand< TApi >", "classalpaka_1_1rand_1_1RandUniformCudaHipRand.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, TinyMersenneTwister >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, TinyMersenneTwister >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::TinyMersenneTwister", "classalpaka_1_1rand_1_1TinyMersenneTwister.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1637,10 +1637,10 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, UniformReal< TResult > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptRand, UniformReal< TResult > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::rand::UniformReal< TResult, TSfinae >", "classalpaka_1_1rand_1_1UniformReal.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptWarp, WarpSingleThread >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptWarp, WarpSingleThread >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::warp::WarpSingleThread", "classalpaka_1_1warp_1_1WarpSingleThread.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1648,12 +1648,12 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptWarp, WarpUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptWarp, WarpUniformCudaHipBuiltIn >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::warp::WarpUniformCudaHipBuiltIn", "classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptWorkDiv, WorkDivMembers< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptWorkDiv, WorkDivMembers< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::WorkDivMembers< TDim, TIdx >", "classalpaka_1_1WorkDivMembers.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1666,7 +1666,7 @@ var hierarchy =
         [ "alpaka::TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs >", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::interface::Implements< ConceptWorkDiv, WorkDivUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1interface_1_1Implements.html", [
       [ "alpaka::WorkDivUniformCudaHipBuiltIn< TDim, TIdx >", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]

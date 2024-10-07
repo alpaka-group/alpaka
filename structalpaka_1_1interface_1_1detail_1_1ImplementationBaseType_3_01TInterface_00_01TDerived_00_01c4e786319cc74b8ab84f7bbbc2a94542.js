@@ -1,0 +1,5 @@
+var structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542 =
+[
+    [ "type", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542.html#a4282f355d9130b3b4af669b7259b69f4", null ],
+    [ "implementer", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542.html#a7885d43a0f5ebb6c51cfab6166c55658", null ]
+];

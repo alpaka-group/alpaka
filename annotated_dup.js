@@ -8,15 +8,6 @@ var annotated_dup =
         [ "IdxBtUniformCudaHipBuiltIn", "classalpaka_1_1bt_1_1IdxBtUniformCudaHipBuiltIn.html", null ],
         [ "IdxBtZero", "classalpaka_1_1bt_1_1IdxBtZero.html", null ]
       ] ],
-      [ "concepts", "namespacealpaka_1_1concepts.html", [
-        [ "detail", "namespacealpaka_1_1concepts_1_1detail.html", [
-          [ "ImplementationBaseType", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType.html", null ],
-          [ "ImplementationBaseType< TConcept, TDerived, std::enable_if_t< ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374" ],
-          [ "ImplementationBaseType< TConcept, TDerived, std::enable_if_t<!ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a.html", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a" ]
-        ] ],
-        [ "Implements", "structalpaka_1_1concepts_1_1Implements.html", null ],
-        [ "ImplementsConcept", "structalpaka_1_1concepts_1_1ImplementsConcept.html", "structalpaka_1_1concepts_1_1ImplementsConcept" ]
-      ] ],
       [ "core", "namespacealpaka_1_1core.html", [
         [ "align", "namespacealpaka_1_1core_1_1align.html", [
           [ "OptimalAlignment", "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html", null ]
@@ -145,6 +136,15 @@ var annotated_dup =
         [ "Blocks", "structalpaka_1_1hierarchy_1_1Blocks.html", null ],
         [ "Grids", "structalpaka_1_1hierarchy_1_1Grids.html", null ],
         [ "Threads", "structalpaka_1_1hierarchy_1_1Threads.html", null ]
+      ] ],
+      [ "interface", "namespacealpaka_1_1interface.html", [
+        [ "detail", "namespacealpaka_1_1interface_1_1detail.html", [
+          [ "ImplementationBaseType", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType.html", null ],
+          [ "ImplementationBaseType< TInterface, TDerived, std::enable_if_t< ImplementsInterface< TInterface, TDerived >::value > >", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542.html", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_01c4e786319cc74b8ab84f7bbbc2a94542" ],
+          [ "ImplementationBaseType< TInterface, TDerived, std::enable_if_t<!ImplementsInterface< TInterface, TDerived >::value > >", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66" ]
+        ] ],
+        [ "Implements", "structalpaka_1_1interface_1_1Implements.html", null ],
+        [ "ImplementsInterface", "structalpaka_1_1interface_1_1ImplementsInterface.html", "structalpaka_1_1interface_1_1ImplementsInterface" ]
       ] ],
       [ "internal", "namespacealpaka_1_1internal.html", [
         [ "Complex", "classalpaka_1_1internal_1_1Complex.html", "classalpaka_1_1internal_1_1Complex" ],
@@ -712,7 +712,7 @@ var annotated_dup =
         [ "DevType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
         [ "DevType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
         [ "DevType< TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_748136d18cba1bf097b4b40671af9556.html", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_748136d18cba1bf097b4b40671af9556" ],
-        [ "DevType< TDev, std::enable_if_t< concepts::ImplementsConcept< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787" ],
+        [ "DevType< TDev, std::enable_if_t< interface::ImplementsInterface< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01interface_1_1ImplementsIfd4e0d0448eab41b4bca51d39aac746b.html", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01interface_1_1ImplementsIfd4e0d0448eab41b4bca51d39aac746b" ],
         [ "DevType< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1DevType_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4" ],
         [ "DevType< ViewConst< TView > >", "structalpaka_1_1trait_1_1DevType_3_01ViewConst_3_01TView_01_4_01_4.html", null ],
         [ "DevType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
@@ -1032,7 +1032,7 @@ var annotated_dup =
         [ "PlatformType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
         [ "PlatformType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
         [ "PlatformType< TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_010d3ab9faa5359f76890af49d5bc67568.html", "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_010d3ab9faa5359f76890af49d5bc67568" ],
-        [ "PlatformType< TPlatform, std::enable_if_t< concepts::ImplementsConcept< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e.html", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e" ],
+        [ "PlatformType< TPlatform, std::enable_if_t< interface::ImplementsInterface< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01interface_1_1Ifa8dd03f3298650dd2b1132904ef1152.html", "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01interface_1_1Ifa8dd03f3298650dd2b1132904ef1152" ],
         [ "Popcount", "structalpaka_1_1trait_1_1Popcount.html", null ],
         [ "Popcount< IntrinsicCpu >", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4" ],
         [ "Popcount< IntrinsicFallback >", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html", "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4" ],
@@ -1042,8 +1042,8 @@ var annotated_dup =
         [ "QueueType< DevCpu, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4" ],
         [ "QueueType< DevUniformCudaHipRt< TApi >, Blocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01Blocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01Blocking_01_4" ],
         [ "QueueType< DevUniformCudaHipRt< TApi >, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01NonBlocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01NonBlocking_01_4" ],
-        [ "QueueType< TAcc, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptAcc, TAcc >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245" ],
-        [ "QueueType< TPlatform, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01cof2295b602ff1b86e835d3331331292eb.html", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01cof2295b602ff1b86e835d3331331292eb" ],
+        [ "QueueType< TAcc, TProperty, std::enable_if_t< interface::ImplementsInterface< ConceptAcc, TAcc >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01interfa302ce5bf0adeb5dce94e2b90cfdbcffe.html", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01interfa302ce5bf0adeb5dce94e2b90cfdbcffe" ],
+        [ "QueueType< TPlatform, TProperty, std::enable_if_t< interface::ImplementsInterface< ConceptPlatform, TPlatform >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01ina24a7010ace4e4e9b0e0b69ba570cb9e.html", "structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01ina24a7010ace4e4e9b0e0b69ba570cb9e" ],
         [ "Reset", "structalpaka_1_1trait_1_1Reset.html", null ],
         [ "Reset< DevCpu >", "structalpaka_1_1trait_1_1Reset_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1Reset_3_01DevCpu_01_4" ],
         [ "Reset< DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1Reset_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1Reset_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],

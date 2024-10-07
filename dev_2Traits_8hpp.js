@@ -1,6 +1,6 @@
 var dev_2Traits_8hpp =
 [
-    [ "DevType< TDev, std::enable_if_t< concepts::ImplementsConcept< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787" ],
+    [ "DevType< TDev, std::enable_if_t< interface::ImplementsInterface< ConceptDev, TDev >::value > >", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01interface_1_1ImplementsIfd4e0d0448eab41b4bca51d39aac746b.html", "structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01interface_1_1ImplementsIfd4e0d0448eab41b4bca51d39aac746b" ],
     [ "Dev", "dev_2Traits_8hpp.html#a32355d5c313b0846505aeaf5d42484be", null ],
     [ "getDev", "dev_2Traits_8hpp.html#aa4fe5980725182b3306caf3167053a75", null ],
     [ "getFreeMemBytes", "dev_2Traits_8hpp.html#a6049156c92d1112a3e7cfb96f09b153e", null ],

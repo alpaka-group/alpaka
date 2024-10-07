@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Implementation details.</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ClipCast_8hpp.html">alpaka/core/ClipCast.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Interface_8hpp.html">alpaka/core/Interface.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Sycl_8hpp.html">alpaka/core/Sycl.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        : <span class="keyword">public</span> WorkDivGenericSycl&lt;TDim, TIdx&gt;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        , <span class="keyword">public</span> gb::IdxGbGenericSycl&lt;TDim, TIdx&gt;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        , <span class="keyword">public</span> bt::IdxBtGenericSycl&lt;TDim, TIdx&gt;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        , <span class="keyword">public</span> <a class="code" href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">AtomicHierarchy</a>&lt;AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl&gt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        , <span class="keyword">public</span> <a class="code" href="namespacealpaka.html#adb82b7a03913308a2fe6546627aa56d6">AtomicHierarchy</a>&lt;AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl&gt;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        , <span class="keyword">public</span> math::MathGenericSycl</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        , <span class="keyword">public</span> BlockSharedMemDynGenericSycl</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        , <span class="keyword">public</span> BlockSharedMemStGenericSycl</div>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        , <span class="keyword">public</span> rand::RandGenericSycl&lt;TDim&gt;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        , <span class="keyword">public</span> warp::WarpGenericSycl&lt;TDim&gt;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        , <span class="keyword">public</span> concepts::Implements&lt;ConceptAcc, AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        , <span class="keyword">public</span> interface::Implements&lt;ConceptAcc, AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        static_assert(TDim::value &gt; 0, <span class="stringliteral">&quot;The SYCL accelerator must have a dimension greater than zero.&quot;</span>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
@@ -308,10 +308,10 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="ttc" id="aBlockSyncGenericSycl_8hpp_html"><div class="ttname"><a href="BlockSyncGenericSycl_8hpp.html">BlockSyncGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aClipCast_8hpp_html"><div class="ttname"><a href="ClipCast_8hpp.html">ClipCast.hpp</a></div></div>
-<div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aIdxBtGenericSycl_8hpp_html"><div class="ttname"><a href="IdxBtGenericSycl_8hpp.html">IdxBtGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aIdxGbGenericSycl_8hpp_html"><div class="ttname"><a href="IdxGbGenericSycl_8hpp.html">IdxGbGenericSycl.hpp</a></div></div>
+<div class="ttc" id="aInterface_8hpp_html"><div class="ttname"><a href="Interface_8hpp.html">Interface.hpp</a></div></div>
 <div class="ttc" id="aIntrinsicGenericSycl_8hpp_html"><div class="ttname"><a href="IntrinsicGenericSycl_8hpp.html">IntrinsicGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aMathGenericSycl_8hpp_html"><div class="ttname"><a href="MathGenericSycl_8hpp.html">MathGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aMemFenceGenericSycl_8hpp_html"><div class="ttname"><a href="MemFenceGenericSycl_8hpp.html">MemFenceGenericSycl.hpp</a></div></div>
@@ -334,7 +334,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00332">Traits.hpp:332</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a69d68a30000dc80ea5a1c09139f2b789"><div class="ttname"><a href="namespacealpaka.html#a69d68a30000dc80ea5a1c09139f2b789">alpaka::getMemBytes</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getMemBytes(TDev const &amp;dev) -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00095">Traits.hpp:95</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_abc4b415f6e9996b6ecb9e50c9fe62403"><div class="ttname"><a href="namespacealpaka.html#abc4b415f6e9996b6ecb9e50c9fe62403">alpaka::Vec</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
-<div class="ttc" id="anamespacealpaka_html_abe27c0dad6ddd453657dee8f0bb343ff"><div class="ttname"><a href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">alpaka::AtomicHierarchy</a></div><div class="ttdeci">alpaka::meta::InheritFromList&lt; alpaka::meta::Unique&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, concepts::Implements&lt; ConceptAtomicGrids, TGridAtomic &gt;, concepts::Implements&lt; ConceptAtomicBlocks, TBlockAtomic &gt;, concepts::Implements&lt; ConceptAtomicThreads, TThreadAtomic &gt; &gt;&gt; &gt; AtomicHierarchy</div><div class="ttdoc">build a single class to inherit from different atomic implementations</div><div class="ttdef"><b>Definition:</b> <a href="AtomicHierarchy_8hpp_source.html#l00027">AtomicHierarchy.hpp:33</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_adb82b7a03913308a2fe6546627aa56d6"><div class="ttname"><a href="namespacealpaka.html#adb82b7a03913308a2fe6546627aa56d6">alpaka::AtomicHierarchy</a></div><div class="ttdeci">alpaka::meta::InheritFromList&lt; alpaka::meta::Unique&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, interface::Implements&lt; ConceptAtomicGrids, TGridAtomic &gt;, interface::Implements&lt; ConceptAtomicBlocks, TBlockAtomic &gt;, interface::Implements&lt; ConceptAtomicThreads, TThreadAtomic &gt; &gt;&gt; &gt; AtomicHierarchy</div><div class="ttdoc">build a single class to inherit from different atomic implementations</div><div class="ttdef"><b>Definition:</b> <a href="AtomicHierarchy_8hpp_source.html#l00027">AtomicHierarchy.hpp:33</a></div></div>
 <div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1GetAccName_html_a89be9c6144a1fd916731d19c5aa9d507"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">alpaka::trait::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00069">Traits.hpp:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -343,7 +343,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGenericSycl_8hpp.html">AccGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

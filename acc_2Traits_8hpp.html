@@ -95,8 +95,8 @@ $(document).ready(function(){initNavTree('acc_2Traits_8hpp.html',''); initResiza
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="AccDevProps_8hpp_source.html">alpaka/acc/AccDevProps.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DemangleTypeNames_8hpp_source.html">alpaka/core/DemangleTypeNames.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Interface_8hpp_source.html">alpaka/core/Interface.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&quot;</code><br />
@@ -122,7 +122,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1IsSingleThreadAcc.html">alpaka::trait::IsSingleThreadAcc&lt; TAcc, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single thread accelerator trait.  <a href="structalpaka_1_1trait_1_1IsSingleThreadAcc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html">alpaka::trait::QueueType&lt; TAcc, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptAcc, TAcc &gt;::value &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01interfa302ce5bf0adeb5dce94e2b90cfdbcffe.html">alpaka::trait::QueueType&lt; TAcc, TProperty, std::enable_if_t&lt; interface::ImplementsInterface&lt; ConceptAcc, TAcc &gt;::value &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -153,7 +153,7 @@ Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd">alpaka::isAccelerator</a> = concepts::ImplementsConcept&lt;ConceptAcc, TAcc&gt;::value</td></tr>
+<tr class="memitem:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd">alpaka::isAccelerator</a> = interface::ImplementsInterface&lt;ConceptAcc, TAcc&gt;::value</td></tr>
 <tr class="memdesc:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TAcc is an accelerator, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptAcc.html">ConceptAcc</a> concept.  <a href="namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd">More...</a><br /></td></tr>
 <tr class="separator:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b9738d9422291b856f55a20d6605299"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
@@ -171,7 +171,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="acc_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

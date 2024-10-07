@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Tag_8hpp.html">alpaka/acc/Tag.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ClipCast_8hpp.html">alpaka/core/ClipCast.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Interface_8hpp.html">alpaka/core/Interface.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevCpu_8hpp.html">alpaka/dev/DevCpu.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1rand_1_1TinyMersenneTwister.html">rand::RandStdLib</a></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1warp_1_1WarpSingleThread.html">warp::WarpSingleThread</a></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        , <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptAcc, AccCpuThreads&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        , <span class="keyword">public</span> <a class="code" href="structalpaka_1_1interface_1_1Implements.html">interface::Implements</a>&lt;ConceptAcc, AccCpuThreads&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        static_assert(</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">sizeof</span>(TIdx) &gt;= <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>),</div>
@@ -339,11 +339,11 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="ttc" id="aBlockSyncBarrierThread_8hpp_html"><div class="ttname"><a href="BlockSyncBarrierThread_8hpp.html">BlockSyncBarrierThread.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aClipCast_8hpp_html"><div class="ttname"><a href="ClipCast_8hpp.html">ClipCast.hpp</a></div></div>
-<div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDemangleTypeNames_8hpp_html"><div class="ttname"><a href="DemangleTypeNames_8hpp.html">DemangleTypeNames.hpp</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="aIdxBtRefThreadIdMap_8hpp_html"><div class="ttname"><a href="IdxBtRefThreadIdMap_8hpp.html">IdxBtRefThreadIdMap.hpp</a></div></div>
 <div class="ttc" id="aIdxGbRef_8hpp_html"><div class="ttname"><a href="IdxGbRef_8hpp.html">IdxGbRef.hpp</a></div></div>
+<div class="ttc" id="aInterface_8hpp_html"><div class="ttname"><a href="Interface_8hpp.html">Interface.hpp</a></div></div>
 <div class="ttc" id="aIntrinsicCpu_8hpp_html"><div class="ttname"><a href="IntrinsicCpu_8hpp.html">IntrinsicCpu.hpp</a></div></div>
 <div class="ttc" id="aMathStdLib_8hpp_html"><div class="ttname"><a href="MathStdLib_8hpp.html">MathStdLib.hpp</a></div></div>
 <div class="ttc" id="aMemFenceCpu_8hpp_html"><div class="ttname"><a href="MemFenceCpu_8hpp.html">MemFenceCpu.hpp</a></div></div>
@@ -392,7 +392,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="ttc" id="astructalpaka_1_1AccDevProps_html"><div class="ttname"><a href="structalpaka_1_1AccDevProps.html">alpaka::AccDevProps</a></div><div class="ttdoc">The acceleration properties on a device.</div><div class="ttdef"><b>Definition:</b> <a href="AccDevProps_8hpp_source.html#l00017">AccDevProps.hpp:18</a></div></div>
 <div class="ttc" id="astructalpaka_1_1PlatformCpu_html"><div class="ttname"><a href="structalpaka_1_1PlatformCpu.html">alpaka::PlatformCpu</a></div><div class="ttdoc">The CPU device platform.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformCpu_8hpp_source.html#l00017">PlatformCpu.hpp:18</a></div></div>
 <div class="ttc" id="astructalpaka_1_1TagCpuThreads_html"><div class="ttname"><a href="structalpaka_1_1TagCpuThreads.html">alpaka::TagCpuThreads</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00028">Tag.hpp:28</a></div></div>
-<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
+<div class="ttc" id="astructalpaka_1_1interface_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1interface_1_1Implements.html">alpaka::interface::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific interface (TInterface) is im...</div><div class="ttdef"><b>Definition:</b> <a href="Interface_8hpp_source.html#l00014">Interface.hpp:15</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1AccToTag_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AccToTag.html">alpaka::trait::AccToTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00038">Tag.hpp:38</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1AccType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AccType.html">alpaka::trait::AccType</a></div><div class="ttdoc">The accelerator type trait.</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00037">Traits.hpp:37</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TWorkDib4782672d185e3f892e8af18df8d89c4_html_aab89cd95e23571088b8706ab63ad94b6"><div class="ttname"><a href="structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TWorkDib4782672d185e3f892e8af18df8d89c4.html#aab89cd95e23571088b8706ab63ad94b6">alpaka::trait::CreateTaskKernel&lt; AccCpuThreads&lt; TDim, TIdx &gt;, TWorkDiv, TKernelFnObj, TArgs... &gt;::createTaskKernel</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuThreads_8hpp_source.html#l00205">AccCpuThreads.hpp:205</a></div></div>
@@ -416,7 +416,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuThreads_8hpp.html">AccCpuThreads.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

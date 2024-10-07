@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Interface_8hpp.html">alpaka/core/Interface.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Sycl_8hpp.html">alpaka/core/Sycl.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevGenericSycl_8hpp.html">alpaka/dev/DevGenericSycl.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&quot;</span></div>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">    //! The SYCL device manager.</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">struct </span>PlatformGenericSycl : concepts::Implements&lt;ConceptPlatform, PlatformGenericSycl&lt;TTag&gt;&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">struct </span>PlatformGenericSycl : interface::Implements&lt;ConceptPlatform, PlatformGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        PlatformGenericSycl()</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            : platform{detail::SYCLDeviceSelector&lt;TTag&gt;{}}</div>
@@ -833,9 +833,9 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160; </div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00062">Debug.hpp:62</a></div></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
+<div class="ttc" id="aInterface_8hpp_html"><div class="ttname"><a href="Interface_8hpp.html">Interface.hpp</a></div></div>
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_1_1constants_html_a7ad96b482f538f4c4a525beac7c9c938"><div class="ttname"><a href="namespacealpaka_1_1math_1_1constants.html#a7ad96b482f538f4c4a525beac7c9c938">alpaka::math::constants::e</a></div><div class="ttdeci">constexpr double e</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l00058">Traits.hpp:58</a></div></div>
@@ -853,7 +853,7 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ca6de7bc64c9403e30034829d52eb840.html">platform</a></li><li class="navelem"><a class="el" href="PlatformGenericSycl_8hpp.html">PlatformGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

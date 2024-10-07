@@ -1,0 +1,4 @@
+var structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66 =
+[
+    [ "type", "structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html#a27cd664bf83944707359694f10ee442f", null ]
+];

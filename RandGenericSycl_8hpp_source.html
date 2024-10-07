@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('RandGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Interface_8hpp.html">alpaka/core/Interface.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevGenericSycl_8hpp.html">alpaka/dev/DevGenericSycl.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="rand_2Traits_8hpp.html">alpaka/rand/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('RandGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">    //! The SYCL rand implementation.</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">struct </span>RandGenericSycl : concepts::Implements&lt;ConceptRand, RandGenericSycl&lt;TDim&gt;&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">struct </span>RandGenericSycl : interface::Implements&lt;ConceptRand, RandGenericSycl&lt;TDim&gt;&gt;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">explicit</span> RandGenericSycl(sycl::nd_item&lt;TDim::value&gt; my_item) : m_item_rand{my_item}</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
@@ -286,8 +286,8 @@ $(document).ready(function(){initNavTree('RandGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
-<div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
+<div class="ttc" id="aInterface_8hpp_html"><div class="ttname"><a href="Interface_8hpp.html">Interface.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00039">Common.hpp:39</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01263">Traits.hpp:1263</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_ad1a3c72853dc08a5e54e532f25a08988"><div class="ttname"><a href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">alpaka::math::min</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto min(T const &amp;min_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the smaller of two arguments. NaNs are treated as missing data (between a NaN and a numeric v...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01280">Traits.hpp:1280</a></div></div>
@@ -303,7 +303,7 @@ $(document).ready(function(){initNavTree('RandGenericSycl_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="RandGenericSycl_8hpp.html">RandGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -1,7 +1,6 @@
 var namespacealpaka =
 [
     [ "bt", "namespacealpaka_1_1bt.html", "namespacealpaka_1_1bt" ],
-    [ "concepts", "namespacealpaka_1_1concepts.html", "namespacealpaka_1_1concepts" ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
@@ -9,6 +8,7 @@ var namespacealpaka =
     [ "gb", "namespacealpaka_1_1gb.html", "namespacealpaka_1_1gb" ],
     [ "generic", "namespacealpaka_1_1generic.html", "namespacealpaka_1_1generic" ],
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
+    [ "interface", "namespacealpaka_1_1interface.html", "namespacealpaka_1_1interface" ],
     [ "internal", "namespacealpaka_1_1internal.html", "namespacealpaka_1_1internal" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
     [ "memory_scope", "namespacealpaka_1_1memory__scope.html", "namespacealpaka_1_1memory__scope" ],
@@ -130,7 +130,7 @@ var namespacealpaka =
     [ "AccTags", "namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0", null ],
     [ "AccToTag", "namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc", null ],
     [ "AtomicCpu", "namespacealpaka.html#a179c2203b0e2bdf8a153a5593eac78ee", null ],
-    [ "AtomicHierarchy", "namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff", null ],
+    [ "AtomicHierarchy", "namespacealpaka.html#adb82b7a03913308a2fe6546627aa56d6", null ],
     [ "AtomicHierarchyConcept", "namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52", null ],
     [ "Buf", "namespacealpaka.html#ac9381e9159626b8969f257249c4c9386", null ],
     [ "BufCudaRt", "namespacealpaka.html#ae4501d6cc83b94366a4a141ed1b504b8", null ],

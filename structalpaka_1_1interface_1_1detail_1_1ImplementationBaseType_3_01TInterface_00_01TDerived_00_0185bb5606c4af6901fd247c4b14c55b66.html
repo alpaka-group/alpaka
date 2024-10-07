@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::trait::DevType&lt; TDev, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptDev, TDev &gt;::value &gt; &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::interface::detail::ImplementationBaseType&lt; TInterface, TDerived, std::enable_if_t&lt;!ImplementsInterface&lt; TInterface, TDerived &gt;::value &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,58 +85,58 @@ $(document).ready(function(){initNavTree('structalpaka_1_1trait_1_1DevType_3_01T
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCo10fcdeeef8d77030321c65d6df913657.html">List of all members</a>  </div>
+<a href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0151142addf9fd24f5c95b2f759cb4d9b1.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::trait::DevType&lt; TDev, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptDev, TDev &gt;::value &gt; &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::interface::detail::ImplementationBaseType&lt; TInterface, TDerived, std::enable_if_t&lt;!ImplementsInterface&lt; TInterface, TDerived &gt;::value &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Get device type.  
- <a href="structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html#details">More...</a></p>
+<p>Base case for types that do not inherit from "Implements&lt;TInterface, ...&gt;" is the type itself.  
+ <a href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Interface_8hpp_source.html">Interface.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a54763aacfdeb2a8d8f34e9497f63e271"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html#a54763aacfdeb2a8d8f34e9497f63e271">type</a> = typename <a class="el" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase</a>&lt; ConceptDev, TDev &gt;</td></tr>
-<tr class="separator:a54763aacfdeb2a8d8f34e9497f63e271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27cd664bf83944707359694f10ee442f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html#a27cd664bf83944707359694f10ee442f">type</a> = TDerived</td></tr>
+<tr class="separator:a27cd664bf83944707359694f10ee442f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TDev&gt;<br />
-struct alpaka::trait::DevType&lt; TDev, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptDev, TDev &gt;::value &gt; &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TInterface, typename TDerived&gt;<br />
+struct alpaka::interface::detail::ImplementationBaseType&lt; TInterface, TDerived, std::enable_if_t&lt;!ImplementsInterface&lt; TInterface, TDerived &gt;::value &gt; &gt;</h3>
 
-<p>Get device type. </p>
+<p>Base case for types that do not inherit from "Implements&lt;TInterface, ...&gt;" is the type itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00135">135</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Interface_8hpp_source.html#l00037">37</a> of file <a class="el" href="Interface_8hpp_source.html">Interface.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a54763aacfdeb2a8d8f34e9497f63e271"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54763aacfdeb2a8d8f34e9497f63e271">&#9670;&nbsp;</a></span>type</h2>
+<a id="a27cd664bf83944707359694f10ee442f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27cd664bf83944707359694f10ee442f">&#9670;&nbsp;</a></span>type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDev &gt; </div>
+template&lt;typename TInterface , typename TDerived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a>&lt; TDev, std::enable_if_t&lt; <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt; ConceptDev, TDev &gt;::value &gt; &gt;::<a class="el" href="structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html#a54763aacfdeb2a8d8f34e9497f63e271">type</a> =  typename <a class="el" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase</a>&lt;ConceptDev, TDev&gt;</td>
+          <td class="memname">using <a class="el" href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType.html">alpaka::interface::detail::ImplementationBaseType</a>&lt; TInterface, TDerived, std::enable_if_t&lt;!<a class="el" href="structalpaka_1_1interface_1_1ImplementsInterface.html">ImplementsInterface</a>&lt; TInterface, TDerived &gt;::value &gt; &gt;::<a class="el" href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html#a27cd664bf83944707359694f10ee442f">type</a> =  TDerived</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00137">137</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Interface_8hpp_source.html#l00042">42</a> of file <a class="el" href="Interface_8hpp_source.html">Interface.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/runner/work/alpaka/alpaka/include/alpaka/dev/<a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a></li>
+<li>/home/runner/work/alpaka/alpaka/include/alpaka/core/<a class="el" href="Interface_8hpp_source.html">Interface.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1trait.html">trait</a></li><li class="navelem"><a class="el" href="structalpaka_1_1trait_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCod9d752f4a13548a023d24d2576747787.html">DevType&lt; TDev, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptDev, TDev &gt;::value &gt; &gt;</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:07 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1interface.html">interface</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1interface_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1interface_1_1detail_1_1ImplementationBaseType_3_01TInterface_00_01TDerived_00_0185bb5606c4af6901fd247c4b14c55b66.html">ImplementationBaseType&lt; TInterface, TDerived, std::enable_if_t&lt;!ImplementsInterface&lt; TInterface, TDerived &gt;::value &gt; &gt;</a></li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:11 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

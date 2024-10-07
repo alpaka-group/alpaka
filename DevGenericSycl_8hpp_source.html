@@ -211,8 +211,8 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">    //! The SYCL device handle.</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">class </span>DevGenericSycl</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        : <span class="keyword">public</span> concepts::Implements&lt;ConceptCurrentThreadWaitFor, DevGenericSycl&lt;TTag&gt;&gt;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        , <span class="keyword">public</span> concepts::Implements&lt;ConceptDev, DevGenericSycl&lt;TTag&gt;&gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        : <span class="keyword">public</span> interface::Implements&lt;ConceptCurrentThreadWaitFor, DevGenericSycl&lt;TTag&gt;&gt;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        , <span class="keyword">public</span> interface::Implements&lt;ConceptDev, DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">friend</span> <span class="keyword">struct </span>trait::GetDevByIdx&lt;PlatformGenericSycl&lt;TTag&gt;&gt;;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
@@ -401,7 +401,7 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 3 2024 08:35:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
