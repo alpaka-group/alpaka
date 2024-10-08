@@ -16,7 +16,7 @@ concurrency:
 # Therefore we aim to have each value been set in at lest one job.
 # ALPAKA_CI_CXX                                 : {g++, clang++}
 #   [g++] ALPAKA_CI_GCC_VER                     : {10, 11, 12, 13}
-#   [clang++] ALPAKA_CI_CLANG_VER               : {10, 11, 12, 13, 14}
+#   [clang++] ALPAKA_CI_CLANG_VER               : {13, 14, 15, 16, 17, 18, 19}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2022}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [ALPAKA_CI_CXX==clang++]:libc++}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
@@ -173,18 +173,18 @@ jobs:
         #  - libc++
         #  - sanitizer jobs
         # clang++
-        - name: linux_clang-10_release
+        - name: linux_clang-13_release
           os: ubuntu-20.04
-          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
           container: ubuntu:20.04
         # clang-11 tested in GitLab CI
-        - name: linux_clang-12_release
+        - name: linux_clang-14_release
           os: ubuntu-20.04
-          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 12,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 14,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
           container: ubuntu:20.04
-        - name: linux_clang-13_debug
+        - name: linux_clang-15_debug
           os: ubuntu-22.04
-          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 3, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {ALPAKA_CI_CXX: clang++,  ALPAKA_CI_CLANG_VER: 15,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 3, CMAKE_CXX_EXTENSIONS: OFF}
           container: ubuntu:22.04
         - name: linux_clang-16_debug_ubsan
           os: ubuntu-22.04

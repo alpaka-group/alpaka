@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MPL-2.0
 
-linux_clang-11_release:
+linux_clang-13_release:
   extends: .base_clang
   variables:
-    ALPAKA_CI_CLANG_VER: 11
+    ALPAKA_CI_CLANG_VER: 13
     ALPAKA_CI_STDLIB: libstdc++
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.75.0

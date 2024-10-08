@@ -14,7 +14,6 @@
 
 #include <string>
 
-
 using Dim = alpaka::DimInt<1>;
 using Idx = int;
 using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
@@ -274,4 +273,32 @@ TEST_CASE("test EnabledAccTags", "[acc][tag]")
 {
     using AllAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1>, int>;
     STATIC_REQUIRE(std::tuple_size<AllAccs>::value == std::tuple_size<alpaka::EnabledAccTags>::value);
+}
+
+struct NoTag1
+{
+    static std::string get_name()
+    {
+        return "foo";
+    }
+};
+
+struct NoTag2 : public alpaka::InterfaceTag
+{
+};
+
+template<alpaka::concepts::Tag>
+consteval bool specialize_tag()
+{
+    return true;
+}
+
+TEMPLATE_LIST_TEST_CASE("test concept tag", "[tag][concept]", TagList)
+{
+    using TagToTest = TestType;
+    STATIC_REQUIRE(alpaka::concepts::Tag<TagToTest>);
+    STATIC_REQUIRE_FALSE(alpaka::concepts::Tag<NoTag1>);
+    STATIC_REQUIRE_FALSE(alpaka::concepts::Tag<NoTag2>);
+
+    STATIC_REQUIRE(specialize_tag<TagToTest>());
 }

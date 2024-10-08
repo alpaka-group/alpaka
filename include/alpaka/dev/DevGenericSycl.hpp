@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Sycl.hpp"
@@ -38,16 +39,16 @@ namespace alpaka
         struct GetDevByIdx;
     } // namespace trait
 
-    template<typename TTag>
+    template<concepts::Tag TTag>
     using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TTag, true>;
 
-    template<typename TTag>
+    template<concepts::Tag TTag>
     using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TTag, false>;
 
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct PlatformGenericSycl;
 
-    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     class BufGenericSycl;
 
     namespace detail
@@ -120,7 +121,7 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device handle.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     class DevGenericSycl
         : public interface::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TTag>>
         , public interface::Implements<ConceptDev, DevGenericSycl<TTag>>
@@ -154,7 +155,7 @@ namespace alpaka
     namespace trait
     {
         //! The SYCL device name get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetName<DevGenericSycl<TTag>>
         {
             static auto getName(DevGenericSycl<TTag> const& dev) -> std::string
@@ -165,7 +166,7 @@ namespace alpaka
         };
 
         //! The SYCL device available memory get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetMemBytes<DevGenericSycl<TTag>>
         {
             static auto getMemBytes(DevGenericSycl<TTag> const& dev) -> std::size_t
@@ -176,7 +177,7 @@ namespace alpaka
         };
 
         //! The SYCL device free memory get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetFreeMemBytes<DevGenericSycl<TTag>>
         {
             static auto getFreeMemBytes(DevGenericSycl<TTag> const& /* dev */) -> std::size_t
@@ -189,7 +190,7 @@ namespace alpaka
         };
 
         //! The SYCL device warp size get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetWarpSizes<DevGenericSycl<TTag>>
         {
             static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
@@ -207,7 +208,7 @@ namespace alpaka
         };
 
         //! The SYCL device preferred warp size get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetPreferredWarpSize<DevGenericSycl<TTag>>
         {
             static auto getPreferredWarpSize(DevGenericSycl<TTag> const& dev) -> std::size_t
@@ -217,7 +218,7 @@ namespace alpaka
         };
 
         //! The SYCL device reset trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct Reset<DevGenericSycl<TTag>>
         {
             static auto reset(DevGenericSycl<TTag> const&) -> void
@@ -229,7 +230,7 @@ namespace alpaka
         };
 
         //! The SYCL device native handle trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct NativeHandle<DevGenericSycl<TTag>>
         {
             [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TTag> const& dev)
@@ -239,21 +240,21 @@ namespace alpaka
         };
 
         //! The SYCL device memory buffer type trait specialization.
-        template<typename TElem, typename TDim, typename TIdx, typename TTag>
+        template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
         struct BufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
         {
             using type = BufGenericSycl<TElem, TDim, TIdx, TTag>;
         };
 
         //! The SYCL device platform type trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct PlatformType<DevGenericSycl<TTag>>
         {
             using type = PlatformGenericSycl<TTag>;
         };
 
         //! The thread SYCL device wait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct CurrentThreadWaitFor<DevGenericSycl<TTag>>
         {
             static auto currentThreadWaitFor(DevGenericSycl<TTag> const& dev) -> void
@@ -263,14 +264,14 @@ namespace alpaka
         };
 
         //! The SYCL blocking queue trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct QueueType<DevGenericSycl<TTag>, Blocking>
         {
             using type = QueueGenericSyclBlocking<TTag>;
         };
 
         //! The SYCL non-blocking queue trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct QueueType<DevGenericSycl<TTag>, NonBlocking>
         {
             using type = QueueGenericSyclNonBlocking<TTag>;

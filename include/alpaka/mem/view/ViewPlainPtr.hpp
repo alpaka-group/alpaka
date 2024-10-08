@@ -154,7 +154,7 @@ namespace alpaka
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED)
         //! The SYCL device CreateViewPlainPtr trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct CreateViewPlainPtr<DevGenericSycl<TTag>>
         {
             template<typename TElem, typename TExtent, typename TPitch>

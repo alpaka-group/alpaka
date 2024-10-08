@@ -11,6 +11,7 @@
 #include "alpaka/acc/AccFpgaSyclIntel.hpp"
 #include "alpaka/acc/AccGpuCudaRt.hpp"
 #include "alpaka/acc/AccGpuHipRt.hpp"
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/meta/Filter.hpp"
 
@@ -20,12 +21,12 @@ namespace alpaka
 {
     //! \brief check if the accelerator is enabled for a given tag
     //! \tparam TTag alpaka tag type
-    template<typename TTag, typename = void>
+    template<concepts::Tag TTag, typename = void>
     struct AccIsEnabled : std::false_type
     {
     };
 
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct AccIsEnabled<TTag, std::void_t<TagToAcc<TTag, alpaka::DimInt<1>, int>>> : std::true_type
     {
     };

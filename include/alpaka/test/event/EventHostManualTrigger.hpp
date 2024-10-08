@@ -712,7 +712,7 @@ namespace alpaka
 {
     namespace test
     {
-        template<typename TTag>
+        template<concepts::Tag TTag>
         class EventHostManualTriggerSycl
         {
         public:
@@ -727,13 +727,13 @@ namespace alpaka
 
         namespace trait
         {
-            template<typename TTag>
+            template<concepts::Tag TTag>
             struct EventHostManualTriggerType<DevGenericSycl<TTag>>
             {
                 using type = alpaka::test::EventHostManualTriggerSycl<TTag>;
             };
 
-            template<typename TTag>
+            template<concepts::Tag TTag>
             struct IsEventHostManualTriggerSupported<DevGenericSycl<TTag>>
             {
                 ALPAKA_FN_HOST static auto isSupported(DevGenericSycl<TTag> const&) -> bool
@@ -746,7 +746,7 @@ namespace alpaka
 
     namespace trait
     {
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct Enqueue<QueueGenericSyclBlocking<TTag>, test::EventHostManualTriggerSycl<TTag>>
         {
             ALPAKA_FN_HOST static auto enqueue(
@@ -756,7 +756,7 @@ namespace alpaka
             }
         };
 
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct Enqueue<QueueGenericSyclNonBlocking<TTag>, test::EventHostManualTriggerSycl<TTag>>
         {
             ALPAKA_FN_HOST static auto enqueue(
@@ -766,7 +766,7 @@ namespace alpaka
             }
         };
 
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct IsComplete<test::EventHostManualTriggerSycl<TTag>>
         {
             ALPAKA_FN_HOST static auto isComplete(test::EventHostManualTriggerSycl<TTag> const& /* event */) -> bool

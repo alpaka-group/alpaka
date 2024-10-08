@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/event/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
@@ -25,10 +26,10 @@
 
 namespace alpaka
 {
-    template<typename TTag>
+    template<concepts::Tag TTag>
     class DevGenericSycl;
 
-    template<typename TTag>
+    template<concepts::Tag TTag>
     class EventGenericSycl;
 
     namespace detail
@@ -173,7 +174,7 @@ namespace alpaka
             sycl::queue m_queue;
         };
 
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         class QueueGenericSyclBase
             : public interface::Implements<ConceptCurrentThreadWaitFor, QueueGenericSyclBase<TTag, TBlocking>>
             , public interface::Implements<ConceptQueue, QueueGenericSyclBase<TTag, TBlocking>>
@@ -212,14 +213,14 @@ namespace alpaka
     namespace trait
     {
         //! The SYCL blocking queue device type trait specialization.
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct DevType<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             using type = DevGenericSycl<TTag>;
         };
 
         //! The SYCL blocking queue device get trait specialization.
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct GetDev<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             static auto getDev(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
@@ -230,14 +231,14 @@ namespace alpaka
         };
 
         //! The SYCL blocking queue event type trait specialization.
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct EventType<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             using type = EventGenericSycl<TTag>;
         };
 
         //! The SYCL blocking queue enqueue trait specialization.
-        template<typename TTag, bool TBlocking, typename TTask>
+        template<concepts::Tag TTag, bool TBlocking, typename TTask>
         struct Enqueue<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>, TTask>
         {
             static auto enqueue(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>& queue, TTask const& task)
@@ -249,7 +250,7 @@ namespace alpaka
         };
 
         //! The SYCL blocking queue test trait specialization.
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct Empty<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             static auto empty(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue) -> bool
@@ -263,7 +264,7 @@ namespace alpaka
         //!
         //! Blocks execution of the calling thread until the queue has finished processing all previously requested
         //! tasks (kernels, data copies, ...)
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct CurrentThreadWaitFor<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             static auto currentThreadWaitFor(alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> const& queue)
@@ -275,7 +276,7 @@ namespace alpaka
         };
 
         //! The SYCL queue native handle trait specialization.
-        template<typename TTag, bool TBlocking>
+        template<concepts::Tag TTag, bool TBlocking>
         struct NativeHandle<alpaka::detail::QueueGenericSyclBase<TTag, TBlocking>>
         {
             [[nodiscard]] static auto getNativeHandle(
