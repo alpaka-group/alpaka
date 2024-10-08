@@ -115,7 +115,11 @@ void testKernels()
     // Define work divisions
     const alpaka::Vec<Dim3, Idx> size{nx, ny, nz};
 
-    auto const bundeledInitKernel = alpaka::KernelBundle(
+    alpaka::KernelCfg<Acc> const kernelCfg = {size, alpaka::Vec<Dim3, Idx>::ones()};
+
+    auto workDiv = alpaka::getValidWorkDiv(
+        kernelCfg,
+        devAcc,
         InitializerKernel{},
         mdDensity,
         mdEnergy,
@@ -123,14 +127,6 @@ void testKernels()
         mdVelocityX,
         mdVelocityY,
         mdVelocityZ);
-
-    auto workDiv = alpaka::getValidWorkDivForKernel<Acc>(
-        devAcc,
-        bundeledInitKernel,
-        size,
-        alpaka::Vec<Dim3, Idx>::ones(),
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
     // Simulation parameters
     float totalTime = 0.0f; // Total simulation time
 
