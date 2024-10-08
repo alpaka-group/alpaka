@@ -71,7 +71,7 @@
 namespace alpaka
 {
     //! The SYCL accelerator execution task.
-    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<concepts::Tag TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
     {
     public:
@@ -286,7 +286,7 @@ namespace alpaka::trait
     //! \tparam TIdx The idx type of the accelerator device properties.
     //! \tparam TKernelFn Kernel function object type.
     //! \tparam TArgs Kernel function object argument types as a parameter pack.
-    template<typename TTag, typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+    template<concepts::Tag TTag, typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
     struct FunctionAttributes<AccGenericSycl<TTag, TDim, TIdx>, TDev, TKernelFn, TArgs...>
     {
         //! \param dev The device instance

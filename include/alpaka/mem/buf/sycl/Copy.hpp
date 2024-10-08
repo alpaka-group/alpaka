@@ -195,7 +195,7 @@ namespace alpaka::detail
 namespace alpaka::trait
 {
     //! The SYCL host-to-device memory copy trait specialization.
-    template<typename TTag, typename TDim>
+    template<concepts::Tag TTag, typename TDim>
     struct CreateTaskMemcpy<TDim, DevGenericSycl<TTag>, DevCpu>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
@@ -209,7 +209,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL device-to-host memory copy trait specialization.
-    template<typename TTag, typename TDim>
+    template<concepts::Tag TTag, typename TDim>
     struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TTag>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
@@ -223,7 +223,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL device-to-device memory copy trait specialization.
-    template<typename TTagDst, typename TTagSrc, typename TDim>
+    template<concepts::Tag TTagDst, concepts::Tag TTagSrc, typename TDim>
     struct CreateTaskMemcpy<TDim, DevGenericSycl<TTagDst>, DevGenericSycl<TTagSrc>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>

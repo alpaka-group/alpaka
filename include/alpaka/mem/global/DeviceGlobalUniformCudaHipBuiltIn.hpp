@@ -41,7 +41,7 @@ namespace alpaka
 
     // from device to host
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TApi,
         bool TBlocking,
         typename TViewDst,
@@ -77,7 +77,7 @@ namespace alpaka
 
     // from host to device
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TApi,
         bool TBlocking,
         typename TTypeDst,
@@ -113,7 +113,7 @@ namespace alpaka
 
     // from device to host
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TApi,
         bool TBlocking,
         typename TViewDst,
@@ -149,7 +149,7 @@ namespace alpaka
 
     // from host to device
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TApi,
         bool TBlocking,
         typename TTypeDst,

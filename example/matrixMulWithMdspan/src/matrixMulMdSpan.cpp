@@ -90,7 +90,7 @@ inline void initializeMatrx(TMdSpan& span)
 // Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
 // selected accelerator only. If you use the example as the starting point for your project, you can rename the
 // example() function to main() and move the accelerator tag to the function body.
-template<typename TAccTag>
+template<alpaka::concepts::Tag TAccTag>
 auto example(TAccTag const&) -> int
 {
     // Set number of dimensions (i.e 2) as a type

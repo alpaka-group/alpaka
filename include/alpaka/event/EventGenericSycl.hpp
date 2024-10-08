@@ -22,7 +22,7 @@
 namespace alpaka
 {
     //! The SYCL device event.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     class EventGenericSycl final
     {
     public:
@@ -60,7 +60,7 @@ namespace alpaka
 namespace alpaka::trait
 {
     //! The SYCL device event device get trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct GetDev<EventGenericSycl<TTag>>
     {
         static auto getDev(EventGenericSycl<TTag> const& event) -> DevGenericSycl<TTag>
@@ -70,7 +70,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL device event test trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct IsComplete<EventGenericSycl<TTag>>
     {
         static auto isComplete(EventGenericSycl<TTag> const& event)
@@ -82,7 +82,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL queue enqueue trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct Enqueue<QueueGenericSyclNonBlocking<TTag>, EventGenericSycl<TTag>>
     {
         static auto enqueue(QueueGenericSyclNonBlocking<TTag>& queue, EventGenericSycl<TTag>& event)
@@ -92,7 +92,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL queue enqueue trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct Enqueue<QueueGenericSyclBlocking<TTag>, EventGenericSycl<TTag>>
     {
         static auto enqueue(QueueGenericSyclBlocking<TTag>& queue, EventGenericSycl<TTag>& event)
@@ -105,7 +105,7 @@ namespace alpaka::trait
     //!
     //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been
     //! completed. If the event is not enqueued to a queue the method returns immediately.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct CurrentThreadWaitFor<EventGenericSycl<TTag>>
     {
         static auto currentThreadWaitFor(EventGenericSycl<TTag> const& event)
@@ -115,7 +115,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL queue event wait trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct WaiterWaitFor<QueueGenericSyclNonBlocking<TTag>, EventGenericSycl<TTag>>
     {
         static auto waiterWaitFor(QueueGenericSyclNonBlocking<TTag>& queue, EventGenericSycl<TTag> const& event)
@@ -125,7 +125,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL queue event wait trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct WaiterWaitFor<QueueGenericSyclBlocking<TTag>, EventGenericSycl<TTag>>
     {
         static auto waiterWaitFor(QueueGenericSyclBlocking<TTag>& queue, EventGenericSycl<TTag> const& event)
@@ -138,7 +138,7 @@ namespace alpaka::trait
     //!
     //! Any future work submitted in any queue of this device will wait for event to complete before beginning
     //! execution.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct WaiterWaitFor<DevGenericSycl<TTag>, EventGenericSycl<TTag>>
     {
         static auto waiterWaitFor(DevGenericSycl<TTag>& dev, EventGenericSycl<TTag> const& event)
@@ -148,7 +148,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL device event native handle trait specialization.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct NativeHandle<EventGenericSycl<TTag>>
     {
         [[nodiscard]] static auto getNativeHandle(EventGenericSycl<TTag> const& event)

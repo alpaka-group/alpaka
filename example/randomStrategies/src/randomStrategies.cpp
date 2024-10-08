@@ -25,7 +25,7 @@ using RandomEngine = alpaka::rand::Philox4x32x10;
 
 
 /// Parameters to set up the default accelerator, queue, and buffers
-template<typename TAccTag>
+template<alpaka::concepts::Tag TAccTag>
 struct Box
 {
     // accelerator, queue, and work division typedefs
@@ -184,7 +184,7 @@ struct FillKernel
  *
  *  File is in TSV format. One line for each "point"; line length is the number of "rolls".
  */
-template<typename TAccTag>
+template<alpaka::concepts::Tag TAccTag>
 void saveDataAndShowAverage(std::string filename, float const* buffer, Box<TAccTag> const& box)
 {
     std::ofstream output(filename);
@@ -207,7 +207,7 @@ struct Writer;
 template<>
 struct Writer<Strategy::seed>
 {
-    template<typename TAccTag>
+    template<alpaka::concepts::Tag TAccTag>
     static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_seed.csv", buffer, box);
@@ -217,7 +217,7 @@ struct Writer<Strategy::seed>
 template<>
 struct Writer<Strategy::subsequence>
 {
-    template<typename TAccTag>
+    template<alpaka::concepts::Tag TAccTag>
     static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_subsequence.csv", buffer, box);
@@ -227,14 +227,14 @@ struct Writer<Strategy::subsequence>
 template<>
 struct Writer<Strategy::offset>
 {
-    template<typename TAccTag>
+    template<alpaka::concepts::Tag TAccTag>
     static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_offset.csv", buffer, box);
     }
 };
 
-template<Strategy TStrategy, typename TAccTag>
+template<Strategy TStrategy, alpaka::concepts::Tag TAccTag>
 void runStrategy(Box<TAccTag>& box)
 {
     // Set up the pointer to the PRNG states buffer
@@ -326,7 +326,7 @@ void runStrategy(Box<TAccTag>& box)
 // Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
 // selected accelerator only. If you use the example as the starting point for your project, you can rename the
 // example() function to main() and move the accelerator tag to the function body.
-template<typename TAccTag>
+template<alpaka::concepts::Tag TAccTag>
 auto example(TAccTag const&) -> int
 {
     Box<TAccTag> box; // Initialize the box

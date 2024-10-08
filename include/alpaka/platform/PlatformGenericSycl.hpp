@@ -32,12 +32,12 @@ namespace alpaka
 {
     namespace detail
     {
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct SYCLDeviceSelector;
     } // namespace detail
 
     //! The SYCL device manager.
-    template<typename TTag>
+    template<concepts::Tag TTag>
     struct PlatformGenericSycl : interface::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
     {
         PlatformGenericSycl()
@@ -104,14 +104,14 @@ namespace alpaka
     namespace trait
     {
         //! The SYCL platform device type trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct DevType<PlatformGenericSycl<TTag>>
         {
             using type = DevGenericSycl<TTag>;
         };
 
         //! The SYCL platform device count get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetDevCount<PlatformGenericSycl<TTag>>
         {
             static auto getDevCount(PlatformGenericSycl<TTag> const& platform) -> std::size_t
@@ -123,7 +123,7 @@ namespace alpaka
         };
 
         //! The SYCL platform device get trait specialization.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct GetDevByIdx<PlatformGenericSycl<TTag>>
         {
             static auto getDevByIdx(PlatformGenericSycl<TTag> const& platform, std::size_t const& devIdx)

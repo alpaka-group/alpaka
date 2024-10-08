@@ -46,13 +46,13 @@
 
 namespace alpaka
 {
-    template<typename TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<concepts::Tag TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGenericSycl;
 
     //! The SYCL accelerator.
     //!
     //! This accelerator allows parallel kernel execution on SYCL devices.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     class AccGenericSycl
         : public WorkDivGenericSycl<TDim, TIdx>
         , public gb::IdxGbGenericSycl<TDim, TIdx>
@@ -103,26 +103,26 @@ namespace alpaka
 namespace alpaka::trait
 {
     //! The SYCL accelerator type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct AccType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = AccGenericSycl<TTag, TDim, TIdx>;
     };
 
     //! The SYCL single thread accelerator type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct IsSingleThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::false_type
     {
     };
 
     //! The SYCL multi thread accelerator type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct IsMultiThreadAcc<AccGenericSycl<TTag, TDim, TIdx>> : std::true_type
     {
     };
 
     //! The SYCL accelerator device properties get trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct GetAccDevProps<AccGenericSycl<TTag, TDim, TIdx>>
     {
         static auto getAccDevProps(DevGenericSycl<TTag> const& dev) -> AccDevProps<TDim, TIdx>
@@ -159,7 +159,7 @@ namespace alpaka::trait
     };
 
     //! The SYCL accelerator name trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct GetAccName<AccGenericSycl<TTag, TDim, TIdx>>
     {
         static auto getAccName() -> std::string
@@ -170,21 +170,27 @@ namespace alpaka::trait
     };
 
     //! The SYCL accelerator device type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct DevType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = DevGenericSycl<TTag>;
     };
 
     //! The SYCL accelerator dimension getter trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct DimType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = TDim;
     };
 
     //! The SYCL accelerator execution task type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    template<
+        concepts::Tag TTag,
+        typename TDim,
+        typename TIdx,
+        typename TWorkDiv,
+        typename TKernelFnObj,
+        typename... TArgs>
     struct CreateTaskKernel<AccGenericSycl<TTag, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
     {
         static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
@@ -197,14 +203,14 @@ namespace alpaka::trait
     };
 
     //! The SYCL execution task platform type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct PlatformType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = PlatformGenericSycl<TTag>;
     };
 
     //! The SYCL accelerator idx type trait specialization.
-    template<typename TTag, typename TDim, typename TIdx>
+    template<concepts::Tag TTag, typename TDim, typename TIdx>
     struct IdxType<AccGenericSycl<TTag, TDim, TIdx>>
     {
         using type = TIdx;

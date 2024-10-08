@@ -13,7 +13,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-template<typename TDim, typename TAccTag>
+template<typename TDim, alpaka::concepts::Tag TAccTag>
 auto mapIdxPitchBytes(TAccTag const&)
 {
     using Dim = TDim;

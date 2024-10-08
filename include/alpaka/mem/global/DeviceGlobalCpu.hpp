@@ -48,7 +48,7 @@ namespace alpaka
     } // namespace detail
 
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TViewSrc,
         typename TTypeDst,
         typename TQueue,
@@ -73,7 +73,7 @@ namespace alpaka
     }
 
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TTypeSrc,
         typename TViewDstFwd,
         typename TQueue,
@@ -98,7 +98,7 @@ namespace alpaka
     }
 
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TExtent,
         typename TViewSrc,
         typename TTypeDst,
@@ -124,7 +124,7 @@ namespace alpaka
     }
 
     template<
-        typename TTag,
+        concepts::Tag TTag,
         typename TExtent,
         typename TTypeSrc,
         typename TViewDstFwd,

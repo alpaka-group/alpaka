@@ -42,7 +42,7 @@ namespace alpaka::test
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
         //! The default queue type trait specialization for the SYCL device.
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct DefaultQueueType<DevGenericSycl<TTag>>
         {
 #    if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
@@ -89,13 +89,13 @@ namespace alpaka::test
 #endif
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct IsBlockingQueue<QueueGenericSyclBlocking<TTag>>
         {
             static constexpr auto value = true;
         };
 
-        template<typename TTag>
+        template<concepts::Tag TTag>
         struct IsBlockingQueue<QueueGenericSyclNonBlocking<TTag>>
         {
             static constexpr auto value = false;

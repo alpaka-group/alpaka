@@ -10,7 +10,7 @@
 
 namespace alpaka
 {
-    template<typename TTag>
+    template<concepts::Tag TTag>
     using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TTag, false>;
 } // namespace alpaka
 
