@@ -42,15 +42,21 @@ def get_args() -> argparse.Namespace:
     Returns:
         argparse.Namespace: The commandline arguments.
     """
-    parser = argparse.ArgumentParser(description="Calculate job matrix and create GitLab CI .yml.")
+    parser = argparse.ArgumentParser(
+        description="Calculate job matrix and create GitLab CI .yml."
+    )
 
-    parser.add_argument("version", type=float, help="Version number of the used CI container.")
+    parser.add_argument(
+        "version", type=float, help="Version number of the used CI container."
+    )
     parser.add_argument(
         "--print-combinations",
         action="store_true",
         help="Display combination matrix.",
     )
-    parser.add_argument("--verify", action="store_true", help="Verify generated combination matrix")
+    parser.add_argument(
+        "--verify", action="store_true", help="Verify generated combination matrix"
+    )
     parser.add_argument(
         "-a",
         "--all",
@@ -83,13 +89,19 @@ def get_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--wave",
-        type=str,
-        # add `all` and remove `JOB_UNKNOWN` from the choices
-        choices=["all"] + list(set(WAVE_GROUP_NAMES) - set([JOB_UNKNOWN])),
-        default="all",
-        help="Generates only jobs for a specific wave group.",
+        "--split-waves",
+        action="store_true",
+        help="Write job waves in separate output files.",
     )
+
+    for wave_name in list(set(WAVE_GROUP_NAMES) - set([JOB_UNKNOWN])):
+        parser.add_argument(
+            f"--wave-out-{wave_name}",
+            type=str,
+            required="--split-waves" in sys.argv,
+            # add `all` and remove `JOB_UNKNOWN` from the choices
+            help=f"Output path of the job yaml for wave group {wave_name}",
+        )
 
     parser.add_argument(
         "--no-image-check",
@@ -169,7 +181,9 @@ if __name__ == "__main__":
             if striped_line.strip().startswith(COMMIT_MESSAGE_FILTER_PREFIX):
                 filter_regix = striped_line[len(COMMIT_MESSAGE_FILTER_PREFIX) :].strip()
             if striped_line.startswith(COMMIT_MESSAGE_REORDER_PREFIX):
-                reorder_regix = striped_line[len(COMMIT_MESSAGE_REORDER_PREFIX) :].strip()
+                reorder_regix = striped_line[
+                    len(COMMIT_MESSAGE_REORDER_PREFIX) :
+                ].strip()
 
     if filter_regix:
         job_matrix_yaml = filter_job_list(job_matrix_yaml, filter_regix)
@@ -186,14 +200,19 @@ if __name__ == "__main__":
             for job in wave:
                 print(job)
 
-    if args.wave != "all":
-        filter_wave_name = args.wave
-        wave_job_matrix = {filter_wave_name: wave_job_matrix[filter_wave_name]}
-        for wave_name in WAVE_GROUP_NAMES:
-            if wave_name not in wave_job_matrix:
-                wave_job_matrix[wave_name] = []
-
-    write_job_yaml(
-        job_matrix=wave_job_matrix,
-        path=args.output_path,
-    )
+    if not args.split_waves:
+        write_job_yaml(
+            job_matrix=wave_job_matrix,
+            path=args.output_path,
+        )
+    else:
+        for wave_name in list(set(WAVE_GROUP_NAMES) - set([JOB_UNKNOWN])):
+            # the script arguments for the wave output paths are automatically
+            # generated
+            # therefore we need also to construct the argument name to get the
+            # specific output path
+            arg_name = f"wave_out_{wave_name}"
+            write_job_yaml(
+                job_matrix={wave_name: wave_job_matrix[wave_name]},
+                path=args.__getattribute__(arg_name),
+            )
