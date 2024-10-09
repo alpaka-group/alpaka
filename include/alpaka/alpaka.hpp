@@ -10778,6 +10778,7 @@
 		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		// #include <iostream>    // amalgamate: file already included
+		// #include <tuple>    // amalgamate: file already included
 		#include <type_traits>
 
 		namespace alpaka
@@ -10859,6 +10860,30 @@
 		        alpaka::TagFpgaSyclIntel,
 		        alpaka::TagGpuSyclIntel>;
 
+		    //!  \brief Function to print the names of each tag in the given tuple of tags
+		    //!  \tparam TTuple is the type of the tuple of tags
+		    template<typename TTuple>
+		    void printTagNames()
+		    {
+		        // Check if the tuple is empty using std::tuple_size_v
+		        if(std::tuple_size_v<TTuple> == 0)
+		        {
+		            std::cout << "No Tags!";
+		        }
+		        else
+		        {
+		            std::cout << "Tags: ";
+		            // Print tags with comma in between
+		            std::apply(
+		                [](auto... args)
+		                {
+		                    auto index = std::tuple_size_v<TTuple>;
+		                    ((std::cout << args.get_name() << (--index > 0u ? "," : "")), ...);
+		                },
+		                TTuple{});
+		        }
+		        std::cout << std::endl;
+		    }
 		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/acc/Tag.hpp ==
