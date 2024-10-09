@@ -600,7 +600,7 @@ def write_job_yaml(
         # If there is no CI job, create a dummy job.
         # This can happen if the filter filters out all jobs.
         number_of_jobs = 0
-        for wave_name in WAVE_GROUP_NAMES:
+        for wave_name in job_matrix.keys():
             number_of_jobs += len(job_matrix[wave_name])
 
         if number_of_jobs == 0:
@@ -618,7 +618,7 @@ def write_job_yaml(
 
         stages: Dict[str, List[str]] = {"stages": []}
 
-        for wave_name in WAVE_GROUP_NAMES:
+        for wave_name in job_matrix.keys():
             # setup all stages
             for stage_number in range(len(job_matrix[wave_name])):
                 stages["stages"].append(f"{wave_name}-stage{stage_number}")
@@ -640,7 +640,7 @@ def write_job_yaml(
             job_base_yaml = yaml.load(file, yaml.loader.SafeLoader)
         yaml.dump(job_base_yaml, output_file)
 
-        for wave_name in WAVE_GROUP_NAMES:
+        for wave_name in job_matrix.keys():
             # Writes each job separately to the file.
             # If all jobs would be collected first in dict, the order would be not guarantied.
             for stage_number, wave in enumerate(job_matrix[wave_name]):
