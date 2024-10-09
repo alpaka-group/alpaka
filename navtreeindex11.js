@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1core_1_1detail_1_1ThreadPool.html":[3,0,0,1,1,5],
+"structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a049fef3549faf571737621ed9f86322d":[3,0,0,1,1,5,0],
+"structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a072fecfc4770accac092afbda3cad42a":[3,0,0,1,1,5,1],
 "structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a8192aaffe9bf17a12379051122b5e69a":[3,0,0,1,1,5,2],
 "structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a9b86df90395fee792bedb478fcf9b09d":[3,0,0,1,1,5,3],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html":[3,0,0,1,2,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,9,29],
 "structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,9,30],
 "structalpaka_1_1math_1_1ConceptMathAtanh.html":[3,0,0,9,31],
-"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,9,32],
-"structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,9,33],
-"structalpaka_1_1math_1_1ConceptMathConj.html":[3,0,0,9,34],
-"structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35]
+"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,9,32]
 };

@@ -101,6 +101,8 @@ $(document).ready(function(){initNavTree('Tag_8hpp.html',''); initResizable(); }
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1InterfaceTag.html">alpaka::InterfaceTag</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1TagCpuOmp2Blocks.html">alpaka::TagCpuOmp2Blocks</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1TagCpuOmp2Threads.html">alpaka::TagCpuOmp2Threads</a></td></tr>
@@ -129,6 +131,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka accelerator library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1concepts"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1concepts.html">alpaka::concepts</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1trait"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1trait.html">alpaka::trait</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1trait"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,16 +151,19 @@ Typedefs</h2></td></tr>
 <tr class="memitem:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a> = typename trait::AccToTag&lt; TAcc &gt;::type</td></tr>
 <tr class="memdesc:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps an acc type to a tag type  <a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">More...</a><br /></td></tr>
 <tr class="separator:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplParams" colspan="2">template&lt;typename TTag , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplParams" colspan="2">template&lt;concepts::Tag TTag, typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">alpaka::TagToAcc</a> = typename trait::TagToAcc&lt; TTag, TDim, TIdx &gt;::type</td></tr>
 <tr class="memdesc:affc8849a6a5b20ced64d3f1248e24a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps a tag type to an acc type  <a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">More...</a><br /></td></tr>
 <tr class="separator:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TTag&gt; </td></tr>
+<tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , concepts::Tag... TTag&gt; </td></tr>
 <tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">alpaka::accMatchesTags</a> = (std::is_same_v&lt;<a class="el" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a>&lt;TAcc&gt;, TTag&gt; || ...)</td></tr>
 <tr class="separator:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c35a02a6ace6a1b5945ba5e1db1ab28"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a8c35a02a6ace6a1b5945ba5e1db1ab28"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1concepts.html#a8c35a02a6ace6a1b5945ba5e1db1ab28">alpaka::concepts::Tag</a></td></tr>
+<tr class="separator:a8c35a02a6ace6a1b5945ba5e1db1ab28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ab81964c6c549b86595784601aa5181d5"></a>
@@ -174,15 +181,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">struct </span>tag_name                                                                                                   \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">struct </span>tag_name : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1InterfaceTag.html">alpaka::InterfaceTag</a>                                                                     \</div>
 <div class="line">    {                                                                                                                 \</div>
 <div class="line">        static std::string get_name()                                                                                 \</div>
 <div class="line">        {                                                                                                             \</div>
 <div class="line">            return #tag_name;                                                                                         \</div>
 <div class="line">        }                                                                                                             \</div>
 <div class="line">    }</div>
+<div class="ttc" id="astructalpaka_1_1InterfaceTag_html"><div class="ttname"><a href="structalpaka_1_1InterfaceTag.html">alpaka::InterfaceTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00014">Tag.hpp:15</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00012">12</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00019">19</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -192,7 +200,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="Tag_8hpp.html">Tag.hpp</a></li>
-    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 08:34:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

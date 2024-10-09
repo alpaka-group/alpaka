@@ -152,6 +152,19 @@ var hierarchy =
       [ "alpaka::WorkDivMembers< Dim, Idx >", "classalpaka_1_1WorkDivMembers.html", null ]
     ] ],
     [ "alpaka::interface::ImplementsInterface< TInterface, TDerived >", "structalpaka_1_1interface_1_1ImplementsInterface.html", null ],
+    [ "alpaka::InterfaceTag", "structalpaka_1_1InterfaceTag.html", [
+      [ "alpaka::TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", null ],
+      [ "alpaka::TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", null ],
+      [ "alpaka::TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", null ],
+      [ "alpaka::TagCpuSycl", "structalpaka_1_1TagCpuSycl.html", null ],
+      [ "alpaka::TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", null ],
+      [ "alpaka::TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", null ],
+      [ "alpaka::TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", null ],
+      [ "alpaka::TagGenericSycl", "structalpaka_1_1TagGenericSycl.html", null ],
+      [ "alpaka::TagGpuCudaRt", "structalpaka_1_1TagGpuCudaRt.html", null ],
+      [ "alpaka::TagGpuHipRt", "structalpaka_1_1TagGpuHipRt.html", null ],
+      [ "alpaka::TagGpuSyclIntel", "structalpaka_1_1TagGpuSyclIntel.html", null ]
+    ] ],
     [ "alpaka::internal::Complex< T >", "classalpaka_1_1internal_1_1Complex.html", null ],
     [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
@@ -438,17 +451,6 @@ var hierarchy =
     [ "alpaka::rand::EngineCallHostAccProxy< TEngine >", "structalpaka_1_1rand_1_1EngineCallHostAccProxy.html", null ],
     [ "alpaka::remove_restrict< T >", "structalpaka_1_1remove__restrict.html", null ],
     [ "alpaka::remove_restrict< T *__restrict__ >", "structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html", null ],
-    [ "alpaka::TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", null ],
-    [ "alpaka::TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", null ],
-    [ "alpaka::TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", null ],
-    [ "alpaka::TagCpuSycl", "structalpaka_1_1TagCpuSycl.html", null ],
-    [ "alpaka::TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", null ],
-    [ "alpaka::TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", null ],
-    [ "alpaka::TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", null ],
-    [ "alpaka::TagGenericSycl", "structalpaka_1_1TagGenericSycl.html", null ],
-    [ "alpaka::TagGpuCudaRt", "structalpaka_1_1TagGpuCudaRt.html", null ],
-    [ "alpaka::TagGpuHipRt", "structalpaka_1_1TagGpuHipRt.html", null ],
-    [ "alpaka::TagGpuSyclIntel", "structalpaka_1_1TagGpuSyclIntel.html", null ],
     [ "alpaka::test::Array< TType, TSize >", "structalpaka_1_1test_1_1Array.html", null ],
     [ "alpaka::test::cpu::detail::EventHostManualTriggerCpuImpl< TDev >", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html", null ],
     [ "alpaka::test::detail::StreamOutAccName", "structalpaka_1_1test_1_1detail_1_1StreamOutAccName.html", null ],

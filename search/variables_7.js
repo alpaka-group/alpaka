@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['hasasyncbufsupport_4534',['hasAsyncBufSupport',['../namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce',1,'alpaka']]],
-  ['hasmappedbufsupport_4535',['hasMappedBufSupport',['../namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb',1,'alpaka']]],
-  ['hostmalloccoherent_4536',['hostMallocCoherent',['../structalpaka_1_1ApiCudaRt.html#abfa2b5a486a9b3f142917fb14b9921d9',1,'alpaka::ApiCudaRt']]],
-  ['hostmallocdefault_4537',['hostMallocDefault',['../structalpaka_1_1ApiCudaRt.html#a48731bce43a4fef07420eb4dc48351c7',1,'alpaka::ApiCudaRt']]],
-  ['hostmallocmapped_4538',['hostMallocMapped',['../structalpaka_1_1ApiCudaRt.html#a747bc880d01ad4e14b0c092b09bc4ae1',1,'alpaka::ApiCudaRt']]],
-  ['hostmallocnoncoherent_4539',['hostMallocNonCoherent',['../structalpaka_1_1ApiCudaRt.html#a683cbda89fc70dab5961bb7793adeff3',1,'alpaka::ApiCudaRt']]],
-  ['hostmallocportable_4540',['hostMallocPortable',['../structalpaka_1_1ApiCudaRt.html#a3187101fc192325a8c34d223d969336b',1,'alpaka::ApiCudaRt']]],
-  ['hostmallocwritecombined_4541',['hostMallocWriteCombined',['../structalpaka_1_1ApiCudaRt.html#a3a0394d9df40d85a854880dadcf4cad6',1,'alpaka::ApiCudaRt']]],
-  ['hostregisterdefault_4542',['hostRegisterDefault',['../structalpaka_1_1ApiCudaRt.html#a820f18e0a1ab0fa1888fab261bf57dbf',1,'alpaka::ApiCudaRt']]],
-  ['hostregisteriomemory_4543',['hostRegisterIoMemory',['../structalpaka_1_1ApiCudaRt.html#ad24dc8d17cba117654327efc6f6d07f8',1,'alpaka::ApiCudaRt']]],
-  ['hostregistermapped_4544',['hostRegisterMapped',['../structalpaka_1_1ApiCudaRt.html#aab59ece9a5d64a4782417e7aed7eaa10',1,'alpaka::ApiCudaRt']]],
-  ['hostregisterportable_4545',['hostRegisterPortable',['../structalpaka_1_1ApiCudaRt.html#a528b5b339c1e9a1a0bdc7ca708fbc539',1,'alpaka::ApiCudaRt']]]
+  ['hasasyncbufsupport_4539',['hasAsyncBufSupport',['../namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce',1,'alpaka']]],
+  ['hasmappedbufsupport_4540',['hasMappedBufSupport',['../namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb',1,'alpaka']]],
+  ['hostmalloccoherent_4541',['hostMallocCoherent',['../structalpaka_1_1ApiCudaRt.html#abfa2b5a486a9b3f142917fb14b9921d9',1,'alpaka::ApiCudaRt']]],
+  ['hostmallocdefault_4542',['hostMallocDefault',['../structalpaka_1_1ApiCudaRt.html#a48731bce43a4fef07420eb4dc48351c7',1,'alpaka::ApiCudaRt']]],
+  ['hostmallocmapped_4543',['hostMallocMapped',['../structalpaka_1_1ApiCudaRt.html#a747bc880d01ad4e14b0c092b09bc4ae1',1,'alpaka::ApiCudaRt']]],
+  ['hostmallocnoncoherent_4544',['hostMallocNonCoherent',['../structalpaka_1_1ApiCudaRt.html#a683cbda89fc70dab5961bb7793adeff3',1,'alpaka::ApiCudaRt']]],
+  ['hostmallocportable_4545',['hostMallocPortable',['../structalpaka_1_1ApiCudaRt.html#a3187101fc192325a8c34d223d969336b',1,'alpaka::ApiCudaRt']]],
+  ['hostmallocwritecombined_4546',['hostMallocWriteCombined',['../structalpaka_1_1ApiCudaRt.html#a3a0394d9df40d85a854880dadcf4cad6',1,'alpaka::ApiCudaRt']]],
+  ['hostregisterdefault_4547',['hostRegisterDefault',['../structalpaka_1_1ApiCudaRt.html#a820f18e0a1ab0fa1888fab261bf57dbf',1,'alpaka::ApiCudaRt']]],
+  ['hostregisteriomemory_4548',['hostRegisterIoMemory',['../structalpaka_1_1ApiCudaRt.html#ad24dc8d17cba117654327efc6f6d07f8',1,'alpaka::ApiCudaRt']]],
+  ['hostregistermapped_4549',['hostRegisterMapped',['../structalpaka_1_1ApiCudaRt.html#aab59ece9a5d64a4782417e7aed7eaa10',1,'alpaka::ApiCudaRt']]],
+  ['hostregisterportable_4550',['hostRegisterPortable',['../structalpaka_1_1ApiCudaRt.html#a528b5b339c1e9a1a0bdc7ca708fbc539',1,'alpaka::ApiCudaRt']]]
 ];

@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">    //! The SYCL memory buffer.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">class </span>BufGenericSycl : <span class="keyword">public</span> internal::ViewAccessOps&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">public</span>:</div>
@@ -151,14 +151,14 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">    //! The BufGenericSycl device type trait specialization.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">struct </span>DevType&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">using</span> type = DevGenericSycl&lt;TTag&gt;;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    };</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">    //! The BufGenericSycl device get trait specialization.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">struct </span>GetDev&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt; <span class="keyword">const</span>&amp; buf)</div>
@@ -168,21 +168,21 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">    //! The BufGenericSycl dimension getter trait specialization.</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">struct </span>DimType&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">using</span> type = TDim;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    };</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">    //! The BufGenericSycl memory element type get trait specialization.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">struct </span>ElemType&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    {</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">using</span> type = TElem;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    };</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">    //! The BufGenericSycl extent get trait specialization.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">struct </span>GetExtents&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keyword">auto</span> operator()(BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt; <span class="keyword">const</span>&amp; buf)<span class="keyword"> const</span></div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    };</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    //! The BufGenericSycl native pointer get trait specialization.</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">struct </span>GetPtrNative&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">getPtrNative</a>(BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt; <span class="keyword">const</span>&amp; buf) -&gt; TElem <span class="keyword">const</span>*</div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    };</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">    //! The BufGenericSycl pointer on device get trait specialization.</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">struct </span>GetPtrDev&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;, DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    {</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt; <span class="keyword">const</span>&amp; buf, DevGenericSycl&lt;TTag&gt; <span class="keyword">const</span>&amp; dev)</div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    };</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    //! The SYCL memory allocation trait specialization.</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">struct </span>BufAlloc&lt;TElem, TDim, TIdx, DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    {</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent&gt;</div>
@@ -289,13 +289,13 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    };</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keyword">struct </span>HasAsyncBufSupport&lt;TDim, DevGenericSycl&lt;TTag&gt;&gt; : std::false_type</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    {</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    };</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">    //! The BufGenericSycl offset get trait specialization.</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keyword">struct </span>GetOffsets&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    {</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keyword">auto</span> operator()(BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt; <span class="keyword">const</span>&amp;) <span class="keyword">const</span> -&gt; Vec&lt;TDim, TIdx&gt;</div>
@@ -305,7 +305,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    };</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    //! The pinned/mapped memory allocation trait specialization for the SYCL devices.</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">struct </span>BufAllocMapped&lt;PlatformGenericSycl&lt;TTag&gt;, TElem, TDim, TIdx&gt;</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    {</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent&gt;</div>
@@ -327,20 +327,20 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    };</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">    //! The pinned/mapped memory allocation capability trait specialization.</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">struct </span>HasMappedBufSupport&lt;PlatformGenericSycl&lt;TTag&gt;&gt; : <span class="keyword">public</span> std::true_type</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    {</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    };</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">    //! The BufGenericSycl idx type trait specialization.</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keyword">struct </span>IdxType&lt;BufGenericSycl&lt;TElem, TDim, TIdx, TTag&gt;&gt;</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    {</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">using</span> type = TIdx;</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    };</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">    //! The BufCpu pointer on SYCL device get trait specialization.</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">struct </span>GetPtrDev&lt;BufCpu&lt;TElem, TDim, TIdx&gt;, DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    {</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufCpu&lt;TElem, TDim, TIdx&gt; <span class="keyword">const</span>&amp; buf, DevGenericSycl&lt;TTag&gt; <span class="keyword">const</span>&amp;) -&gt; TElem <span class="keyword">const</span>*</div>
@@ -391,7 +391,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufGenericSycl_8hpp.html">BufGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 08:34:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -801,7 +801,7 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;{</div>
 <div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;    <span class="keyword">namespace </span>test</div>
 <div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    {</div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;        <span class="keyword">class </span>EventHostManualTriggerSycl</div>
 <div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        {</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keyword">public</span>:</div>
@@ -816,13 +816,13 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160; </div>
 <div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        {</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;            <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;            <span class="keyword">struct </span>EventHostManualTriggerType&lt;DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            {</div>
 <div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;                <span class="keyword">using</span> type = alpaka::test::EventHostManualTriggerSycl&lt;TTag&gt;;</div>
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;            };</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160; </div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;            <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;            <span class="keyword">struct </span>IsEventHostManualTriggerSupported&lt;DevGenericSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;            {</div>
 <div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;                <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> isSupported(DevGenericSycl&lt;TTag&gt; <span class="keyword">const</span>&amp;) -&gt; <span class="keywordtype">bool</span></div>
@@ -835,7 +835,7 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160; </div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    {</div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        <span class="keyword">struct </span>Enqueue&lt;QueueGenericSyclBlocking&lt;TTag&gt;, test::EventHostManualTriggerSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;        {</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
@@ -845,7 +845,7 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;            }</div>
 <div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        };</div>
 <div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160; </div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;        <span class="keyword">struct </span>Enqueue&lt;QueueGenericSyclNonBlocking&lt;TTag&gt;, test::EventHostManualTriggerSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;        {</div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
@@ -855,7 +855,7 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;            }</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        };</div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160; </div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag&gt;</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        <span class="keyword">template</span>&lt;concepts::Tag TTag&gt;</div>
 <div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        <span class="keyword">struct </span>IsComplete&lt;test::EventHostManualTriggerSycl&lt;TTag&gt;&gt;</div>
 <div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        {</div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">isComplete</a>(test::EventHostManualTriggerSycl&lt;TTag&gt; <span class="keyword">const</span>&amp; <span class="comment">/* event */</span>) -&gt; <span class="keywordtype">bool</span></div>
@@ -947,7 +947,7 @@ $(document).ready(function(){initNavTree('EventHostManualTrigger_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_ff295c5245522fb77f33919b09e08248.html">event</a></li><li class="navelem"><a class="el" href="EventHostManualTrigger_8hpp.html">EventHostManualTrigger.hpp</a></li>
-    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 08:34:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

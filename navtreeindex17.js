@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1Malloc.html":[3,0,0,15,396],
+"structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html":[3,0,0,15,397],
+"structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html#a0af5be835e5e197e22cb985ca9afc012":[3,0,0,15,397,0],
 "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html":[3,0,0,15,398],
 "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html#ac05bd6f973a3e5b55c9c0133173310f9":[3,0,0,15,398,0],
 "structalpaka_1_1trait_1_1MemFence.html":[3,0,0,15,399],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "tinymt32_8h.html#aa8b7b0413be22846684eaeed1d5c38f5":[4,0,0,0,20,1,1,5],
 "tinymt32_8h.html#aad7ed549a9eb60849db663f723d63ba6":[4,0,0,0,20,1,1,8],
 "tinymt32_8h.html#ab48070637c531d101479d2288da8b97c":[4,0,0,0,20,1,1,18],
-"tinymt32_8h.html#ab5eb23180f7cc12b7d6c04a8ec067fdd":[4,0,0,0,20,1,1,10],
-"tinymt32_8h.html#ac29e1292a65ed4821d4453bbb2ea2c30":[4,0,0,0,20,1,1,22],
-"tinymt32_8h.html#ac2ed41a6a750e977cb1c2d575d7379cd":[4,0,0,0,20,1,1,4],
-"tinymt32_8h.html#ac4cfc7b0d8b92f8e74e03d8ff90397bc":[4,0,0,0,20,1,1,3]
+"tinymt32_8h.html#ab5eb23180f7cc12b7d6c04a8ec067fdd":[4,0,0,0,20,1,1,10]
 };

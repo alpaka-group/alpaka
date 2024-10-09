@@ -1184,6 +1184,7 @@ var annotated_dup =
       [ "EventGenericThreads", "classalpaka_1_1EventGenericThreads.html", "classalpaka_1_1EventGenericThreads" ],
       [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],
       [ "IGenericThreadsQueue", "classalpaka_1_1IGenericThreadsQueue.html", "classalpaka_1_1IGenericThreadsQueue" ],
+      [ "InterfaceTag", "structalpaka_1_1InterfaceTag.html", null ],
       [ "IntrinsicCpu", "classalpaka_1_1IntrinsicCpu.html", null ],
       [ "IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", null ],
       [ "IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", null ],

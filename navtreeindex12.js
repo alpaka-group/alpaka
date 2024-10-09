@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,9,33],
+"structalpaka_1_1math_1_1ConceptMathConj.html":[3,0,0,9,34],
+"structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35],
 "structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,9,36],
 "structalpaka_1_1math_1_1ConceptMathCosh.html":[3,0,0,9,37],
 "structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,9,38],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1memory__scope_1_1Device.html":[3,0,0,10,1],
 "structalpaka_1_1memory__scope_1_1Grid.html":[3,0,0,10,2],
 "structalpaka_1_1meta_1_1Contains.html":[3,0,0,11,1],
-"structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html":[3,0,0,11,2],
-"structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html#acf79b9efc38d0c09275291563e5fd99f":[3,0,0,11,2,0],
-"structalpaka_1_1meta_1_1DependentFalseType.html":[3,0,0,11,3],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,11,6]
+"structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html":[3,0,0,11,2]
 };

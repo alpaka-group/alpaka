@@ -1,6 +1,9 @@
 var namespacealpaka =
 [
     [ "bt", "namespacealpaka_1_1bt.html", "namespacealpaka_1_1bt" ],
+    [ "concepts", "namespacealpaka_1_1concepts.html", [
+      [ "Tag", "namespacealpaka_1_1concepts.html#a8c35a02a6ace6a1b5945ba5e1db1ab28", null ]
+    ] ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
@@ -83,6 +86,7 @@ var namespacealpaka =
     [ "EventGenericThreads", "classalpaka_1_1EventGenericThreads.html", "classalpaka_1_1EventGenericThreads" ],
     [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],
     [ "IGenericThreadsQueue", "classalpaka_1_1IGenericThreadsQueue.html", "classalpaka_1_1IGenericThreadsQueue" ],
+    [ "InterfaceTag", "structalpaka_1_1InterfaceTag.html", null ],
     [ "IntrinsicCpu", "classalpaka_1_1IntrinsicCpu.html", null ],
     [ "IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", null ],
     [ "IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", null ],

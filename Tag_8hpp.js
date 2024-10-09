@@ -1,5 +1,6 @@
 var Tag_8hpp =
 [
+    [ "InterfaceTag", "structalpaka_1_1InterfaceTag.html", null ],
     [ "TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", "structalpaka_1_1TagCpuOmp2Blocks" ],
     [ "TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", "structalpaka_1_1TagCpuOmp2Threads" ],
     [ "TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", "structalpaka_1_1TagCpuSerial" ],
@@ -15,5 +16,6 @@ var Tag_8hpp =
     [ "AccTags", "Tag_8hpp.html#a5b85a9de90c7f79392c2914e648d74e0", null ],
     [ "AccToTag", "Tag_8hpp.html#af5f5caddacfd0c5a7584d88a0a6c85dc", null ],
     [ "TagToAcc", "Tag_8hpp.html#affc8849a6a5b20ced64d3f1248e24a0a", null ],
-    [ "accMatchesTags", "Tag_8hpp.html#ac7dc6f9301a777fe3a25be17ac1d60b1", null ]
+    [ "accMatchesTags", "Tag_8hpp.html#ac7dc6f9301a777fe3a25be17ac1d60b1", null ],
+    [ "Tag", "Tag_8hpp.html#a8c35a02a6ace6a1b5945ba5e1db1ab28", null ]
 ];

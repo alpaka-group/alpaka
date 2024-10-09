@@ -135,13 +135,13 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">template</span>&lt;<a class="code" href="namespacealpaka_1_1concepts.html#a8c35a02a6ace6a1b5945ba5e1db1ab28">concepts::Tag</a> TTag, <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">class </span>TaskKernelGenericSycl;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    //! The SYCL accelerator.</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">    //!</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">    //! This accelerator allows parallel kernel execution on SYCL devices.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">class </span>AccGenericSycl</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        : <span class="keyword">public</span> WorkDivGenericSycl&lt;TDim, TIdx&gt;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        , <span class="keyword">public</span> gb::IdxGbGenericSycl&lt;TDim, TIdx&gt;</div>
@@ -192,26 +192,26 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    //! The SYCL accelerator type trait specialization.</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">struct </span>AccType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">using</span> type = AccGenericSycl&lt;TTag, TDim, TIdx&gt;;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    };</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">    //! The SYCL single thread accelerator type trait specialization.</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keyword">struct </span>IsSingleThreadAcc&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt; : std::false_type</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    {</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    };</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">    //! The SYCL multi thread accelerator type trait specialization.</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">struct </span>IsMultiThreadAcc&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt; : std::true_type</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    {</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    };</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">    //! The SYCL accelerator device properties get trait specialization.</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">struct </span>GetAccDevProps&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a3fa7ad40eda1f1fc3b26d8945ff882a0">getAccDevProps</a>(DevGenericSycl&lt;TTag&gt; <span class="keyword">const</span>&amp; dev) -&gt; AccDevProps&lt;TDim, TIdx&gt;</div>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    };</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    //! The SYCL accelerator name trait specialization.</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">struct </span>GetAccName&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">getAccName</a>() -&gt; std::string</div>
@@ -259,48 +259,54 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    };</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    //! The SYCL accelerator device type trait specialization.</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">struct </span>DevType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    {</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keyword">using</span> type = DevGenericSycl&lt;TTag&gt;;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    };</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">    //! The SYCL accelerator dimension getter trait specialization.</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keyword">struct </span>DimType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keyword">using</span> type = TDim;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    };</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    //! The SYCL accelerator execution task type trait specialization.</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TWorkDiv, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">struct </span>CreateTaskKernel&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">return</span> TaskKernelGenericSycl&lt;TTag, AccGenericSycl&lt;TTag, TDim, TIdx&gt;, TDim, TIdx, TKernelFnObj, TArgs...&gt;{</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                workDiv,</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                kernelFnObj,</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                std::forward&lt;TArgs&gt;(args)...};</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    };</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    //! The SYCL execution task platform type trait specialization.</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">struct </span>PlatformType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keyword">using</span> type = PlatformGenericSycl&lt;TTag&gt;;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    };</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">    //! The SYCL accelerator idx type trait specialization.</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">struct </span>IdxType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keyword">using</span> type = TIdx;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    };</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <a class="code" href="namespacealpaka_1_1concepts.html#a8c35a02a6ace6a1b5945ba5e1db1ab28">concepts::Tag</a> TTag,</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keyword">typename</span> TDim,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keyword">typename</span> TIdx,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="keyword">typename</span> TWorkDiv,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keyword">typename</span> TKernelFnObj,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keyword">struct </span>CreateTaskKernel&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keywordflow">return</span> TaskKernelGenericSycl&lt;TTag, AccGenericSycl&lt;TTag, TDim, TIdx&gt;, TDim, TIdx, TKernelFnObj, TArgs...&gt;{</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                workDiv,</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                kernelFnObj,</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                std::forward&lt;TArgs&gt;(args)...};</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    };</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">    //! The SYCL execution task platform type trait specialization.</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">struct </span>PlatformType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">using</span> type = PlatformGenericSycl&lt;TTag&gt;;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    };</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">    //! The SYCL accelerator idx type trait specialization.</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;concepts::Tag TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">struct </span>IdxType&lt;AccGenericSycl&lt;TTag, TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keyword">using</span> type = TIdx;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    };</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAtomicGenericSycl_8hpp_html"><div class="ttname"><a href="AtomicGenericSycl_8hpp.html">AtomicGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aAtomicHierarchy_8hpp_html"><div class="ttname"><a href="AtomicHierarchy_8hpp.html">AtomicHierarchy.hpp</a></div></div>
 <div class="ttc" id="aBlockSharedMemDynGenericSycl_8hpp_html"><div class="ttname"><a href="BlockSharedMemDynGenericSycl_8hpp.html">BlockSharedMemDynGenericSycl.hpp</a></div></div>
@@ -327,6 +333,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1concepts_html_a8c35a02a6ace6a1b5945ba5e1db1ab28"><div class="ttname"><a href="namespacealpaka_1_1concepts.html#a8c35a02a6ace6a1b5945ba5e1db1ab28">alpaka::concepts::Tag</a></div><div class="ttdeci">concept Tag</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00045">Tag.hpp:45</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01263">Traits.hpp:1263</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00111">AccCpuOmp2Blocks.hpp:112</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00048">AccCpuOmp2Blocks.hpp:49</a></div></div>
@@ -343,7 +350,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGenericSycl_8hpp.html">AccGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Mon Oct 7 2024 08:46:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 08:34:11 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
