@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1math_1_1MathStdLib.html":[3,0,0,9,92],
 "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html":[3,0,0,9,93],
 "classalpaka_1_1math_1_1MaxStdLib.html":[3,0,0,9,94],
 "classalpaka_1_1math_1_1MaxUniformCudaHipBuiltIn.html":[3,0,0,9,95],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "core_2Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6":[4,0,0,0,3,9,0],
 "core_2Common_8hpp_source.html":[4,0,0,0,3,9],
 "cpu_2Copy_8hpp.html":[4,0,0,0,15,1,0,0],
-"cpu_2Copy_8hpp_source.html":[4,0,0,0,15,1,0,0],
-"dev_2Traits_8hpp.html":[4,0,0,0,4,10]
+"cpu_2Copy_8hpp_source.html":[4,0,0,0,15,1,0,0]
 };

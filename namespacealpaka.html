@@ -999,6 +999,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e4d90e1f7462d76a92f07f09a263d93"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e4d90e1f7462d76a92f07f09a263d93">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\n&quot;, std::string const &amp;rowPrefix=&quot;[&quot;, std::string const &amp;rowSuffix=&quot;]&quot;) -&gt; void</td></tr>
 <tr class="memdesc:a6e4d90e1f7462d76a92f07f09a263d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given queue.  <a href="namespacealpaka.html#a6e4d90e1f7462d76a92f07f09a263d93">More...</a><br /></td></tr>
 <tr class="separator:a6e4d90e1f7462d76a92f07f09a263d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memTemplParams" colspan="2">template&lt;typename TTuple &gt; </td></tr>
+<tr class="memitem:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aefe36f8ea050ba72ad6756ed3083c5cd">printTagNames</a> ()</td></tr>
+<tr class="memdesc:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to print the names of each tag in the given tuple of tags.  <a href="namespacealpaka.html#aefe36f8ea050ba72ad6756ed3083c5cd">More...</a><br /></td></tr>
+<tr class="separator:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a41ac82cec34e8e887aaa4d8e4e064943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent on the accelerator.  <a href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">More...</a><br /></td></tr>
@@ -1216,7 +1220,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 <p>list of all available tags </p>
 
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00079">79</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00080">80</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -1242,7 +1246,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00066">66</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00067">67</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -1799,7 +1803,7 @@ template&lt;concepts::Tag TTag, typename TDim , typename TIdx &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00073">73</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00074">74</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -6944,6 +6948,35 @@ template&lt;typename TView &gt; </div>
 
 </div>
 </div>
+<a id="aefe36f8ea050ba72ad6756ed3083c5cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe36f8ea050ba72ad6756ed3083c5cd">&#9670;&nbsp;</a></span>printTagNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TTuple &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void alpaka::printTagNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to print the names of each tag in the given tuple of tags. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TTuple</td><td>is the type of the tuple of tags </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00095">95</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a41ac82cec34e8e887aaa4d8e4e064943"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41ac82cec34e8e887aaa4d8e4e064943">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -8147,7 +8180,7 @@ template&lt;typename TAcc , concepts::Tag... TTag&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00076">76</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00077">77</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -8550,7 +8583,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Oct 9 2024 08:34:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 14:28:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

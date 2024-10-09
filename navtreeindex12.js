@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1ConceptMathAtanh.html":[3,0,0,9,31],
+"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,9,32],
 "structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,9,33],
 "structalpaka_1_1math_1_1ConceptMathConj.html":[3,0,0,9,34],
 "structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1math_1_1trait_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enab2f89028e4b864334a758b6f5246154fe.html#a87fa59d2794be947e83ac1c157349d1d":[3,0,0,9,0,107,0],
 "structalpaka_1_1memory__scope_1_1Block.html":[3,0,0,10,0],
 "structalpaka_1_1memory__scope_1_1Device.html":[3,0,0,10,1],
-"structalpaka_1_1memory__scope_1_1Grid.html":[3,0,0,10,2],
-"structalpaka_1_1meta_1_1Contains.html":[3,0,0,11,1],
-"structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html":[3,0,0,11,2]
+"structalpaka_1_1memory__scope_1_1Grid.html":[3,0,0,10,2]
 };

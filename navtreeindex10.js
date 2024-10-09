@@ -1,13 +1,15 @@
 var NAVTREEINDEX10 =
 {
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,1,20,0],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,23,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,1,19],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,1,19,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,22,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,25],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html#a1752844dcbe0855d0965ded8720f12a9":[3,0,1,22,0],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,25],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html#a1752844dcbe0855d0965ded8720f12a9":[3,0,25,0],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html#a1752844dcbe0855d0965ded8720f12a9":[3,0,1,22,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01alpaka_1_1hierarch049c63322bc711b14738c82138def244.html":[3,0,1,21],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01alpaka_1_1hierarch049c63322bc711b14738c82138def244.html":[3,0,24],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01alpaka_1_1hierarch049c63322bc711b14738c82138def244.html#af71e1b3ebd54660ebcdcae8c57a71be6":[3,0,1,21,0],
@@ -139,8 +141,8 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1AtomicAnd.html":[3,0,0,30],
 "structalpaka_1_1AtomicAnd.html#aa85005d679f8e05433faa9ed834615a7":[3,0,0,30,0],
 "structalpaka_1_1AtomicCas.html":[3,0,0,32],
-"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,32,1],
 "structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,32,0],
+"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,32,1],
 "structalpaka_1_1AtomicDec.html":[3,0,0,33],
 "structalpaka_1_1AtomicDec.html#aebc09cbda5fe57cd1c04e9416f6f6ebb":[3,0,0,33,0],
 "structalpaka_1_1AtomicExch.html":[3,0,0,34],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,1,1,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,1,1,1],
-"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html#a05ac5d22cd7bf5947c87848005ff242c":[3,0,0,1,1,1,0],
-"structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html":[3,0,0,1,1,2],
-"structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html":[3,0,0,1,1,3]
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html#a05ac5d22cd7bf5947c87848005ff242c":[3,0,0,1,1,1,0]
 };

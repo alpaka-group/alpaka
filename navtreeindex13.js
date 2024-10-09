@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1meta_1_1Contains.html":[3,0,0,11,1],
+"structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html":[3,0,0,11,2],
 "structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html#acf79b9efc38d0c09275291563e5fd99f":[3,0,0,11,2,0],
 "structalpaka_1_1meta_1_1DependentFalseType.html":[3,0,0,11,3],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,11,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCpu_01_4.html#a242ec7e175b2a222e903c184f1e8254d":[3,0,0,14,2,15,0],
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html":[3,0,0,14,2,16],
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html#ad8f5a926d75d3ca52062df43a1f91a26":[3,0,0,14,2,16,0],
-"structalpaka_1_1trait_1_1AccToTag.html":[3,0,0,15,1],
-"structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,2],
-"structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a1ceee62aa9fbb4e7ab98a91c300315e1":[3,0,0,15,2,0]
+"structalpaka_1_1trait_1_1AccToTag.html":[3,0,0,15,1]
 };

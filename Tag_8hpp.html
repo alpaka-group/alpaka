@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('Tag_8hpp.html',''); initResizable(); }
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Tag.hpp File Reference</div>  </div>
@@ -95,6 +96,7 @@ $(document).ready(function(){initNavTree('Tag_8hpp.html',''); initResizable(); }
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="Tag_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -156,6 +158,13 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:affc8849a6a5b20ced64d3f1248e24a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps a tag type to an acc type  <a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">More...</a><br /></td></tr>
 <tr class="separator:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memTemplParams" colspan="2">template&lt;typename TTuple &gt; </td></tr>
+<tr class="memitem:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aefe36f8ea050ba72ad6756ed3083c5cd">alpaka::printTagNames</a> ()</td></tr>
+<tr class="memdesc:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to print the names of each tag in the given tuple of tags.  <a href="namespacealpaka.html#aefe36f8ea050ba72ad6756ed3083c5cd">More...</a><br /></td></tr>
+<tr class="separator:aefe36f8ea050ba72ad6756ed3083c5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , concepts::Tag... TTag&gt; </td></tr>
@@ -188,9 +197,9 @@ Variables</h2></td></tr>
 <div class="line">            return #tag_name;                                                                                         \</div>
 <div class="line">        }                                                                                                             \</div>
 <div class="line">    }</div>
-<div class="ttc" id="astructalpaka_1_1InterfaceTag_html"><div class="ttname"><a href="structalpaka_1_1InterfaceTag.html">alpaka::InterfaceTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00014">Tag.hpp:15</a></div></div>
+<div class="ttc" id="astructalpaka_1_1InterfaceTag_html"><div class="ttname"><a href="structalpaka_1_1InterfaceTag.html">alpaka::InterfaceTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00015">Tag.hpp:16</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00019">19</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00020">20</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
 
 </div>
 </div>
@@ -200,7 +209,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="Tag_8hpp.html">Tag.hpp</a></li>
-    <li class="footer">Generated on Wed Oct 9 2024 08:34:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Oct 9 2024 14:28:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

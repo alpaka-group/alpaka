@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html":[3,0,0,1,1,2],
+"structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html":[3,0,0,1,1,3],
 "structalpaka_1_1core_1_1detail_1_1ThreadPool.html":[3,0,0,1,1,5],
 "structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a049fef3549faf571737621ed9f86322d":[3,0,0,1,1,5,0],
 "structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a072fecfc4770accac092afbda3cad42a":[3,0,0,1,1,5,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,9,27],
 "structalpaka_1_1math_1_1ConceptMathAsinh.html":[3,0,0,9,28],
 "structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,9,29],
-"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,9,30],
-"structalpaka_1_1math_1_1ConceptMathAtanh.html":[3,0,0,9,31],
-"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,9,32]
+"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,9,30]
 };

@@ -291,6 +291,7 @@ var namespacealpaka =
     [ "popcount", "namespacealpaka.html#aac5de33521502710a7ca0a2b2cfc02e1", null ],
     [ "popcount", "namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed", null ],
     [ "print", "namespacealpaka.html#a6e4d90e1f7462d76a92f07f09a263d93", null ],
+    [ "printTagNames", "namespacealpaka.html#aefe36f8ea050ba72ad6756ed3083c5cd", null ],
     [ "reset", "namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943", null ],
     [ "reverseVec", "namespacealpaka.html#a734094d00febe551f0e85310a3faf1ec", null ],
     [ "subDivideGridElems", "namespacealpaka.html#aeeb203c11f29a926f5f2739bd9b7f704", null ],
