@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html":[3,0,23],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,1,20,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,23,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,1,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,1,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,1,1,0,0],
-"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,1,1,1],
-"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html#a05ac5d22cd7bf5947c87848005ff242c":[3,0,0,1,1,1,0]
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,1,1,1]
 };
