@@ -18,11 +18,11 @@
 
 #    if !defined(ALPAKA_HOST_ONLY)
 
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 #            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #        endif
 
-#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
@@ -79,7 +79,7 @@ namespace alpaka::trait
 
                 // Emulating atomics with atomicCAS is mentioned in the programming guide too.
                 // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
-#        if BOOST_LANG_HIP
+#        if ALPAKA_LANG_HIP
 #            if __has_builtin(__hip_atomic_load)
                 EmulatedType old{__hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
 #            else

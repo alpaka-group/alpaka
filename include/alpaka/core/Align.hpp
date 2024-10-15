@@ -49,7 +49,7 @@ namespace alpaka::core
         struct OptimalAlignment
             : std::integral_constant<
                   std::size_t,
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
                   // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger
                   // than 128[-Wattributes]".
                   (TsizeBytes > 64) ? 128 :

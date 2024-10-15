@@ -29,7 +29,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wunused-lambda-capture"
 #        pragma clang diagnostic ignored "-Wunused-parameter"
@@ -238,7 +238,7 @@ namespace alpaka
 
 } // namespace alpaka
 
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic pop
 #    endif
 

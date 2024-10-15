@@ -56,8 +56,8 @@ namespace alpaka
         //! Value constructor.
         //! This constructor is only available if the number of parameters matches the vector idx.
         ALPAKA_NO_HOST_ACC_WARNING
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
-    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC >= ALPAKA_VERSION_NUMBER(11, 3, 0)                                           \
+    && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 4, 0)
         // This constructor tries to avoid SFINAE, which crashes nvcc 11.3. We also need to have a first
         // argument, so an unconstrained ctor with forwarding references does not hijack the compiler provided
         // copy-ctor.
@@ -82,8 +82,8 @@ namespace alpaka
         //! Generator constructor.
         //! Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to
         //! TDim - 1 (inclusive).
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
-    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC >= ALPAKA_VERSION_NUMBER(11, 3, 0)                                           \
+    && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 4, 0)
         template<typename F>
         ALPAKA_FN_HOST_ACC constexpr explicit Vec(
             F&& generator,
@@ -287,7 +287,7 @@ namespace alpaka
         }
 
 // suppress strange warning produced by nvcc+MSVC in release mode
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4702) // unreachable code
 #endif
@@ -297,7 +297,7 @@ namespace alpaka
         {
             return foldrAll(std::multiplies<TVal>{}, TVal{1});
         }
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(pop)
 #endif
         //! \return The sum of all values.
@@ -373,7 +373,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator+(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -390,17 +390,17 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator-(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
 #endif
             {
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_suppress = unsigned_compare_with_zero
 #endif
                 for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_default = unsigned_compare_with_zero
 #endif
                     r[i] = p[i] - q[i];
@@ -413,7 +413,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator*(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -428,17 +428,17 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC friend constexpr auto operator==(Vec const& a, Vec const& b) -> bool
         {
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
 #endif
             {
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_suppress = unsigned_compare_with_zero
 #endif
                 for(typename TDim::value_type i(0); i < TDim::value; ++i)
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_default = unsigned_compare_with_zero
 #endif
                 {
@@ -460,7 +460,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator<(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -477,7 +477,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator<=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -494,7 +494,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator>(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -511,7 +511,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator>=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -528,7 +528,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator&&(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -545,7 +545,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator||(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
@@ -560,17 +560,17 @@ namespace alpaka
         ALPAKA_FN_HOST friend constexpr auto operator<<(std::ostream& os, Vec const& v) -> std::ostream&
         {
             os << "(";
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
             if(TDim::value > 0)
 #else
             if constexpr(TDim::value > 0)
 #endif
             {
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_suppress = unsigned_compare_with_zero
 #endif
                 for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
 #    pragma diag_default = unsigned_compare_with_zero
 #endif
                 {
@@ -606,7 +606,7 @@ namespace alpaka
     ALPAKA_FN_HOST_ACC constexpr auto toArray(Vec<TDim, TVal> const& v) -> std::array<TVal, TDim::value>
     {
         std::array<TVal, TDim::value> a{};
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
         if(TDim::value > 0)
 #else
         if constexpr(TDim::value > 0)
@@ -628,7 +628,7 @@ namespace alpaka
     ALPAKA_FN_HOST_ACC constexpr auto elementwise_min(Vec<TDim, TVal> const& p, Vecs const&... qs) -> Vec<TDim, TVal>
     {
         Vec<TDim, TVal> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
         if(TDim::value > 0)
 #else
         if constexpr(TDim::value > 0)
@@ -650,7 +650,7 @@ namespace alpaka
     ALPAKA_FN_HOST_ACC constexpr auto elementwise_max(Vec<TDim, TVal> const& p, Vecs const&... qs) -> Vec<TDim, TVal>
     {
         Vec<TDim, TVal> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
         if(TDim::value > 0)
 #else
         if constexpr(TDim::value > 0)
@@ -714,7 +714,7 @@ namespace alpaka
                 else
                 {
                     Vec<TDim, TValNew> r;
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#if ALPAKA_COMP_NVCC && ALPAKA_COMP_NVCC < ALPAKA_VERSION_NUMBER(11, 3, 0)
                     if(TDim::value > 0)
 #else
                     if constexpr(TDim::value > 0)

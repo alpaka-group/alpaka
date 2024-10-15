@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <boost/predef.h>
+#include <alpaka/core/BoostPredef.hpp>
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -17,7 +17,7 @@ namespace alpaka
     {
         // Names
         static constexpr char name[] = "Hip";
-        static constexpr auto version = BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0);
+        static constexpr auto version = ALPAKA_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0);
 
         // Types
         using DeviceAttr_t = ::hipDeviceAttribute_t;
@@ -207,12 +207,12 @@ namespace alpaka
         template<typename T>
         static inline Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)
         {
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wconditionally-supported"
 #    endif
             return ::hipFuncGetAttributes(attr, reinterpret_cast<void const*>(func));
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic pop
 #    endif
         }

@@ -21,14 +21,14 @@ class RandTestKernel
         {
             auto dist = alpaka::rand::distribution::createNormalReal<float>(acc);
             [[maybe_unused]] auto const r = dist(gen);
-            if constexpr(!BOOST_ARCH_PTX)
+            if constexpr(!ALPAKA_ARCH_PTX)
                 ALPAKA_CHECK(*success, std::isfinite(r));
         }
 
         {
             auto dist = alpaka::rand::distribution::createNormalReal<double>(acc);
             [[maybe_unused]] auto const r = dist(gen);
-            if constexpr(!BOOST_ARCH_PTX)
+            if constexpr(!ALPAKA_ARCH_PTX)
                 ALPAKA_CHECK(*success, std::isfinite(r));
         }
         {
@@ -114,7 +114,7 @@ TEMPLATE_LIST_TEST_CASE("defaultRandomGeneratorIsTriviallyCopyable", "[rand]", a
     // This causes alpaka rand state for the HIP accelerator and those versions to also not be trivially copyable.
     // It was fixed on AMD side in https://github.com/ROCmSoftwarePlatform/rocRAND/pull/252.
     // Thus we guard the test to skip HIP accelerator and older HIP versions.
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (BOOST_LANG_HIP < BOOST_VERSION_NUMBER(5, 2, 0))
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (ALPAKA_LANG_HIP < ALPAKA_VERSION_NUMBER(5, 2, 0))
     if constexpr(!IsAccHIP<Acc>::value)
         STATIC_REQUIRE(isEngineTriviallyCopyable);
 #else

@@ -238,7 +238,7 @@ namespace alpaka::trait
 
 #    include <cuda.h>
 
-#    if !BOOST_LANG_CUDA && !defined(ALPAKA_HOST_ONLY)
+#    if !ALPAKA_LANG_CUDA && !defined(ALPAKA_HOST_ONLY)
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #    endif
 
@@ -478,7 +478,7 @@ namespace alpaka::trait
 
 #    include <hip/hip_runtime.h>
 
-#    if !BOOST_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
+#    if !ALPAKA_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 

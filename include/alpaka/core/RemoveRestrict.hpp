@@ -15,7 +15,7 @@ namespace alpaka
         using type = T;
     };
 
-#if BOOST_COMP_MSVC
+#if ALPAKA_COMP_MSVC
     template<typename T>
     struct remove_restrict<T* __restrict>
     {

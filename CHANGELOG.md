@@ -213,7 +213,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - Starting from HIP 5.4.0, the HIP back-end internally uses `hipLaunchHostFunc` instead of a work-around #1883
   - Adapted to API changes in CUDA 11.7's stream memory operations #1878 #1919 
   - Shortened mangled CUDA kernel names #1795
-  - CUDA runtime versions checks are now based upon `CUDART_VERSION` instead of `BOOST_LANG_CUDA` #1777
+  - CUDA runtime versions checks are now based upon `CUDART_VERSION` instead of `ALPAKA_LANG_CUDA` #1777
   - Because of a HIP performance regression the HIP back-end now uses the emulated `atomicAdd(float)` on the `Threads` hierarchy level #1771
   - Changed look-up of built-in and emulated atomic functions for the CUDA and HIP back-ends #1768
   - The HIP back-end now uses the built-in `atomicAdd(double)` #1767
@@ -455,7 +455,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Renamed namespace `traits` to `trait` #1651
 - alpaka now enforces that kernel functions are trivially copyable #1654
 - Replaced the internal `hipLaunchKernelGGL()` call with a `kernel<<<...>>>()` call #1663
-- `BOOST_LANG_HIP` will now report a (somewhat) correct version number (for internal consumption) #1664
+- `ALPAKA_LANG_HIP` will now report a (somewhat) correct version number (for internal consumption) #1664
 - Refactored `Queue` implementation for CUDA and HIP to reduce code duplication #1667
 - `core/CudaHipMath.hpp` was merged back into `math/MathUniformCudaHipBuiltIn.hpp` #1668
 - The OpenMP 5 memory fence no longer explicitly sets the `acq_rel` memory order clause since it is the default #1673
@@ -674,7 +674,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fix Intel compiler detection #1070
 - CMake: build type CXX flag not passed to nvcc #1073
 - work around Intel ICE (Internal Compiler Error) when using std::decay on empty template parameter packs #1074
-- BoostPredef.hpp: Add redefinition of BOOST_COMP_PGI #1082
+- BoostPredef.hpp: Add redefinition of ALPAKA_COMP_PGI #1082
 - fix min/max return type deduction #1085
 - CMake: fix boost fiber linking #1088
 - fix HIP-clang compile #1107
@@ -859,7 +859,7 @@ The script only works if you used the full namespace `alpaka::*` for alpaka func
   - This use case can now be handled with the support for external CPU queues as can bee seen in the example QueueCpuOmp2CollectiveImpl
 - previously it was possible to have kernels return values even though they were always ignored. Now kernels are checked to always return void
 - renamed all files with *Stl suffix to *StdLib
-- renamed BOOST_ARCH_CUDA_DEVICE to BOOST_ARCH_PTX
+- renamed ALPAKA_ARCH_CUDA_DEVICE to ALPAKA_ARCH_PTX
 - executors have been renamed due to the upcoming standard C++ feature with a different meaning. All files within alpaka/exec/ have been moved to alpaka/kernel/ and the files and classes have been renamed from Exec* to TaskKernel*. This should not affect users of alpaka but will affect extensions.
 
 ## [0.3.6] - 2020-01-06

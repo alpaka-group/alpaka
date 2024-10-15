@@ -92,7 +92,7 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto computeNativePtr()
         {
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
             // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
 #    pragma GCC diagnostic ignored "-Wcast-align"
@@ -100,7 +100,7 @@ namespace alpaka
             return reinterpret_cast<TElem*>(
                 reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(m_viewParentView))
                 + (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum());
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
         }

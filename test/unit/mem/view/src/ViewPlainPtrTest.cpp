@@ -16,7 +16,7 @@
 #include <tuple>
 #include <type_traits>
 
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 // "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
 #    pragma GCC diagnostic ignored "-Wcast-align"
@@ -91,7 +91,7 @@ namespace alpaka::test
         CHECK(alpaka::getPtrNative(viewMove) == nativePtr2);
     }
 } // namespace alpaka::test
-#if BOOST_COMP_GNUC
+#if ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
 
