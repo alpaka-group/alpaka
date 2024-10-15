@@ -133,5 +133,5 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
 
     # run tests each time if a CPU backend is used
     for job in job_matrix:
-        if job[DEVICE_COMPILER][NAME] in [GCC, CLANG]:
+        if job[DEVICE_COMPILER][NAME] in [GCC, CLANG, ICPX]:
             job[JOB_EXECUTION_TYPE] = (JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME)
