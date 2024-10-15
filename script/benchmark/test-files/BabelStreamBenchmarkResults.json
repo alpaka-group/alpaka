@@ -1,0 +1,611 @@
+[
+    {
+        "id_test": "2f0c9cddfe598198985975372af01dd7",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Init",
+        "Bandwidth(GB/s)": "6.2681",
+        "MinTime(s)": "0.0013383",
+        "MaxTime(s)": "0.0013383",
+        "AvgTime(s)": "0.0013383",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "d4394804f2b1164c2e9f7e9d20cadd16",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Copy",
+        "Bandwidth(GB/s)": "13.683",
+        "MinTime(s)": "0.00061305",
+        "MaxTime(s)": "0.00061305",
+        "AvgTime(s)": "0.00061305",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "a100fcf101d3c95311f1d17d08c78816",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Mult",
+        "Bandwidth(GB/s)": "19.777",
+        "MinTime(s)": "0.00042416",
+        "MaxTime(s)": "0.00042416",
+        "AvgTime(s)": "0.00042416",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "f6dff215d76eb900604980d34dbba215",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Add",
+        "Bandwidth(GB/s)": "19.95",
+        "MinTime(s)": "0.00063073",
+        "MaxTime(s)": "0.00063073",
+        "AvgTime(s)": "0.00063073",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "352e83d09960eaf67aa1c413e42ac7da",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Triad",
+        "Bandwidth(GB/s)": "28.162",
+        "MinTime(s)": "0.0004468",
+        "MaxTime(s)": "0.0004468",
+        "AvgTime(s)": "0.0004468",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "97a416c48ab2d41a35b774918653f901",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Init",
+        "Bandwidth(GB/s)": "0.0034765",
+        "MinTime(s)": "2.413",
+        "MaxTime(s)": "2.413",
+        "AvgTime(s)": "2.413",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "6988c17657ef9109d0d10ce4c7c43298",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Copy",
+        "Bandwidth(GB/s)": "0.0034368",
+        "MinTime(s)": "2.4408",
+        "MaxTime(s)": "2.4408",
+        "AvgTime(s)": "2.4408",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "af8a1e72ab7579033ff96c53ea42a861",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Mult",
+        "Bandwidth(GB/s)": "0.0039335",
+        "MinTime(s)": "2.1326",
+        "MaxTime(s)": "2.1326",
+        "AvgTime(s)": "2.1326",
+        "DataUsage(MB)": "8.3886",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "b1ba5e6100a47081c01beae289465270",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Add",
+        "Bandwidth(GB/s)": "0.0068308",
+        "MinTime(s)": "1.8421",
+        "MaxTime(s)": "1.8421",
+        "AvgTime(s)": "1.8421",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "3b1096f5b94d2caee9a9a2c46bb9fb14",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "single",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Triad",
+        "Bandwidth(GB/s)": "0.0061349",
+        "MinTime(s)": "2.051",
+        "MaxTime(s)": "2.051",
+        "AvgTime(s)": "2.051",
+        "DataUsage(MB)": "12.583",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "single",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "0b23ac52527a0766ccacb45ecda26fc4",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Init",
+        "Bandwidth(GB/s)": "15.833",
+        "MinTime(s)": "0.0010596",
+        "MaxTime(s)": "0.0010596",
+        "AvgTime(s)": "0.0010596",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "b038ccb35ee809cd544a5826071612ef",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Copy",
+        "Bandwidth(GB/s)": "30.944",
+        "MinTime(s)": "0.00054218",
+        "MaxTime(s)": "0.00054218",
+        "AvgTime(s)": "0.00054218",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "07c5a47ab273c89e6881bb37d3951342",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Mult",
+        "Bandwidth(GB/s)": "38.664",
+        "MinTime(s)": "0.00043392",
+        "MaxTime(s)": "0.00043392",
+        "AvgTime(s)": "0.00043392",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "6d5dccbc905e884417fe6d327a3de227",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Add",
+        "Bandwidth(GB/s)": "32.626",
+        "MinTime(s)": "0.00077134",
+        "MaxTime(s)": "0.00077134",
+        "AvgTime(s)": "0.00077134",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "e47ee3d587b9c613d9eb87044cefc34b",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Triad",
+        "Bandwidth(GB/s)": "32.052",
+        "MinTime(s)": "0.00078516",
+        "MaxTime(s)": "0.00078516",
+        "AvgTime(s)": "0.00078516",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (1048576), blockThreadExtent: (1), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "3a2bb0e1d0679c071c0f1e95c2932b3c",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Init",
+        "Bandwidth(GB/s)": "0.010841",
+        "MinTime(s)": "1.5476",
+        "MaxTime(s)": "1.5476",
+        "AvgTime(s)": "1.5476",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "ee157f36d915557bcb5fda1d78ac189f",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Copy",
+        "Bandwidth(GB/s)": "0.0078898",
+        "MinTime(s)": "2.1265",
+        "MaxTime(s)": "2.1265",
+        "AvgTime(s)": "2.1265",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "68967e4349065afb76f7fb68f2ae55ed",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Mult",
+        "Bandwidth(GB/s)": "0.0076437",
+        "MinTime(s)": "2.1949",
+        "MaxTime(s)": "2.1949",
+        "AvgTime(s)": "2.1949",
+        "DataUsage(MB)": "16.777",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "2878be3fd6f75c8359936d30a5a9704f",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Add",
+        "Bandwidth(GB/s)": "0.01712",
+        "MinTime(s)": "1.47",
+        "MaxTime(s)": "1.47",
+        "AvgTime(s)": "1.47",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "b6a2c2062d05783c69c56e500c6dc9b0",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "Triad",
+        "Bandwidth(GB/s)": "0.010144",
+        "MinTime(s)": "2.4808",
+        "MaxTime(s)": "2.4808",
+        "AvgTime(s)": "2.4808",
+        "DataUsage(MB)": "25.166",
+        "WorkDiv": "{gridBlockExtent: (65536), blockThreadExtent: (16), threadElemExtent: (1)}",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    },
+    {
+        "id_test": "f0edcf6562e64167880ae4329592da4e",
+        "meta": {
+            "creator": "unknown",
+            "datetime": "unknown",
+            "hostname": "unknown",
+            "moreinterestingmetadata": "unknown"
+        },
+        "env": {
+            "NumberOfRuns": "2",
+            "Precision": "double",
+            "DataSize(items)": "1048576",
+            "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+            "kind": "Babelstream"
+        },
+        "name": "All",
+        "Bandwidth(GB/s)": "tests",
+        "MinTime(s)": "passed",
+        "MaxTime(s)": "(12",
+        "AvgTime(s)": "assertions",
+        "DataUsage(MB)": "in",
+        "WorkDiv": "",
+        "AcceleratorType": "",
+        "NumberOfRuns": "2",
+        "Precision": "double",
+        "DataSize(items)": "1048576",
+        "DeviceName": "13th Gen Intel(R) Core(TM) i7-1360P",
+        "kind": "Babelstream"
+    }
+]
