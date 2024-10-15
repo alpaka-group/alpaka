@@ -11,6 +11,7 @@
 #include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"
 #include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/grid/GridSyncGpuCudaHip.hpp"
 #include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"
 #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
 #include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
@@ -40,7 +41,14 @@
 
 namespace alpaka
 {
-    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<
+        typename TApi,
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        bool TCooperative,
+        typename... TArgs>
     class TaskKernelGpuUniformCudaHipRt;
 
     //! The GPU CUDA accelerator.
@@ -59,6 +67,7 @@ namespace alpaka
         , public BlockSharedMemDynUniformCudaHipBuiltIn
         , public BlockSharedMemStUniformCudaHipBuiltIn
         , public BlockSyncUniformCudaHipBuiltIn
+        , public GridSyncCudaHipBuiltIn
         , public IntrinsicUniformCudaHipBuiltIn
         , public MemFenceUniformCudaHipBuiltIn
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -161,6 +170,12 @@ namespace alpaka
                     TApi::deviceAttributeMaxSharedMemoryPerBlock,
                     dev.getNativeHandle()));
 
+                int cooperativeLaunch = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::deviceGetAttribute(
+                    &cooperativeLaunch,
+                    TApi::deviceAttributeCooperativeLaunch,
+                    dev.getNativeHandle()));
+
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
                         // m_gridBlockExtentMax
@@ -184,7 +199,9 @@ namespace alpaka
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(sharedMemSizeBytes),
                         // m_globalMemSizeBytes
-                        getMemBytes(dev)};
+                        getMemBytes(dev),
+                        // m_cooperativeLaunch
+                        static_cast<bool>(cooperativeLaunch)};
 
 #    else
                 typename TApi::DeviceProp_t properties;
@@ -213,7 +230,9 @@ namespace alpaka
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(properties.sharedMemPerBlock),
                         // m_globalMemSizeBytes
-                        getMemBytes(dev)};
+                        getMemBytes(dev),
+                        // m_cooperativeLaunch
+                        static_cast<bool>(properties.cooperativeLaunch)};
 #    endif
             }
         };
@@ -284,6 +303,33 @@ namespace alpaka
                     TDim,
                     TIdx,
                     TKernelFnObj,
+                    false,
+                    TArgs...>(workDiv, kernelFnObj, std::forward<TArgs>(args)...);
+            }
+        };
+
+        //! The GPU CUDA accelerator execution cooperative task type trait specialization.
+        template<
+            typename TApi,
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskCooperativeKernel<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        {
+            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+                TWorkDiv const& workDiv,
+                TKernelFnObj const& kernelFnObj,
+                TArgs&&... args)
+            {
+                return TaskKernelGpuUniformCudaHipRt<
+                    TApi,
+                    AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
+                    TDim,
+                    TIdx,
+                    TKernelFnObj,
+                    true,
                     TArgs...>(workDiv, kernelFnObj, std::forward<TArgs>(args)...);
             }
         };
