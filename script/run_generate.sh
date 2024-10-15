@@ -21,15 +21,24 @@ echo_green "<SCRIPT: run_generate>"
 #
 # @param $1 cmake/environment variable name
 #
-# @result if $1 exists cmake variable definition else nothing is returned
+# @result if $1 exists cmake variable definition else nothing is returned. If variable is not
+# defined, the script will be exited.
 #
 # @code{.bash}
 # FOO=ON
+# BAR=""
 # echo "$(env2cmake FOO)" # returns "-DFOO=ON"
 # echo "$(env2cmake BAR)" # returns nothing
+# echo "$(env2cmake FOOBAR)" # exit 1
 # @endcode
 function env2cmake()
 {
+    # check if variable is definded
+    if [ -z ${!1+x} ]; then 
+        kill -SIGTERM $$
+    fi
+
+    # return only content of variable is not empty
     if [ ! -z "${!1}" ] ; then
         echo -n "-D$1=${!1}"
     fi
