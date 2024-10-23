@@ -176,7 +176,14 @@ TEST_CASE("basicVecTraits", "[vec]")
     }
 
     {
-        constexpr alpaka::Vec<Dim, Idx> vec3(static_cast<Idx>(47u), static_cast<Idx>(8u), static_cast<Idx>(3u));
+        using Vec3 = alpaka::Vec<Dim, Idx>;
+        constexpr Vec3 vec3(static_cast<Idx>(47u), static_cast<Idx>(8u), static_cast<Idx>(3u));
+
+        // alpaka::Vec::dim
+        {
+            STATIC_REQUIRE(vec3.dim() == 3);
+            STATIC_REQUIRE(Vec3::dim() == 3);
+        }
 
         // alpaka::Vec operator +
         {

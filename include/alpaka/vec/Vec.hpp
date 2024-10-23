@@ -368,6 +368,12 @@ namespace alpaka
             return (*this)[I];
         }
 
+        //! \return The number of dimensions of the vector.
+        [[nodiscard]] ALPAKA_FN_HOST_ACC static constexpr auto dim() noexcept -> TVal
+        {
+            return TDim::value;
+        }
+
         //! \return The element-wise sum of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC friend constexpr auto operator+(Vec const& p, Vec const& q) -> Vec
