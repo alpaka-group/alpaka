@@ -9,24 +9,32 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <algorithm>
+#include <iterator>
 #include <string>
 
 /**
- * Babelstream benchmarking example. Babelstream has 5 kernels. Add, Multiply, Copy, Triad and Dot.
- * Babelstream is a memory-bound benchmark since the main operation in the kernels has high Code Balance (bytes/FLOP)
- * value. For example c[i] = a[i] + b[i]; has 2 reads 1 writes and has one FLOP operation. For double precision each
- * read-write is 8 bytes. Hence Code Balance (3*8 / 1) = 24 bytes/FLOP.
+ * Babelstream benchmarking example. Babelstream has 5 kernels. Add, Multiply, Copy, Triad and Dot. NStream is
+ * optional. Init kernel is run before 5 standard kernel sequence. Babelstream is a memory-bound benchmark since the
+ * main operation in the kernels has high Code Balance (bytes/FLOP) value. For example c[i] = a[i] + b[i]; has 2 reads
+ * 1 writes and has one FLOP operation. For double precision each read-write is 8 bytes. Hence Code Balance (3*8 / 1) =
+ * 24 bytes/FLOP.
  *
  * Some implementations and the documents are accessible through https://github.com/UoB-HPC
  *
  * Can be run with custom arguments as well as catch2 arguments
- * Run with Custom arguments:
+ * Run with Custom arguments and for kernels: init, copy, mul, add, triad (and dot kernel if a multi-thread acc
+ * available):
  * ./babelstream --array-size=33554432 --number-runs=100
- * Runt with default array size and num runs:
+ * Run with Custom arguments and select from 3 kernel groups: all, triad, nstream
+ * ./babelstream --array-size=33554432 --number-runs=100 --run-kernels=triad (only triad kernel)
+ * ./babelstream --array-size=33554432 --number-runs=100 --run-kernels=nstream (only nstream kernel)
+ * ./babelstream --array-size=33554432 --number-runs=100 --run-kernels=all (default case. Add, Multiply, Copy, Triad
+ * and Dot) Run with default array size and num runs:
  * ./babelstream
- * Run with Catch2 arguments and defaul arrary size and num runs:
+ * Run with Catch2 arguments and default array size and num runs:
  * ./babelstream --success
- * ./babelstream -r a.xml
+ * ./babelstream -r xml
  * Run with Custom and catch2 arguments together:
  * ./babelstream  --success --array-size=1280000 --number-runs=10
  * Help to list custom and catch2 arguments
@@ -57,14 +65,15 @@ struct InitKernel
     //! \tparam T The data type
     //! \param acc The accelerator to be executed on.
     //! \param a Pointer for vector a
-    //! \param initA the value to set all items in the vector
+    //! \param initialA the value to set all items in the vector a
+    //! \param initialB the value to set all items in the vector b
     template<typename TAcc, typename T>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* a, T* b, T* c, T initA) const
+    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* a, T* b, T* c, T initialA, T initialB, T initialC) const
     {
         auto const [i] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        a[i] = initA;
-        b[i] = static_cast<T>(0.0);
-        c[i] = static_cast<T>(0.0);
+        a[i] = initialA;
+        b[i] = initialB;
+        c[i] = initialC;
     }
 };
 
@@ -76,12 +85,12 @@ struct CopyKernel
     //! \tparam T The data type
     //! \param acc The accelerator to be executed on.
     //! \param a Pointer for vector a
-    //! \param b Pointer for vector b
+    //! \param c Pointer for vector c
     template<typename TAcc, typename T>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* a, T* b) const
+    ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* a, T* c) const
     {
         auto const [index] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        b[index] = a[index];
+        c[index] = a[index];
     }
 };
 
@@ -92,14 +101,14 @@ struct MultKernel
     //! \tparam TAcc The accelerator environment to be executed on.
     //! \tparam T The data type
     //! \param acc The accelerator to be executed on.
-    //! \param a Pointer for vector a
+    //! \param c Pointer for vector c
     //! \param b Pointer for result vector b
     template<typename TAcc, typename T>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* const a, T* b) const
+    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* b, T* const c) const
     {
         const T scalar = static_cast<T>(scalarVal);
         auto const [i] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        b[i] = scalar * a[i];
+        b[i] = scalar * c[i];
     }
 };
 
@@ -132,11 +141,23 @@ struct TriadKernel
     //! \param b Pointer for vector b
     //! \param c Pointer for result vector c
     template<typename TAcc, typename T>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* a, T const* b, T* c) const
+    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* a, T const* b, T const* c) const
     {
         const T scalar = static_cast<T>(scalarVal);
         auto const [i] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        c[i] = a[i] + scalar * b[i];
+        a[i] = b[i] + scalar * c[i];
+    }
+};
+
+//! Optional kernel, not one of the 5 standard Babelstream kernels
+struct NstreamKernel
+{
+    template<typename TAcc, typename T>
+    ALPAKA_FN_ACC void operator()(TAcc const& acc, T* a, T const* b, T const* c) const
+    {
+        const T scalar = static_cast<T>(scalarVal);
+        auto const [i] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        a[i] += b[i] + scalar * c[i];
     }
 };
 
@@ -150,7 +171,8 @@ struct DotKernel
     //! \param acc The accelerator to be executed on.
     //! \param a Pointer for vector a
     //! \param b Pointer for vector b
-    //! \param sum Pointer for result vector consisting sums for each block
+    //! \param sum Pointer for result vector consisting sums of blocks
+    //! \param arraySize the size of the array
     template<typename TAcc, typename T>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* a, T const* b, T* sum, alpaka::Idx<TAcc> arraySize) const
     {
@@ -171,7 +193,24 @@ struct DotKernel
         {
             alpaka::syncBlockThreads(acc);
             if(local_i < offset)
+            {
+// Suppress warnings
+#if defined(__GNUC__) && !defined(__clang__)
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#elif defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wuninitialized"
+#endif
+                // read from shared memory and sum
                 tbSum[local_i] += tbSum[local_i + offset];
+// Remove suppression of warnings
+#if defined(__GNUC__) && !defined(__clang__)
+#    pragma GCC diagnostic pop
+#elif defined(__clang__)
+#    pragma clang diagnostic pop
+#endif
+            }
         }
 
         auto const gridBlockIndex = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
@@ -186,15 +225,20 @@ struct DotKernel
 template<typename TAcc, typename DataType>
 void testKernels()
 {
+    if(kernelsToBeExecuted == KernelsToRun::All)
+    {
+        std::cout << "Kernels: Init, Copy, Mul, Add, Triad, Dot Kernels" << std::endl;
+    }
     using Acc = TAcc;
-    // Define the index domain
     // Set the number of dimensions as an integral constant. Set to 1 for 1D.
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    // Meta data
-    // A MetaData class instance to keep the problem and results to print later
-    MetaData metaData;
+    // A MetaData class instance to keep the benchmark info and results to print later. Does not include intermediate
+    // runtime data.
+    BenchmarkMetaData metaData;
+
+    // Convert data-type to string to display
     std::string dataTypeStr;
     if(std::is_same<DataType, float>::value)
     {
@@ -251,7 +295,9 @@ void testKernels()
         bufAccInputAPtr,
         bufAccInputBPtr,
         bufAccOutputCPtr,
-        static_cast<DataType>(valA));
+        static_cast<DataType>(initA),
+        static_cast<DataType>(initB),
+        static_cast<DataType>(initC));
     auto const workDivCopy
         = alpaka::getValidWorkDiv(kernelCfg, devAcc, CopyKernel(), bufAccInputAPtr, bufAccInputBPtr);
     auto const workDivMult
@@ -267,41 +313,87 @@ void testKernels()
         bufAccInputBPtr,
         bufAccOutputCPtr);
 
-    // Vector of average run-times of babelstream kernels
-    std::vector<double> avgExecTimesOfKernels;
-    std::vector<double> minExecTimesOfKernels;
-    std::vector<double> maxExecTimesOfKernels;
-    std::vector<std::string> kernelLabels;
-    // Vector for collecting successive run-times of a single kernel in benchmark macro
-    std::vector<double> times;
+    auto const workDivNStream = alpaka::getValidWorkDiv(
+        kernelCfg,
+        devAcc,
+        NstreamKernel(),
+        bufAccInputAPtr,
+        bufAccInputBPtr,
+        bufAccOutputCPtr);
+
+
+    // Lambda to create and return work division for dot kernel
+    auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
+    {
+        // Use babelstream standard work division for multi-threaded backends
+        if constexpr(alpaka::
+                         accMatchesTags<AccType, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+        {
+            return alpaka::WorkDivMembers{
+                Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
+                Vec::all(blockThreadExtentMain),
+                Vec::all(1)};
+        }
+        else
+        {
+            // Work division for single-threaded backends
+            // Since block size is 1, the elements per grid is dotGridBlockExtent * blockThreadExtentMain
+            alpaka::KernelCfg<AccType> const kernelCfgDot
+                = {Vec::all(dotGridBlockExtent * blockThreadExtentMain), elementsPerThread};
+
+            return alpaka::getValidWorkDiv(
+                kernelCfgDot,
+                devAcc,
+                DotKernel(),
+                bufAccInputAPtr,
+                bufAccInputBPtr,
+                bufAccOutputCPtr, // this is used here a kind of dummy
+                static_cast<alpaka::Idx<AccType>>(arraySize));
+        }
+    };
+
+    // Work Division for Dot Kernel
+    auto const workDivDot = (getWorkDivForDotKernel.template operator()<Acc>());
+    // To record runtime data generated while running the kernels
+    RuntimeResults runtimeResults;
 
     // Lambda for measuring run-time
     auto measureKernelExec = [&](auto&& kernelFunc, [[maybe_unused]] auto&& kernelLabel)
     {
-        for(auto i = 0; i < numberOfRuns; i++)
-        {
-            double runtime = 0.0;
-            auto start = std::chrono::high_resolution_clock::now();
-            kernelFunc();
-            alpaka::wait(queue);
-            auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> duration = end - start;
-            runtime = duration.count();
-            times.push_back(runtime);
-        }
-
-        // find the minimum of the durations array.
-        // In benchmarking the first item of the runtimes array is not included in calculations.
-        const auto minmaxPair = findMinMax(times);
-        minExecTimesOfKernels.push_back(minmaxPair.first);
-        maxExecTimesOfKernels.push_back(minmaxPair.second);
-        avgExecTimesOfKernels.push_back(findAverage(times));
-        kernelLabels.push_back(kernelLabel);
-        times.clear();
+        double runtime = 0.0;
+        auto start = std::chrono::high_resolution_clock::now();
+        kernelFunc();
+        alpaka::wait(queue);
+        auto end = std::chrono::high_resolution_clock::now();
+        // get duration in seconds
+        std::chrono::duration<double> duration = end - start;
+        runtime = duration.count();
+        runtimeResults.kernelToRundataMap[kernelLabel]->timingsSuccessiveRuns.push_back(runtime);
     };
 
-    // Run kernels one by one
-    // Test the init-kernel.
+
+    // Initialize logger before running kernels
+    // Runtime result initialisation to be filled by each kernel
+    runtimeResults.addKernelTimingsVec("InitKernel");
+    if(kernelsToBeExecuted == KernelsToRun::All)
+    {
+        runtimeResults.addKernelTimingsVec("CopyKernel");
+        runtimeResults.addKernelTimingsVec("AddKernel");
+        runtimeResults.addKernelTimingsVec("TriadKernel");
+        runtimeResults.addKernelTimingsVec("MultKernel");
+        runtimeResults.addKernelTimingsVec("DotKernel");
+    }
+    else if(kernelsToBeExecuted == KernelsToRun::NStream)
+    {
+        runtimeResults.addKernelTimingsVec("NStreamKernel");
+    }
+    else if(kernelsToBeExecuted == KernelsToRun::Triad)
+    {
+        runtimeResults.addKernelTimingsVec("TriadKernel");
+    }
+
+
+    // Init kernel
     measureKernelExec(
         [&]()
         {
@@ -312,149 +404,239 @@ void testKernels()
                 bufAccInputAPtr,
                 bufAccInputBPtr,
                 bufAccOutputCPtr,
-                static_cast<DataType>(valA));
+                static_cast<DataType>(initA),
+                static_cast<DataType>(initB),
+                static_cast<DataType>(initC));
         },
         "InitKernel");
 
-    // Test the copy-kernel. Copy A one by one to B.
-    measureKernelExec(
-        [&]() { alpaka::exec<Acc>(queue, workDivCopy, CopyKernel(), bufAccInputAPtr, bufAccInputBPtr); },
-        "CopyKernel");
+    // Init kernel will be run for all cases therefore add it to metadata unconditionally
+    metaData.setItem(BMInfoDataType::WorkDivInit, workDivInit);
 
-    // Test the scaling-kernel. Calculate B=scalar*A.
-    measureKernelExec(
-        [&]() { alpaka::exec<Acc>(queue, workDivMult, MultKernel(), bufAccInputAPtr, bufAccInputBPtr); },
-        "MultKernel");
+    // Dot kernel result
+    DataType resultDot = static_cast<DataType>(0.0f);
 
-    // Test the addition-kernel. Calculate C=A+B. Where B=scalar*A.
-    measureKernelExec(
-        [&]()
-        { alpaka::exec<Acc>(queue, workDivAdd, AddKernel(), bufAccInputAPtr, bufAccInputBPtr, bufAccOutputCPtr); },
-        "AddKernel");
-
-    // Test the Triad-kernel. Calculate C=A+scalar*B where B=scalar*A.
-    measureKernelExec(
-        [&]()
-        { alpaka::exec<Acc>(queue, workDivTriad, TriadKernel(), bufAccInputAPtr, bufAccInputBPtr, bufAccOutputCPtr); },
-        "TriadKernel");
-
-
-    // Copy arrays back to host
-    alpaka::memcpy(queue, bufHostOutputC, bufAccOutputC, arraySize);
-    alpaka::memcpy(queue, bufHostOutputB, bufAccInputB, arraySize);
-    alpaka::memcpy(queue, bufHostOutputA, bufAccInputA, arraySize);
-
-    // Verify the results
-    //
-    // Find sum of the errors as sum of the differences from expected values
-    DataType initVal{static_cast<DataType>(0.0)};
-    DataType sumErrC{initVal}, sumErrB{initVal}, sumErrA{initVal};
-
-    auto const expectedC = static_cast<DataType>(valA + scalarVal * scalarVal * valA);
-    auto const expectedB = static_cast<DataType>(scalarVal * valA);
-    auto const expectedA = static_cast<DataType>(valA);
-
-    // sum of the errors for each array
-    for(Idx i = 0; i < arraySize; ++i)
+    // Main for loop to run the kernel-sequence
+    for(auto i = 0; i < numberOfRuns; i++)
     {
-        sumErrC += bufHostOutputC[static_cast<Idx>(i)] - expectedC;
-        sumErrB += bufHostOutputB[static_cast<Idx>(i)] - expectedB;
-        sumErrA += bufHostOutputA[static_cast<Idx>(i)] - expectedA;
+        if(kernelsToBeExecuted == KernelsToRun::All)
+        {
+            // Test the copy-kernel. Copy A one by one to C.
+            measureKernelExec(
+                [&]() { alpaka::exec<Acc>(queue, workDivCopy, CopyKernel(), bufAccInputAPtr, bufAccOutputCPtr); },
+                "CopyKernel");
+
+            // Test the scaling-kernel. Calculate B=scalar*C. Where C = A.
+            measureKernelExec(
+                [&]() { alpaka::exec<Acc>(queue, workDivMult, MultKernel(), bufAccInputBPtr, bufAccOutputCPtr); },
+                "MultKernel");
+
+            // Test the addition-kernel. Calculate C=A+B. Where B=scalar*C or B=scalar*A.
+            measureKernelExec(
+                [&]() {
+                    alpaka::exec<Acc>(
+                        queue,
+                        workDivAdd,
+                        AddKernel(),
+                        bufAccInputAPtr,
+                        bufAccInputBPtr,
+                        bufAccOutputCPtr);
+                },
+                "AddKernel");
+        }
+        // Triad kernel is run for 2 command line arguments
+        if(kernelsToBeExecuted == KernelsToRun::All || kernelsToBeExecuted == KernelsToRun::Triad)
+        {
+            // Test the Triad-kernel. Calculate A=B+scalar*C. Where C is A+scalar*A.
+            measureKernelExec(
+                [&]() {
+                    alpaka::exec<Acc>(
+                        queue,
+                        workDivTriad,
+                        TriadKernel(),
+                        bufAccInputAPtr,
+                        bufAccInputBPtr,
+                        bufAccOutputCPtr);
+                },
+                "TriadKernel");
+        }
+        if(kernelsToBeExecuted == KernelsToRun::All)
+        {
+            // Vector of sums of each block
+            auto bufAccSumPerBlock = alpaka::allocBuf<DataType, Idx>(devAcc, workDivDot.m_gridBlockExtent[0]);
+            auto bufHostSumPerBlock = alpaka::allocBuf<DataType, Idx>(devHost, workDivDot.m_gridBlockExtent[0]);
+            // Test Dot kernel with specific blocksize which is larger than one
+
+
+            measureKernelExec(
+                [&]()
+                {
+                    alpaka::exec<Acc>(
+                        queue,
+                        workDivDot,
+                        DotKernel(), // Dot kernel
+                        bufAccInputAPtr,
+                        bufAccInputBPtr,
+                        alpaka::getPtrNative(bufAccSumPerBlock),
+                        static_cast<alpaka::Idx<Acc>>(arraySize));
+                    alpaka::memcpy(queue, bufHostSumPerBlock, bufAccSumPerBlock, workDivDot.m_gridBlockExtent[0]);
+                    alpaka::wait(queue);
+
+                    DataType const* sumPtr = std::data(bufHostSumPerBlock);
+                    resultDot
+                        = static_cast<DataType>(std::reduce(sumPtr, sumPtr + workDivDot.m_gridBlockExtent[0], 0.0));
+                },
+                "DotKernel");
+            // Add workdiv to the list of workdivs to print later
+            metaData.setItem(BMInfoDataType::WorkDivDot, workDivDot);
+        }
+        // NStream kernel is run only for one command line argument
+        if(kernelsToBeExecuted == KernelsToRun::NStream)
+        {
+            // Test the NStream-kernel. Calculate A += B + scalar * C;
+            measureKernelExec(
+                [&]() {
+                    alpaka::exec<Acc>(
+                        queue,
+                        workDivNStream,
+                        NstreamKernel(),
+                        bufAccInputAPtr,
+                        bufAccInputBPtr,
+                        bufAccOutputCPtr);
+                },
+                "NStreamKernel");
+        }
+        alpaka::wait(queue);
+    } // End of MAIN LOOP which runs the kernels many times
+
+
+    // Copy results back to the host, measure copy time
+    {
+        auto start = std::chrono::high_resolution_clock::now();
+        // Copy arrays back to host since the execution of kernels except dot kernel finished
+        alpaka::memcpy(queue, bufHostOutputC, bufAccOutputC, arraySize);
+        alpaka::memcpy(queue, bufHostOutputB, bufAccInputB, arraySize);
+        alpaka::memcpy(queue, bufHostOutputA, bufAccInputA, arraySize);
+        alpaka::wait(queue);
+        auto end = std::chrono::high_resolution_clock::now();
+        // Get duration in seconds
+        std::chrono::duration<double> duration = end - start;
+        double copyRuntime = duration.count();
+        metaData.setItem(BMInfoDataType::CopyTimeFromAccToHost, copyRuntime);
     }
 
-    // Normalize and compare sum of the errors
-    REQUIRE(FuzzyEqual(sumErrC / static_cast<DataType>(arraySize) / expectedC, static_cast<DataType>(0.0)));
-    REQUIRE(FuzzyEqual(sumErrB / static_cast<DataType>(arraySize) / expectedB, static_cast<DataType>(0.0)));
-    REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize) / expectedA, static_cast<DataType>(0.0)));
-    alpaka::wait(queue);
+    //
+    // Result Verification and BW Calculation for 3 cases
+    //
 
-    // Test Dot kernel with specific blocksize which is larger than 1
-    if constexpr(alpaka::accMatchesTags<TAcc, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+    // Generated expected values by doing the same chain of operations due to floating point error
+    DataType expectedA = static_cast<DataType>(initA);
+    DataType expectedB = static_cast<DataType>(initB);
+    DataType expectedC = static_cast<DataType>(initC);
+
+    // To calculate expected results by applying at host the same operation sequence
+    calculateBabelstreamExpectedResults(expectedA, expectedB, expectedC);
+
+    // Verify the resulting data, if kernels are init, copy, mul, add, triad and dot kernel
+    if(kernelsToBeExecuted == KernelsToRun::All)
     {
-        using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-        // Threads per block for Dot kernel
-        constexpr Idx blockThreadExtent = blockThreadExtentMain;
-        // Blocks per grid for Dot kernel
-        constexpr Idx gridBlockExtent = static_cast<Idx>(256);
-        // Vector of sums of each block
-        auto bufAccSumPerBlock = alpaka::allocBuf<DataType, Idx>(devAcc, gridBlockExtent);
-        auto bufHostSumPerBlock = alpaka::allocBuf<DataType, Idx>(devHost, gridBlockExtent);
-        // A specific work-division is used for dotKernel
-        auto const workDivDot = WorkDiv{Vec{gridBlockExtent}, Vec{blockThreadExtent}, Vec::all(1)};
+        // Find sum of the errors as sum of the differences from expected values
+        constexpr DataType initVal{static_cast<DataType>(0.0)};
+        DataType sumErrC{initVal}, sumErrB{initVal}, sumErrA{initVal};
 
-        measureKernelExec(
-            [&]()
-            {
-                alpaka::exec<Acc>(
-                    queue,
-                    workDivDot,
-                    DotKernel(), // Dot kernel
-                    alpaka::getPtrNative(bufAccInputA),
-                    alpaka::getPtrNative(bufAccInputB),
-                    alpaka::getPtrNative(bufAccSumPerBlock),
-                    static_cast<alpaka::Idx<Acc>>(arraySize));
-            },
-            "DotKernel");
+        // sum of the errors for each array
+        for(Idx i = 0; i < arraySize; ++i)
+        {
+            sumErrC += std::fabs(bufHostOutputC[static_cast<Idx>(i)] - expectedC);
+            sumErrB += std::fabs(bufHostOutputB[static_cast<Idx>(i)] - expectedB);
+            sumErrA += std::fabs(bufHostOutputA[static_cast<Idx>(i)] - expectedA);
+        }
 
-        alpaka::memcpy(queue, bufHostSumPerBlock, bufAccSumPerBlock, gridBlockExtent);
+        // Normalize and compare sum of the errors
+        // Use a different equality check if floating point errors exceed precision of FuzzyEqual function
+        REQUIRE(FuzzyEqual(sumErrC / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrB / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
         alpaka::wait(queue);
 
-        DataType const* sumPtr = std::data(bufHostSumPerBlock);
-        auto const result = std::reduce(sumPtr, sumPtr + gridBlockExtent, DataType{0});
-        // Since vector values are 1, dot product should be identical to arraySize
-        REQUIRE(FuzzyEqual(static_cast<DataType>(result), static_cast<DataType>(arraySize * 2)));
-        // Add workdiv to the list of workdivs to print later
-        metaData.setItem(BMInfoDataType::WorkDivDot, workDivDot);
+        // Verify Dot kernel
+        DataType const expectedSum = static_cast<DataType>(arraySize) * expectedA * expectedB;
+        //  Dot product should be identical to arraySize*valA*valB
+        //  Use a different equality check if floating point errors exceed precision of FuzzyEqual function
+        REQUIRE(FuzzyEqual(static_cast<float>(std::fabs(resultDot - expectedSum) / expectedSum), 0.0f));
+
+        // Set workdivs of benchmark metadata to be displayed at the end
+        metaData.setItem(BMInfoDataType::WorkDivInit, workDivInit);
+        metaData.setItem(BMInfoDataType::WorkDivCopy, workDivCopy);
+        metaData.setItem(BMInfoDataType::WorkDivAdd, workDivAdd);
+        metaData.setItem(BMInfoDataType::WorkDivMult, workDivMult);
+        metaData.setItem(BMInfoDataType::WorkDivTriad, workDivTriad);
     }
-
-
-    //
-    // Calculate and Display Benchmark Results
-    //
-    std::vector<double> bytesReadWriteMB = {
-        getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize)),
-        getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize)),
-        getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize)),
-        getDataThroughput<DataType>(3u, static_cast<unsigned>(arraySize)),
-        getDataThroughput<DataType>(3u, static_cast<unsigned>(arraySize)),
-        getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize)),
-    };
-
-    // calculate the bandwidth as throughput per seconds
-    std::vector<double> bandwidthsPerKernel;
-    if(minExecTimesOfKernels.size() == kernelLabels.size())
+    // Verify the Triad Kernel result if "--run-kernels=triad".
+    else if(kernelsToBeExecuted == KernelsToRun::Triad)
     {
-        for(size_t i = 0; i < minExecTimesOfKernels.size(); ++i)
+        // Verify triad by summing the error
+        auto sumErrA = static_cast<DataType>(0.0);
+        // sum of the errors for each array
+        for(Idx i = 0; i < arraySize; ++i)
         {
-            bandwidthsPerKernel.push_back(calculateBandwidth(bytesReadWriteMB.at(i), minExecTimesOfKernels.at(i)));
+            sumErrA += std::fabs(bufHostOutputA[static_cast<Idx>(i)] - expectedA);
         }
+
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize) / expectedA, static_cast<DataType>(0.0)));
+        metaData.setItem(BMInfoDataType::WorkDivTriad, workDivTriad);
+    }
+    // Verify the NStream Kernel result if "--run-kernels=nstream".
+    else if(kernelsToBeExecuted == KernelsToRun::NStream)
+    {
+        auto sumErrA = static_cast<DataType>(0.0);
+        // sum of the errors for each array
+        for(Idx i = 0; i < arraySize; ++i)
+        {
+            sumErrA += std::fabs(bufHostOutputA[static_cast<Idx>(i)] - expectedA);
+        }
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize) / expectedA, static_cast<DataType>(0.0)));
+
+        metaData.setItem(BMInfoDataType::WorkDivNStream, workDivNStream);
     }
 
-    // Setting fields of Benchmark Info map. All information about benchmark and results are stored in a single map
+    // Runtime results of the benchmark: Calculate throughput and bandwidth
+    // Set throuput values depending on the kernels
+    runtimeResults.initializeByteReadWrite<DataType>(arraySize);
+    runtimeResults.calculateBandwidthsForKernels<DataType>();
+
+    // Set metadata to display all benchmark related information.
+    //
+    // All information about benchmark and results are stored in a single map
     metaData.setItem(BMInfoDataType::TimeStamp, getCurrentTimestamp());
     metaData.setItem(BMInfoDataType::NumRuns, std::to_string(numberOfRuns));
     metaData.setItem(BMInfoDataType::DataSize, std::to_string(arraySizeMain));
     metaData.setItem(BMInfoDataType::DataType, dataTypeStr);
-
-    metaData.setItem(BMInfoDataType::WorkDivInit, workDivInit);
-    metaData.setItem(BMInfoDataType::WorkDivCopy, workDivCopy);
-    metaData.setItem(BMInfoDataType::WorkDivAdd, workDivAdd);
-    metaData.setItem(BMInfoDataType::WorkDivMult, workDivMult);
-    metaData.setItem(BMInfoDataType::WorkDivTriad, workDivTriad);
-
     // Device and accelerator
     metaData.setItem(BMInfoDataType::DeviceName, alpaka::getName(devAcc));
     metaData.setItem(BMInfoDataType::AcceleratorType, alpaka::getAccName<Acc>());
     // XML reporter of catch2 always converts to Nano Seconds
     metaData.setItem(BMInfoDataType::TimeUnit, "Nano Seconds");
-    // Join elements and create a comma separated string
-    metaData.setItem(BMInfoDataType::KernelNames, joinElements(kernelLabels, ", "));
-    metaData.setItem(BMInfoDataType::KernelDataUsageValues, joinElements(bytesReadWriteMB, ", "));
-    metaData.setItem(BMInfoDataType::KernelBandwidths, joinElements(bandwidthsPerKernel, ", "));
-    metaData.setItem(BMInfoDataType::KernelMinTimes, joinElements(minExecTimesOfKernels, ", "));
-    metaData.setItem(BMInfoDataType::KernelMaxTimes, joinElements(maxExecTimesOfKernels, ", "));
-    metaData.setItem(BMInfoDataType::KernelAvgTimes, joinElements(avgExecTimesOfKernels, ", "));
 
+    // get labels from the map
+    std::vector<std::string> kernelLabels;
+    std::transform(
+        runtimeResults.kernelToRundataMap.begin(),
+        runtimeResults.kernelToRundataMap.end(),
+        std::back_inserter(kernelLabels),
+        [](auto const& pair) { return pair.first; });
+    // Join elements and create a comma separated string and set item
+    metaData.setItem(BMInfoDataType::KernelNames, joinElements(kernelLabels, ", "));
+    // Join elements and create a comma separated string and set item
+    std::vector<double> values(runtimeResults.getThroughputKernelArray());
+    metaData.setItem(BMInfoDataType::KernelDataUsageValues, joinElements(values, ", "));
+    // Join elements and create a comma separated string and set item
+    std::vector<double> valuesBW(runtimeResults.getBandwidthKernelVec());
+    metaData.setItem(BMInfoDataType::KernelBandwidths, joinElements(valuesBW, ", "));
+
+    metaData.setItem(BMInfoDataType::KernelMinTimes, joinElements(runtimeResults.getMinExecTimeKernelArray(), ", "));
+    metaData.setItem(BMInfoDataType::KernelMaxTimes, joinElements(runtimeResults.getMaxExecTimeKernelArray(), ", "));
+    metaData.setItem(BMInfoDataType::KernelAvgTimes, joinElements(runtimeResults.getAvgExecTimeKernelArray(), ", "));
     // Print the summary as a table, if a standard serialization is needed other functions of the class can be used
     std::cout << metaData.serializeAsTable() << std::endl;
 }
@@ -462,7 +644,7 @@ void testKernels()
 using TestAccs1D = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
 
 // Run for all Accs given by the argument
-TEMPLATE_LIST_TEST_CASE("TEST: Babelstream Five Kernels<Float>", "[benchmark-test]", TestAccs1D)
+TEMPLATE_LIST_TEST_CASE("TEST: Babelstream Kernels<Float>", "[benchmark-test]", TestAccs1D)
 {
     using Acc = TestType;
     // Run tests for the float data type
@@ -470,7 +652,7 @@ TEMPLATE_LIST_TEST_CASE("TEST: Babelstream Five Kernels<Float>", "[benchmark-tes
 }
 
 // Run for all Accs given by the argument
-TEMPLATE_LIST_TEST_CASE("TEST: Babelstream Five Kernels<Double>", "[benchmark-test]", TestAccs1D)
+TEMPLATE_LIST_TEST_CASE("TEST: Babelstream Kernels<Double>", "[benchmark-test]", TestAccs1D)
 {
     using Acc = TestType;
     // Run tests for the double data type
