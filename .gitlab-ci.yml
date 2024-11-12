@@ -28,8 +28,8 @@ generate:
     - pip3 install -r script/job_generator/requirements.txt
     # it is sufficient to verify once, as the same job matrix is generated, verified and then filtered each time
     # disable verify because we know that the generator is broken: https://github.com/thombashi/allpairspy/pull/10
-    # - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --verify --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_cpu.yml --wave-out-runtime_job_cpu=runtime_gpu.yml
-    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_cpu.yml --wave-out-runtime_job_cpu=runtime_gpu.yml
+    # - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --verify --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
+    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
     - cat compile_only.yml
     - cat runtime_cpu.yml
     - cat runtime_gpu.yml
