@@ -16,7 +16,7 @@ echo -e "\033[0;33mSteps to setup containter locally"
 
 # display the correct docker run command
 first_step_prefix="1. Run docker image via:"
-if [ "${CMAKE_CXX_COMPILER}" == "nvc++" ] || [ "${alpaka_ACC_GPU_CUDA_ENABLE}" == "ON" ];
+if [ "${CMAKE_CXX_COMPILER:-}" == "nvc++" ] || [ "${alpaka_ACC_GPU_CUDA_ENABLE}" == "ON" ];
 then
     if [ "${ALPAKA_CI_RUN_TESTS}" == "ON" ];
     then
@@ -39,16 +39,23 @@ fi
 echo -e "2. Run the following export commands in the container to setup enviroment\n"
 
 # take all env variables, filter it and display it with a `export` prefix
-printenv | grep -E 'alpaka_*|ALPAKA_*|CMAKE_*|BOOST_|CUDA_' | while read -r line ; do
-    echo "export $line \\"
+env_name_prefixes=("^ALPAKA_*" "^alpaka_*" "^CMAKE_*" "^BOOST_*" "^CUDA_*")
+for reg in ${env_name_prefixes[@]}; do
+    if printenv | grep -qE ${reg}; then
+        printenv | grep -E ${reg} | sort | while read -r line ; do
+            echo "export $line \\"
+        done
+    fi
 done
+
+echo "export CI_RUNNER_TAGS='${CI_RUNNER_TAGS}' \\"
 
 # the variable is not set, but should be set if a job is debugged locally in a container
 echo 'export alpaka_DISABLE_EXIT_FAILURE=true \'
 echo 'export GITLAB_CI=true'
 echo ""
 
-echo "3. install git: apt update; apt install -y git"
+echo "3. install git: apt update && apt install -y git"
 echo "4. clone alpaka repository: git clone https://gitlab.com/hzdr/crp/alpaka.git --depth 1 -b ${CI_COMMIT_BRANCH}"
 echo "5. Run the following script: cd alpaka && ./script/gitlab_ci_run.sh"
 # reset the color
