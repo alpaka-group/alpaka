@@ -57,6 +57,20 @@ function(alpaka_set_compiler_options scope type name)
     endif()
 endfunction()
 
+# Check if compiler supports required C++ standard.
+#
+# language - can be CXX, HIP or CUDA
+# min_cxx_standard - C++ standard which is the minimum requirement
+function(checkCompilerCXXSupport language min_cxx_standard)
+    string(TOUPPER "${language}" language_upper_case)
+    string(TOLOWER "${language}" language_lower_case)
+
+    if(NOT "${language_lower_case}_std_${min_cxx_standard}" IN_LIST CMAKE_${language_upper_case}_COMPILE_FEATURES)
+        message(FATAL_ERROR "The ${language_upper_case} compiler does not support C++ ${min_cxx_standard}. \
+        Please upgrade your compiler or use alpaka 1.2 which supports C++17.")
+    endif()
+endfunction()
+
 # HIP and platform selection and warning about unsupported features
 option(alpaka_ACC_GPU_HIP_ENABLE "Enable the HIP back-end (all other back-ends must be disabled)" OFF)
 option(alpaka_ACC_GPU_HIP_ONLY_MODE "Only back-ends using HIP can be enabled in this mode." OFF) # HIP only runs without other back-ends
@@ -114,6 +128,8 @@ endif()
 set(alpaka_DEBUG "0" CACHE STRING "Debug level")
 set_property(CACHE alpaka_DEBUG PROPERTY STRINGS "0;1;2")
 
+# minimum required C++ standard
+set(alpaka_MIN_CXX_STANDARD "20")
 set(alpaka_CXX_STANDARD_DEFAULT "20")
 # Check whether alpaka_CXX_STANDARD has already been defined as a non-cached variable.
 if(DEFINED alpaka_CXX_STANDARD)
@@ -122,6 +138,12 @@ endif()
 
 set(alpaka_CXX_STANDARD ${alpaka_CXX_STANDARD_DEFAULT} CACHE STRING "C++ standard version")
 set_property(CACHE alpaka_CXX_STANDARD PROPERTY STRINGS "20")
+
+if(${alpaka_CXX_STANDARD} VERSION_LESS ${alpaka_MIN_CXX_STANDARD})
+    message(FATAL_ERROR "The alpaka_CXX_STANDARD standard must be at least C++${alpaka_MIN_CXX_STANDARD}")
+endif()
+
+checkCompilerCXXSupport(CXX ${alpaka_MIN_CXX_STANDARD})
 
 if(NOT TARGET alpaka)
     add_library(alpaka INTERFACE)
@@ -406,6 +428,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
         endif()
 
         enable_language(CUDA)
+        checkCompilerCXXSupport(CUDA ${alpaka_MIN_CXX_STANDARD})
 
         if(DEFINED _CLANG_CUDA_VERSION)
             message(DEBUG "Workaround: reset variables for clang as cuda compiler -std=c++98 fix")
@@ -579,6 +602,8 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
 
         set(_alpaka_HIP_MIN_VER 5.1)
         set(_alpaka_HIP_MAX_VER 6.2)
+        
+        checkCompilerCXXSupport(HIP ${alpaka_MIN_CXX_STANDARD})
 
         # construct hip version only with major and minor level
         # cannot use hip_VERSION because of the patch level
