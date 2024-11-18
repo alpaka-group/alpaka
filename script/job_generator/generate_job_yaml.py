@@ -481,6 +481,7 @@ def create_job(job: Dict[str, Tuple[str, str]], container_version: float, gitlab
     job_yaml["image"] = job_image(job, container_version, gitlab_images)
     job_yaml["variables"] = job_variables(job)
     job_yaml["script"] = [
+        "source ./script/set_default_env_vars.sh",
         "source ./script/gitlabci/print_env.sh",
         "source ./script/gitlab_ci_run.sh",
     ]
