@@ -399,7 +399,7 @@
             "comment": "[^4]"
         }
     },
-    "Xcode 13.2.1 / 14.2 / 14.3.1 (macOS)": {
+    "Xcode 15.4 / 16.1 (macOS)": {
         "serial": {
             "state": "yes"
         },
