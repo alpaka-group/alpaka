@@ -33389,7 +33389,6 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
 		// ==
@@ -34192,52 +34191,13 @@
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
 		// ============================================================================
 
-		// ============================================================================
-		// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
-		// ==
-		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
-
-		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    namespace detail
-		    {
-		        template<>
-		        struct SYCLDeviceSelector<TagCpuSycl>
-		        {
-		            auto operator()(sycl::device const& dev) const -> int
-		            {
-		                return dev.is_cpu() ? 1 : -1;
-		            }
-		        };
-		    } // namespace detail
-
-		    //! The SYCL device manager.
-		    using PlatformCpuSycl = PlatformGenericSycl<TagCpuSycl>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
-		// ============================================================================
-
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PlatformCpuSycl>;
+	    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, TagCpuSycl>;
 	} // namespace alpaka
 
 	#endif
@@ -35742,72 +35702,14 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
-		// ==
-		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
-
-		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    namespace detail
-		    {
-		        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-		        // linker anyway.
-		#    if BOOST_COMP_CLANG
-		#        pragma clang diagnostic push
-		#        pragma clang diagnostic ignored "-Wweak-vtables"
-		#    endif
-		        template<>
-		        struct SYCLDeviceSelector<TagFpgaSyclIntel>
-		        {
-		#    ifdef ALPAKA_FPGA_EMULATION
-		            static constexpr auto platform_name = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
-		#    else
-		            static constexpr auto platform_name = "Intel(R) FPGA SDK for OpenCL(TM)";
-		#    endif
-
-		            auto operator()(sycl::device const& dev) const -> int
-		            {
-		                auto const& platform = dev.get_platform().get_info<sycl::info::platform::name>();
-		                auto const is_intel_fpga = dev.is_accelerator() && (platform == platform_name);
-
-		                return is_intel_fpga ? 1 : -1;
-		            }
-		        };
-		#    if BOOST_COMP_CLANG
-		#        pragma clang diagnostic pop
-		#    endif
-		    } // namespace detail
-
-		    //! The SYCL device manager.
-		    using PlatformFpgaSyclIntel = PlatformGenericSycl<TagFpgaSyclIntel>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
-		// ============================================================================
-
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, PlatformFpgaSyclIntel>;
+	    using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, TagFpgaSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -35824,57 +35726,14 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
-		// ==
-		/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
-
-		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    namespace detail
-		    {
-		        template<>
-		        struct SYCLDeviceSelector<TagGpuSyclIntel>
-		        {
-		            auto operator()(sycl::device const& dev) const -> int
-		            {
-		                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-		                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
-
-		                return is_intel_gpu ? 1 : -1;
-		            }
-		        };
-		    } // namespace detail
-
-		    //! The SYCL device manager.
-		    using PlatformGpuSyclIntel = PlatformGenericSycl<TagGpuSyclIntel>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
-		// ============================================================================
-
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, PlatformGpuSyclIntel>;
+	    using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, TagGpuSyclIntel>;
 	} // namespace alpaka
 
 	#endif
@@ -37432,7 +37291,45 @@
 // #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
 // platform
 // #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
-// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        template<>
+	        struct SYCLDeviceSelector<TagCpuSycl>
+	        {
+	            auto operator()(sycl::device const& dev) const -> int
+	            {
+	                return dev.is_cpu() ? 1 : -1;
+	            }
+	        };
+	    } // namespace detail
+
+	    //! The SYCL device manager.
+	    using PlatformCpuSycl = PlatformGenericSycl<TagCpuSycl>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
+	// ============================================================================
+
 	// ============================================================================
 	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ==
@@ -37727,8 +37624,105 @@
 	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already inlined
-// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
+	        // linker anyway.
+	#    if BOOST_COMP_CLANG
+	#        pragma clang diagnostic push
+	#        pragma clang diagnostic ignored "-Wweak-vtables"
+	#    endif
+	        template<>
+	        struct SYCLDeviceSelector<TagFpgaSyclIntel>
+	        {
+	#    ifdef ALPAKA_FPGA_EMULATION
+	            static constexpr auto platform_name = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
+	#    else
+	            static constexpr auto platform_name = "Intel(R) FPGA SDK for OpenCL(TM)";
+	#    endif
+
+	            auto operator()(sycl::device const& dev) const -> int
+	            {
+	                auto const& platform = dev.get_platform().get_info<sycl::info::platform::name>();
+	                auto const is_intel_fpga = dev.is_accelerator() && (platform == platform_name);
+
+	                return is_intel_fpga ? 1 : -1;
+	            }
+	        };
+	#    if BOOST_COMP_CLANG
+	#        pragma clang diagnostic pop
+	#    endif
+	    } // namespace detail
+
+	    //! The SYCL device manager.
+	    using PlatformFpgaSyclIntel = PlatformGenericSycl<TagFpgaSyclIntel>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
+	// ==
+	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        template<>
+	        struct SYCLDeviceSelector<TagGpuSyclIntel>
+	        {
+	            auto operator()(sycl::device const& dev) const -> int
+	            {
+	                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+	                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
+
+	                return is_intel_gpu ? 1 : -1;
+	            }
+	        };
+	    } // namespace detail
+
+	    //! The SYCL device manager.
+	    using PlatformGpuSyclIntel = PlatformGenericSycl<TagGpuSyclIntel>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
+	// ============================================================================
+
 	// ============================================================================
 	// == ./include/alpaka/platform/PlatformHipRt.hpp ==
 	// ==
