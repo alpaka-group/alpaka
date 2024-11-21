@@ -23,7 +23,7 @@ sw_versions: Dict[str, List[str]] = {
         "12.6",
     ],
     HIPCC: ["6.0", "6.1", "6.2"],
-    ICPX: ["2024.2"],
+    ICPX: ["2025.0"],
     # Contains all enabled back-ends.
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
     # which have to be combined with nvcc and hipcc versions.

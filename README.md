@@ -49,15 +49,16 @@ The [source code documentation](https://alpaka-group.github.io/alpaka/) is gener
 Accelerator Back-ends
 ---------------------
 
-| Accelerator Back-end   | Lib/API                                                 | Devices               | Execution strategy grid-blocks     | Execution strategy block-threads     |
-|------------------------|---------------------------------------------------------|-----------------------|------------------------------------|--------------------------------------|
-| Serial                 | n/a                                                     | Host CPU (single core) | sequential                         | sequential (only 1 thread per block) |
-| OpenMP 2.0+ blocks     | OpenMP 2.0+                                             | Host CPU (multi core) | parallel (preemptive multitasking) | sequential (only 1 thread per block) |
-| OpenMP 2.0+ threads    | OpenMP 2.0+                                             | Host CPU (multi core) | sequential                         | parallel (preemptive multitasking)   |
-| std::thread            | std::thread                                             | Host CPU (multi core) | sequential                         | parallel (preemptive multitasking)   |
-| TBB                    | TBB 2.2+                                                | Host CPU (multi core) | parallel (preemptive multitasking) | sequential (only 1 thread per block) |
-| CUDA                   | CUDA 12.0+                                              | NVIDIA GPUs           | parallel (undefined)               | parallel (lock-step within warps)    |
-| HIP(clang)             | [HIP 6.0+](https://github.com/ROCm-Developer-Tools/HIP) | AMD GPUs              | parallel (undefined)               | parallel (lock-step within warps)    |
+| Accelerator Back-end   | Lib/API                                                 | Devices                    | Execution strategy grid-blocks     | Execution strategy block-threads     |
+|------------------------|---------------------------------------------------------|----------------------------|------------------------------------|--------------------------------------|
+| Serial                 | n/a                                                     | Host CPU (single core)     | sequential                         | sequential (only 1 thread per block) |
+| OpenMP 2.0+ blocks     | OpenMP 2.0+                                             | Host CPU (multi core)      | parallel (preemptive multitasking) | sequential (only 1 thread per block) |
+| OpenMP 2.0+ threads    | OpenMP 2.0+                                             | Host CPU (multi core)      | sequential                         | parallel (preemptive multitasking)   |
+| std::thread            | std::thread                                             | Host CPU (multi core)      | sequential                         | parallel (preemptive multitasking)   |
+| TBB                    | TBB 2.2+                                                | Host CPU (multi core)      | parallel (preemptive multitasking) | sequential (only 1 thread per block) |
+| CUDA                   | CUDA 12.0+                                              | NVIDIA GPUs                | parallel (undefined)               | parallel (lock-step within warps)    |
+| HIP(clang)             | [HIP 6.0+](https://github.com/ROCm-Developer-Tools/HIP) | AMD GPUs                   | parallel (undefined)               | parallel (lock-step within warps)    |
+| SYCL(oneAPI)           | oneAPI 2024.2+                                          | CPUs, Intel GPUs and FPGAs | parallel (undefined)               | parallel (lock-step within warps)    |
 
 
 Supported Compilers
@@ -65,7 +66,7 @@ Supported Compilers
 
 This library uses C++20 (or newer when available).
 
-| Accelerator Back-end | gcc 10.4 / 11.1 (Linux)        | gcc 12.3 (Linux)                      | gcc 13.1 (Linux)                      | clang 10/11 (Linux)            | clang 12 (Linux)               | clang 13 (Linux)               | clang 14 (Linux)               | clang 15 (Linux)               | clang 16 (Linux)               | clang 17 (Linux)                      | clang 18 (Linux)                      | clang 19 (Linux)   | icpx 2024.2 (Linux)     | Xcode 15.4 / 16.1 (macOS) | Visual Studio 2022 (Windows) |
+| Accelerator Back-end | gcc 10.4 / 11.1 (Linux)        | gcc 12.3 (Linux)                      | gcc 13.1 (Linux)                      | clang 10/11 (Linux)            | clang 12 (Linux)               | clang 13 (Linux)               | clang 14 (Linux)               | clang 15 (Linux)               | clang 16 (Linux)               | clang 17 (Linux)                      | clang 18 (Linux)                      | clang 19 (Linux)   | icpx 2025.0 (Linux)     | Xcode 15.4 / 16.1 (macOS) | Visual Studio 2022 (Windows) |
 |----------------------|--------------------------------|---------------------------------------|---------------------------------------|--------------------------------|--------------------------------|--------------------------------|--------------------------------|--------------------------------|--------------------------------|---------------------------------------|---------------------------------------|--------------------|-------------------------|---------------------------|------------------------------|
 | Serial               | :white_check_mark:             | :white_check_mark:                    | :white_check_mark:                    | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:                    | :white_check_mark:                    | :white_check_mark: | :white_check_mark:      | :white_check_mark:        | :white_check_mark:           |
 | OpenMP 2.0+ blocks   | :white_check_mark:             | :white_check_mark:                    | :white_check_mark:                    | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:             | :white_check_mark:                    | :white_check_mark:                    | :white_check_mark: | :white_check_mark: [^1] | :white_check_mark:        | :white_check_mark:           |
