@@ -15,6 +15,58 @@
 #include <numeric>
 #include <type_traits>
 
+namespace buftest
+{
+    template<typename TDim, typename TDev, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(TDev dev, TExtent extent)
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevCpu dev, TExtent extent) -> alpaka::BufCpu<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevCudaRt dev, TExtent extent) -> alpaka::BufCudaRt<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevHipRt dev, TExtent extent) -> alpaka::BufHipRt<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_CPU)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevCpuSycl dev, TExtent extent) -> alpaka::BufCpuSycl<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevGpuSyclIntel dev, TExtent extent) -> alpaka::BufGpuSyclIntel<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+    template<typename TDim, typename TElem, typename TIdx, typename TExtent>
+    auto allocBuf(alpaka::DevFpgaSyclIntel dev, TExtent extent) -> alpaka::BufFpgaSyclIntel<TElem, TDim, TIdx>
+    {
+        return alpaka::allocBuf<TElem, TIdx>(dev, extent);
+    }
+#endif
+
+} // namespace buftest
+
 template<typename TAcc>
 static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
@@ -244,13 +296,14 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
     using Elem = std::size_t;
+    using DimExtent = alpaka::DimInt<0>;
 
     auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
     auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
-    auto const extent = alpaka::Vec<alpaka::DimInt<0>, Idx>{};
+    auto const extent = alpaka::Vec<DimExtent, Idx>{};
 
     auto write = [&](auto& buf, Elem value)
     {
@@ -267,7 +320,7 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
 
     // move constructor
     {
-        auto buf1 = alpaka::allocBuf<Elem, Idx>(dev, extent);
+        auto buf1 = buftest::allocBuf<DimExtent, Elem, Idx>(dev, extent);
         write(buf1, 1);
         auto buf2{std::move(buf1)};
         CHECK(read(buf2) == 1);
@@ -275,8 +328,8 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
 
     // move assignment (via swap)
     {
-        auto buf1 = alpaka::allocBuf<Elem, Idx>(dev, extent);
-        auto buf2 = alpaka::allocBuf<Elem, Idx>(dev, extent);
+        auto buf1 = buftest::allocBuf<DimExtent, Elem, Idx>(dev, extent);
+        auto buf2 = buftest::allocBuf<DimExtent, Elem, Idx>(dev, extent);
         write(buf1, 1);
         write(buf2, 2);
         using std::swap;
