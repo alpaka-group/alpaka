@@ -142,9 +142,12 @@ auto example(TAccTag const&) -> int
 
     // Enqueue the kernel execution task
     {
+        // wait in case we are using an asynchronous queue to time actual kernel runtime
+        alpaka::wait(queue);
         auto const beginT = std::chrono::high_resolution_clock::now();
         alpaka::enqueue(queue, taskKernel);
-        alpaka::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
+        // wait in case we are using an asynchronous queue to time actual kernel runtime
+        alpaka::wait(queue);
         auto const endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT - beginT).count() << 's'
                   << std::endl;
