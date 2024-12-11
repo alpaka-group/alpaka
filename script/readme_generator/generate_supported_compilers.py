@@ -5,6 +5,7 @@ import sys
 import json
 from typing import List, Dict
 from dataclasses import dataclass
+import argparse
 
 
 def print_red(msg: str):
@@ -62,7 +63,9 @@ def config_validator(conf: Dict[str, Dict[str, str]]) -> bool:
                 print_red(f"[ERROR]: {compiler_name} misses entry {expected_entry}")
                 return False
             if "state" not in compiler_conf[expected_entry]:
-                print_red(f"[ERROR]: {compiler_name}/{expected_entry} misses state entry")
+                print_red(
+                    f"[ERROR]: {compiler_name}/{expected_entry} misses state entry"
+                )
                 return False
             if compiler_conf[expected_entry]["state"] not in get_known_state_names():
                 print_red(
@@ -74,10 +77,11 @@ def config_validator(conf: Dict[str, Dict[str, str]]) -> bool:
     return True
 
 
-def render_table(conf):
+def render_table(conf) -> str:
     """Renders the configuration to a markdown table"""
     # [column][row]
     table: List[List[str]] = []
+    markdown_table: str = ""
 
     # add backend names
     backends: List[str] = ["Accelerator Back-end"]
@@ -106,29 +110,63 @@ def render_table(conf):
             size = max(size, len(row))
         column_sizes.append(size)
 
-    # print the table header
-    print("|", end="")
+    # render the table header
+    markdown_table += "|"
     for c_num in range(len(table)):
-        print(f" {table[c_num][0]:<{column_sizes[c_num]}} |", end="")
-    print()
+        markdown_table += f" {table[c_num][0]:<{column_sizes[c_num]}} |"
+    markdown_table += "\n"
 
-    # print the lines under the table header
-    print("|", end="")
+    # render the lines under the table header
+    markdown_table += "|"
     for c_num in range(len(table)):
-        print((column_sizes[c_num] + 2) * "-" + "|", end="")
-    print()
+        markdown_table += (column_sizes[c_num] + 2) * "-" + "|"
+    markdown_table += "\n"
 
-    # prints each backend state cell for each compiler
+    # render each backend state cell for each compiler
     for r_num in range(1, len(table[0])):
-        print("|", end="")
+        markdown_table += "|"
         for c_num in range(len(table)):
-            print(f" {table[c_num][r_num]:<{column_sizes[c_num]}} |", end="")
-        print()
+            markdown_table += f" {table[c_num][r_num]:<{column_sizes[c_num]}} |"
+        markdown_table += "\n"
+
+    return markdown_table
 
 
 if __name__ == "__main__":
     script_path = os.path.dirname(os.path.realpath(__file__))
-    config_path = os.path.join(script_path, "supported_compilers.json")
+    default_config_path = os.path.join(script_path, "supported_compilers.json")
+    default_readme_path = os.path.abspath(
+        os.path.join(script_path, "../..", "README.md")
+    )
+
+    parser = argparse.ArgumentParser(
+        description="Creates a Markdown table for the supported compilers from "
+        "the configuration file."
+    )
+    parser.add_argument(
+        "-c",
+        "--config-path",
+        type=str,
+        default=default_config_path,
+        help=f"Path to the config file (default: {default_config_path}).",
+    )
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help="Check if generated compiler support table is in the alpaka "
+        "README.md\nSpecify path to the README.md with --readme-path.",
+    )
+
+    parser.add_argument(
+        "--readme-path",
+        type=str,
+        default=default_readme_path,
+        help=f"Path to the alpaka README.md (default: {default_readme_path}).",
+    )
+
+    args = parser.parse_args()
+
+    config_path = args.config_path
 
     if not os.path.exists(config_path):
         print_red(f"[ERROR]: {config_path} does not exist")
@@ -140,4 +178,49 @@ if __name__ == "__main__":
     if not config_validator(config):
         sys.exit(1)
 
-    render_table(config)
+    markdown_table = render_table(config)
+
+    if not args.verify:
+        print(markdown_table)
+    else:
+        readme_path = args.readme_path
+        if not os.path.exists(readme_path):
+            print_red(f"[ERROR]: {readme_path} does not exist")
+            sys.exit(1)
+
+        with open(readme_path, "r", encoding="utf-8") as readme_file:
+            readme = [line.rstrip() for line in readme_file]
+
+        missing_line = False
+
+        for line_num, markdown_line in enumerate(markdown_table.split("\n")):
+            if markdown_line not in readme:
+                if not missing_line:
+                    print_red(
+                        "[ERROR]: could not find the following lines in "
+                        f"{readme_path}\n"
+                        "The first number is the line number of the generated "
+                        "markdown table."
+                    )
+                    missing_line = True
+                print(f"{line_num}: {markdown_line}")
+
+        if not missing_line:
+            sys.exit(0)
+        else:
+            print()
+            print(
+                "Please the check the configuration file "
+                "'./script/readme_generator/supported_compilers.json'"
+            )
+            print(
+                "Generate a new table with "
+                "'./script/readme_generator/generate_supported_compilers.py'"
+            )
+            print("Copy the output in the README.md")
+            print(
+                "Verify the README.md with "
+                "'./script/readme_generator/generate_supported_compilers.py "
+                "--verify'"
+            )
+            sys.exit(1)
