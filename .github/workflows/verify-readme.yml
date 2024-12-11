@@ -5,7 +5,7 @@ name: Check compiler support table in README.md
 on: [push, pull_request]
 
 jobs:
-  single-header:
+  check-readme:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
