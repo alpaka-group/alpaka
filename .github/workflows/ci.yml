@@ -115,7 +115,7 @@ jobs:
           container: ubuntu:20.04
         - name: windows_cl-2022_debug_analysis
           os: windows-2022
-          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.25.3,                     ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2}
+          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3,                          ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2}
         - name: macos_xcode-15.4_debug_analysis
           os: macos-14
           env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 15.4,                                CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.81.0,                                                  ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                                             alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
@@ -135,10 +135,10 @@ jobs:
         ### Windows
         - name: windows_cl-2022_release
           os: windows-2022
-          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 1}
+          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3     , OMP_NUM_THREADS: 1}
         - name: windows_cl-2022_debug
           os: windows-2022
-          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.25.1, OMP_NUM_THREADS: 4,                                                                                                                                                                                           alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+          env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3     , OMP_NUM_THREADS: 4,                                                                                                                                                                                           alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
 
         ## CUDA 12.1
         # nvcc + MSVC
