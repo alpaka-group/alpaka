@@ -7,7 +7,7 @@
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
 #include "alpaka/mem/global/Traits.hpp"
 #include "alpaka/mem/view/ViewPlainPtr.hpp"
-#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
+#include "alpaka/queue/cuda-hip/QueueUniformCudaHipRt.hpp"
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
