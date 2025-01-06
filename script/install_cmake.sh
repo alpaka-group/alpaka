@@ -45,10 +45,8 @@ then
             fi
         elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
         then
-            # uninstalling CMake is broken in the GitHub Actions Windows Image
-            # therefore we need to use what is installed
-            #choco uninstall cmake.install
-            #choco install cmake.install --no-progress --version ${ALPAKA_CI_CMAKE_VER}
+            choco uninstall cmake.install
+            choco install cmake.install --no-progress --version ${ALPAKA_CI_CMAKE_VER}
             cmake --version
         fi
     fi
