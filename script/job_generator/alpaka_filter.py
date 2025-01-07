@@ -135,4 +135,11 @@ def alpaka_post_filter(row: List) -> bool:
         ):
             return False
 
+    # the SYCL backends needs to be enabled if the icpx compiler is used
+    if row_check_name(row, DEVICE_COMPILER, "==", ICPX):
+        if is_in_row(row, BACKENDS) and (
+            (ALPAKA_ACC_SYCL_ENABLE, ON_VER) not in row[param_map[BACKENDS]]
+        ):
+            return False
+
     return True

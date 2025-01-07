@@ -91,6 +91,15 @@ then
 fi
 
 #-------------------------------------------------------------------------------
+# ONEAPI
+if [[ "${ALPAKA_CI_CXX}" == "icpx" ]]; then
+    if [[ "${alpaka_ACC_SYCL_ENABLE}" != "ON" ]]; then
+        echo_red "alpaka_ACC_SYCL_ENABLE needs to be enabled, if the C++ compiler is icpx"
+        exit 1
+    fi
+fi
+
+#-------------------------------------------------------------------------------
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
