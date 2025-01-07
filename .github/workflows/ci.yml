@@ -72,7 +72,9 @@ env:
   alpaka_ACC_GPU_CUDA_ONLY_MODE: OFF
   alpaka_ACC_GPU_HIP_ENABLE: OFF
   alpaka_ACC_GPU_HIP_ONLY_MODE: OFF
+  alpaka_ACC_SYCL_ENABLE: OFF
   alpaka_USE_MDSPAN: OFF
+  alpaka_DEBUG: 0
   alpaka_ENABLE_WERROR: ON
   CMAKE_INSTALL_PREFIX: ${{ github.workspace }}/_install
 
@@ -111,7 +113,7 @@ jobs:
         ### Analysis builds
         - name: linux_clang-14_cuda-11.2_debug_analysis
           os: ubuntu-20.04
-          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_CLANG_VER: 14,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, ALPAKA_CI_ANALYSIS: ON, ALPAKA_CI_RUN_TESTS: OFF, alpaka_DEBUG: 1, alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.2", ALPAKA_CI_CUDA_COMPILER : clang++,   alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_CLANG_VER: 14,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, ALPAKA_CI_ANALYSIS: ON, ALPAKA_CI_RUN_TESTS: OFF, alpaka_DEBUG: 1, alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.2", ALPAKA_CI_CUDA_COMPILER : clang++,   alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, CMAKE_CUDA_ARCHITECTURES: 61, alpaka_RELOCATABLE_DEVICE_CODE: OFF, alpaka_CUDA_SHOW_REGISTER: OFF, alpaka_CUDA_KEEP_FILES: OFF, alpaka_CUDA_EXPT_EXTENDED_LAMBDA: OFF}
           container: ubuntu:20.04
         - name: windows_cl-2022_debug_analysis
           os: windows-2022

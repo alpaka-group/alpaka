@@ -43,6 +43,14 @@ export ALPAKA_CI_INSTALL_CUDA="OFF"
 if [[ "${alpaka_ACC_GPU_CUDA_ENABLE}" == "ON" ]]
 then
     export ALPAKA_CI_INSTALL_CUDA="ON"
+else
+    echo_yellow "<SETENV: set cuda environment variables for disabled backend>"
+    export alpaka_RELOCATABLE_DEVICE_CODE=${alpaka_RELOCATABLE_DEVICE_CODE:=""}
+    export CMAKE_CUDA_ARCHITECTURES=${CMAKE_CUDA_ARCHITECTURES:=""}
+    export CMAKE_CUDA_COMPILER=${CMAKE_CUDA_COMPILER:=""}
+    export alpaka_CUDA_SHOW_REGISTER=${alpaka_CUDA_SHOW_REGISTER:=""}
+    export alpaka_CUDA_KEEP_FILES=${alpaka_CUDA_KEEP_FILES:=""}
+    export alpaka_CUDA_EXPT_EXTENDED_LAMBDA=${alpaka_CUDA_EXPT_EXTENDED_LAMBDA:=""}
 fi
 
 #-------------------------------------------------------------------------------
@@ -51,6 +59,10 @@ export ALPAKA_CI_INSTALL_HIP="OFF"
 if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ]
 then
     export ALPAKA_CI_INSTALL_HIP="ON"
+else
+    echo_yellow "<DEFAULT: hip environment variables for disabled backend>"
+    export CMAKE_HIP_ARCHITECTURES=${CMAKE_HIP_ARCHITECTURES:=""}
+    export CMAKE_HIP_COMPILER=${CMAKE_HIP_COMPILER:=""}
 fi
 
 #-------------------------------------------------------------------------------
@@ -97,6 +109,12 @@ if [[ "${ALPAKA_CI_CXX}" == "icpx" ]]; then
         echo_red "alpaka_ACC_SYCL_ENABLE needs to be enabled, if the C++ compiler is icpx"
         exit 1
     fi
+fi
+
+if [ "${alpaka_ACC_SYCL_ENABLE}" == "OFF" ]; then
+    echo_yellow "<DEFAULT: SYCL environment variables for disabled backend>"
+    export alpaka_SYCL_ONEAPI_CPU=${alpaka_SYCL_ONEAPI_CPU:=""}
+    export alpaka_SYCL_ONEAPI_CPU_ISA=${alpaka_SYCL_ONEAPI_CPU_ISA:=""}
 fi
 
 #-------------------------------------------------------------------------------

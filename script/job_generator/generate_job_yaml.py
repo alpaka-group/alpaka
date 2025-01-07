@@ -345,6 +345,9 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["CMAKE_CUDA_ARCHITECTURES"] = job[SM_LEVEL][VERSION]
         variables["ALPAKA_CI_CUDA_VERSION"] = job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
+        variables["alpaka_RELOCATABLE_DEVICE_CODE"] = "OFF"
+        variables["alpaka_CUDA_SHOW_REGISTER"] = "OFF"
+        variables["alpaka_CUDA_KEEP_FILES"] = "OFF"
         variables["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "OFF"
 
     if job[DEVICE_COMPILER][NAME] == NVCC:
@@ -451,6 +454,9 @@ def global_variables() -> Dict[str, str]:
     variables["ALPAKA_CI_CUDA_DIR"] = "$HOME/cuda"
     variables["ALPAKA_CI_HIP_ROOT_DIR"] = "$HOME/hip"
     variables["alpaka_ENABLE_WERROR"] = "ON"
+    # TODO(SimeonEhrig): Implement algorithm which select for each backend one
+    # job and set alpaka_DEBUG=2
+    variables["alpaka_DEBUG"] = 0
 
     return variables
 

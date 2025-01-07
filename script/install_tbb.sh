@@ -45,6 +45,6 @@ else
         # run the mv in PS, because INNER_FOLDER contains backslashes (from github.workspace variable) and bash fails to glob
         powershell.exe -Command mv "${INNER_FOLDER}/*" "${TBB_ROOT}/"
         rm -r "${INNER_FOLDER}"
-        export TBB_DIR="${TBB_ROOT}/lib/cmake/tbb"
+        export ALPAKA_CI_TBB_DIR="${TBB_ROOT}/lib/cmake/tbb"
     fi
 fi

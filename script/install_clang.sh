@@ -32,7 +32,7 @@ else
     if { [ "${ALPAKA_CI_UBUNTU_NAME}" == "focal" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 13 ]; } || \
     { [ "${ALPAKA_CI_UBUNTU_NAME}" == "jammy" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 15 ]; }
     then
-        sudo add-apt-repository "deb http://apt.llvm.org/${ALPAKA_CI_UBUNTU_NAME}/ llvm-toolchain-${ALPAKA_CI_UBUNTU_NAME}-$ALPAKA_CI_CLANG_VER main"
+        sudo add-apt-repository -y "deb http://apt.llvm.org/${ALPAKA_CI_UBUNTU_NAME}/ llvm-toolchain-${ALPAKA_CI_UBUNTU_NAME}-$ALPAKA_CI_CLANG_VER main"
     fi
 
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-${ALPAKA_CI_CLANG_VER}

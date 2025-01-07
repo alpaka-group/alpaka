@@ -13,6 +13,9 @@ linux_nvcc12.0_gcc11_debug_relocatable_device_code_compile_only:
     ALPAKA_CI_CMAKE_VER: 3.26.5
     alpaka_CXX_STANDARD: 20
     alpaka_RELOCATABLE_DEVICE_CODE: "ON"
+    alpaka_CUDA_SHOW_REGISTER: "OFF"
+    alpaka_CUDA_KEEP_FILES: "OFF"
+    alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
 
 linux_nvcc12.0_gcc11_release_extended_lambda_off_compile_only:
   extends: .base_cuda_gcc_compile_only
@@ -26,4 +29,7 @@ linux_nvcc12.0_gcc11_release_extended_lambda_off_compile_only:
     ALPAKA_CI_CMAKE_VER: 3.27.1
     alpaka_CXX_STANDARD: 20
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
+    alpaka_RELOCATABLE_DEVICE_CODE: "OFF"
+    alpaka_CUDA_SHOW_REGISTER: "OFF"
+    alpaka_CUDA_KEEP_FILES: "OFF"
     alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
