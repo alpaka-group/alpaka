@@ -19,6 +19,8 @@ jobs:
       run: |
         ./script/create-single-header.sh
     - name: commit
+      # run deployment only on the develop branch in the upstream repository
+      if: github.ref == 'refs/heads/develop' && github.repository_owner == 'alpaka-group'
       run: |
         set -x
         cd single-header
