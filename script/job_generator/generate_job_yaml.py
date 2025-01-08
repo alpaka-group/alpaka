@@ -345,10 +345,15 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["CMAKE_CUDA_ARCHITECTURES"] = job[SM_LEVEL][VERSION]
         variables["ALPAKA_CI_CUDA_VERSION"] = job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
+        variables["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "OFF"
 
     if job[DEVICE_COMPILER][NAME] == NVCC:
         # general configuration, if nvcc is the CUDA compiler
         variables["ALPAKA_CI_CUDA_COMPILER"] = "nvcc"
+
+        # MdSpan requires alpaka_CUDA_EXPT_EXTENDED_LAMBDA
+        if job[MDSPAN][VERSION] == ON_VER:
+            variables["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "ON"
 
         # configuration, if GCC is the CUDA host compiler
         if job[HOST_COMPILER][NAME] == GCC:
