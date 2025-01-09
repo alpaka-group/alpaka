@@ -954,12 +954,6 @@ if (NOT alpaka_USE_MDSPAN STREQUAL "OFF")
         message(FATAL_ERROR "std::mdspan on MSVC requires C++20. Please enable C++20 via alpaka_CXX_STANDARD. Use of std::mdspan has been disabled.")
     endif ()
 
-    if (alpaka_ACC_GPU_CUDA_ENABLE AND (CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA") AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-        # this issue actually only occurs when the host compiler (not the CXX compiler) is clang, but cmake does not let us query the host compiler id
-        # see: https://gitlab.kitware.com/cmake/cmake/-/issues/20901
-        message(FATAL_ERROR "std::mdspan does not work with nvcc and clang as host compiler. Use of std::mdspan has been disabled.")
-    endif ()
-
     if (alpaka_ACC_GPU_CUDA_ENABLE AND CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND (NOT alpaka_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON))
         message(FATAL_ERROR "std::mdspan requires nvcc's extended lambdas.")
     endif()
