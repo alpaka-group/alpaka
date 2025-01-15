@@ -21,13 +21,14 @@
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
-#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
+#include "alpaka/queue/cuda-hip/QueueUniformCudaHipRt.hpp"
 #include "alpaka/workdiv/WorkDivHelpers.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #    include <iostream>
 #endif
