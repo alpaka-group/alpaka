@@ -265,7 +265,7 @@
         },
         "hip": {
             "state": "yes",
-            "comment": "(HIP 5.1 - 5.2)"
+            "comment": "(HIP 5.2)"
         },
         "sycl": {
             "state": "no"

@@ -29,7 +29,7 @@ sw_versions: Dict[str, List[str]] = {
         "12.5",
         "12.6",
     ],
-    HIPCC: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "6.0", "6.1", "6.2"],
+    HIPCC: ["5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "6.0", "6.1", "6.2"],
     ICPX: ["2024.2"],
     # Contains all enabled back-ends.
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
