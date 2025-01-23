@@ -171,7 +171,12 @@ void gridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     // and fixed number of blocks tied to hardware parameters.
     // alpaka element layer is not used in this pattern.
     uint64_t const threadsPerBlock = maxThreadsPerBlock;
+#if defined(__SYCL_ID_QUERIES_FIT_IN_INT__) && __SYCL_ID_QUERIES_FIT_IN_INT__
+    // the compiler assumes that SYCL query parameters and maximum grid*block size fits in INT_MAX (2**31-1)
+    uint64_t const blocksPerGrid = std::min(deviceProperties.m_multiProcessorCount, INT_MAX / threadsPerBlock);
+#else
     uint64_t const blocksPerGrid = deviceProperties.m_multiProcessorCount;
+#endif
     uint64_t const elementsPerThread = 1u;
     auto const workDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
     std::cout << "\nGrid strided loop processing - fixed number of threads and blocks:\n";
@@ -246,7 +251,12 @@ void chunkedGridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     // Fixed sized alpaka element layer defines chunk size.
     // With 1 element per thread this pattern is same as grid strided loop.
     uint64_t const threadsPerBlock = maxThreadsPerBlock;
+#if defined(__SYCL_ID_QUERIES_FIT_IN_INT__) && __SYCL_ID_QUERIES_FIT_IN_INT__
+    // the compiler assumes that SYCL query parameters and maximum grid*block size fits in INT_MAX (2**31-1)
+    uint64_t const blocksPerGrid = std::min(deviceProperties.m_multiProcessorCount, INT_MAX / threadsPerBlock);
+#else
     uint64_t const blocksPerGrid = deviceProperties.m_multiProcessorCount;
+#endif
     uint64_t const elementsPerThread = 8u;
     auto const workDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
     std::cout << "\nChunked grid strided loop processing - fixed number of threads and blocks:\n";
@@ -312,7 +322,12 @@ void naiveOpenMPStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     // and number of blocks scales with the problem size.
     // alpaka element layer is not used in this pattern.
     uint64_t const threadsPerBlock = maxThreadsPerBlock;
+#if defined(__SYCL_ID_QUERIES_FIT_IN_INT__) && __SYCL_ID_QUERIES_FIT_IN_INT__
+    // the compiler assumes that SYCL query parameters and maximum grid*block size fits in INT_MAX (2**31-1)
+    uint64_t const blocksPerGrid = std::min(numCores, INT_MAX / threadsPerBlock);
+#else
     uint64_t const blocksPerGrid = numCores;
+#endif
     uint64_t const elementsPerThread = 1u;
     auto const workDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
     std::cout << "\nNaive OpenMP style processing - each thread processes a single consecutive range of elements:\n";
@@ -390,7 +405,12 @@ void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     // Fixed sized alpaka element layer defines SIMD size.
     // With 1 element per thread this pattern is same as naive OpenMP style.
     uint64_t const threadsPerBlock = maxThreadsPerBlock;
+#if defined(__SYCL_ID_QUERIES_FIT_IN_INT__) && __SYCL_ID_QUERIES_FIT_IN_INT__
+    // the compiler assumes that SYCL query parameters and maximum grid*block size fits in INT_MAX (2**31-1)
+    uint64_t const blocksPerGrid = std::min(numCores, INT_MAX / threadsPerBlock);
+#else
     uint64_t const blocksPerGrid = numCores;
+#endif
     uint64_t const elementsPerThread = 4u;
     auto const workDiv = WorkDiv{blocksPerGrid, threadsPerBlock, elementsPerThread};
     std::cout << "\nOpenMP SIMD style processing - each thread processes a single consecutive range of elements:\n";
