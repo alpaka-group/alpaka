@@ -80,7 +80,7 @@ jobs:
   clang-format:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: DoozyX/clang-format-lint-action@v0.16.2
       with:
         clangFormatVersion: 16
@@ -88,7 +88,7 @@ jobs:
         inplace: True
     - run: |
         git diff --exit-code > format.patch
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: format.patch
@@ -199,7 +199,7 @@ jobs:
     - name: check filter
       if: (contains(github.event.head_commit.message, 'ci_filter') && !contains(github.event.head_commit.message, matrix.name ))
       run: exit 1
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: build + test
       if: (runner.os == 'Windows')
       env:
