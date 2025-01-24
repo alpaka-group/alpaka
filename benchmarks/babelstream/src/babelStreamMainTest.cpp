@@ -176,6 +176,14 @@ struct DotKernel
     template<typename TAcc, typename T>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* a, T const* b, T* sum, alpaka::Idx<TAcc> arraySize) const
     {
+        // check that sum[arraySize] has enough elements
+        [[maybe_unused]] auto const numBlocks = alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[0];
+        ALPAKA_ASSERT_ACC(numBlocks <= arraySize);
+
+        // check that tbSum[blockThreadExtentMain] has enough elements
+        auto const blockSize = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0];
+        ALPAKA_ASSERT_ACC(blockSize <= blockThreadExtentMain);
+
         using Idx = alpaka::Idx<TAcc>;
         auto& tbSum = alpaka::declareSharedVar<T[blockThreadExtentMain], __COUNTER__>(acc);
 
@@ -188,7 +196,6 @@ struct DotKernel
             threadSum += a[i] * b[i];
         tbSum[local_i] = threadSum;
 
-        auto const blockSize = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0];
         for(Idx offset = blockSize / 2; offset > 0; offset /= 2)
         {
             alpaka::syncBlockThreads(acc);
@@ -326,8 +333,7 @@ void testKernels()
     auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
     {
         // Use babelstream standard work division for multi-threaded backends
-        if constexpr(alpaka::
-                         accMatchesTags<AccType, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+        if constexpr(alpaka::isMultiThreadAcc<AccType>)
         {
             return alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
