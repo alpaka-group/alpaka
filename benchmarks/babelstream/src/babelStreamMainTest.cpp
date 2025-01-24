@@ -1,4 +1,3 @@
-
 #include "babelStreamCommon.hpp"
 #include "catch2/catch_session.hpp"
 
@@ -47,13 +46,17 @@
 // Main function that integrates Catch2 and custom argument handling
 int main(int argc, char* argv[])
 {
+    std::cout << "Starting program..." << std::endl;
+
     // Handle custom arguments
     handleCustomArguments(argc, argv);
 
     // Initialize Catch2 and pass the command-line arguments to it
+    std::cout << "Initializing Catch2 session..." << std::endl;
     int result = Catch::Session().run(argc, argv);
 
     // Return the result of the tests
+    std::cout << "Program finished." << std::endl;
     return result;
 }
 
@@ -225,6 +228,8 @@ struct DotKernel
 template<typename TAcc, typename DataType>
 void testKernels()
 {
+    std::cout << "Starting testKernels..." << std::endl;
+
     if(kernelsToBeExecuted == KernelsToRun::All)
     {
         std::cout << "Kernels: Init, Copy, Mul, Add, Triad, Dot Kernels" << std::endl;
@@ -256,6 +261,7 @@ void testKernels()
     auto const devAcc = alpaka::getDevByIdx(platform, 0);
 
     // Create a queue on the device
+    std::cout << "Creating queue on the device..." << std::endl;
     QueueAcc queue(devAcc);
 
     // Get the host device for allocating memory on the host.
@@ -266,14 +272,50 @@ void testKernels()
     Idx arraySize = static_cast<Idx>(arraySizeMain);
 
     // Acc buffers
+    std::cout << "Allocating device buffers..." << std::endl;
     auto bufAccInputA = alpaka::allocBuf<DataType, Idx>(devAcc, arraySize);
+    if(!std::data(bufAccInputA))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufAccInputA" << std::endl;
+        return;
+    }
+
     auto bufAccInputB = alpaka::allocBuf<DataType, Idx>(devAcc, arraySize);
+    if(!std::data(bufAccInputB))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufAccInputB" << std::endl;
+        return;
+    }
+
     auto bufAccOutputC = alpaka::allocBuf<DataType, Idx>(devAcc, arraySize);
+    if(!std::data(bufAccOutputC))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufAccOutputC" << std::endl;
+        return;
+    }
 
     // Host buffer as the result
+    std::cout << "Allocating host buffers..." << std::endl;
     auto bufHostOutputA = alpaka::allocBuf<DataType, Idx>(devHost, arraySize);
+    if(!std::data(bufHostOutputA))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufHostOutputA" << std::endl;
+        return;
+    }
+
     auto bufHostOutputB = alpaka::allocBuf<DataType, Idx>(devHost, arraySize);
+    if(!std::data(bufHostOutputB))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufHostOutputB" << std::endl;
+        return;
+    }
+
     auto bufHostOutputC = alpaka::allocBuf<DataType, Idx>(devHost, arraySize);
+    if(!std::data(bufHostOutputC))
+    {
+        std::cerr << "Warning: Failed to allocate buffer bufHostOutputC" << std::endl;
+        return;
+    }
 
     // Grid size and elems per thread will be used to get the work division
     using Vec = alpaka::Vec<Dim, Idx>;
@@ -288,6 +330,7 @@ void testKernels()
     // Bind gridsize and elements per thread together
     alpaka::KernelCfg<Acc> const kernelCfg = {elementsPerGrid, elementsPerThread};
     // Let alpaka calculate good work division (namely the block and grid sizes) given our full problem extent
+    std::cout << "Calculating work divisions..." << std::endl;
     auto const workDivInit = alpaka::getValidWorkDiv(
         kernelCfg,
         devAcc,
@@ -321,7 +364,6 @@ void testKernels()
         bufAccInputBPtr,
         bufAccOutputCPtr);
 
-
     // Lambda to create and return work division for dot kernel
     auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
     {
@@ -353,6 +395,7 @@ void testKernels()
     };
 
     // Work Division for Dot Kernel
+    std::cout << "Calculating work division for DotKernel..." << std::endl;
     auto const workDivDot = (getWorkDivForDotKernel.template operator()<Acc>());
     // To record runtime data generated while running the kernels
     RuntimeResults runtimeResults;
@@ -371,9 +414,9 @@ void testKernels()
         runtimeResults.kernelToRundataMap[kernelLabel]->timingsSuccessiveRuns.push_back(runtime);
     };
 
-
     // Initialize logger before running kernels
     // Runtime result initialisation to be filled by each kernel
+    std::cout << "Initializing runtime results..." << std::endl;
     runtimeResults.addKernelTimingsVec("InitKernel");
     if(kernelsToBeExecuted == KernelsToRun::All)
     {
@@ -392,8 +435,8 @@ void testKernels()
         runtimeResults.addKernelTimingsVec("TriadKernel");
     }
 
-
     // Init kernel
+    std::cout << "Running InitKernel..." << std::endl;
     measureKernelExec(
         [&]()
         {
@@ -417,21 +460,25 @@ void testKernels()
     DataType resultDot = static_cast<DataType>(0.0f);
 
     // Main for loop to run the kernel-sequence
+    std::cout << "Starting main kernel loop..." << std::endl;
     for(auto i = 0; i < numberOfRuns; i++)
     {
         if(kernelsToBeExecuted == KernelsToRun::All)
         {
             // Test the copy-kernel. Copy A one by one to C.
+            std::cout << "Running CopyKernel..." << std::endl;
             measureKernelExec(
                 [&]() { alpaka::exec<Acc>(queue, workDivCopy, CopyKernel(), bufAccInputAPtr, bufAccOutputCPtr); },
                 "CopyKernel");
 
             // Test the scaling-kernel. Calculate B=scalar*C. Where C = A.
+            std::cout << "Running MultKernel..." << std::endl;
             measureKernelExec(
                 [&]() { alpaka::exec<Acc>(queue, workDivMult, MultKernel(), bufAccInputBPtr, bufAccOutputCPtr); },
                 "MultKernel");
 
             // Test the addition-kernel. Calculate C=A+B. Where B=scalar*C or B=scalar*A.
+            std::cout << "Running AddKernel..." << std::endl;
             measureKernelExec(
                 [&]() {
                     alpaka::exec<Acc>(
@@ -448,6 +495,7 @@ void testKernels()
         if(kernelsToBeExecuted == KernelsToRun::All || kernelsToBeExecuted == KernelsToRun::Triad)
         {
             // Test the Triad-kernel. Calculate A=B+scalar*C. Where C is A+scalar*A.
+            std::cout << "Running TriadKernel..." << std::endl;
             measureKernelExec(
                 [&]() {
                     alpaka::exec<Acc>(
@@ -463,11 +511,23 @@ void testKernels()
         if(kernelsToBeExecuted == KernelsToRun::All)
         {
             // Vector of sums of each block
+            std::cout << "Allocating buffers for DotKernel..." << std::endl;
             auto bufAccSumPerBlock = alpaka::allocBuf<DataType, Idx>(devAcc, workDivDot.m_gridBlockExtent[0]);
+            if(!std::data(bufAccSumPerBlock))
+            {
+                std::cerr << "Warning: Failed to allocate buffer bufAccSumPerBlock" << std::endl;
+                return;
+            }
+
             auto bufHostSumPerBlock = alpaka::allocBuf<DataType, Idx>(devHost, workDivDot.m_gridBlockExtent[0]);
+            if(!std::data(bufHostSumPerBlock))
+            {
+                std::cerr << "Warning: Failed to allocate buffer bufHostSumPerBlock" << std::endl;
+                return;
+            }
+
             // Test Dot kernel with specific blocksize which is larger than one
-
-
+            std::cout << "Running DotKernel..." << std::endl;
             measureKernelExec(
                 [&]()
                 {
@@ -494,6 +554,7 @@ void testKernels()
         if(kernelsToBeExecuted == KernelsToRun::NStream)
         {
             // Test the NStream-kernel. Calculate A += B + scalar * C;
+            std::cout << "Running NStreamKernel..." << std::endl;
             measureKernelExec(
                 [&]() {
                     alpaka::exec<Acc>(
@@ -509,8 +570,8 @@ void testKernels()
         alpaka::wait(queue);
     } // End of MAIN LOOP which runs the kernels many times
 
-
     // Copy results back to the host, measure copy time
+    std::cout << "Copying results back to host..." << std::endl;
     {
         auto start = std::chrono::high_resolution_clock::now();
         // Copy arrays back to host since the execution of kernels except dot kernel finished
@@ -639,6 +700,8 @@ void testKernels()
     metaData.setItem(BMInfoDataType::KernelAvgTimes, joinElements(runtimeResults.getAvgExecTimeKernelArray(), ", "));
     // Print the summary as a table, if a standard serialization is needed other functions of the class can be used
     std::cout << metaData.serializeAsTable() << std::endl;
+
+    std::cout << "testKernels finished." << std::endl;
 }
 
 using TestAccs1D = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
