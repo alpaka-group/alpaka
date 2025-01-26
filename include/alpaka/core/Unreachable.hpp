@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Jeffrey Kelling
+/* Copyright 2025 Jan Stephan, Jeffrey Kelling, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -11,11 +11,7 @@
 //!
 //! \param x A dummy value for the expected return type of the calling function.
 #if(BOOST_COMP_NVCC && BOOST_ARCH_PTX)
-#    if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(11, 3, 0)
-#        define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
-#    else
-#        define ALPAKA_UNREACHABLE(...) return __VA_ARGS__
-#    endif
+#    define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
 #elif BOOST_COMP_MSVC
 #    define ALPAKA_UNREACHABLE(...) __assume(false)
 #elif BOOST_COMP_GNUC || BOOST_COMP_CLANG

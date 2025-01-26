@@ -1,4 +1,4 @@
-/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+/* Copyright 2025 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
  *                Bernhard Manfred Gruber, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -273,11 +273,6 @@ namespace alpaka
         template<typename TApi, typename TElem, typename TDim, typename TIdx>
         struct AsyncBufAlloc<TElem, TDim, TIdx, DevUniformCudaHipRt<TApi>>
         {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-            static_assert(
-                std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0),
-                "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
-#    endif
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             static_assert(
                 std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0),
@@ -324,13 +319,13 @@ namespace alpaka
                   TDim::value <= 1
                   && (
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
+                      std::is_same_v<TApi, ApiCudaRt>
 #    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                       std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0)
 #    else
                       false
 #    endif
-                          )>
+                      )>
         {
         };
 

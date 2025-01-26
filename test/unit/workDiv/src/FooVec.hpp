@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Jan Stephan, Mehmet Yusufoglu
+/* Copyright 2025 Sergei Bastrakov, Jan Stephan, Mehmet Yusufoglu, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -95,11 +95,7 @@ namespace alpaka::trait
             -> alpaka::Vec<DimInt<N>, TVal>
         {
             alpaka::Vec<DimInt<N>, TVal> v{};
-#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-            if(DimInt<N>::value > 0)
-#else
             if constexpr(DimInt<N>::value > 0)
-#endif
             {
                 // Reverse the vector since the dimensions ordered as z-y-x in alpaka
                 for(unsigned i = 0; i < DimInt<N>::value; i++)
