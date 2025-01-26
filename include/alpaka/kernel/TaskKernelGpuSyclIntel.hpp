@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/acc/AccGpuSyclIntel.hpp"
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/kernel/TaskKernelGenericSycl.hpp"
 
