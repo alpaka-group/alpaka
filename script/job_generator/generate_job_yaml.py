@@ -375,7 +375,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "17"
         elif job[DEVICE_COMPILER][VERSION] == "2024.1":
             variables["ALPAKA_CI_CLANG_VER"] = "18"
-        elif job[DEVICE_COMPILER][VERSION] == "2024.2":
+        elif job[DEVICE_COMPILER][VERSION] in ("2024.2", "2025.0"):
             variables["ALPAKA_CI_CLANG_VER"] = "19"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
