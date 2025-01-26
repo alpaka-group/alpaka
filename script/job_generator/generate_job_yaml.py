@@ -391,6 +391,10 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
         variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
         variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
+        variables["alpaka_SYCL_ONEAPI_FPGA"] = "ON"
+        variables["alpaka_SYCL_ONEAPI_FPGA_MODE"] = "emulation"
+        variables["alpaka_SYCL_ONEAPI_FPGA_BOARD"] = ""
+        variables["alpaka_SYCL_ONEAPI_FPGA_BSP"] = ""
 
     return variables
 

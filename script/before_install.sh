@@ -115,6 +115,10 @@ if [ "${alpaka_ACC_SYCL_ENABLE}" == "OFF" ]; then
     echo_yellow "<DEFAULT: SYCL environment variables for disabled backend>"
     export alpaka_SYCL_ONEAPI_CPU=${alpaka_SYCL_ONEAPI_CPU:=""}
     export alpaka_SYCL_ONEAPI_CPU_ISA=${alpaka_SYCL_ONEAPI_CPU_ISA:=""}
+    export alpaka_SYCL_ONEAPI_FPGA=${alpaka_SYCL_ONEAPI_FPGA:=""}
+    export alpaka_SYCL_ONEAPI_FPGA_MODE=${alpaka_SYCL_ONEAPI_FPGA_MODE:=""}
+    export alpaka_SYCL_ONEAPI_FPGA_BOARD=${alpaka_SYCL_ONEAPI_FPGA_BOARD:=""}
+    export alpaka_SYCL_ONEAPI_FPGA_BSP=${alpaka_SYCL_ONEAPI_FPGA_BSP:=""}
 fi
 
 #-------------------------------------------------------------------------------
