@@ -45,107 +45,11 @@
 		// ============================================================================
 		// == ./include/alpaka/atomic/AtomicCpu.hpp ==
 		// ==
-		/* Copyright 2024 Andrea Bocci, Felice Pantaleo
+		/* Copyright 2025 Andrea Bocci, Felice Pantaleo
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-			// ============================================================================
-			// == ./include/alpaka/core/BoostPredef.hpp ==
-			// ==
-			/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Jeffrey Kelling,
-			 *                Bernhard Manfred Gruber, Jan Stephan
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			#include <boost/predef.h>
-
-			#ifdef __INTEL_COMPILER
-			#    warning                                                                                                          \
-			        "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)."
-			#endif
-
-			//---------------------------------------HIP-----------------------------------
-			// __HIP__ is defined by both hip-clang and vanilla clang in HIP mode.
-			// https://github.com/ROCm-Developer-Tools/HIP/blob/master/docs/markdown/hip_porting_guide.md#compiler-defines-summary
-			#if !defined(BOOST_LANG_HIP)
-			#    if defined(__HIP__)
-			/* BOOST_LANG_CUDA is enabled when either __CUDACC__ (nvcc) or __CUDA__ (clang) are defined. This occurs when
-			   nvcc / clang encounter a CUDA source file. Since there are no HIP source files we treat every source file
-			   as HIP when we are using a HIP-capable compiler. */
-			#        include <hip/hip_version.h>
-			// HIP doesn't give us a patch level for the last entry, just a gitdate
-			#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
-			#    else
-			#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
-			#    endif
-			#endif
-
-			// HSA device architecture detection (HSA generated via HIP(clang))
-			#if !defined(BOOST_ARCH_HSA)
-			#    if defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1 && defined(__HIP__)
-			// __HIP_DEVICE_COMPILE__ does not represent feature capability of target device like CUDA_ARCH.
-			// For feature detection there are special macros, see ROCm's HIP porting guide.
-			#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_AVAILABLE
-			#    else
-			#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_NOT_AVAILABLE
-			#    endif
-			#endif
-
-			// HIP compiler detection
-			#if !defined(BOOST_COMP_HIP)
-			#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
-			#        include <hip/hip_version.h>
-			// HIP doesn't give us a patch level for the last entry, just a gitdate
-			#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
-			#    else
-			#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
-			#    endif
-			#endif
-
-			// clang CUDA compiler detection
-			// Currently __CUDA__ is only defined by clang when compiling CUDA code.
-			#if defined(__clang__) && defined(__CUDA__)
-			#    define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
-			#else
-			#    define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
-			#endif
-
-			// PGI and NV HPC SDK compiler detection
-			// As of Boost 1.74, Boost.Predef's compiler detection is a bit weird. Recent PGI compilers will be identified as
-			// BOOST_COMP_PGI_EMULATED. Boost.Predef has lackluster front-end support and mistakes the EDG front-end
-			// for an actual compiler.
-			// TODO: Whenever you look at this code please check whether https://github.com/boostorg/predef/issues/28 and
-			// https://github.com/boostorg/predef/issues/51 have been resolved.
-			// BOOST_COMP_PGI_EMULATED is defined by boost instead of BOOST_COMP_PGI
-			#if defined(BOOST_COMP_PGI) && defined(BOOST_COMP_PGI_EMULATED)
-			#    undef BOOST_COMP_PGI
-			#    define BOOST_COMP_PGI BOOST_COMP_PGI_EMULATED
-			#endif
-
-			// Intel LLVM compiler detection
-			#if !defined(BOOST_COMP_ICPX)
-			#    if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
-			// The version string for icpx 2023.1.0 is 20230100. In Boost.Predef this becomes (53,1,0).
-			#        define BOOST_COMP_ICPX BOOST_PREDEF_MAKE_YYYYMMDD(__INTEL_LLVM_COMPILER)
-			#    endif
-			#endif
-			// ==
-			// == ./include/alpaka/core/BoostPredef.hpp ==
-			// ============================================================================
-
-
-		// clang 9/10/11 together with nvcc<11.6.0 as host compiler fails at compile time when using boost::atomic_ref
-		#ifdef BOOST_COMP_CLANG_AVAILABLE
-		#    if(BOOST_COMP_CLANG < BOOST_VERSION_NUMBER(12, 0, 0) && BOOST_COMP_NVCC                                          \
-		        && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 6, 0))
-		#        if !defined(ALPAKA_DISABLE_ATOMIC_ATOMICREF)
-		#            define ALPAKA_DISABLE_ATOMIC_ATOMICREF
-		#        endif
-		#    endif
-		#endif // BOOST_COMP_CLANG_AVAILABLE
-
 			// ============================================================================
 			// == ./include/alpaka/atomic/AtomicAtomicRef.hpp ==
 			// ==
@@ -170,7 +74,91 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+						// ============================================================================
+						// == ./include/alpaka/core/BoostPredef.hpp ==
+						// ==
+						/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Jeffrey Kelling,
+						 *                Bernhard Manfred Gruber, Jan Stephan
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+						#include <boost/predef.h>
+
+						#ifdef __INTEL_COMPILER
+						#    warning                                                                                                          \
+						        "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)."
+						#endif
+
+						//---------------------------------------HIP-----------------------------------
+						// __HIP__ is defined by both hip-clang and vanilla clang in HIP mode.
+						// https://github.com/ROCm-Developer-Tools/HIP/blob/master/docs/markdown/hip_porting_guide.md#compiler-defines-summary
+						#if !defined(BOOST_LANG_HIP)
+						#    if defined(__HIP__)
+						/* BOOST_LANG_CUDA is enabled when either __CUDACC__ (nvcc) or __CUDA__ (clang) are defined. This occurs when
+						   nvcc / clang encounter a CUDA source file. Since there are no HIP source files we treat every source file
+						   as HIP when we are using a HIP-capable compiler. */
+						#        include <hip/hip_version.h>
+						// HIP doesn't give us a patch level for the last entry, just a gitdate
+						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
+						#    else
+						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
+						#    endif
+						#endif
+
+						// HSA device architecture detection (HSA generated via HIP(clang))
+						#if !defined(BOOST_ARCH_HSA)
+						#    if defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1 && defined(__HIP__)
+						// __HIP_DEVICE_COMPILE__ does not represent feature capability of target device like CUDA_ARCH.
+						// For feature detection there are special macros, see ROCm's HIP porting guide.
+						#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_AVAILABLE
+						#    else
+						#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+						#    endif
+						#endif
+
+						// HIP compiler detection
+						#if !defined(BOOST_COMP_HIP)
+						#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
+						#        include <hip/hip_version.h>
+						// HIP doesn't give us a patch level for the last entry, just a gitdate
+						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
+						#    else
+						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
+						#    endif
+						#endif
+
+						// clang CUDA compiler detection
+						// Currently __CUDA__ is only defined by clang when compiling CUDA code.
+						#if defined(__clang__) && defined(__CUDA__)
+						#    define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
+						#else
+						#    define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+						#endif
+
+						// PGI and NV HPC SDK compiler detection
+						// As of Boost 1.74, Boost.Predef's compiler detection is a bit weird. Recent PGI compilers will be identified as
+						// BOOST_COMP_PGI_EMULATED. Boost.Predef has lackluster front-end support and mistakes the EDG front-end
+						// for an actual compiler.
+						// TODO: Whenever you look at this code please check whether https://github.com/boostorg/predef/issues/28 and
+						// https://github.com/boostorg/predef/issues/51 have been resolved.
+						// BOOST_COMP_PGI_EMULATED is defined by boost instead of BOOST_COMP_PGI
+						#if defined(BOOST_COMP_PGI) && defined(BOOST_COMP_PGI_EMULATED)
+						#    undef BOOST_COMP_PGI
+						#    define BOOST_COMP_PGI BOOST_COMP_PGI_EMULATED
+						#endif
+
+						// Intel LLVM compiler detection
+						#if !defined(BOOST_COMP_ICPX)
+						#    if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+						// The version string for icpx 2023.1.0 is 20230100. In Boost.Predef this becomes (53,1,0).
+						#        define BOOST_COMP_ICPX BOOST_PREDEF_MAKE_YYYYMMDD(__INTEL_LLVM_COMPILER)
+						#    endif
+						#endif
+						// ==
+						// == ./include/alpaka/core/BoostPredef.hpp ==
+						// ============================================================================
+
 						// ============================================================================
 						// == ./include/alpaka/core/Common.hpp ==
 						// ==
@@ -3175,7 +3163,7 @@
 			// ============================================================================
 			// == ./include/alpaka/vec/Vec.hpp ==
 			// ==
-			/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+			/* Copyright 2025 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
 			 *                Bernhard Manfred Gruber
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
@@ -3258,7 +3246,7 @@
 				// ============================================================================
 				// == ./include/alpaka/core/Unreachable.hpp ==
 				// ==
-				/* Copyright 2022 Jan Stephan, Jeffrey Kelling
+				/* Copyright 2025 Jan Stephan, Jeffrey Kelling, Andrea Bocci
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -3270,11 +3258,7 @@
 				//!
 				//! \param x A dummy value for the expected return type of the calling function.
 				#if(BOOST_COMP_NVCC && BOOST_ARCH_PTX)
-				#    if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(11, 3, 0)
-				#        define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
-				#    else
-				#        define ALPAKA_UNREACHABLE(...) return __VA_ARGS__
-				#    endif
+				#    define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
 				#elif BOOST_COMP_MSVC
 				#    define ALPAKA_UNREACHABLE(...) __assume(false)
 				#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
@@ -3744,20 +3728,6 @@
 			        //! Value constructor.
 			        //! This constructor is only available if the number of parameters matches the vector idx.
 			        ALPAKA_NO_HOST_ACC_WARNING
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
-			    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
-			        // This constructor tries to avoid SFINAE, which crashes nvcc 11.3. We also need to have a first
-			        // argument, so an unconstrained ctor with forwarding references does not hijack the compiler provided
-			        // copy-ctor.
-			        template<typename... TArgs>
-			        ALPAKA_FN_HOST_ACC constexpr Vec(TVal arg0, TArgs&&... args)
-			            : m_data{std::move(arg0), static_cast<TVal>(std::forward<TArgs>(args))...}
-			        {
-			            static_assert(
-			                1 + sizeof...(TArgs) == TDim::value && (std::is_convertible_v<std::decay_t<TArgs>, TVal> && ...),
-			                "Wrong number of arguments to Vec constructor or types are not convertible to TVal.");
-			        }
-			#else
 			        template<
 			            typename... TArgs,
 			            typename = std::enable_if_t<
@@ -3765,28 +3735,15 @@
 			        ALPAKA_FN_HOST_ACC constexpr Vec(TArgs&&... args) : m_data{static_cast<TVal>(std::forward<TArgs>(args))...}
 			        {
 			        }
-			#endif
 
 			        //! Generator constructor.
 			        //! Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to
 			        //! TDim - 1 (inclusive).
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
-			    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
-			        template<typename F>
-			        ALPAKA_FN_HOST_ACC constexpr explicit Vec(
-			            F&& generator,
-			            std::void_t<decltype(generator(std::integral_constant<std::size_t, 0>{}))>* ignore = nullptr)
-			            : Vec(std::forward<F>(generator), std::make_index_sequence<TDim::value>{})
-			        {
-			            static_cast<void>(ignore);
-			        }
-			#else
 			        template<typename F, std::enable_if_t<std::is_invocable_v<F, std::integral_constant<std::size_t, 0>>, int> = 0>
 			        ALPAKA_FN_HOST_ACC constexpr explicit Vec(F&& generator)
 			            : Vec(std::forward<F>(generator), std::make_index_sequence<TDim::value>{})
 			        {
 			        }
-			#endif
 
 			    private:
 			        template<typename F, std::size_t... Is>
@@ -4067,11 +4024,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator+(Vec const& p, Vec const& q) -> Vec
 			        {
 			            Vec r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] + q[i];
@@ -4084,19 +4037,9 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator-(Vec const& p, Vec const& q) -> Vec
 			        {
 			            Vec r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_suppress = unsigned_compare_with_zero
-			#endif
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_default = unsigned_compare_with_zero
-			#endif
 			                    r[i] = p[i] - q[i];
 			            }
 			            return r;
@@ -4107,11 +4050,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator*(Vec const& p, Vec const& q) -> Vec
 			        {
 			            Vec r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] * q[i];
@@ -4122,19 +4061,9 @@
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator==(Vec const& a, Vec const& b) -> bool
 			        {
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_suppress = unsigned_compare_with_zero
-			#endif
 			                for(typename TDim::value_type i(0); i < TDim::value; ++i)
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_default = unsigned_compare_with_zero
-			#endif
 			                {
 			                    if(a[i] != b[i])
 			                        return false;
@@ -4154,11 +4083,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator<(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] < q[i];
@@ -4171,11 +4096,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator<=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] <= q[i];
@@ -4188,11 +4109,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator>(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] > q[i];
@@ -4205,11 +4122,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator>=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] >= q[i];
@@ -4222,11 +4135,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator&&(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] && q[i];
@@ -4239,11 +4148,7 @@
 			        ALPAKA_FN_HOST_ACC friend constexpr auto operator||(Vec const& p, Vec const& q) -> Vec<TDim, bool>
 			        {
 			            Vec<TDim, bool> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] || q[i];
@@ -4254,19 +4159,9 @@
 			        ALPAKA_FN_HOST friend constexpr auto operator<<(std::ostream& os, Vec const& v) -> std::ostream&
 			        {
 			            os << "(";
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			            if(TDim::value > 0)
-			#else
 			            if constexpr(TDim::value > 0)
-			#endif
 			            {
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_suppress = unsigned_compare_with_zero
-			#endif
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			#    pragma diag_default = unsigned_compare_with_zero
-			#endif
 			                {
 			                    os << v[i];
 			                    if(i != TDim::value - 1)
@@ -4300,11 +4195,7 @@
 			    ALPAKA_FN_HOST_ACC constexpr auto toArray(Vec<TDim, TVal> const& v) -> std::array<TVal, TDim::value>
 			    {
 			        std::array<TVal, TDim::value> a{};
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			        if(TDim::value > 0)
-			#else
 			        if constexpr(TDim::value > 0)
-			#endif
 			        {
 			            for(unsigned i = 0; i < TDim::value; i++)
 			                a[i] = v[i];
@@ -4322,11 +4213,7 @@
 			    ALPAKA_FN_HOST_ACC constexpr auto elementwise_min(Vec<TDim, TVal> const& p, Vecs const&... qs) -> Vec<TDim, TVal>
 			    {
 			        Vec<TDim, TVal> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			        if(TDim::value > 0)
-			#else
 			        if constexpr(TDim::value > 0)
-			#endif
 			        {
 			            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                r[i] = std::min({p[i], qs[i]...});
@@ -4344,11 +4231,7 @@
 			    ALPAKA_FN_HOST_ACC constexpr auto elementwise_max(Vec<TDim, TVal> const& p, Vecs const&... qs) -> Vec<TDim, TVal>
 			    {
 			        Vec<TDim, TVal> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			        if(TDim::value > 0)
-			#else
 			        if constexpr(TDim::value > 0)
-			#endif
 			        {
 			            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                r[i] = std::max({p[i], qs[i]...});
@@ -4408,11 +4291,7 @@
 			                else
 			                {
 			                    Vec<TDim, TValNew> r;
-			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-			                    if(TDim::value > 0)
-			#else
 			                    if constexpr(TDim::value > 0)
-			#endif
 			                    {
 			                        for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                            r[i] = static_cast<TValNew>(vec[i]);
@@ -34512,7 +34391,7 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+		/* Copyright 2025 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
 		 *                Bernhard Manfred Gruber, Antonio Di Pilato
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
@@ -34786,16 +34665,6 @@
 		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
 		        struct AsyncBufAlloc<TElem, TDim, TIdx, DevUniformCudaHipRt<TApi>>
 		        {
-		#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-		            static_assert(
-		                std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0),
-		                "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
-		#    endif
-		#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-		            static_assert(
-		                std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0),
-		                "Support for stream-ordered memory buffers requires HIP/ROCm 5.3 or higher.");
-		#    endif
 		            static_assert(
 		                TDim::value <= 1,
 		                "CUDA/HIP devices support only one-dimensional stream-ordered memory buffers.");
@@ -34832,18 +34701,7 @@
 
 		        //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
 		        template<typename TApi, typename TDim>
-		        struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>>
-		            : std::bool_constant<
-		                  TDim::value <= 1
-		                  && (
-		#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-		                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
-		#    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-		                      std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0)
-		#    else
-		                      false
-		#    endif
-		                          )>
+		        struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>> : std::bool_constant<TDim::value <= 1>
 		        {
 		        };
 
