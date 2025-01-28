@@ -367,7 +367,8 @@ void testKernels()
     // Lambda to create and return work division for dot kernel
     auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
     {
-        // Use babelstream standard work division for multi-threaded backends
+        // Use babelstream benchmark standard work division for multi-threaded backends: {256,1024,1}
+        // For multi-threaded CPUs, which are not part of the benchmark limit blocksize with the limit of the backend.
         if constexpr(alpaka::isMultiThreadAcc<AccType>)
         {
             std::cout << "GetWorkDiv call DotKernel for the Multithreaded ACC: " << alpaka::getAccName<AccType>()
@@ -380,16 +381,23 @@ void testKernels()
                 bufAccInputBPtr,
                 bufAccOutputCPtr, // this is used here a kind of dummy
                 static_cast<alpaka::Idx<AccType>>(arraySize));
-            auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
 
+            // Get the maxThreadPerBlock
+            auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+            // Threads per block is 1024 for benchmark, if the system does not allow use the max value
             auto threadsPerBlock
                 = maxThreadsPerBlock < blockThreadExtentMain ? maxThreadsPerBlock : blockThreadExtentMain;
 
+            // Reduce operation at dot-kernel needs even block size
             if(threadsPerBlock != 1 && threadsPerBlock % 2 != 0)
             {
                 threadsPerBlock -= 1;
             }
 
+            // Dot kernel is only used for benchmarking of GPU backends; and Work division is fixed: 256,1024,1.
+            // https://github.com/UoB-HPC/BabelStream/blob/main/src/cuda/CUDAStream.cu
+            // Hence blocksize should be 1024 for GPU backends. But for multi-threaded CPUs; this code would also run
+            // and in that case the blocksize would be less.
             auto workDiv = alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
                 Vec::all(static_cast<alpaka::Idx<AccType>>(threadsPerBlock)),
