@@ -368,8 +368,7 @@ void testKernels()
     auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
     {
         // Use babelstream standard work division for multi-threaded backends
-        if constexpr(alpaka::
-                         accMatchesTags<AccType, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+        if constexpr(alpaka::isMultiThreadAcc<AccType>)
         {
             return alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
