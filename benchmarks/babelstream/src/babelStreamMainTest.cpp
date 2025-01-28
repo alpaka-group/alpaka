@@ -370,7 +370,7 @@ void testKernels()
         // Use babelstream standard work division for multi-threaded backends
         if constexpr(alpaka::isMultiThreadAcc<AccType>)
         {
-            std::cout << "GetWorkDiv got DotKernel for the Multithreaded ACC: " << alpaka::getAccName<AccType>()
+            std::cout << "GetWorkDiv call DotKernel for the Multithreaded ACC: " << alpaka::getAccName<AccType>()
                       << std::endl;
 
             auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(
@@ -382,8 +382,13 @@ void testKernels()
                 static_cast<alpaka::Idx<AccType>>(arraySize));
             auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
 
-            auto const threadsPerBlock
+            auto threadsPerBlock
                 = maxThreadsPerBlock < blockThreadExtentMain ? maxThreadsPerBlock : blockThreadExtentMain;
+
+            if(threadsPerBlock != 1 && threadsPerBlock % 2 != 0)
+            {
+                threadsPerBlock -= 1;
+            }
 
             auto workDiv = alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
