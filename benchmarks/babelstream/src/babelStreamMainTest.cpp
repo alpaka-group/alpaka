@@ -373,9 +373,21 @@ void testKernels()
             std::cout << "GetWorkDiv got DotKernel for the Multithreaded ACC: " << alpaka::getAccName<AccType>()
                       << std::endl;
 
+            auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(
+                devAcc,
+                DotKernel(),
+                bufAccInputAPtr,
+                bufAccInputBPtr,
+                bufAccOutputCPtr, // this is used here a kind of dummy
+                static_cast<alpaka::Idx<AccType>>(arraySize));
+            auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+
+            auto const threadsPerBlock
+                = maxThreadsPerBlock < blockThreadExtentMain ? maxThreadsPerBlock : blockThreadExtentMain;
+
             auto workDiv = alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
-                Vec::all(blockThreadExtentMain),
+                Vec::all(static_cast<alpaka::Idx<AccType>>(threadsPerBlock)),
                 Vec::all(1)};
             std::cout << " The workdiv for dot kernel: " << workDiv << std::endl;
             return workDiv;
