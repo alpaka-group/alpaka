@@ -65,6 +65,9 @@ struct alpaka::trait::WarpSize<ActivemaskMultipleThreadWarpTestKernel<TWarpSize>
 TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
+    using Dim = alpaka::Dim<Acc>;
+    using Idx = alpaka::Idx<Acc>;
+
     if constexpr(alpaka::accMatchesTags<
                      Acc,
                      alpaka::TagCpuSycl,
@@ -72,14 +75,10 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {
-        std::cout << "Test disabled for SYCL\n";
-        return;
+        WARN("Test disabled for SYCL");
     }
     else
     {
-        using Dim = alpaka::Dim<Acc>;
-        using Idx = alpaka::Idx<Acc>;
-
         auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         auto const warpExtents = alpaka::getWarpSizes(dev);
