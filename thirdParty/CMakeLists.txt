@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+# Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci, Simeon Ehrig
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -23,12 +23,24 @@ if(BUILD_TESTING OR alpaka_BUILD_BENCHMARKS)
 
         # Silence icpx remark:
         # Note that use of '-g' without any optimization-level option will turn off most compiler optimizations similar to use of '-O0'
-        # Remarks are not treated as warnings so we need to disable them manually. 
+        # Remarks are not treated as warnings so we need to disable them manually.
         add_compile_options($<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:IntelLLVM>>:-Rno-debug-disables-optimization>)
+
+        # suppress warning produced by Catch2 3.5.2
+        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang"
+            AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19
+            AND alpaka_CXX_STANDARD VERSION_LESS_EQUAL 17)
+                list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-c++20-extensions")
+        endif()
+        if(CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM" AND
+                CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 2025 AND
+                alpaka_CXX_STANDARD VERSION_LESS_EQUAL 17)
+            add_compile_options(-Wno-c++20-extensions)
+        endif()
 
         # Turn off fast math to prevent warnings inside Catch2 (icpx defaults to -fp-model=fast)
         add_compile_options($<$<CXX_COMPILER_ID:IntelLLVM>:-fp-model=precise>)
-        
+
         add_subdirectory(catch2)
 
         # hide Catch2 cmake variables by default in cmake gui

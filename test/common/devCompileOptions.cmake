@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Benjamin Worpitz, Jeffrey Kelling, Bernhard Manfred Gruber, René Widera, Jan Stephan
+# Copyright 2025 Benjamin Worpitz, Jeffrey Kelling, Bernhard Manfred Gruber, René Widera, Jan Stephan, Simeon Ehrig
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -166,6 +166,12 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10.0)
         list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-deprecated-copy>")
     endif()
+    # suppress warning produced by Catch2 3.5.2
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang"
+            AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19
+            AND alpaka_CXX_STANDARD VERSION_LESS_EQUAL 17)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-c++20-extensions")
+    endif()
 
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12.0)
         list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-poison-system-directories")
@@ -185,6 +191,11 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
     if(${CMAKE_CXX_COMPILER_ID} STREQUAL "IntelLLVM")
         # fast math is turned on by default with ICPX, which breaks our unit tests
         list(APPEND alpaka_DEV_COMPILE_OPTIONS "-fp-model=precise")
+
+        # suppress warning produced by Catch2 3.5.2
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 2025 AND alpaka_CXX_STANDARD VERSION_LESS_EQUAL 17)
+            list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-c++20-extensions")
+        endif()
 
         if (alpaka_ACC_SYCL_ENABLE)
             # avoid: warning: disabled expansion of recursive macro
