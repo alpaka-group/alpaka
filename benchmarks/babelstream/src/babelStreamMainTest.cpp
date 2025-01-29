@@ -325,14 +325,38 @@ void testKernels()
     // Lambda to create and return work division for dot kernel
     auto getWorkDivForDotKernel = [&]<typename AccType>() -> alpaka::WorkDivMembers<Dim, Idx>
     {
-        // Use babelstream standard work division for multi-threaded backends
-        if constexpr(alpaka::
-                         accMatchesTags<AccType, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+        // Use babelstream benchmark standard work division for multi-threaded backends
+        // For GPUs the benchmark expects a fixed workdiv: {256,1024,1}
+        // For multi-threaded CPUs, which are not part of the benchmark, the code below will limit the blocksize with
+        // the limit of the backend.
+        if constexpr(alpaka::isMultiThreadAcc<AccType>)
         {
-            return alpaka::WorkDivMembers{
+            auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(
+                devAcc,
+                DotKernel(),
+                bufAccInputAPtr,
+                bufAccInputBPtr,
+                bufAccOutputCPtr, // this is used here a kind of dummy
+                static_cast<alpaka::Idx<AccType>>(arraySize));
+
+            // Get the maxThreadPerBlock
+            auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+            // Threads per block is 1024 for benchmark, if the system does not allow use the max value
+            auto threadsPerBlock = std::min(maxThreadsPerBlock, blockThreadExtentMain);
+
+            // Reduce operation at dot-kernel needs even block size
+            threadsPerBlock = (threadsPerBlock + 1) / 2 * 2;
+
+            // Dot kernel is only used for benchmarking of GPU backends; and Work division is fixed for benchmark:
+            // 256,1024,1. https://github.com/UoB-HPC/BabelStream/blob/main/src/cuda/CUDAStream.cu Hence blocksize
+            // should be 1024 for GPU backends. But for multi-threaded CPUs; this code would also run and in that case
+            // the blocksize would be less.
+            auto workDiv = alpaka::WorkDivMembers{
                 Vec::all(static_cast<alpaka::Idx<AccType>>(dotGridBlockExtent)),
-                Vec::all(blockThreadExtentMain),
+                Vec::all(static_cast<alpaka::Idx<AccType>>(threadsPerBlock)),
                 Vec::all(1)};
+
+            return workDiv;
         }
         else
         {
