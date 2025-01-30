@@ -327,15 +327,37 @@ void testKernels()
         bufAccInputBPtr,
         bufAccOutputCPtr);
 
-
     // Work division for Dot Kernel
     alpaka::WorkDivMembers<Dim, Idx> workDivDot{Vec::all(1), Vec::all(1), Vec::all(1)};
-    if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagGpuSyclIntel>)
+    // Use babelstream benchmark standard work division for multi-threaded backends
+    // For GPUs the benchmark expects a fixed workdiv: {256,1024,1}
+    // For multi-threaded CPUs, which are not part of the benchmark, the code below will limit the blocksize with
+    // the limit of the backend.
+    if constexpr(alpaka::isMultiThreadAcc<Acc>)
     {
-        // Use babelstream standard work division for multi-threaded backends
+        auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(
+            devAcc,
+            DotKernel(),
+            bufAccInputAPtr,
+            bufAccInputBPtr,
+            bufAccOutputCPtr, // this is used here a kind of dummy
+            static_cast<alpaka::Idx<Acc>>(arraySize));
+
+        // Get the maxThreadPerBlock
+        auto const maxThreadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+        // Threads per block is 1024 for benchmark, if the system does not allow use the max value
+        auto threadsPerBlock = std::min(maxThreadsPerBlock, blockThreadExtentMain);
+
+        // Reduce operation at dot-kernel needs even block size
+        threadsPerBlock = (threadsPerBlock + 1) / 2 * 2;
+
+        // Dot kernel is only used for benchmarking of GPU backends; and Work division is fixed for benchmark:
+        // 256,1024,1. https://github.com/UoB-HPC/BabelStream/blob/main/src/cuda/CUDAStream.cu Hence blocksize
+        // should be 1024 for GPU backends. But for multi-threaded CPUs; this code would also run and in that case
+        // the blocksize would be less.
         workDivDot = alpaka::WorkDivMembers{
             Vec::all(static_cast<alpaka::Idx<Acc>>(dotGridBlockExtent)),
-            Vec::all(blockThreadExtentMain),
+            Vec::all(static_cast<alpaka::Idx<Acc>>(threadsPerBlock)),
             Vec::all(1)};
     }
     else
