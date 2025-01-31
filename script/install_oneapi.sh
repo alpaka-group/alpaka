@@ -36,7 +36,7 @@ else
     components=(
         intel-oneapi-common-vars                                      # Contains /opt/intel/oneapi/setvars.sh - has no version number
         intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" # Contains icpx compiler and SYCL runtime
-        intel-oneapi-runtime-opencl                                   # Required to run SYCL tests on the CPU - has no version number
+        intel-oneapi-compiler-fpga-"${ALPAKA_CI_ONEAPI_VERSION}"      # Containes the FPGA support package
     )
     travis_retry sudo apt-get install -y "${components[@]}"
 
