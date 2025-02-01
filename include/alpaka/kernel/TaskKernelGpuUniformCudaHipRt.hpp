@@ -26,6 +26,7 @@
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 
@@ -299,8 +300,9 @@ namespace alpaka
                 }
                 if constexpr(ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
                 {
-                    auto const msg
-                        = std::string{"execution of kernel '" + core::demangled<TKernelFnObj> + "' failed with"};
+                    using namespace std::literals;
+                    std::string const msg
+                        = "execution of kernel '"s + std::string(core::demangled<TKernelFnObj>) + "' failed with"s;
                     ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(msg.c_str(), __FILE__, __LINE__);
                 }
             }
