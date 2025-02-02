@@ -1,4 +1,4 @@
-/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
+/* Copyright 2025 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -37,6 +37,9 @@
 #include "alpaka/core/Sycl.hpp"
 
 #include <cstddef>
+#ifdef __cpp_lib_format
+#    include <format>
+#endif
 #include <string>
 #include <type_traits>
 
@@ -164,8 +167,26 @@ namespace alpaka::trait
     {
         static auto getAccName() -> std::string
         {
-            return std::string("Acc") + core::demangled<TTag>.substr(__builtin_strlen("alpaka::Tag")) + "<"
-                   + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    endif
+            using namespace std::literals;
+            static std::string const accName =
+#    ifdef __cpp_lib_format
+                std::format(
+                    "Acc{}<{},{}>",
+                    core::demangled<TTag>.substr(std::string_view("alpaka::Tag").size()),
+                    TDim::value,
+                    core::demangled<TIdx>);
+#    else
+                "Acc"s + std::string(core::demangled<TTag>.substr(std::string_view("alpaka::Tag").size())) + "<"s
+                + std::to_string(TDim::value) + ","s + std::string(core::demangled<TIdx>) + ">"s;
+#    endif
+            return accName;
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
         }
     };
 

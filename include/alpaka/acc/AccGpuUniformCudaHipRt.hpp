@@ -1,4 +1,4 @@
-/* Copyright 2024 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2025 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -34,7 +34,10 @@
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
 
-#include <typeinfo>
+#ifdef __cpp_lib_format
+#    include <format>
+#endif
+#include <string>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -224,8 +227,22 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
-                return std::string("AccGpu") + TApi::name + "Rt<" + std::to_string(TDim::value) + ","
-                       + core::demangled<TIdx> + ">";
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    endif
+                using namespace std::literals;
+                static std::string const accName =
+#    ifdef __cpp_lib_format
+                    std::format("AccGpu{}Rt<{},{}>", TApi::name, TDim::value, core::demangled<TIdx>);
+#    else
+                    "AccGpu"s + TApi::name + "Rt<"s + std::to_string(TDim::value) + ","s
+                    + std::string(core::demangled<TIdx>) + ">"s;
+#    endif
+                return accName;
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
             }
         };
 
