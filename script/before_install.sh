@@ -119,6 +119,27 @@ if [ "${alpaka_ACC_SYCL_ENABLE}" == "OFF" ]; then
     export alpaka_SYCL_ONEAPI_FPGA_MODE=${alpaka_SYCL_ONEAPI_FPGA_MODE:=""}
     export alpaka_SYCL_ONEAPI_FPGA_BOARD=${alpaka_SYCL_ONEAPI_FPGA_BOARD:=""}
     export alpaka_SYCL_ONEAPI_FPGA_BSP=${alpaka_SYCL_ONEAPI_FPGA_BSP:=""}
+else
+    if !( [ "$alpaka_SYCL_ONEAPI_CPU" == "ON" ] || [ "$alpaka_SYCL_ONEAPI_FPGA" == "ON" ] ); then
+        echo_red "ERROR: the SYCL CPU or FPGA device needs to enabled"
+        exit 1
+    fi
+
+    if [ "$alpaka_SYCL_ONEAPI_CPU" == "ON" ] && [ "$alpaka_SYCL_ONEAPI_FPGA" == "ON" ]; then
+        echo_red "ERROR: the SYCL CPU or FPGA device cannot be enabled at the same time"
+        exit 1
+    fi
+
+    if [ "$alpaka_SYCL_ONEAPI_CPU" == "OFF" ]; then
+        echo_yellow "<DEFAULT: SYCL environment variables for enabled backend and disabled CPU device>"
+        export alpaka_SYCL_ONEAPI_CPU_ISA=""        
+    fi
+    if [ "$alpaka_SYCL_ONEAPI_FPGA" == "OFF" ]; then
+        echo_yellow "<DEFAULT: SYCL environment variables for enabled backend and disabled FPGA device>"
+        export alpaka_SYCL_ONEAPI_FPGA_MODE=""
+        export alpaka_SYCL_ONEAPI_FPGA_BOARD=""
+        export alpaka_SYCL_ONEAPI_FPGA_BSP=""
+    fi
 fi
 
 #-------------------------------------------------------------------------------

@@ -389,6 +389,8 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "19"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
+        variables["alpaka_SYCL_ONEAPI_CPU"] = "OFF"
+        variables["alpaka_SYCL_ONEAPI_FPGA"] = "OFF"
         if job[SYCL_DEVICE][NAME] == SYCL_CPU:
             variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
             variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
