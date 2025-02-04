@@ -31,7 +31,7 @@ from generate_job_yaml import (
     JOB_UNKNOWN,
     WAVE_GROUP_NAMES,
 )
-from job_modifier import add_job_parameters
+from job_modifier import add_job_parameters, add_sycl_fpga_jobs
 from verify import verify, verify_parameters
 from util import print_warn
 
@@ -139,6 +139,8 @@ if __name__ == "__main__":
     )
 
     add_job_parameters(job_matrix)
+    
+    job_matrix = add_sycl_fpga_jobs(job_matrix)
 
     if args.print_combinations or args.all:
         print(f"number of combinations before reorder: {len(job_matrix)}")

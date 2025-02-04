@@ -26,3 +26,8 @@ SM_LEVEL: str = "sm_level"
 
 # enable mdspan support
 MDSPAN: str = "mdspan"
+
+# enabled device for Intel SYCL backend
+SYCL_DEVICE: str = "sycl_device"
+SYCL_CPU: str = "sycl_cpu"
+SYCL_FPGA: str = "sycl_fpga"

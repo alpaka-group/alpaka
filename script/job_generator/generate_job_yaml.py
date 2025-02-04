@@ -389,12 +389,14 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "19"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
-        variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
-        variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
-        variables["alpaka_SYCL_ONEAPI_FPGA"] = "ON"
-        variables["alpaka_SYCL_ONEAPI_FPGA_MODE"] = "emulation"
-        variables["alpaka_SYCL_ONEAPI_FPGA_BOARD"] = ""
-        variables["alpaka_SYCL_ONEAPI_FPGA_BSP"] = ""
+        if job[SYCL_DEVICE][NAME] == SYCL_CPU:
+            variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
+            variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
+        if job[SYCL_DEVICE][NAME] == SYCL_FPGA: 
+            variables["alpaka_SYCL_ONEAPI_FPGA"] = "ON"
+            variables["alpaka_SYCL_ONEAPI_FPGA_MODE"] = "emulation"
+            variables["alpaka_SYCL_ONEAPI_FPGA_BOARD"] = ""
+            variables["alpaka_SYCL_ONEAPI_FPGA_BSP"] = ""
 
     return variables
 
@@ -486,6 +488,11 @@ def create_job(job: Dict[str, Tuple[str, str]], container_version: float, gitlab
     # if Clang-CUDA is the device compiler, add also the CUDA SDK version to the name
     if job[DEVICE_COMPILER][NAME] == CLANG_CUDA:
         job_name = job_name + "-cuda" + job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
+
+    if job[SYCL_DEVICE][NAME] == SYCL_CPU:
+        job_name = job_name + "-cpu"
+    if job[SYCL_DEVICE][NAME] == SYCL_FPGA:
+        job_name = job_name + "-fpga"
 
     if job[JOB_EXECUTION_TYPE][VERSION] == JOB_EXECUTION_COMPILE_ONLY:
         job_name += "_compile_only"
