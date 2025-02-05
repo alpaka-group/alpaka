@@ -26,6 +26,10 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct BufAlloc;
 
+        //! The BucCpu to ConstBufCpu conversion.
+        template<typename TBuf, typename TSfinae = void>
+        struct ConstBufConvert;
+
         //! The stream-ordered memory allocator trait.
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct AsyncBufAlloc;
@@ -64,6 +68,17 @@ namespace alpaka
     ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent = TExtent())
     {
         return trait::BufAlloc<TElem, Dim<TExtent>, TIdx, TDev>::allocBuf(dev, extent);
+    }
+
+    //! Creates a constant version of a given buffer. Both buffers share ownership.
+    //!
+    //! \tparam TBuf The type of the initial buffer.
+    //! \param dev The initial buffer.
+    //! \return The converted buffer with only constant data accesses allowed.
+    template<typename TBuf>
+    ALPAKA_FN_HOST auto makeConstBuf(TBuf buf)
+    {
+        return trait::ConstBufConvert<TBuf>::makeConstBuf(buf);
     }
 
     //! Allocates stream-ordered memory on the given device.

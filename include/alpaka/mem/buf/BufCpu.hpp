@@ -84,15 +84,20 @@ namespace alpaka
         };
     } // namespace detail
 
+    template<typename TElem, typename TDim, typename TIdx>
+    class ConstBufCpu;
+
     //! The CPU memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
     class BufCpu : public internal::ViewAccessOps<BufCpu<TElem, TDim, TIdx>>
     {
+        friend ConstBufCpu<TElem, TDim, TIdx>;
+
     public:
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST BufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
             : m_spBufCpuImpl{
-                std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
+                  std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
@@ -219,6 +224,18 @@ namespace alpaka
             }
         };
 
+        //! The BufCpu to ConstBufCpu conversion.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct ConstBufConvert<BufCpu<TElem, TDim, TIdx>>
+        {
+            ALPAKA_FN_HOST static auto makeConstBuf(BufCpu<TElem, TDim, TIdx> const& buf)
+                -> ConstBufCpu<TElem, TDim, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                return ConstBufCpu<TElem, TDim, TIdx>(buf);
+            }
+        };
+
         //! The BufCpu stream-ordered memory allocation trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct AsyncBufAlloc<TElem, TDim, TIdx, DevCpu>
@@ -310,5 +327,6 @@ namespace alpaka
     } // namespace trait
 } // namespace alpaka
 
+#include "alpaka/mem/buf/cpu/ConstBufCpu.hpp"
 #include "alpaka/mem/buf/cpu/Copy.hpp"
 #include "alpaka/mem/buf/cpu/Set.hpp"
