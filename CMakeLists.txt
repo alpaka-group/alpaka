@@ -162,8 +162,9 @@ endif()
 ################################################################################
 # Installation.
 
+option(alpaka_INSTALL "" OFF)
 # Do not install if alpaka is used as a CMake subdirectory
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR alpaka_INSTALL)
     include(CMakePackageConfigHelpers)
     include(GNUInstallDirs)
 
@@ -204,4 +205,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             DESTINATION "${_alpaka_INSTALL_CMAKEDIR}")
     install(DIRECTORY "${_alpaka_ROOT_DIR}/cmake/tests"
             DESTINATION "${_alpaka_INSTALL_CMAKEDIR}")
+
+    install(TARGETS alpaka EXPORT alpakaTargets)
+    install(EXPORT alpakaTargets DESTINATION "${_alpaka_INSTALL_CMAKEDIR}" NAMESPACE alpaka::)
 endif()

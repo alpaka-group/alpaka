@@ -602,7 +602,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
 
         set(_alpaka_HIP_MIN_VER 5.1)
         set(_alpaka_HIP_MAX_VER 6.2)
-        
+
         checkCompilerCXXSupport(HIP ${alpaka_MIN_CXX_STANDARD})
 
         # construct hip version only with major and minor level
@@ -873,9 +873,15 @@ if(TARGET alpaka)
     # the alpaka library itself
     # SYSTEM voids showing warnings produced by alpaka when used in user applications.
     if(BUILD_TESTING)
-        target_include_directories(alpaka INTERFACE ${_alpaka_INCLUDE_DIRECTORY})
+        target_include_directories(alpaka
+          INTERFACE
+            $<BUILD_INTERFACE:${_alpaka_INCLUDE_DIRECTORY}>
+            $<INSTALL_INTERFACE:include>)
     else()
-        target_include_directories(alpaka SYSTEM INTERFACE ${_alpaka_INCLUDE_DIRECTORY})
+        target_include_directories(alpaka
+          SYSTEM INTERFACE
+            $<BUILD_INTERFACE:${_alpaka_INCLUDE_DIRECTORY}>
+            $<INSTALL_INTERFACE:include>)
     endif()
 
     if(${alpaka_DEBUG} GREATER 1)
