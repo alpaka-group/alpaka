@@ -162,7 +162,7 @@ endif()
 ################################################################################
 # Installation.
 
-option(alpaka_INSTALL "" OFF)
+option(alpaka_INSTALL "install alpaka even if used as project dependency" OFF)
 # Do not install if alpaka is used as a CMake subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR alpaka_INSTALL)
     include(CMakePackageConfigHelpers)

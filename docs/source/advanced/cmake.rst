@@ -178,6 +178,12 @@ alpaka_USE_MDSPAN
      "SYSTEM" - Enable mdspan and acquire it via `find_package` from your system
      "FETCH" - Enable mdspan and download it via CMake's `FetchContent` from GitHub. The dependency will not be installed when you install alpaka.
 
+alpaka_INSTALL
+  .. code-block::
+
+     Install alpaka even if it is a project dependency.
+     Defaults to off (i.e. alpaka is not installed separately if alpaka is a project dependency).
+
 .. _cpu-serial:
 
 CPU Serial
