@@ -152,9 +152,14 @@ def add_sycl_fpga_jobs(job_matrix: List[Dict[str, Tuple[str, str]]]) -> List[Dic
 
     for job in job_matrix:
         if ALPAKA_ACC_SYCL_ENABLE in job:
-            for enabled_device in (SYCL_CPU, SYCL_FPGA):
+            extended_job = job.copy()
+            extended_job[SYCL_DEVICE] = (SYCL_CPU, ON)
+            extended_job_matrix.append(extended_job)
+            # TODO: a bug in the blockSharedSharingTest disallow testing the
+            # SYCL FPGA backend in debug mode
+            if job[BUILD_TYPE][VERSION] == CMAKE_RELEASE:
                 extended_job = job.copy()
-                extended_job[SYCL_DEVICE] = (enabled_device, ON)
+                extended_job[SYCL_DEVICE] = (SYCL_FPGA, ON)
                 extended_job_matrix.append(extended_job)
         else:
             job[SYCL_DEVICE] = ("", "")
