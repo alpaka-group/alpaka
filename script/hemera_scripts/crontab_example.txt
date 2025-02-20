@@ -1,9 +1,9 @@
 # Commented out test job which runs every minute
 
 # Run scripts at 4 AM (04:00)
-0 4 * * * /home/$USER/scripts/run_cpu_seq.sh >> /home/$USER/scripts/logs/cpu_seq.log 2>&1
-5 4 * * * /home/$USER/scripts/run_gpu_cuda_nvcc.sh >> /home/$USER/scripts/logs/gpu_cuda_nvcc.log 2>&1
-10 4 * * * /home/$USER/scripts/run_omp2_threads.sh >> /home/$USER/scripts/logs/omp2_threads.log 2>&1
-20 4 * * * /home/$USER/scripts/run_opm2_blocks.sh >> /home/$USER/scripts/logs/opm2_blocks.log 2>&1
+0 * * * * /home/$USER/scripts/run_cpu_seq_slurm.sh >> /home/$USER/scripts/logs/cpu_seq.log 2>&1
+5 * * * * /home/$USER/scripts/run_gpu_cuda_nvcc_slurm.sh >> /home/$USER/scripts/logs/gpu_cuda_nvcc.log 2>&1
+10 * * * * /home/$USER/scripts/run_omp2_threads_slurm.sh >> /home/$USER/scripts/logs/omp2_threads.log 2>&1
+20 * * * * /home/$USER/scripts/run_opm2_blocks_slurm.sh >> /home/$USER/scripts/logs/opm2_blocks.log 2>&1
 
 

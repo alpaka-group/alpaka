@@ -11,15 +11,45 @@ print_directory_info() {
     echo "Script Directory: $(dirname "$(realpath "$0")")"
 }
 
+# Function to initialize the module system (based on your interactive environment)
+initialize_modules() {
+    echo "Initializing module system..."
+
+    # Set MODULEPATH as seen in your interactive environment
+    export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
+
+    # Source the Lmod initialization script
+    if [ -f /trinity/shared/lmod/lmod/init/bash ]; then
+        source /trinity/shared/lmod/lmod/init/bash
+    elif [ -f /etc/profile.d/modules.sh ]; then
+        source /etc/profile.d/modules.sh
+    else
+        echo "Error: Module system initialization script not found."
+        exit 1
+    fi
+
+    # Define the 'module' function explicitly (if needed)
+    BASH_FUNC_module "() {  eval \`$LMOD_CMD bash \"\$@\"\` && eval \`${LMOD_SETTARG_CMD:-:} -s sh\`"
+    export -f module
+
+    echo "Module system initialized successfully."
+}
+
 # Function to clone or update the Alpaka repository
 clone_or_update_alpaka() {
     if [ -d "alpaka" ]; then
         echo "Updating Alpaka repository..."
         cd alpaka || exit 1
+
+        # Explicitly set PATH for git (based on your interactive environment)
+        export PATH=/trinity/shared/pkg/devel/git/2.37.1/bin:$PATH
         git checkout develop
         git pull origin develop
     else
         echo "Cloning Alpaka repository..."
+
+        # Explicitly set PATH for git (based on your interactive environment)
+        export PATH=/trinity/shared/pkg/devel/git/2.37.1/bin:$PATH
         git clone https://github.com/alpaka-group/alpaka.git --branch develop
         cd ./alpaka
     fi
@@ -28,11 +58,16 @@ clone_or_update_alpaka() {
 # Function to set up the environment for cpu-omp2t
 setup_environment_cpu_omp2t() {
     echo "Setting up environment for cpu-omp2t..."
+
+    # Initialize the module system
+    initialize_modules
+
+    # Load necessary modules (based on your interactive environment)
     module load git
     module load cmake/3.26.1
     module load gcc/12.2.0 || { echo "Failed to load gcc/12.2.0"; return 1; }
     module load python/3.10.4 || { echo "Failed to load python/3.10.4"; return 1; }
-    module load boost/1.82.0 || { echo "Failed to load Boost"; return 1; }  # Specific hash for Boost
+    module load boost/1.82.0 || { echo "Failed to load Boost"; return 1; }
 
     # Ensure OpenMP is available
     which gcc > /dev/null || { echo "Error: GCC (with OpenMP support) not found."; return 1; }
@@ -91,6 +126,10 @@ submit_cpu_omp2t_benchmark() {
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 
+# Reinitialize the module system inside the Slurm job
+export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
+source /trinity/shared/lmod/lmod/init/bash
+
 # Load necessary modules inside the Slurm job
 module load gcc/12.2.0
 module load boost/1.82.0
@@ -115,7 +154,13 @@ EOF
 
 # Main script execution
 print_directory_info
+
+# Ensure the module system is initialized
+initialize_modules
+
+# Clone or update Alpaka repository
 clone_or_update_alpaka
+
 echo "Current Working Directory: $(pwd)"
 
 if [ "$(basename "$(pwd)")" != "alpaka" ]; then

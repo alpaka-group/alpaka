@@ -11,15 +11,45 @@ print_directory_info() {
     echo "Script Directory: $(dirname "$(realpath "$0")")"
 }
 
+# Function to initialize the module system (based on env output)
+initialize_modules() {
+    echo "Initializing module system..."
+    
+    # Set MODULEPATH as seen in the env output
+    export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
+
+    # Source the Lmod initialization script
+    if [ -f /trinity/shared/lmod/lmod/init/bash ]; then
+        source /trinity/shared/lmod/lmod/init/bash
+    elif [ -f /etc/profile.d/modules.sh ]; then
+        source /etc/profile.d/modules.sh
+    else
+        echo "Error: Module system initialization script not found."
+        exit 1
+    fi
+
+    # Ensure the BASH_FUNC_module function is defined (from env output)
+    BASH_FUNC_module "() {  eval \`$LMOD_CMD bash \"\$@\"\` && eval \`${LMOD_SETTARG_CMD:-:} -s sh\`"
+    export -f module
+
+    echo "Module system initialized successfully."
+}
+
 # Function to clone or update the Alpaka repository
 clone_or_update_alpaka() {
     if [ -d "alpaka" ]; then
         echo "Updating Alpaka repository..."
         cd alpaka || exit 1
+        
+        # Explicitly set PATH for git (based on env output)
+        export PATH=/trinity/shared/pkg/devel/git/2.37.1/bin:$PATH
         git checkout develop
         git pull origin develop
     else
         echo "Cloning Alpaka repository..."
+        
+        # Explicitly set PATH for git (based on env output)
+        export PATH=/trinity/shared/pkg/devel/git/2.37.1/bin:$PATH
         git clone https://github.com/alpaka-group/alpaka.git --branch develop
         cd ./alpaka
     fi
@@ -28,17 +58,22 @@ clone_or_update_alpaka() {
 # Function to set up the environment for gpu-cuda-nvcc
 setup_environment_gpu_cuda_nvcc() {
     echo "Setting up environment for gpu-cuda-nvcc..."
-    module load git
+
+    # Initialize the module system
+    initialize_modules
+
+    # Load necessary modules (based on env output)
+    module load git/2.37.1
     module load cmake/3.26.1
     module load gcc/12.2.0 || { echo "Failed to load gcc/12.2.0"; return 1; }
     module load python/3.10.4 || { echo "Failed to load python/3.10.4"; return 1; }
-    module load boost/1.82.0 || { echo "Failed to load Boost"; return 1; }  # Specific hash for Boost
+    module load boost/1.82.0 || { echo "Failed to load Boost"; return 1; }
     module load cuda/12.1 || { echo "Failed to load CUDA 12.1"; return 1; }
 
     # Verify if nvcc exists
     which nvcc > /dev/null || { echo "Error: nvcc not found. Ensure CUDA is loaded properly."; return 1; }
 
-    # Set LD_LIBRARY_PATH for CUDA
+    # Set LD_LIBRARY_PATH for CUDA (based on env output)
     export LD_LIBRARY_PATH=$(dirname "$(which nvcc)")/../lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     echo "Environment setup completed successfully."
 }
@@ -99,9 +134,16 @@ submit_gpu_cuda_nvcc_benchmark() {
 #SBATCH --mem=8G
 #SBATCH --gres=gpu:1                                 # Request 1 GPU
 
+# Reinitialize the module system inside the Slurm job
+export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
+source /trinity/shared/lmod/lmod/init/bash
+
 # Load necessary modules inside the Slurm job
-module load cuda/12.1
+module load git/2.37.1
+module load cmake/3.26.1
+module load gcc/12.2.0
 module load boost/1.82.0
+module load cuda/12.1
 
 # To prevent libstdc++ not found error
 export LD_LIBRARY_PATH=/trinity/shared/pkg/compiler/gcc/12.2.0/lib64:/trinity/shared/pkg/compiler/gcc/12.2.0/lib:\$LD_LIBRARY_PATH
@@ -123,7 +165,13 @@ EOF
 
 # Main script execution
 print_directory_info
+
+# Ensure the module system is initialized
+initialize_modules
+
+# Clone or update Alpaka repository
 clone_or_update_alpaka
+
 echo "Current Working Directory: $(pwd)"
 
 if [ "$(basename "$(pwd)")" != "alpaka" ]; then
