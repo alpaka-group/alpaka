@@ -28,10 +28,6 @@ initialize_modules() {
         exit 1
     fi
 
-    # Define the 'module' function explicitly (if needed)
-    BASH_FUNC_module "() {  eval \`$LMOD_CMD bash \"\$@\"\` && eval \`${LMOD_SETTARG_CMD:-:} -s sh\`"
-    export -f module
-
     echo "Module system initialized successfully."
 }
 
@@ -94,7 +90,6 @@ build_cpu_omp2b() {
 
     echo "Configuring for preset: $preset"
     cmake --preset "$preset" \
-          -DBoost_INCLUDE_DIR="$(spack location -i /u3oct6d)/include" \
           -Dalpaka_BUILD_BENCHMARKS=ON \
           -DCMAKE_BUILD_TYPE=RELEASE \
           $extra_flags

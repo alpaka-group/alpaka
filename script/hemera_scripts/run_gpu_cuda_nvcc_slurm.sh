@@ -28,10 +28,6 @@ initialize_modules() {
         exit 1
     fi
 
-    # Ensure the BASH_FUNC_module function is defined (from env output)
-    BASH_FUNC_module "() {  eval \`$LMOD_CMD bash \"\$@\"\` && eval \`${LMOD_SETTARG_CMD:-:} -s sh\`"
-    export -f module
-
     echo "Module system initialized successfully."
 }
 
@@ -101,7 +97,6 @@ build_gpu_cuda_nvcc() {
 
     echo "Configuring for preset: $preset"
     cmake --preset "$preset" \
-          -DBoost_INCLUDE_DIR="$(spack location -i /u3oct6d)/include" \
           -Dalpaka_BUILD_BENCHMARKS=ON \
           -DCMAKE_BUILD_TYPE=RELEASE \
           $extra_flags
