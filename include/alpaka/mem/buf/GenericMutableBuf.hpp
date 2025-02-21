@@ -33,9 +33,6 @@ namespace alpaka
         {
         }
 
-        // prevent conversion from the constant TBuf which would cast away the constness
-        // ALPAKA_FN_HOST GenericBuf(TBuf<TElem, TDim, TIdx> const& buf) = delete;
-
     public:
         std::shared_ptr<TBufImpl<TElem, TDim, TIdx>> m_spBufImpl;
     };
@@ -153,29 +150,15 @@ namespace alpaka::trait
             GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf,
             TDev const& dev) -> TElem const*
         {
-            if(dev == getDev(buf))
-            {
-                return GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf});
-            }
-            else
-            {
-                throw std::runtime_error("The buffer is not accessible from the given device!");
-            }
+            return GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf});
         }
 
         ALPAKA_FN_HOST static auto getPtrDev(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf, TDev const& dev)
             -> TElem*
         {
-            if(dev == getDev(buf))
-            {
-                // cast away the TElem's constness from the ConstBuf's return type
-                return const_cast<TElem*>(
-                    GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf}));
-            }
-            else
-            {
-                throw std::runtime_error("The buffer is not accessible from the given device!");
-            }
+            // cast away the TElem's constness from the TBuf's return type
+            return const_cast<TElem*>(
+                GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf}));
         }
     };
 
