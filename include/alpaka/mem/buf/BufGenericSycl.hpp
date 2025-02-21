@@ -10,6 +10,7 @@
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/mem/buf/BufCpu.hpp"
+#include "alpaka/mem/buf/GenericMutableBuf.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
@@ -25,7 +26,7 @@ namespace alpaka
 {
     //! The SYCL memory buffer.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    class BufGenericSycl : public internal::ViewAccessOps<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    class ConstBufGenericSycl : public internal::ViewAccessOps<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
     public:
         static_assert(
@@ -36,7 +37,7 @@ namespace alpaka
 
         //! Constructor
         template<typename TExtent, typename Deleter>
-        BufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
+        ConstBufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
             : m_dev{dev}
             , m_extentElements{getExtentVecEnd<TDim>(extent)}
             , m_spMem(pMem, std::move(deleter))
@@ -53,88 +54,83 @@ namespace alpaka
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 
+        ALPAKA_FN_HOST ConstBufGenericSycl(
+            GenericBuf<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx> const& buf)
+            : m_dev{trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>::getDev(buf)}
+            , m_extentElements{}
+            , m_spMem{buf.m_spBufImpl}
+        {
+        }
+
         DevGenericSycl<TTag> m_dev;
         Vec<TDim, TIdx> m_extentElements;
         std::shared_ptr<TElem> m_spMem;
     };
+
+    template<typename TElem, typename TDim, typename TIdx, typename TTag>
+    using BufGenericSycl = GenericBuf<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx>;
+
 } // namespace alpaka
 
 namespace alpaka::trait
 {
-    //! The BufGenericSycl device type trait specialization.
+    //! The ConstBufGenericSycl device type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct DevType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct DevType<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
         using type = DevGenericSycl<TTag>;
     };
 
-    //! The BufGenericSycl device get trait specialization.
+    //! The ConstBufGenericSycl device get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
+        static auto getDev(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
         {
             return buf.m_dev;
         }
     };
 
-    //! The BufGenericSycl dimension getter trait specialization.
+    //! The ConstBufGenericSycl dimension getter trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct DimType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct DimType<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
         using type = TDim;
     };
 
-    //! The BufGenericSycl memory element type get trait specialization.
+    //! The ConstBufGenericSycl memory element type get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct ElemType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct ElemType<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        using type = TElem;
+        using type = TElem const;
     };
 
-    //! The BufGenericSycl extent get trait specialization.
+    //! The ConstBufGenericSycl extent get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct GetExtents<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const
+        auto operator()(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const
         {
             return buf.m_extentElements;
         }
     };
 
-    //! The BufGenericSycl native pointer get trait specialization.
+    //! The ConstBufGenericSycl native pointer get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) -> TElem const*
-        {
-            return buf.m_spMem.get();
-        }
-
-        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag>& buf) -> TElem*
+        static auto getPtrNative(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) -> TElem const*
         {
             return buf.m_spMem.get();
         }
     };
 
-    //! The BufGenericSycl pointer on device get trait specialization.
+    //! The ConstBufGenericSycl pointer on device get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>
+    struct GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>
     {
-        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf, DevGenericSycl<TTag> const& dev)
+        static auto getPtrDev(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf, DevGenericSycl<TTag> const& dev)
             -> TElem const*
-        {
-            if(dev == getDev(buf))
-            {
-                return buf.m_spMem.get();
-            }
-            else
-            {
-                throw std::runtime_error("The buffer is not accessible from the given device!");
-            }
-        }
-
-        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TTag>& buf, DevGenericSycl<TTag> const& dev) -> TElem*
         {
             if(dev == getDev(buf))
             {
@@ -205,11 +201,11 @@ namespace alpaka::trait
     {
     };
 
-    //! The BufGenericSycl offset get trait specialization.
+    //! The ConstBufGenericSycl offset get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct GetOffsets<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const&) const -> Vec<TDim, TIdx>
+        auto operator()(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const&) const -> Vec<TDim, TIdx>
         {
             return Vec<TDim, TIdx>::zeros();
         }
@@ -243,9 +239,9 @@ namespace alpaka::trait
     {
     };
 
-    //! The BufGenericSycl idx type trait specialization.
+    //! The ConstBufGenericSycl idx type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+    struct IdxType<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
         using type = TIdx;
     };
@@ -255,11 +251,6 @@ namespace alpaka::trait
     struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TTag>>
     {
         static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TTag> const&) -> TElem const*
-        {
-            return getPtrNative(buf);
-        }
-
-        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TTag> const&) -> TElem*
         {
             return getPtrNative(buf);
         }

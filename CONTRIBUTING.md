@@ -23,7 +23,7 @@ will make the next commit pass.
 
 ## Formatting
 
-Please format your code before before opening pull requests using clang-format 16 and the .clang-format file placed in 
+Please format your code before opening pull requests using clang-format 16 and the .clang-format file placed in 
 the repository root. If you were using `pre-commit` during your changes, this has happened automatically already. If
 not, find further instructions below.
 

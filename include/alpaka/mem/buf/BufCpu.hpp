@@ -93,11 +93,12 @@ namespace alpaka
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST ConstBufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
             : m_spBufCpuImpl{
-                  std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
+                std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufCpu(GenericBuf<ConstBufCpu, detail::BufCpuImpl, DevCpu, TElem, TDim, TIdx> const& buf)
+        ALPAKA_FN_HOST ConstBufCpu(
+            GenericBuf<ConstBufCpu, detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const& buf)
             : m_spBufCpuImpl{buf.m_spBufImpl}
         {
         }
@@ -107,7 +108,7 @@ namespace alpaka
     };
 
     template<typename TElem, typename TDim, typename TIdx>
-    using BufCpu = GenericBuf<ConstBufCpu, alpaka::detail::BufCpuImpl, DevCpu, TElem, TDim, TIdx>;
+    using BufCpu = GenericBuf<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx>;
 
     namespace trait
     {

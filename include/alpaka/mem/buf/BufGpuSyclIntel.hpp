@@ -11,6 +11,9 @@
 namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
+    using ConstBufGpuSyclIntel = ConstBufGenericSycl<TElem, TDim, TIdx, TagGpuSyclIntel>;
+
+    template<typename TElem, typename TDim, typename TIdx>
     using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, TagGpuSyclIntel>;
 } // namespace alpaka
 

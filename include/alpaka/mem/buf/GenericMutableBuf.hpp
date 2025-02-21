@@ -18,8 +18,9 @@ namespace alpaka
 {
     //! The generic memory buffer template implementing muting accessors.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -29,12 +30,12 @@ namespace alpaka
     public:
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST GenericBuf(TDev const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
-            : m_spBufImpl{std::make_shared<TBufImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
+            : m_spBufImpl{std::make_shared<TBufImpl>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
     public:
-        std::shared_ptr<TBufImpl<TElem, TDim, TIdx>> m_spBufImpl;
+        std::shared_ptr<TBufImpl> m_spBufImpl;
     };
 } // namespace alpaka
 
@@ -42,8 +43,9 @@ namespace alpaka::trait
 {
     //! The GenericBuf device type trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -55,8 +57,9 @@ namespace alpaka::trait
 
     //! The GenericBuf device get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -71,8 +74,9 @@ namespace alpaka::trait
 
     //! The GenericBuf dimension getter trait.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -84,8 +88,9 @@ namespace alpaka::trait
 
     //! The GenericBuf memory element type get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -97,8 +102,9 @@ namespace alpaka::trait
 
     //! The GenericBuf width get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -113,8 +119,9 @@ namespace alpaka::trait
 
     //! The GenericBuf native pointer get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -137,8 +144,9 @@ namespace alpaka::trait
 
     //! The GenericBuf pointer on device get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -164,8 +172,9 @@ namespace alpaka::trait
 
     //! The GenericBuf offset get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
@@ -182,8 +191,9 @@ namespace alpaka::trait
 
     //! The GenericBuf idx type trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
-        template<typename, typename, typename> class TBufImpl,
+        template<typename, typename, typename>
+        class TBuf,
+        typename TBufImpl,
         typename TDev,
         typename TElem,
         typename TDim,
