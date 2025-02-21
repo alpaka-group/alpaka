@@ -17,16 +17,10 @@
 
 namespace buftest
 {
-    template<typename TDim, typename TDev, typename TElem, typename TIdx, typename TExtent>
-    auto allocConstBuf(TDev dev, TExtent extent)
-    {
-        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
-    }
-
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCpu dev, TExtent extent) -> alpaka::ConstBufCpu<TElem, TDim, TIdx>
     {
-        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufCpu(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -94,7 +88,7 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     using TCBuf = decltype(c_buf);
 
     auto const offset = alpaka::Vec<Dim, Idx>::zeros();
-    alpaka::test::testViewImmutable<Elem>(c_buf, dev, extent, offset);
+    alpaka::test::testViewImmutable<Elem const>(c_buf, dev, extent, offset);
 
     // check that Constant buffer can't be converted to non-const buffer
     STATIC_REQUIRE_FALSE(std::convertible_to<TCBuf, TBuf>);
@@ -104,7 +98,7 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
 
     // check that Constant buffer cannot give a non const native ptr
     // STATIC_REQUIRE(buftest::onlyConstNativePtr<TCBuf>);
-    // getPtrNative(c_buf)* = 0.f;  // <- this does not compile, as desired
+    // *getPtrNative(c_buf) = 0.f;  // <- this does not compile, as desired
     // however, the static require above doesn't work and seems to get float* instead of float const*
 
     STATIC_REQUIRE_FALSE(buftest::onlyConstNativePtr<TBuf>);

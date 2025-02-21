@@ -97,6 +97,11 @@ namespace alpaka
         {
         }
 
+        ALPAKA_FN_HOST ConstBufCpu(GenericBuf<ConstBufCpu, detail::BufCpuImpl, DevCpu, TElem, TDim, TIdx> const& buf)
+            : m_spBufCpuImpl{buf.m_spBufImpl}
+        {
+        }
+
     public:
         std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
     };
@@ -106,6 +111,13 @@ namespace alpaka
 
     namespace trait
     {
+        //! The CPU device memory buffer type trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct BufType<DevCpu, TElem, TDim, TIdx>
+        {
+            using type = BufCpu<TElem, TDim, TIdx>;
+        };
+
         //! The ConstBufCpu device type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct DevType<ConstBufCpu<TElem, TDim, TIdx>>
@@ -134,7 +146,8 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx>
         struct ElemType<ConstBufCpu<TElem, TDim, TIdx>>
         {
-            using type = TElem;
+            // const qualify the element type of the inner view
+            using type = TElem const;
         };
 
         //! The ConstBufCpu width get trait specialization.

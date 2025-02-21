@@ -6,6 +6,7 @@
 
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <functional>
@@ -23,15 +24,20 @@ namespace alpaka
         typename TElem,
         typename TDim,
         typename TIdx>
-    class GenericBuf : public TBuf<TElem, TDim, TIdx>
+    class GenericBuf : public internal::ViewAccessOps<GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
     public:
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST GenericBuf(TDev const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
-            : TBuf<TElem, TDim, TIdx>{
-                  std::make_shared<TBufImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
+            : m_spBufImpl{std::make_shared<TBufImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
+
+        // prevent conversion from the constant TBuf which would cast away the constness
+        // ALPAKA_FN_HOST GenericBuf(TBuf<TElem, TDim, TIdx> const& buf) = delete;
+
+    public:
+        std::shared_ptr<TBufImpl<TElem, TDim, TIdx>> m_spBufImpl;
     };
 } // namespace alpaka
 
@@ -62,7 +68,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) -> TDev
         {
-            return getDev(TBuf<TElem, TDim, TIdx>{buf});
+            return GetDev<TBuf<TElem, TDim, TIdx>>::getDev(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
@@ -100,12 +106,11 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-
     struct GetExtents<GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
         ALPAKA_FN_HOST auto operator()(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
         {
-            return getExtents(TBuf<TElem, TDim, TIdx>{buf});
+            return GetExtents<TBuf<TElem, TDim, TIdx>>{}(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
@@ -122,13 +127,14 @@ namespace alpaka::trait
         ALPAKA_FN_HOST static auto getPtrNative(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
             -> TElem const*
         {
-            return getPtrNative(TBuf<TElem, TDim, TIdx>{buf});
+            return GetPtrNative<TBuf<TElem, TDim, TIdx>>::getPtrNative(TBuf<TElem, TDim, TIdx>{buf});
         }
 
         ALPAKA_FN_HOST static auto getPtrNative(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf) -> TElem*
         {
             // cast away the TElem's constness from the TBuf's return type
-            return const_cast<TElem*>(getPtrNative(TBuf<TElem, TDim, TIdx>{buf}));
+            return const_cast<TElem*>(
+                GetPtrNative<TBuf<TElem, TDim, TIdx>>::getPtrNative(TBuf<TElem, TDim, TIdx>{buf}));
         }
     };
 
@@ -149,7 +155,7 @@ namespace alpaka::trait
         {
             if(dev == getDev(buf))
             {
-                return getPtrDev(TBuf<TElem, TDim, TIdx>{buf});
+                return GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf});
             }
             else
             {
@@ -163,7 +169,8 @@ namespace alpaka::trait
             if(dev == getDev(buf))
             {
                 // cast away the TElem's constness from the ConstBuf's return type
-                return const_cast<TElem*>(getPtrDev(TBuf<TElem, TDim, TIdx>{buf}));
+                return const_cast<TElem*>(
+                    GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf}));
             }
             else
             {
@@ -183,10 +190,10 @@ namespace alpaka::trait
 
     struct GetOffsets<GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST auto operator()(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const&) const
+        ALPAKA_FN_HOST auto operator()(GenericBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) const
             -> Vec<TDim, TIdx>
         {
-            return Vec<TDim, TIdx>::zeros();
+            return GetOffsets<TBuf<TElem, TDim, TIdx>>{}(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
