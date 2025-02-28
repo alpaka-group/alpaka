@@ -69,8 +69,8 @@ submit_combined_job() {
     sbatch <<EOF
 #!/bin/bash
 #SBATCH --job-name=combined-babelstream
-#SBATCH --output=$results_dir/combined-slurm-%j.out  # Store Slurm metadata here
-#SBATCH --error=$results_dir/combined-slurm-%j.err   # Store Slurm errors here
+#SBATCH --output=$results_dir/babelstr-slurminfo-cpu-serial-%j-$datetime_now-$commit_hash.out  # Store Slurm metadata here
+#SBATCH --error=$results_dir/babelstr-slurminfo-cpu-serial-%j-$datetime_now-$commit_hash.err   # Store Slurm errors here
 #SBATCH --time=01:00:00
 #SBATCH --partition=milan                              # Use CPU partition
 #SBATCH --nodes=1
@@ -90,6 +90,29 @@ echo "Modules loaded successfully."
 export LD_LIBRARY_PATH=/trinity/shared/pkg/compiler/gcc/12.2.0/lib64:/trinity/shared/pkg/compiler/gcc/12.2.0/lib:\$LD_LIBRARY_PATH
 # Clone or update Alpaka repository
 cd "$SCRIPT_DIR/alpaka" || { echo "Failed to enter alpaka directory."; exit 1; }
+# Log system information
+{
+    echo "System Information:"
+    echo "-------------------"
+    echo "\$(uname -a)"
+    echo ""
+    echo "NUMA Configuration:"
+    echo "-------------------"
+    numactl --hardware
+    echo ""
+    echo "Hardware Topology:"
+    echo "------------------"
+    hwloc-ls
+    echo ""
+    echo "-------------------"
+    echo "Partition: milan"
+    echo "Node: \$(hostname)"
+    echo ""
+    echo "Alpaka Repository Hash:"
+    echo "-----------------------"
+    git rev-parse --short=8 HEAD
+    echo ""
+} > "$results_file"
 # Configure and build the project
 echo "Configuring and building the project..."
 num_cores=\$(( \$(nproc) - 2 ))
@@ -115,9 +138,11 @@ if [ ! -f "\$babelstream_executable" ]; then
     echo "Error: BabelStream executable not found at \$babelstream_executable. Exiting."
     exit 1
 fi
-# Run the benchmark and redirect output to the benchmark results file
+# Run the benchmark and append output to the benchmark results file
 echo "Running BabelStream benchmark on \$(hostname)..."
-"\$babelstream_executable" --array-size=33554432 --number-runs=10 > "$results_file" 2>&1
+echo "Benchmark Results:" >> "$results_file"
+echo "------------------" >> "$results_file"
+"\$babelstream_executable" --array-size=33554432 --number-runs=10 >> "$results_file" 2>&1
 echo "Benchmark completed."
 EOF
     echo "Combined Slurm job submitted. Check $results_file for results."
