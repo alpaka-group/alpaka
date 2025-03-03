@@ -1,7 +1,32 @@
+
 import json
 import re
 import sys
 import os
+
+def parse_sections(lines, end_marker):
+    sections = {}
+    index = 0
+    current_key = None
+    current_value = []
+
+    while index < len(lines):
+        line = lines[index].strip()
+        if line == end_marker:
+            if current_key:
+                sections[current_key] = "\n".join(current_value).strip()
+            index += 1
+            break
+        if line.endswith(":"):
+            if current_key:
+                sections[current_key] = "\n".join(current_value).strip()
+            current_key = line[:-1]
+            current_value = []
+        elif line and not re.match(r"^[-]+$", line):
+            current_value.append(line)
+        index += 1
+
+    return sections, index
 
 def parse_workdiv(lines, index):
     workdiv = {}
@@ -9,7 +34,7 @@ def parse_workdiv(lines, index):
         parts = lines[index].split(":", 1)
         kernel_name = parts[0].replace("WorkDiv", "").strip()
         values = re.findall(r"\d+", parts[1]) if len(parts) > 1 else []
-        
+
         if len(values) == 3:
             workdiv[kernel_name] = {
                 "gridBlockExtent": int(values[0]),
@@ -19,7 +44,7 @@ def parse_workdiv(lines, index):
         else:
             print(f"Error: WorkDiv format issue at line {index}: {lines[index]}")
             sys.exit(1)
-        
+
         index += 1
     return workdiv, index
 
@@ -43,9 +68,12 @@ def parse_kernel_performance(lines, index):
 def parse_txt_to_json(filename):
     with open(filename, "r") as file:
         lines = file.readlines()
-    
-    data = []
-    index = 0
+
+    data = {}
+    sections, index = parse_sections(lines, "Benchmark Results:")
+    data.update(sections)
+
+    benchmark_results = []
     while index < len(lines):
         if "AcceleratorType" in lines[index]:
             entry = {}
@@ -59,32 +87,32 @@ def parse_txt_to_json(filename):
             index += 1
             entry["DeviceName"] = lines[index].split(":")[1].strip()
             index += 1
-            
+
             entry["WorkDiv"], index = parse_workdiv(lines, index)
-            
+
             if index < len(lines) and "AccToHost Memcpy Time" in lines[index]:
                 entry["AccToHostMemcpyTime_sec"] = float(lines[index].split(":")[1].strip())
                 index += 1
-                
+
             if index < len(lines) and "Kernels" in lines[index]:
                 entry["Kernels"], index = parse_kernel_performance(lines, index)
-                
-            data.append(entry)
+
+            benchmark_results.append(entry)
         else:
             index += 1
-    
+
+    data["BenchmarkResults"] = benchmark_results
+
     json_filename = os.path.splitext(filename)[0] + ".json"
     with open(json_filename, "w") as json_file:
         json.dump(data, json_file, indent=4)
-    
-    return data
 
 # Usage
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py <filename>")
         sys.exit(1)
-    
+
     filename = sys.argv[1]
     parse_txt_to_json(filename)
 
