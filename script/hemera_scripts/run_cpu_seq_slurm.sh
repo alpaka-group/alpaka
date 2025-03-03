@@ -5,6 +5,9 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 results_dir="$SCRIPT_DIR/test-results"
 mkdir -p "$results_dir"
 
+# Global array of required modules
+declare -a required_modules=("python/3.10.4" "gcc/12.2.0" "boost/1.82.0" "cmake")
+
 # Function to print directory information
 print_directory_info() {
     echo "Current Working Directory: $(pwd)"
@@ -59,6 +62,16 @@ clone_or_update_alpaka() {
     fi
 }
 
+# Function to load required modules and log their names
+load_and_log_modules() {
+    echo "Loading required modules..."
+    for module_name in "${required_modules[@]}"; do
+        echo "Loading module: $module_name"
+        module load "$module_name" || { echo "Failed to load $module_name"; exit 1; }
+    done
+    echo "Modules loaded successfully."
+}
+
 # Function to submit the combined Slurm job
 submit_combined_job() {
     local datetime_now=$(date +"%Y-%m-%d_%H-%M")
@@ -81,10 +94,10 @@ submit_combined_job() {
 export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
 source /trinity/shared/lmod/lmod/init/bash
 # Load necessary modules inside the Slurm job
-module load python/3.10.4
-module load gcc/12.2.0
-module load boost/1.82.0
-module load cmake
+for module_name in ${required_modules[@]}; do
+    echo "Loading module: \$module_name"
+    module load "\$module_name" || { echo "Failed to load \$module_name"; exit 1; }
+done
 echo "Modules loaded successfully."
 # To prevent libstdc++ not found error
 export LD_LIBRARY_PATH=/trinity/shared/pkg/compiler/gcc/12.2.0/lib64:/trinity/shared/pkg/compiler/gcc/12.2.0/lib:\$LD_LIBRARY_PATH
@@ -94,7 +107,7 @@ cd "$SCRIPT_DIR/alpaka" || { echo "Failed to enter alpaka directory."; exit 1; }
 {
     echo "System Information:"
     echo "-------------------"
-    echo "\$(uname -a)"
+    uname -a
     echo ""
     echo "NUMA Configuration:"
     echo "-------------------"
@@ -104,6 +117,13 @@ cd "$SCRIPT_DIR/alpaka" || { echo "Failed to enter alpaka directory."; exit 1; }
     echo "------------------"
     hwloc-ls
     echo ""
+    echo "Loaded Modules:"
+    echo "---------------"
+    for module_name in ${required_modules[@]}; do
+        echo "\$module_name"
+    done
+    echo ""
+    echo "Partition and Node:"
     echo "-------------------"
     echo "Partition: milan"
     echo "Node: \$(hostname)"
@@ -153,6 +173,8 @@ echo "Starting script execution..."
 print_directory_info
 # Ensure the module system is initialized
 initialize_modules
+# Load required modules and log their names
+load_and_log_modules
 # Clone or update Alpaka repository
 clone_or_update_alpaka
 echo "Current Working Directory: $(pwd)"

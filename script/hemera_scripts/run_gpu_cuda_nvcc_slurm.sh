@@ -5,6 +5,9 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 results_dir="$SCRIPT_DIR/test-results"
 mkdir -p "$results_dir"
 
+# Global array of required modules
+declare -a required_modules=("python/3.10.4" "gcc/12.2.0" "boost/1.82.0" "cuda/12.1" "cmake")
+
 # Function to print directory information
 print_directory_info() {
     echo "Current Working Directory: $(pwd)"
@@ -59,14 +62,20 @@ clone_or_update_alpaka() {
     fi
 }
 
+# Function to load required modules and log their names
+load_and_log_modules() {
+    echo "Loading required modules..."
+    for module_name in "${required_modules[@]}"; do
+        echo "Loading module: $module_name"
+        module load "$module_name" || { echo "Failed to load $module_name"; exit 1; }
+    done
+    echo "Modules loaded successfully."
+}
+
 # Function to configure and build the project for gpu-cuda-nvcc
 build_gpu_cuda_nvcc() {
     echo "Loading necessary modules for building..."
-    module load python/3.10.4 || { echo "Failed to load python/3.10.4"; exit 1; }
-    module load gcc/12.2.0 || { echo "Failed to load gcc/12.2.0"; exit 1; }
-    module load boost/1.82.0 || { echo "Failed to load boost/1.82.0"; exit 1; }
-    module load cuda/12.1 || { echo "Failed to load CUDA 12.1"; exit 1; }
-    module load cmake || { echo "Failed to load cmake"; exit 1; }
+    load_and_log_modules
 
     # Verify nvcc availability
     if ! which nvcc > /dev/null; then
@@ -124,10 +133,11 @@ submit_gpu_cuda_nvcc_benchmark() {
 export MODULEPATH=/trinity/shared/lmod/modulefiles/Linux:/trinity/shared/lmod/modulefiles/Core:/trinity/shared/lmod/lmod/modulefiles/Core/tools:/trinity/shared/lmod/lmod/modulefiles/Core/ansys:/trinity/shared/lmod/lmod/modulefiles/Core/analysis:/trinity/shared/lmod/lmod/modulefiles/Core/simulation:/trinity/shared/lmod/lmod/modulefiles/Core/devel:/trinity/shared/lmod/lmod/modulefiles/Core/compiler
 source /trinity/shared/lmod/lmod/init/bash
 # Load necessary modules inside the Slurm job
-module load python/3.10.4 || { echo "Failed to load python/3.10.4"; exit 1; }
-module load gcc/12.2.0 || { echo "Failed to load gcc/12.2.0"; exit 1; }
-module load boost/1.82.0 || { echo "Failed to load boost/1.82.0"; exit 1; }
-module load cuda/12.1 || { echo "Failed to load CUDA 12.1"; exit 1; }
+for module_name in ${required_modules[@]}; do
+    echo "Loading module: \$module_name"
+    module load "\$module_name" || { echo "Failed to load \$module_name"; exit 1; }
+done
+echo "Modules loaded successfully."
 # To prevent libstdc++ not found error
 export LD_LIBRARY_PATH=/trinity/shared/pkg/compiler/gcc/12.2.0/lib64:/trinity/shared/pkg/compiler/gcc/12.2.0/lib:\$LD_LIBRARY_PATH
 # Path to the babelstream executable
@@ -138,9 +148,41 @@ if [ ! -f "\$babelstream_executable" ]; then
     echo "Error: BabelStream executable not found at \$babelstream_executable. Exiting."
     exit 1
 fi
-# Run the benchmark and redirect output to the benchmark results file
+# Log system information
+{
+    echo "System Information:"
+    echo "-------------------"
+    uname -a
+    echo ""
+    echo "Hardware Topology:"
+    echo "------------------"
+    hwloc-ls
+    echo ""
+    echo "NVIDIA GPU Information:"
+    echo "-----------------------"
+    nvidia-smi
+    echo ""
+    echo "Loaded Modules:"
+    echo "---------------"
+    for module_name in ${required_modules[@]}; do
+        echo "\$module_name"
+    done
+    echo ""
+    echo "Partition and Node:"
+    echo "-------------------"
+    echo "Partition: casus_a100"
+    echo "Node: \$(hostname)"
+    echo ""
+    echo "Alpaka Repository Hash:"
+    echo "-----------------------"
+    git rev-parse --short=8 HEAD
+    echo ""
+} > "$results_file"
+# Run the benchmark and append output to the benchmark results file
 echo "Running BabelStream benchmark on \$(hostname)..."
-"\$babelstream_executable" --array-size=33554432 --number-runs=10 > "$results_file" 2>&1
+echo "Benchmark Results:" >> "$results_file"
+echo "------------------" >> "$results_file"
+"\$babelstream_executable" --array-size=33554432 --number-runs=10 >> "$results_file" 2>&1
 echo "Benchmark completed."
 EOF
     echo "BabelStream benchmark submitted to Slurm. Check $results_file for results."
@@ -166,4 +208,3 @@ build_gpu_cuda_nvcc
 # Submit the benchmark to Slurm
 echo "Submitting BabelStream benchmark to Slurm..."
 submit_gpu_cuda_nvcc_benchmark
-echo "Script execution completed."
