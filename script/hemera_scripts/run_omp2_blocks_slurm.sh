@@ -158,6 +158,15 @@ if [ ! -f "\$babelstream_executable" ]; then
     echo "Error: BabelStream executable not found at \$babelstream_executable. Exiting."
     exit 1
 fi
+# Add header information to the beginning of the results file
+temp_file="\$(mktemp)"
+{
+    echo "ExecutableName: Babelstream"
+    echo "Time And Date: $datetime_now"
+    echo "Preset: \$preset_dir"
+    cat "$results_file"
+} > "\$temp_file"
+mv "\$temp_file" "$results_file"
 # Run the benchmark and append output to the benchmark results file
 echo "Running BabelStream benchmark on \$(hostname)..."
 echo "Benchmark Results:" >> "$results_file"

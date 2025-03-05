@@ -1,8 +1,20 @@
-
 import json
 import re
 import sys
 import os
+
+def parse_header_fields(lines):
+    header_fields = {}
+    index = 0
+    while index < len(lines):
+        line = lines[index].strip()
+        if line.endswith(":") and line.count(" ") < 5:  # Likely a section heading
+            break
+        if ":" in line:
+            key, value = line.split(":", 1)
+            header_fields[key.strip()] = value.strip()
+        index += 1
+    return header_fields, index
 
 def parse_sections(lines, end_marker):
     sections = {}
@@ -70,8 +82,13 @@ def parse_txt_to_json(filename):
         lines = file.readlines()
 
     data = {}
-    sections, index = parse_sections(lines, "Benchmark Results:")
+
+    header_fields, index = parse_header_fields(lines)
+    data.update(header_fields)
+
+    sections, sec_index = parse_sections(lines[index:], "Benchmark Results:")
     data.update(sections)
+    index += sec_index
 
     benchmark_results = []
     while index < len(lines):
