@@ -24,23 +24,77 @@
 
 namespace alpaka
 {
+    namespace detail
+    {
+        //! The Sycl memory buffer implementation.
+        template<typename TElem, typename TDim, typename TIdx>
+        class BufSyclImpl final
+        {
+            static_assert(
+                !std::is_const_v<TElem>,
+                "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
+                "elements!");
+            static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
+
+        public:
+            template<typename TExtent>
+            ALPAKA_FN_HOST BufSyclImpl(
+                DevCpu dev,
+                TElem* pMem,
+                std::function<void(TElem*)> deleter,
+                TExtent const& extent) noexcept
+                : m_dev(std::move(dev))
+                , m_extentElements(getExtentVecEnd<TDim>(extent))
+                , m_pMem(pMem)
+                , m_deleter(std::move(deleter))
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                static_assert(
+                    TDim::value == Dim<TExtent>::value,
+                    "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be "
+                    "identical!");
+                static_assert(
+                    std::is_same_v<TIdx, Idx<TExtent>>,
+                    "The idx type of TExtent and the TIdx template parameter have to be identical!");
+
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << __func__ << " e: " << m_extentElements << " ptr: " << static_cast<void*>(m_pMem)
+                          << std::endl;
+#    endif
+            }
+
+            BufSyclImpl(BufSyclImpl&&) = delete;
+            auto operator=(BufSyclImpl&&) -> BufSyclImpl& = delete;
+
+            ALPAKA_FN_HOST ~BufSyclImpl()
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                // NOTE: m_pMem is allowed to be a nullptr here.
+                m_deleter(m_pMem);
+            }
+
+        private:
+            DevGenericSycl<TTag> m_dev;
+            Vec<TDim, TIdx> m_extentElements;
+            TElem* const m_pMem;
+            std::function<void(TElem*)> m_deleter;
+        };
+    } // namespace detail
+
     //! The SYCL memory buffer.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     class ConstBufGenericSycl : public internal::ViewAccessOps<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
     public:
-        static_assert(
-            !std::is_const_v<TElem>,
-            "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
-            "elements!");
-        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
-
         //! Constructor
         template<typename TExtent, typename Deleter>
         ConstBufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
             : m_dev{dev}
             , m_extentElements{getExtentVecEnd<TDim>(extent)}
             , m_spMem(pMem, std::move(deleter))
+            , m_spBuf{std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -62,9 +116,13 @@ namespace alpaka
         {
         }
 
-        DevGenericSycl<TTag> m_dev;
-        Vec<TDim, TIdx> m_extentElements;
-        std::shared_ptr<TElem> m_spMem;
+    private:
+        std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
+
+        friend alpaka::trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx>, DevGenericSycl<TTag>>;
     };
 
     template<typename TElem, typename TDim, typename TIdx, typename TTag>
