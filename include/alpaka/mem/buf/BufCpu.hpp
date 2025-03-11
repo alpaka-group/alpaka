@@ -87,28 +87,36 @@ namespace alpaka
 
     //! The CPU memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
-    class ConstBufCpu : public internal::ViewAccessOps<ConstBufCpu<TElem, TDim, TIdx>>
+    class GenericCpuBuf : public internal::ViewAccessOps<GenericCpuBuf<TElem, TDim, TIdx>>
     {
     public:
         template<typename TExtent, typename Deleter>
-        ALPAKA_FN_HOST ConstBufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
+        ALPAKA_FN_HOST GenericCpuBuf(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
             : m_spBufCpuImpl{
                 std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufCpu(
-            GenericBuf<ConstBufCpu, detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const& buf)
+        ALPAKA_FN_HOST GenericCpuBuf(
+            GenericBuf<GenericCpuBuf, detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const& buf)
             : m_spBufCpuImpl{buf.m_spBufImpl}
         {
         }
 
-    public:
+    private:
         std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
+
+        friend alpaka::trait::GetDev<GenericCpuBuf<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetExtents<GenericCpuBuf<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetPtrNative<GenericCpuBuf<TElem, TDim, TIdx>>;
+        friend alpaka::trait::GetPtrDev<GenericCpuBuf<TElem, TDim, TIdx>, DevCpu>;
     };
 
     template<typename TElem, typename TDim, typename TIdx>
-    using BufCpu = GenericBuf<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx>;
+    using ConstBufCpu = GenericCpuBuf<TElem, TDim, TIdx>;
+
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufCpu = GenericBuf<GenericCpuBuf, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx>;
 
     namespace trait
     {
@@ -199,8 +207,8 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // If ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT is defined, positive, and a power of 2, use it as the
-                // default alignment for host memory allocations. Otherwise, the alignment is chosen to enable optimal
-                // performance dependant on the target architecture.
+                // default alignment for host memory allocations. Otherwise, the alignment is chosen to enable
+                // optimal performance dependant on the target architecture.
 #if defined(ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT)
                 static_assert(
                     ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT > 0
@@ -235,8 +243,8 @@ namespace alpaka
                 DevCpu const& dev = getDev(queue);
 
                 // If ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT is defined, positive, and a power of 2, use it as the
-                // default alignment for host memory allocations. Otherwise, the alignment is chosen to enable optimal
-                // performance dependant on the target architecture.
+                // default alignment for host memory allocations. Otherwise, the alignment is chosen to enable
+                // optimal performance dependant on the target architecture.
 #if defined(ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT)
                 static_assert(
                     ALPAKA_DEFAULT_HOST_MEMORY_ALIGNMENT > 0
