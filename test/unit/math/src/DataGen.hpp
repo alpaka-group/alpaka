@@ -185,7 +185,29 @@ namespace mathtest
                 args(2).arg[k] = std::numeric_limits<TData>::signaling_NaN();
                 args(3).arg[k] = std::numeric_limits<TData>::infinity();
                 args(4).arg[k] = -std::numeric_limits<TData>::infinity();
-                constexpr size_t nFixed = 5;
+                // One negative one positive value
+                if constexpr(std::is_same_v<TData, float>)
+                {
+                    args(5).arg[k] = 1.1f; // Use float literal
+                    args(6).arg[k] = -1.1f;
+                }
+                else if constexpr(std::is_same_v<TData, double>)
+                {
+                    args(5).arg[k] = 1.1; // Use double literal
+                    args(6).arg[k] = -1.1;
+                }
+                else if constexpr(std::is_same_v<TData, alpaka::Complex<float>>)
+                {
+                    args(5).arg[k] = alpaka::Complex<float>{1.1f, 2.1f}; // Complex float
+                    args(6).arg[k] = alpaka::Complex<float>{-1.1f, -2.1f};
+                }
+                else if constexpr(std::is_same_v<TData, alpaka::Complex<double>>)
+                {
+                    args(5).arg[k] = alpaka::Complex<double>{1.1, 2.1}; // Complex double
+                    args(6).arg[k] = alpaka::Complex<double>{-1.1, -2.1};
+                }
+
+                constexpr size_t nFixed = 7;
                 size_t i = nFixed;
                 // no need to test for denormal for now: not supported by CUDA
                 // for(; i < nFixed + (TArgs::capacity - nFixed) / 2; ++i)
@@ -193,6 +215,7 @@ namespace mathtest
                 //     const TData v = rngWrapper.getNumber(dist, eng) *
                 //     std::numeric_limits<TData>::denorm_min(); args(i).arg[k] = (i % 2 == 0) ? v : -v;
                 // }
+                // Next values
                 for(; i < TArgs::capacity; ++i)
                 {
                     TData const v = rngWrapper.getNumber(dist, eng);
