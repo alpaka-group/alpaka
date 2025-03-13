@@ -8,6 +8,10 @@
 #include "alpaka/core/Decay.hpp"
 #include "alpaka/math/Traits.hpp"
 
+#include <bit>
+#include <cstdint>
+#include <type_traits>
+
 namespace alpaka::math
 {
     //! The standard library abs, implementation covered by the general template.
@@ -294,6 +298,99 @@ namespace alpaka::math
                 ALPAKA_UNREACHABLE(std::common_type_t<Tx, Ty>{});
             }
         };
+
+        //! Custom IEEE 754 bitwise implementation of isfinite.
+        //! std counterpart does not work correctly for some compiler flags at CPU backend
+        template<typename TArg>
+        struct Isfinite<IsfiniteStdLib, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            auto operator()(IsfiniteStdLib const& /* ctx */, TArg const& arg) -> bool
+            {
+                if constexpr(std::is_same_v<TArg, float>)
+                {
+                    constexpr std::uint32_t expMask = 0x7F80'0000;
+                    std::uint32_t bits = std::bit_cast<std::uint32_t>(arg);
+                    bool result = (bits & expMask) != expMask;
+                    return result;
+                }
+                else if constexpr(std::is_same_v<TArg, double>)
+                {
+                    constexpr std::uint64_t expMask = 0x7FF0'0000'0000'0000ULL;
+                    std::uint64_t bits = std::bit_cast<std::uint64_t>(arg);
+                    bool result = (bits & expMask) != expMask;
+                    return result;
+                }
+                else
+                {
+                    static_assert(!sizeof(TArg), "Unsupported floating-point type");
+                    ALPAKA_UNREACHABLE(TArg{});
+                }
+            }
+        };
+
+        //! Custom IEEE 754 bitwise implementation of isinf
+        //! std counterpart does not work correctly for some compiler flags at CPU backend
+        template<typename TArg>
+        struct Isinf<IsinfStdLib, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            auto operator()(IsinfStdLib const& /* ctx */, TArg const& arg) -> bool
+            {
+                if constexpr(std::is_same_v<TArg, float>)
+                {
+                    constexpr std::uint32_t expMask = 0x7F80'0000;
+                    constexpr std::uint32_t fracMask = 0x007F'FFFF;
+                    std::uint32_t bits = std::bit_cast<std::uint32_t>(arg);
+                    bool result = ((bits & expMask) == expMask) && !(bits & fracMask);
+                    return result;
+                }
+                else if constexpr(std::is_same_v<TArg, double>)
+                {
+                    constexpr std::uint64_t expMask = 0x7FF0'0000'0000'0000ULL;
+                    constexpr std::uint64_t fracMask = 0x000F'FFFF'FFFF'FFFFULL;
+                    std::uint64_t bits = std::bit_cast<std::uint64_t>(arg);
+                    bool result = ((bits & expMask) == expMask) && !(bits & fracMask);
+                    return result;
+                }
+                else
+                {
+                    static_assert(!sizeof(TArg), "Unsupported floating-point type");
+                    ALPAKA_UNREACHABLE(TArg{});
+                }
+            }
+        };
+
+        //! Custom IEEE 754 bitwise implementation of isnan
+        //! std counterpart does not work correctly for some compiler flags at CPU backend
+        template<typename TArg>
+        struct Isnan<IsnanStdLib, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            auto operator()(IsnanStdLib const& /* ctx */, TArg const& arg) -> bool
+            {
+                if constexpr(std::is_same_v<TArg, float>)
+                {
+                    constexpr std::uint32_t expMask = 0x7F80'0000;
+                    constexpr std::uint32_t fracMask = 0x007F'FFFF;
+                    std::uint32_t bits = std::bit_cast<std::uint32_t>(arg);
+                    bool result = ((bits & expMask) == expMask) && (bits & fracMask);
+                    return result;
+                }
+                else if constexpr(std::is_same_v<TArg, double>)
+                {
+                    constexpr std::uint64_t expMask = 0x7FF0'0000'0000'0000ULL;
+                    constexpr std::uint64_t fracMask = 0x000F'FFFF'FFFF'FFFFULL;
+                    std::uint64_t bits = std::bit_cast<std::uint64_t>(arg);
+                    bool result = ((bits & expMask) == expMask) && (bits & fracMask);
+                    return result;
+                }
+                else
+                {
+                    static_assert(!sizeof(TArg), "Unsupported floating-point type");
+                    ALPAKA_UNREACHABLE(TArg{});
+                }
+            }
+        };
+
+
     } // namespace trait
 
 } // namespace alpaka::math

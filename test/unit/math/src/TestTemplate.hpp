@@ -53,6 +53,52 @@ namespace mathtest
         using type = T;
     };
 
+    //!
+    //! \brief setExpectedResultForSpecificInput
+    //! This function is for testing alpaka::math functions isinf, isnan, isfinite. Since for some compile
+    //! options for CPU backends; std::isnan, std::isinf and std::isfinite does not work properpy; test results can
+    //! only be tested by setting the expected results for the known input. For 3 testing operators OpIsnan, OpIsinf,
+    //! OpIsfinite; at the beginning of test input array, specific values are used and their expected results are set
+    //! in that function.
+    //!   input[0]: [ 0 ]
+    //!   input[1]: [ nan ]
+    //!   input[2]: [ nan ]
+    //!   input[3]: [ inf ]
+    //!   input[4]: [ -inf ]
+    //! \param stdExpectedResult Expected value for the operator, the type of resulting operation could either be type
+    //! of operand (although for uniary op. like isInf it is bool) Since all operation outputs are represented by
+    //! operand type in the code, this function uses 0 and 1 for the results. \param idx is the index in the input
+    //! buffer
+    //!
+
+    template<typename TFunctor, typename TData>
+    void setExpectedResultForSpecificInput(TData& stdExpectedResult, size_t idx)
+    {
+        constexpr bool isIsnan = std::is_same_v<TFunctor, OpIsnan>;
+        constexpr bool isIsinf = std::is_same_v<TFunctor, OpIsinf>;
+        constexpr bool isIsfinite = std::is_same_v<TFunctor, OpIsfinite>;
+
+        if constexpr(isIsnan)
+        {
+            // for the input[1] and input[2] input is Nan and isNan should be tested by result 1.
+            stdExpectedResult = (idx == 1 || idx == 2) ? static_cast<TData>(1) : static_cast<TData>(0);
+        }
+        else if constexpr(isIsinf)
+        {
+            // for the input[3] and input[4] input is Inf and -Inf should be tested by result 1.
+            stdExpectedResult = (idx == 3 || idx == 4) ? static_cast<TData>(1) : static_cast<TData>(0);
+        }
+        else if constexpr(isIsfinite)
+        {
+            // input[0] is 0 hence it is finite, other data starting after nan and infs are finite.
+            stdExpectedResult = (idx == 0 || idx > 4) ? static_cast<TData>(1) : static_cast<TData>(0);
+        }
+        else
+        {
+            stdExpectedResult = static_cast<TData>(0);
+        }
+    }
+
     //! Base test template for math unit tests
     //! @tparam TAcc Accelerator.
     //! @tparam TFunctor Functor defined in Functor.hpp.
@@ -140,9 +186,25 @@ namespace mathtest
 #endif
             for(size_t i = 0; i < Args::capacity; ++i)
             {
-                TData std_result = functor(args(i));
-                INFO("Idx i: " << i << " computed : " << results(i) << " vs expected: " << std_result);
-                REQUIRE(isApproxEqual(results(i), std_result));
+                TData stdExpectedResult{};
+
+                constexpr bool isSpecialCase = std::is_same_v<TFunctor, OpIsnan> || std::is_same_v<TFunctor, OpIsinf>
+                                               || std::is_same_v<TFunctor, OpIsfinite>;
+
+                // Only for specific operators, the results for the test inputs can only be verified by setting the
+                // expected specific result manually.
+                if constexpr((std::is_same_v<TData, float> || std::is_same_v<TData, double>) &&isSpecialCase)
+                {
+                    setExpectedResultForSpecificInput<TFunctor>(stdExpectedResult, i);
+                }
+                else
+                {
+                    // Calculated expected result using std functions
+                    stdExpectedResult = functor(args(i));
+                }
+                INFO("Idx i: " << i << " computed : " << results(i) << " vs expected: " << stdExpectedResult);
+                // Validate
+                REQUIRE(isApproxEqual(results(i), stdExpectedResult));
             }
         }
 
