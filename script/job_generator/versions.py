@@ -11,7 +11,7 @@ from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-
 
 
 sw_versions: Dict[str, List[str]] = {
-    GCC: ["10", "11", "12", "13"],
+    GCC: ["11", "12", "13"],
     CLANG: ["14", "15", "16", "17", "18", "19"],
     NVCC: [
         "12.0",

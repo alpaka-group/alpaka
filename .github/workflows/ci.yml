@@ -15,7 +15,7 @@ concurrency:
 # NOTE: Testing the full matrix is not practical.
 # Therefore we aim to have each value been set in at lest one job.
 # ALPAKA_CI_CXX                                 : {g++, clang++}
-#   [g++] ALPAKA_CI_GCC_VER                     : {10, 11, 12, 13}
+#   [g++] ALPAKA_CI_GCC_VER                     : {11, 12, 13}
 #   [clang++] ALPAKA_CI_CLANG_VER               : {14, 15, 16, 17, 18, 19}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2022}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [ALPAKA_CI_CXX==clang++]:libc++}

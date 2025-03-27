@@ -1,5 +1,5 @@
 {
-    "gcc 10.4 / 11.1 (Linux)": {
+    "gcc 11.1 (Linux)": {
         "serial": {
             "state": "yes"
         },
