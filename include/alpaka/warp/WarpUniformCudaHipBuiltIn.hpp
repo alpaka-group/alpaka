@@ -112,12 +112,7 @@ namespace alpaka::warp
                 -> std::uint64_t
 #        endif
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 return __activemask();
-#        else
-                // No HIP intrinsic for it, emulate via ballot
-                return __ballot(1);
-#        endif
             }
         };
 
@@ -128,11 +123,7 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __all_sync(0xffff'ffff, predicate);
-#        else
-                return __all(predicate);
-#        endif
+                return __all_sync(activemask(warp), predicate);
             }
         };
 
@@ -143,11 +134,7 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __any_sync(0xffff'ffff, predicate);
-#        else
-                return __any(predicate);
-#        endif
+                return __any_sync(activemask(warp), predicate);
             }
         };
 
@@ -164,11 +151,7 @@ namespace alpaka::warp
                 -> std::uint64_t
 #        endif
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __ballot_sync(0xffff'ffff, predicate);
-#        else
-                return __ballot(predicate);
-#        endif
+                return __ballot_sync(activemask(warp), predicate);
             }
         };
 
@@ -182,11 +165,7 @@ namespace alpaka::warp
                 int srcLane,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __shfl_sync(0xffff'ffff, val, srcLane, width);
-#        else
-                return __shfl(val, srcLane, width);
-#        endif
+                return __shfl_sync(activemask(warp), val, srcLane, width);
             }
         };
 
@@ -200,11 +179,7 @@ namespace alpaka::warp
                 std::uint32_t offset,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __shfl_up_sync(0xffff'ffff, val, offset, width);
-#        else
-                return __shfl_up(val, offset, width);
-#        endif
+                return __shfl_up_sync(activemask(warp), val, offset, width);
             }
         };
 
@@ -218,11 +193,7 @@ namespace alpaka::warp
                 std::uint32_t offset,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __shfl_down_sync(0xffff'ffff, val, offset, width);
-#        else
-                return __shfl_down(val, offset, width);
-#        endif
+                return __shfl_down_sync(activemask(warp), val, offset, width);
             }
         };
 
@@ -236,11 +207,7 @@ namespace alpaka::warp
                 std::int32_t mask,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __shfl_xor_sync(0xffff'ffff, val, mask, width);
-#        else
-                return __shfl_xor(val, mask, width);
-#        endif
+                return __shfl_xor_sync(activemask(warp), val, mask, width);
             }
         };
 
