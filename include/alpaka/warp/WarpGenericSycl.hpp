@@ -73,24 +73,10 @@ namespace alpaka::warp::trait
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
         // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
         // Restrict to warpSize <= 32 for now.
-        static auto activemask(warp::WarpGenericSycl<TDim> const& warp) -> std::uint32_t
+        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/)
+            -> sycl::ext::oneapi::experimental::opportunistic_group
         {
-            static_assert(!sizeof(warp), "activemask is not supported on SYCL");
-            // SYCL does not have an API to get the activemask. It is also questionable (to me, bgruber) whether an
-            // "activemask" even exists on some hardware architectures, since the idea is bound to threads being
-            // "turned off" when they take different control flow in a warp. A SYCL implementation could run each
-            // thread as a SIMD lane, in which cause the "thread" is always active, but some SIMD lanes are either
-            // predicated off, or side-effects are masked out when writing them back.
-            //
-            // An implementation via oneAPI's sycl::ext::oneapi::group_ballot causes UB, because activemask is expected
-            // to be callable when less than all threads are active in a warp (CUDA). But SYCL requires all threads of
-            // a group to call the function.
-            //
-            // Intel's CUDA -> SYCL migration tool also suggests that there is no direct equivalent and the user must
-            // rewrite their kernel logic. See also:
-            // https://oneapi-src.github.io/SYCLomatic/dev_guide/diagnostic_ref/dpct1086.html
-
-            return ~std::uint32_t{0};
+            return sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
         }
     };
 
@@ -99,8 +85,7 @@ namespace alpaka::warp::trait
     {
         static auto all(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
         {
-            auto const sub_group = warp.m_item_warp.get_sub_group();
-            return static_cast<std::int32_t>(sycl::all_of_group(sub_group, static_cast<bool>(predicate)));
+            return static_cast<std::int32_t>(sycl::all_of_group(activemask(warp), static_cast<bool>(predicate)));
         }
     };
 
@@ -109,8 +94,7 @@ namespace alpaka::warp::trait
     {
         static auto any(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
         {
-            auto const sub_group = warp.m_item_warp.get_sub_group();
-            return static_cast<std::int32_t>(sycl::any_of_group(sub_group, static_cast<bool>(predicate)));
+            return static_cast<std::int32_t>(sycl::any_of_group(activemask(warp), static_cast<bool>(predicate)));
         }
     };
 
@@ -120,9 +104,9 @@ namespace alpaka::warp::trait
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
         // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
         // Restrict to warpSize <= 32 for now.
-        static auto ballot(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::uint32_t
+        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::uint32_t
         {
-            auto const sub_group = warp.m_item_warp.get_sub_group();
+            auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
             auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
             // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
             // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
@@ -148,7 +132,7 @@ namespace alpaka::warp::trait
                Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
                The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
                first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto const actual_group = activemask(warp);
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
             return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
@@ -165,7 +149,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
         {
-            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto const actual_group = activemask(warp);
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
@@ -188,7 +172,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset,
             std::int32_t width)
         {
-            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto const actual_group = activemask(warp);
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const end_index = (id / w + 1) * w;
@@ -207,7 +191,7 @@ namespace alpaka::warp::trait
         template<typename T>
         static auto shfl_xor(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t mask, std::int32_t width)
         {
-            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto const actual_group = activemask(warp);
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
@@ -218,3 +202,4 @@ namespace alpaka::warp::trait
 } // namespace alpaka::warp::trait
 
 #endif
+
