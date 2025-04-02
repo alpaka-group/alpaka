@@ -108,12 +108,12 @@ namespace alpaka
             return all(static_cast<TVal>(1));
         }
 
-        ALPAKA_FN_HOST_ACC constexpr auto begin() noexcept -> TVal* 
+        ALPAKA_FN_HOST_ACC constexpr auto begin() noexcept -> TVal*
         {
             return m_data;
         }
 
-        ALPAKA_FN_HOST_ACC constexpr auto begin() const noexcept -> TVal const* 
+        ALPAKA_FN_HOST_ACC constexpr auto begin() const noexcept -> TVal const*
         {
             return m_data;
         }
