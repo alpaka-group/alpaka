@@ -6,6 +6,7 @@
 #pragma once
 
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/dev/common/DeviceProperties.hpp"
 #include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/dev/cpu/SysInfo.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
@@ -57,7 +58,9 @@ namespace alpaka
         friend struct trait::GetDevByIdx<PlatformCpu>;
 
     protected:
-        DevCpu() : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
+        DevCpu()
+            : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
+            , m_deviceProperties(std::make_shared<alpaka::DeviceProperties>())
         {
         }
 
@@ -89,8 +92,15 @@ namespace alpaka
             return 0;
         }
 
+        friend struct trait::GetName<DevCpu>;
+        friend struct trait::GetMemBytes<DevCpu>;
+        friend struct trait::GetFreeMemBytes<DevCpu>;
+        friend struct trait::GetWarpSizes<DevCpu>;
+        friend struct trait::GetPreferredWarpSize<DevCpu>;
+
     private:
         std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
+        std::shared_ptr<alpaka::DeviceProperties> m_deviceProperties;
     };
 
     namespace trait
@@ -99,9 +109,13 @@ namespace alpaka
         template<>
         struct GetName<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getName(DevCpu const& /* dev */) -> std::string
+            ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
-                return cpu::detail::getCpuName();
+                if(!dev.m_deviceProperties->name.has_value())
+                {
+                    dev.m_deviceProperties->name = cpu::detail::getCpuName();
+                }
+                return dev.m_deviceProperties->name.value();
             }
         };
 
@@ -109,9 +123,13 @@ namespace alpaka
         template<>
         struct GetMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
-                return cpu::detail::getTotalGlobalMemSizeBytes();
+                if(!dev.m_deviceProperties->totalGlobalMem.has_value())
+                {
+                    dev.m_deviceProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                }
+                return dev.m_deviceProperties->totalGlobalMem.value();
             }
         };
 
@@ -119,9 +137,13 @@ namespace alpaka
         template<>
         struct GetFreeMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& dev) -> std::size_t
             {
-                return cpu::detail::getFreeGlobalMemSizeBytes();
+                if(!dev.m_deviceProperties->freeGlobalMem.has_value())
+                {
+                    dev.m_deviceProperties->freeGlobalMem = cpu::detail::getFreeGlobalMemSizeBytes();
+                }
+                return dev.m_deviceProperties->freeGlobalMem.value();
             }
         };
 
