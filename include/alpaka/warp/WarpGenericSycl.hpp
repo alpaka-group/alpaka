@@ -86,7 +86,7 @@ namespace alpaka::warp::trait
     template<typename TDim>
     struct All<warp::WarpGenericSycl<TDim>>
     {
-        static auto all(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
+        static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
             auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
@@ -96,7 +96,7 @@ namespace alpaka::warp::trait
     template<typename TDim>
     struct Any<warp::WarpGenericSycl<TDim>>
     {
-        static auto any(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
+        static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
             auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
@@ -126,7 +126,7 @@ namespace alpaka::warp::trait
     struct Shfl<warp::WarpGenericSycl<TDim>>
     {
         template<typename T>
-        static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
+        static auto shfl(warp::WarpGenericSycl<TDim> const& /*warp*/, T value, std::int32_t srcLane, std::int32_t width)
         {
             ALPAKA_ASSERT_ACC(width > 0);
             ALPAKA_ASSERT_ACC(srcLane >= 0);
@@ -149,7 +149,7 @@ namespace alpaka::warp::trait
     {
         template<typename T>
         static auto shfl_up(
-            warp::WarpGenericSycl<TDim> const& warp,
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
             T value,
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
@@ -172,7 +172,7 @@ namespace alpaka::warp::trait
     {
         template<typename T>
         static auto shfl_down(
-            warp::WarpGenericSycl<TDim> const& warp,
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
             T value,
             std::uint32_t offset,
             std::int32_t width)
@@ -194,7 +194,7 @@ namespace alpaka::warp::trait
     struct ShflXor<warp::WarpGenericSycl<TDim>>
     {
         template<typename T>
-        static auto shfl_xor(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t mask, std::int32_t width)
+        static auto shfl_xor(warp::WarpGenericSycl<TDim> const& /*warp*/, T value, std::int32_t mask, std::int32_t width)
         {
             auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
