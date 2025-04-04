@@ -73,10 +73,13 @@ namespace alpaka::warp::trait
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
         // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
         // Restrict to warpSize <= 32 for now.
-        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/)
-            -> sycl::ext::oneapi::experimental::opportunistic_group
+        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> std::uint32_t
         {
-            return sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
+            auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
+            std::uint32_t bits = 0;
+            mask.extract_bits(bits);
+            return bits;
         }
     };
 
@@ -85,7 +88,8 @@ namespace alpaka::warp::trait
     {
         static auto all(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
         {
-            return static_cast<std::int32_t>(sycl::all_of_group(activemask(warp), static_cast<bool>(predicate)));
+            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
         }
     };
 
@@ -94,7 +98,8 @@ namespace alpaka::warp::trait
     {
         static auto any(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
         {
-            return static_cast<std::int32_t>(sycl::any_of_group(activemask(warp), static_cast<bool>(predicate)));
+            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
         }
     };
 
@@ -132,7 +137,7 @@ namespace alpaka::warp::trait
                Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
                The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
                first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-            auto const actual_group = activemask(warp);
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
             return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
@@ -149,7 +154,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
         {
-            auto const actual_group = activemask(warp);
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
@@ -172,7 +177,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset,
             std::int32_t width)
         {
-            auto const actual_group = activemask(warp);
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const end_index = (id / w + 1) * w;
@@ -191,7 +196,7 @@ namespace alpaka::warp::trait
         template<typename T>
         static auto shfl_xor(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t mask, std::int32_t width)
         {
-            auto const actual_group = activemask(warp);
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
