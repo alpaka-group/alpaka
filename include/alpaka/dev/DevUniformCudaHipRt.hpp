@@ -129,7 +129,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->name.has_value())
                     {
                         // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties
@@ -151,7 +151,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->freeGlobalMem.has_value())
                     {
                         // Set the current device to wait for.
@@ -178,7 +178,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->totalGlobalMem.has_value())
                     {
                         // Set the current device to wait for.
@@ -205,7 +205,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->warpSizes.has_value())
                     {
                         dev.m_deviceProperties->warpSizes = std::vector<std::size_t>{
@@ -223,7 +223,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->preferredWarpSize.has_value())
                     {
                         int warpSize = 0;

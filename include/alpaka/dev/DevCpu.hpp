@@ -114,7 +114,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->name.has_value())
                     {
                         dev.m_deviceProperties->name = cpu::detail::getCpuName();
@@ -131,7 +131,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->totalGlobalMem.has_value())
                     {
                         dev.m_deviceProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
@@ -148,7 +148,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->freeGlobalMem.has_value())
                     {
                         dev.m_deviceProperties->freeGlobalMem = cpu::detail::getFreeGlobalMemSizeBytes();

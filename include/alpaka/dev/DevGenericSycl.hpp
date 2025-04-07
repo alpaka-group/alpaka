@@ -166,7 +166,7 @@ namespace alpaka
             static auto getName(DevGenericSycl<TTag> const& dev) -> std::string
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->name.has_value())
                     {
                         auto const device = dev.getNativeHandle().first;
@@ -184,7 +184,7 @@ namespace alpaka
             static auto getMemBytes(DevGenericSycl<TTag> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->totalGlobalMem.has_value())
                     {
                         auto const device = dev.getNativeHandle().first;
@@ -216,7 +216,7 @@ namespace alpaka
             static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(!dev.m_deviceProperties->warpSizes.has_value())
                     {
                         auto const device = dev.getNativeHandle().first;
@@ -243,7 +243,7 @@ namespace alpaka
             static auto getPreferredWarpSize(DevGenericSycl<TTag> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard lock(*dev.m_mutex);
+                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
                     if(dev.m_deviceProperties->preferredWarpSize.has_value())
                     {
                         return dev.m_deviceProperties->preferredWarpSize.value().front();
