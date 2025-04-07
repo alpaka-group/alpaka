@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "alpaka/dev/Traits.hpp"
+
 #include <optional>
 #include <string>
 #include <vector>
