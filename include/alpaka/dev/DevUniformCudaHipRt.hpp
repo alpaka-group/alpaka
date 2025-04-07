@@ -67,6 +67,7 @@ namespace alpaka
         DevUniformCudaHipRt()
             : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
             , m_deviceProperties{std::make_shared<alpaka::DeviceProperties>()}
+            , m_mutex(std::make_shared<std::mutex>())
         {
         }
 

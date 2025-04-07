@@ -244,9 +244,9 @@ namespace alpaka
             {
                 {
                     std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(dev.m_deviceProperties->preferredWarpSize.has_value())
+                    if(dev.m_deviceProperties->warpSizes.has_value())
                     {
-                        return dev.m_deviceProperties->preferredWarpSize.value().front();
+                        return dev.m_deviceProperties->warpSizes.value().front();
                     }
                 }
                 return GetWarpSizes<DevGenericSycl<TTag>>::getWarpSizes(dev).front();
