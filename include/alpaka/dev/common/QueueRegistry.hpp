@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/dev/common/DeviceProperties.hpp"
 
 #include <deque>
 #include <functional>
@@ -52,8 +53,19 @@ namespace alpaka::detail
             m_queues.push_back(spQueue);
         }
 
+        std::mutex& mutex()
+        {
+            return m_Mutex;
+        }
+
+        alpaka::DeviceProperties& deviceProperties()
+        {
+            return m_deviceProperties;
+        }
+
     private:
         std::mutex mutable m_Mutex;
+        alpaka::DeviceProperties m_deviceProperties;
         std::deque<std::weak_ptr<TQueue>> mutable m_queues;
     };
 } // namespace alpaka::detail

@@ -64,10 +64,7 @@ namespace alpaka
         using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
 
     protected:
-        DevUniformCudaHipRt()
-            : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
-            , m_deviceProperties{std::make_shared<alpaka::DeviceProperties>()}
-            , m_mutex(std::make_shared<std::mutex>())
+        DevUniformCudaHipRt() : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
         {
         }
 
@@ -109,16 +106,12 @@ namespace alpaka
         DevUniformCudaHipRt(int iDevice)
             : m_iDevice(iDevice)
             , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
-            , m_deviceProperties(std::make_shared<alpaka::DeviceProperties>())
-            , m_mutex(std::make_shared<std::mutex>())
         {
         }
 
         int m_iDevice;
 
         std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;
-        std::shared_ptr<alpaka::DeviceProperties> m_deviceProperties;
-        std::shared_ptr<std::mutex> m_mutex;
     };
 
     namespace trait
@@ -130,18 +123,18 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->name.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
+                    if(!dev.m_QueueRegistry->deviceProperties().name.has_value())
                     {
                         // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties
                         // to get a single device property but it has no option to get the name
                         typename TApi::DeviceProp_t devProp;
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, dev.getNativeHandle()));
-                        dev.m_deviceProperties->name = std::string(devProp.name);
+                        dev.m_QueueRegistry->deviceProperties().name = std::string(devProp.name);
                     }
                 }
 
-                return dev.m_deviceProperties->name.value();
+                return dev.m_QueueRegistry->deviceProperties().name.value();
             }
         };
 
@@ -152,8 +145,8 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->freeGlobalMem.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
+                    if(!dev.m_QueueRegistry->deviceProperties().totalGlobalMem.has_value())
                     {
                         // Set the current device to wait for.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
@@ -163,12 +156,11 @@ namespace alpaka
 
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
 
-                        dev.m_deviceProperties->totalGlobalMem = totalInternal;
-                        dev.m_deviceProperties->freeGlobalMem = freeInternal;
+                        dev.m_QueueRegistry->deviceProperties().totalGlobalMem = totalInternal;
                     }
                 }
 
-                return dev.m_deviceProperties->totalGlobalMem.value();
+                return dev.m_QueueRegistry->deviceProperties().totalGlobalMem.value();
             }
         };
 
@@ -178,24 +170,23 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
+                std::size_t freeInternal(0u);
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->totalGlobalMem.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
+                    if(!dev.m_QueueRegistry->deviceProperties().totalGlobalMem.has_value())
                     {
                         // Set the current device to wait for.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
 
-                        std::size_t freeInternal(0u);
                         std::size_t totalInternal(0u);
 
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
 
-                        dev.m_deviceProperties->totalGlobalMem = totalInternal;
-                        dev.m_deviceProperties->freeGlobalMem = freeInternal;
+                        dev.m_QueueRegistry->deviceProperties().totalGlobalMem = totalInternal;
                     }
                 }
 
-                return dev.m_deviceProperties->freeGlobalMem.value();
+                return freeInternal;
             }
         };
 
@@ -206,14 +197,14 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->warpSizes.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
+                    if(!dev.m_QueueRegistry->deviceProperties().warpSizes.has_value())
                     {
-                        dev.m_deviceProperties->warpSizes = std::vector<std::size_t>{
+                        dev.m_QueueRegistry->deviceProperties().warpSizes = std::vector<std::size_t>{
                             GetPreferredWarpSize<DevUniformCudaHipRt<TApi>>::getPreferredWarpSize(dev)};
                     }
                 }
-                return dev.m_deviceProperties->warpSizes.value();
+                return dev.m_QueueRegistry->deviceProperties().warpSizes.value();
             }
         };
 
@@ -224,18 +215,18 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->preferredWarpSize.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
+                    if(!dev.m_QueueRegistry->deviceProperties().preferredWarpSize.has_value())
                     {
                         int warpSize = 0;
 
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, dev.getNativeHandle()));
-                        dev.m_deviceProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
+                        dev.m_QueueRegistry->deviceProperties().preferredWarpSize = static_cast<std::size_t>(warpSize);
                     }
                 }
 
-                return dev.m_deviceProperties->preferredWarpSize.value();
+                return dev.m_QueueRegistry->deviceProperties().preferredWarpSize.value();
             }
         };
 

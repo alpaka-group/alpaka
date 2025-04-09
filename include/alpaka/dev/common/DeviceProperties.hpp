@@ -13,7 +13,6 @@ namespace alpaka
     {
         std::optional<std::string> name;
         std::optional<std::size_t> totalGlobalMem;
-        std::optional<std::size_t> freeGlobalMem;
         std::optional<std::vector<std::size_t>> warpSizes;
         std::optional<std::size_t> preferredWarpSize;
 

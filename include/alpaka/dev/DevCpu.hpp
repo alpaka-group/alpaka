@@ -6,7 +6,6 @@
 #pragma once
 
 #include "alpaka/dev/Traits.hpp"
-#include "alpaka/dev/common/DeviceProperties.hpp"
 #include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/dev/cpu/SysInfo.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
@@ -58,10 +57,7 @@ namespace alpaka
         friend struct trait::GetDevByIdx<PlatformCpu>;
 
     protected:
-        DevCpu()
-            : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
-            , m_deviceProperties(std::make_shared<alpaka::DeviceProperties>())
-            , m_mutex(std::make_shared<std::mutex>())
+        DevCpu() : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
         {
         }
 
@@ -101,8 +97,6 @@ namespace alpaka
 
     private:
         std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
-        std::shared_ptr<alpaka::DeviceProperties> m_deviceProperties;
-        std::shared_ptr<std::mutex> m_mutex;
     };
 
     namespace trait
@@ -114,13 +108,13 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->name.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
+                    if(!dev.m_spDevCpuImpl->deviceProperties().name.has_value())
                     {
-                        dev.m_deviceProperties->name = cpu::detail::getCpuName();
+                        dev.m_spDevCpuImpl->deviceProperties().name = cpu::detail::getCpuName();
                     }
                 }
-                return dev.m_deviceProperties->name.value();
+                return dev.m_spDevCpuImpl->deviceProperties().name.value();
             }
         };
 
@@ -131,13 +125,14 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
                 {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->totalGlobalMem.has_value())
+                    std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
+                    if(!dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem.has_value())
                     {
-                        dev.m_deviceProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                        dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem
+                            = cpu::detail::getTotalGlobalMemSizeBytes();
                     }
                 }
-                return dev.m_deviceProperties->totalGlobalMem.value();
+                return dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem.value();
             }
         };
 
@@ -145,16 +140,9 @@ namespace alpaka
         template<>
         struct GetFreeMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& /* dev */) -> std::size_t
             {
-                {
-                    std::lock_guard<std::mutex> lock(*dev.m_mutex);
-                    if(!dev.m_deviceProperties->freeGlobalMem.has_value())
-                    {
-                        dev.m_deviceProperties->freeGlobalMem = cpu::detail::getFreeGlobalMemSizeBytes();
-                    }
-                }
-                return dev.m_deviceProperties->freeGlobalMem.value();
+                return cpu::detail::getFreeGlobalMemSizeBytes();
             }
         };
 
