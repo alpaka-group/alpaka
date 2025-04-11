@@ -172,7 +172,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                auto& freeInternal = dev.m_QueueRegistry->deviceProperties().freeInternal;
+                auto& totalGlobalMem = dev.m_QueueRegistry->deviceProperties().totalGlobalMem;
                 std::size_t freeInternal(0u);
                 {
                     std::lock_guard<std::mutex> lock(dev.m_QueueRegistry->mutex());
@@ -216,7 +216,7 @@ namespace alpaka
                                 &warpSize,
                                 TApi::deviceAttributeWarpSize,
                                 dev.getNativeHandle()));
-                            warpSizes = std::vector<std::size_t>{warpSize};
+                            warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
                         }
                     }
                 }

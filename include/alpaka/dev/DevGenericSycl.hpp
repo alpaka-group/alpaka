@@ -223,7 +223,7 @@ namespace alpaka
         {
             static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
             {
-                auto& warpSizes = dev.m_impl->deviceProperties().warpSizes
+                auto& warpSizes = dev.m_impl->deviceProperties().warpSizes;
                 {
                     std::lock_guard<std::shared_mutex> lock(dev.m_impl->mutex());
                     if(!warpSizes.has_value())
