@@ -107,14 +107,15 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
+                auto& name = dev.m_spDevCpuImpl->deviceProperties().name;
                 {
                     std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
-                    if(!dev.m_spDevCpuImpl->deviceProperties().name.has_value())
+                    if(!name.has_value())
                     {
-                        dev.m_spDevCpuImpl->deviceProperties().name = cpu::detail::getCpuName();
+                        name = cpu::detail::getCpuName();
                     }
                 }
-                return dev.m_spDevCpuImpl->deviceProperties().name.value();
+                return name.value();
             }
         };
 
@@ -124,15 +125,15 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
+                auto& totalGlobalMem = dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem;
                 {
                     std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
-                    if(!dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem.has_value())
+                    if(!totalGlobalMem.has_value())
                     {
-                        dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem
-                            = cpu::detail::getTotalGlobalMemSizeBytes();
+                        totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
                     }
                 }
-                return dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem.value();
+                return totalGlobalMem.value();
             }
         };
 
