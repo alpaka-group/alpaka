@@ -105,17 +105,10 @@ namespace alpaka
         template<>
         struct GetName<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
+            ALPAKA_FN_HOST static auto getName(DevCpu const& /* dev */) -> std::string
             {
-                auto& name = dev.m_spDevCpuImpl->deviceProperties().name;
-                {
-                    std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
-                    if(!name.has_value())
-                    {
-                        name = cpu::detail::getCpuName();
-                    }
-                }
-                return name.value();
+                static auto name = cpu::detail::getCpuName();
+                return name;
             }
         };
 
@@ -123,17 +116,10 @@ namespace alpaka
         template<>
         struct GetMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& /* dev */) -> std::size_t
             {
-                auto& totalGlobalMem = dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem;
-                {
-                    std::lock_guard<std::mutex> lock(dev.m_spDevCpuImpl->mutex());
-                    if(!totalGlobalMem.has_value())
-                    {
-                        totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
-                    }
-                }
-                return totalGlobalMem.value();
+                static auto totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                return totalGlobalMem;
             }
         };
 

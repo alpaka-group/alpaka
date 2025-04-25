@@ -53,9 +53,9 @@ namespace alpaka::detail
             m_queues.push_back(spQueue);
         }
 
-        std::mutex& mutex()
+        std::once_flag& onceFlag()
         {
-            return m_Mutex;
+            return m_onceFlag;
         }
 
         alpaka::DeviceProperties& deviceProperties()
@@ -65,6 +65,7 @@ namespace alpaka::detail
 
     private:
         std::mutex mutable m_Mutex;
+        std::once_flag m_onceFlag;
         alpaka::DeviceProperties m_deviceProperties;
         std::deque<std::weak_ptr<TQueue>> mutable m_queues;
     };
