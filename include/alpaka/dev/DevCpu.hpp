@@ -105,10 +105,11 @@ namespace alpaka
         template<>
         struct GetName<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getName(DevCpu const& /* dev */) -> std::string
+            ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
-                static auto name = cpu::detail::getCpuName();
-                return name;
+                auto& name = dev.m_spDevCpuImpl->deviceProperties().name;
+                std::call_once(dev.m_spDevCpuImpl->onceFlag(), [&]() noexcept { name = cpu::detail::getCpuName(); });
+                return name.value();
             }
         };
 
@@ -116,10 +117,13 @@ namespace alpaka
         template<>
         struct GetMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
-                static auto totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
-                return totalGlobalMem;
+                auto& totalGlobalMem = dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem;
+                std::call_once(
+                    dev.m_spDevCpuImpl->onceFlag(),
+                    [&]() noexcept { totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes(); });
+                return totalGlobalMem.value();
             }
         };
 
