@@ -122,20 +122,33 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
             {
-                auto& name = dev.m_QueueRegistry->deviceProperties().name;
+                auto& devProperties = dev.m_QueueRegistry->deviceProperties();
                 std::call_once(
                     dev.m_QueueRegistry->onceFlag(),
                     [&]()
                     {
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto devHandle = dev.getNativeHandle();
                         // There is cuda/hip-DeviceGetAttribute as faster alternative to
                         // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
                         // the name
                         typename TApi::DeviceProp_t devProp;
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, dev.getNativeHandle()));
-                        name = std::string(devProp.name);
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+                        devProperties->name = std::string(devProp.name);
+
+                        std::size_t freeInternal(0u);
+                        std::size_t totalInternal(0u);
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+                        devProperties->totalGlobalMem = totalInternal;
+
+                        int warpSize = 0;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+                        devProperties->warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+                        devProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
                     });
 
-                return name.value();
+                return devProperties->name;
             }
         };
 
@@ -145,23 +158,33 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                auto& totalGlobalMem = dev.m_QueueRegistry->deviceProperties().totalGlobalMem;
+                auto& devProperties = dev.m_QueueRegistry->deviceProperties();
                 std::call_once(
                     dev.m_QueueRegistry->onceFlag(),
                     [&]()
                     {
-                        // Set the current device to wait for.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto devHandle = dev.getNativeHandle();
+                        // There is cuda/hip-DeviceGetAttribute as faster alternative to
+                        // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+                        // the name
+                        typename TApi::DeviceProp_t devProp;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+                        devProperties->name = std::string(devProp.name);
 
                         std::size_t freeInternal(0u);
                         std::size_t totalInternal(0u);
-
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+                        devProperties->totalGlobalMem = totalInternal;
 
-                        totalGlobalMem = totalInternal;
+                        int warpSize = 0;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+                        devProperties->warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+                        devProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
                     });
 
-                return totalGlobalMem.value();
+                return devProperties->totalGlobalMem;
             }
         };
 
@@ -171,20 +194,30 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                auto& totalGlobalMem = dev.m_QueueRegistry->deviceProperties().totalGlobalMem;
+                auto& devProperties = dev.m_QueueRegistry->deviceProperties();
                 std::size_t freeInternal(0u);
                 std::call_once(
-                    dev.m_QueueRegistry->m_onceFlag(),
+                    dev.m_QueueRegistry->onceFlag(),
                     [&]()
                     {
-                        // Set the current device to wait for.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto devHandle = dev.getNativeHandle();
+                        // There is cuda/hip-DeviceGetAttribute as faster alternative to
+                        // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+                        // the name
+                        typename TApi::DeviceProp_t devProp;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+                        devProperties->name = std::string(devProp.name);
 
                         std::size_t totalInternal(0u);
-
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+                        devProperties->totalGlobalMem = totalInternal;
 
-                        totalGlobalMem = totalInternal;
+                        int warpSize = 0;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+                        devProperties->warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+                        devProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
                     });
 
                 return freeInternal;
@@ -197,27 +230,33 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
-                auto& warpSizes = dev.m_QueueRegistry->deviceProperties().warpSizes;
+                auto& devProperties = dev.m_QueueRegistry->deviceProperties();
                 std::call_once(
                     dev.m_QueueRegistry->onceFlag(),
                     [&]()
                     {
-                        if(dev.m_QueueRegistry->deviceProperties().preferredWarpSize.has_value())
-                        {
-                            warpSizes = std::vector<std::size_t>{
-                                dev.m_QueueRegistry->deviceProperties().preferredWarpSize.value()};
-                        }
-                        else
-                        {
-                            int warpSize = 0;
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::deviceGetAttribute(
-                                &warpSize,
-                                TApi::deviceAttributeWarpSize,
-                                dev.getNativeHandle()));
-                            warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
-                        }
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto devHandle = dev.getNativeHandle();
+                        // There is cuda/hip-DeviceGetAttribute as faster alternative to
+                        // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+                        // the name
+                        typename TApi::DeviceProp_t devProp;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+                        devProperties->name = std::string(devProp.name);
+
+                        std::size_t freeInternal(0u);
+                        std::size_t totalInternal(0u);
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+                        devProperties->totalGlobalMem = totalInternal;
+
+                        int warpSize = 0;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+                        devProperties->warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+                        devProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
                     });
-                return warpSizes.value();
+
+                return devProperties->warpSizes;
             }
         };
 
@@ -227,19 +266,33 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                auto& preferredWarpSize = dev.m_QueueRegistry->deviceProperties().preferredWarpSize;
+                auto& devProperties = dev.m_QueueRegistry->deviceProperties();
                 std::call_once(
                     dev.m_QueueRegistry->onceFlag(),
                     [&]()
                     {
-                        int warpSize = 0;
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto devHandle = dev.getNativeHandle();
+                        // There is cuda/hip-DeviceGetAttribute as faster alternative to
+                        // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+                        // the name
+                        typename TApi::DeviceProp_t devProp;
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+                        devProperties->name = std::string(devProp.name);
 
+                        std::size_t freeInternal(0u);
+                        std::size_t totalInternal(0u);
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+                        devProperties->totalGlobalMem = totalInternal;
+
+                        int warpSize = 0;
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, dev.getNativeHandle()));
-                        preferredWarpSize = static_cast<std::size_t>(warpSize);
+                            TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+                        devProperties->warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+                        devProperties->preferredWarpSize = static_cast<std::size_t>(warpSize);
                     });
 
-                return preferredWarpSize.value();
+                return devProperties->preferredWarpSize;
             }
         };
 

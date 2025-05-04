@@ -3,7 +3,6 @@
 
 #include "alpaka/dev/Traits.hpp"
 
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -11,10 +10,10 @@ namespace alpaka
 {
     class DeviceProperties
     {
-        std::optional<std::string> name;
-        std::optional<std::size_t> totalGlobalMem;
-        std::optional<std::vector<std::size_t>> warpSizes;
-        std::optional<std::size_t> preferredWarpSize;
+        std::string name;
+        std::size_t totalGlobalMem;
+        std::vector<std::size_t> warpSizes;
+        std::size_t preferredWarpSize;
 
     public:
         DeviceProperties() = default;

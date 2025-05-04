@@ -107,9 +107,15 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
-                auto& name = dev.m_spDevCpuImpl->deviceProperties().name;
-                std::call_once(dev.m_spDevCpuImpl->onceFlag(), [&]() noexcept { name = cpu::detail::getCpuName(); });
-                return name.value();
+                auto& devProperties = dev.m_spDevCpuImpl->deviceProperties();
+                std::call_once(
+                    dev.m_spDevCpuImpl->onceFlag(),
+                    [&]() noexcept
+                    {
+                        devProperties->name = cpu::detail::getCpuName();
+                        devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                    });
+                return devProperties->name;
             }
         };
 
@@ -119,11 +125,16 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
-                auto& totalGlobalMem = dev.m_spDevCpuImpl->deviceProperties().totalGlobalMem;
+                auto& devProperties = dev.m_spDevCpuImpl->deviceProperties();
                 std::call_once(
                     dev.m_spDevCpuImpl->onceFlag(),
-                    [&]() noexcept { totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes(); });
-                return totalGlobalMem.value();
+                    [&]() noexcept
+                    {
+                        devProperties->name = cpu::detail::getCpuName();
+                        devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                    });
+
+                return devProperties->totalGlobalMem;
             }
         };
 

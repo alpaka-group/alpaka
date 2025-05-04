@@ -11,6 +11,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 
 namespace alpaka::detail
 {
@@ -58,7 +59,7 @@ namespace alpaka::detail
             return m_onceFlag;
         }
 
-        alpaka::DeviceProperties& deviceProperties()
+        std::optional<alpaka::DeviceProperties>& deviceProperties()
         {
             return m_deviceProperties;
         }
@@ -66,7 +67,7 @@ namespace alpaka::detail
     private:
         std::mutex mutable m_Mutex;
         std::once_flag m_onceFlag;
-        alpaka::DeviceProperties m_deviceProperties;
+        std::optional<alpaka::DeviceProperties> m_deviceProperties;
         std::deque<std::weak_ptr<TQueue>> mutable m_queues;
     };
 } // namespace alpaka::detail
