@@ -112,6 +112,7 @@ namespace alpaka
                     dev.m_spDevCpuImpl->onceFlag(),
                     [&]() noexcept
                     {
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
                         devProperties->name = cpu::detail::getCpuName();
                         devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
                     });
@@ -130,6 +131,7 @@ namespace alpaka
                     dev.m_spDevCpuImpl->onceFlag(),
                     [&]() noexcept
                     {
+                        devProperties = std::make_optional<alpaka::DeviceProperties>();
                         devProperties->name = cpu::detail::getCpuName();
                         devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
                     });
