@@ -113,12 +113,12 @@ namespace alpaka
                 return m_context;
             }
 
-            std::once_flag& onceFlag()
+            auto onceFlag() -> std::once_flag&
             {
                 return m_onceFlag;
             }
 
-            std::optional<alpaka::DeviceProperties>& deviceProperties()
+            auto deviceProperties() -> std::optional<alpaka::DeviceProperties>&
             {
                 return m_deviceProperties;
             }
