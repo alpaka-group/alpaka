@@ -8,6 +8,7 @@
 
 namespace alpaka
 {
+
     class DeviceProperties
     {
         std::string name;

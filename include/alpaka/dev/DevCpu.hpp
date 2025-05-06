@@ -101,6 +101,13 @@ namespace alpaka
 
     namespace trait
     {
+
+        static void setDeviceProperties(std::string& name, std::size_t& totalGlobalMem)
+        {
+            name = cpu::detail::getCpuName();
+            totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+        }
+
         //! The CPU device name get trait specialization.
         template<>
         struct GetName<DevCpu>
@@ -113,8 +120,7 @@ namespace alpaka
                     [&]() noexcept
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        devProperties->name = cpu::detail::getCpuName();
-                        devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                        setDeviceProperties(devProperties->name, devProperties->totalGlobalMem);
                     });
                 return devProperties->name;
             }
@@ -132,8 +138,7 @@ namespace alpaka
                     [&]() noexcept
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        devProperties->name = cpu::detail::getCpuName();
-                        devProperties->totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+                        setDeviceProperties(devProperties->name, devProperties->totalGlobalMem);
                     });
 
                 return devProperties->totalGlobalMem;

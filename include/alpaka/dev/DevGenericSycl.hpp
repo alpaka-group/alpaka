@@ -167,6 +167,31 @@ namespace alpaka
 
     namespace trait
     {
+
+        template<concepts::Tag TTag>
+        static inline void setDeviceProperties(
+            DevGenericSycl<TTag> const& dev,
+            std::string& name,
+            std::size_t& totalGlobalMem,
+            std::vector<std::size_t>& warpSizes,
+            std::size_t& preferredWarpSize)
+        {
+            auto const device = dev.getNativeHandle().first;
+            name = device.template get_info<sycl::info::device::name>();
+            totalGlobalMem = device.template get_info<sycl::info::device::global_mem_size>();
+
+            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
+            // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
+            // does not
+            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+            if(find64 != warp_sizes.end())
+                warp_sizes.erase(find64);
+            // Sort the warp sizes in decreasing order
+            std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
+            warpSizes = std::move(warp_sizes);
+            preferredWarpSize = warpSizes.front();
+        }
+
         //! The SYCL device name get trait specialization.
         template<concepts::Tag TTag>
         struct GetName<DevGenericSycl<TTag>>
@@ -179,22 +204,12 @@ namespace alpaka
                     [&]()
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        auto const device = dev.getNativeHandle().first;
-                        devProperties->name = device.template get_info<sycl::info::device::name>();
-                        devProperties->totalGlobalMem
-                            = device.template get_info<sycl::info::device::global_mem_size>();
-
-                        std::vector<std::size_t> warp_sizes
-                            = device.template get_info<sycl::info::device::sub_group_sizes>();
-                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-                        // does not
-                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-                        if(find64 != warp_sizes.end())
-                            warp_sizes.erase(find64);
-                        // Sort the warp sizes in decreasing order
-                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-                        devProperties->warpSizes = std::move(warp_sizes);
-                        devProperties->preferredWarpSize = devProperties->warpSizes.front();
+                        setDeviceProperties(
+                            dev,
+                            devProperties->name,
+                            devProperties->totalGlobalMem,
+                            devProperties->warpSizes,
+                            devProperties->preferredWarpSize);
                     });
                 return devProperties->name;
             }
@@ -212,22 +227,12 @@ namespace alpaka
                     [&]()
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        auto const device = dev.getNativeHandle().first;
-                        devProperties->name = device.template get_info<sycl::info::device::name>();
-                        devProperties->totalGlobalMem
-                            = device.template get_info<sycl::info::device::global_mem_size>();
-
-                        std::vector<std::size_t> warp_sizes
-                            = device.template get_info<sycl::info::device::sub_group_sizes>();
-                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-                        // does not
-                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-                        if(find64 != warp_sizes.end())
-                            warp_sizes.erase(find64);
-                        // Sort the warp sizes in decreasing order
-                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-                        devProperties->warpSizes = std::move(warp_sizes);
-                        devProperties->preferredWarpSize = devProperties->warpSizes.front();
+                        setDeviceProperties(
+                            dev,
+                            devProperties->name,
+                            devProperties->totalGlobalMem,
+                            devProperties->warpSizes,
+                            devProperties->preferredWarpSize);
                     });
 
                 return devProperties->totalGlobalMem;
@@ -259,22 +264,12 @@ namespace alpaka
                     [&]()
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        auto const device = dev.getNativeHandle().first;
-                        devProperties->name = device.template get_info<sycl::info::device::name>();
-                        devProperties->totalGlobalMem
-                            = device.template get_info<sycl::info::device::global_mem_size>();
-
-                        std::vector<std::size_t> warp_sizes
-                            = device.template get_info<sycl::info::device::sub_group_sizes>();
-                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-                        // does not
-                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-                        if(find64 != warp_sizes.end())
-                            warp_sizes.erase(find64);
-                        // Sort the warp sizes in decreasing order
-                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-                        devProperties->warpSizes = std::move(warp_sizes);
-                        devProperties->preferredWarpSize = devProperties->warpSizes.front();
+                        setDeviceProperties(
+                            dev,
+                            devProperties->name,
+                            devProperties->totalGlobalMem,
+                            devProperties->warpSizes,
+                            devProperties->preferredWarpSize);
                     });
 
                 return devProperties->warpSizes;
@@ -293,22 +288,12 @@ namespace alpaka
                     [&]()
                     {
                         devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        auto const device = dev.getNativeHandle().first;
-                        devProperties->name = device.template get_info<sycl::info::device::name>();
-                        devProperties->totalGlobalMem
-                            = device.template get_info<sycl::info::device::global_mem_size>();
-
-                        std::vector<std::size_t> warp_sizes
-                            = device.template get_info<sycl::info::device::sub_group_sizes>();
-                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-                        // does not
-                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-                        if(find64 != warp_sizes.end())
-                            warp_sizes.erase(find64);
-                        // Sort the warp sizes in decreasing order
-                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-                        devProperties->warpSizes = std::move(warp_sizes);
-                        devProperties->preferredWarpSize = devProperties->warpSizes.front();
+                        setDeviceProperties(
+                            dev,
+                            devProperties->name,
+                            devProperties->totalGlobalMem,
+                            devProperties->warpSizes,
+                            devProperties->preferredWarpSize);
                     });
 
                 return devProperties->preferredWarpSize;
