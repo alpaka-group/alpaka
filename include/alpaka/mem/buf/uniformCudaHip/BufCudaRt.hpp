@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/ApiCudaRt.hpp"
-#include "alpaka/mem/buf/BufUniformCudaHipRt.hpp"
+#include "alpaka/mem/buf/uniformCudaHip/BufUniformCudaHipRt.hpp"
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 

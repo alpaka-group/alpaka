@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "alpaka/mem/buf/BufGenericSycl.hpp"
+#include "alpaka/mem/buf/sycl/MutBufGenericSycl.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 

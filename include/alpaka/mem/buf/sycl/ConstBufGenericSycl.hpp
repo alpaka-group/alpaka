@@ -9,14 +9,16 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/dim/Traits.hpp"
-#include "alpaka/mem/buf/BufCpu.hpp"
-#include "alpaka/mem/buf/GenericMutableBuf.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/sycl/MutBufGenericSycl.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <memory>
 #include <type_traits>
+
+// TODO: delete
+// #define ALPAKA_ACC_SYCL_ENABLED 1
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -27,7 +29,7 @@ namespace alpaka
     namespace detail
     {
         //! The Sycl memory buffer implementation.
-        template<typename TElem, typename TDim, typename TIdx>
+        template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
         class BufSyclImpl final
         {
             static_assert(
@@ -39,7 +41,7 @@ namespace alpaka
         public:
             template<typename TExtent>
             ALPAKA_FN_HOST BufSyclImpl(
-                DevCpu dev,
+                DevGenericSycl<TTag> dev,
                 TElem* pMem,
                 std::function<void(TElem*)> deleter,
                 TExtent const& extent) noexcept
@@ -108,8 +110,9 @@ namespace alpaka
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 
+        //! Constructor for a ConstBuf from a non-ConstBuf
         ALPAKA_FN_HOST ConstBufGenericSycl(
-            GenericBuf<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx> const& buf)
+            MutBufGenericSycl<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx> const& buf)
             : m_dev{trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>::getDev(buf)}
             , m_extentElements{}
             , m_spMem{buf.m_spBufImpl}
@@ -119,14 +122,14 @@ namespace alpaka
     private:
         std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
 
-        friend alpaka::trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx>>;
-        friend alpaka::trait::GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx>>;
-        friend alpaka::trait::GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx>>;
-        friend alpaka::trait::GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx>, DevGenericSycl<TTag>>;
+        friend alpaka::trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>;
+        friend alpaka::trait::GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>;
+        friend alpaka::trait::GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>;
+        friend alpaka::trait::GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>;
     };
 
     template<typename TElem, typename TDim, typename TIdx, typename TTag>
-    using BufGenericSycl = GenericBuf<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx>;
+    using BufGenericSycl = MutBufGenericSycl<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx>;
 
 } // namespace alpaka
 
