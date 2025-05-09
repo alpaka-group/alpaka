@@ -56,10 +56,23 @@ namespace alpaka::detail
             m_deleter(m_pMem);
         }
 
-    public:
+    private:
         DevCpu const m_dev;
         Vec<TDim, TIdx> const m_extentElements;
         TElem* const m_pMem;
         std::function<void(TElem*)> m_deleter;
+
+        // friend declarations to allow usage of these pointers in the respective trait implementations
+        template<typename TBuf, typename TSfinae>
+        friend struct alpaka::trait::GetDev;
+
+        template<typename TBuf, typename TSfinae>
+        friend struct alpaka::trait::GetExtents;
+
+        template<typename TBuf, typename TSfinae>
+        friend struct alpaka::trait::GetPtrNative;
+
+        template<typename TBuf, typename DevCpu, typename TSfinae>
+        friend struct alpaka::trait::GetPtrDev;
     };
 } // namespace alpaka::detail
