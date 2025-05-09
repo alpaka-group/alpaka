@@ -1,16 +1,16 @@
-/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
-#include "alpaka/dev/DevCpu.hpp"
+#ifdef ALPAKA_ACC_SYCL_ENABLED
 
 namespace alpaka::detail
 {
-    //! The CPU memory buffer.
-    template<typename TElem, typename TDim, typename TIdx>
-    class BufCpuImpl final
+    //! The Sycl memory buffer implementation.
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+    class BufSyclImpl final
     {
         static_assert(
             !std::is_const_v<TElem>,
@@ -20,8 +20,8 @@ namespace alpaka::detail
 
     public:
         template<typename TExtent>
-        ALPAKA_FN_HOST BufCpuImpl(
-            DevCpu dev,
+        ALPAKA_FN_HOST BufSyclImpl(
+            DevGenericSycl<TTag> dev,
             TElem* pMem,
             std::function<void(TElem*)> deleter,
             TExtent const& extent) noexcept
@@ -40,15 +40,15 @@ namespace alpaka::detail
                 std::is_same_v<TIdx, Idx<TExtent>>,
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
 
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__ << " e: " << m_extentElements << " ptr: " << static_cast<void*>(m_pMem) << std::endl;
-#endif
+#    endif
         }
 
-        BufCpuImpl(BufCpuImpl&&) = delete;
-        auto operator=(BufCpuImpl&&) -> BufCpuImpl& = delete;
+        BufSyclImpl(BufSyclImpl&&) = delete;
+        auto operator=(BufSyclImpl&&) -> BufSyclImpl& = delete;
 
-        ALPAKA_FN_HOST ~BufCpuImpl()
+        ALPAKA_FN_HOST ~BufSyclImpl()
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -57,10 +57,10 @@ namespace alpaka::detail
         }
 
     private:
-        DevCpu const m_dev;
+        DevGenericSycl<TTag> m_dev;
         TElem* const m_pMem;
         std::function<void(TElem*)> m_deleter;
-        Vec<TDim, TIdx> const m_extentElements;
+        Vec<TDim, TIdx> m_extentElements;
 
         // friend declarations to allow usage of these pointers in the respective trait implementations
         template<typename TBuf, typename TSfinae>
@@ -76,3 +76,5 @@ namespace alpaka::detail
         friend struct alpaka::trait::GetPtrDev;
     };
 } // namespace alpaka::detail
+
+#endif

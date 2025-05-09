@@ -141,7 +141,6 @@
 #include "alpaka/mem/alloc/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/buf/cpu/CpuBuf.hpp"
-#include "alpaka/mem/buf/sycl/ConstBufGenericSycl.hpp"
 #include "alpaka/mem/buf/sycl/specializations/BufCpuSycl.hpp"
 #include "alpaka/mem/buf/sycl/specializations/BufFpgaSyclIntel.hpp"
 #include "alpaka/mem/buf/sycl/specializations/BufGpuSyclIntel.hpp"

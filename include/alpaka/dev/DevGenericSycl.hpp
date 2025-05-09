@@ -49,9 +49,6 @@ namespace alpaka
     template<concepts::Tag TTag>
     struct PlatformGenericSycl;
 
-    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    class BufGenericSycl;
-
     namespace detail
     {
         class DevGenericSyclImpl
@@ -259,13 +256,6 @@ namespace alpaka
             {
                 return dev.getNativeHandle();
             }
-        };
-
-        //! The SYCL device memory buffer type trait specialization.
-        template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-        struct BufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
-        {
-            using type = BufGenericSycl<TElem, TDim, TIdx, TTag>;
         };
 
         //! The SYCL device platform type trait specialization.
