@@ -4,9 +4,6 @@
 
 #pragma once
 
-// TODO: delete
-// #define ALPAKA_ACC_SYCL_ENABLED 1
-
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
@@ -20,9 +17,6 @@
 
 #include <memory>
 #include <type_traits>
-
-// TODO: delete
-#define ALPAKA_ACC_SYCL_ENABLED 1
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -56,9 +50,16 @@ namespace alpaka
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 
-        //! Constructor for a ConstBuf from a non-ConstBuf
+        //! Constructor for a ConstBuf from a MutBuf
         ALPAKA_FN_HOST ConstBufGenericSycl(
-            MutBufGenericSycl<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx, TTag> const& buf)
+            MutBufGenericSycl<
+                ConstBufGenericSycl,
+                detail::BufSyclImpl<TElem, TDim, TIdx, TTag>,
+                DevGenericSycl<TTag>,
+                TElem,
+                TDim,
+                TIdx,
+                TTag> const& buf)
             : m_spBufSyclImpl{buf.m_spBufSyclImpl}
         {
         }

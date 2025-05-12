@@ -28,7 +28,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
         {
-            return buf.m_dev;
+            return buf.m_spBufSyclImpl->m_dev;
         }
     };
 

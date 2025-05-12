@@ -12,8 +12,14 @@
 namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    using BufGenericSycl
-        = MutBufGenericSycl<ConstBufGenericSycl, TElem, DevGenericSycl<TTag>, TElem, TDim, TIdx, TTag>;
+    using BufGenericSycl = MutBufGenericSycl<
+        ConstBufGenericSycl,
+        detail::BufSyclImpl<TElem, TDim, TIdx, TTag>,
+        DevGenericSycl<TTag>,
+        TElem,
+        TDim,
+        TIdx,
+        TTag>;
 } // namespace alpaka
 
 #    include "alpaka/mem/buf/sycl/Copy.hpp"
