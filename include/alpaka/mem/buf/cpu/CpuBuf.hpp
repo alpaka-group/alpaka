@@ -8,7 +8,7 @@
 namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
-    using BufCpu = MutCpuBuf<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx>;
+    using BufCpu = MutBufCpu<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx>;
 } // namespace alpaka
 
 #include "alpaka/mem/buf/cpu/Copy.hpp"

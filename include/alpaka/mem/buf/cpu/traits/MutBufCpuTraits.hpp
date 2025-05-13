@@ -5,7 +5,7 @@
 
 namespace alpaka::trait
 {
-    //! The MutCpuBuf device type trait specialization.
+    //! The MutBufCpu device type trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -13,12 +13,12 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct DevType<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct DevType<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
         using type = TDev;
     };
 
-    //! The MutCpuBuf device get trait specialization.
+    //! The MutBufCpu device get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -26,15 +26,15 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct GetDev<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct GetDev<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST static auto getDev(MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) -> TDev
+        ALPAKA_FN_HOST static auto getDev(MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) -> TDev
         {
             return GetDev<TBuf<TElem, TDim, TIdx>>::getDev(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
-    //! The MutCpuBuf dimension getter trait.
+    //! The MutBufCpu dimension getter trait.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -42,12 +42,12 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct DimType<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct DimType<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
         using type = TDim;
     };
 
-    //! The MutCpuBuf memory element type get trait specialization.
+    //! The MutBufCpu memory element type get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -55,12 +55,12 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct ElemType<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct ElemType<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
         using type = TElem;
     };
 
-    //! The MutCpuBuf width get trait specialization.
+    //! The MutBufCpu width get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -68,15 +68,15 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct GetExtents<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct GetExtents<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST auto operator()(MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
+        ALPAKA_FN_HOST auto operator()(MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
         {
             return GetExtents<TBuf<TElem, TDim, TIdx>>{}(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
-    //! The MutCpuBuf native pointer get trait specialization.
+    //! The MutBufCpu native pointer get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -84,15 +84,15 @@ namespace alpaka::trait
         typename TElem,
         typename TDim,
         typename TIdx>
-    struct GetPtrNative<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct GetPtrNative<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST static auto getPtrNative(MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
+        ALPAKA_FN_HOST static auto getPtrNative(MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf)
             -> TElem const*
         {
             return GetPtrNative<TBuf<TElem, TDim, TIdx>>::getPtrNative(TBuf<TElem, TDim, TIdx>{buf});
         }
 
-        ALPAKA_FN_HOST static auto getPtrNative(MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf) -> TElem*
+        ALPAKA_FN_HOST static auto getPtrNative(MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf) -> TElem*
         {
             // cast away the TElem's constness from the TBuf's return type
             return const_cast<TElem*>(
@@ -100,7 +100,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The MutCpuBuf pointer on device get trait specialization.
+    //! The MutBufCpu pointer on device get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -109,17 +109,17 @@ namespace alpaka::trait
         typename TDim,
         typename TIdx>
 
-    struct GetPtrDev<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>, TDev>
+    struct GetPtrDev<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>, TDev>
     {
         ALPAKA_FN_HOST static auto getPtrDev(
-            MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf,
+            MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf,
             TDev const& /*dev*/) -> TElem const*
         {
             return GetPtrDev<TBuf<TElem, TDim, TIdx>, TDev>::getPtrDev(TBuf<TElem, TDim, TIdx>{buf});
         }
 
         ALPAKA_FN_HOST static auto getPtrDev(
-            MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf,
+            MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>& buf,
             TDev const& /*dev*/) -> TElem*
         {
             // cast away the TElem's constness from the TBuf's return type
@@ -128,7 +128,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The MutCpuBuf offset get trait specialization.
+    //! The MutBufCpu offset get trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -137,16 +137,16 @@ namespace alpaka::trait
         typename TDim,
         typename TIdx>
 
-    struct GetOffsets<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct GetOffsets<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST auto operator()(MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) const
+        ALPAKA_FN_HOST auto operator()(MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx> const& buf) const
             -> Vec<TDim, TIdx>
         {
             return GetOffsets<TBuf<TElem, TDim, TIdx>>{}(TBuf<TElem, TDim, TIdx>{buf});
         }
     };
 
-    //! The MutCpuBuf idx type trait specialization.
+    //! The MutBufCpu idx type trait specialization.
     template<
         template<typename, typename, typename> class TBuf,
         typename TBufImpl,
@@ -155,7 +155,7 @@ namespace alpaka::trait
         typename TDim,
         typename TIdx>
 
-    struct IdxType<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    struct IdxType<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
         using type = TIdx;
     };

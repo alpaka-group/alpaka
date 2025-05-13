@@ -20,35 +20,35 @@ namespace buftest
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCpu dev, TExtent extent) -> alpaka::ConstBufCpu<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCpu(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufCpu<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
-    auto allocBuf(alpaka::DevCudaRt dev, TExtent extent) -> alpaka::ConstBufCudaRt<TElem, TDim, TIdx>
+    auto allocConstBuf(alpaka::DevCudaRt dev, TExtent extent) -> alpaka::ConstBufCudaRt<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCudaRt(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufCudaRt<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
-    auto allocBuf(alpaka::DevHipRt dev, TExtent extent) -> alpaka::ConstBufHipRt<TElem, TDim, TIdx>
+    auto allocConstBuf(alpaka::DevHipRt dev, TExtent extent) -> alpaka::ConstBufHipRt<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufHipRt(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufHipRt<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_CPU)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCpuSycl dev, TExtent extent) -> alpaka::ConstBufCpuSycl<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCpuSycl(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufCpuSycl<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevGpuSyclIntel dev, TExtent extent) -> alpaka::ConstBufGpuSyclIntel<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufGpuSyclIntel(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufGpuSyclIntel<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
@@ -56,7 +56,7 @@ namespace buftest
     auto allocConstBuf(alpaka::DevFpgaSyclIntel dev, TExtent extent)
         -> alpaka::ConstBufFpgaSyclIntel<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufFpgaSyclIntel(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::ConstBufFpgaSyclIntel<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 
@@ -96,11 +96,6 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     STATIC_REQUIRE(std::convertible_to<TCBuf, TCBuf>);
     STATIC_REQUIRE(std::convertible_to<TBuf, TBuf>);
     STATIC_REQUIRE(std::convertible_to<TBuf, TCBuf>);
-
-    // TODO: check that Constant buffer cannot give a non const native ptr
-    // STATIC_REQUIRE(buftest::onlyConstNativePtr<TCBuf>);
-    // *getPtrNative(c_buf) = 0.f;  // <- this does not compile, as desired
-    // however, the static require above doesn't work and seems to get float* instead of float const*
 
     STATIC_REQUIRE_FALSE(buftest::onlyConstNativePtr<TBuf>);
 }

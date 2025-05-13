@@ -39,9 +39,8 @@ namespace alpaka
         {
         }
 
-        // TODO: this might not correctly deduce its template arguments? warning -Wctad-maybe-unsupported is triggered
         ALPAKA_FN_HOST ConstBufCpu(
-            MutCpuBuf<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const&
+            MutBufCpu<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const&
                 buf)
             : m_spBufCpuImpl{buf.m_spBufImpl}
         {

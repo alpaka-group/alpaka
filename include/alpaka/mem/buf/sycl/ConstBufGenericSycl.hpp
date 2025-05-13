@@ -38,16 +38,6 @@ namespace alpaka
                   std::move(deleter),
                   extent)}
         {
-            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-            static_assert(
-                TDim::value == Dim<TExtent>::value,
-                "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be "
-                "identical!");
-
-            static_assert(
-                std::is_same_v<TIdx, Idx<TExtent>>,
-                "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 
         //! Constructor for a ConstBuf from a MutBuf

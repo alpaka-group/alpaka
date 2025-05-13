@@ -12,6 +12,9 @@
 namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
+    using ConstBufHipRt = ConstBufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
+
+    template<typename TElem, typename TDim, typename TIdx>
     using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
 } // namespace alpaka
 

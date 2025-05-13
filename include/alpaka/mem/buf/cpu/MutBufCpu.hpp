@@ -24,11 +24,11 @@ namespace alpaka
         typename TElem,
         typename TDim,
         typename TIdx>
-    class MutCpuBuf : public internal::ViewAccessOps<MutCpuBuf<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    class MutBufCpu : public internal::ViewAccessOps<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
     {
     public:
         template<typename TExtent, typename Deleter>
-        ALPAKA_FN_HOST MutCpuBuf(TDev const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
+        ALPAKA_FN_HOST MutBufCpu(TDev const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
             : m_spBufImpl{std::make_shared<TBufImpl>(dev, pMem, std::move(deleter), extent)}
         {
         }
