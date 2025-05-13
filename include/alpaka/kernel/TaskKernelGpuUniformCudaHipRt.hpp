@@ -78,6 +78,14 @@ namespace alpaka
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic pop
 #        endif
+
+        template<typename TKernelFnObj, typename TAcc, typename... TArgs>
+        inline void (*kernelName)(
+            Vec<Dim<TAcc>, Idx<TAcc>> const,
+            TKernelFnObj const,
+            remove_restrict_t<std::decay_t<TArgs>>...)
+            = gpuKernel<TKernelFnObj, TAcc, TArgs...>;
+
     } // namespace detail
 
     namespace uniform_cuda_hip
@@ -248,7 +256,7 @@ namespace alpaka
 #        endif
 
                 auto kernelName
-                    = alpaka::detail::gpuKernel<TKernelFnObj, TAcc, remove_restrict_t<std::decay_t<TArgs>>...>;
+                    = alpaka::detail::kernelName<TKernelFnObj, TAcc, remove_restrict_t<std::decay_t<TArgs>>...>;
 
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
@@ -317,7 +325,7 @@ namespace alpaka
                 [[maybe_unused]] TKernelFn const& kernelFn,
                 [[maybe_unused]] TArgs&&... args) -> alpaka::KernelFunctionAttributes
             {
-                auto kernelName = alpaka::detail::gpuKernel<
+                auto kernelName = alpaka::detail::kernelName<
                     TKernelFn,
                     AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
                     remove_restrict_t<std::decay_t<TArgs>>...>;
@@ -363,9 +371,96 @@ namespace alpaka
                 return kernelFunctionAttributes;
             }
         };
+
     } // namespace trait
+
 } // namespace alpaka
 
+// These macros can be used to give a more readable name to a GPU kernel.
+// KERNEL must be the class or struct whose operator()(acc, ...) implements the kernel.
+// ::NAME (or ::NAMESPACE::NAME) must be a unique name across the whole program.
+
+struct The_ALPAKA_KERNEL_NAME_macro_must_be_called_in_the_global_namespace;
+
+#        define ALPAKA_KERNEL_NAME(KERNEL, NAME)                                                                      \
+                                                                                                                      \
+            struct The_ALPAKA_KERNEL_NAME_macro_must_be_called_in_the_global_namespace;                               \
+                                                                                                                      \
+            static_assert(                                                                                            \
+                std::is_same_v<                                                                                       \
+                    The_ALPAKA_KERNEL_NAME_macro_must_be_called_in_the_global_namespace,                              \
+                    ::The_ALPAKA_KERNEL_NAME_macro_must_be_called_in_the_global_namespace>,                           \
+                "The ALPAKA_KERNEL_NAME macro must be called in the global namespace");                               \
+                                                                                                                      \
+            template<typename TAcc, typename... TArgs>                                                                \
+            __global__ void NAME(                                                                                     \
+                alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const extent,                                       \
+                KERNEL const kernelFnObj,                                                                             \
+                TArgs... args)                                                                                        \
+            {                                                                                                         \
+                TAcc const acc(extent);                                                                               \
+                kernelFnObj(const_cast<TAcc const&>(acc), args...);                                                   \
+            }                                                                                                         \
+                                                                                                                      \
+            namespace alpaka::detail                                                                                  \
+            {                                                                                                         \
+                template<typename TAcc, typename... TArgs>                                                            \
+                inline void (*kernelName<KERNEL, TAcc, TArgs...>)(                                                    \
+                    alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const,                                          \
+                    KERNEL const,                                                                                     \
+                    TArgs...)                                                                                         \
+                    = ::NAME<TAcc, TArgs...>;                                                                         \
+            }
+
+struct The_ALPAKA_KERNEL_SCOPED_NAME_macro_must_be_called_in_the_global_namespace;
+
+#        define ALPAKA_KERNEL_SCOPED_NAME(KERNEL, NAMESPACE, NAME)                                                    \
+            struct The_ALPAKA_KERNEL_SCOPED_NAME_macro_must_be_called_in_the_global_namespace;                        \
+                                                                                                                      \
+            static_assert(                                                                                            \
+                std::is_same_v<                                                                                       \
+                    The_ALPAKA_KERNEL_SCOPED_NAME_macro_must_be_called_in_the_global_namespace,                       \
+                    ::The_ALPAKA_KERNEL_SCOPED_NAME_macro_must_be_called_in_the_global_namespace>,                    \
+                "The ALPAKA_KERNEL_SCOPED_NAME macro must be called in the global namespace");                        \
+                                                                                                                      \
+            namespace NAMESPACE                                                                                       \
+            {                                                                                                         \
+                template<typename TAcc, typename... TArgs>                                                            \
+                __global__ void NAME(                                                                                 \
+                    alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const extent,                                   \
+                    KERNEL const kernelFnObj,                                                                         \
+                    TArgs... args)                                                                                    \
+                {                                                                                                     \
+                    TAcc const acc(extent);                                                                           \
+                    kernelFnObj(const_cast<TAcc const&>(acc), args...);                                               \
+                }                                                                                                     \
+            }                                                                                                         \
+                                                                                                                      \
+            namespace alpaka::detail                                                                                  \
+            {                                                                                                         \
+                template<typename TAcc, typename... TArgs>                                                            \
+                inline void (*kernelName<KERNEL, TAcc, TArgs...>)(                                                    \
+                    alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const,                                          \
+                    KERNEL const,                                                                                     \
+                    TArgs...)                                                                                         \
+                    = ::NAMESPACE::NAME<TAcc, TArgs...>;                                                              \
+            }
+
+
+#    else
+
+// In host-only mode, expand to empty macros
+
+#        define ALPAKA_KERNEL_NAME(KERNEL, NAME)
+#        define ALPAKA_KERNEL_SCOPED_NAME(KERNEL, NAMESPACE, NAME)
+
 #    endif
+
+#else
+
+// If CUDA or HIP are not available, expand to empty macros
+
+#    define ALPAKA_KERNEL_NAME(KERNEL, NAME)
+#    define ALPAKA_KERNEL_SCOPED_NAME(KERNEL, NAMESPACE, NAME)
 
 #endif
