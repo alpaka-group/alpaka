@@ -59,9 +59,9 @@ namespace alpaka
         // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
         // We have put the function into a shallow namespace and gave it a short name, so the mangled name in the
         // profiler (e.g. ncu) is as shorter as possible.
-        template<typename TKernelFnObj, typename TApi, typename TAcc, typename TDim, typename TIdx, typename... TArgs>
+        template<typename TKernelFnObj, typename TAcc, typename... TArgs>
         __global__ void gpuKernel(
-            Vec<TDim, TIdx> const threadElemExtent,
+            Vec<Dim<TAcc>, Idx<TAcc>> const threadElemExtent,
             TKernelFnObj const kernelFnObj,
             TArgs... args)
         {
@@ -247,8 +247,8 @@ namespace alpaka
                           << std::endl;
 #        endif
 
-                auto kernelName = alpaka::detail::
-                    gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
+                auto kernelName
+                    = alpaka::detail::gpuKernel<TKernelFnObj, TAcc, remove_restrict_t<std::decay_t<TArgs>>...>;
 
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
@@ -319,10 +319,7 @@ namespace alpaka
             {
                 auto kernelName = alpaka::detail::gpuKernel<
                     TKernelFn,
-                    TApi,
                     AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
-                    TDim,
-                    TIdx,
                     remove_restrict_t<std::decay_t<TArgs>>...>;
 
                 typename TApi::FuncAttributes_t funcAttrs;
