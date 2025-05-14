@@ -3,6 +3,10 @@
  */
 #pragma once
 
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/cpu/MutBufCpu.hpp"
+
 namespace alpaka::trait
 {
     //! The MutBufCpu device type trait specialization.

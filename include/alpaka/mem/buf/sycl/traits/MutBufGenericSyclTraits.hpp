@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/sycl/MutBufGenericSycl.hpp"
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 namespace alpaka::trait

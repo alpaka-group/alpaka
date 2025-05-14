@@ -4,8 +4,10 @@
 
 #pragma once
 
+#include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/cpu/MutBufCpu.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
