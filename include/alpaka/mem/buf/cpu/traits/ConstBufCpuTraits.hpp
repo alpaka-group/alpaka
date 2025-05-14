@@ -207,4 +207,15 @@ namespace alpaka::trait
     {
         using type = TIdx;
     };
+
+    //! The MakeConstBuf trait for constant CPU buffers.
+    template<typename TElem, typename TDim, typename TIdx>
+    struct MakeConstBuf<ConstBufCpu<TElem, TDim, TIdx>>
+    {
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufCpu<TElem, TDim, TIdx> const& buf)
+            -> ConstBufCpu<TElem, TDim, TIdx>
+        {
+            return buf;
+        }
+    };
 } // namespace alpaka::trait

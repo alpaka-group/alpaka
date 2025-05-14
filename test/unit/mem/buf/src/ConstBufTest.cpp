@@ -20,35 +20,35 @@ namespace buftest
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCpu dev, TExtent extent) -> alpaka::ConstBufCpu<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCpu<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCudaRt dev, TExtent extent) -> alpaka::ConstBufCudaRt<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCudaRt<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevHipRt dev, TExtent extent) -> alpaka::ConstBufHipRt<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufHipRt<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_CPU)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevCpuSycl dev, TExtent extent) -> alpaka::ConstBufCpuSycl<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufCpuSycl<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) and defined(ALPAKA_SYCL_ONEAPI_GPU)
     template<typename TDim, typename TElem, typename TIdx, typename TExtent>
     auto allocConstBuf(alpaka::DevGpuSyclIntel dev, TExtent extent) -> alpaka::ConstBufGpuSyclIntel<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufGpuSyclIntel<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
@@ -56,7 +56,7 @@ namespace buftest
     auto allocConstBuf(alpaka::DevFpgaSyclIntel dev, TExtent extent)
         -> alpaka::ConstBufFpgaSyclIntel<TElem, TDim, TIdx>
     {
-        return alpaka::ConstBufFpgaSyclIntel<TElem, TDim, TIdx>(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
     }
 #endif
 

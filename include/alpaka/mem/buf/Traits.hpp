@@ -45,6 +45,11 @@ namespace alpaka
         struct HasMappedBufSupport : public std::false_type
         {
         };
+
+        //! The trait to transform a mutable buffer into a constant one.
+        template<typename TBuf>
+        struct MakeConstBuf;
+
     } // namespace trait
 
     //! The memory buffer type trait alias template to remove the ::type.
@@ -189,4 +194,16 @@ namespace alpaka
 
         ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(host, extent));
     }
+
+    //! Creates a constant buffer from the given mutable buffer.
+    //!
+    //! \tparam TBuf The type of the original buffer.
+    //! \param buf The original buffer.
+    //! \return The transformed buffer with only read-access allowed.
+    template<typename TBuf>
+    ALPAKA_FN_HOST auto makeConstBuf(TBuf const& buf)
+    {
+        return trait::MakeConstBuf<TBuf>::makeConstBuf(buf);
+    }
+
 } // namespace alpaka

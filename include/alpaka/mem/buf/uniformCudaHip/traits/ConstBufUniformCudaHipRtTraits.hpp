@@ -292,6 +292,18 @@ namespace alpaka::trait
             return pDev;
         }
     };
+
+    //! The MakeConstBuf trait for constant CUDA/HIP buffers.
+    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    struct MakeConstBuf<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+    {
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
+            -> ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>
+        {
+            return buf;
+        }
+    };
+
 } // namespace alpaka::trait
 
 #endif

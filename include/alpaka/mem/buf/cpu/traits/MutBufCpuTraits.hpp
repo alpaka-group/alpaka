@@ -5,6 +5,7 @@
 
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/cpu/CpuBuf.hpp"
 #include "alpaka/mem/buf/cpu/MutBufCpu.hpp"
 
 namespace alpaka::trait
@@ -172,4 +173,15 @@ namespace alpaka::trait
     {
         using type = TIdx;
     };
+
+    //! The MakeConstBuf trait for CPU buffers.
+    template<typename TElem, typename TDim, typename TIdx>
+    struct MakeConstBuf<BufCpu<TElem, TDim, TIdx>>
+    {
+        ALPAKA_FN_HOST static auto makeConstBuf(BufCpu<TElem, TDim, TIdx> const& buf) -> ConstBufCpu<TElem, TDim, TIdx>
+        {
+            return ConstBufCpu<TElem, TDim, TIdx>(buf);
+        }
+    };
+
 } // namespace alpaka::trait

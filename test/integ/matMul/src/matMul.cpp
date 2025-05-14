@@ -17,7 +17,7 @@
 #include <vector>
 
 //! A matrix multiplication kernel.
-//! Computes C + alpha*A*B + beta*C. LxM * MxN -> LxN
+//! Computes C = alpha*A*B + beta*C. LxM * MxN -> LxN
 //! This is an adaption of the algorithm from the CUDA developers guide.
 class MatMulKernel
 {
@@ -207,8 +207,8 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     alpaka::memset(queueHost, bufCHost, 0u);
 
     // Allocate the buffers on the accelerator.
-    auto bufAAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentA);
-    auto bufBAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentB);
+    auto bufAAccMut = alpaka::allocBuf<Val, Idx>(devAcc, extentA);
+    auto bufBAccMut = alpaka::allocBuf<Val, Idx>(devAcc, extentB);
     auto bufCAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentC);
 
     // Copy inputs Host -> Acc.
@@ -216,12 +216,17 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
               << alpaka::test::integ::measureRunTimeMs(
                      [&]
                      {
-                         alpaka::memcpy(queueAcc, bufAAcc, bufAHost);
-                         alpaka::memcpy(queueAcc, bufBAcc, bufBHost);
+                         alpaka::memcpy(queueAcc, bufAAccMut, bufAHost);
+                         alpaka::memcpy(queueAcc, bufBAccMut, bufBHost);
                          alpaka::wait(queueAcc);
                      })
               << " ms" << std::endl;
     alpaka::wait(queueHost); // Make sure memset finished
+
+    // bufA and bufB can be constant
+    auto bufAAcc = alpaka::makeConstBuf(bufAAccMut);
+    auto bufBAcc = alpaka::makeConstBuf(bufBAccMut);
+
     std::cout << "Input2 copy time: "
               << alpaka::test::integ::measureRunTimeMs([&] { alpaka::memcpy(queueAcc, bufCAcc, bufCHost); }) << " ms"
               << std::endl;

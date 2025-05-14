@@ -201,6 +201,17 @@ namespace alpaka::trait
             return getPtrNative(buf);
         }
     };
+
+    //! The MakeConstBuf trait for constant Sycl buffers.
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+    struct MakeConstBuf<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
+    {
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
+            -> ConstBufGenericSycl<TElem, TDim, TIdx, TTag>
+        {
+            return ConstBufGenericSycl<TElem, TDim, TIdx, TTag>(buf);
+        }
+    };
 } // namespace alpaka::trait
 
 #endif
