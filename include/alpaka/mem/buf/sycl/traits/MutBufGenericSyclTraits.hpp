@@ -13,7 +13,8 @@ namespace alpaka::trait
 {
     //! The MutBufGenericSycl device type trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -27,7 +28,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl device get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -45,7 +47,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl dimension getter trait.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -59,7 +62,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl memory element type get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -73,7 +77,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl width get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -90,7 +95,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl native pointer get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -116,7 +122,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl pointer on device get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -144,7 +151,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl offset get trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -162,7 +170,8 @@ namespace alpaka::trait
 
     //! The MutBufGenericSycl idx type trait specialization.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,

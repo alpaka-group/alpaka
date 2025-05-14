@@ -14,7 +14,8 @@ namespace alpaka::trait
 {
     //! The MutBufUniformCudaHipRt device type trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -28,7 +29,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt device get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -46,7 +48,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt dimension getter trait.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -60,7 +63,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt memory element type get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -74,7 +78,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt width get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -92,7 +97,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt native pointer get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -118,7 +124,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt pointer on device get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -145,7 +152,8 @@ namespace alpaka::trait
     };
 
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -163,7 +171,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt offset get trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -181,7 +190,8 @@ namespace alpaka::trait
 
     //! The MutBufUniformCudaHipRt idx type trait specialization.
     template<
-        template<typename, typename, typename, typename> class TBuf,
+        template<typename, typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TApi,
         typename TDev,
@@ -203,11 +213,10 @@ namespace alpaka::trait
             // TODO: Check if the memory is mapped at all!
             TElem* pDev(nullptr);
 
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                TApi::hostGetDevicePointer(
-                    &pDev,
-                    const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
-                    0));
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::hostGetDevicePointer(
+                &pDev,
+                const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
+                0));
 
             return pDev;
         }

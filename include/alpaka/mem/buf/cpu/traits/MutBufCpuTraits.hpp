@@ -11,7 +11,8 @@ namespace alpaka::trait
 {
     //! The MutBufCpu device type trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -24,7 +25,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu device get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -40,7 +42,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu dimension getter trait.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -53,7 +56,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu memory element type get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -66,7 +70,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu width get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -82,7 +87,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu native pointer get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -106,7 +112,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu pointer on device get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -134,7 +141,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu offset get trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
@@ -152,7 +160,8 @@ namespace alpaka::trait
 
     //! The MutBufCpu idx type trait specialization.
     template<
-        template<typename, typename, typename> class TBuf,
+        template<typename, typename, typename>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,

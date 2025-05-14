@@ -47,23 +47,22 @@ namespace alpaka
             TExtent const& extent,
             std::size_t pitchBytes)
             : m_spBufImpl{std::make_shared<detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>>(
-                  dev,
-                  pMem,
-                  std::move(deleter),
-                  extent,
-                  pitchBytes)}
+                dev,
+                pMem,
+                std::move(deleter),
+                extent,
+                pitchBytes)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufUniformCudaHipRt(
-            MutBufUniformCudaHipRt<
-                ConstBufUniformCudaHipRt,
-                alpaka::detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>,
-                TApi,
-                DevUniformCudaHipRt<TApi>,
-                TElem,
-                TDim,
-                TIdx> const& buf)
+        ALPAKA_FN_HOST ConstBufUniformCudaHipRt(MutBufUniformCudaHipRt<
+                                                ConstBufUniformCudaHipRt,
+                                                alpaka::detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>,
+                                                TApi,
+                                                DevUniformCudaHipRt<TApi>,
+                                                TElem,
+                                                TDim,
+                                                TIdx> const& buf)
             : m_spBufImpl{buf.m_spBufImpl}
         {
         }

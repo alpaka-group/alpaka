@@ -22,7 +22,8 @@ namespace alpaka
 {
     //! The generic memory buffer template implementing muting accessors.
     template<
-        template<typename, typename, typename, concepts::Tag> class TBuf,
+        template<typename, typename, typename, concepts::Tag>
+        class TBuf,
         typename TBufImpl,
         typename TDev,
         typename TElem,
