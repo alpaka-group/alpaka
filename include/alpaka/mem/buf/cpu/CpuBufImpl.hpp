@@ -4,7 +4,14 @@
 
 #pragma once
 
+#include "alpaka/core/Common.hpp"
 #include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <functional>
+#include <memory>
+#include <type_traits>
 
 namespace alpaka::detail
 {

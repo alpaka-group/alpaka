@@ -4,6 +4,15 @@
 
 #pragma once
 
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dev/DevGenericSycl.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <functional>
+#include <memory>
+#include <type_traits>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 namespace alpaka::detail

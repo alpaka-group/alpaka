@@ -5,6 +5,14 @@
 
 #pragma once
 
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dev/DevCudaRt.hpp"
+#include "alpaka/dev/DevHipRt.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <functional>
+#include <memory>
 #include <type_traits>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)

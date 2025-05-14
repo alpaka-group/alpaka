@@ -7,6 +7,7 @@
 
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/buf/cpu/CpuBuf.hpp"
+#include "alpaka/mem/buf/uniformCudaHip/BufUniformCudaHipRt.hpp"
 #include "alpaka/mem/buf/uniformCudaHip/ConstBufUniformCudaHipRt.hpp"
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
