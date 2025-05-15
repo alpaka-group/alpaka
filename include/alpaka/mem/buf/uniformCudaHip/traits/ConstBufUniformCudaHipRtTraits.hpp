@@ -141,12 +141,11 @@ namespace alpaka::trait
                 }
                 else if constexpr(Dim::value == 2)
                 {
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        TApi::mallocPitch(
-                            &memPtr,
-                            &rowPitchInBytes,
-                            static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem),
-                            static_cast<std::size_t>(getHeight(extent))));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::mallocPitch(
+                        &memPtr,
+                        &rowPitchInBytes,
+                        static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem),
+                        static_cast<std::size_t>(getHeight(extent))));
                 }
                 else if constexpr(Dim::value == 3)
                 {
@@ -240,11 +239,10 @@ namespace alpaka::trait
             // Allocate CUDA/HIP page-locked memory on the host, mapped into the CUDA/HIP address space and
             // accessible to all CUDA/HIP devices.
             TElem* memPtr = nullptr;
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                TApi::hostMalloc(
-                    reinterpret_cast<void**>(&memPtr),
-                    sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
-                    TApi::hostMallocMapped | TApi::hostMallocPortable));
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::hostMalloc(
+                reinterpret_cast<void**>(&memPtr),
+                sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
+                TApi::hostMallocMapped | TApi::hostMallocPortable));
             auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::hostFree(ptr)); };
 
             return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
@@ -286,11 +284,10 @@ namespace alpaka::trait
             // TODO: Check if the memory is mapped at all!
             TElem* pDev(nullptr);
 
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                TApi::hostGetDevicePointer(
-                    &pDev,
-                    const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
-                    0));
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::hostGetDevicePointer(
+                &pDev,
+                const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
+                0));
 
             return pDev;
         }

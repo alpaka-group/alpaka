@@ -36,10 +36,10 @@ namespace alpaka
         template<typename TExtent, typename Deleter>
         ConstBufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
             : m_spBufGenericSyclImpl{std::make_shared<detail::BufGenericSyclImpl<TElem, TDim, TIdx, TTag>>(
-                  dev,
-                  pMem,
-                  std::move(deleter),
-                  extent)}
+                dev,
+                pMem,
+                std::move(deleter),
+                extent)}
         {
         }
 

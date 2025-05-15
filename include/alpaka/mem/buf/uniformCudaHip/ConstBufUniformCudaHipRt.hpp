@@ -48,11 +48,11 @@ namespace alpaka
             TExtent const& extent,
             std::size_t pitchBytes)
             : m_spBufImpl{std::make_shared<detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>>(
-                  dev,
-                  pMem,
-                  std::move(deleter),
-                  extent,
-                  pitchBytes)}
+                dev,
+                pMem,
+                std::move(deleter),
+                extent,
+                pitchBytes)}
         {
         }
 

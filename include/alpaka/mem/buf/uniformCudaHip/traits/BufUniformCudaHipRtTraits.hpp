@@ -138,11 +138,10 @@ namespace alpaka::trait
             // TODO: Check if the memory is mapped at all!
             TElem* pDev(nullptr);
 
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                TApi::hostGetDevicePointer(
-                    &pDev,
-                    const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
-                    0));
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::hostGetDevicePointer(
+                &pDev,
+                const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
+                0));
 
             return pDev;
         }
