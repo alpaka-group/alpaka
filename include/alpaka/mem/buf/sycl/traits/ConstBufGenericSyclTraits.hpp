@@ -11,11 +11,11 @@
 
 namespace alpaka::trait
 {
-    //! The SYCL device memory buffer type trait specialization.
+    //! The SYCL device memory const-buffer type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    struct BufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
+    struct ConstBufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
     {
-        using type = BufGenericSycl<TElem, TDim, TIdx, TTag>;
+        using type = ConstBufGenericSycl<TElem, TDim, TIdx, TTag>;
     };
 
     //! The ConstBufGenericSycl device type trait specialization.

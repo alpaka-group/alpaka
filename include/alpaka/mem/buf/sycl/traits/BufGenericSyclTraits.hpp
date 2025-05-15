@@ -11,6 +11,13 @@
 
 namespace alpaka::trait
 {
+    //! The SYCL device memory buffer type trait specialization.
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+    struct BufType<DevGenericSycl<TTag>, TElem, TDim, TIdx>
+    {
+        using type = BufGenericSycl<TElem, TDim, TIdx, TTag>;
+    };
+
     //! The BufGenericSycl device type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     struct DevType<BufGenericSycl<TElem, TDim, TIdx, TTag>>

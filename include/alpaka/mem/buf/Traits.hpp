@@ -22,6 +22,10 @@ namespace alpaka
         template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TSfinae = void>
         struct BufType;
 
+        //! The memory const-buffer type trait.
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TSfinae = void>
+        struct ConstBufType;
+
         //! The memory allocator trait.
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct BufAlloc;
@@ -52,9 +56,13 @@ namespace alpaka
 
     } // namespace trait
 
-    //! The memory buffer type trait alias template to remove the ::type.
+    //! The memory buffer type trait alias template to remove the ::type for a Buffer type.
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
     using Buf = typename trait::BufType<alpaka::Dev<TDev>, TElem, TDim, TIdx>::type;
+
+    //! The memory buffer type trait alias template to remove the ::type for a ConstBuffer type.
+    template<typename TDev, typename TElem, typename TDim, typename TIdx>
+    using ConstBuf = typename trait::ConstBufType<alpaka::Dev<TDev>, TElem, TDim, TIdx>::type;
 
     //! Allocates memory on the given device.
     //!

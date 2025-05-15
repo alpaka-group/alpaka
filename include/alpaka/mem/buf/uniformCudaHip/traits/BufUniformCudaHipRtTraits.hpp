@@ -12,6 +12,13 @@
 
 namespace alpaka::trait
 {
+    //! The CUDA/HIP RT device memory buffer type trait specialization.
+    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    struct BufType<DevUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+    {
+        using type = BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>;
+    };
+
     //! The BufUniformCudaHipRt device type trait specialization.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct DevType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>

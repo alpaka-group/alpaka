@@ -11,11 +11,11 @@
 
 namespace alpaka::trait
 {
-    //! The CPU device memory buffer type trait specialization.
+    //! The CPU device memory const-buffer type trait specialization.
     template<typename TElem, typename TDim, typename TIdx>
-    struct BufType<DevCpu, TElem, TDim, TIdx>
+    struct ConstBufType<DevCpu, TElem, TDim, TIdx>
     {
-        using type = BufCpu<TElem, TDim, TIdx>;
+        using type = ConstBufCpu<TElem, TDim, TIdx>;
     };
 
     //! The ConstBufCpu device type trait specialization.

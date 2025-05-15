@@ -9,6 +9,13 @@
 
 namespace alpaka::trait
 {
+    //! The CPU device memory buffer type trait specialization.
+    template<typename TElem, typename TDim, typename TIdx>
+    struct BufType<DevCpu, TElem, TDim, TIdx>
+    {
+        using type = BufCpu<TElem, TDim, TIdx>;
+    };
+
     //!  The BufCpu device type trait specialization.
     template<typename TElem, typename TDim, typename TIdx>
     struct DevType<BufCpu<TElem, TDim, TIdx>>
