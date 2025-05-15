@@ -6,6 +6,8 @@
 
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/cpu/BufCpuImpl.hpp"
+#include "alpaka/mem/buf/cpu/ConstBufCpu.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
@@ -17,19 +19,14 @@
 namespace alpaka
 {
     //! The CPU memory buffer template implementing muting accessors.
-    template<
-        template<typename, typename, typename>
-        class TBuf,
-        typename TBufImpl,
-        typename TDev,
-        typename TElem,
-        typename TDim,
-        typename TIdx>
-    class MutBufCpu : public internal::ViewAccessOps<MutBufCpu<TBuf, TBufImpl, TDev, TElem, TDim, TIdx>>
+    template<typename TElem, typename TDim, typename TIdx>
+    class BufCpu : public internal::ViewAccessOps<BufCpu<TElem, TDim, TIdx>>
     {
+        using TBufImpl = detail::BufCpuImpl<TElem, TDim, TIdx>;
+
     public:
         template<typename TExtent, typename Deleter>
-        ALPAKA_FN_HOST MutBufCpu(TDev const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
+        ALPAKA_FN_HOST BufCpu(DevCpu const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
             : m_spBufImpl{std::make_shared<TBufImpl>(dev, pMem, std::move(deleter), extent)}
         {
         }
@@ -37,5 +34,9 @@ namespace alpaka
     public:
         std::shared_ptr<TBufImpl> m_spBufImpl;
     };
-
 } // namespace alpaka
+
+#include "alpaka/mem/buf/cpu/Copy.hpp"
+#include "alpaka/mem/buf/cpu/Set.hpp"
+#include "alpaka/mem/buf/cpu/traits/BufCpuTraits.hpp"
+#include "alpaka/mem/buf/cpu/traits/ConstBufCpuTraits.hpp"

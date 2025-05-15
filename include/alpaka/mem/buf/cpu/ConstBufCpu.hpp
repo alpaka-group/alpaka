@@ -13,8 +13,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/alloc/AllocCpuAligned.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
-#include "alpaka/mem/buf/cpu/CpuBufImpl.hpp"
-#include "alpaka/mem/buf/cpu/MutBufCpu.hpp"
+#include "alpaka/mem/buf/cpu/BufCpuImpl.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
 #include "alpaka/platform/PlatformCpu.hpp"
@@ -27,6 +26,10 @@
 
 namespace alpaka
 {
+    // Predeclaration of BufCpu
+    template<typename TElem, typename TDim, typename TIdx>
+    class BufCpu;
+
     //! The CPU memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
     class ConstBufCpu : public internal::ViewAccessOps<ConstBufCpu<TElem, TDim, TIdx>>
@@ -35,14 +38,11 @@ namespace alpaka
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST ConstBufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
             : m_spBufCpuImpl{
-                std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
+                  std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufCpu(
-            MutBufCpu<ConstBufCpu, alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>, DevCpu, TElem, TDim, TIdx> const&
-                buf)
-            : m_spBufCpuImpl{buf.m_spBufImpl}
+        ALPAKA_FN_HOST ConstBufCpu(BufCpu<TElem, TDim, TIdx> const& buf) : m_spBufCpuImpl{buf.m_spBufImpl}
         {
         }
 

@@ -19,7 +19,7 @@ namespace alpaka::detail
 {
     //! The Sycl memory buffer implementation.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-    class BufSyclImpl final
+    class BufGenericSyclImpl final
     {
         static_assert(
             !std::is_const_v<TElem>,
@@ -29,7 +29,7 @@ namespace alpaka::detail
 
     public:
         template<typename TExtent>
-        ALPAKA_FN_HOST BufSyclImpl(
+        ALPAKA_FN_HOST BufGenericSyclImpl(
             DevGenericSycl<TTag> dev,
             TElem* pMem,
             std::function<void(TElem*)> deleter,
@@ -54,10 +54,10 @@ namespace alpaka::detail
 #    endif
         }
 
-        BufSyclImpl(BufSyclImpl&&) = delete;
-        auto operator=(BufSyclImpl&&) -> BufSyclImpl& = delete;
+        BufGenericSyclImpl(BufGenericSyclImpl&&) = delete;
+        auto operator=(BufGenericSyclImpl&&) -> BufGenericSyclImpl& = delete;
 
-        ALPAKA_FN_HOST ~BufSyclImpl()
+        ALPAKA_FN_HOST ~BufGenericSyclImpl()
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

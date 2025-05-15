@@ -6,8 +6,8 @@
 
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/buf/cpu/BufCpu.hpp"
 #include "alpaka/mem/buf/cpu/ConstBufCpu.hpp"
-#include "alpaka/mem/buf/cpu/CpuBuf.hpp"
 
 namespace alpaka::trait
 {

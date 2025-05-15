@@ -31,7 +31,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
         {
-            return buf.m_spBufSyclImpl->m_dev;
+            return buf.m_spBufGenericSyclImpl->m_dev;
         }
     };
 
@@ -55,7 +55,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const
         {
-            return buf.m_spBufSyclImpl->m_extentElements;
+            return buf.m_spBufGenericSyclImpl->m_extentElements;
         }
     };
 
@@ -66,7 +66,7 @@ namespace alpaka::trait
         ALPAKA_FN_HOST static auto getPtrNative(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
             -> TElem const*
         {
-            return buf.m_spBufSyclImpl->m_pMem;
+            return buf.m_spBufGenericSyclImpl->m_pMem;
         }
     };
 
@@ -80,7 +80,7 @@ namespace alpaka::trait
         {
             if(dev == getDev(buf))
             {
-                return buf.m_spBufSyclImpl->m_pMem;
+                return buf.m_spBufGenericSyclImpl->m_pMem;
             }
             else
             {

@@ -10,8 +10,7 @@
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
-#include "alpaka/mem/buf/sycl/GenericSyclBufImpl.hpp"
-#include "alpaka/mem/buf/sycl/MutBufGenericSycl.hpp"
+#include "alpaka/mem/buf/sycl/BufGenericSyclImpl.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
@@ -24,6 +23,10 @@
 
 namespace alpaka
 {
+    // Predeclaration
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+    class BufGenericSycl;
+
     //! The SYCL memory buffer.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     class ConstBufGenericSycl : public internal::ViewAccessOps<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
@@ -32,26 +35,22 @@ namespace alpaka
         //! Constructor
         template<typename TExtent, typename Deleter>
         ConstBufGenericSycl(DevGenericSycl<TTag> const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
-            : m_spBufSyclImpl{
-                std::make_shared<detail::BufSyclImpl<TElem, TDim, TIdx, TTag>>(dev, pMem, std::move(deleter), extent)}
+            : m_spBufGenericSyclImpl{std::make_shared<detail::BufGenericSyclImpl<TElem, TDim, TIdx, TTag>>(
+                  dev,
+                  pMem,
+                  std::move(deleter),
+                  extent)}
         {
         }
 
-        //! Constructor for a ConstBuf from a MutBuf
-        ALPAKA_FN_HOST ConstBufGenericSycl(MutBufGenericSycl<
-                                           ConstBufGenericSycl,
-                                           detail::BufSyclImpl<TElem, TDim, TIdx, TTag>,
-                                           DevGenericSycl<TTag>,
-                                           TElem,
-                                           TDim,
-                                           TIdx,
-                                           TTag> const& buf)
-            : m_spBufSyclImpl{buf.m_spBufSyclImpl}
+        //! Constructor for a ConstBuf from a BufGenericSycl
+        ALPAKA_FN_HOST ConstBufGenericSycl(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
+            : m_spBufGenericSyclImpl{buf.m_spBufGenericSyclImpl}
         {
         }
 
     private:
-        std::shared_ptr<detail::BufSyclImpl<TElem, TDim, TIdx, TTag>> m_spBufSyclImpl;
+        std::shared_ptr<detail::BufGenericSyclImpl<TElem, TDim, TIdx, TTag>> m_spBufGenericSyclImpl;
 
         friend alpaka::trait::GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>;
         friend alpaka::trait::GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>;

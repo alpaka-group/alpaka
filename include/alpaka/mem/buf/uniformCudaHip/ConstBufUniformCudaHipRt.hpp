@@ -13,7 +13,6 @@
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/buf/uniformCudaHip/BufUniformCudaHipRtImpl.hpp"
-#include "alpaka/mem/buf/uniformCudaHip/MutBufUniformCudaHipRt.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
 #include "alpaka/vec/Vec.hpp"
@@ -30,6 +29,8 @@ namespace alpaka
     // Forward declarations.
     struct ApiCudaRt;
     struct ApiHipRt;
+    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    class BufUniformCudaHipRt;
 
     //! The CUDA/HIP memory buffer.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
@@ -47,22 +48,15 @@ namespace alpaka
             TExtent const& extent,
             std::size_t pitchBytes)
             : m_spBufImpl{std::make_shared<detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>>(
-                dev,
-                pMem,
-                std::move(deleter),
-                extent,
-                pitchBytes)}
+                  dev,
+                  pMem,
+                  std::move(deleter),
+                  extent,
+                  pitchBytes)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufUniformCudaHipRt(MutBufUniformCudaHipRt<
-                                                ConstBufUniformCudaHipRt,
-                                                alpaka::detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>,
-                                                TApi,
-                                                DevUniformCudaHipRt<TApi>,
-                                                TElem,
-                                                TDim,
-                                                TIdx> const& buf)
+        ALPAKA_FN_HOST ConstBufUniformCudaHipRt(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
             : m_spBufImpl{buf.m_spBufImpl}
         {
         }
