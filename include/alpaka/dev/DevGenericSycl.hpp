@@ -113,13 +113,31 @@ namespace alpaka
                 return m_context;
             }
 
-            auto onceFlag() -> std::once_flag&
-            {
-                return m_onceFlag;
-            }
-
             auto deviceProperties() -> std::optional<alpaka::DeviceProperties>&
             {
+                std::call_once(
+                    m_onceFlag,
+                    [&]()
+                    {
+                        m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
+                        auto const device = this->get_device();
+                        m_deviceProperties->name = device.template get_info<sycl::info::device::name>();
+                        m_deviceProperties->totalGlobalMem
+                            = device.template get_info<sycl::info::device::global_mem_size>();
+
+                        std::vector<std::size_t> warp_sizes
+                            = device.template get_info<sycl::info::device::sub_group_sizes>();
+                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
+                        // does not
+                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+                        if(find64 != warp_sizes.end())
+                            warp_sizes.erase(find64);
+                        // Sort the warp sizes in decreasing order
+                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
+                        m_deviceProperties->warpSizes = std::move(warp_sizes);
+                        m_deviceProperties->preferredWarpSize = m_deviceProperties->warpSizes.front();
+                    });
+
                 return m_deviceProperties;
             }
 
@@ -168,50 +186,13 @@ namespace alpaka
     namespace trait
     {
 
-        template<concepts::Tag TTag>
-        static inline void setDeviceProperties(
-            DevGenericSycl<TTag> const& dev,
-            std::string& name,
-            std::size_t& totalGlobalMem,
-            std::vector<std::size_t>& warpSizes,
-            std::size_t& preferredWarpSize)
-        {
-            auto const device = dev.getNativeHandle().first;
-            name = device.template get_info<sycl::info::device::name>();
-            totalGlobalMem = device.template get_info<sycl::info::device::global_mem_size>();
-
-            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
-            // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-            // does not
-            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-            if(find64 != warp_sizes.end())
-                warp_sizes.erase(find64);
-            // Sort the warp sizes in decreasing order
-            std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-            warpSizes = std::move(warp_sizes);
-            preferredWarpSize = warpSizes.front();
-        }
-
         //! The SYCL device name get trait specialization.
         template<concepts::Tag TTag>
         struct GetName<DevGenericSycl<TTag>>
         {
             static auto getName(DevGenericSycl<TTag> const& dev) -> std::string
             {
-                auto& devProperties = dev.m_impl->deviceProperties();
-                std::call_once(
-                    dev.m_impl->onceFlag(),
-                    [&]()
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(
-                            dev,
-                            devProperties->name,
-                            devProperties->totalGlobalMem,
-                            devProperties->warpSizes,
-                            devProperties->preferredWarpSize);
-                    });
-                return devProperties->name;
+                return dev.m_impl->deviceProperties()->name;
             }
         };
 
@@ -221,21 +202,7 @@ namespace alpaka
         {
             static auto getMemBytes(DevGenericSycl<TTag> const& dev) -> std::size_t
             {
-                auto& devProperties = dev.m_impl->deviceProperties();
-                std::call_once(
-                    dev.m_impl->onceFlag(),
-                    [&]()
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(
-                            dev,
-                            devProperties->name,
-                            devProperties->totalGlobalMem,
-                            devProperties->warpSizes,
-                            devProperties->preferredWarpSize);
-                    });
-
-                return devProperties->totalGlobalMem;
+                return dev.m_impl->deviceProperties()->totalGlobalMem;
             }
         };
 
@@ -258,21 +225,7 @@ namespace alpaka
         {
             static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
             {
-                auto& devProperties = dev.m_impl->deviceProperties();
-                std::call_once(
-                    dev.m_impl->onceFlag(),
-                    [&]()
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(
-                            dev,
-                            devProperties->name,
-                            devProperties->totalGlobalMem,
-                            devProperties->warpSizes,
-                            devProperties->preferredWarpSize);
-                    });
-
-                return devProperties->warpSizes;
+                return dev.m_impl->deviceProperties()->warpSizes;
             }
         };
 
@@ -282,21 +235,7 @@ namespace alpaka
         {
             static auto getPreferredWarpSize(DevGenericSycl<TTag> const& dev) -> std::size_t
             {
-                auto& devProperties = dev.m_impl->deviceProperties();
-                std::call_once(
-                    dev.m_impl->onceFlag(),
-                    [&]()
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(
-                            dev,
-                            devProperties->name,
-                            devProperties->totalGlobalMem,
-                            devProperties->warpSizes,
-                            devProperties->preferredWarpSize);
-                    });
-
-                return devProperties->preferredWarpSize;
+                return dev.m_impl->deviceProperties()->preferredWarpSize;
             }
         };
 

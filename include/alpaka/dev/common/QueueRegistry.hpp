@@ -15,6 +15,11 @@
 
 namespace alpaka::detail
 {
+
+    inline void setDeviceProperties(int iDevice, alpaka::DeviceProperties& devProperties);
+    template<typename TApi>
+    inline void setDeviceProperties(int iDevice, alpaka::DeviceProperties& devProperties);
+
     //! The CPU/GPU device queue registry implementation.
     //!
     //! @tparam TQueue queue implementation
@@ -54,13 +59,16 @@ namespace alpaka::detail
             m_queues.push_back(spQueue);
         }
 
-        auto onceFlag() -> std::once_flag&
+        auto deviceProperties(int iDevice = 0u) -> std::optional<alpaka::DeviceProperties>&
         {
-            return m_onceFlag;
-        }
+            std::call_once(
+                m_onceFlag,
+                [&]() noexcept
+                {
+                    m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
+                    setDeviceProperties(iDevice, *m_deviceProperties);
+                });
 
-        auto deviceProperties() -> std::optional<alpaka::DeviceProperties>&
-        {
             return m_deviceProperties;
         }
 

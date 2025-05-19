@@ -42,6 +42,15 @@ namespace alpaka
     } // namespace trait
     struct PlatformCpu;
 
+    namespace detail
+    {
+        inline void setDeviceProperties(int, alpaka::DeviceProperties& devProperties)
+        {
+            devProperties.name = cpu::detail::getCpuName();
+            devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+        }
+    } // namespace detail
+
     //! The CPU device.
     namespace cpu::detail
     {
@@ -102,27 +111,13 @@ namespace alpaka
     namespace trait
     {
 
-        static void setDeviceProperties(std::string& name, std::size_t& totalGlobalMem)
-        {
-            name = cpu::detail::getCpuName();
-            totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
-        }
-
         //! The CPU device name get trait specialization.
         template<>
         struct GetName<DevCpu>
         {
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
-                auto& devProperties = dev.m_spDevCpuImpl->deviceProperties();
-                std::call_once(
-                    dev.m_spDevCpuImpl->onceFlag(),
-                    [&]() noexcept
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(devProperties->name, devProperties->totalGlobalMem);
-                    });
-                return devProperties->name;
+                return dev.m_spDevCpuImpl->deviceProperties()->name;
             }
         };
 
@@ -132,16 +127,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
-                auto& devProperties = dev.m_spDevCpuImpl->deviceProperties();
-                std::call_once(
-                    dev.m_spDevCpuImpl->onceFlag(),
-                    [&]() noexcept
-                    {
-                        devProperties = std::make_optional<alpaka::DeviceProperties>();
-                        setDeviceProperties(devProperties->name, devProperties->totalGlobalMem);
-                    });
-
-                return devProperties->totalGlobalMem;
+                return dev.m_spDevCpuImpl->deviceProperties()->totalGlobalMem;
             }
         };
 
