@@ -59,6 +59,7 @@ namespace alpaka::detail
             m_queues.push_back(spQueue);
         }
 
+        template<typename TApi = void>
         auto deviceProperties(int iDevice = 0u) -> std::optional<alpaka::DeviceProperties>&
         {
             std::call_once(
@@ -66,7 +67,7 @@ namespace alpaka::detail
                 [&]() noexcept
                 {
                     m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
-                    setDeviceProperties(iDevice, *m_deviceProperties);
+                    setDeviceProperties<TApi>(iDevice, *m_deviceProperties);
                 });
 
             return m_deviceProperties;

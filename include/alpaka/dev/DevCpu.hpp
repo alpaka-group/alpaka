@@ -44,7 +44,11 @@ namespace alpaka
 
     namespace detail
     {
-        inline void setDeviceProperties(int, alpaka::DeviceProperties& devProperties)
+        template<typename TApi>
+        inline void setDeviceProperties(int, alpaka::DeviceProperties& devProperties);
+
+        template<>
+        inline void setDeviceProperties<void>(int, alpaka::DeviceProperties& devProperties)
         {
             devProperties.name = cpu::detail::getCpuName();
             devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
