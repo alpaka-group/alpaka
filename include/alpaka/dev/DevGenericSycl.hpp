@@ -120,7 +120,7 @@ namespace alpaka
                     [&]()
                     {
                         m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
-                        auto const device = this->get_device();
+                        auto const& device = this->get_device();
                         m_deviceProperties->name = device.template get_info<sycl::info::device::name>();
                         m_deviceProperties->totalGlobalMem
                             = device.template get_info<sycl::info::device::global_mem_size>();
