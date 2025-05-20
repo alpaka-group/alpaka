@@ -113,6 +113,9 @@ namespace alpaka
         template<typename TDim, typename TDev, typename TSfinae = void>
         struct CreateTaskMemset;
 
+        template<typename TDim, typename TDev, typename TSfinae = void>
+        struct CreateTaskFill;
+
         //! The memory copy task trait.
         //!
         //! Copies memory from one view into another view possibly on a different device.
@@ -221,6 +224,24 @@ namespace alpaka
             extent);
     }
 
+    template<typename TExtent, typename TViewFwd, typename TValue>
+    ALPAKA_FN_HOST auto createTaskFill(TViewFwd&& view, TValue const& value, TExtent const& extent)
+    {
+        using TView = std::remove_reference_t<TViewFwd>;
+        static_assert(!std::is_const_v<TView>, "The view must not be const!");
+        static_assert(
+            Dim<TView>::value == Dim<TExtent>::value,
+            "The view and the extent are required to have the same dimensionality!");
+        static_assert(
+            meta::IsIntegralSuperset<Idx<TView>, Idx<TExtent>>::value,
+            "The view and the extent must have compatible index types!");
+
+        return trait::CreateTaskFill<Dim<TView>, Dev<TView>>::createTaskFill(
+            std::forward<TViewFwd>(view),
+            value,
+            extent);
+    }
+
     //! Sets the bytes of the memory of view, described by extent, to the given value.
     //!
     //! \param queue The queue to enqueue the view fill task into.
@@ -242,6 +263,18 @@ namespace alpaka
     ALPAKA_FN_HOST auto memset(TQueue& queue, TViewFwd&& view, std::uint8_t const& byte) -> void
     {
         enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtents(view)));
+    }
+
+    template<typename TViewFwd, typename TValue, typename TQueue>
+    ALPAKA_FN_HOST auto fill(TQueue& queue, TViewFwd&& view, TValue const& value) -> void
+    {
+        enqueue(queue, createTaskFill(std::forward<TViewFwd>(view), value, getExtents(view)));
+    }
+
+    template<typename TExtent, typename TViewFwd, typename TValue, typename TQueue>
+    ALPAKA_FN_HOST auto fill(TQueue& queue, TViewFwd&& view, TValue const& value, TExtent const& extent) -> void
+    {
+        enqueue(queue, createTaskFill(std::forward<TViewFwd>(view), value, extent));
     }
 
     //! Creates a memory copy task.

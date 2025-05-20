@@ -45,6 +45,7 @@ namespace alpaka
 } // namespace alpaka
 
 #    include "alpaka/mem/buf/sycl/Copy.hpp"
+#    include "alpaka/mem/buf/sycl/Fill.hpp"
 #    include "alpaka/mem/buf/sycl/Set.hpp"
 #    include "alpaka/mem/buf/sycl/traits/BufGenericSyclTraits.hpp"
 #    include "alpaka/mem/buf/sycl/traits/ConstBufGenericSyclTraits.hpp"

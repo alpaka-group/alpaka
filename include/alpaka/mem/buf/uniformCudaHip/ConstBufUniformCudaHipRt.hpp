@@ -79,6 +79,7 @@ namespace alpaka
 } // namespace alpaka
 
 #    include "alpaka/mem/buf/uniformCudaHip/Copy.hpp"
+#    include "alpaka/mem/buf/uniformCudaHip/Fill.hpp"
 #    include "alpaka/mem/buf/uniformCudaHip/Set.hpp"
 
 #endif
