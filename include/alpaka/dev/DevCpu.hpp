@@ -44,11 +44,7 @@ namespace alpaka
 
     namespace detail
     {
-        template<typename TApi>
-        inline void setDeviceProperties(int, alpaka::DeviceProperties& devProperties);
-
-        template<>
-        inline void setDeviceProperties<void>(int, alpaka::DeviceProperties& devProperties)
+        inline void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties& devProperties)
         {
             devProperties.name = cpu::detail::getCpuName();
             devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
@@ -121,7 +117,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
             {
-                return dev.m_spDevCpuImpl->deviceProperties()->name;
+                return dev.m_spDevCpuImpl->deviceProperties(dev)->name;
             }
         };
 
@@ -131,7 +127,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
             {
-                return dev.m_spDevCpuImpl->deviceProperties()->totalGlobalMem;
+                return dev.m_spDevCpuImpl->deviceProperties(dev)->totalGlobalMem;
             }
         };
 

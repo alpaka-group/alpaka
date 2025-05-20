@@ -13,12 +13,19 @@
 #include <mutex>
 #include <optional>
 
+namespace alpaka
+{
+    class DevCpu;
+
+    template<typename TApi>
+    class DevUniformCudaHipRt;
+} // namespace alpaka
+
 namespace alpaka::detail
 {
-
-    inline void setDeviceProperties(int iDevice, alpaka::DeviceProperties& devProperties);
+    inline void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties&);
     template<typename TApi>
-    inline void setDeviceProperties(int iDevice, alpaka::DeviceProperties& devProperties);
+    inline void setDeviceProperties(alpaka::DevUniformCudaHipRt<TApi> const&, alpaka::DeviceProperties&);
 
     //! The CPU/GPU device queue registry implementation.
     //!
@@ -59,15 +66,15 @@ namespace alpaka::detail
             m_queues.push_back(spQueue);
         }
 
-        template<typename TApi = void>
-        auto deviceProperties(int iDevice = 0u) -> std::optional<alpaka::DeviceProperties>&
+        template<typename TDev>
+        auto deviceProperties(TDev const& device) -> std::optional<alpaka::DeviceProperties>&
         {
             std::call_once(
                 m_onceFlag,
                 [&]() noexcept
                 {
                     m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
-                    setDeviceProperties<TApi>(iDevice, *m_deviceProperties);
+                    setDeviceProperties(device, *m_deviceProperties);
                 });
 
             return m_deviceProperties;
