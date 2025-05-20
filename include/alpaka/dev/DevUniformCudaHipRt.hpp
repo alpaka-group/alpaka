@@ -47,6 +47,7 @@ namespace alpaka
             ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, iDevice));
             devProperties.name = std::string(devProp.name);
 
+            std::size_t freeInternal(0u);
             std::size_t totalInternal(0u);
             ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
             devProperties.totalGlobalMem = totalInternal;
@@ -147,7 +148,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
             {
-                return m_QueueRegistry->deviceProperties(dev.getNativeHandle())->name;
+                return dev.m_QueueRegistry->template deviceProperties<TApi>(dev.getNativeHandle())->name;
             }
         };
 
@@ -157,7 +158,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                return m_QueueRegistry->deviceProperties(dev.getNativeHandle())->totalGlobalMem;
+                return dev.m_QueueRegistry->template deviceProperties<TApi>(dev.getNativeHandle())->totalGlobalMem;
             }
         };
 
@@ -182,8 +183,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
-                return devProperties->warpSizes;
-                return m_QueueRegistry->deviceProperties(dev.getNativeHandle())->warpSizes;
+                return dev.m_QueueRegistry->template deviceProperties<TApi>(dev.getNativeHandle())->warpSizes;
             }
         };
 
@@ -193,7 +193,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                return m_QueueRegistry->deviceProperties(dev.getNativeHandle())->preferredWarpSize;
+                return dev.m_QueueRegistry->template deviceProperties<TApi>(dev.getNativeHandle())->preferredWarpSize;
             }
         };
 
