@@ -31,7 +31,7 @@ namespace alpaka::detail
     //!
     //! @tparam TQueue queue implementation
     template<typename TQueue>
-    struct QueueRegistry
+    struct DevGenericImpl
     {
         ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<TQueue>>
         {

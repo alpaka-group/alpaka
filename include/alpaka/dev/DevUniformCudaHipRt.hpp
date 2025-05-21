@@ -10,8 +10,8 @@
 #include "alpaka/core/Hip.hpp"
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/dev/common/DevGenericImpl.hpp"
 #include "alpaka/dev/common/DeviceProperties.hpp"
-#include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
@@ -96,7 +96,7 @@ namespace alpaka
         using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
 
     protected:
-        DevUniformCudaHipRt() : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
+        DevUniformCudaHipRt() : m_DevGenericImpl{std::make_shared<alpaka::detail::DevGenericImpl<IDeviceQueue>>()}
         {
         }
 
@@ -118,14 +118,14 @@ namespace alpaka
 
         [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IDeviceQueue>>
         {
-            return m_QueueRegistry->getAllExistingQueues();
+            return m_DevGenericImpl->getAllExistingQueues();
         }
 
         //! Registers the given queue on this device.
         //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IDeviceQueue> spQueue) const -> void
         {
-            m_QueueRegistry->registerQueue(spQueue);
+            m_DevGenericImpl->registerQueue(spQueue);
         }
 
         friend struct trait::GetName<DevUniformCudaHipRt<TApi>>;
@@ -137,13 +137,13 @@ namespace alpaka
     private:
         DevUniformCudaHipRt(int iDevice)
             : m_iDevice(iDevice)
-            , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
+            , m_DevGenericImpl(std::make_shared<alpaka::detail::DevGenericImpl<IDeviceQueue>>())
         {
         }
 
         int m_iDevice;
 
-        std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;
+        std::shared_ptr<alpaka::detail::DevGenericImpl<IDeviceQueue>> m_DevGenericImpl;
     };
 
     namespace trait
@@ -155,7 +155,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
             {
-                return dev.m_QueueRegistry->deviceProperties(dev)->name;
+                return dev.m_DevGenericImpl->deviceProperties(dev)->name;
             }
         };
 
@@ -165,7 +165,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                return dev.m_QueueRegistry->deviceProperties(dev)->totalGlobalMem;
+                return dev.m_DevGenericImpl->deviceProperties(dev)->totalGlobalMem;
             }
         };
 
@@ -190,7 +190,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
-                return dev.m_QueueRegistry->deviceProperties(dev)->warpSizes;
+                return dev.m_DevGenericImpl->deviceProperties(dev)->warpSizes;
             }
         };
 
@@ -200,7 +200,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
             {
-                return dev.m_QueueRegistry->deviceProperties(dev)->preferredWarpSize;
+                return dev.m_DevGenericImpl->deviceProperties(dev)->preferredWarpSize;
             }
         };
 

@@ -6,7 +6,7 @@
 #pragma once
 
 #include "alpaka/dev/Traits.hpp"
-#include "alpaka/dev/common/QueueRegistry.hpp"
+#include "alpaka/dev/common/DevGenericImpl.hpp"
 #include "alpaka/dev/cpu/SysInfo.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
@@ -55,7 +55,7 @@ namespace alpaka
     namespace cpu::detail
     {
         //! The CPU device implementation.
-        using DevCpuImpl = alpaka::detail::QueueRegistry<cpu::ICpuQueue>;
+        using DevCpuImpl = alpaka::detail::DevGenericImpl<cpu::ICpuQueue>;
     } // namespace cpu::detail
 
     //! The CPU device handle.
