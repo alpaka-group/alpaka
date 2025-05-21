@@ -42,15 +42,6 @@ namespace alpaka
     } // namespace trait
     struct PlatformCpu;
 
-    namespace detail
-    {
-        inline void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties& devProperties)
-        {
-            devProperties.name = cpu::detail::getCpuName();
-            devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
-        }
-    } // namespace detail
-
     //! The CPU device.
     namespace cpu::detail
     {
@@ -96,6 +87,12 @@ namespace alpaka
         [[nodiscard]] auto getNativeHandle() const noexcept
         {
             return 0;
+        }
+
+        static void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties& devProperties)
+        {
+            devProperties.name = cpu::detail::getCpuName();
+            devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
         }
 
         friend struct trait::GetName<DevCpu>;

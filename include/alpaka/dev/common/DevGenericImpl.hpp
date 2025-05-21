@@ -13,19 +13,8 @@
 #include <mutex>
 #include <optional>
 
-namespace alpaka
-{
-    class DevCpu;
-
-    template<typename TApi>
-    class DevUniformCudaHipRt;
-} // namespace alpaka
-
 namespace alpaka::detail
 {
-    inline void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties&);
-    template<typename TApi>
-    inline void setDeviceProperties(alpaka::DevUniformCudaHipRt<TApi> const&, alpaka::DeviceProperties&);
 
     //! The CPU/GPU device queue registry implementation.
     //!
@@ -74,7 +63,7 @@ namespace alpaka::detail
                 [&]() noexcept
                 {
                     m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
-                    setDeviceProperties(device, *m_deviceProperties);
+                    TDev::setDeviceProperties(device, *m_deviceProperties);
                 });
 
             return m_deviceProperties;

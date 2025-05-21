@@ -39,34 +39,6 @@ namespace alpaka
         struct GetDevByIdx;
     } // namespace trait
 
-    namespace detail
-    {
-        template<typename TApi>
-        inline void setDeviceProperties(
-            DevUniformCudaHipRt<TApi> const& device,
-            alpaka::DeviceProperties& devProperties)
-        {
-            // There is cuda/hip-DeviceGetAttribute as faster alternative to
-            // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
-            // the name
-            auto devHandle = device.getNativeHandle();
-            typename TApi::DeviceProp_t devProp;
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
-            devProperties.name = std::string(devProp.name);
-
-            std::size_t freeInternal(0u);
-            std::size_t totalInternal(0u);
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
-            devProperties.totalGlobalMem = totalInternal;
-
-            int warpSize = 0;
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
-            devProperties.warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
-            devProperties.preferredWarpSize = static_cast<std::size_t>(warpSize);
-        }
-    } // namespace detail
-
     namespace uniform_cuda_hip::detail
     {
         template<typename TApi, bool TBlocking>
@@ -126,6 +98,30 @@ namespace alpaka
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IDeviceQueue> spQueue) const -> void
         {
             m_DevGenericImpl->registerQueue(spQueue);
+        }
+
+        static void setDeviceProperties(
+            DevUniformCudaHipRt<TApi> const& device,
+            alpaka::DeviceProperties& devProperties)
+        {
+            // There is cuda/hip-DeviceGetAttribute as faster alternative to
+            // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+            // the name
+            auto devHandle = device.getNativeHandle();
+            typename TApi::DeviceProp_t devProp;
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+            devProperties.name = std::string(devProp.name);
+
+            std::size_t freeInternal(0u);
+            std::size_t totalInternal(0u);
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+            devProperties.totalGlobalMem = totalInternal;
+
+            int warpSize = 0;
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+            devProperties.warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+            devProperties.preferredWarpSize = static_cast<std::size_t>(warpSize);
         }
 
         friend struct trait::GetName<DevUniformCudaHipRt<TApi>>;
