@@ -43,6 +43,7 @@ namespace alpaka
             ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(DevUniformCudaHipRt<TApi> const& dev)
                 : m_dev(dev)
                 , m_UniformCudaHipQueue()
+                , m_isOwning(true)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -61,6 +62,16 @@ namespace alpaka
                     TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
             }
 
+            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(TApi::Stream_t stream)
+                : m_UniformCudaHipQueue(stream)
+                , m_isOwning(false)
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                auto deviceId;
+                TApi::getDevice(&deviceId);
+                m_dev = alpaka::getDevByIdx(alpaka::PlatformUniformCudaHipRt<TApi>{}, deviceId);
+            }
+
             QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
             auto operator=(QueueUniformCudaHipRtImpl&&) -> QueueUniformCudaHipRtImpl& = delete;
 
@@ -71,8 +82,11 @@ namespace alpaka
                 // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
                 // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
                 // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
+                if(m_isOwning)
+                {
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
+                }
             }
 
             [[nodiscard]] auto getNativeHandle() const noexcept
@@ -86,6 +100,7 @@ namespace alpaka
 
         private:
             typename TApi::Stream_t m_UniformCudaHipQueue;
+            bool m_isOwning;
         };
 
         //! The CUDA/HIP RT queue.
@@ -220,10 +235,11 @@ namespace alpaka
                 uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
                 TTask const& task) -> void
             {
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchHostFunc(
-                    queue.getNativeHandle(),
-                    uniformCudaHipRtHostFunc,
-                    new HostFuncData{*queue.m_spQueueImpl, task}));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    TApi::launchHostFunc(
+                        queue.getNativeHandle(),
+                        uniformCudaHipRtHostFunc,
+                        new HostFuncData{*queue.m_spQueueImpl, task}));
                 if constexpr(TBlocking)
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
             }
