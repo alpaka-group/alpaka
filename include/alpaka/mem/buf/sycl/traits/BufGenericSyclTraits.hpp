@@ -130,6 +130,81 @@ namespace alpaka::trait
             return ConstBufGenericSycl<TElem, TDim, TIdx, TTag>(buf);
         }
     };
+
+    //! The SYCL memory allocation trait specialization.
+    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TTag>>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocBuf(DevGenericSycl<TTag> const& dev, TExtent const& extent)
+            -> BufGenericSycl<TElem, TDim, TIdx, TTag>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+            if constexpr(TDim::value == 0)
+                std::cout << __func__ << " ewb: " << sizeof(TElem) << '\n';
+            else if constexpr(TDim::value == 1)
+            {
+                auto const width = getWidth(extent);
+
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+                std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << '\n';
+            }
+            else if constexpr(TDim::value == 2)
+            {
+                auto const width = getWidth(extent);
+                auto const height = getHeight(extent);
+
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+                std::cout << __func__ << " ew: " << width << " eh: " << height << " ewb: " << widthBytes
+                          << " pitch: " << widthBytes << '\n';
+            }
+            else if constexpr(TDim::value == 3)
+            {
+                auto const width = getWidth(extent);
+                auto const height = getHeight(extent);
+                auto const depth = getDepth(extent);
+
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+                std::cout << __func__ << " ew: " << width << " eh: " << height << " ed: " << depth
+                          << " ewb: " << widthBytes << " pitch: " << widthBytes << '\n';
+            }
+#    endif
+
+            auto const& [nativeDev, nativeContext] = dev.getNativeHandle();
+            TElem* memPtr = sycl::malloc_device<TElem>(
+                static_cast<std::size_t>(getExtentProduct(extent)),
+                nativeDev,
+                nativeContext);
+            auto deleter = [ctx = nativeContext](TElem* ptr) { sycl::free(ptr, ctx); };
+
+            return BufGenericSycl<TElem, TDim, TIdx, TTag>(dev, memPtr, std::move(deleter), extent);
+        }
+    };
+
+    //! The pinned/mapped memory allocation trait specialization for the SYCL devices.
+    template<concepts::Tag TTag, typename TElem, typename TDim, typename TIdx>
+    struct BufAllocMapped<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocMappedBuf(
+            DevCpu const& host,
+            PlatformGenericSycl<TTag> const& platform,
+            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+            // Allocate SYCL page-locked memory on the host, mapped into the SYCL platform's address space and
+            // accessible to all devices in the SYCL platform.
+            auto ctx = platform.syclContext();
+            TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
+            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
+
+            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+        }
+    };
+
 } // namespace alpaka::trait
 
 #endif
