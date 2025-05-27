@@ -33,8 +33,7 @@ namespace alpaka::trait
         ALPAKA_FN_HOST static auto getDev(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
             -> DevUniformCudaHipRt<TApi>
         {
-            return GetDev<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>::getDev(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf});
+            return buf.m_spBufImpl->m_dev;
         }
     };
 
@@ -58,8 +57,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
         {
-            return GetExtents<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>{}(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf});
+            return buffer.m_spBufImpl->m_extentElements;
         }
     };
 
@@ -70,15 +68,12 @@ namespace alpaka::trait
         ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
             -> TElem const*
         {
-            return GetPtrNative<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>::getPtrNative(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf});
+            return buf.m_spBufImpl->m_pMem;
         }
 
         ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBuf's return type
-            return const_cast<TElem*>(GetPtrNative<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>::getPtrNative(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf}));
+            return buf.m_spBufImpl->m_pMem;
         }
     };
 
@@ -88,20 +83,30 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getPtrDev(
             BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf,
-            DevUniformCudaHipRt<TApi> const& /*dev*/) -> TElem const*
+            DevUniformCudaHipRt<TApi> const& dev) -> TElem const*
         {
-            return GetPtrDev<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>, DevUniformCudaHipRt<TApi>>::getPtrDev(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf});
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
 
         ALPAKA_FN_HOST static auto getPtrDev(
             BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf,
-            DevUniformCudaHipRt<TApi> const& /*dev*/) -> TElem*
+            DevUniformCudaHipRt<TApi> const& dev) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBuf's return type
-            return const_cast<TElem*>(
-                GetPtrDev<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>, DevUniformCudaHipRt<TApi>>::getPtrDev(
-                    ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf}));
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
     };
 
@@ -123,8 +128,7 @@ namespace alpaka::trait
         ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
             -> Vec<TDim, TIdx>
         {
-            return GetOffsets<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>{}(
-                ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>{buf});
+            return Vec<TDim, TIdx>::zeros();
         }
     };
 

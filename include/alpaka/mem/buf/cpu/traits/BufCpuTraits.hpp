@@ -29,7 +29,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(BufCpu<TElem, TDim, TIdx> const& buf) -> DevCpu
         {
-            return GetDev<ConstBufCpu<TElem, TDim, TIdx>>::getDev(ConstBufCpu<TElem, TDim, TIdx>{buf});
+            return buf.m_spBufCpuImpl->m_dev;
         }
     };
 
@@ -53,7 +53,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const& buf)
         {
-            return GetExtents<ConstBufCpu<TElem, TDim, TIdx>>{}(ConstBufCpu<TElem, TDim, TIdx>{buf});
+            return buf.m_spBufCpuImpl->m_extentElements;
         }
     };
 
@@ -63,14 +63,12 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getPtrNative(BufCpu<TElem, TDim, TIdx> const& buf) -> TElem const*
         {
-            return GetPtrNative<ConstBufCpu<TElem, TDim, TIdx>>::getPtrNative(ConstBufCpu<TElem, TDim, TIdx>{buf});
+            return buf.m_spBufCpuImpl->m_pMem;
         }
 
         ALPAKA_FN_HOST static auto getPtrNative(BufCpu<TElem, TDim, TIdx>& buf) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBufCpu's return type
-            return const_cast<TElem*>(
-                GetPtrNative<ConstBufCpu<TElem, TDim, TIdx>>::getPtrNative(ConstBufCpu<TElem, TDim, TIdx>{buf}));
+            return buf.m_spBufCpuImpl->m_pMem;
         }
     };
 
@@ -78,17 +76,28 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx>
     struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevCpu>
     {
-        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevCpu const& /*dev*/)
-            -> TElem const*
+        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevCpu const& dev) -> TElem const*
         {
-            return GetPtrDev<ConstBufCpu<TElem, TDim, TIdx>, DevCpu>::getPtrDev(ConstBufCpu<TElem, TDim, TIdx>{buf});
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufCpuImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
 
-        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevCpu const& /*dev*/) -> TElem*
+        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevCpu const& dev) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBufCpu's return type
-            return const_cast<TElem*>(
-                GetPtrDev<ConstBufCpu<TElem, TDim, TIdx>, DevCpu>::getPtrDev(ConstBufCpu<TElem, TDim, TIdx>{buf}));
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufCpuImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
     };
 
@@ -98,7 +107,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const& buf) const -> Vec<TDim, TIdx>
         {
-            return GetOffsets<ConstBufCpu<TElem, TDim, TIdx>>{}(ConstBufCpu<TElem, TDim, TIdx>{buf});
+            return Vec<TDim, TIdx>::zeros();
         }
     };
 

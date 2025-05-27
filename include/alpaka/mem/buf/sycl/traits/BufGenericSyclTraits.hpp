@@ -31,8 +31,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) -> DevGenericSycl<TTag>
         {
-            return GetDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>::getDev(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf});
+            return buf.m_spBufGenericSyclImpl->m_dev;
         }
     };
 
@@ -56,8 +55,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
         {
-            return GetExtents<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>{}(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf});
+            return buf.m_spBufGenericSyclImpl->m_extentElements;
         }
     };
 
@@ -67,15 +65,12 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) -> TElem const*
         {
-            return GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>::getPtrNative(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf});
+            return buf.m_spBufGenericSyclImpl->m_pMem;
         }
 
         ALPAKA_FN_HOST static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TTag>& buf) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBuf's return type
-            return const_cast<TElem*>(GetPtrNative<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>::getPtrNative(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf}));
+            return buf.m_spBufGenericSyclImpl->m_pMem;
         }
     };
 
@@ -85,20 +80,30 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getPtrDev(
             BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf,
-            DevGenericSycl<TTag> const& /*dev*/) -> TElem const*
+            DevGenericSycl<TTag> const& dev) -> TElem const*
         {
-            return GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>::getPtrDev(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf});
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufGenericSyclImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
 
         ALPAKA_FN_HOST static auto getPtrDev(
             BufGenericSycl<TElem, TDim, TIdx, TTag>& buf,
-            DevGenericSycl<TTag> const& /*dev*/) -> TElem*
+            DevGenericSycl<TTag> const& dev) -> TElem*
         {
-            // cast away the TElem's constness from the ConstBuf's return type
-            return const_cast<TElem*>(
-                GetPtrDev<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>, DevGenericSycl<TTag>>::getPtrDev(
-                    ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf}));
+            if(dev == getDev(buf))
+            {
+                return buf.m_spBufGenericSyclImpl->m_pMem;
+            }
+            else
+            {
+                throw std::runtime_error("The buffer is not accessible from the given device!");
+            }
         }
     };
 
@@ -108,8 +113,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const -> Vec<TDim, TIdx>
         {
-            return GetOffsets<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>{}(
-                ConstBufGenericSycl<TElem, TDim, TIdx, TTag>{buf});
+            return Vec<TDim, TIdx>::zeros();
         }
     };
 
