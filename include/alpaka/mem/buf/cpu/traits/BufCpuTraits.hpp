@@ -29,7 +29,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(BufCpu<TElem, TDim, TIdx> const& buf) -> DevCpu
         {
-            return buf.m_spBufCpuImpl->m_dev;
+            return buf.m_spBufImpl->m_dev;
         }
     };
 
@@ -53,7 +53,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const& buf)
         {
-            return buf.m_spBufCpuImpl->m_extentElements;
+            return buf.m_spBufImpl->m_extentElements;
         }
     };
 
@@ -63,12 +63,12 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getPtrNative(BufCpu<TElem, TDim, TIdx> const& buf) -> TElem const*
         {
-            return buf.m_spBufCpuImpl->m_pMem;
+            return buf.m_spBufImpl->m_pMem;
         }
 
         ALPAKA_FN_HOST static auto getPtrNative(BufCpu<TElem, TDim, TIdx>& buf) -> TElem*
         {
-            return buf.m_spBufCpuImpl->m_pMem;
+            return buf.m_spBufImpl->m_pMem;
         }
     };
 
@@ -80,7 +80,7 @@ namespace alpaka::trait
         {
             if(dev == getDev(buf))
             {
-                return buf.m_spBufCpuImpl->m_pMem;
+                return buf.m_spBufImpl->m_pMem;
             }
             else
             {
@@ -92,7 +92,7 @@ namespace alpaka::trait
         {
             if(dev == getDev(buf))
             {
-                return buf.m_spBufCpuImpl->m_pMem;
+                return buf.m_spBufImpl->m_pMem;
             }
             else
             {

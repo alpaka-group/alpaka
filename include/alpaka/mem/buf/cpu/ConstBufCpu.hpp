@@ -37,17 +37,17 @@ namespace alpaka
     public:
         template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST ConstBufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
-            : m_spBufCpuImpl{
+            : m_spBufImpl{
                 std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
-        ALPAKA_FN_HOST ConstBufCpu(BufCpu<TElem, TDim, TIdx> const& buf) : m_spBufCpuImpl{buf.m_spBufImpl}
+        ALPAKA_FN_HOST ConstBufCpu(BufCpu<TElem, TDim, TIdx> const& buf) : m_spBufImpl{buf.m_spBufImpl}
         {
         }
 
     private:
-        std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
+        std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufImpl;
 
         friend alpaka::trait::GetDev<ConstBufCpu<TElem, TDim, TIdx>>;
         friend alpaka::trait::GetExtents<ConstBufCpu<TElem, TDim, TIdx>>;

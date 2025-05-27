@@ -35,12 +35,12 @@ namespace alpaka
             TElem* const pMem,
             Deleter deleter,
             TExtent const& extent)
-            : m_spBufGenericSyclImpl{std::make_shared<TBufImpl>(dev, pMem, std::move(deleter), extent)}
+            : m_spBufImpl{std::make_shared<TBufImpl>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
     public:
-        std::shared_ptr<TBufImpl> m_spBufGenericSyclImpl;
+        std::shared_ptr<TBufImpl> m_spBufImpl;
     };
 } // namespace alpaka
 
