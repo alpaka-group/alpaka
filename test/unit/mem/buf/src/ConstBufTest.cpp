@@ -18,25 +18,39 @@
 namespace buftest
 {
     template<typename TDev, typename TDim, typename TElem, typename TIdx, typename TExtent>
-    auto allocConstBuf(TDev dev, TExtent extent) -> alpaka::ConstBuf<TDev, TElem, TDim, TIdx>
+    auto initConstBuf(TDev dev, TExtent extent)
     {
-        return alpaka::makeConstBuf(alpaka::allocBuf<TElem, TIdx>(dev, extent));
+        using QueueAcc = alpaka::test::DefaultQueue<TDev>;
+
+        // allocate buffer
+        auto buf = alpaka::allocBuf<TElem, TIdx>(dev, extent);
+
+        // fill buffer
+        auto const platformHost = alpaka::PlatformCpu{};
+        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+        std::vector<TElem> dataHost(static_cast<std::size_t>(getExtentProduct(extent)), static_cast<TElem>(1));
+        auto bufHost = alpaka::createView(devHost, dataHost.data(), extent);
+        QueueAcc queueAcc{dev};
+        alpaka::memcpy(queueAcc, buf, bufHost);
+        alpaka::wait(queueAcc);
+
+        // make the buffer constant and return only that
+        auto const constBuf = alpaka::makeConstBuf(buf);
+        return constBuf;
     }
 
     template<typename TBuf>
     concept onlyConstNativePtr = requires(TBuf t) {
         {
             alpaka::getPtrNative(t)
-        } -> std::same_as<alpaka::Elem<TBuf> const*>;
+        } -> std::same_as<alpaka::Elem<std::remove_const_t<TBuf>> const*>;
     };
-
 } // namespace buftest
 
 template<typename TAcc>
 static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
-    using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::Dim<TAcc>;
@@ -44,11 +58,10 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
 
     auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
-    Queue queue(dev);
 
     // alpaka::malloc
     auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
-    auto const c_buf = buftest::allocConstBuf<Dev, Dim, Elem, Idx>(dev, extent);
+    auto const c_buf = buftest::initConstBuf<Dev, Dim, Elem, Idx>(dev, extent);
 
     using TBuf = decltype(buf);
     using TCBuf = decltype(c_buf);
@@ -63,6 +76,49 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     STATIC_REQUIRE(std::convertible_to<TBuf, TCBuf>);
 
     STATIC_REQUIRE_FALSE(buftest::onlyConstNativePtr<TBuf>);
+    STATIC_REQUIRE(buftest::onlyConstNativePtr<TCBuf>);
+    // *getPtrNative(c_buf) = 0.f;  // <- this does not compile, as desired
+}
+
+template<typename TAcc>
+static auto testConstBufLifetime(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
+{
+    using Dev = alpaka::Dev<TAcc>;
+    using Queue = alpaka::test::DefaultQueue<Dev>;
+
+    using Elem = std::uint32_t;
+    using Dim = alpaka::Dim<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
+
+    auto const platformAcc = alpaka::Platform<TAcc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+
+    // init and return a const buffer filled with all ones
+    auto const c_buf = buftest::initConstBuf<Dev, Dim, Elem, Idx>(dev, extent);
+
+    Queue queue{dev};
+
+    // create local buffer filled with all ones
+    auto const platformHost = alpaka::PlatformCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    std::vector<Elem> dataHost(static_cast<std::size_t>(getExtentProduct(extent)), static_cast<Elem>(1));
+    auto bufHost = alpaka::createView(devHost, dataHost.data(), extent);
+
+    auto copiedBack = alpaka::allocBuf<Elem, Idx>(dev, extent);
+    alpaka::memcpy(queue, copiedBack, c_buf);
+
+    bool resultCorrect = true;
+    auto const pHostData = std::data(bufHost);
+    auto const pCopiedBackData = std::data(copiedBack);
+    for(Idx i(0u); i < getExtentProduct(extent); ++i)
+    {
+        if(pHostData[i] != pCopiedBackData[i])
+        {
+            resultCorrect = false;
+        }
+    }
+
+    REQUIRE(resultCorrect);
 }
 
 TEMPLATE_LIST_TEST_CASE("constMemBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
@@ -71,4 +127,5 @@ TEMPLATE_LIST_TEST_CASE("constMemBufBasicTest", "[memBuf]", alpaka::test::TestAc
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
     testConstBuffer<Acc>(alpaka::test::extentBuf<Dim, Idx>);
+    testConstBufLifetime<Acc>(alpaka::test::extentBuf<Dim, Idx>);
 }
