@@ -10880,7 +10880,7 @@
 		// #pragma once
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
-			// == ./include/alpaka/dev/common/QueueRegistry.hpp ==
+			// == ./include/alpaka/dev/common/DevGenericImpl.hpp ==
 			// ==
 			/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jeffrey Kelling
 			 * SPDX-License-Identifier: MPL-2.0
@@ -10888,19 +10888,46 @@
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/dev/common/DeviceProperties.hpp ==
+				// ==
+
+				// #pragma once
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+
+				// #include <string>    // amalgamate: file already included
+				// #include <vector>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+
+				    struct DeviceProperties
+				    {
+				        std::string name;
+				        std::size_t totalGlobalMem;
+				        std::vector<std::size_t> warpSizes;
+				        std::size_t preferredWarpSize;
+				    };
+				} // namespace alpaka
+				// ==
+				// == ./include/alpaka/dev/common/DeviceProperties.hpp ==
+				// ============================================================================
+
 
 			#include <deque>
 			// #include <functional>    // amalgamate: file already included
 			#include <memory>
 			// #include <mutex>    // amalgamate: file already included
+			#include <optional>
 
 			namespace alpaka::detail
 			{
+
 			    //! The CPU/GPU device queue registry implementation.
 			    //!
 			    //! @tparam TQueue queue implementation
 			    template<typename TQueue>
-			    struct QueueRegistry
+			    struct DevGenericImpl
 			    {
 			        ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<TQueue>>
 			        {
@@ -10935,13 +10962,29 @@
 			            m_queues.push_back(spQueue);
 			        }
 
+			        template<typename TDev>
+			        auto deviceProperties(TDev const& device) -> std::optional<alpaka::DeviceProperties>&
+			        {
+			            std::call_once(
+			                m_onceFlag,
+			                [&]() noexcept
+			                {
+			                    m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
+			                    TDev::setDeviceProperties(device, *m_deviceProperties);
+			                });
+
+			            return m_deviceProperties;
+			        }
+
 			    private:
 			        std::mutex mutable m_Mutex;
+			        std::once_flag m_onceFlag;
+			        std::optional<alpaka::DeviceProperties> m_deviceProperties;
 			        std::deque<std::weak_ptr<TQueue>> mutable m_queues;
 			    };
 			} // namespace alpaka::detail
 			// ==
-			// == ./include/alpaka/dev/common/QueueRegistry.hpp ==
+			// == ./include/alpaka/dev/common/DevGenericImpl.hpp ==
 			// ============================================================================
 
 			// ============================================================================
@@ -13341,7 +13384,7 @@
 		    namespace cpu::detail
 		    {
 		        //! The CPU device implementation.
-		        using DevCpuImpl = alpaka::detail::QueueRegistry<cpu::ICpuQueue>;
+		        using DevCpuImpl = alpaka::detail::DevGenericImpl<cpu::ICpuQueue>;
 		    } // namespace cpu::detail
 
 		    //! The CPU device handle.
@@ -13384,19 +13427,32 @@
 		            return 0;
 		        }
 
+		        static void setDeviceProperties(alpaka::DevCpu const&, alpaka::DeviceProperties& devProperties)
+		        {
+		            devProperties.name = cpu::detail::getCpuName();
+		            devProperties.totalGlobalMem = cpu::detail::getTotalGlobalMemSizeBytes();
+		        }
+
+		        friend struct trait::GetName<DevCpu>;
+		        friend struct trait::GetMemBytes<DevCpu>;
+		        friend struct trait::GetFreeMemBytes<DevCpu>;
+		        friend struct trait::GetWarpSizes<DevCpu>;
+		        friend struct trait::GetPreferredWarpSize<DevCpu>;
+
 		    private:
 		        std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
 		    };
 
 		    namespace trait
 		    {
+
 		        //! The CPU device name get trait specialization.
 		        template<>
 		        struct GetName<DevCpu>
 		        {
-		            ALPAKA_FN_HOST static auto getName(DevCpu const& /* dev */) -> std::string
+		            ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
 		            {
-		                return cpu::detail::getCpuName();
+		                return dev.m_spDevCpuImpl->deviceProperties(dev)->name;
 		            }
 		        };
 
@@ -13404,9 +13460,9 @@
 		        template<>
 		        struct GetMemBytes<DevCpu>
 		        {
-		            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& /* dev */) -> std::size_t
+		            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
 		            {
-		                return cpu::detail::getTotalGlobalMemSizeBytes();
+		                return dev.m_spDevCpuImpl->deviceProperties(dev)->totalGlobalMem;
 		            }
 		        };
 
@@ -15459,6 +15515,7 @@
 				// ============================================================================
 
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/common/DeviceProperties.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
@@ -15857,11 +15914,41 @@
 			                return m_context;
 			            }
 
+			            auto deviceProperties() -> std::optional<alpaka::DeviceProperties>&
+			            {
+			                std::call_once(
+			                    m_onceFlag,
+			                    [&]()
+			                    {
+			                        m_deviceProperties = std::make_optional<alpaka::DeviceProperties>();
+			                        auto const& device = this->get_device();
+			                        m_deviceProperties->name = device.template get_info<sycl::info::device::name>();
+			                        m_deviceProperties->totalGlobalMem
+			                            = device.template get_info<sycl::info::device::global_mem_size>();
+
+			                        std::vector<std::size_t> warp_sizes
+			                            = device.template get_info<sycl::info::device::sub_group_sizes>();
+			                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
+			                        // does not
+			                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+			                        if(find64 != warp_sizes.end())
+			                            warp_sizes.erase(find64);
+			                        // Sort the warp sizes in decreasing order
+			                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
+			                        m_deviceProperties->warpSizes = std::move(warp_sizes);
+			                        m_deviceProperties->preferredWarpSize = m_deviceProperties->warpSizes.front();
+			                    });
+
+			                return m_deviceProperties;
+			            }
+
 			        private:
 			            sycl::device m_device;
 			            sycl::context m_context;
 			            std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
+			            std::optional<alpaka::DeviceProperties> m_deviceProperties;
 			            std::shared_mutex mutable m_mutex;
+			            std::once_flag m_onceFlag;
 			        };
 			    } // namespace detail
 
@@ -15899,14 +15986,14 @@
 
 			    namespace trait
 			    {
+
 			        //! The SYCL device name get trait specialization.
 			        template<concepts::Tag TTag>
 			        struct GetName<DevGenericSycl<TTag>>
 			        {
 			            static auto getName(DevGenericSycl<TTag> const& dev) -> std::string
 			            {
-			                auto const device = dev.getNativeHandle().first;
-			                return device.template get_info<sycl::info::device::name>();
+			                return dev.m_impl->deviceProperties()->name;
 			            }
 			        };
 
@@ -15916,8 +16003,7 @@
 			        {
 			            static auto getMemBytes(DevGenericSycl<TTag> const& dev) -> std::size_t
 			            {
-			                auto const device = dev.getNativeHandle().first;
-			                return device.template get_info<sycl::info::device::global_mem_size>();
+			                return dev.m_impl->deviceProperties()->totalGlobalMem;
 			            }
 			        };
 
@@ -15940,15 +16026,7 @@
 			        {
 			            static auto getWarpSizes(DevGenericSycl<TTag> const& dev) -> std::vector<std::size_t>
 			            {
-			                auto const device = dev.getNativeHandle().first;
-			                std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
-			                // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently does not
-			                auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-			                if(find64 != warp_sizes.end())
-			                    warp_sizes.erase(find64);
-			                // Sort the warp sizes in decreasing order
-			                std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
-			                return warp_sizes;
+			                return dev.m_impl->deviceProperties()->warpSizes;
 			            }
 			        };
 
@@ -15958,7 +16036,7 @@
 			        {
 			            static auto getPreferredWarpSize(DevGenericSycl<TTag> const& dev) -> std::size_t
 			            {
-			                return GetWarpSizes<DevGenericSycl<TTag>>::getWarpSizes(dev).front();
+			                return dev.m_impl->deviceProperties()->preferredWarpSize;
 			            }
 			        };
 
@@ -23972,7 +24050,8 @@
 				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/dev/common/QueueRegistry.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/common/DevGenericImpl.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/common/DeviceProperties.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
@@ -24232,6 +24311,7 @@
 				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
+				// #include <mutex>    // amalgamate: file already included
 				// #include <string>    // amalgamate: file already included
 				// #include <vector>    // amalgamate: file already included
 
@@ -24239,6 +24319,10 @@
 
 				namespace alpaka
 				{
+
+				    template<typename TApi>
+				    class DevUniformCudaHipRt;
+
 				    namespace trait
 				    {
 				        template<typename TPlatform, typename TSfinae>
@@ -24274,7 +24358,7 @@
 				        using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
 
 				    protected:
-				        DevUniformCudaHipRt() : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
+				        DevUniformCudaHipRt() : m_DevGenericImpl{std::make_shared<alpaka::detail::DevGenericImpl<IDeviceQueue>>()}
 				        {
 				        }
 
@@ -24296,42 +24380,68 @@
 
 				        [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IDeviceQueue>>
 				        {
-				            return m_QueueRegistry->getAllExistingQueues();
+				            return m_DevGenericImpl->getAllExistingQueues();
 				        }
 
 				        //! Registers the given queue on this device.
 				        //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
 				        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IDeviceQueue> spQueue) const -> void
 				        {
-				            m_QueueRegistry->registerQueue(spQueue);
+				            m_DevGenericImpl->registerQueue(spQueue);
 				        }
+
+				        static void setDeviceProperties(
+				            DevUniformCudaHipRt<TApi> const& device,
+				            alpaka::DeviceProperties& devProperties)
+				        {
+				            // There is cuda/hip-DeviceGetAttribute as faster alternative to
+				            // cuda/hip-GetDeviceProperties to get a single device property but it has no option to get
+				            // the name
+				            auto devHandle = device.getNativeHandle();
+				            typename TApi::DeviceProp_t devProp;
+				            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, devHandle));
+				            devProperties.name = std::string(devProp.name);
+
+				            std::size_t freeInternal(0u);
+				            std::size_t totalInternal(0u);
+				            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
+				            devProperties.totalGlobalMem = totalInternal;
+
+				            int warpSize = 0;
+				            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+				                TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, devHandle));
+				            devProperties.warpSizes = std::vector<std::size_t>{static_cast<std::size_t>(warpSize)};
+				            devProperties.preferredWarpSize = static_cast<std::size_t>(warpSize);
+				        }
+
+				        friend struct trait::GetName<DevUniformCudaHipRt<TApi>>;
+				        friend struct trait::GetMemBytes<DevUniformCudaHipRt<TApi>>;
+				        friend struct trait::GetFreeMemBytes<DevUniformCudaHipRt<TApi>>;
+				        friend struct trait::GetWarpSizes<DevUniformCudaHipRt<TApi>>;
+				        friend struct trait::GetPreferredWarpSize<DevUniformCudaHipRt<TApi>>;
 
 				    private:
 				        DevUniformCudaHipRt(int iDevice)
 				            : m_iDevice(iDevice)
-				            , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
+				            , m_DevGenericImpl(std::make_shared<alpaka::detail::DevGenericImpl<IDeviceQueue>>())
 				        {
 				        }
 
 				        int m_iDevice;
 
-				        std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;
+				        std::shared_ptr<alpaka::detail::DevGenericImpl<IDeviceQueue>> m_DevGenericImpl;
 				    };
 
 				    namespace trait
 				    {
+
 				        //! The CUDA/HIP RT device name get trait specialization.
 				        template<typename TApi>
 				        struct GetName<DevUniformCudaHipRt<TApi>>
 				        {
 				            ALPAKA_FN_HOST static auto getName(DevUniformCudaHipRt<TApi> const& dev) -> std::string
 				            {
-				                // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties to get a
-				                // single device property but it has no option to get the name
-				                typename TApi::DeviceProp_t devProp;
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, dev.getNativeHandle()));
-
-				                return std::string(devProp.name);
+				                return dev.m_DevGenericImpl->deviceProperties(dev)->name;
 				            }
 				        };
 
@@ -24341,15 +24451,7 @@
 				        {
 				            ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
 				            {
-				                // Set the current device to wait for.
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
-
-				                std::size_t freeInternal(0u);
-				                std::size_t totalInternal(0u);
-
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
-
-				                return totalInternal;
+				                return dev.m_DevGenericImpl->deviceProperties(dev)->totalGlobalMem;
 				            }
 				        };
 
@@ -24359,12 +24461,9 @@
 				        {
 				            ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
 				            {
-				                // Set the current device to wait for.
 				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
-
 				                std::size_t freeInternal(0u);
 				                std::size_t totalInternal(0u);
-
 				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memGetInfo(&freeInternal, &totalInternal));
 
 				                return freeInternal;
@@ -24377,7 +24476,7 @@
 				        {
 				            ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
 				            {
-				                return {GetPreferredWarpSize<DevUniformCudaHipRt<TApi>>::getPreferredWarpSize(dev)};
+				                return dev.m_DevGenericImpl->deviceProperties(dev)->warpSizes;
 				            }
 				        };
 
@@ -24387,11 +24486,7 @@
 				        {
 				            ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
 				            {
-				                int warpSize = 0;
-
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-				                    TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, dev.getNativeHandle()));
-				                return static_cast<std::size_t>(warpSize);
+				                return dev.m_DevGenericImpl->deviceProperties(dev)->preferredWarpSize;
 				            }
 				        };
 
@@ -26179,7 +26274,7 @@
 	// #include <atomic>    // amalgamate: file already included
 	// #include <future>    // amalgamate: file already included
 	// #include <mutex>    // amalgamate: file already included
-	#include <optional>
+	// #include <optional>    // amalgamate: file already included
 	// #include <queue>    // amalgamate: file already included
 	// #include <vector>    // amalgamate: file already included
 
