@@ -111,7 +111,7 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
-        ALPAKA_FN_HOST auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& buf) const -> Vec<TDim, TIdx>
+        ALPAKA_FN_HOST auto operator()(BufGenericSycl<TElem, TDim, TIdx, TTag> const& /*buf*/) const -> Vec<TDim, TIdx>
         {
             return Vec<TDim, TIdx>::zeros();
         }

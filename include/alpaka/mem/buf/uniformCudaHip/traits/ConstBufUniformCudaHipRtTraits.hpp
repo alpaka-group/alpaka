@@ -57,9 +57,9 @@ namespace alpaka::trait
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct GetExtents<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST auto operator()(ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buffer) const
+        ALPAKA_FN_HOST auto operator()(ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
         {
-            return buffer.m_spBufImpl->m_extentElements;
+            return buf.m_spBufImpl->m_extentElements;
         }
     };
 

@@ -57,7 +57,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
         {
-            return buffer.m_spBufImpl->m_extentElements;
+            return buf.m_spBufImpl->m_extentElements;
         }
     };
 
@@ -125,7 +125,7 @@ namespace alpaka::trait
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct GetOffsets<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
     {
-        ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
+        ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& /*buf*/) const
             -> Vec<TDim, TIdx>
         {
             return Vec<TDim, TIdx>::zeros();
