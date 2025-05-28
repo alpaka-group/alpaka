@@ -104,8 +104,9 @@ static auto testConstBufLifetime(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc
     std::vector<Elem> dataHost(static_cast<std::size_t>(getExtentProduct(extent)), static_cast<Elem>(1));
     auto bufHost = alpaka::createView(devHost, dataHost.data(), extent);
 
-    auto copiedBack = alpaka::allocBuf<Elem, Idx>(dev, extent);
+    auto copiedBack = alpaka::allocBuf<Elem, Idx>(devHost, extent);
     alpaka::memcpy(queue, copiedBack, c_buf);
+    alpaka::wait(queue);
 
     bool resultCorrect = true;
     auto const pHostData = std::data(bufHost);
