@@ -49,6 +49,12 @@ namespace alpaka
         {
         }
 
+        //! Constructor for a ConstBuf from a BufGenericSycl
+        ALPAKA_FN_HOST ConstBufGenericSycl(BufGenericSycl<TElem, TDim, TIdx, TTag>&& buf)
+            : m_spBufImpl{std::move(buf.m_spBufImpl)}
+        {
+        }
+
     private:
         std::shared_ptr<detail::BufGenericSyclImpl<TElem, TDim, TIdx, TTag>> m_spBufImpl;
 

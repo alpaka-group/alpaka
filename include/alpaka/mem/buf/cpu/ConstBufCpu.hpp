@@ -46,6 +46,10 @@ namespace alpaka
         {
         }
 
+        ALPAKA_FN_HOST ConstBufCpu(BufCpu<TElem, TDim, TIdx>&& buf) : m_spBufImpl{std::move(buf.m_spBufImpl)}
+        {
+        }
+
     private:
         std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufImpl;
 

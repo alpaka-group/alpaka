@@ -35,7 +35,7 @@ namespace buftest
         alpaka::wait(queueAcc);
 
         // make the buffer constant and return only that
-        auto const constBuf = alpaka::makeConstBuf(buf);
+        auto const constBuf = alpaka::makeConstBuf(std::move(buf));
         return constBuf;
     }
 

@@ -61,6 +61,11 @@ namespace alpaka
         {
         }
 
+        ALPAKA_FN_HOST ConstBufUniformCudaHipRt(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>&& buf)
+            : m_spBufImpl{std::move(buf.m_spBufImpl)}
+        {
+        }
+
     private:
         std::shared_ptr<detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>> m_spBufImpl;
 
