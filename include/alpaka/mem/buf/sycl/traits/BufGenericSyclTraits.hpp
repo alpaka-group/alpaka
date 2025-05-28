@@ -187,6 +187,18 @@ namespace alpaka::trait
         }
     };
 
+    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
+    template<typename TDim, concepts::Tag TTag>
+    struct HasAsyncBufSupport<TDim, DevGenericSycl<TTag>> : std::false_type
+    {
+    };
+
+    //! The pinned/mapped memory allocation capability trait specialization.
+    template<concepts::Tag TTag>
+    struct HasMappedBufSupport<PlatformGenericSycl<TTag>> : public std::true_type
+    {
+    };
+
     //! The pinned/mapped memory allocation trait specialization for the SYCL devices.
     template<concepts::Tag TTag, typename TElem, typename TDim, typename TIdx>
     struct BufAllocMapped<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>

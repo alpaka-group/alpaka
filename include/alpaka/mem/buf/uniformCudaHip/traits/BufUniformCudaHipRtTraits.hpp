@@ -248,6 +248,12 @@ namespace alpaka::trait
         }
     };
 
+    //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
+    template<typename TApi, typename TDim>
+    struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>> : std::bool_constant<TDim::value <= 1>
+    {
+    };
+
     //! The CUDA/HIP stream-ordered memory allocation trait specialization.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct AsyncBufAlloc<TElem, TDim, TIdx, DevUniformCudaHipRt<TApi>>
@@ -282,6 +288,12 @@ namespace alpaka::trait
                 extent,
                 static_cast<std::size_t>(width) * sizeof(TElem)};
         }
+    };
+
+    //! The pinned/mapped memory allocation capability trait specialization.
+    template<typename TApi>
+    struct HasMappedBufSupport<PlatformUniformCudaHipRt<TApi>> : public std::true_type
+    {
     };
 
     //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.

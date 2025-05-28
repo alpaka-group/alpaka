@@ -89,12 +89,6 @@ namespace alpaka::trait
         }
     };
 
-    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
-    template<typename TDim, concepts::Tag TTag>
-    struct HasAsyncBufSupport<TDim, DevGenericSycl<TTag>> : std::false_type
-    {
-    };
-
     //! The ConstBufGenericSycl offset get trait specialization.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     struct GetOffsets<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
@@ -103,12 +97,6 @@ namespace alpaka::trait
         {
             return Vec<TDim, TIdx>::zeros();
         }
-    };
-
-    //! The pinned/mapped memory allocation capability trait specialization.
-    template<concepts::Tag TTag>
-    struct HasMappedBufSupport<PlatformGenericSycl<TTag>> : public std::true_type
-    {
     };
 
     //! The ConstBufGenericSycl idx type trait specialization.

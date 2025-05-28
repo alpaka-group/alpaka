@@ -114,18 +114,6 @@ namespace alpaka::trait
         }
     };
 
-    //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
-    template<typename TApi, typename TDim>
-    struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>> : std::bool_constant<TDim::value <= 1>
-    {
-    };
-
-    //! The pinned/mapped memory allocation capability trait specialization.
-    template<typename TApi>
-    struct HasMappedBufSupport<PlatformUniformCudaHipRt<TApi>> : public std::true_type
-    {
-    };
-
     //! The ConstBufUniformCudaHipRt offset get trait specialization.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct GetOffsets<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>

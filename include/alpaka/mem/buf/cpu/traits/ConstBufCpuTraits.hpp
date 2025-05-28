@@ -88,18 +88,6 @@ namespace alpaka::trait
         }
     };
 
-    //! The ConstBufCpu stream-ordered memory allocation capability trait specialization.
-    template<typename TDim>
-    struct HasAsyncBufSupport<TDim, DevCpu> : public std::true_type
-    {
-    };
-
-    //! The pinned/mapped memory allocation capability trait specialization.
-    template<>
-    struct HasMappedBufSupport<PlatformCpu> : public std::true_type
-    {
-    };
-
     //! The ConstBufCpu offset get trait specialization.
     template<typename TElem, typename TDim, typename TIdx>
     struct GetOffsets<ConstBufCpu<TElem, TDim, TIdx>>
