@@ -78,6 +78,10 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     STATIC_REQUIRE_FALSE(buftest::onlyConstNativePtr<TBuf>);
     STATIC_REQUIRE(buftest::onlyConstNativePtr<TCBuf>);
     // *getPtrNative(c_buf) = 0.f;  // <- this does not compile, as desired
+
+    // check return types of the buffers
+    STATIC_REQUIRE(std::is_same_v<decltype(buf[0]), Elem&>);
+    STATIC_REQUIRE(std::is_same_v<decltype(c_buf[0]), Elem const&>);
 }
 
 template<typename TAcc>
