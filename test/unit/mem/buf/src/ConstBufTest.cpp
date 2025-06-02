@@ -82,6 +82,10 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     // check return types of the buffers
     STATIC_REQUIRE(std::is_same_v<decltype(buf[0]), Elem&>);
     STATIC_REQUIRE(std::is_same_v<decltype(c_buf[0]), Elem const&>);
+
+    // check movability construction of buffers
+    STATIC_REQUIRE(std::movable<TBuf>);
+    STATIC_REQUIRE(std::movable<std::remove_const_t<TCBuf>>);
 }
 
 template<typename TAcc>
