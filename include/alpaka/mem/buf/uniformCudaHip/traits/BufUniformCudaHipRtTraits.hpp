@@ -178,6 +178,12 @@ namespace alpaka::trait
         {
             return ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>(buf);
         }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>&& buf)
+            -> ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>
+        {
+            return ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>(std::move(buf));
+        }
     };
 
     //! The CUDA/HIP memory allocation trait specialization.

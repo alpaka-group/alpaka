@@ -214,4 +214,10 @@ namespace alpaka
         return trait::MakeConstBuf<TBuf>::makeConstBuf(buf);
     }
 
+    template<typename TBuf>
+    ALPAKA_FN_HOST auto makeConstBuf(TBuf&& buf)
+    {
+        return trait::MakeConstBuf<std::remove_cvref_t<TBuf>>::makeConstBuf(std::move(buf));
+    }
+
 } // namespace alpaka

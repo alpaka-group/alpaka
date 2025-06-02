@@ -133,6 +133,12 @@ namespace alpaka::trait
         {
             return ConstBufGenericSycl<TElem, TDim, TIdx, TTag>(buf);
         }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(BufGenericSycl<TElem, TDim, TIdx, TTag>&& buf)
+            -> ConstBufGenericSycl<TElem, TDim, TIdx, TTag>
+        {
+            return ConstBufGenericSycl<TElem, TDim, TIdx, TTag>(std::move(buf));
+        }
     };
 
     //! The SYCL memory allocation trait specialization.

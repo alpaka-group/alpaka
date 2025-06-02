@@ -161,6 +161,12 @@ namespace alpaka::trait
         {
             return buf;
         }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>&& buf)
+            -> ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>
+        {
+            return buf;
+        }
     };
 
 } // namespace alpaka::trait

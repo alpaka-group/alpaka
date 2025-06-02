@@ -123,7 +123,13 @@ namespace alpaka::trait
         ALPAKA_FN_HOST static auto makeConstBuf(ConstBufGenericSycl<TElem, TDim, TIdx, TTag> const& buf)
             -> ConstBufGenericSycl<TElem, TDim, TIdx, TTag>
         {
-            return ConstBufGenericSycl<TElem, TDim, TIdx, TTag>(buf);
+            return buf;
+        }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufGenericSycl<TElem, TDim, TIdx, TTag>&& buf)
+            -> ConstBufGenericSycl<TElem, TDim, TIdx, TTag>
+        {
+            return buf;
         }
     };
 } // namespace alpaka::trait

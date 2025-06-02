@@ -126,6 +126,11 @@ namespace alpaka::trait
         {
             return ConstBufCpu<TElem, TDim, TIdx>(buf);
         }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(BufCpu<TElem, TDim, TIdx>&& buf) -> ConstBufCpu<TElem, TDim, TIdx>
+        {
+            return ConstBufCpu<TElem, TDim, TIdx>(std::move(buf));
+        }
     };
 
     //! The BufCpu memory allocation trait specialization.

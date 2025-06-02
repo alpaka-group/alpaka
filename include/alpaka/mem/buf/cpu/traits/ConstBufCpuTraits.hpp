@@ -114,5 +114,10 @@ namespace alpaka::trait
         {
             return buf;
         }
+
+        ALPAKA_FN_HOST static auto makeConstBuf(ConstBufCpu<TElem, TDim, TIdx>&& buf) -> ConstBufCpu<TElem, TDim, TIdx>
+        {
+            return buf;
+        }
     };
 } // namespace alpaka::trait
