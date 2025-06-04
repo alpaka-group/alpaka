@@ -27377,7 +27377,6 @@
 
 
 	// #include <algorithm>    // amalgamate: file already included
-	#include <ciso646> // workaround for MSVC in c++17 mode - TODO: remove once we move to c++20
 	// #include <cstddef>    // amalgamate: file already included
 	#include <type_traits>
 
@@ -27901,7 +27900,6 @@
 	// #include "alpaka/idx/Accessors.hpp"    // amalgamate: file already inlined
 
 	// #include <algorithm>    // amalgamate: file already included
-	// #include <ciso646> // workaround for MSVC in c++17 mode - TODO: remove once we move to c++20    // amalgamate: file already included
 	// #include <cstddef>    // amalgamate: file already included
 	#include <type_traits>
 
