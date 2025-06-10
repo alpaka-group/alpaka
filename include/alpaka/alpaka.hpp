@@ -16273,15 +16273,15 @@
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0)),
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2)),
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0)),
 			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2))};
 			            }
 			        }
 			    };
@@ -16356,15 +16356,15 @@
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>(
-			                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
-			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)),
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(1)));
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>(
-			                    static_cast<TIdx>(idx.m_item_gb.get_group(2)),
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)),
 			                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
-			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(2)));
 			            }
 			        }
 			    };
@@ -19505,15 +19505,15 @@
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(1)),
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(1))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(2)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0)),
 			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(1)),
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(2))};
 			            }
 			        }
 			    };
@@ -19532,15 +19532,15 @@
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(1)),
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(1))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(2)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0)),
 			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(1)),
-			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(2))};
 			            }
 			        }
 			    };
@@ -31154,13 +31154,13 @@
 		                return sycl::range<1>{static_cast<std::size_t>(work_groups[0] * group_items[0])};
 		            else if constexpr(TDim::value == 2)
 		                return sycl::range<2>{
-		                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
-		                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+		                    static_cast<std::size_t>(work_groups[0] * group_items[0]),
+		                    static_cast<std::size_t>(work_groups[1] * group_items[1])};
 		            else
 		                return sycl::range<3>{
-		                    static_cast<std::size_t>(work_groups[2] * group_items[2]),
+		                    static_cast<std::size_t>(work_groups[0] * group_items[0]),
 		                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
-		                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+		                    static_cast<std::size_t>(work_groups[2] * group_items[2])};
 		        }
 
 		        auto get_local_size(Vec<TDim, TIdx> const& group_items) const
@@ -31169,13 +31169,13 @@
 		                return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
 		            else if constexpr(TDim::value == 2)
 		                return sycl::range<2>{
-		                    static_cast<std::size_t>(group_items[1]),
-		                    static_cast<std::size_t>(group_items[0])};
+		                    static_cast<std::size_t>(group_items[0]),
+		                    static_cast<std::size_t>(group_items[1])};
 		            else
 		                return sycl::range<3>{
-		                    static_cast<std::size_t>(group_items[2]),
+		                    static_cast<std::size_t>(group_items[0]),
 		                    static_cast<std::size_t>(group_items[1]),
-		                    static_cast<std::size_t>(group_items[0])};
+		                    static_cast<std::size_t>(group_items[2])};
 		        }
 
 		    public:
