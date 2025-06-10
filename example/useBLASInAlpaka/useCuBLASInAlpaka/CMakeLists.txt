@@ -25,9 +25,7 @@ if(NOT alpaka_ACC_GPU_CUDA_ONLY_MODE)
 endif()
 
 # Add cuBLAS library
-find_package(CUDA REQUIRED)
-set(CUDA_LIBRARIES ${CUDA_LIBRARIES} cublas)
-
+find_package(CUDAToolkit REQUIRED)
 #-------------------------------------------------------------------------------
 # Find alpaka.
 
@@ -51,7 +49,7 @@ alpaka_add_executable(
     src/useCuBLASInAlpaka.cpp)
 target_link_libraries(
     ${_TARGET_NAME}
-    PUBLIC alpaka::alpaka ${CUDA_LIBRARIES})
+    PUBLIC alpaka::alpaka CUDA::cublas)
 
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER example)
 #set_target_properties(${_TARGET_NAME}  PROPERTIES CUDA_STANDARD 17)
