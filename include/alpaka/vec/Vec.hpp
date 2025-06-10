@@ -7,8 +7,8 @@
 
 #include "alpaka/core/Align.hpp"
 #include "alpaka/core/Assert.hpp"
-#include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
+#include "alpaka/core/Config.hpp"
 #include "alpaka/core/Unreachable.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/dim/Traits.hpp"
@@ -260,7 +260,7 @@ namespace alpaka
         }
 
 // suppress strange warning produced by nvcc+MSVC in release mode
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4702) // unreachable code
 #endif
@@ -270,7 +270,7 @@ namespace alpaka
         {
             return foldrAll(std::multiplies<TVal>{}, TVal{1});
         }
-#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#if ALPAKA_COMP_MSVC
 #    pragma warning(pop)
 #endif
         //! \return The sum of all values.

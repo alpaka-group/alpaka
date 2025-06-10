@@ -227,7 +227,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wexit-time-destructors"
 #    endif
@@ -240,7 +240,7 @@ namespace alpaka
                     + std::string(core::demangled<TIdx>) + ">"s;
 #    endif
                 return accName;
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic pop
 #    endif
             }

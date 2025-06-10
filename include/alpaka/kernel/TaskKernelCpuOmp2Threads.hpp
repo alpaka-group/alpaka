@@ -115,7 +115,7 @@ namespace alpaka
 #    pragma omp parallel num_threads(iBlockThreadCount)
                     {
                         // The guard is for gcc internal compiler error, as discussed in #735
-                        if constexpr((!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0)))
+                        if constexpr((!ALPAKA_COMP_GNUC) || (ALPAKA_COMP_GNUC >= ALPAKA_VERSION_NUMBER(8, 1, 0)))
                         {
 #    pragma omp single nowait
                             {

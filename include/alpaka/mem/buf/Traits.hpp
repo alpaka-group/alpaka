@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
+#include "alpaka/core/Config.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 
@@ -96,7 +96,7 @@ namespace alpaka
 
     /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
        figure out that the template parameters are attached to a C++17 inline variable. */
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdocumentation"
 #endif
@@ -106,7 +106,7 @@ namespace alpaka
     //! \tparam TDim The dimensionality of the buffer to allocate.
     template<typename TDev, typename TDim>
     inline constexpr bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
 
@@ -158,7 +158,7 @@ namespace alpaka
 
     /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
        figure out that the template parameters are attached to a C++17 inline variable. */
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdocumentation"
 #endif
@@ -167,7 +167,7 @@ namespace alpaka
     //! \tparam TPlatform The platform from which the buffer is accessible.
     template<typename TPlatform>
     inline constexpr bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
 

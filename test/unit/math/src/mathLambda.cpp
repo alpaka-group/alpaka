@@ -12,7 +12,7 @@
 #    include "Functor.hpp"
 #    include "TestTemplate.hpp"
 
-#    include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/Config.hpp>
 #    include <alpaka/math/Complex.hpp>
 #    include <alpaka/test/KernelExecutionFixture.hpp>
 #    include <alpaka/test/acc/TestAccs.hpp>

@@ -2,8 +2,8 @@
  * Aurora Perego SPDX-License-Identifier: MPL-2.0
  */
 
-#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Config.hpp>
 #include <alpaka/meta/ForEachType.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>

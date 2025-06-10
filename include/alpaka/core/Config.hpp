@@ -11,15 +11,16 @@
 #endif
 
 #define ALPAKA_VERSION_NUMBER(major, minor, patch)                                                                    \
-    ((((major) % 1000) * 100'000'000) + (((minor) % 1000) * 100000) + ((patch) % 100000))
+    ((((major) % 1000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
 
-#define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0, 0, 0)
+#define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0llu, 0llu, 0llu)
 
-#define ALPAKA_YYYYMMDD_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 10000), ((V) / 100) % 100, (V) % 100)
+#define ALPAKA_YYYYMMDD_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 10000llu), ((V) / 100llu) % 100llu, (V) % 100llu)
 
-#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100) % 100, (V) % 100, 0)
+#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100llu) % 100llu, (V) % 100llu, 0llu)
 
-#define ALPAKA_VVRRP_10_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 1000) % 100, ((V) / 10) % 100, (V) % 10)
+#define ALPAKA_VVRRP_10_TO_VERSION(V)                                                                                 \
+    ALPAKA_VERSION_NUMBER(((V) / 1000llu) % 100llu, ((V) / 10llu) % 100llu, (V) % 10llu)
 
 // ######## detect operating systems ########
 
@@ -89,12 +90,21 @@
 #    endif
 #endif
 
-// ARM
+// NVIDIA device compile
 #if !defined(ALPAKA_ARCH_PTX)
 #    if defined(__CUDA_ARCH__)
 #        define ALPAKA_ARCH_PTX 1
 #    else
 #        define ALPAKA_ARCH_PTX 0
+#    endif
+#endif
+
+// HIP device compile
+#if !defined(ALPAKA_ARCH_HSA)
+#    if defined(__HIP__) && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1
+#        define ALPAKA_ARCH_HSA 1
+#    else
+#        define ALPAKA_ARCH_HSA 0
 #    endif
 #endif
 
@@ -133,8 +143,8 @@
 #    define ALPAKA_COMP_MSVC ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
 #endif
 
-// gnu compiler
-#if defined(__GNUC__)
+// gnu compiler (excluding compilers which emulates gnu compiler like clang)
+#if defined(__GNUC__) && !defined(__clang__)
 #    if defined(__GNUC_PATCHLEVEL__)
 #        define ALPAKA_COMP_GNUC ALPAKA_VERSION_NUMBER(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
 #    else
@@ -196,7 +206,7 @@
 #if !defined(ALPAKA_LANG_CUDA)
 #    if defined(__CUDACC__) || defined(__CUDA__)
 #        include <cuda.h>
-// HIP doesn't give us a patch level for the last entry, just a gitdate
+// CUDA doesn't give us a patch level for the last entry, just zero.
 #        define ALPAKA_LANG_CUDA ALPAKA_VVRRP_10_TO_VERSION(CUDART_VERSION)
 #    else
 #        define ALPAKA_LANG_CUDA ALPAKA_VERSION_NUMBER_NOT_AVAILABLE

@@ -31,8 +31,8 @@
 #include "alpaka/vec/Vec.hpp"
 
 // Implementation details.
-#include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Config.hpp"
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/core/Sycl.hpp"
 
@@ -167,7 +167,7 @@ namespace alpaka::trait
     {
         static auto getAccName() -> std::string
         {
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wexit-time-destructors"
 #    endif
@@ -184,7 +184,7 @@ namespace alpaka::trait
                 + std::to_string(TDim::value) + ","s + std::string(core::demangled<TIdx>) + ">"s;
 #    endif
             return accName;
-#    if BOOST_COMP_CLANG
+#    if ALPAKA_COMP_CLANG
 #        pragma clang diagnostic pop
 #    endif
         }

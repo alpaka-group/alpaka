@@ -90,7 +90,7 @@ option(alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block threa
 option(alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" OFF)
 option(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
 option(alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
-option(alpaka_ACC_CPU_DISABLE_ATOMIC_REF "Disable boost::atomic_ref for CPU back-ends" OFF)
+option(alpaka_ACC_CPU_DISABLE_ATOMIC_REF "Disable atomic_ref for CPU back-ends" OFF)
 option(alpaka_ACC_SYCL_ENABLE "Enable the SYCL back-end" OFF)
 
 # Unified compiler options
@@ -227,20 +227,6 @@ else()
                                          "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:SHELL:-O0>")
 endif()
 
-#-------------------------------------------------------------------------------
-# Find Boost.
-set(_alpaka_BOOST_MIN_VER "1.74.0")
-
-if(${alpaka_DEBUG} GREATER 1)
-    SET(Boost_DEBUG ON)
-    SET(Boost_DETAILED_FAILURE_MSG ON)
-endif()
-
-find_package(Boost ${_alpaka_BOOST_MIN_VER} REQUIRED
-        OPTIONAL_COMPONENTS atomic)
-
-target_link_libraries(alpaka INTERFACE Boost::headers)
-
 if(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
    alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE OR
    alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
@@ -264,66 +250,26 @@ if(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
             endif()
         endif()
 
-        if(Boost_ATOMIC_FOUND AND (NOT alpaka_HAS_STD_ATOMIC_REF))
-            message(STATUS "boost::atomic_ref<T> found")
-            target_link_libraries(alpaka INTERFACE Boost::atomic)
-        endif()
+        if (NOT alpaka_HAS_STD_ATOMIC_REF)
+            # search for boost only if std::atomic_ref is not supported
+            set(_alpaka_BOOST_MIN_VER "1.74.0")
+            find_package(Boost ${_alpaka_BOOST_MIN_VER} REQUIRED
+                    OPTIONAL_COMPONENTS atomic)
+            target_link_libraries(alpaka INTERFACE Boost::headers)
+
+            if (Boost_ATOMIC_FOUND)
+                message(STATUS "boost::atomic_ref<T> found")
+                target_link_libraries(alpaka INTERFACE Boost::atomic)
+            else ()
+                message(STATUS "boost::atomic_ref<T> NOT found")
+            endif ()
+        endif ()
     endif()
 
     if(alpaka_ACC_CPU_DISABLE_ATOMIC_REF OR ((NOT alpaka_HAS_STD_ATOMIC_REF) AND (NOT Boost_ATOMIC_FOUND)))
         message(STATUS "atomic_ref<T> was not found or manually disabled. Falling back to lock-based CPU atomics.")
         target_compile_definitions(alpaka INTERFACE ALPAKA_DISABLE_ATOMIC_ATOMICREF)
     endif()
-endif()
-
-if(${alpaka_DEBUG} GREATER 1)
-    message(STATUS "Boost in:")
-    cmake_print_variables(BOOST_ROOT)
-    cmake_print_variables(BOOSTROOT)
-    cmake_print_variables(BOOST_INCLUDEDIR)
-    cmake_print_variables(BOOST_LIBRARYDIR)
-    cmake_print_variables(Boost_NO_SYSTEM_PATHS)
-    cmake_print_variables(Boost_ADDITIONAL_VERSIONS)
-    cmake_print_variables(Boost_USE_MULTITHREADED)
-    cmake_print_variables(Boost_USE_STATIC_LIBS)
-    cmake_print_variables(Boost_USE_STATIC_RUNTIME)
-    cmake_print_variables(Boost_USE_DEBUG_RUNTIME)
-    cmake_print_variables(Boost_USE_DEBUG_PYTHON)
-    cmake_print_variables(Boost_USE_STLPORT)
-    cmake_print_variables(Boost_USE_STLPORT_DEPRECATED_NATIVE_IOSTREAMS)
-    cmake_print_variables(Boost_COMPILER)
-    cmake_print_variables(Boost_THREADAPI)
-    cmake_print_variables(Boost_NAMESPACE)
-    cmake_print_variables(Boost_DEBUG)
-    cmake_print_variables(Boost_DETAILED_FAILURE_MSG)
-    cmake_print_variables(Boost_REALPATH)
-    cmake_print_variables(Boost_NO_BOOST_CMAKE)
-    message(STATUS "Boost out:")
-    cmake_print_variables(Boost_FOUND)
-    cmake_print_variables(Boost_INCLUDE_DIRS)
-    cmake_print_variables(Boost_LIBRARY_DIRS)
-    cmake_print_variables(Boost_LIBRARIES)
-    cmake_print_variables(Boost_CONTEXT_FOUND)
-    cmake_print_variables(Boost_CONTEXT_LIBRARY)
-    cmake_print_variables(Boost_SYSTEM_FOUND)
-    cmake_print_variables(Boost_SYSTEM_LIBRARY)
-    cmake_print_variables(Boost_THREAD_FOUND)
-    cmake_print_variables(Boost_THREAD_LIBRARY)
-    cmake_print_variables(Boost_ATOMIC_FOUND)
-    cmake_print_variables(Boost_ATOMIC_LIBRARY)
-    cmake_print_variables(Boost_CHRONO_FOUND)
-    cmake_print_variables(Boost_CHRONO_LIBRARY)
-    cmake_print_variables(Boost_DATE_TIME_FOUND)
-    cmake_print_variables(Boost_DATE_TIME_LIBRARY)
-    cmake_print_variables(Boost_VERSION)
-    cmake_print_variables(Boost_LIB_VERSION)
-    cmake_print_variables(Boost_MAJOR_VERSION)
-    cmake_print_variables(Boost_MINOR_VERSION)
-    cmake_print_variables(Boost_SUBMINOR_VERSION)
-    cmake_print_variables(Boost_LIB_DIAGNOSTIC_DEFINITIONS)
-    message(STATUS "Boost cached:")
-    cmake_print_variables(Boost_INCLUDE_DIR)
-    cmake_print_variables(Boost_LIBRARY_DIR)
 endif()
 
 #-------------------------------------------------------------------------------
@@ -467,9 +413,6 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
             # This seems to be a false positive as all flags are 'unused' for an empty file.
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Qunused-arguments>")
-
-            # Silences warnings that are produced by boost because clang is not correctly identified.
-            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Wno-unused-local-typedef>")
 
             if(alpaka_FAST_MATH STREQUAL ON)
                 # -ffp-contract=fast enables the usage of FMA

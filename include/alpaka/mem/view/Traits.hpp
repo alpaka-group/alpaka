@@ -79,12 +79,12 @@ namespace alpaka
                 constexpr auto viewDim = Dim<TView>::value;
                 if constexpr(idx < viewDim - 1)
                 {
-#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
                     return getExtents(view)[idx] * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
-#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
                 }
@@ -175,12 +175,12 @@ namespace alpaka
     template<std::size_t Tidx, typename TView>
     [[deprecated("Use getPitchesInBytes instead")]] ALPAKA_FN_HOST auto getPitchBytes(TView const& view) -> Idx<TView>
     {
-#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
         return trait::GetPitchBytes<DimInt<Tidx>, TView>::getPitchBytes(view);
-#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 #    pragma GCC diagnostic pop
 #endif
     }
@@ -535,12 +535,12 @@ namespace alpaka
                     ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
                     {
                         assert(i % alignof(ElementType) == 0);
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wcast-align"
 #    endif
                         return *reinterpret_cast<ElementType*>(p + i);
-#    if BOOST_COMP_GNUC
+#    if ALPAKA_COMP_GNUC
 #        pragma GCC diagnostic pop
 #    endif
                     }

@@ -22,7 +22,7 @@
 #include <set>
 #include <type_traits>
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wswitch-default"
 #endif
@@ -549,6 +549,6 @@ namespace alpaka
     }
 } // namespace alpaka
 
-#if BOOST_COMP_CLANG
+#if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif

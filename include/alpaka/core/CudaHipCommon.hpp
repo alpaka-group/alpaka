@@ -50,7 +50,7 @@ namespace alpaka
             ushort3
 // CUDA built-in variables have special types in clang native CUDA compilation
 // defined in cuda_builtin_vars.h
-#    if BOOST_COMP_CLANG_CUDA
+#    if ALPAKA_COMP_CLANG_CUDA
             ,
             __cuda_builtin_threadIdx_t,
             __cuda_builtin_blockIdx_t,

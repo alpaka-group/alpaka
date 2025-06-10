@@ -17,8 +17,8 @@
 // we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
 #if defined(ALPAKA_CI)
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA                                                       \
-        || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_LANG_CUDA                                                      \
+        || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_LANG_HIP
 #        define ALPAKA_CUDA_CI
 #    endif
 #endif
@@ -63,14 +63,14 @@ namespace alpaka::test
         template<typename TDim, typename TIdx>
         using AccCpuOmp2ThreadsIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA || defined(ALPAKA_HOST_ONLY))
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (ALPAKA_LANG_CUDA || defined(ALPAKA_HOST_ONLY))
         template<typename TDim, typename TIdx>
         using AccGpuCudaRtIfAvailableElseInt = AccGpuCudaRt<TDim, TIdx>;
 #else
         template<typename TDim, typename TIdx>
         using AccGpuCudaRtIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (BOOST_LANG_HIP || defined(ALPAKA_HOST_ONLY))
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (ALPAKA_LANG_HIP || defined(ALPAKA_HOST_ONLY))
         template<typename TDim, typename TIdx>
         using AccGpuHipRtIfAvailableElseInt =
             typename std::conditional<std::is_same_v<TDim, DimInt<3u>> == false, AccGpuHipRt<TDim, TIdx>, int>::type;
