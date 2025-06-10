@@ -76,12 +76,20 @@ endif()
 #-------------------------------------------------------------------------------
 # Add executable.
 
+
+
 alpaka_add_executable(
     ${_TARGET_NAME}
     src/useCuBLASInAlpaka.cpp)
 target_link_libraries(
     ${_TARGET_NAME}
     PUBLIC alpaka::alpaka CUDA::cublas)
+
+    # Explicitly add include directories to the target
+target_include_directories(
+    ${_TARGET_NAME}
+    PRIVATE ${CUDA_SEARCH_PATHS}
+)
 
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER example)
 #set_target_properties(${_TARGET_NAME}  PROPERTIES CUDA_STANDARD 17)
