@@ -53,15 +53,15 @@ namespace alpaka::trait
             else if constexpr(TDim::value == 2)
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0)),
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1))};
             }
             else
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2)),
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0)),
                     static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2))};
             }
         }
     };

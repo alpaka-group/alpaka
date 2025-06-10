@@ -207,13 +207,13 @@ namespace alpaka
                 return sycl::range<1>{static_cast<std::size_t>(work_groups[0] * group_items[0])};
             else if constexpr(TDim::value == 2)
                 return sycl::range<2>{
-                    static_cast<std::size_t>(work_groups[1] * group_items[1]),
-                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+                    static_cast<std::size_t>(work_groups[0] * group_items[0]),
+                    static_cast<std::size_t>(work_groups[1] * group_items[1])};
             else
                 return sycl::range<3>{
-                    static_cast<std::size_t>(work_groups[2] * group_items[2]),
+                    static_cast<std::size_t>(work_groups[0] * group_items[0]),
                     static_cast<std::size_t>(work_groups[1] * group_items[1]),
-                    static_cast<std::size_t>(work_groups[0] * group_items[0])};
+                    static_cast<std::size_t>(work_groups[2] * group_items[2])};
         }
 
         auto get_local_size(Vec<TDim, TIdx> const& group_items) const
@@ -222,13 +222,13 @@ namespace alpaka
                 return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
             else if constexpr(TDim::value == 2)
                 return sycl::range<2>{
-                    static_cast<std::size_t>(group_items[1]),
-                    static_cast<std::size_t>(group_items[0])};
+                    static_cast<std::size_t>(group_items[0]),
+                    static_cast<std::size_t>(group_items[1])};
             else
                 return sycl::range<3>{
-                    static_cast<std::size_t>(group_items[2]),
+                    static_cast<std::size_t>(group_items[0]),
                     static_cast<std::size_t>(group_items[1]),
-                    static_cast<std::size_t>(group_items[0])};
+                    static_cast<std::size_t>(group_items[2])};
         }
 
     public:
