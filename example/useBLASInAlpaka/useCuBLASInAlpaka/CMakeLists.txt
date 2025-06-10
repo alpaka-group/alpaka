@@ -47,20 +47,31 @@ message(STATUS "CUDAToolkit version: ${CUDAToolkit_VERSION}")
 message(STATUS "CUDAToolkit include directories: ${CUDAToolkit_INCLUDE_DIRS}")
 message(STATUS "CUDAToolkit library directories: ${CUDAToolkit_LIBRARY_DIR}")
 
+string(REPLACE "." ";" CUDA_VERSION_LIST ${CUDAToolkit_VERSION})
+list(GET CUDA_VERSION_LIST 0 CUDA_VERSION_MAJOR)
+list(GET CUDA_VERSION_LIST 1 CUDA_VERSION_MINOR)
+
+# Construct dynamic include paths based on the detected CUDA version
+set(CUDA_SEARCH_PATHS
+    ${CUDAToolkit_INCLUDE_DIRS}
+    /usr/local/cuda/include
+    /usr/local/cuda-${CUDA_VERSION_MAJOR}.${CUDA_VERSION_MINOR}/include
+    /usr/local/cuda-${CUDA_VERSION_MAJOR}/include
+    /opt/cuda/include
+)
+
 # Verify cuBLAS header exists
-if(CUDAToolkit_INCLUDE_DIRS)
-    find_file(CUBLAS_HEADER_FILE
-        NAMES cublas_v2.h
-        PATHS ${CUDAToolkit_INCLUDE_DIRS}
-        NO_DEFAULT_PATH
-    )
-    if(NOT CUBLAS_HEADER_FILE)
-        message(FATAL_ERROR "cublas_v2.h not found in CUDA toolkit include directories: ${CUDAToolkit_INCLUDE_DIRS}")
-    else()
-        message(STATUS "Found cublas_v2.h: ${CUBLAS_HEADER_FILE}")
-    endif()
+find_file(CUBLAS_HEADER_FILE
+    NAMES cublas_v2.h
+    PATHS ${CUDA_SEARCH_PATHS}
+    NO_DEFAULT_PATH
+)
+
+if(NOT CUBLAS_HEADER_FILE)
+    message(STATUS "Searched for cublas_v2.h in: ${CUDA_SEARCH_PATHS}")
+    message(FATAL_ERROR "cublas_v2.h not found in any CUDA include directories")
 else()
-    message(WARNING "CUDAToolkit_INCLUDE_DIRS is empty - this may cause compilation issues")
+    message(STATUS "Found cublas_v2.h: ${CUBLAS_HEADER_FILE}")
 endif()
 #-------------------------------------------------------------------------------
 # Add executable.
