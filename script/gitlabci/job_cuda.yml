@@ -56,7 +56,7 @@ linux_nvcc12.5_gcc13_release_cuda_only_mode:
     alpaka_ACC_SYCL_ENABLE: 'OFF'
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     alpaka_ACC_GPU_CUDA_ONLY_MODE: "ON"
-    alpaka_RELOCATABLE_DEVICE_CODE: "OFF"
+    alpaka_RELOCATABLE_DEVICE_CODE: "ON"
     alpaka_CUDA_SHOW_REGISTER: "OFF"
     alpaka_CUDA_KEEP_FILES: "OFF"
-    alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "ON"
+    alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
