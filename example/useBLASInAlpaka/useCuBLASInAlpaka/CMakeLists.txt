@@ -51,6 +51,22 @@ if(NOT CUDAToolkit_FOUND)
     message(FATAL_ERROR "CUDAToolkit not found. Please ensure the CUDA toolkit is installed and accessible.")
 endif()# Search for cublas_v2.h in /usr/local using the find command
 
+# Search for cublas.h in /usr/local using the find command
+execute_process(
+    COMMAND find /usr/local -name "cublas.h" -type f
+    OUTPUT_VARIABLE CUBLAS_H_PATHS
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+
+# Check if the file was found and print the result
+if(CUBLAS_H_PATHS)
+    message(STATUS "Found OLD FILE cublas.h in the following locations:")
+    message(STATUS "${CUBLAS_H_PATHS}")
+else()
+    message(STATUS "cublas.h not found in /usr/local.")
+endif()
+
 # Search for cublas_v2.h in /usr/local using the find command
 execute_process(
     COMMAND find /usr/local -name "cublas_v2.h" -type f
