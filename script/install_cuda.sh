@@ -161,10 +161,10 @@ else
 echo_green "Installing minimal CUDA packages for version ${ALPAKA_CI_CUDA_VERSION}..."
 
 # # Verify if the CUDA repository is installed correctly
-# if ! dpkg -l | grep -q "${ALPAKA_CUDA_PKG_DEB_NAME}"; then
-#     echo_red "CUDA repository package ${ALPAKA_CUDA_PKG_DEB_NAME} is not installed correctly. Exiting."
-#     exit 1
-# fi
+ if ! dpkg -l | grep -q "${ALPAKA_CUDA_PKG_DEB_NAME}"; then
+     echo_red "CUDA repository package ${ALPAKA_CUDA_PKG_DEB_NAME} is not installed correctly. Exiting."
+     exit 1
+ fi
 
 # Install the required CUDA components
 if ! sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install \
