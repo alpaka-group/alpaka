@@ -39,7 +39,7 @@ linux_nvcc12.6_gcc13_release_cuda_only_mode:
   image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda125-gcc:3.2
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
-    ALPAKA_CI_CUDA_VERSION: "12.5"
+    ALPAKA_CI_CUDA_VERSION: "12.4"
     ALPAKA_CI_GCC_VER: 13
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.86.0

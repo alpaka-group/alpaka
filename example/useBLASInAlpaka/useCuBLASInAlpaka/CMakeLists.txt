@@ -40,25 +40,31 @@ if(NOT TARGET alpaka::alpaka)
         find_package(alpaka REQUIRED)
     endif()
 endif()
-
 # Debug: Print CUDA toolkit information
 message(STATUS "CUDAToolkit found: ${CUDAToolkit_FOUND}")
 message(STATUS "CUDAToolkit version: ${CUDAToolkit_VERSION}")
 message(STATUS "CUDAToolkit include directories: ${CUDAToolkit_INCLUDE_DIRS}")
 message(STATUS "CUDAToolkit library directories: ${CUDAToolkit_LIBRARY_DIR}")
 
+# Ensure CUDAToolkit is found
+if(NOT CUDAToolkit_FOUND)
+    message(FATAL_ERROR "CUDAToolkit not found. Please ensure the CUDA toolkit is installed and accessible.")
+endif()
+
+# Extract CUDA version
 string(REPLACE "." ";" CUDA_VERSION_LIST ${CUDAToolkit_VERSION})
 list(GET CUDA_VERSION_LIST 0 CUDA_VERSION_MAJOR)
 list(GET CUDA_VERSION_LIST 1 CUDA_VERSION_MINOR)
 
-# Construct dynamic include paths based on the detected CUDA version
+# Construct dynamic include paths
 set(CUDA_SEARCH_PATHS
     ${CUDAToolkit_INCLUDE_DIRS}
-    /usr/local/cuda/include
     /usr/local/cuda-${CUDA_VERSION_MAJOR}.${CUDA_VERSION_MINOR}/include
     /usr/local/cuda-${CUDA_VERSION_MAJOR}/include
-    /opt/cuda/include
 )
+
+# Debug: Print search paths
+message(STATUS "Searching for cublas_v2.h in the following paths: ${CUDA_SEARCH_PATHS}")
 
 # Verify cuBLAS header exists
 find_file(CUBLAS_HEADER_FILE
@@ -68,29 +74,20 @@ find_file(CUBLAS_HEADER_FILE
 )
 
 if(NOT CUBLAS_HEADER_FILE)
-    message(STATUS "Searched for cublas_v2.h in: ${CUDA_SEARCH_PATHS}")
-    message(FATAL_ERROR "cublas_v2.h not found in any CUDA include directories")
+    message(FATAL_ERROR "cublas_v2.h not found in any CUDA include directories. Please ensure the CUDA toolkit is installed and the include paths are correct.")
 else()
     message(STATUS "Found cublas_v2.h: ${CUBLAS_HEADER_FILE}")
 endif()
-#-------------------------------------------------------------------------------
-# Add executable.
 
-
-
+# Add executable
 alpaka_add_executable(
     ${_TARGET_NAME}
     src/useCuBLASInAlpaka.cpp)
+
+# Link cuBLAS library
 target_link_libraries(
     ${_TARGET_NAME}
     PUBLIC alpaka::alpaka CUDA::cublas)
 
-    # Explicitly add include directories to the target
-target_include_directories(
-    ${_TARGET_NAME}
-    PRIVATE ${CUDA_SEARCH_PATHS}
-)
-
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER example)
-#set_target_properties(${_TARGET_NAME}  PROPERTIES CUDA_STANDARD 17)
 add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})
