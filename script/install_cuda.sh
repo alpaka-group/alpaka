@@ -157,12 +157,60 @@ else
         # Install CUDA
         # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
         # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
-       sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}" libcublas-"${ALPAKA_CI_CUDA_VERSION}" libcublas-dev-"${ALPAKA_CI_CUDA_VERSION}"
+       # Install minimal CUDA packages with error handling and user messages
+echo_green "Installing minimal CUDA packages for version ${ALPAKA_CI_CUDA_VERSION}..."
 
-        sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
-        export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-        export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
+# # Verify if the CUDA repository is installed correctly
+# if ! dpkg -l | grep -q "${ALPAKA_CUDA_PKG_DEB_NAME}"; then
+#     echo_red "CUDA repository package ${ALPAKA_CUDA_PKG_DEB_NAME} is not installed correctly. Exiting."
+#     exit 1
+# fi
 
+# Install the required CUDA components
+if ! sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install \
+    cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" \
+    cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" \
+    cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" \
+    libcurand-"${ALPAKA_CI_CUDA_VERSION}" \
+    libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}" \
+    libcublas-"${ALPAKA_CI_CUDA_VERSION}" \
+    libcublas-dev-"${ALPAKA_CI_CUDA_VERSION}"; then
+    echo_red "Failed to install CUDA packages for version ${ALPAKA_CI_CUDA_VERSION}. Please check your network connection or repository setup. Exiting."
+    exit 1
+fi
+
+echo_green "CUDA packages for version ${ALPAKA_CI_CUDA_VERSION} installed successfully."
+
+# Verify if the CUDA installation directory exists
+if [ ! -d "/usr/local/cuda-${ALPAKA_CI_CUDA_VERSION}" ]; then
+    echo_red "CUDA installation directory /usr/local/cuda-${ALPAKA_CI_CUDA_VERSION} does not exist. Exiting."
+    exit 1
+fi
+
+# Create a symlink for the installed CUDA version
+if [ -L /usr/local/cuda ]; then
+    echo_yellow "Removing existing symlink at /usr/local/cuda..."
+    sudo rm /usr/local/cuda
+fi
+echo_green "Creating symlink for CUDA version ${ALPAKA_CI_CUDA_VERSION} at /usr/local/cuda..."
+sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
+
+# Update PATH and LD_LIBRARY_PATH environment variables
+if [ -d "/usr/local/cuda/bin" ]; then
+    export PATH=/usr/local/cuda/bin:$PATH
+    echo_green "Updated PATH to include /usr/local/cuda/bin."
+else
+    echo_red "CUDA bin directory /usr/local/cuda/bin does not exist. Exiting."
+    exit 1
+fi
+
+if [ -d "/usr/local/cuda/lib64" ]; then
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    echo_green "Updated LD_LIBRARY_PATH to include /usr/local/cuda/lib64."
+else
+    echo_red "CUDA lib64 directory /usr/local/cuda/lib64 does not exist. Exiting."
+    exit 1
+fi
         if [ "${ALPAKA_CI_CUDA_COMPILER}" == "clang++" ]
         then
             travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-multilib
