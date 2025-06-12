@@ -160,7 +160,7 @@ else
        # Install minimal CUDA packages with error handling and user messages
 echo_green "Installing minimal CUDA packages for version ${ALPAKA_CI_CUDA_VERSION}..."
 
-# # # Verify if the CUDA repository is installed correctly
+# # Verify if the CUDA repository is installed correctly
 #  if ! dpkg -l | grep -q "${ALPAKA_CUDA_PKG_DEB_NAME}"; then
 #      echo_red "CUDA repository package ${ALPAKA_CUDA_PKG_DEB_NAME} is not installed correctly. Exiting."
 #      exit 1
