@@ -157,7 +157,13 @@ else
         # Install CUDA
         # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
         # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
-        sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}"
+        sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" \
+            cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" \
+            cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" \
+            libcurand-"${ALPAKA_CI_CUDA_VERSION}" \
+            libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}" \
+            libcublas-${ALPAKA_CI_CUDA_VERSION} \
+            libcublas-dev-${ALPAKA_CI_CUDA_VERSION}
 
         sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
         export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
