@@ -42,7 +42,7 @@ struct LambdaMathTestTemplate
         using Functor = std::tuple_element_t<index, TFunctors>;
         using ArgsItem = mathtest::ArgsItem<TData, Functor::arity>;
         auto wrappedFunctor
-            = [] ALPAKA_FN_HOST_ACC(ArgsItem const& arguments, TAcc const& acc) { return Functor{}(arguments, acc); };
+            = [] ALPAKA_FN_ACC(ArgsItem const& arguments, TAcc const& acc) { return Functor{}(arguments, acc); };
         auto testTemplate = mathtest::TestTemplate<TAcc, Functor>{};
         testTemplate.template operator()<TData>(wrappedFunctor);
     }
