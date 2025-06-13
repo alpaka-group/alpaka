@@ -3086,8 +3086,15 @@
 
 		// #pragma once
 		// #include <array>    // amalgamate: file already included
-		#ifdef __cpp_lib_source_location
-		#    include <source_location>
+		/** The following compilers does not use std::source_location therefore we do not include the header.
+		 * Including the header source_location would lead into compiler issues under the following conditions.
+		 *  - nvcc is used with clang 15 as host compiler and MDSpan is used too.
+		 *  error: `include/c++/11/source_location(53): error: identifier "__builtin_source_location" is undefined`
+		 */
+		#if !(defined(__GNUC__) || defined(__clang__) || defined(__PGI) || defined(__NVCOMPILER) || defined(_MSC_VER))
+		#    if defined(__cpp_lib_source_location)
+		#        include <source_location>
+		#    endif
 		#endif
 		#include <string_view>
 		// #include <utility>    // amalgamate: file already included
