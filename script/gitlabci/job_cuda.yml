@@ -35,7 +35,7 @@ linux_nvcc12.0_gcc11_release_extended_lambda_off_compile_only:
     alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
 
 linux_nvcc12.5_gcc13_release_cuda_only_mode:
-  extends: .base_cuda_gcc_compile_only
+  extends: .base_cuda_gcc
   image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-gcc:3.2
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
