@@ -14,7 +14,7 @@
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wmissing-prototypes"
 #    endif
-__device__ auto userDefinedThreadFence() -> void
+__device__ static auto userDefinedThreadFence() -> void
 {
     __threadfence();
 }
