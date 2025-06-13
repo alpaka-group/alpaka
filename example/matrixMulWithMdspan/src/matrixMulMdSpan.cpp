@@ -31,7 +31,7 @@ inline constexpr bool is_mdspan = IsMdspan<T>::value;
 // Index type
 using Idx = std::size_t;
 // Set data type
-using DataType = float;
+using DataType = std::uint64_t;
 
 /**
  * @brief Kernel for performing multiplication of two 2D matrices. Each element is computed by a different thread.
@@ -165,17 +165,19 @@ auto example(TAccTag const&) -> int
     auto mdHostC = alpaka::experimental::getMdSpan(bufHostC);
     for(Idx i = 0; i < M; ++i)
     {
-        for(Idx j = 0; j < N; ++j)
+        if(success)
         {
-            DataType expectedValue = 0.0f;
-            for(Idx k = 0; k < K; ++k)
+            for(Idx j = 0; j < N; ++j)
             {
-                expectedValue += mdHostA(i, k) * mdHostB(k, j);
-            }
-            if(mdHostC(i, j) != expectedValue)
-            {
-                success = false;
-                break;
+                DataType expectedValue = 0.0f;
+                for(Idx k = 0; k < K; ++k)
+                {
+                    expectedValue += mdHostA(i, k) * mdHostB(k, j);
+                }
+                if(mdHostC(i, j) != expectedValue)
+                {
+                    success = false;
+                }
             }
         }
     }
