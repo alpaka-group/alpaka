@@ -102,7 +102,7 @@ auto example(TAccTag const&) -> int
     Idx const K = 1024;
 
     // Define device and queue
-    using Acc = alpaka::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::TagToAcc<TAccTag, Dim, Idx>;
     using Queue = alpaka::Queue<Acc, alpaka::Blocking>;
     using Vec = alpaka::Vec<Dim, Idx>;
 
