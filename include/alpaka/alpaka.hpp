@@ -20,14 +20,259 @@
 	 */
 
 	// #pragma once
-	#include <boost/predef/version_number.h>
+		// ============================================================================
+		// == ./include/alpaka/core/Config.hpp ==
+		// ==
+		/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Jeffrey Kelling,
+		 *                Bernhard Manfred Gruber, Jan Stephan
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		#ifdef __INTEL_COMPILER
+		#    warning                                                                                                          \
+		        "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)."
+		#endif
+
+		#define ALPAKA_VERSION_NUMBER(major, minor, patch)                                                                    \
+		    ((((major) % 1000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
+
+		#define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0llu, 0llu, 0llu)
+
+		#define ALPAKA_YYYYMMDD_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 10000llu), ((V) / 100llu) % 100llu, (V) % 100llu)
+
+		#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100llu) % 100llu, (V) % 100llu, 0llu)
+
+		#define ALPAKA_VVRRP_10_TO_VERSION(V)                                                                                 \
+		    ALPAKA_VERSION_NUMBER(((V) / 1000llu) % 100llu, ((V) / 10llu) % 100llu, (V) % 10llu)
+
+		// ######## detect operating systems ########
+
+		// WINDOWS
+		#if !defined(ALPAKA_OS_WINDOWS)
+		#    if defined(__WIN32__) || defined(__MINGW32__) || defined(WIN32)
+		#        define ALPAKA_OS_WINDOWS 1
+		#    else
+		#        define ALPAKA_OS_WINDOWS 0
+		#    endif
+		#endif
+
+
+		// Linux
+		#if !defined(ALPAKA_OS_LINUX)
+		#    if defined(__linux) || defined(__linux__) || defined(__gnu_linux__)
+		#        define ALPAKA_OS_LINUX 1
+		#    else
+		#        define ALPAKA_OS_LINUX 0
+		#    endif
+		#endif
+
+		// Apple
+		#if !defined(ALPAKA_OS_IOS)
+		#    if defined(__APPLE__)
+		#        define ALPAKA_OS_IOS 1
+		#    else
+		#        define ALPAKA_OS_IOS 0
+		#    endif
+		#endif
+
+		// Cygwin
+		#if !defined(ALPAKA_OS_CYGWIN)
+		#    if defined(__CYGWIN__)
+		#        define ALPAKA_OS_CYGWIN 1
+		#    else
+		#        define ALPAKA_OS_CYGWIN 0
+		#    endif
+		#endif
+
+		// ### architectures
+
+		// X86
+		#if !defined(ALPAKA_ARCH_X86)
+		#    if defined(__x86_64__) || defined(_M_X64)
+		#        define ALPAKA_ARCH_X86 1
+		#    else
+		#        define ALPAKA_ARCH_X86 0
+		#    endif
+		#endif
+
+		// RISCV
+		#if !defined(ALPAKA_ARCH_RISCV)
+		#    if defined(__riscv)
+		#        define ALPAKA_ARCH_RISCV 1
+		#    else
+		#        define ALPAKA_ARCH_RISCV 0
+		#    endif
+		#endif
+
+		// ARM
+		#if !defined(ALPAKA_ARCH_ARM)
+		#    if defined(__ARM_ARCH) || defined(__arm__) || defined(__arm64)
+		#        define ALPAKA_ARCH_ARM 1
+		#    else
+		#        define ALPAKA_ARCH_ARM 0
+		#    endif
+		#endif
+
+		// NVIDIA device compile
+		#if !defined(ALPAKA_ARCH_PTX)
+		#    if defined(__CUDA_ARCH__)
+		#        define ALPAKA_ARCH_PTX 1
+		#    else
+		#        define ALPAKA_ARCH_PTX 0
+		#    endif
+		#endif
+
+		// HIP device compile
+		#if !defined(ALPAKA_ARCH_HSA)
+		#    if defined(__HIP__) && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1
+		#        define ALPAKA_ARCH_HSA 1
+		#    else
+		#        define ALPAKA_ARCH_HSA 0
+		#    endif
+		#endif
+
+		// ######## compiler ########
+
+		// HIP compiler detection
+		#if !defined(ALPAKA_COMP_HIP)
+		#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
+		#        include <hip/hip_version.h>
+		// HIP doesn't give us a patch level for the last entry, just a gitdate
+		#        define ALPAKA_COMP_HIP ALPAKA_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
+		#    else
+		#        define ALPAKA_COMP_HIP ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#endif
+
+		// nvcc compiler
+		#if defined(__NVCC__)
+		#    define ALPAKA_COMP_NVCC ALPAKA_VERSION_NUMBER(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__, __CUDACC_VER_BUILD__)
+		#else
+		#    define ALPAKA_COMP_NVCC ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// clang compiler
+		#if defined(__clang__)
+		#    define ALPAKA_COMP_CLANG ALPAKA_VERSION_NUMBER(__clang_major__, __clang_minor__, __clang_patchlevel__)
+		#else
+		#    define ALPAKA_COMP_CLANG ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// MSVC compiler
+		#if defined(_MSC_VER)
+		#    define ALPAKA_COMP_MSVC                                                                                          \
+		        ALPAKA_VERSION_NUMBER((_MSC_FULL_VER) % 10'000'000, ((_MSC_FULL_VER) / 100000) % 100, (_MSC_FULL_VER) % 100000)
+		#else
+		#    define ALPAKA_COMP_MSVC ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// gnu compiler (excluding compilers which emulates gnu compiler like clang)
+		#if defined(__GNUC__) && !defined(__clang__)
+		#    if defined(__GNUC_PATCHLEVEL__)
+		#        define ALPAKA_COMP_GNUC ALPAKA_VERSION_NUMBER(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+		#    else
+		#        define ALPAKA_COMP_GNUC ALPAKA_VERSION_NUMBER(__GNUC__, __GNUC_MINOR__, 0)
+		#    endif
+		#else
+		#    define ALPAKA_COMP_GNUC ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// IBM compiler
+		// only clang based is supported
+		#if defined(__ibmxl__)
+		#    define ALPAKA_COMP_IBM ALPAKA_VERSION_NUMBER(__ibmxl_version__, __ibmxl_release__, __ibmxl_modification__)
+		#else
+		#    define ALPAKA_COMP_IBM ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// clang CUDA compiler detection
+		// Currently __CUDA__ is only defined by clang when compiling CUDA code.
+		#if defined(__clang__) && defined(__CUDA__)
+		#    define ALPAKA_COMP_CLANG_CUDA ALPAKA_VERSION_NUMBER(__clang_major__, __clang_minor__, __clang_patchlevel__)
+		#else
+		#    define ALPAKA_COMP_CLANG_CUDA ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// PGI and NV HPC SDK compiler detection
+		#if defined(__PGI)
+		#    define ALPAKA_COMP_PGI ALPAKA_VERSION_NUMBER(__PGIC__, __PGIC_MINOR__, __PGIC_PATCHLEVEL__)
+		#else
+		#    define ALPAKA_COMP_PGI ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#endif
+
+		// Intel LLVM compiler detection
+		#if !defined(ALPAKA_COMP_ICPX)
+		#    if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+		// The version string for icpx 2023.1.0 is 20230100. In Boost.Predef this becomes (53,1,0).
+		#        define ALPAKA_COMP_ICPX ALPAKA_YYYYMMDD_TO_VERSION(__INTEL_LLVM_COMPILER)
+		#    else
+		#        define ALPAKA_COMP_ICPX ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#endif
+
+		// ######## C++ language ########
+
+		//---------------------------------------HIP-----------------------------------
+		// __HIP__ is defined by both hip-clang and vanilla clang in HIP mode.
+		// https://github.com/ROCm-Developer-Tools/HIP/blob/master/docs/markdown/hip_porting_guide.md#compiler-defines-summary
+		#if !defined(ALPAKA_LANG_HIP)
+		#    if defined(__HIP__)
+		#        include <hip/hip_version.h>
+		// HIP doesn't give us a patch level for the last entry, just a gitdate
+		#        define ALPAKA_LANG_HIP ALPAKA_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
+		#    else
+		#        define ALPAKA_LANG_HIP ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#endif
+
+		// CUDA
+		#if !defined(ALPAKA_LANG_CUDA)
+		#    if defined(__CUDACC__) || defined(__CUDA__)
+		#        include <cuda.h>
+		// CUDA doesn't give us a patch level for the last entry, just zero.
+		#        define ALPAKA_LANG_CUDA ALPAKA_VVRRP_10_TO_VERSION(CUDART_VERSION)
+		#    else
+		#        define ALPAKA_LANG_CUDA ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#endif
+
+		// Intel OneAPI Sycl GPU
+		#if !defined(ALPAKA_LANG_SYCL)
+		#    if defined(SYCL_LANGUAGE_VERSION)
+		#        define ALPAKA_LANG_SYCL ALPAKA_YYYYMMDD_TO_VERSION(SYCL_LANGUAGE_VERSION)
+		#    else
+		#        define ALPAKA_LANG_SYCL ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#    if(ALPAKA_COMP_ICPX)
+		// ONE API must be detected via the ICPX compiler see
+		// https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2023-2/use-predefined-macros-to-specify-intel-compilers.html
+		#        define ALPAKA_LANG_ONEAPI ALPAKA_COMP_ICPX
+		#    endif
+		#endif
+
+		// OpenMP
+		#if !defined(ALPAKA_OMP)
+		#    if defined(_OPENMP)
+		#        include <omp.h>
+		#    endif
+		#    if defined(_OPENMP)
+		#        define ALPAKA_OMP ALPAKA_YYYYMM_TO_VERSION(_OPENMP)
+		#    else
+		#        define ALPAKA_OMP ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
+		#    endif
+		#endif
+		// ==
+		// == ./include/alpaka/core/Config.hpp ==
+		// ============================================================================
+
 
 	#define ALPAKA_VERSION_MAJOR 2
 	#define ALPAKA_VERSION_MINOR 0
 	#define ALPAKA_VERSION_PATCH 0
 
 	//! The alpaka library version number
-	#define ALPAKA_VERSION BOOST_VERSION_NUMBER(ALPAKA_VERSION_MAJOR, ALPAKA_VERSION_MINOR, ALPAKA_VERSION_PATCH)
+	#define ALPAKA_VERSION ALPAKA_VERSION_NUMBER(ALPAKA_VERSION_MAJOR, ALPAKA_VERSION_MINOR, ALPAKA_VERSION_PATCH)
 	// ==
 	// == ./include/alpaka/version.hpp ==
 	// ============================================================================
@@ -75,91 +320,6 @@
 
 					// #pragma once
 						// ============================================================================
-						// == ./include/alpaka/core/BoostPredef.hpp ==
-						// ==
-						/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Jeffrey Kelling,
-						 *                Bernhard Manfred Gruber, Jan Stephan
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						#include <boost/predef.h>
-
-						#ifdef __INTEL_COMPILER
-						#    warning                                                                                                          \
-						        "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)."
-						#endif
-
-						//---------------------------------------HIP-----------------------------------
-						// __HIP__ is defined by both hip-clang and vanilla clang in HIP mode.
-						// https://github.com/ROCm-Developer-Tools/HIP/blob/master/docs/markdown/hip_porting_guide.md#compiler-defines-summary
-						#if !defined(BOOST_LANG_HIP)
-						#    if defined(__HIP__)
-						/* BOOST_LANG_CUDA is enabled when either __CUDACC__ (nvcc) or __CUDA__ (clang) are defined. This occurs when
-						   nvcc / clang encounter a CUDA source file. Since there are no HIP source files we treat every source file
-						   as HIP when we are using a HIP-capable compiler. */
-						#        include <hip/hip_version.h>
-						// HIP doesn't give us a patch level for the last entry, just a gitdate
-						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
-						#    else
-						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
-						#    endif
-						#endif
-
-						// HSA device architecture detection (HSA generated via HIP(clang))
-						#if !defined(BOOST_ARCH_HSA)
-						#    if defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1 && defined(__HIP__)
-						// __HIP_DEVICE_COMPILE__ does not represent feature capability of target device like CUDA_ARCH.
-						// For feature detection there are special macros, see ROCm's HIP porting guide.
-						#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_AVAILABLE
-						#    else
-						#        define BOOST_ARCH_HSA BOOST_VERSION_NUMBER_NOT_AVAILABLE
-						#    endif
-						#endif
-
-						// HIP compiler detection
-						#if !defined(BOOST_COMP_HIP)
-						#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
-						#        include <hip/hip_version.h>
-						// HIP doesn't give us a patch level for the last entry, just a gitdate
-						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
-						#    else
-						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
-						#    endif
-						#endif
-
-						// clang CUDA compiler detection
-						// Currently __CUDA__ is only defined by clang when compiling CUDA code.
-						#if defined(__clang__) && defined(__CUDA__)
-						#    define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
-						#else
-						#    define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
-						#endif
-
-						// PGI and NV HPC SDK compiler detection
-						// As of Boost 1.74, Boost.Predef's compiler detection is a bit weird. Recent PGI compilers will be identified as
-						// BOOST_COMP_PGI_EMULATED. Boost.Predef has lackluster front-end support and mistakes the EDG front-end
-						// for an actual compiler.
-						// TODO: Whenever you look at this code please check whether https://github.com/boostorg/predef/issues/28 and
-						// https://github.com/boostorg/predef/issues/51 have been resolved.
-						// BOOST_COMP_PGI_EMULATED is defined by boost instead of BOOST_COMP_PGI
-						#if defined(BOOST_COMP_PGI) && defined(BOOST_COMP_PGI_EMULATED)
-						#    undef BOOST_COMP_PGI
-						#    define BOOST_COMP_PGI BOOST_COMP_PGI_EMULATED
-						#endif
-
-						// Intel LLVM compiler detection
-						#if !defined(BOOST_COMP_ICPX)
-						#    if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
-						// The version string for icpx 2023.1.0 is 20230100. In Boost.Predef this becomes (53,1,0).
-						#        define BOOST_COMP_ICPX BOOST_PREDEF_MAKE_YYYYMMDD(__INTEL_LLVM_COMPILER)
-						#    endif
-						#endif
-						// ==
-						// == ./include/alpaka/core/BoostPredef.hpp ==
-						// ============================================================================
-
-						// ============================================================================
 						// == ./include/alpaka/core/Common.hpp ==
 						// ==
 						/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego
@@ -167,7 +327,7 @@
 						 */
 
 						// #pragma once
-						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+						// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 							// ============================================================================
 							// == ./include/alpaka/core/Debug.hpp ==
 							// ==
@@ -176,7 +336,7 @@
 							 */
 
 							// #pragma once
-							// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+							// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 							#include <iostream>
 							#include <string>
@@ -236,9 +396,9 @@
 
 							// Define ALPAKA_DEBUG_BREAK.
 							#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-							#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG
+							#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 							#        define ALPAKA_DEBUG_BREAK ::__builtin_trap()
-							#    elif BOOST_COMP_MSVC
+							#    elif ALPAKA_COMP_MSVC
 							#        define ALPAKA_DEBUG_BREAK ::__debugbreak()
 							#    else
 							#        define ALPAKA_DEBUG_BREAK
@@ -257,7 +417,7 @@
 						#    include <intrin.h>
 						#endif
 
-						#if BOOST_LANG_HIP
+						#if ALPAKA_LANG_HIP
 						// HIP defines some keywords like __forceinline__ in header files.
 						#    include <hip/hip_runtime.h>
 						#endif
@@ -271,7 +431,7 @@
 						//! -> std::int32_t;
 						//! \endcode
 						//! @{
-						#if BOOST_LANG_CUDA || BOOST_LANG_HIP
+						#if ALPAKA_LANG_CUDA || ALPAKA_LANG_HIP
 						#    if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) || defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
 						#        define ALPAKA_FN_ACC __device__
 						#    else
@@ -316,9 +476,9 @@
 						//! ALPAKA_NO_HOST_ACC_WARNING
 						//! ALPAKA_FN_HOST_ACC function_declaration()
 						//! WARNING: Only use this method if there is no other way.
-						//! Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.
-						#if(BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA)
-						#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+						//! Most cases can be solved by #if ALPAKA_ARCH_PTX or #if ALPAKA_LANG_CUDA.
+						#if(ALPAKA_LANG_CUDA && !ALPAKA_COMP_CLANG_CUDA)
+						#    if ALPAKA_COMP_MSVC
 						#        define ALPAKA_NO_HOST_ACC_WARNING __pragma(hd_warning_disable)
 						#    else
 						#        define ALPAKA_NO_HOST_ACC_WARNING _Pragma("hd_warning_disable")
@@ -330,9 +490,9 @@
 						//! Macro defining the inline function attribute.
 						//!
 						//! The macro should stay on the left hand side of keywords, e.g. 'static', 'constexpr', 'explicit' or the return type.
-						#if BOOST_LANG_CUDA || BOOST_LANG_HIP
+						#if ALPAKA_LANG_CUDA || ALPAKA_LANG_HIP
 						#    define ALPAKA_FN_INLINE __forceinline__
-						#elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+						#elif ALPAKA_COMP_MSVC
 						// TODO: With C++20 [[msvc::forceinline]] can be used.
 						#    define ALPAKA_FN_INLINE __forceinline
 						#else
@@ -378,8 +538,8 @@
 						//!     alpaka::memcpy(queue, foo<Acc>, bufHost, extent);
 						//! }
 						//! \endcode
-						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
-						    || BOOST_LANG_HIP)
+						#if((ALPAKA_LANG_CUDA && ALPAKA_COMP_CLANG_CUDA) || (ALPAKA_LANG_CUDA && ALPAKA_COMP_NVCC && ALPAKA_ARCH_PTX)         \
+						    || ALPAKA_LANG_HIP)
 						#    if defined(__CUDACC_RDC__) || defined(__CLANG_RDC__)
 						#        define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                          \
 						            template<typename TAcc>                                                                                   \
@@ -433,8 +593,8 @@
 						//!     alpaka::memcpy(queue, foo<Acc>, bufHost, extent);
 						//! }
 						//! \endcode
-						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
-						    || BOOST_LANG_HIP)
+						#if((ALPAKA_LANG_CUDA && ALPAKA_COMP_CLANG_CUDA) || (ALPAKA_LANG_CUDA && ALPAKA_COMP_NVCC && ALPAKA_ARCH_PTX)         \
+						    || ALPAKA_LANG_HIP)
 						#    if defined(__CUDACC_RDC__) || defined(__CLANG_RDC__)
 						#        define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                        \
 						            template<typename TAcc>                                                                                   \
@@ -458,8 +618,8 @@
 						//! This is useful for pointers, (shared) variables and shared memory which are used in combination with
 						//! the alpaka::mem_fence() function. It ensures that memory annotated with this macro will always be written directly
 						//! to memory (and not to a register or cache because of compiler optimizations).
-						#if(BOOST_LANG_CUDA && BOOST_ARCH_PTX)                                                                                \
-						    || (BOOST_LANG_HIP && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1)
+						#if(ALPAKA_LANG_CUDA && ALPAKA_ARCH_PTX)                                                                              \
+						    || (ALPAKA_LANG_HIP && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1)
 						#    define ALPAKA_DEVICE_VOLATILE volatile
 						#else
 						#    define ALPAKA_DEVICE_VOLATILE
@@ -468,6 +628,7 @@
 						// == ./include/alpaka/core/Common.hpp ==
 						// ============================================================================
 
+					// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 					#include <algorithm>
 					#include <type_traits>
@@ -484,13 +645,13 @@
 					        {
 					            auto const old = *addr;
 					            auto& ref = *addr;
-					#if BOOST_COMP_GNUC
+					#if ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic push
 					#    pragma GCC diagnostic ignored "-Wconversion"
 					#endif
 					            ref += value;
 					            return old;
-					#if BOOST_COMP_GNUC
+					#if ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic pop
 					#endif
 					        }
@@ -506,12 +667,12 @@
 					        {
 					            auto const old = *addr;
 					            auto& ref = *addr;
-					#if BOOST_COMP_GNUC
+					#if ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic push
 					#    pragma GCC diagnostic ignored "-Wconversion"
 					#endif
 					            ref -= value;
-					#if BOOST_COMP_GNUC
+					#if ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic pop
 					#endif
 					            return old;
@@ -656,13 +817,13 @@
 
 					// gcc-7.4.0 assumes for an optimization that a signed overflow does not occur here.
 					// That's fine, so ignore that warning.
-					#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
+					#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
 					#    pragma GCC diagnostic push
 					#    pragma GCC diagnostic ignored "-Wstrict-overflow"
 					#endif
 					            // check if values are bit-wise equal
 					            ref = ((old == compare) ? value : old);
-					#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
+					#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
 					#    pragma GCC diagnostic pop
 					#endif
 					            return old;
@@ -694,7 +855,7 @@
 
 					// gcc-7.4.0 assumes for an optimization that a signed overflow does not occur here.
 					// That's fine, so ignore that warning.
-					#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
+					#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
 					#    pragma GCC diagnostic push
 					#    pragma GCC diagnostic ignored "-Wstrict-overflow"
 					#endif
@@ -702,7 +863,7 @@
 					            BitUnion c{compare};
 
 					            ref = ((o.r == c.r) ? value : old);
-					#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
+					#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
 					#    pragma GCC diagnostic pop
 					#endif
 					            return old;
@@ -1140,7 +1301,7 @@
 				// == ./include/alpaka/atomic/Traits.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 			#include <array>
 			#include <atomic>
@@ -1354,12 +1515,12 @@
 			                T result;
 			                do
 			                {
-			#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 			#        pragma GCC diagnostic push
 			#        pragma GCC diagnostic ignored "-Wfloat-equal"
 			#    endif
 			                    result = ((old == compare) ? value : old);
-			#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 			#        pragma GCC diagnostic pop
 			#    endif
 			                } while(!ref.compare_exchange_weak(old, result));
@@ -1383,7 +1544,7 @@
 
 			// #pragma once
 			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 			// #include <array>    // amalgamate: file already included
 			#include <mutex>
@@ -1435,7 +1596,7 @@
 			            constexpr size_t hashTableSize = THashTableSize == 0u ? 1u : nextPowerOf2(THashTableSize);
 
 			            size_t const hashedAddr = hash(ptr) & (hashTableSize - 1u);
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic push
 			#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 			#    endif
@@ -1443,7 +1604,7 @@
 			                std::mutex,
 			                hashTableSize>
 			                m_mtxAtomic; //!< The mutex protecting access for an atomic operation.
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic pop
 			#    endif
 			            return m_mtxAtomic[hashedAddr];
@@ -1657,7 +1818,7 @@
 		// #pragma once
 		// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 		#ifdef _OPENMP
 
@@ -1686,7 +1847,7 @@
 		                T old;
 		                auto& ref(*addr);
 		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconversion"
 		#        endif
@@ -1695,7 +1856,7 @@
 		                    old = ref;
 		                    ref += value;
 		                }
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 		                return old;
@@ -1711,7 +1872,7 @@
 		                T old;
 		                auto& ref(*addr);
 		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconversion"
 		#        endif
@@ -1720,7 +1881,7 @@
 		                    old = ref;
 		                    ref -= value;
 		                }
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 		                return old;
@@ -1754,7 +1915,7 @@
 		                T old;
 		                auto& ref(*addr);
 		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconversion"
 		#        endif
@@ -1763,7 +1924,7 @@
 		                    old = ref;
 		                    ref &= value;
 		                }
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 		                return old;
@@ -1779,7 +1940,7 @@
 		                T old;
 		                auto& ref(*addr);
 		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconversion"
 		#        endif
@@ -1788,7 +1949,7 @@
 		                    old = ref;
 		                    ref |= value;
 		                }
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 		                return old;
@@ -1804,7 +1965,7 @@
 		                T old;
 		                auto& ref(*addr);
 		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconversion"
 		#        endif
@@ -1813,7 +1974,7 @@
 		                    old = ref;
 		                    ref ^= value;
 		                }
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 		                return old;
@@ -2183,13 +2344,12 @@
 			//!  for(...){...}`
 			// \TODO: Implement for other compilers.
 			// See: http://stackoverflow.com/questions/2706286/pragmas-swp-ivdep-prefetch-support-in-various-compilers
-			/*#if BOOST_COMP_HPACC
-			    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("ivdep")
-			#elif BOOST_COMP_PGI
+			/*
+			#if ALPAKA_COMP_PGI
 			    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("vector")
-			#elif BOOST_COMP_MSVC
+			#elif ALPAKA_COMP_MSVC
 			    #define ALPAKA_VECTORIZE_HINT(...)  __pragma(loop(ivdep))
-			#elif BOOST_COMP_GNUC
+			#elif ALPAKA_COMP_GNUC
 			    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("GCC ivdep")
 			#else
 			    #define ALPAKA_VECTORIZE_HINT(...)
@@ -2547,7 +2707,7 @@
 		        };
 		    } // namespace detail
 
-		#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+		#if ALPAKA_COMP_MSVC
 		#    pragma warning(push)
 		#    pragma warning(disable : 4324) // warning C4324: structure was padded due to alignment specifier
 		#endif
@@ -2602,7 +2762,7 @@
 		        mutable std::array<uint8_t, detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes> m_mem;
 		        std::uint32_t m_dynPitch;
 		    };
-		#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+		#if ALPAKA_COMP_MSVC
 		#    pragma warning(pop)
 		#endif
 
@@ -2611,7 +2771,7 @@
 		        template<typename T, std::size_t TStaticAllocKiB>
 		        struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
 		        {
-		#if BOOST_COMP_GNUC
+		#if ALPAKA_COMP_GNUC
 		#    pragma GCC diagnostic push
 		#    pragma GCC diagnostic ignored                                                                                    \
 		        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
@@ -2624,7 +2784,7 @@
 		                    "defaultAlignment!");
 		                return reinterpret_cast<T*>(mem.dynMemBegin());
 		            }
-		#if BOOST_COMP_GNUC
+		#if ALPAKA_COMP_GNUC
 		#    pragma GCC diagnostic pop
 		#endif
 		        };
@@ -2775,7 +2935,7 @@
 			            meta->offset = m_allocdBytes;
 			        }
 
-			#if BOOST_COMP_GNUC
+			#if ALPAKA_COMP_GNUC
 			#    pragma GCC diagnostic push
 			#    pragma GCC diagnostic ignored                                                                                    \
 			        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
@@ -2819,7 +2979,7 @@
 			        }
 
 			    private:
-			#if BOOST_COMP_GNUC
+			#if ALPAKA_COMP_GNUC
 			#    pragma GCC diagnostic pop
 			#endif
 
@@ -3258,7 +3418,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
 				#include <type_traits>
@@ -3303,7 +3463,7 @@
 				        struct OptimalAlignment
 				            : std::integral_constant<
 				                  std::size_t,
-				#if BOOST_COMP_GNUC
+				#if ALPAKA_COMP_GNUC
 				                  // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger
 				                  // than 128[-Wattributes]".
 				                  (TsizeBytes > 64) ? 128 :
@@ -3322,8 +3482,8 @@
 				// ============================================================================
 
 			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Unreachable.hpp ==
 				// ==
@@ -3332,17 +3492,17 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 				//! Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue
 				//! a false warning about a missing return statement unless it is told that the following code section is unreachable.
 				//!
 				//! \param x A dummy value for the expected return type of the calling function.
-				#if(BOOST_COMP_NVCC && BOOST_ARCH_PTX)
+				#if(ALPAKA_COMP_NVCC && ALPAKA_ARCH_PTX)
 				#    define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
-				#elif BOOST_COMP_MSVC
+				#elif ALPAKA_COMP_MSVC
 				#    define ALPAKA_UNREACHABLE(...) __assume(false)
-				#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
+				#elif ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 				#    define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
 				#else
 				#    define ALPAKA_UNREACHABLE(...)
@@ -4013,7 +4173,7 @@
 			        }
 
 			// suppress strange warning produced by nvcc+MSVC in release mode
-			#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+			#if ALPAKA_COMP_MSVC
 			#    pragma warning(push)
 			#    pragma warning(disable : 4702) // unreachable code
 			#endif
@@ -4023,7 +4183,7 @@
 			        {
 			            return foldrAll(std::multiplies<TVal>{}, TVal{1});
 			        }
-			#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+			#if ALPAKA_COMP_MSVC
 			#    pragma warning(pop)
 			#endif
 			        //! \return The sum of all values.
@@ -4575,7 +4735,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/intrinsic/IntrinsicFallback.hpp ==
@@ -4760,7 +4920,7 @@
 		#    include <bit>
 		#endif
 
-		#if BOOST_COMP_MSVC
+		#if ALPAKA_COMP_MSVC
 		// #    include <intrin.h>    // amalgamate: file already included
 		#endif
 
@@ -4781,12 +4941,12 @@
 		            {
 		#ifdef __cpp_lib_bitops
 		                return std::popcount(value);
-		#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
+		#elif ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 		                if constexpr(sizeof(UnsignedIntegral) == 8)
 		                    return __builtin_popcountll(value);
 		                else
 		                    return __builtin_popcount(value);
-		#elif BOOST_COMP_MSVC
+		#elif ALPAKA_COMP_MSVC
 		                if constexpr(sizeof(UnsignedIntegral) == 8)
 		                    return static_cast<std::int32_t>(__popcnt64(value));
 		                else
@@ -4807,12 +4967,12 @@
 		            {
 		#ifdef __cpp_lib_bitops
 		                return value == 0 ? 0 : std::countr_zero(static_cast<std::make_unsigned_t<Integral>>(value)) + 1;
-		#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
+		#elif ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 		                if constexpr(sizeof(Integral) == 8)
 		                    return __builtin_ffsll(value);
 		                else
 		                    return __builtin_ffs(value);
-		#elif BOOST_COMP_MSVC
+		#elif ALPAKA_COMP_MSVC
 		                // Implementation based on
 		                // https://gitlab.freedesktop.org/cairo/cairo/commit/f5167dc2e1a13d8c4e5d66d7178a24b9b5e7ac7a
 		                unsigned long index = 0u;
@@ -4849,7 +5009,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 			#include <type_traits>
 
@@ -7050,7 +7210,7 @@
 							 */
 
 							// #pragma once
-							// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+							// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 							//! Suggests unrolling of the directly following loop to the compiler.
 							//!
@@ -7058,13 +7218,13 @@
 							//!  `ALPAKA_UNROLL
 							//!  for(...){...}`
 							// \TODO: Implement for other compilers.
-							#if BOOST_ARCH_PTX
+							#if ALPAKA_ARCH_PTX
 							#    define ALPAKA_UNROLL_STRINGIFY(x) #x
 							#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
-							#elif BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
+							#elif ALPAKA_COMP_IBM
 							#    define ALPAKA_UNROLL_STRINGIFY(x) #x
 							#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
-							#elif BOOST_COMP_PGI
+							#elif ALPAKA_COMP_PGI
 							#    define ALPAKA_UNROLL(...) _Pragma("unroll")
 							#else
 							#    define ALPAKA_UNROLL(...)
@@ -8164,7 +8324,7 @@
 				 * LICENSE.txt
 				 */
 
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
 				/* work-around for glibc < 2.18 according to bug
@@ -8178,16 +8338,16 @@
 				#endif
 				#include <cinttypes>
 
-				#if BOOST_COMP_CLANG
+				#if ALPAKA_COMP_CLANG
 				#   pragma clang diagnostic push
 				#   pragma clang diagnostic ignored "-Wold-style-cast"
 				#   pragma clang diagnostic ignored "-Wunused-function"
 				#endif
-				#if BOOST_COMP_GNUC
+				#if ALPAKA_COMP_GNUC
 				#   pragma GCC diagnostic push
 				#   pragma GCC diagnostic ignored "-Wold-style-cast"
 				#endif
-				#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+				#if ALPAKA_COMP_MSVC
 				    #pragma warning(push)
 				    #pragma warning(disable: 4100)  // tinymt32.h(60): warning C4100: 'random': unreferenced formal parameter
 				#endif
@@ -8560,13 +8720,13 @@
 				#undef MIN_LOOP
 				#undef PRE_LOOP
 
-				#if BOOST_COMP_CLANG
+				#if ALPAKA_COMP_CLANG
 				#   pragma clang diagnostic pop
 				#endif
-				#if BOOST_COMP_GNUC
+				#if ALPAKA_COMP_GNUC
 				#   pragma GCC diagnostic pop
 				#endif
-				#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+				#if ALPAKA_COMP_MSVC
 				#   pragma warning(pop)
 				#endif
 
@@ -9418,12 +9578,12 @@
 			    [[deprecated("use getExtents(extent)[Tidx] instead")]] ALPAKA_FN_HOST_ACC auto getExtent(
 			        TExtent const& extent = TExtent()) -> Idx<TExtent>
 			    {
-			#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+			#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 			#    pragma GCC diagnostic push
 			#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 			#endif
 			        return trait::GetExtent<DimInt<Tidx>, TExtent>::getExtent(extent);
-			#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+			#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 			#    pragma GCC diagnostic pop
 			#endif
 			    }
@@ -9986,8 +10146,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 				// ============================================================================
@@ -10001,7 +10161,7 @@
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 				#ifdef _OPENMP
-				#    include <omp.h>
+				// #    include <omp.h>    // amalgamate: file already included
 				#endif
 
 				// #include <cstdint>    // amalgamate: file already included
@@ -10278,7 +10438,7 @@
 			        template<typename TKernelFnObj, typename TAcc, typename TSfinae = void>
 			        struct BlockSharedMemDynSizeBytes
 			        {
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10290,7 +10450,7 @@
 			            //! \param args,... The kernel invocation arguments.
 			            //! \return The size of the shared memory allocated for a block in bytes.
 			            //! The default version always returns zero.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			            ALPAKA_NO_HOST_ACC_WARNING
@@ -10368,7 +10528,7 @@
 			            };
 
 			        public:
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10380,7 +10540,7 @@
 			            //! \param args,... The kernel invocation arguments.
 			            //! \return The OpenMP schedule information as an alpaka::omp::Schedule object,
 			            //!         returning an object of any other type is treated as if the trait is not specialized.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			            ALPAKA_NO_HOST_ACC_WARNING
@@ -10396,7 +10556,7 @@
 			        };
 			    } // namespace trait
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10408,7 +10568,7 @@
 			//! \param args,... The kernel invocation arguments.
 			//! \return The size of the shared memory allocated for a block in bytes.
 			//! The default implementation always returns zero.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			    ALPAKA_NO_HOST_ACC_WARNING
@@ -10445,7 +10605,7 @@
 			            std::forward<TArgs>(args)...);
 			    }
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10457,7 +10617,7 @@
 			//! \param args,... The kernel invocation arguments.
 			//! \return The OpenMP schedule information as an alpaka::omp::Schedule object if the kernel specialized the
 			//!         OmpSchedule trait, an object of another type if the kernel didn't specialize the trait.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			    template<typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
@@ -10474,7 +10634,7 @@
 			            args...);
 			    }
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10538,7 +10698,7 @@
 			    //! @{
 			    template<typename T, typename = void>
 			    struct IsKernelTriviallyCopyable
-			#if BOOST_COMP_NVCC
+			#if ALPAKA_COMP_NVCC
 			        : std::bool_constant<
 			              std::is_trivially_copyable_v<T> || __nv_is_extended_device_lambda_closure_type(T)
 			              || __nv_is_extended_host_device_lambda_closure_type(T)>
@@ -10560,7 +10720,7 @@
 			//! \param kernelFnObj The kernel function object which should be executed.
 			//! \param args,... The kernel invocation arguments.
 			//! \return The kernel execution task.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
@@ -10569,7 +10729,7 @@
 			        // check for void return type
 			        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
-			#if BOOST_COMP_NVCC
+			#if ALPAKA_COMP_NVCC
 			        static_assert(
 			            isKernelTriviallyCopyable<TKernelFnObj>,
 			            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
@@ -10594,7 +10754,7 @@
 			            std::forward<TArgs>(args)...);
 			    }
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
@@ -10606,7 +10766,7 @@
 			//! \param workDiv The index domain work division.
 			//! \param kernelFnObj The kernel function object which should be executed.
 			//! \param args,... The kernel invocation arguments.
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
@@ -10838,7 +10998,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 		// #include <iostream>    // amalgamate: file already included
 		// #include <tuple>    // amalgamate: file already included
@@ -11173,9 +11333,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
-			#if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
+			#if ALPAKA_OS_WINDOWS || ALPAKA_OS_CYGWIN
 			#    ifndef NOMINMAX
 			#        define NOMINMAX
 			#    endif
@@ -11184,18 +11344,18 @@
 			#    endif
 			// We could use some more macros to reduce the number of sub-headers included, but this would restrict user code.
 			#    include <windows.h>
-			#elif BOOST_OS_UNIX || BOOST_OS_MACOS
+			#elif ALPAKA_OS_LINUX || ALPAKA_OS_IOS
 			#    include <sys/param.h>
 			#    include <sys/types.h>
 			#    include <unistd.h>
 
 			// #    include <cstdint>    // amalgamate: file already included
-			#    if BOOST_OS_BSD || BOOST_OS_MACOS
+			#    if ALPAKA_OS_IOS
 			#        include <sys/sysctl.h>
 			#    endif
 			#endif
 
-			#if BOOST_OS_LINUX
+			#if ALPAKA_OS_LINUX
 			#    include <fstream>
 			#endif
 
@@ -11203,10 +11363,10 @@
 			#include <stdexcept>
 			// #include <string>    // amalgamate: file already included
 
-			#if BOOST_ARCH_X86
-			#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_PGI
+			#if ALPAKA_ARCH_X86
+			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG || ALPAKA_COMP_PGI
 			#        include <cpuid.h>
-			#    elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+			#    elif ALPAKA_COMP_MSVC
 			// #        include <intrin.h>    // amalgamate: file already included
 			#    endif
 			#endif
@@ -11216,14 +11376,14 @@
 			    constexpr int NO_CPUID = 0;
 			    constexpr int UNKNOWN_CPU = 0;
 			    constexpr int UNKNOWN_COMPILER = 1;
-			#if BOOST_ARCH_X86
-			#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_PGI
+			#if ALPAKA_ARCH_X86
+			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG || ALPAKA_COMP_PGI
 			    inline auto cpuid(std::uint32_t level, std::uint32_t subfunction, std::uint32_t ex[4]) -> void
 			    {
 			        __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
 			    }
 
-			#    elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+			#    elif ALPAKA_COMP_MSVC
 			    inline auto cpuid(std::uint32_t level, std::uint32_t subfunction, std::uint32_t ex[4]) -> void
 			    {
 			        __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
@@ -11262,7 +11422,7 @@
 			                return "<unknown>";
 			            }
 			        }
-			#if BOOST_ARCH_X86
+			#if ALPAKA_ARCH_X86
 			        // Get the information associated with each extended ID.
 			        char cpuBrandString[0x40] = {0};
 			        for(std::uint32_t i(0x8000'0000); i <= nExIds; ++i)
@@ -11292,11 +11452,11 @@
 			    //! \return Pagesize in bytes used by the system.
 			    inline size_t getPageSize()
 			    {
-			#if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
+			#if ALPAKA_OS_WINDOWS || ALPAKA_OS_CYGWIN
 			        SYSTEM_INFO si;
 			        GetSystemInfo(&si);
 			        return si.dwPageSize;
-			#elif BOOST_OS_UNIX || BOOST_OS_MACOS
+			#elif ALPAKA_OS_LINUX || ALPAKA_OS_IOS
 			#    if defined(_SC_PAGESIZE)
 			        return static_cast<std::size_t>(sysconf(_SC_PAGESIZE));
 			#    else
@@ -11314,20 +11474,20 @@
 			    //! http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
 			    inline auto getTotalGlobalMemSizeBytes() -> std::size_t
 			    {
-			#if BOOST_OS_WINDOWS
+			#if ALPAKA_OS_WINDOWS
 			        MEMORYSTATUSEX status;
 			        status.dwLength = sizeof(status);
 			        GlobalMemoryStatusEx(&status);
 			        return static_cast<std::size_t>(status.ullTotalPhys);
 
-			#elif BOOST_OS_CYGWIN
+			#elif ALPAKA_OS_CYGWIN
 			        // New 64-bit MEMORYSTATUSEX isn't available.
 			        MEMORYSTATUS status;
 			        status.dwLength = sizeof(status);
 			        GlobalMemoryStatus(&status);
 			        return static_cast<std::size_t>(status.dwTotalPhys);
 
-			#elif BOOST_OS_UNIX || BOOST_OS_MACOS
+			#elif ALPAKA_OS_LINUX || ALPAKA_OS_IOS
 			        // Unix : Prefer sysctl() over sysconf() except sysctl() with HW_REALMEM and HW_PHYSMEM which are not
 			        // always reliable
 			#    if defined(CTL_HW) && (defined(HW_MEMSIZE) || defined(HW_PHYSMEM64))
@@ -11377,19 +11537,19 @@
 			    //! \throws std::logic_error if not implemented on the system and std::runtime_error on other errors.
 			    inline auto getFreeGlobalMemSizeBytes() -> std::size_t
 			    {
-			#if BOOST_OS_WINDOWS
+			#if ALPAKA_OS_WINDOWS
 			        MEMORYSTATUSEX status;
 			        status.dwLength = sizeof(status);
 			        GlobalMemoryStatusEx(&status);
 			        return static_cast<std::size_t>(status.ullAvailPhys);
-			#elif BOOST_OS_LINUX
+			#elif ALPAKA_OS_LINUX
 			#    if defined(_SC_AVPHYS_PAGES)
 			        return static_cast<std::size_t>(sysconf(_SC_AVPHYS_PAGES)) * getPageSize();
 			#    else
 			        // this is legacy and only used as fallback
 			        return static_cast<std::size_t>(get_avphys_pages()) * getPageSize();
 			#    endif
-			#elif BOOST_OS_MACOS
+			#elif ALPAKA_OS_IOS
 			        int free_pages = 0;
 			        std::size_t len = sizeof(free_pages);
 			        if(sysctlbyname("vm.page_free_count", &free_pages, &len, nullptr, 0) < 0)
@@ -11417,8 +11577,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/mem/view/Traits.hpp ==
 				// ==
@@ -11517,12 +11677,12 @@
 					    [[deprecated("use getOffsets(offsets)[Tidx] instead")]] ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets)
 					        -> Idx<TOffsets>
 					    {
-					#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+					#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic push
 					#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 					#endif
 					        return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
-					#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+					#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 					#    pragma GCC diagnostic pop
 					#endif
 					    }
@@ -11677,12 +11837,12 @@
 				                constexpr auto viewDim = Dim<TView>::value;
 				                if constexpr(idx < viewDim - 1)
 				                {
-				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 				#    pragma GCC diagnostic push
 				#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 				#endif
 				                    return getExtents(view)[idx] * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
-				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 				#    pragma GCC diagnostic pop
 				#endif
 				                }
@@ -11773,12 +11933,12 @@
 				    template<std::size_t Tidx, typename TView>
 				    [[deprecated("Use getPitchesInBytes instead")]] ALPAKA_FN_HOST auto getPitchBytes(TView const& view) -> Idx<TView>
 				    {
-				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 				#    pragma GCC diagnostic push
 				#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 				#endif
 				        return trait::GetPitchBytes<DimInt<Tidx>, TView>::getPitchBytes(view);
-				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#if ALPAKA_COMP_CLANG || ALPAKA_COMP_GNUC
 				#    pragma GCC diagnostic pop
 				#endif
 				    }
@@ -12133,12 +12293,12 @@
 				                    ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
 				                    {
 				                        assert(i % alignof(ElementType) == 0);
-				#    if BOOST_COMP_GNUC
+				#    if ALPAKA_COMP_GNUC
 				#        pragma GCC diagnostic push
 				#        pragma GCC diagnostic ignored "-Wcast-align"
 				#    endif
 				                        return *reinterpret_cast<ElementType*>(p + i);
-				#    if BOOST_COMP_GNUC
+				#    if ALPAKA_COMP_GNUC
 				#        pragma GCC diagnostic pop
 				#    endif
 				                    }
@@ -12302,7 +12462,7 @@
 
 			    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
 			       figure out that the template parameters are attached to a C++17 inline variable. */
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored "-Wdocumentation"
 			#endif
@@ -12312,7 +12472,7 @@
 			    //! \tparam TDim The dimensionality of the buffer to allocate.
 			    template<typename TDev, typename TDim>
 			    inline constexpr bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 
@@ -12364,7 +12524,7 @@
 
 			    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
 			       figure out that the template parameters are attached to a C++17 inline variable. */
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored "-Wdocumentation"
 			#endif
@@ -12373,7 +12533,7 @@
 			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    template<typename TPlatform>
 			    inline constexpr bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 
@@ -12520,14 +12680,14 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 				namespace alpaka
 				{
 				    template<typename TDev>
 				    class EventGenericThreads;
 
-				#if BOOST_COMP_CLANG
+				#if ALPAKA_COMP_CLANG
 				// avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every
 				// translation unit [-Werror,-Wweak-vtables]" https://stackoverflow.com/a/29288300
 				#    pragma clang diagnostic push
@@ -12545,7 +12705,7 @@
 				        virtual void wait(EventGenericThreads<TDev> const&) = 0;
 				        virtual ~IGenericThreadsQueue() = default;
 				    };
-				#if BOOST_COMP_CLANG
+				#if ALPAKA_COMP_CLANG
 				#    pragma clang diagnostic pop
 				#endif
 				} // namespace alpaka
@@ -12568,7 +12728,7 @@
 			    {
 			        namespace detail
 			        {
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			// avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every
 			// translation unit [-Werror,-Wweak-vtables]" https://stackoverflow.com/a/29288300
 			#    pragma clang diagnostic push
@@ -12577,7 +12737,7 @@
 			            //! The CPU device queue implementation.
 			            template<typename TDev>
 			            class QueueGenericThreadsBlockingImpl final : public IGenericThreadsQueue<TDev>
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			            {
@@ -12736,7 +12896,7 @@
 					    // This function is equivalent to std::declval() but can be used
 					    // within an alpaka accelerator kernel too.
 					    // This function can be used only within std::decltype().
-					#if BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA || BOOST_COMP_HIP
+					#if ALPAKA_LANG_CUDA && ALPAKA_COMP_CLANG_CUDA || ALPAKA_COMP_HIP
 					    template<class T>
 					    ALPAKA_FN_HOST_ACC std::add_rvalue_reference_t<T> declval();
 					#else
@@ -12796,7 +12956,6 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 						// ============================================================================
 						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ==
@@ -12805,7 +12964,7 @@
 						 */
 
 						// #pragma once
-						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+						// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 						// #include <cassert>    // amalgamate: file already included
 						#include <condition_variable>
@@ -12820,7 +12979,7 @@
 						{
 						    class CallbackThread
 						    {
-						#if BOOST_COMP_CLANG
+						#if ALPAKA_COMP_CLANG
 						#    pragma clang diagnostic push
 						#    pragma clang diagnostic ignored "-Wweak-vtables"
 						#endif
@@ -12828,7 +12987,7 @@
 						        // std::future which will keep the task alive and we cannot control the moment the future is set.
 						        //! \todo with C++23 std::move_only_function should be used
 						        struct Task
-						#if BOOST_COMP_CLANG
+						#if ALPAKA_COMP_CLANG
 						#    pragma clang diagnostic pop
 						#endif
 						        {
@@ -12974,6 +13133,7 @@
 						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ============================================================================
 
+					// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
@@ -12996,7 +13156,7 @@
 					    {
 					        namespace detail
 					        {
-					#if BOOST_COMP_CLANG
+					#if ALPAKA_COMP_CLANG
 					// avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every
 					// translation unit [-Werror,-Wweak-vtables]" https://stackoverflow.com/a/29288300
 					#    pragma clang diagnostic push
@@ -13005,7 +13165,7 @@
 					            //! The CPU device queue implementation.
 					            template<typename TDev>
 					            class QueueGenericThreadsNonBlockingImpl final : public IGenericThreadsQueue<TDev>
-					#if BOOST_COMP_CLANG
+					#if ALPAKA_COMP_CLANG
 					#    pragma clang diagnostic pop
 					#endif
 					            {
@@ -13889,7 +14049,7 @@
 	        {
 	            ALPAKA_FN_HOST static auto getAccName() -> std::string
 	            {
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 	#    endif
@@ -13902,7 +14062,7 @@
 	                    + ">"s;
 	#    endif
 	                return accName;
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	            }
@@ -14009,8 +14169,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 			#include <new>
 
@@ -14070,7 +14230,7 @@
 
 		    namespace trait
 		    {
-		#if BOOST_COMP_GNUC
+		#if ALPAKA_COMP_GNUC
 		#    pragma GCC diagnostic push
 		#    pragma GCC diagnostic ignored                                                                                    \
 		        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
@@ -14101,7 +14261,7 @@
 		                return *data;
 		            }
 		        };
-		#if BOOST_COMP_GNUC
+		#if ALPAKA_COMP_GNUC
 		#    pragma GCC diagnostic pop
 		#endif
 		        template<std::size_t TDataAlignBytes>
@@ -14655,7 +14815,7 @@
 	        {
 	            ALPAKA_FN_HOST static auto getAccName() -> std::string
 	            {
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 	#    endif
@@ -14668,7 +14828,7 @@
 	                    + ">"s;
 	#    endif
 	                return accName;
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	            }
@@ -14953,7 +15113,7 @@
 	        {
 	            ALPAKA_FN_HOST static auto getAccName() -> std::string
 	            {
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 	#    endif
@@ -14965,7 +15125,7 @@
 	                    "AccCpuSerial<"s + std::to_string(TDim::value) + ","s + std::string(core::demangled<TIdx>) + ">"s;
 	#    endif
 	                return accName;
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	            }
@@ -15607,7 +15767,7 @@
 				using AlpakaFormat = char const*;
 				#        endif
 
-				#        if BOOST_COMP_CLANG
+				#        if ALPAKA_COMP_CLANG
 				#            pragma clang diagnostic push
 				#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
 				#        endif
@@ -15619,7 +15779,7 @@
 				                sycl::ext::oneapi::experimental::printf(format, ##__VA_ARGS__);                                       \
 				            } while(false)
 
-				#        if BOOST_COMP_CLANG
+				#        if ALPAKA_COMP_CLANG
 				#            pragma clang diagnostic pop
 				#        endif
 
@@ -18440,7 +18600,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic push
 			#        pragma clang diagnostic ignored "-Wswitch-default"
 			#    endif
@@ -18626,15 +18786,15 @@
 
 			                std::cout << "SYCL version: " << device.get_info<sycl::info::device::version>() << '\n';
 
-			#        if !defined(BOOST_COMP_ICPX)
+			#        if !defined(ALPAKA_COMP_ICPX)
 			                // Not defined by Level Zero back-end
 			                std::cout << "Backend version: " << device.get_info<sycl::info::device::backend_version>() << '\n';
 			#        endif
 
 			                std::cout << "Aspects: " << '\n';
 
-			#        if defined(BOOST_COMP_ICPX)
-			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			#        if defined(ALPAKA_COMP_ICPX)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
 			                // These aspects are missing from oneAPI versions < 2023.2.0
 			                if(device.has(sycl::aspect::emulated))
 			                    std::cout << "\t* emulated\n";
@@ -18933,7 +19093,7 @@
 			                        case sycl::memory_order::seq_cst:
 			                            std::cout << "seq_cst";
 			                            break;
-			#        if defined(BOOST_COMP_ICPX)
+			#        if defined(ALPAKA_COMP_ICPX)
 			                        // Stop icpx from complaining about its own internals.
 			                        case sycl::memory_order::__consume_unsupported:
 			                            break;
@@ -18948,8 +19108,8 @@
 			                auto const mem_orders = device.get_info<sycl::info::device::atomic_memory_order_capabilities>();
 			                print_memory_orders(mem_orders);
 
-			#        if defined(BOOST_COMP_ICPX)
-			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			#        if defined(ALPAKA_COMP_ICPX)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
 			                // Not implemented in oneAPI < 2023.2.0
 			                std::cout << "Supported memory orderings for sycl::atomic_fence: ";
 			                auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
@@ -18992,8 +19152,8 @@
 			                auto const mem_scopes = device.get_info<sycl::info::device::atomic_memory_scope_capabilities>();
 			                print_memory_scopes(mem_scopes);
 
-			#        if defined(BOOST_COMP_ICPX)
-			#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+			#        if defined(ALPAKA_COMP_ICPX)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
 			                // Not implemented in oneAPI < 2023.2.0
 			                std::cout << "Supported memory scopes for sycl::atomic_fence: ";
 			                auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
@@ -19039,7 +19199,7 @@
 			                            std::cout << "by affinity domain";
 			                            has_affinity_domains = true;
 			                            break;
-			#        if defined(BOOST_COMP_ICPX)
+			#        if defined(ALPAKA_COMP_ICPX)
 			                        case sycl::info::partition_property::ext_intel_partition_by_cslice:
 			                            std::cout << "by compute slice (Intel extension; deprecated)";
 			                            break;
@@ -19109,7 +19269,7 @@
 			                        std::cout << "partitioned by affinity domain";
 			                        break;
 
-			#        if defined(BOOST_COMP_ICPX)
+			#        if defined(ALPAKA_COMP_ICPX)
 			                    case sycl::info::partition_property::ext_intel_partition_by_cslice:
 			                        std::cout << "partitioned by compute slice (Intel extension; deprecated)";
 			                        break;
@@ -19158,7 +19318,7 @@
 			    } // namespace trait
 			} // namespace alpaka
 
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic pop
 			#    endif
 
@@ -19176,7 +19336,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
@@ -19185,7 +19345,7 @@
 
 			// Backend specific imports.
 			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic push
 			#        pragma clang diagnostic ignored "-Wcast-align"
 			#        pragma clang diagnostic ignored "-Wcast-qual"
@@ -19198,7 +19358,7 @@
 			#        pragma clang diagnostic ignored "-Wundef"
 			#    endif
 			#    include <oneapi/dpl/random>
-			#    if BOOST_COMP_CLANG
+			#    if ALPAKA_COMP_CLANG
 			#        pragma clang diagnostic pop
 			#    endif
 
@@ -19713,8 +19873,8 @@
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// Implementation details.
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 
@@ -19849,7 +20009,7 @@
 		    {
 		        static auto getAccName() -> std::string
 		        {
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic push
 		#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 		#    endif
@@ -19866,7 +20026,7 @@
 		                + std::to_string(TDim::value) + ","s + std::string(core::demangled<TIdx>) + ">"s;
 		#    endif
 		            return accName;
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic pop
 		#    endif
 		        }
@@ -20189,7 +20349,7 @@
 	        {
 	            ALPAKA_FN_HOST static auto getAccName() -> std::string
 	            {
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 	#    endif
@@ -20202,7 +20362,7 @@
 	                    + ">"s;
 	#    endif
 	                return accName;
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	            }
@@ -20634,8 +20794,8 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
@@ -20787,7 +20947,7 @@
 	        {
 	            ALPAKA_FN_HOST static auto getAccName() -> std::string
 	            {
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 	#    endif
@@ -20799,7 +20959,7 @@
 	                    "AccCpuThreads<"s + std::to_string(TDim::value) + ","s + std::string(core::demangled<TIdx>) + ">"s;
 	#    endif
 	                return accName;
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	            }
@@ -20949,7 +21109,7 @@
 
 				// #pragma once
 				// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
 
@@ -20970,17 +21130,17 @@
 
 				#    if !defined(ALPAKA_HOST_ONLY)
 
-				#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+				#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 				#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 				#        endif
 
-				#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+				#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 				#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 				#        endif
 
 				//! clang is providing a builtin for different atomic functions even if these is not supported for architectures < 6.0
 				#        define CLANG_CUDA_PTX_WORKAROUND                                                                             \
-				            (BOOST_COMP_CLANG && BOOST_LANG_CUDA && BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(6, 0, 0))
+				            (ALPAKA_COMP_CLANG && ALPAKA_LANG_CUDA && ALPAKA_ARCH_PTX < ALPAKA_VERSION_NUMBER(6, 0, 0))
 
 				//! These types must be in the global namespace for checking existence of respective functions in global namespace via
 				//! SFINAE, so we use inline namespace.
@@ -21080,7 +21240,7 @@
 				    };
 				#        endif
 
-				#        if(BOOST_LANG_HIP)
+				#        if(ALPAKA_LANG_HIP)
 				    // HIP shows bad performance with builtin atomicAdd(float*,float) for the hierarchy threads therefore we do not
 				    // call the buildin method and instead use the atomicCAS emulation. For details see:
 				    // https://github.com/alpaka-group/alpaka/issues/1657
@@ -21154,7 +21314,7 @@
 				#        endif
 
 				// disable HIP atomicMin: see https://github.com/ROCm-Developer-Tools/hipamd/pull/40
-				#        if(BOOST_LANG_HIP)
+				#        if(ALPAKA_LANG_HIP)
 				    template<typename THierarchy>
 				    struct AlpakaBuiltInAtomic<alpaka::AtomicMin, float, THierarchy> : std::false_type
 				    {
@@ -21221,7 +21381,7 @@
 				#        endif
 
 				    // disable HIP atomicMax: see https://github.com/ROCm-Developer-Tools/hipamd/pull/40
-				#        if(BOOST_LANG_HIP)
+				#        if(ALPAKA_LANG_HIP)
 				    template<typename THierarchy>
 				    struct AlpakaBuiltInAtomic<alpaka::AtomicMax, float, THierarchy> : std::false_type
 				    {
@@ -21460,7 +21620,7 @@
 
 			// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 
@@ -21471,11 +21631,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -21532,7 +21692,7 @@
 
 			                // Emulating atomics with atomicCAS is mentioned in the programming guide too.
 			                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
-			#        if BOOST_LANG_HIP
+			#        if ALPAKA_LANG_HIP
 			#            if __has_builtin(__hip_atomic_load)
 			                EmulatedType old{__hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
 			#            else
@@ -21785,7 +21945,7 @@
 
 			// #pragma once
 			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
@@ -21803,11 +21963,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -21848,7 +22008,7 @@
 
 			// #pragma once
 			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
@@ -21866,11 +22026,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -21914,7 +22074,7 @@
 
 			// #pragma once
 			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -21929,11 +22089,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -21955,7 +22115,7 @@
 			                BlockSyncUniformCudaHipBuiltIn const& /*blockSync*/,
 			                int predicate) -> int
 			            {
-			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && BOOST_COMP_HIP
+			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
 			                __syncthreads();
@@ -21980,7 +22140,7 @@
 			                BlockSyncUniformCudaHipBuiltIn const& /*blockSync*/,
 			                int predicate) -> int
 			            {
-			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && BOOST_COMP_HIP
+			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
 			                __syncthreads();
@@ -22005,7 +22165,7 @@
 			                BlockSyncUniformCudaHipBuiltIn const& /*blockSync*/,
 			                int predicate) -> int
 			            {
-			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && BOOST_COMP_HIP
+			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
 			                __syncthreads();
@@ -22043,7 +22203,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Cuda.hpp ==
 				// ==
@@ -22208,7 +22368,7 @@
 					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-					#        include <cuda.h>
+					// #        include <cuda.h>    // amalgamate: file already included
 					#        include <cuda_runtime.h>
 					#    endif
 
@@ -22240,7 +22400,7 @@
 					            ushort3
 					// CUDA built-in variables have special types in clang native CUDA compilation
 					// defined in cuda_builtin_vars.h
-					#    if BOOST_COMP_CLANG_CUDA
+					#    if ALPAKA_COMP_CLANG_CUDA
 					            ,
 					            __cuda_builtin_threadIdx_t,
 					            __cuda_builtin_blockIdx_t,
@@ -22410,7 +22570,7 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 						// ============================================================================
 						// == ./include/alpaka/core/Hip.hpp ==
@@ -22424,7 +22584,7 @@
 						// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
 
 						#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-						#    if !BOOST_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
+						#    if !ALPAKA_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
 						#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 						#    endif
 						#endif
@@ -22567,11 +22727,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -22630,7 +22790,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
@@ -22654,11 +22814,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -22716,7 +22876,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already inlined
 
@@ -22732,11 +22892,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -22749,7 +22909,7 @@
 			                -> std::int32_t
 			            {
 			                // clang as CUDA compiler change the interface to unsigned values for clang >=18
-			#        if BOOST_COMP_CLANG && BOOST_LANG_CUDA && BOOST_COMP_CLANG < BOOST_VERSION_NUMBER(18, 0, 0)
+			#        if ALPAKA_COMP_CLANG && ALPAKA_LANG_CUDA && ALPAKA_COMP_CLANG < ALPAKA_VERSION_NUMBER(18, 0, 0)
 			                return __popc(static_cast<int>(value));
 			#        else
 			                return static_cast<std::int32_t>(__popc(static_cast<unsigned int>(value)));
@@ -22760,7 +22920,7 @@
 			                -> std::int32_t
 			            {
 			                // clang as CUDA compiler change the interface to unsigned values for clang >=18
-			#        if BOOST_COMP_CLANG && BOOST_LANG_CUDA && BOOST_COMP_CLANG < BOOST_VERSION_NUMBER(18, 0, 0)
+			#        if ALPAKA_COMP_CLANG && ALPAKA_LANG_CUDA && ALPAKA_COMP_CLANG < ALPAKA_VERSION_NUMBER(18, 0, 0)
 			                return __popcll(static_cast<long long>(value));
 			#        else
 			                return static_cast<std::int32_t>(__popcll(static_cast<unsigned long long>(value)));
@@ -22803,7 +22963,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
@@ -23062,11 +23222,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -23858,7 +24018,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
@@ -23873,11 +24033,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -23930,7 +24090,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
@@ -23951,7 +24111,7 @@
 					 */
 
 					// #pragma once
-					// #include <boost/predef.h>    // amalgamate: file already included
+					// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 					#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 					#    include <cuda_runtime_api.h>
@@ -23962,7 +24122,7 @@
 					    {
 					        // Names
 					        static constexpr char name[] = "Cuda";
-					        static constexpr auto version = BOOST_PREDEF_MAKE_10_VVRRP(CUDART_VERSION);
+					        static constexpr auto version = ALPAKA_LANG_CUDA;
 
 					        // Types
 					        using DeviceAttr_t = ::cudaDeviceAttr;
@@ -24129,12 +24289,12 @@
 					        template<typename T>
 					        static inline Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)
 					        {
-					#    if BOOST_COMP_GNUC
+					#    if ALPAKA_COMP_GNUC
 					#        pragma GCC diagnostic push
 					#        pragma GCC diagnostic ignored "-Wconditionally-supported"
 					#    endif
 					            return ::cudaFuncGetAttributes(attr, reinterpret_cast<void const*>(func));
-					#    if BOOST_COMP_GNUC
+					#    if ALPAKA_COMP_GNUC
 					#        pragma GCC diagnostic pop
 					#    endif
 					        }
@@ -24882,7 +25042,7 @@
 			#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 			#        include <curand_kernel.h>
 			#    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-			#        if BOOST_COMP_CLANG
+			#        if ALPAKA_COMP_CLANG
 			#            pragma clang diagnostic push
 			#            pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
 			#        endif
@@ -24893,7 +25053,7 @@
 			#            include <hiprand_kernel.h>
 			#        endif
 
-			#        if BOOST_COMP_CLANG
+			#        if ALPAKA_COMP_CLANG
 			#            pragma clang diagnostic pop
 			#        endif
 			#    endif
@@ -24908,11 +25068,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -25157,7 +25317,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
@@ -25174,11 +25334,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -25352,7 +25512,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
@@ -25383,11 +25543,11 @@
 
 			#    if !defined(ALPAKA_HOST_ONLY)
 
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
 
-			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
@@ -25674,7 +25834,7 @@
 		        {
 		            ALPAKA_FN_HOST static auto getAccName() -> std::string
 		            {
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic push
 		#        pragma clang diagnostic ignored "-Wexit-time-destructors"
 		#    endif
@@ -25687,7 +25847,7 @@
 		                    + std::string(core::demangled<TIdx>) + ">"s;
 		#    endif
 		                return accName;
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic pop
 		#    endif
 		            }
@@ -25822,7 +25982,7 @@
 		 */
 
 		// #pragma once
-		// #include <boost/predef.h>    // amalgamate: file already included
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 		#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -25835,7 +25995,7 @@
 		    {
 		        // Names
 		        static constexpr char name[] = "Hip";
-		        static constexpr auto version = BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0);
+		        static constexpr auto version = ALPAKA_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0);
 
 		        // Types
 		        using DeviceAttr_t = ::hipDeviceAttribute_t;
@@ -26025,12 +26185,12 @@
 		        template<typename T>
 		        static inline Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)
 		        {
-		#    if BOOST_COMP_GNUC
+		#    if ALPAKA_COMP_GNUC
 		#        pragma GCC diagnostic push
 		#        pragma GCC diagnostic ignored "-Wconditionally-supported"
 		#    endif
 		            return ::hipFuncGetAttributes(attr, reinterpret_cast<void const*>(func));
-		#    if BOOST_COMP_GNUC
+		#    if ALPAKA_COMP_GNUC
 		#        pragma GCC diagnostic pop
 		#    endif
 		        }
@@ -26464,9 +26624,9 @@
 // #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/BarrierThread.hpp"    // amalgamate: file already inlined
-// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
@@ -26481,7 +26641,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
@@ -26492,7 +26652,7 @@
 	        using type = T;
 	    };
 
-	#if BOOST_COMP_MSVC
+	#if ALPAKA_COMP_MSVC
 	    template<typename T>
 	    struct remove_restrict<T* __restrict>
 	    {
@@ -26640,7 +26800,7 @@
 	        template<typename TFnObj, typename... TArgs>
 	        auto enqueueTask(TFnObj&& task, TArgs&&... args) -> std::future<void>
 	        {
-	#if BOOST_COMP_MSVC
+	#if ALPAKA_COMP_MSVC
 	// MSVC 14.39.33519 is throwing an error because the noexcept type deduction is not defined in original C++17
 	// error C2065: 'task': undeclared identifier
 	// see: https://stackoverflow.com/a/72467726
@@ -29417,8 +29577,8 @@
 		    //! The CPU device platform.
 		    struct PlatformCpu : interface::Implements<ConceptPlatform, PlatformCpu>
 		    {
-		#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-		    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+		#if defined(ALPAKA_COMP_GNUC) && ALPAKA_COMP_GNUC >= ALPAKA_VERSION_NUMBER(11, 0, 0)                                  \
+		    && ALPAKA_COMP_GNUC < ALPAKA_VERSION_NUMBER(12, 0, 0)
 		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
 		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
 		        char c = {};
@@ -29485,7 +29645,7 @@
 
 	#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wswitch-default"
 	#    endif
@@ -30436,7 +30596,7 @@
 	    } // namespace trait
 	} // namespace alpaka
 
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 
@@ -30654,7 +30814,7 @@
 	#    pragma omp parallel num_threads(iBlockThreadCount)
 	                    {
 	                        // The guard is for gcc internal compiler error, as discussed in #735
-	                        if constexpr((!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0)))
+	                        if constexpr((!ALPAKA_COMP_GNUC) || (ALPAKA_COMP_GNUC >= ALPAKA_VERSION_NUMBER(8, 1, 0)))
 	                        {
 	#    pragma omp single nowait
 	                            {
@@ -30970,7 +31130,7 @@
 		// #pragma once
 		// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
@@ -31198,7 +31358,7 @@
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic push
 		#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
 		#        pragma clang diagnostic ignored "-Wunused-parameter"
@@ -31407,7 +31567,7 @@
 
 		} // namespace alpaka
 
-		#    if BOOST_COMP_CLANG
+		#    if ALPAKA_COMP_CLANG
 		#        pragma clang diagnostic pop
 		#    endif
 
@@ -31707,7 +31867,7 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuThreads.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/ThreadPool.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
@@ -31984,7 +32144,7 @@
 		// #pragma once
 		// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
@@ -32025,7 +32185,7 @@
 			#include <set>
 			#include <type_traits>
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic push
 			#    pragma clang diagnostic ignored "-Wswitch-default"
 			#endif
@@ -32552,7 +32712,7 @@
 			    }
 			} // namespace alpaka
 
-			#if BOOST_COMP_CLANG
+			#if ALPAKA_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
 			// ==
@@ -32574,13 +32734,13 @@
 
 		#    if !defined(ALPAKA_HOST_ONLY)
 
-		// #        include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #        include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
-		#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+		#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 		#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 		#        endif
 
-		#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+		#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
 		#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 		#        endif
 
@@ -32588,7 +32748,7 @@
 		{
 		    namespace detail
 		    {
-		#        if BOOST_COMP_CLANG
+		#        if ALPAKA_COMP_CLANG
 		#            pragma clang diagnostic push
 		#            pragma clang diagnostic ignored "-Wunused-template"
 		#        endif
@@ -32605,14 +32765,14 @@
 		            TAcc const acc(threadElemExtent);
 
 		// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
-		#        if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+		#        if !(ALPAKA_COMP_CLANG_CUDA && ALPAKA_COMP_CLANG)
 		            static_assert(
 		                std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
 		                "The TKernelFnObj is required to return void!");
 		#        endif
 		            kernelFnObj(const_cast<TAcc const&>(acc), args...);
 		        }
-		#        if BOOST_COMP_CLANG
+		#        if ALPAKA_COMP_CLANG
 		#            pragma clang diagnostic pop
 		#        endif
 
@@ -32869,14 +33029,14 @@
 		                    remove_restrict_t<std::decay_t<TArgs>>...>;
 
 		                typename TApi::FuncAttributes_t funcAttrs;
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		                // Disable and enable compile warnings for gcc
 		#            pragma GCC diagnostic push
 		#            pragma GCC diagnostic ignored "-Wconditionally-supported"
 		#        endif
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
 		                    TApi::funcGetAttributes(&funcAttrs, reinterpret_cast<void const*>(kernelName)));
-		#        if BOOST_COMP_GNUC
+		#        if ALPAKA_COMP_GNUC
 		#            pragma GCC diagnostic pop
 		#        endif
 
@@ -38601,7 +38761,7 @@
 	    public:
 	        ALPAKA_FN_HOST auto computeNativePtr()
 	        {
-	#if BOOST_COMP_GNUC
+	#if ALPAKA_COMP_GNUC
 	#    pragma GCC diagnostic push
 	            // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
 	#    pragma GCC diagnostic ignored "-Wcast-align"
@@ -38609,7 +38769,7 @@
 	            return reinterpret_cast<TElem*>(
 	                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(m_viewParentView))
 	                + (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum());
-	#if BOOST_COMP_GNUC
+	#if ALPAKA_COMP_GNUC
 	#    pragma GCC diagnostic pop
 	#endif
 	        }
@@ -39082,8 +39242,8 @@
 		    template<typename TApi>
 		    struct PlatformUniformCudaHipRt : interface::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
 		    {
-		#    if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                 \
-		        && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+		#    if defined(ALPAKA_COMP_GNUC) && ALPAKA_COMP_GNUC >= ALPAKA_VERSION_NUMBER(11, 0, 0)                              \
+		        && ALPAKA_COMP_GNUC < ALPAKA_VERSION_NUMBER(12, 0, 0)
 		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
 		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
 		        char c = {};
@@ -39357,7 +39517,7 @@
 	    {
 	        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
 	        // linker anyway.
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic push
 	#        pragma clang diagnostic ignored "-Wweak-vtables"
 	#    endif
@@ -39378,7 +39538,7 @@
 	                return is_intel_fpga ? 1 : -1;
 	            }
 	        };
-	#    if BOOST_COMP_CLANG
+	#    if ALPAKA_COMP_CLANG
 	#        pragma clang diagnostic pop
 	#    endif
 	    } // namespace detail
