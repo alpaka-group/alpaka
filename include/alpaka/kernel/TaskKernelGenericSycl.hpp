@@ -41,7 +41,7 @@
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
             [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-                sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]                  \
+                sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]                   \
             {                                                                                                         \
                 auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
                 std::apply(                                                                                           \
