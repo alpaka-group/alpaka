@@ -3,6 +3,11 @@
   "description": "The alpaka library is a header-only C++20 abstraction library for accelerator development. Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.",
   "creators": [
     {
+      "name": "Almarzouqi, Abdulrahman",
+      "affiliation": "University of Bahrain",
+      "orcid": "0009-0001-7712-8139"
+    },
+    {
       "name": "Bocci, Andrea",
       "affiliation": "CERN",
       "orcid": "0000-0002-6515-5666"
@@ -29,6 +34,11 @@
       "name": "Lenz, Julian",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
       "orcid": "0000-0001-5250-0005"
+    },
+    {
+      "name": "Michailidi, Maria",
+      "affiliation": "CERN",
+      "orcid": "0009-0009-7518-3896"
     },
     {
       "name": "Perego, Aurora",
