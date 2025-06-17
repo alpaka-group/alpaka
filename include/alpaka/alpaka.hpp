@@ -295,6 +295,10 @@
 		 */
 
 		// #pragma once
+		#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)                    \
+		    || defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)                   \
+		    || defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+
 			// ============================================================================
 			// == ./include/alpaka/atomic/AtomicAtomicRef.hpp ==
 			// ==
@@ -303,6 +307,10 @@
 			 */
 
 			// #pragma once
+			#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)                    \
+			    || defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)                   \
+			    || defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+
 				// ============================================================================
 				// == ./include/alpaka/atomic/Traits.hpp ==
 				// ==
@@ -1301,28 +1309,28 @@
 				// == ./include/alpaka/atomic/Traits.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+			// #    include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 
-			#include <array>
-			#include <atomic>
-			#include <type_traits>
+			#    include <array>
+			#    include <atomic>
+			#    include <type_traits>
 
-			#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
-			#    ifndef ALPAKA_HAS_STD_ATOMIC_REF
-			#        include <boost/atomic.hpp>
-			#    endif
+			#    ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+			#        ifndef ALPAKA_HAS_STD_ATOMIC_REF
+			#            include <boost/atomic.hpp>
+			#        endif
 
 			namespace alpaka
 			{
 			    namespace detail
 			    {
-			#    if defined(ALPAKA_HAS_STD_ATOMIC_REF)
+			#        if defined(ALPAKA_HAS_STD_ATOMIC_REF)
 			        template<typename T>
 			        using atomic_ref = std::atomic_ref<T>;
-			#    else
+			#        else
 			        template<typename T>
 			        using atomic_ref = boost::atomic_ref<T>;
-			#    endif
+			#        endif
 			    } // namespace detail
 
 			    //! The atomic ops based on atomic_ref for CPU accelerators.
@@ -1515,14 +1523,14 @@
 			                T result;
 			                do
 			                {
-			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
-			#        pragma GCC diagnostic push
-			#        pragma GCC diagnostic ignored "-Wfloat-equal"
-			#    endif
+			#        if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
+			#            pragma GCC diagnostic push
+			#            pragma GCC diagnostic ignored "-Wfloat-equal"
+			#        endif
 			                    result = ((old == compare) ? value : old);
-			#    if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
-			#        pragma GCC diagnostic pop
-			#    endif
+			#        if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
+			#            pragma GCC diagnostic pop
+			#        endif
 			                } while(!ref.compare_exchange_weak(old, result));
 			                return old;
 			            }
@@ -1530,6 +1538,7 @@
 			    } // namespace trait
 			} // namespace alpaka
 
+			#    endif
 			#endif
 			// ==
 			// == ./include/alpaka/atomic/AtomicAtomicRef.hpp ==
@@ -1647,13 +1656,15 @@
 
 		namespace alpaka
 		{
-		#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+		#    ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
 		    using AtomicCpu = AtomicAtomicRef;
-		#else
+		#    else
 		    using AtomicCpu = AtomicStdLibLock<16>;
-		#endif // ALPAKA_DISABLE_ATOMIC_ATOMICREF
+		#    endif // ALPAKA_DISABLE_ATOMIC_ATOMICREF
 
 		} // namespace alpaka
+
+		#endif
 		// ==
 		// == ./include/alpaka/atomic/AtomicCpu.hpp ==
 		// ============================================================================
