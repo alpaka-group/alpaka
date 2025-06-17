@@ -17,9 +17,9 @@ namespace alpaka
 
     namespace detail
     {
-        //! The CPU device ND memory fill task base.
+        //! The CPU device N-dimensional memory fill task.
         template<typename TDim, typename TView, typename TExtent>
-        struct TaskFillCpuBase
+        struct TaskFillCpu
         {
             static_assert(TDim::value > 0);
 
@@ -30,63 +30,63 @@ namespace alpaka
             static_assert(std::is_trivially_copyable_v<Elem>, "Only trivially copyable types supported for fill");
 
             template<typename TViewFwd>
-            TaskFillCpuBase(TViewFwd&& view, Elem const& value, TExtent const& extent)
+            TaskFillCpu(TViewFwd&& view, Elem const& value, TExtent const& extent)
                 : m_value(value)
                 , m_extent(getExtents(extent))
-                , m_extentWidth(getExtents(extent).back())
-#if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+#if(!defined(NDEBUG))
                 , m_dstExtent(getExtents(view))
 #endif
                 , m_dstPitchBytes(getPitchesInBytes(view))
-                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
+                , m_dstMemNative(getPtrNative(view))
             {
                 ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+                if constexpr(TDim::value > 0)
+                {
+                    ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[TDim::value - 1]) >= sizeof(Elem));
+                    ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[TDim::value - 1]) % alignof(Elem) == 0);
+                }
                 if constexpr(TDim::value > 1)
-                    ALPAKA_ASSERT(
-                        m_extentWidth * static_cast<ExtentSize>(sizeof(Elem)) <= m_dstPitchBytes[TDim::value - 2]);
-
+                {
+                    for(int dim = TDim::value - 2; dim >= 0; --dim)
+                    {
+                        ALPAKA_ASSERT(
+                            static_cast<std::size_t>(m_dstPitchBytes[dim])
+                            >= static_cast<std::size_t>(m_dstPitchBytes[dim + 1] * m_dstExtent[dim + 1]));
+                        ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[dim]) % alignof(Elem) == 0);
+                    }
+                }
                 ALPAKA_ASSERT(reinterpret_cast<std::uintptr_t>(m_dstMemNative) % alignof(Elem) == 0);
             }
 
+            ALPAKA_FN_HOST auto operator()() const -> void
+            {
+                if(static_cast<std::size_t>(m_extent.prod()) != 0u)
+                {
+                    meta::ndLoopIncIdx(
+                        m_extent,
+                        [&](Vec<TDim, ExtentSize> const& idx)
+                        {
+                            // All elements of m_dstPitchBytes are multiples of the alignment of Elem.
+                            std::uintptr_t offsetBytes = static_cast<std::uintptr_t>((idx * m_dstPitchBytes).sum());
+                            Elem* elem = reinterpret_cast<Elem*>(__builtin_assume_aligned(
+                                reinterpret_cast<std::uint8_t*>(m_dstMemNative) + offsetBytes,
+                                alignof(Elem)));
+                            *elem = m_value;
+                        });
+                }
+            }
+
+        private:
             Elem const m_value;
             Vec<TDim, ExtentSize> const m_extent;
-            ExtentSize const m_extentWidth;
 #if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             Vec<TDim, DstSize> const m_dstExtent;
 #endif
             Vec<TDim, DstSize> const m_dstPitchBytes;
-            std::uint8_t* const m_dstMemNative;
+            Elem* const m_dstMemNative;
         };
 
-        //! Generic ND version memory fill task.
-        template<typename TDim, typename TView, typename TExtent>
-        struct TaskFillCpu : public TaskFillCpuBase<TDim, TView, TExtent>
-        {
-            using TaskFillCpuBase<TDim, TView, TExtent>::TaskFillCpuBase;
-            using typename TaskFillCpuBase<TDim, TView, TExtent>::Elem;
-            using typename TaskFillCpuBase<TDim, TView, TExtent>::ExtentSize;
-
-            ALPAKA_FN_HOST auto operator()() const -> void
-            {
-                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
-                {
-                    meta::ndLoopIncIdx(
-                        this->m_extent,
-                        [&](Vec<TDim, ExtentSize> const& idx)
-                        {
-                            std::uintptr_t offsetBytes
-                                = static_cast<std::uintptr_t>((idx * this->m_dstPitchBytes).sum());
-                            assert(offsetBytes % alignof(Elem) == 0);
-                            Elem* elem = reinterpret_cast<Elem*>(
-                                __builtin_assume_aligned(this->m_dstMemNative + offsetBytes, alignof(Elem)));
-
-                            *elem = this->m_value;
-                        });
-                }
-            }
-        };
-
-        // 0D version (scalar fill)
+        //! The CPU device 0-dimensional memory fill task specialisation.
         template<typename TView, typename TExtent>
         struct TaskFillCpu<DimInt<0u>, TView, TExtent>
         {
@@ -107,6 +107,7 @@ namespace alpaka
                 *m_dstMemNative = m_value;
             }
 
+        private:
             Elem const m_value;
             Elem* const m_dstMemNative;
         };

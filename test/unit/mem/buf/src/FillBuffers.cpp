@@ -31,7 +31,7 @@ TEMPLATE_LIST_TEST_CASE("memBufFillPrimitiveValuesTest", "[memBuf]", alpaka::tes
     auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
-    INFO("Test fill function");
+    INFO("Test fill function on device");
     INFO(alpaka::getName(dev));
 
     Queue queue(dev);
@@ -87,7 +87,7 @@ TEMPLATE_LIST_TEST_CASE("memBufFillNonPrimitiveValuesTest", "[memBuf]", alpaka::
     auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
-    INFO("Test fill function");
+    INFO("Test fill function on device");
     INFO(alpaka::getName(dev));
 
     Queue queue(dev);
@@ -133,7 +133,7 @@ TEMPLATE_LIST_TEST_CASE("memBufFillScalarFloatTest", "[memBuf]", alpaka::test::T
     auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
-    INFO("Test fill function");
+    INFO("Test fill function on device");
     INFO(alpaka::getName(dev));
 
     Queue queue(dev);

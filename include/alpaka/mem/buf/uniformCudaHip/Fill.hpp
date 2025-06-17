@@ -43,44 +43,30 @@ namespace alpaka
                 TExtent extent,
                 TPitchBytes pitchBytes) const
             {
-                if(extent.prod() != 1u)
+                for(auto const& idx : alpaka::uniformElementsND(acc, extent))
                 {
-                    for(auto const& idx : alpaka::uniformElementsND(acc, extent))
-                    {
-                        std::uintptr_t offsetBytes = static_cast<std::uintptr_t>((pitchBytes * idx).sum());
+                    // The host code checks that the pitches are a multiple of TElem's alignment.
+                    std::uintptr_t offsetBytes = static_cast<std::uintptr_t>((pitchBytes * idx).sum());
+                    TElem* elem = reinterpret_cast<TElem*>(
+                        __builtin_assume_aligned(reinterpret_cast<std::uint8_t*>(ptr) + offsetBytes, alignof(TElem)));
 
-                        TElem* elem = reinterpret_cast<TElem*>(__builtin_assume_aligned(
-                            reinterpret_cast<std::uint8_t*>(ptr) + offsetBytes,
-                            alignof(TElem)));
-
-                        // Write value at element address
-                        *elem = value;
-                    }
-                }
-            }
-        };
-
-        template<typename TElem, typename TExtent>
-        struct FillKernel0D
-        {
-            template<typename TAcc>
-            ALPAKA_FN_ACC void operator()([[maybe_unused]] TAcc const& acc, TElem* ptr, TElem value, TExtent extent)
-                const
-            {
-                if(extent.prod() == 1u)
-                {
-                    TElem* elem = reinterpret_cast<TElem*>(__builtin_assume_aligned(ptr, alignof(TElem)));
-
+                    // Write value at element address
                     *elem = value;
                 }
             }
         };
 
-        template<typename TDim, typename TIdx>
-        TIdx getThreadNumForFill()
+        template<typename TElem>
+        struct FillKernel0D
         {
-            return 64; // tbd
-        }
+            template<typename TAcc>
+            ALPAKA_FN_ACC void operator()([[maybe_unused]] TAcc const& acc, TElem* ptr, TElem value) const
+            {
+                // A zero-dimensional buffer always has a single element.
+                *ptr = value;
+            }
+        };
+
 
     } // namespace detail
 
@@ -104,33 +90,36 @@ namespace alpaka
 
                 if constexpr(TDim::value == 0)
                 {
-                    Vec threads = Vec::ones();
-                    Vec const elements = Vec::ones();
-                    Vec blocks = Vec::ones();
-
-                    WorkDiv grid = WorkDiv(blocks, threads, elements);
+                    // A zero-dimensional buffer always has a single element.
+                    WorkDiv grid{Vec{}, Vec{}, Vec{}};
                     return alpaka::createTaskKernel<Acc>(
                         grid,
-                        alpaka::detail::FillKernel0D<Elem, TExtent>{},
+                        alpaka::detail::FillKernel0D<Elem>{},
                         std::data(view),
-                        value,
-                        extent);
+                        value);
                 }
                 else
                 {
-                    Vec threads = Vec::ones();
-                    threads.x() = alpaka::detail::getThreadNumForFill<TDim, Idx>();
+                    // TODO: compute an efficient work division.
                     Vec const elements = Vec::ones();
-                    Vec blocks = Vec::ones();
-
+                    Vec threads = Vec::ones();
+                    threads.x() = 64;
+                    Vec const blocks = Vec::ones();
                     WorkDiv grid = WorkDiv(blocks, threads, elements);
+
+                    // Check that the pitches are a multiple of Elem's alignment.
+                    auto pitches = getPitchesInBytes(view);
+                    for([[maybe_unused]] auto pitch : pitches)
+                    {
+                        ALPAKA_ASSERT(static_cast<std::size_t>(pitch) % alignof(Elem) == 0);
+                    }
                     return alpaka::createTaskKernel<Acc>(
                         grid,
                         alpaka::detail::FillKernelND<Elem, TExtent, Vec>{},
                         std::data(view),
                         value,
                         extent,
-                        getPitchesInBytes(view));
+                        pitches);
                 }
             }
         };
