@@ -2,22 +2,20 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && !defined(alpaka_ACC_GPU_HIP_ONLY_MODE)
-
 // make sure the CPU_B_SEQ_T_SEQ backend is always available
-#    ifndef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-#        define ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-#    endif // ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-#    include <alpaka/alpaka.hpp>
-#    include <alpaka/test/acc/TestAccs.hpp>
+#ifndef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+#    define ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+#endif // ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+#include <alpaka/alpaka.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 
-#    include <catch2/catch_message.hpp>
-#    include <catch2/catch_template_test_macros.hpp>
-#    include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_message.hpp>
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-#    include <cstdint>
-#    include <cstring>
-#    include <iostream>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
 
 // fill an trivial type with std::memset
 template<typename T>
@@ -141,5 +139,3 @@ TEMPLATE_LIST_TEST_CASE("zeroDimBuffer", "[zeroDimBuffer]", TestAccs)
     CHECK(expected1 == *h_buffer1);
     CHECK(expected2 == *h_buffer2);
 }
-
-#endif
