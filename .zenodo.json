@@ -36,6 +36,11 @@
       "orcid": "0009-0002-5210-6213"
     },
     {
+      "name": "Reinhard, Anton",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0009-0004-6483-2137"
+    },
+    {
       "name": "Varvarin, Michael",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf"
     },
@@ -181,8 +186,8 @@
       "type": "Other"
     },
     {
-      "name":"Wesarg, Bert",
-      "affiliation":"TU Dresden",
+      "name": "Wesarg, Bert",
+      "affiliation": "TU Dresden",
       "type": "Other"
     },
     {
