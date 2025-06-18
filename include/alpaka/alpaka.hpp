@@ -3416,7 +3416,7 @@
 			// == ./include/alpaka/vec/Vec.hpp ==
 			// ==
 			/* Copyright 2025 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
-			 *                Bernhard Manfred Gruber
+			 *                Bernhard Manfred Gruber, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -4306,6 +4306,19 @@
 			            {
 			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
 			                    r[i] = p[i] * q[i];
+			            }
+			            return r;
+			        }
+
+			        //! \return The element-wise product of a vector times a scalar.
+			        ALPAKA_NO_HOST_ACC_WARNING
+			        ALPAKA_FN_HOST_ACC friend constexpr auto operator*(Vec const& p, TVal const& q) -> Vec
+			        {
+			            Vec r;
+			            if constexpr(TDim::value > 0)
+			            {
+			                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+			                    r[i] = p[i] * q;
 			            }
 			            return r;
 			        }
@@ -11882,6 +11895,9 @@
 				        template<typename TDim, typename TDev, typename TSfinae = void>
 				        struct CreateTaskMemset;
 
+				        template<typename TDim, typename TDev, typename TSfinae = void>
+				        struct CreateTaskFill;
+
 				        //! The memory copy task trait.
 				        //!
 				        //! Copies memory from one view into another view possibly on a different device.
@@ -11990,6 +12006,24 @@
 				            extent);
 				    }
 
+				    template<typename TExtent, typename TViewFwd, typename TValue>
+				    ALPAKA_FN_HOST auto createTaskFill(TViewFwd&& view, TValue const& value, TExtent const& extent)
+				    {
+				        using TView = std::remove_reference_t<TViewFwd>;
+				        static_assert(!std::is_const_v<TView>, "The view must not be const!");
+				        static_assert(
+				            Dim<TView>::value == Dim<TExtent>::value,
+				            "The view and the extent are required to have the same dimensionality!");
+				        static_assert(
+				            meta::IsIntegralSuperset<Idx<TView>, Idx<TExtent>>::value,
+				            "The view and the extent must have compatible index types!");
+
+				        return trait::CreateTaskFill<Dim<TView>, Dev<TView>>::createTaskFill(
+				            std::forward<TViewFwd>(view),
+				            value,
+				            extent);
+				    }
+
 				    //! Sets the bytes of the memory of view, described by extent, to the given value.
 				    //!
 				    //! \param queue The queue to enqueue the view fill task into.
@@ -12011,6 +12045,18 @@
 				    ALPAKA_FN_HOST auto memset(TQueue& queue, TViewFwd&& view, std::uint8_t const& byte) -> void
 				    {
 				        enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtents(view)));
+				    }
+
+				    template<typename TViewFwd, typename TValue, typename TQueue>
+				    ALPAKA_FN_HOST auto fill(TQueue& queue, TViewFwd&& view, TValue const& value) -> void
+				    {
+				        enqueue(queue, createTaskFill(std::forward<TViewFwd>(view), value, getExtents(view)));
+				    }
+
+				    template<typename TExtent, typename TViewFwd, typename TValue, typename TQueue>
+				    ALPAKA_FN_HOST auto fill(TQueue& queue, TViewFwd&& view, TValue const& value, TExtent const& extent) -> void
+				    {
+				        enqueue(queue, createTaskFill(std::forward<TViewFwd>(view), value, extent));
 				    }
 
 				    //! Creates a memory copy task.
@@ -34001,6 +34047,151 @@
 		// ============================================================================
 
 		// ============================================================================
+		// == ./include/alpaka/mem/buf/cpu/Fill.hpp ==
+		// ==
+		/* Copyright 2025 Maria Michailidi, Anna Polova, Abdulrahman Al Marzouqi
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+
+		namespace alpaka
+		{
+		    class DevCpu;
+
+		    namespace detail
+		    {
+		        //! The CPU device N-dimensional memory fill task.
+		        template<typename TDim, typename TView, typename TExtent>
+		        struct TaskFillCpu
+		        {
+		            static_assert(TDim::value > 0);
+
+		            using ExtentSize = Idx<TExtent>;
+		            using DstSize = Idx<TView>;
+		            using Elem = alpaka::Elem<TView>;
+
+		            static_assert(std::is_trivially_copyable_v<Elem>, "Only trivially copyable types supported for fill");
+
+		            template<typename TViewFwd>
+		            TaskFillCpu(TViewFwd&& view, Elem const& value, TExtent const& extent)
+		                : m_value(value)
+		                , m_extent(getExtents(extent))
+		#if(!defined(NDEBUG))
+		                , m_dstExtent(getExtents(view))
+		#endif
+		                , m_dstPitchBytes(getPitchesInBytes(view))
+		                , m_dstMemNative(getPtrNative(view))
+		            {
+		                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+		                if constexpr(TDim::value > 0)
+		                {
+		                    ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[TDim::value - 1]) >= sizeof(Elem));
+		                    ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[TDim::value - 1]) % alignof(Elem) == 0);
+		                }
+		                if constexpr(TDim::value > 1)
+		                {
+		                    for(int dim = TDim::value - 2; dim >= 0; --dim)
+		                    {
+		                        ALPAKA_ASSERT(
+		                            static_cast<std::size_t>(m_dstPitchBytes[dim])
+		                            >= static_cast<std::size_t>(m_dstPitchBytes[dim + 1] * m_dstExtent[dim + 1]));
+		                        ALPAKA_ASSERT(static_cast<std::size_t>(m_dstPitchBytes[dim]) % alignof(Elem) == 0);
+		                    }
+		                }
+		                ALPAKA_ASSERT(reinterpret_cast<std::uintptr_t>(m_dstMemNative) % alignof(Elem) == 0);
+		            }
+
+		            ALPAKA_FN_HOST auto operator()() const -> void
+		            {
+		                if(static_cast<std::size_t>(m_extent.prod()) != 0u)
+		                {
+		                    meta::ndLoopIncIdx(
+		                        m_extent,
+		                        [&](Vec<TDim, ExtentSize> const& idx)
+		                        {
+		                            // All elements of m_dstPitchBytes are multiples of the alignment of Elem.
+		                            std::uintptr_t offsetBytes = static_cast<std::uintptr_t>((idx * m_dstPitchBytes).sum());
+		                            Elem* elem = reinterpret_cast<Elem*>(__builtin_assume_aligned(
+		                                reinterpret_cast<std::uint8_t*>(m_dstMemNative) + offsetBytes,
+		                                alignof(Elem)));
+		                            *elem = m_value;
+		                        });
+		                }
+		            }
+
+		        private:
+		            Elem const m_value;
+		            Vec<TDim, ExtentSize> const m_extent;
+		#if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+		            Vec<TDim, DstSize> const m_dstExtent;
+		#endif
+		            Vec<TDim, DstSize> const m_dstPitchBytes;
+		            Elem* const m_dstMemNative;
+		        };
+
+		        //! The CPU device 0-dimensional memory fill task specialisation.
+		        template<typename TView, typename TExtent>
+		        struct TaskFillCpu<DimInt<0u>, TView, TExtent>
+		        {
+		            using Elem = alpaka::Elem<TView>;
+
+		            template<typename TViewFwd>
+		            TaskFillCpu(TViewFwd&& view, Elem const& value, [[maybe_unused]] TExtent const& extent)
+		                : m_value(value)
+		                , m_dstMemNative(getPtrNative(view))
+		            {
+		                ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(view).prod() == 1u);
+		                ALPAKA_ASSERT(reinterpret_cast<std::uintptr_t>(m_dstMemNative) % alignof(Elem) == 0);
+		            }
+
+		            ALPAKA_FN_HOST auto operator()() const noexcept -> void
+		            {
+		                *m_dstMemNative = m_value;
+		            }
+
+		        private:
+		            Elem const m_value;
+		            Elem* const m_dstMemNative;
+		        };
+		    } // namespace detail
+
+		    namespace trait
+		    {
+		        //! The memory fill task trait specialization for CPU devices.
+		        template<typename TDim>
+		        struct CreateTaskFill<TDim, DevCpu>
+		        {
+		            template<typename TExtent, typename TViewFwd>
+		            ALPAKA_FN_HOST static auto createTaskFill(
+		                TViewFwd&& view,
+		                alpaka::Elem<std::remove_reference_t<TViewFwd>> const& value,
+		                TExtent const& extent)
+		            {
+		                using TView = std::remove_reference_t<TViewFwd>;
+		                using Elem = alpaka::Elem<TView>;
+		                static_assert(
+		                    std::is_trivially_copyable_v<Elem>,
+		                    "Only trivially copyable types are supported for fill");
+
+		                return alpaka::detail::TaskFillCpu<TDim, TView, TExtent>{std::forward<TViewFwd>(view), value, extent};
+		            }
+		        };
+		    } // namespace trait
+
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/mem/buf/cpu/Fill.hpp ==
+		// ============================================================================
+
+		// ============================================================================
 		// == ./include/alpaka/mem/buf/cpu/Set.hpp ==
 		// ==
 		/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
@@ -35099,6 +35290,210 @@
 			#endif
 			// ==
 			// == ./include/alpaka/mem/buf/sycl/Copy.hpp ==
+			// ============================================================================
+
+			// ============================================================================
+			// == ./include/alpaka/mem/buf/sycl/Fill.hpp ==
+			// ==
+			/* Copyright 2025 Maria Michailidi, Anna Polova, Abdulrahman Al Marzouqi
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/buf/sycl/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+
+			// #include <cstddef>    // amalgamate: file already included
+			// #include <cstdint>    // amalgamate: file already included
+			// #include <iostream>    // amalgamate: file already included
+			// #include <memory>    // amalgamate: file already included
+			#include <type_traits>
+
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			namespace alpaka
+			{
+
+			    namespace detail
+			    {
+
+			        template<typename TDim, typename TView, typename TExtent, typename TValue>
+			        struct TaskFillSyclBase
+			        {
+			            using ExtentSize = Idx<TExtent>;
+			            using DstSize = Idx<TView>;
+			            using Elem = alpaka::Elem<TView>;
+
+			            template<typename TViewFwd>
+			            TaskFillSyclBase(TViewFwd&& view, TValue const& value, TExtent const& extent)
+			                : m_value(value)
+			                , m_extent(getExtents(extent))
+			                , m_extentWidth(m_extent.back())
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			                , m_dstExtent(getExtents(view))
+			#    endif
+			                , m_dstPitchBytes(getPitchesInBytes(view))
+			                , m_dstMemNative(getPtrNative(view))
+			            {
+			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+			                if constexpr(TDim::value > 1)
+			                    ALPAKA_ASSERT(
+			                        m_extentWidth * static_cast<ExtentSize>(sizeof(Elem)) <= m_dstPitchBytes[TDim::value - 2]);
+			            }
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            auto printDebug() const -> void
+			            {
+			                std::cout << __func__ << " e: " << m_extent << " ew: " << m_extentWidth << " de: " << m_dstExtent
+			                          << " dptr: " << reinterpret_cast<void*>(m_dstMemNative) << " dpitchb: " << m_dstPitchBytes
+			                          << std::endl;
+			            }
+			#    endif
+
+			            TValue const m_value;
+			            Vec<TDim, ExtentSize> const m_extent;
+			            ExtentSize const m_extentWidth;
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			            Vec<TDim, DstSize> const m_dstExtent;
+			#    endif
+			            Vec<TDim, DstSize> const m_dstPitchBytes;
+			            Elem* const m_dstMemNative;
+
+			            static constexpr auto is_sycl_task = true;
+			        };
+
+			        template<typename TDim, typename TView, typename TExtent, typename TValue>
+			        struct TaskFillSycl : public TaskFillSyclBase<TDim, TView, TExtent, TValue>
+			        {
+			            using Base = TaskFillSyclBase<TDim, TView, TExtent, TValue>;
+			            using Base::Base;
+			            using typename Base::DstSize;
+			            using typename Base::ExtentSize;
+			            using DimMin1 = DimInt<TDim::value - 1u>;
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                this->printDebug();
+			#    endif
+			                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
+			                Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_dstPitchBytes));
+
+			                std::vector<sycl::event> events;
+			                events.reserve(static_cast<std::size_t>(extentWithoutInnermost.prod()));
+
+			                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			                {
+			                    using Elem = std::remove_cvref_t<decltype(this->m_value)>;
+
+			                    meta::ndLoopIncIdx(
+			                        extentWithoutInnermost,
+			                        [&](Vec<DimMin1, ExtentSize> const& idx)
+			                        {
+			                            auto offsetBytes = (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum();
+			                            Elem* ptr = reinterpret_cast<Elem*>(
+			                                reinterpret_cast<std::uint8_t*>(this->m_dstMemNative) + offsetBytes);
+
+			                            assert(this->m_extentWidth >= 0);
+
+			                            events.push_back(queue.fill<TValue>(
+			                                ptr,
+			                                this->m_value,
+			                                static_cast<std::size_t>(this->m_extentWidth),
+			                                requirements));
+			                        });
+			                }
+
+
+			                return queue.ext_oneapi_submit_barrier(events);
+			            }
+			        };
+
+			        template<typename TView, typename TExtent, typename TValue>
+			        struct TaskFillSycl<DimInt<1u>, TView, TExtent, TValue>
+			            : public TaskFillSyclBase<DimInt<1u>, TView, TExtent, TValue>
+			        {
+			            using Base = TaskFillSyclBase<DimInt<1u>, TView, TExtent, TValue>;
+			            using Base::Base;
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                this->printDebug();
+			#    endif
+			                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			                {
+			                    return queue.fill(
+			                        this->m_dstMemNative,
+			                        this->m_value,
+			                        static_cast<std::size_t>(this->m_extentWidth),
+			                        requirements);
+			                }
+			                else
+			                {
+			                    return queue.ext_oneapi_submit_barrier();
+			                }
+			            }
+			        };
+
+			        template<typename TView, typename TExtent, typename TValue>
+			        struct TaskFillSycl<DimInt<0u>, TView, TExtent, TValue>
+			        {
+			            using Elem = alpaka::Elem<TView>;
+
+			            template<typename TViewFwd>
+			            TaskFillSycl(TViewFwd&& view, TValue const& value, [[maybe_unused]] TExtent const& extent)
+			                : m_value(value)
+			                , m_dstMemNative(getPtrNative(view))
+			            {
+			                ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+			                ALPAKA_ASSERT(getExtents(view).prod() == 1u);
+			            }
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+			                return queue.fill(m_dstMemNative, m_value, 1, requirements);
+			            }
+
+			            TValue const m_value;
+			            Elem* const m_dstMemNative;
+			            static constexpr auto is_sycl_task = true;
+			        };
+
+			    } // namespace detail
+
+			    namespace trait
+			    {
+			        template<typename TDim, typename TPlatform>
+			        struct CreateTaskFill<TDim, DevGenericSycl<TPlatform>>
+			        {
+			            template<typename TExtent, typename TView, typename TValue>
+			            static auto createTaskFill(TView& view, TValue const& value, TExtent const& extent)
+			                -> alpaka::detail::TaskFillSycl<TDim, TView, TExtent, TValue>
+			            {
+			                return alpaka::detail::TaskFillSycl<TDim, TView, TExtent, TValue>(view, value, extent);
+			            }
+			        };
+			    } // namespace trait
+
+			} // namespace alpaka
+			#endif
+			// ==
+			// == ./include/alpaka/mem/buf/sycl/Fill.hpp ==
 			// ============================================================================
 
 			// ============================================================================
@@ -36637,6 +37032,141 @@
 			// ============================================================================
 
 			// ============================================================================
+			// == ./include/alpaka/mem/buf/uniformCudaHip/Fill.hpp ==
+			// ==
+			/* Copyright 2025 Maria Michailidi, Anna Polova, Abdulrahman Al Marzouqi
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/exec/UniformElements.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
+
+			// #include <iostream>    // amalgamate: file already included
+			#include <type_traits>
+
+			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+
+			namespace alpaka
+			{
+			    template<typename TApi>
+			    class DevUniformCudaHipRt;
+
+			    namespace detail
+			    {
+			        template<typename TElem, typename TExtent, typename TPitchBytes>
+			        struct FillKernelND
+			        {
+			            template<typename TAcc>
+			            ALPAKA_FN_ACC void operator()(
+			                TAcc const& acc,
+			                TElem* ptr,
+			                TElem value,
+			                TExtent extent,
+			                TPitchBytes pitchBytes) const
+			            {
+			                for(auto const& idx : alpaka::uniformElementsND(acc, extent))
+			                {
+			                    // The host code checks that the pitches are a multiple of TElem's alignment.
+			                    std::uintptr_t offsetBytes = static_cast<std::uintptr_t>((pitchBytes * idx).sum());
+			                    TElem* elem = reinterpret_cast<TElem*>(
+			                        __builtin_assume_aligned(reinterpret_cast<std::uint8_t*>(ptr) + offsetBytes, alignof(TElem)));
+
+			                    // Write value at element address
+			                    *elem = value;
+			                }
+			            }
+			        };
+
+			        template<typename TElem>
+			        struct FillKernel0D
+			        {
+			            template<typename TAcc>
+			            ALPAKA_FN_ACC void operator()([[maybe_unused]] TAcc const& acc, TElem* ptr, TElem value) const
+			            {
+			                // A zero-dimensional buffer always has a single element.
+			                *ptr = value;
+			            }
+			        };
+
+
+			    } // namespace detail
+
+			    namespace trait
+			    {
+			        template<typename TDim, typename TApi>
+			        struct CreateTaskFill<TDim, DevUniformCudaHipRt<TApi>>
+			        {
+			            template<typename TExtent, typename TViewFwd, typename TValue>
+			            ALPAKA_FN_HOST static auto createTaskFill(TViewFwd&& view, TValue const& value, TExtent const& extent)
+			            {
+			                using View = std::remove_reference_t<TViewFwd>;
+			                using Idx = alpaka::Idx<View>;
+			                using Acc = AccGpuUniformCudaHipRt<TApi, TDim, Idx>;
+			                using WorkDiv = alpaka::WorkDivMembers<TDim, Idx>;
+			                using Vec = alpaka::Vec<TDim, Idx>;
+			                using Elem = alpaka::Elem<View>;
+			                static_assert(
+			                    std::is_trivially_copyable_v<Elem>,
+			                    "Only trivially copyable types are supported for fill");
+
+			                if constexpr(TDim::value == 0)
+			                {
+			                    // A zero-dimensional buffer always has a single element.
+			                    WorkDiv grid{Vec{}, Vec{}, Vec{}};
+			                    return alpaka::createTaskKernel<Acc>(
+			                        grid,
+			                        alpaka::detail::FillKernel0D<Elem>{},
+			                        std::data(view),
+			                        value);
+			                }
+			                else
+			                {
+			                    // TODO: compute an efficient work division.
+			                    Vec const elements = Vec::ones();
+			                    Vec threads = Vec::ones();
+			                    threads.x() = 64;
+			                    Vec const blocks = Vec::ones();
+			                    WorkDiv grid = WorkDiv(blocks, threads, elements);
+
+			                    // Check that the pitches are a multiple of Elem's alignment.
+			                    auto pitches = getPitchesInBytes(view);
+			                    for([[maybe_unused]] auto pitch : pitches)
+			                    {
+			                        ALPAKA_ASSERT(static_cast<std::size_t>(pitch) % alignof(Elem) == 0);
+			                    }
+			                    return alpaka::createTaskKernel<Acc>(
+			                        grid,
+			                        alpaka::detail::FillKernelND<Elem, TExtent, Vec>{},
+			                        std::data(view),
+			                        value,
+			                        extent,
+			                        pitches);
+			                }
+			            }
+			        };
+			    } // namespace trait
+			} // namespace alpaka
+
+			#endif
+			// ==
+			// == ./include/alpaka/mem/buf/uniformCudaHip/Fill.hpp ==
+			// ============================================================================
+
+			// ============================================================================
 			// == ./include/alpaka/mem/buf/uniformCudaHip/Set.hpp ==
 			// ==
 			/* Copyright 2023 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
@@ -37069,6 +37599,7 @@
 	} // namespace alpaka
 
 	// #    include "alpaka/mem/buf/uniformCudaHip/Copy.hpp"    // amalgamate: file already inlined
+	// #    include "alpaka/mem/buf/uniformCudaHip/Fill.hpp"    // amalgamate: file already inlined
 	// #    include "alpaka/mem/buf/uniformCudaHip/Set.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/uniformCudaHip/traits/BufUniformCudaHipRtTraits.hpp ==
