@@ -1,5 +1,5 @@
 /* Copyright 2025 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
- *                Bernhard Manfred Gruber
+ *                Bernhard Manfred Gruber, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -382,6 +382,19 @@ namespace alpaka
             {
                 for(typename TDim::value_type i = 0; i < TDim::value; ++i)
                     r[i] = p[i] * q[i];
+            }
+            return r;
+        }
+
+        //! \return The element-wise product of a vector times a scalar.
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC friend constexpr auto operator*(Vec const& p, TVal const& q) -> Vec
+        {
+            Vec r;
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] * q;
             }
             return r;
         }
