@@ -217,6 +217,11 @@ namespace alpaka
 #    endif
         }
 
+        static inline Error_t getDevice(int* device)
+        {
+            return ::hipGetDevice(device);
+        }
+
         static inline Error_t getDeviceCount(int* count)
         {
             return ::hipGetDeviceCount(count);

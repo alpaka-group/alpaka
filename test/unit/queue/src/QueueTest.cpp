@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include <alpaka/core/ApiCudaRt.hpp>
+#include <alpaka/core/ApiHipRt.hpp>
 #include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/test/queue/Queue.hpp>
@@ -277,4 +279,27 @@ TEMPLATE_LIST_TEST_CASE("isQueue", "[queue]", alpaka::test::TestQueues)
     Fixture f;
 
     REQUIRE(alpaka::isQueue<decltype(f.m_queue)>);
+}
+
+#if defined(alpaka_ACC_GPU_CUDA_ENABLE)
+using Api = alpaka::ApiCudaRt;
+#elif defined(alpaka_ACC_GPU_HIP_ENABLE)
+using Api = alpaka::ApiHipRt;
+#endif
+
+TEMPLATE_LIST_TEST_CASE("constructQueueWithStream", "[queue]", alpaka::test::TestQueues)
+{
+#if defined(alpaka_ACC_GPU_CUDA_ENABLE) || defined(alpaka_ACC_GPU_HIP_ENABLE)
+    using DevQueue = TestType;
+    Api::Stream_t stream;
+    Api::streamCreate(&stream);
+
+    auto queue = DevQueue(stream);
+    // maybe check the public device member?
+    REQUIRE(alpaka::isQueue<decltype(queue)>);
+
+    Api::streamDestroy(stream);
+#else
+    REQUIRE(true);
+#endif
 }

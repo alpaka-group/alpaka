@@ -33,6 +33,9 @@ namespace alpaka
     template<typename TApi>
     class DevUniformCudaHipRt;
 
+    template<typename TApi>
+    class PlatformUniformCudaHipRt;
+
     namespace uniform_cuda_hip::detail
     {
         //! The CUDA/HIP RT queue implementation.
@@ -67,7 +70,7 @@ namespace alpaka
                 , m_isOwning(false)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                auto deviceId;
+                int deviceId;
                 TApi::getDevice(&deviceId);
                 m_dev = alpaka::getDevByIdx(alpaka::PlatformUniformCudaHipRt<TApi>{}, deviceId);
             }

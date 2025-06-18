@@ -192,6 +192,11 @@ namespace alpaka
 #    endif
         }
 
+        static inline Error_t getDevice(int* device)
+        {
+            return ::cudaGetDevice(device);
+        }
+
         static inline Error_t getDeviceCount(int* count)
         {
             return ::cudaGetDeviceCount(count);
