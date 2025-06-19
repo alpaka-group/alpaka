@@ -6,33 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- C++ concepts: for Tag's #2403
-- add static function dim() to alpaka::Vec #2415
+- C++ concepts: for `Tag` #2403
+- add static function `dim()` to `alpaka::Vec` #2415
 - `CMake`
-  - Check in CMake if the compiler supports the minimum required C++ standard #2422
+  - check in CMake if the compiler supports the minimum required C++ standard #2422
   - add option for installation #2476
 - an example using rocBLAS and cuBLAS in alpaka code #2433
 - `CI`
   - add CI job, which verifies that the README.md contains the generated compiler support table #2439
-  - Add CUDA-only mode job to the CI #2480
+  - add `alpaka_ACC_GPU_CUDA_ONLY_MODE` job to the CI #2480
 - use deploy-pages GitHub Action to build and deploy doxygen doc #2446
 - implement a c++20 constexpr type demangler #2472 #2508
 - add `ConstBuf` #2475
-- Implement a fill function for buffers of arbitrary types #2500
+- implement a fill function for buffers of arbitrary types #2500
 
 ### Changed
 
 - switch to C++20 as minimum C++ standard #2402
 - make boost an optional dependency #2503
-- rename namespace alpaka::concepts to alpaka::inteface #2410
+- rename namespace `alpaka::concepts` to `alpaka::interface` #2410
 - `CI`
   - set default environment variables in the CI #2424
   - update MacOS runner to 14 and 15 #2425
   - update oneAPI to 2025.0 #2427
   - Windows CI: use preinstalled CMake instead installing specific version #2438
   - update GitHub Action checkout action and upload-artifact action to v4 #2454
-- CMake: overwork std::mdspan support for nvcc #2445
-- limit babelstream DotKernel block size for multithreaded CPUs #2467
+- CMake: rework `std::mdspan` support for nvcc #2445
+- limit babelstream `DotKernel` block size for multithreaded CPUs #2467
 
 ### Fixed
 
@@ -48,9 +48,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - fix parallelLoopPatterns for the Intel FPGA SYCL back-end #2456
   - disable test not supported by SYCL #2468 #2501
   - fix index order in translation from Sycl to alpaka indices and back #2488
-  - Change attribute intel::reqd_sub_group_size to sycl::reqd_sub_group_size #2509
+  - Change attribute `intel::reqd_sub_group_size` to `sycl::reqd_sub_group_size` #2509
 - `Cuda/Hip`
-  - fix ALPAKA_THROW_ACC for CUDA/HIP-only mode #2511
+  - fix `ALPAKA_THROW_ACC` for CUDA/HIP-only mode #2511
 - `example`
   - fix bablestream benchmark #2420
   - add missing wait to get correct timer information #2432
