@@ -7,6 +7,7 @@
 #include "alpaka/alpaka.hpp"
 #include "alpaka/core/DemangleTypeNames.hpp"
 
+#include <chrono>
 #include <type_traits>
 #include <utility>
 

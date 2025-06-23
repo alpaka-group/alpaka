@@ -5,7 +5,6 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/example/ExecuteForEachAccTag.hpp>
 
-#include <chrono>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
