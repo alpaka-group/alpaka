@@ -6,7 +6,6 @@
 #include <alpaka/example/ExecuteForEachAccTag.hpp>
 #include <alpaka/rand/RandPhiloxStateless.hpp>
 
-#include <chrono>
 #include <iostream>
 #include <random>
 #include <typeinfo>
