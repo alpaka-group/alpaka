@@ -66,13 +66,13 @@ namespace alpaka
             }
 
             ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(TApi::Stream_t stream)
-                : m_UniformCudaHipQueue(stream)
+                : m_dev(
+                      alpaka::getDevByIdx(
+                          alpaka::PlatformUniformCudaHipRt<TApi>{},
+                          static_cast<std::size_t>(TApi::getDevice())))
+                , m_UniformCudaHipQueue(stream)
                 , m_isOwning(false)
             {
-                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                int deviceId;
-                TApi::getDevice(&deviceId);
-                m_dev = alpaka::getDevByIdx(alpaka::PlatformUniformCudaHipRt<TApi>{}, deviceId);
             }
 
             QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
@@ -98,6 +98,7 @@ namespace alpaka
             }
 
         public:
+            int m_deviceId;
             DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
             core::CallbackThread m_callbackThread;
 
@@ -118,6 +119,12 @@ namespace alpaka
                 : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
             {
                 dev.registerQueue(m_spQueueImpl);
+            }
+
+            ALPAKA_FN_HOST QueueUniformCudaHipRt(typename TApi::Stream_t stream)
+                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(stream))
+            {
+                m_spQueueImpl->m_dev.registerQueue(m_spQueueImpl);
             }
 
             ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool

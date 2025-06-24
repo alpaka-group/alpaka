@@ -281,25 +281,23 @@ TEMPLATE_LIST_TEST_CASE("isQueue", "[queue]", alpaka::test::TestQueues)
     REQUIRE(alpaka::isQueue<decltype(f.m_queue)>);
 }
 
-#if defined(alpaka_ACC_GPU_CUDA_ENABLE)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 using Api = alpaka::ApiCudaRt;
-#elif defined(alpaka_ACC_GPU_HIP_ENABLE)
+#    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 using Api = alpaka::ApiHipRt;
-#endif
+#    endif
 
 TEMPLATE_LIST_TEST_CASE("constructQueueWithStream", "[queue]", alpaka::test::TestQueues)
 {
-#if defined(alpaka_ACC_GPU_CUDA_ENABLE) || defined(alpaka_ACC_GPU_HIP_ENABLE)
     using DevQueue = TestType;
     Api::Stream_t stream;
     Api::streamCreate(&stream);
 
-    auto queue = DevQueue(stream);
-    // maybe check the public device member?
-    REQUIRE(alpaka::isQueue<decltype(queue)>);
+    auto queue = alpaka::QueueUniformCudaHipRtBlocking<Api>(stream);
 
     Api::streamDestroy(stream);
-#else
-    REQUIRE(true);
-#endif
 }
+
+#endif
