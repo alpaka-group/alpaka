@@ -197,6 +197,14 @@ namespace alpaka
             return ::cudaGetDevice(device);
         }
 
+        static inline int getDevice()
+        {
+            int device;
+            ::cudaGetDevice(&device);
+
+            return device;
+        }
+
         static inline Error_t getDeviceCount(int* count)
         {
             return ::cudaGetDeviceCount(count);

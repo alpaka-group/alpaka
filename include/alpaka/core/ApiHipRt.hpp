@@ -222,6 +222,14 @@ namespace alpaka
             return ::hipGetDevice(device);
         }
 
+        static inline int getDevice()
+        {
+            int device;
+            ::hipGetDevice(*&evice);
+
+            return device;
+        }
+
         static inline Error_t getDeviceCount(int* count)
         {
             return ::hipGetDeviceCount(count);
