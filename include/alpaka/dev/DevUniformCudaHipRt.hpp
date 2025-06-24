@@ -15,7 +15,7 @@
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
 #include "alpaka/queue/Traits.hpp"
-#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
+#include "alpaka/queue/cuda-hip/QueueUniformCudaHipRt.hpp"
 #include "alpaka/traits/Traits.hpp"
 #include "alpaka/wait/Traits.hpp"
 
