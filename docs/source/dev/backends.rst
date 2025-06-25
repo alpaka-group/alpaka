@@ -240,9 +240,9 @@ The following tables list the functions available in the `CUDA Runtime API <http
     +---------------------------------+-----------------------------------------------------------------------+
     | cudaDeviceSynchronize           | void alpaka::wait(device)                                             |
     +---------------------------------+-----------------------------------------------------------------------+
-    | cudaGetDevice                   | n/a (no current device)                                               |
+    | cudaGetDevice                   | alpaka::ApiCudaRt::getDevice()                                        |
     +---------------------------------+-----------------------------------------------------------------------+
-    | cudaGetDeviceCount              | std::size_t alpaka::getDevCount< TPlatform >()                         |
+    | cudaGetDeviceCount              | std::size_t alpaka::getDevCount< TPlatform >()                        |
     +---------------------------------+-----------------------------------------------------------------------+
     | cudaGetDeviceFlags              | --                                                                    |
     +---------------------------------+-----------------------------------------------------------------------+

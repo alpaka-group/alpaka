@@ -34,7 +34,7 @@ namespace alpaka
     class DevUniformCudaHipRt;
 
     template<typename TApi>
-    class PlatformUniformCudaHipRt;
+    struct PlatformUniformCudaHipRt;
 
     namespace uniform_cuda_hip::detail
     {

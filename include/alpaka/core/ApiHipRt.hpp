@@ -225,7 +225,7 @@ namespace alpaka
         static inline int getDevice()
         {
             int device;
-            ::hipGetDevice(*&evice);
+            ::hipGetDevice(&device);
 
             return device;
         }
