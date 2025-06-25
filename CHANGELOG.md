@@ -54,7 +54,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `example`
   - fix bablestream benchmark #2420
   - add missing wait to get correct timer information #2432
-- use specific commit of amalgamate for single-header branch #2437
+- rename directory `cuda_hip` to `cuda-hip` to fix amalgamation #2437
 - fix `math::isfinite()`, `math::isnan()` and `math::isinf()` to support `-ffast-math` on CPU #2482
 - remove deprecated ciso646 includes #2502
 
