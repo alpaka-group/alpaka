@@ -48,6 +48,11 @@
       "orcid": "0009-0004-6483-2137"
     },
     {
+      "name": "Narwal, Tapish",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0000-0002-5726-2330"
+    },
+    {
       "name": "Yusufoglu, Mehmet",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf"
     }
@@ -145,11 +150,6 @@
       "name": "Mewes, Hauke",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
       "type": "Other"
-    },
-    {
-      "name": "Narwal, Tapish",
-      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0000-0002-5726-2330"
     },
     {
       "name": "Nash, Phil",
