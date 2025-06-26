@@ -34769,6 +34769,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/sycl/BufGenericSycl.hpp ==
 		// ==
@@ -36126,6 +36127,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/sycl/BufGenericSycl.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
@@ -36152,6 +36154,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/buf/sycl/BufGenericSycl.hpp"    // amalgamate: file already inlined
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
@@ -38598,6 +38601,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
@@ -39712,6 +39716,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
@@ -40045,6 +40050,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
@@ -40102,6 +40108,7 @@
 	 */
 
 	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
