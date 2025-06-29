@@ -16,12 +16,6 @@
 #include <tuple>
 #include <type_traits>
 
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic push
-// "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
-#    pragma GCC diagnostic ignored "-Wcast-align"
-#endif
-
 namespace alpaka::test
 {
     template<typename TAcc, typename TElem, bool Const>
@@ -91,9 +85,6 @@ namespace alpaka::test
         CHECK(alpaka::getPtrNative(viewMove) == nativePtr2);
     }
 } // namespace alpaka::test
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic pop
-#endif
 
 TEMPLATE_LIST_TEST_CASE("viewPlainPtrTest", "[memView]", alpaka::test::TestAccs)
 {

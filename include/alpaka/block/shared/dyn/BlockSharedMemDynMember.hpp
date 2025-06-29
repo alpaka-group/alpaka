@@ -92,22 +92,15 @@ namespace alpaka
         template<typename T, std::size_t TStaticAllocKiB>
         struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
         {
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored                                                                                    \
-        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
-#endif
             static auto getMem(BlockSharedMemDynMember<TStaticAllocKiB> const& mem) -> T*
             {
+                constexpr auto alignment = core::vectorization::defaultAlignment;
                 static_assert(
-                    core::vectorization::defaultAlignment >= alignof(T),
+                    alignment >= alignof(T),
                     "Unable to get block shared dynamic memory for types with alignment higher than "
                     "defaultAlignment!");
-                return reinterpret_cast<T*>(mem.dynMemBegin());
+                return reinterpret_cast<T*>(__builtin_assume_aligned(mem.dynMemBegin(), alignment));
             }
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic pop
-#endif
         };
     } // namespace trait
 } // namespace alpaka

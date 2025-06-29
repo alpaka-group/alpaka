@@ -568,14 +568,7 @@ namespace alpaka
                     ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
                     {
                         assert(i % alignof(ElementType) == 0);
-#    if ALPAKA_COMP_GNUC
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wcast-align"
-#    endif
-                        return *reinterpret_cast<ElementType*>(p + i);
-#    if ALPAKA_COMP_GNUC
-#        pragma GCC diagnostic pop
-#    endif
+                        return *reinterpret_cast<ElementType*>(__builtin_assume_aligned(p + i, alignof(ElementType)));
                     }
                 };
 

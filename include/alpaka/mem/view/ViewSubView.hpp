@@ -92,17 +92,10 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto computeNativePtr()
         {
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic push
-            // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
-#    pragma GCC diagnostic ignored "-Wcast-align"
-#endif
-            return reinterpret_cast<TElem*>(
-                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(m_viewParentView))
-                + (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum());
-#if ALPAKA_COMP_GNUC
-#    pragma GCC diagnostic pop
-#endif
+            TElem* base = alpaka::getPtrNative(m_viewParentView);
+            auto offset = (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum();
+            std::byte* ptr = reinterpret_cast<std::byte*>(base) + offset;
+            return reinterpret_cast<TElem*>(__builtin_assume_aligned(ptr, alignof(TElem)));
         }
 
         ViewPlainPtr<Dev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
