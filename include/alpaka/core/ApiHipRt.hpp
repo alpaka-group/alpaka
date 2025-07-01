@@ -6,6 +6,8 @@
 
 #include "alpaka/core/Config.hpp"
 
+#include <stdexcept>
+
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 #    include <hip/hip_runtime_api.h>
@@ -225,7 +227,9 @@ namespace alpaka
         static inline int getDevice()
         {
             int device;
-            ::hipGetDevice(&device);
+            auto error = ::hipGetDevice(&device);
+            if(error != hipSuccess)
+                throw std::runtime_error(hipGetErrorString(error));
 
             return device;
         }

@@ -6,6 +6,8 @@
 
 #include "alpaka/core/Config.hpp"
 
+#include <stdexcept>
+
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #    include <cuda_runtime_api.h>
 
@@ -200,7 +202,9 @@ namespace alpaka
         static inline int getDevice()
         {
             int device;
-            ::cudaGetDevice(&device);
+            auto error = ::cudaGetDevice(&device);
+            if(error != cudaSuccess)
+                throw std::runtime_error(cudaGetErrorString(error));
 
             return device;
         }
