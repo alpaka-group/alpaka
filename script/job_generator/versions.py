@@ -67,7 +67,7 @@ sw_versions: Dict[str, List[str]] = {
             ALPAKA_ACC_SYCL_ENABLE,
         ],
     ],
-    UBUNTU: ["20.04"],
+    UBUNTU: ["22.04", "24.04"],
     CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
     BOOST: [
         "1.74.0",

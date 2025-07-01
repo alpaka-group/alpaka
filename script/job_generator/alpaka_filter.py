@@ -142,4 +142,11 @@ def alpaka_post_filter(row: List) -> bool:
         ):
             return False
 
+    # except for the ROCm images, we use only the Ubuntu 24.04 image
+    # the ROCm Ubuntu support is handled by the alpaka-job-matrix-library
+    if row_check_version(row, UBUNTU, "==", "22.04"):
+        for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+            if row_check_name(row, compiler_type, "!=", HIPCC):
+                return False
+
     return True
