@@ -3,6 +3,39 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.0] - 2025-07-04
+
+### Added
+
+- add static function `dim()` to alpaka::Vec #2428
+- add math functions for complex type for the oneAPI backend #2447
+- Gitlab CI: enable test for the SYCL CPU backend #2462
+
+### Changed
+
+- Intel FPGA SYCL backend does not support 64-bit atomics #2453
+- update Ubuntu 20.04 images in GitHub Actions #2522
+- alpaka::math custom implementations for CPU backend #2525
+
+### Fixed
+
+- fix parallelLoopPatterns for the Intel FPGA SYCL back-end #2457
+- fix bablestream benchmark #2521
+- add missing wait to get correct timer information #2523
+- rename directory cuda_hip to cuda-hip to fix amalgamation #2524
+- fix `ALPAKA_THROW_ACC` for CUDA/HIP-only mode #2529
+- add `#include <chrono>` everywhere it is used #2530
+- SYCL:
+  - fix SYCL index order #2526
+  - change attribute intel::reqd_sub_group_size to sycl::reqd_sub_group_size #2528
+  - fix template arguments of SYCL buffer specializations #2429
+  - protect usage of `__SYCL_TARGET` macros #2532
+- CI:
+  - backport CI fixes from 2.0 dev branch #2449
+  - update GitHub Action checkout action and upload-artifact action to v4 #2455
+  - disable test not supported by SYCL #2469
+  - disable SYCL warp tests #2527
+
 ## [1.2.0] - 2024-10-02
 
 ### Added
