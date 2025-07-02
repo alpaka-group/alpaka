@@ -2782,22 +2782,15 @@
 		        template<typename T, std::size_t TStaticAllocKiB>
 		        struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
 		        {
-		#if ALPAKA_COMP_GNUC
-		#    pragma GCC diagnostic push
-		#    pragma GCC diagnostic ignored                                                                                    \
-		        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
-		#endif
 		            static auto getMem(BlockSharedMemDynMember<TStaticAllocKiB> const& mem) -> T*
 		            {
+		                constexpr auto alignment = core::vectorization::defaultAlignment;
 		                static_assert(
-		                    core::vectorization::defaultAlignment >= alignof(T),
+		                    alignment >= alignof(T),
 		                    "Unable to get block shared dynamic memory for types with alignment higher than "
 		                    "defaultAlignment!");
-		                return reinterpret_cast<T*>(mem.dynMemBegin());
+		                return reinterpret_cast<T*>(__builtin_assume_aligned(mem.dynMemBegin(), alignment));
 		            }
-		#if ALPAKA_COMP_GNUC
-		#    pragma GCC diagnostic pop
-		#endif
 		        };
 		    } // namespace trait
 		} // namespace alpaka
@@ -2946,12 +2939,6 @@
 			            meta->offset = m_allocdBytes;
 			        }
 
-			#if ALPAKA_COMP_GNUC
-			#    pragma GCC diagnostic push
-			#    pragma GCC diagnostic ignored                                                                                    \
-			        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
-			#endif
-
 			        //! Give the pointer to an exiting variable
 			        //!
 			        //! @tparam T type of the variable
@@ -2971,11 +2958,12 @@
 			                    = varChunkEnd<MetaData>(off) - static_cast<std::uint32_t>(sizeof(MetaData));
 			                ALPAKA_ASSERT_ACC(
 			                    (alignedMetaDataOffset + static_cast<std::uint32_t>(sizeof(MetaData))) <= m_allocdBytes);
-			                auto* metaDataPtr = reinterpret_cast<MetaData*>(m_mem + alignedMetaDataOffset);
+			                auto* metaDataPtr = reinterpret_cast<MetaData*>(
+			                    __builtin_assume_aligned(m_mem + alignedMetaDataOffset, alignof(MetaData)));
 			                off = metaDataPtr->offset;
 
 			                if(metaDataPtr->id == id)
-			                    return reinterpret_cast<T*>(&m_mem[off - sizeof(T)]);
+			                    return reinterpret_cast<T*>(__builtin_assume_aligned(&m_mem[off - sizeof(T)], alignof(T)));
 			            }
 
 			            // Variable not found.
@@ -2986,14 +2974,10 @@
 			        template<typename T>
 			        auto getLatestVarPtr() const -> T*
 			        {
-			            return reinterpret_cast<T*>(&m_mem[m_allocdBytes - sizeof(T)]);
+			            return reinterpret_cast<T*>(__builtin_assume_aligned(&m_mem[m_allocdBytes - sizeof(T)], alignof(T)));
 			        }
 
 			    private:
-			#if ALPAKA_COMP_GNUC
-			#    pragma GCC diagnostic pop
-			#endif
-
 			        //! Byte offset to the end of the memory chunk
 			        //!
 			        //! Calculate bytes required to store a type with a aligned starting address in m_mem.
@@ -12350,14 +12334,7 @@
 				                    ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
 				                    {
 				                        assert(i % alignof(ElementType) == 0);
-				#    if ALPAKA_COMP_GNUC
-				#        pragma GCC diagnostic push
-				#        pragma GCC diagnostic ignored "-Wcast-align"
-				#    endif
-				                        return *reinterpret_cast<ElementType*>(p + i);
-				#    if ALPAKA_COMP_GNUC
-				#        pragma GCC diagnostic pop
-				#    endif
+				                        return *reinterpret_cast<ElementType*>(__builtin_assume_aligned(p + i, alignof(ElementType)));
 				                    }
 				                };
 
@@ -14287,11 +14264,6 @@
 
 		    namespace trait
 		    {
-		#if ALPAKA_COMP_GNUC
-		#    pragma GCC diagnostic push
-		#    pragma GCC diagnostic ignored                                                                                    \
-		        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
-		#endif
 		        template<typename T, std::size_t TDataAlignBytes, std::size_t TuniqueId>
 		        struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStMemberMasterSync<TDataAlignBytes>>
 		        {
@@ -14318,9 +14290,7 @@
 		                return *data;
 		            }
 		        };
-		#if ALPAKA_COMP_GNUC
-		#    pragma GCC diagnostic pop
-		#endif
+
 		        template<std::size_t TDataAlignBytes>
 		        struct FreeSharedVars<BlockSharedMemStMemberMasterSync<TDataAlignBytes>>
 		        {
@@ -39307,17 +39277,10 @@
 	    public:
 	        ALPAKA_FN_HOST auto computeNativePtr()
 	        {
-	#if ALPAKA_COMP_GNUC
-	#    pragma GCC diagnostic push
-	            // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
-	#    pragma GCC diagnostic ignored "-Wcast-align"
-	#endif
-	            return reinterpret_cast<TElem*>(
-	                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(m_viewParentView))
-	                + (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum());
-	#if ALPAKA_COMP_GNUC
-	#    pragma GCC diagnostic pop
-	#endif
+	            TElem* base = alpaka::getPtrNative(m_viewParentView);
+	            auto offset = (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum();
+	            std::byte* ptr = reinterpret_cast<std::byte*>(base) + offset;
+	            return reinterpret_cast<TElem*>(__builtin_assume_aligned(ptr, alignof(TElem)));
 	        }
 
 	        ViewPlainPtr<Dev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
