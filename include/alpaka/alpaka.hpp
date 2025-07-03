@@ -25,6 +25,8 @@
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/acc/TagAccIsEnabled.hpp"
 #include "alpaka/acc/Traits.hpp"
+// algo
+#include "alpaka/algo/Transform.hpp"
 // atomic
 #include "alpaka/atomic/AtomicCpu.hpp"
 #include "alpaka/atomic/AtomicGenericSycl.hpp"
