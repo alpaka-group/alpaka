@@ -142,11 +142,35 @@ def alpaka_post_filter(row: List) -> bool:
         ):
             return False
 
-    # except for the ROCm images, we use only the Ubuntu 24.04 image
+    # we use the Ubuntu 22.04 for
+    # - HIP 6.0 until 6.2
+    # - If Clang 14 and older is used
+    # - If CUDA 12.3 and older is used, because the CUDA versions does not support the libstdc++ 13
+    #   which is provided by the Ubuntu host compiler GCC 13
     # the ROCm Ubuntu support is handled by the alpaka-job-matrix-library
     if row_check_version(row, UBUNTU, "==", "22.04"):
         for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
-            if row_check_name(row, compiler_type, "!=", HIPCC):
-                return False
+            for compiler in (GCC, ICPX):
+                if row_check_name(row, compiler_type, "==", compiler):
+                    return False
 
+            for compiler in (CLANG, CLANG_CUDA):
+                if row_check_name(
+                    row, compiler_type, "==", compiler
+                ) and row_check_version(row, compiler_type, ">", "14"):
+                    return False
+
+    if row_check_version(row, UBUNTU, "==", "24.04"):
+        for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+            for compiler in (CLANG, CLANG_CUDA):
+                if row_check_name(
+                    row, compiler_type, "==", compiler
+                ) and row_check_version(row, compiler_type, "<", "15"):
+                    return False
+            if (
+                row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+                and row_check_name(row, HOST_COMPILER, "==", CLANG)
+                and row_check_version(row, DEVICE_COMPILER, "<=", "12.3")
+            ):
+                return False
     return True
