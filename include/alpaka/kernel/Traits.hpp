@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Config.hpp"
 #include "alpaka/core/Debug.hpp"
@@ -374,7 +375,7 @@ namespace alpaka
 #if ALPAKA_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    template<concepts::Acc TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
     ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         -> void
     {

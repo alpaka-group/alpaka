@@ -72,7 +72,7 @@ namespace alpaka
         , public rand::RandStdLib
 #    endif
         , public warp::WarpSingleThread
-        , public interface::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
+        , public interface::Implements<InterfaceAcc, AccCpuSerial<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

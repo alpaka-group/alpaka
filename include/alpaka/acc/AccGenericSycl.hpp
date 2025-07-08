@@ -73,7 +73,7 @@ namespace alpaka
         , public rand::RandGenericSycl<TDim>
 #    endif
         , public warp::WarpGenericSycl<TDim>
-        , public interface::Implements<ConceptAcc, AccGenericSycl<TTag, TDim, TIdx>>
+        , public interface::Implements<InterfaceAcc, AccGenericSycl<TTag, TDim, TIdx>>
     {
         static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
 
