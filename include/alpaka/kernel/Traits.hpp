@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Config.hpp"
@@ -381,4 +382,32 @@ namespace alpaka
     {
         enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
     }
+
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+//! Executes the given kernel in the given queue.
+//!
+//! \tparam TTag The tag type.
+//! \param queue The queue to enqueue the view copy task into.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<concepts::Tag TTag, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        -> void
+    {
+        enqueue(
+            queue,
+            createTaskKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
+                workDiv,
+                kernelFnObj,
+                std::forward<TArgs>(args)...));
+    }
+
 } // namespace alpaka

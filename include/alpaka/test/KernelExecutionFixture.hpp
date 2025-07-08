@@ -27,6 +27,7 @@ namespace alpaka::test
     {
     public:
         using Acc = TAcc;
+        using Tag = alpaka::AccToTag<Acc>;
         using Dim = alpaka::Dim<Acc>;
         using Idx = alpaka::Idx<Acc>;
         using Platform = alpaka::Platform<Acc>;
@@ -80,7 +81,7 @@ namespace alpaka::test
                     getPtrNative(bufAccResult),
                     std::forward<TArgs>(args)...);
 
-            exec<Acc>(m_queue, m_workDiv, kernelFnObj, getPtrNative(bufAccResult), std::forward<TArgs>(args)...);
+            exec<Tag>(m_queue, m_workDiv, kernelFnObj, getPtrNative(bufAccResult), std::forward<TArgs>(args)...);
 
             // Copy the result value to the host
             auto bufHostResult = allocBuf<bool, Idx>(m_devHost, static_cast<Idx>(1u));
