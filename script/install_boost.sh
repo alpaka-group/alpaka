@@ -56,7 +56,7 @@ else
     unset _CTEST_EXE
 fi
 
-export ALPAKA_BOOST_VERSION=1.74.0
+export ALPAKA_BOOST_VERSION=1.78.0
 export BOOST_ROOT=$HOME/boost
 export ALPAKA_CI_BOOST_LIB_DIR=$HOME/boost_lib
 export BOOST_LIBRARYDIR=/opt/boost/${ALPAKA_BOOST_VERSION}/lib

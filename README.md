@@ -87,11 +87,10 @@ Other compilers or combinations marked with :x: in the table above may work but 
 Dependencies
 ------------
 
-[Boost](https://boost.org/) 1.74.0+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *CUDA* is enabled, version *11.2* (with nvcc as CUDA compiler) or version *11.2* (with clang as CUDA compiler) of the *CUDA SDK* is the minimum requirement.
+When an accelerator back-end using *CUDA* is enabled, version *12.0* (with nvcc as CUDA compiler) or version *12.0* (with clang as CUDA compiler) of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
 *NOTE*: Separable compilation is disabled by default and can be enabled via the CMake flag `CMAKE_CUDA_SEPARABLE_COMPILATION`.
 
@@ -99,6 +98,7 @@ When an accelerator back-end using *OpenMP* is enabled, the compiler and the pla
 
 When an accelerator back-end using *TBB* is enabled, the compiler and the platform have to support the corresponding minimum *TBB* version.
 
+[Boost](https://boost.org/) 1.78.0+ is an optional external dependency, if the used C++ standard library does not support `std::atomic_ref`.
 
 Usage
 -----
