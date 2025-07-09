@@ -30,8 +30,10 @@ fi
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]; then
     : "${ALPAKA_CI_CMAKE_DIR?'ALPAKA_CI_CMAKE_DIR must be specified'}"
     _CMAKE_EXE=${ALPAKA_CI_CMAKE_DIR}/bin/cmake
+    _CTEST_EXE=${ALPAKA_CI_CMAKE_DIR}/bin/ctest
 else
     _CMAKE_EXE=cmake
+    _CTEST_EXE=ctest
 fi
 
 # check for C++ 20 std::atomic_ref support
@@ -45,11 +47,13 @@ ${_CMAKE_EXE} --build /tmp/hasStdAtomicRef
 
 unset _CMAKE_EXE
 
-if /tmp/hasStdAtomicRef/hasStdAtomicRef; then
+if ${_CTEST_EXE} -Q --test-dir /tmp/hasStdAtomicRef; then
     echo_green "has C++ std::atomic_ref support"
+    unset _CTEST_EXE
     return
 else
     echo_yellow "requires boost::atomic_ref"
+    unset _CTEST_EXE
 fi
 
 export ALPAKA_BOOST_VERSION=1.74.0
