@@ -30,6 +30,10 @@ namespace alpaka
         concept Acc = requires { requires alpaka::interface::ImplementsInterface<alpaka::InterfaceAcc, T>::value; };
     } // namespace concepts
 
+    //! True if TAcc is an accelerator, i.e. if it implements the InterfaceAcc concept.
+    template<typename TAcc>
+    [[deprecated("use the alpaka::concepts::Acc instead.")]] inline constexpr bool isAccelerator = concepts::Acc<TAcc>;
+
     //! The accelerator traits.
     namespace trait
     {
