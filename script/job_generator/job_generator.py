@@ -122,7 +122,6 @@ if __name__ == "__main__":
     parameters[DEVICE_COMPILER] = get_compiler_versions(clang_cuda=enable_clang_cuda)
     parameters[BACKENDS] = get_backend_matrix()
     parameters[CMAKE] = get_sw_tuple_list(CMAKE)
-    parameters[BOOST] = get_sw_tuple_list(BOOST)
     parameters[UBUNTU] = get_sw_tuple_list(UBUNTU)
     parameters[CXX_STANDARD] = get_sw_tuple_list(CXX_STANDARD)
     parameters[BUILD_TYPE] = get_sw_tuple_list(BUILD_TYPE)

@@ -3,7 +3,6 @@
 .base:
   variables:
     alpaka_DEBUG: 0
-    BOOST_LIBRARYDIR: "/opt/boost/${ALPAKA_BOOST_VERSION}/lib"
     ALPAKA_CI_OS_NAME: "Linux"
     # $CI_CPUS is defined by the HZDR gitlab CI
     ALPAKA_CI_BUILD_JOBS: "$CI_CPUS"

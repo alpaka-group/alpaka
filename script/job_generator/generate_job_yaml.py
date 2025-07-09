@@ -65,7 +65,7 @@ def job_prefix_coding(job: Dict[str, Tuple[str, str]]) -> str:
         str: Job name Prefix.
     """
     version_str = ""
-    for sw in [CMAKE, BOOST, UBUNTU, CXX_STANDARD, MDSPAN, BUILD_TYPE]:
+    for sw in [CMAKE, UBUNTU, CXX_STANDARD, MDSPAN, BUILD_TYPE]:
         if sw in job:
             if job[sw][NAME] == CXX_STANDARD:
                 version_str += "_cxx" + job[sw][VERSION]
@@ -245,11 +245,6 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     variables["ALPAKA_CI_SANITIZERS"] = ""
     # cmake install path, if cmake version is not already installed
     variables["ALPAKA_CI_CMAKE_DIR"] = "$HOME/cmake"
-    # boost install path, if boost version is not already installed
-    variables["BOOST_ROOT"] = "$HOME/boost"
-    # required, if boost is compiled during test job
-    variables["ALPAKA_CI_BOOST_LIB_DIR"] = "$HOME/boost_libs"
-    variables["BOOST_LIBRARYDIR"] = "/opt/boost/${ALPAKA_BOOST_VERSION}/lib"
     # cuda install path, if cuda version is not already installed
     variables["ALPAKA_CI_CUDA_DIR"] = "$HOME/cuda"
     # hip install path, if hip version is not already installed
@@ -268,7 +263,6 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["ALPAKA_CI_RUN_TESTS"] = "OFF"
 
     variables["ALPAKA_CI_CMAKE_VER"] = job[CMAKE][VERSION]
-    variables["ALPAKA_BOOST_VERSION"] = job[BOOST][VERSION]
     variables["alpaka_CXX_STANDARD"] = job[CXX_STANDARD][VERSION]
 
     # all back-ends are disabled by default
@@ -457,8 +451,6 @@ def global_variables() -> Dict[str, str]:
     # TODO(SimeonEhrig) should be set in the before_install.sh and could be removed
     variables["ALPAKA_CI_INSTALL_HIP"] = "OFF"
     variables["ALPAKA_CI_CMAKE_DIR"] = "$HOME/cmake"
-    variables["BOOST_ROOT"] = "$HOME/boost"
-    variables["ALPAKA_CI_BOOST_LIB_DIR"] = "$HOME/boost_libs"
     variables["ALPAKA_CI_CUDA_DIR"] = "$HOME/cuda"
     variables["ALPAKA_CI_HIP_ROOT_DIR"] = "$HOME/hip"
     variables["alpaka_ENABLE_WERROR"] = "ON"
