@@ -291,7 +291,6 @@ using Api = alpaka::ApiHipRt;
 
 TEMPLATE_LIST_TEST_CASE("constructQueueWithStream", "[queue]", alpaka::test::TestQueues)
 {
-    using DevQueue = TestType;
     Api::Stream_t stream;
     Api::streamCreate(&stream);
     auto queue = alpaka::QueueUniformCudaHipRtBlocking<Api>(stream);
