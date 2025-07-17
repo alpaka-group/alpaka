@@ -85,7 +85,6 @@ public:
   }
 
 public:
-  int m_deviceId;
   DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
   core::CallbackThread m_callbackThread;
 
