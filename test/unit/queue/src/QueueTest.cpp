@@ -294,7 +294,7 @@ TEMPLATE_LIST_TEST_CASE("constructQueueWithStream", "[queue]", alpaka::test::Tes
     Api::Stream_t stream;
     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(Api::streamCreate(&stream));
     auto queue = alpaka::QueueUniformCudaHipRtBlocking<Api>(stream);
-    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(Api::streamDestroy(stream));
+    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(Api::streamDestroy(stream));
 }
 
 #endif
