@@ -58,7 +58,7 @@ public:
 
   ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(TApi::Stream_t stream)
       : m_dev(alpaka::getDevByIdx(alpaka::PlatformUniformCudaHipRt<TApi>{},
-                                  static_cast<std::size_t>(TApi::getDevice()))),
+                                  static_cast<std::size_t>(TApi::getCurrentDevice()))),
         m_UniformCudaHipQueue(stream), m_isOwning(false) {}
 
   QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl &&) = default;

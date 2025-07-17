@@ -219,12 +219,7 @@ namespace alpaka
 #    endif
         }
 
-        static inline Error_t getDevice(int* device)
-        {
-            return ::hipGetDevice(device);
-        }
-
-        static inline int getDevice()
+        static inline int getCurrentDevice()
         {
             int device;
             auto error = ::hipGetDevice(&device);

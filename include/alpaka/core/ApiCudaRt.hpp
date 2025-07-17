@@ -194,12 +194,7 @@ namespace alpaka
 #    endif
         }
 
-        static inline Error_t getDevice(int* device)
-        {
-            return ::cudaGetDevice(device);
-        }
-
-        static inline int getDevice()
+        static inline int getCurrentDevice()
         {
             int device;
             auto error = ::cudaGetDevice(&device);
