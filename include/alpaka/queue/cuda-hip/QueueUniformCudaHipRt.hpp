@@ -69,8 +69,8 @@ namespace alpaka
 
             ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(TApi::Stream_t stream)
                 : m_dev(alpaka::getDevByIdx(
-                      alpaka::PlatformUniformCudaHipRt<TApi>{},
-                      static_cast<std::size_t>(TApi::getCurrentDevice())))
+                    alpaka::PlatformUniformCudaHipRt<TApi>{},
+                    static_cast<std::size_t>(TApi::getCurrentDevice())))
                 , m_UniformCudaHipQueue(stream)
                 , m_isOwning(false)
             {
@@ -159,8 +159,9 @@ namespace alpaka
         template<typename TApi, bool TBlocking>
         struct GetDev<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
         {
-            ALPAKA_FN_HOST static auto getDev(uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const&
-                                                  queue) -> DevUniformCudaHipRt<TApi>
+            ALPAKA_FN_HOST static auto getDev(
+                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
+                -> DevUniformCudaHipRt<TApi>
             {
                 return queue.m_spQueueImpl->m_dev;
             }
