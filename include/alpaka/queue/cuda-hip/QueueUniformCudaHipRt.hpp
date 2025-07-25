@@ -67,7 +67,7 @@ namespace alpaka
                     TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
             }
 
-            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(TApi::Stream_t stream)
+            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(typename TApi::Stream_t stream)
                 : m_dev(alpaka::getDevByIdx(
                     alpaka::PlatformUniformCudaHipRt<TApi>{},
                     static_cast<std::size_t>(TApi::getCurrentDevice())))
