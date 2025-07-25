@@ -284,17 +284,17 @@ TEMPLATE_LIST_TEST_CASE("isQueue", "[queue]", alpaka::test::TestQueues)
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-using Api = alpaka::ApiCudaRt;
+using TApi = alpaka::ApiCudaRt;
 #    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-using Api = alpaka::ApiHipRt;
+using TApi = alpaka::ApiHipRt;
 #    endif
 
 TEMPLATE_LIST_TEST_CASE("constructQueueWithStream", "[queue]", alpaka::test::TestQueues)
 {
-    Api::Stream_t stream;
-    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(Api::streamCreate(&stream));
-    auto queue = alpaka::QueueUniformCudaHipRtBlocking<Api>(stream);
-    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(Api::streamDestroy(stream));
+    TApi::Stream_t stream;
+    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamCreate(&stream));
+    auto queue = alpaka::QueueUniformCudaHipRtBlocking<TApi>(stream);
+    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamDestroy(stream));
 }
 
 #endif
