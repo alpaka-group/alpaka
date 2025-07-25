@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Config.hpp"
+#include "alpaka/core/UniformCudaHip.hpp"
 
 #include <stdexcept>
 
@@ -197,9 +198,8 @@ namespace alpaka
         static inline int getCurrentDevice()
         {
             int device;
-            auto error = ::cudaGetDevice(&device);
-            if(error != cudaSuccess)
-                throw std::runtime_error(cudaGetErrorString(error));
+            using TApi = alpaka::ApiCudaRt;
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(::cudaGetDevice(&device));
 
             return device;
         }

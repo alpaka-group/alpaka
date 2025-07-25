@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Config.hpp"
+#include "alpaka/core/UniformCudaHip.hpp"
 
 #include <stdexcept>
 
@@ -222,9 +223,7 @@ namespace alpaka
         static inline int getCurrentDevice()
         {
             int device;
-            auto error = ::hipGetDevice(&device);
-            if(error != hipSuccess)
-                throw std::runtime_error(hipGetErrorString(error));
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(::hipGetDevice(&device));
 
             return device;
         }
