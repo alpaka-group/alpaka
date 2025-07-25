@@ -223,6 +223,7 @@ namespace alpaka
         static inline int getCurrentDevice()
         {
             int device;
+            using TApi = alpaka::ApiHipRt;
             ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(::hipGetDevice(&device));
 
             return device;
