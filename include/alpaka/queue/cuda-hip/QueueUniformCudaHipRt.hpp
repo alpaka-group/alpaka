@@ -188,8 +188,8 @@ namespace alpaka
 
         //! The CUDA/HIP RT queue thread wait trait specialization.
         //!
-        //! Blocks execution of the calling thread until the queue has finished
-        //! processing all previously requested tasks (kernels, data copies, ...)
+        //! Blocks execution of the calling thread until the queue has finished processing all previously requested
+        //! tasks (kernels, data copies, ...)
         template<typename TApi, bool TBlocking>
         struct CurrentThreadWaitFor<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
         {
@@ -225,13 +225,11 @@ namespace alpaka
 
             struct HostFuncData
             {
-                // We don't need to keep the queue alive, because in it's dtor it will
-                // synchronize with the CUDA/HIP stream and wait until all host functions
-                // and the CallbackThread are done. It's actually an error to copy the queue
-                // into the host function. Destroying it here would call CUDA/HIP APIs from
-                // the host function. Passing it further to the Callback thread, would make
-                // the Callback thread hold a task containing the queue with the
-                // CallbackThread itself. Destroying the task if no other queue instance
+                // We don't need to keep the queue alive, because in it's dtor it will synchronize with the CUDA/HIP
+                // stream and wait until all host functions and the CallbackThread are done. It's actually an error to
+                // copy the queue into the host function. Destroying it here would call CUDA/HIP APIs from the host
+                // function. Passing it further to the Callback thread, would make the Callback thread hold a task
+                // containing the queue with the CallbackThread itself. Destroying the task if no other queue instance
                 // exists will make the CallbackThread join itself and crash.
                 QueueImpl& q;
                 TTask t;
