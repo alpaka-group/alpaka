@@ -55,14 +55,12 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(m_dev.getNativeHandle()));
 
                 // - [cuda/hip]StreamDefault: Default queue creation flag.
-                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created
-                // queue may run concurrently with work in queue 0 (the NULL queue),
-                //   and that the created queue should perform no implicit synchronization
-                //   with queue 0.
+                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run
+                // concurrently with work in queue 0 (the NULL queue),
+                // and that the created queue should perform no implicit synchronization with queue 0.
                 // Create the queue on the current device.
-                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic
-                // implemented in the alpaka CPU queue. It would be too much work to
-                // implement implicit default queue synchronization on CPU.
+                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka
+                // CPU queue. It would be too much work to implement implicit default queue synchronization on CPU.
 
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
@@ -84,10 +82,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                // Make sure all pending async work is finished before destroying the stream
-                // to guarantee determinism. This would not be necessary for plain CUDA/HIP
-                // operations, but we can have host functions in the stream, which reference
-                // this queue instance and its CallbackThread. Make sure they are done.
+                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
+                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
+                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
                 if(m_isOwning)
                 {
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
