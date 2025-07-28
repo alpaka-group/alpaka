@@ -7,8 +7,6 @@
 #include "alpaka/core/Config.hpp"
 #include "alpaka/core/UniformCudaHip.hpp"
 
-#include <stdexcept>
-
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 #    include <hip/hip_runtime_api.h>
