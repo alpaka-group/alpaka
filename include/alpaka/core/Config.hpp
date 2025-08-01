@@ -26,7 +26,7 @@
 
 // WINDOWS
 #if !defined(ALPAKA_OS_WINDOWS)
-#    if defined(__WIN32__) || defined(__MINGW32__) || defined(WIN32)
+#    if defined(_WIN64) || defined(__MINGW64__)
 #        define ALPAKA_OS_WINDOWS 1
 #    else
 #        define ALPAKA_OS_WINDOWS 0
