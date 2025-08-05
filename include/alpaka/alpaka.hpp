@@ -24174,6 +24174,7 @@
 
 					// #pragma once
 					// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
 
 					#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 					#    include <cuda_runtime_api.h>
@@ -24359,6 +24360,15 @@
 					#    if ALPAKA_COMP_GNUC
 					#        pragma GCC diagnostic pop
 					#    endif
+					        }
+
+					        static inline int getCurrentDevice()
+					        {
+					            int device;
+					            using TApi = alpaka::ApiCudaRt;
+					            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(::cudaGetDevice(&device));
+
+					            return device;
 					        }
 
 					        static inline Error_t getDeviceCount(int* count)
@@ -24586,7 +24596,7 @@
 					// ============================================================================
 					// == ./include/alpaka/queue/cuda-hip/QueueUniformCudaHipRt.hpp ==
 					// ==
-					/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+					/* Copyright 2025 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
 					 * Antonio Di Pilato
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
@@ -24599,6 +24609,7 @@
 					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
 					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
@@ -24620,6 +24631,9 @@
 					    template<typename TApi>
 					    class DevUniformCudaHipRt;
 
+					    template<typename TApi>
+					    struct PlatformUniformCudaHipRt;
+
 					    namespace uniform_cuda_hip::detail
 					    {
 					        //! The CUDA/HIP RT queue implementation.
@@ -24630,6 +24644,7 @@
 					            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(DevUniformCudaHipRt<TApi> const& dev)
 					                : m_dev(dev)
 					                , m_UniformCudaHipQueue()
+					                , m_isOwning(true)
 					            {
 					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -24639,13 +24654,22 @@
 					                // - [cuda/hip]StreamDefault: Default queue creation flag.
 					                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run
 					                // concurrently with work in queue 0 (the NULL queue),
-					                //   and that the created queue should perform no implicit synchronization with queue 0.
+					                // and that the created queue should perform no implicit synchronization with queue 0.
 					                // Create the queue on the current device.
 					                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka
 					                // CPU queue. It would be too much work to implement implicit default queue synchronization on CPU.
 
 					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
 					                    TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
+					            }
+
+					            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(typename TApi::Stream_t stream)
+					                : m_dev(alpaka::getDevByIdx(
+					                    alpaka::PlatformUniformCudaHipRt<TApi>{},
+					                    static_cast<std::size_t>(TApi::getCurrentDevice())))
+					                , m_UniformCudaHipQueue(stream)
+					                , m_isOwning(false)
+					            {
 					            }
 
 					            QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
@@ -24658,8 +24682,11 @@
 					                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
 					                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
 					                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
-					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
+					                if(m_isOwning)
+					                {
+					                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
+					                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
+					                }
 					            }
 
 					            [[nodiscard]] auto getNativeHandle() const noexcept
@@ -24673,6 +24700,7 @@
 
 					        private:
 					            typename TApi::Stream_t m_UniformCudaHipQueue;
+					            bool m_isOwning;
 					        };
 
 					        //! The CUDA/HIP RT queue.
@@ -24687,6 +24715,12 @@
 					                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
 					            {
 					                dev.registerQueue(m_spQueueImpl);
+					            }
+
+					            ALPAKA_FN_HOST QueueUniformCudaHipRt(typename TApi::Stream_t stream)
+					                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(stream))
+					            {
+					                m_spQueueImpl->m_dev.registerQueue(m_spQueueImpl);
 					            }
 
 					            ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
@@ -26045,6 +26079,7 @@
 
 		// #pragma once
 		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
 
 		#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -26255,6 +26290,15 @@
 		#    if ALPAKA_COMP_GNUC
 		#        pragma GCC diagnostic pop
 		#    endif
+		        }
+
+		        static inline int getCurrentDevice()
+		        {
+		            int device;
+		            using TApi = alpaka::ApiHipRt;
+		            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(::hipGetDevice(&device));
+
+		            return device;
 		        }
 
 		        static inline Error_t getDeviceCount(int* count)
