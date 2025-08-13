@@ -22,45 +22,48 @@ variables:
 generate:
   stage: generator
   # update alpine version to use newer python version
-  image: alpine:3.18
+  image: python:3.13-alpine
   script:
-    - apk update && apk add python3~=3.11 py3-pip
-    - pip3 install -r script/job_generator/requirements.txt
+    # TODO: remove me, if bashi is installed from pypi
+    - apk update && apk add git
+    - pip3 install script/job_generator2
+    - job-generator
     # it is sufficient to verify once, as the same job matrix is generated, verified and then filtered each time
     # disable verify because we know that the generator is broken: https://github.com/thombashi/allpairspy/pull/10
     # - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --verify --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
-    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
-    - cat compile_only.yml
-    - cat runtime_cpu.yml
-    - cat runtime_gpu.yml
-  artifacts:
-    paths:
-      - compile_only.yml
-      - runtime_cpu.yml
-      - runtime_gpu.yml
-    expire_in: 1 week
+    #- python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
+    #- cat compile_only.yml
+    #- cat runtime_cpu.yml
+    #- cat runtime_gpu.yml
+  # artifacts:
+  #   paths:
+  #     - compile_only.yml
+  #     - runtime_cpu.yml
+  #     - runtime_gpu.yml
+  #   expire_in: 1 week
   interruptible: true
 
-run-compile-only-test:
-  stage: run-test-jobs
-  trigger:
-    include:
-      - artifact: compile_only.yml
-        job: generate
-    strategy: depend
+# TODO: bring me back
+# run-compile-only-test:
+#   stage: run-test-jobs
+#   trigger:
+#     include:
+#       - artifact: compile_only.yml
+#         job: generate
+#     strategy: depend
 
-run-runtime-cpu-test:
-  stage: run-test-jobs
-  trigger:
-    include:
-      - artifact: runtime_cpu.yml
-        job: generate
-    strategy: depend
+# run-runtime-cpu-test:
+#   stage: run-test-jobs
+#   trigger:
+#     include:
+#       - artifact: runtime_cpu.yml
+#         job: generate
+#     strategy: depend
 
-run-runtime-gpu-test:
-  stage: run-test-jobs
-  trigger:
-    include:
-      - artifact: runtime_gpu.yml
-        job: generate
-    strategy: depend
+# run-runtime-gpu-test:
+#   stage: run-test-jobs
+#   trigger:
+#     include:
+#       - artifact: runtime_gpu.yml
+#         job: generate
+#     strategy: depend

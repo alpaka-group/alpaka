@@ -1,0 +1,52 @@
+"""Copyright 2025 Simeon Ehrig
+SPDX-License-Identifier: MPL-2.0
+
+Generate CI jobs for alpaka.
+"""
+
+import sys
+import bashi
+import alpaka_bashi
+
+
+def setup_row_printer() -> None:
+    """Set extra configurations for the bashi.print_row_nice() function"""
+    bashi.add_print_row_nice_parameter_alias(alpaka_bashi.BUILD_TYPE, "buildType")
+    bashi.add_print_row_nice_parameter_alias(alpaka_bashi.JOB_EXECUTION_TYPE, "jobType")
+
+    for val_name, aliases in alpaka_bashi.get_version_aliases().items():
+        bashi.add_print_row_nice_version_alias(val_name, aliases)
+
+
+def main() -> None:
+    """Entry point"""
+    setup_row_printer()
+
+    param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
+        software_versions=alpaka_bashi.ALPAKA_VERSIONS
+    )
+
+    alpaka_filter = alpaka_bashi.AlpakaFilter()
+    runtime_infos = bashi.get_runtime_infos(param_matrix)
+
+    comb_list: bashi.CombinationList = bashi.generate_combination_list(
+        parameter_value_matrix=param_matrix,
+        runtime_infos=runtime_infos,
+        custom_filter=alpaka_filter,
+    )
+
+    print(f"number of combinations: {len(comb_list)}")
+
+    if alpaka_bashi.verify(comb_list, param_matrix, runtime_infos):
+        print("Result is correct")
+        sys.exit(0)
+    else:
+        print("ERROR: Result is incorrect")
+        sys.exit(1)
+
+    # for c in comb_list:
+    #     bashi.print_row_nice(c)
+
+
+if __name__ == "__main__":
+    main()
