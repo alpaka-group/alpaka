@@ -1,4 +1,4 @@
-name: lint-test-job-generator-code
+name: ci-job-generator
 on: [push, pull_request]
 jobs:
     formatter:
@@ -51,3 +51,21 @@ jobs:
         - name: Run pylint on alpaka-bashi source code
           run: |
             pylint ./script/job_generator2/src
+
+    unit-tests:
+        name: run unit tests
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - name: Set up Python
+          uses: actions/setup-python@v3
+          with:
+            python-version: "3.13"
+            architecture: x64
+        - name: Install alpaka-bashi
+          run: |
+            pip install ./script/job_generator2
+
+        - name: Run alpaka-bashi test
+          run: |
+            python -m unittest discover -s ./script/job_generator2/tests -p "*.py"
