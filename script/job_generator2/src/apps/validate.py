@@ -5,6 +5,7 @@ Validate if a combination parameter-values is valid for alpaka.
 """
 
 import sys
+from bashi.globals import ON, OFF
 import bashiValidate
 import alpaka_bashi
 
@@ -12,10 +13,15 @@ import alpaka_bashi
 def main():
     """Entry point function."""
 
-    # TODO: find solution to add arguments, which are not a version number or ON or OFF, e.g.
-    # --build_type=Release
     validator = bashiValidate.Validator()
     validator.add_custom_filter(alpaka_bashi.AlpakaFilter())
+    validator.add_string_parameter(
+        alpaka_bashi.BUILD_TYPE, "CMake build type.", alpaka_bashi.BUILD_TYPES_NAMES
+    )
+    validator.add_software_version_parameter(
+        name=alpaka_bashi.MDSPAN, help_text="Build with C++23 std::mdspan.", choices=["ON", "OFF"]
+    )
+    validator.add_known_version(alpaka_bashi.MDSPAN, [OFF, ON])
     sys.exit(int(not validator.validate()))
 
 
