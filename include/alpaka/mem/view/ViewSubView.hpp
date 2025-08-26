@@ -23,7 +23,7 @@ namespace alpaka
 {
     //! A sub-view to a view.
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    class ViewSubView : public internal::ViewAccessOps<ViewSubView<TDev, TElem, TDim, TIdx>>
+    class ViewSubView : public internal::ViewAccessorType<TDev, ViewSubView<TDev, TElem, TDim, TIdx>>
     {
         static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 

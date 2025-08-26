@@ -20,7 +20,7 @@ namespace alpaka
 {
     //! The CPU memory buffer template implementing muting accessors.
     template<typename TElem, typename TDim, typename TIdx>
-    class BufCpu : public internal::ViewAccessOps<BufCpu<TElem, TDim, TIdx>>
+    class BufCpu : public internal::ViewAccessorType<DevCpu, BufCpu<TElem, TDim, TIdx>>
     {
         using TBufImpl = detail::BufCpuImpl<TElem, TDim, TIdx>;
 

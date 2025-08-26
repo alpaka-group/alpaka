@@ -34,7 +34,8 @@ namespace alpaka
 
     //! The CUDA/HIP memory buffer.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
-    struct ConstBufUniformCudaHipRt : internal::ViewAccessOps<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+    struct ConstBufUniformCudaHipRt
+        : internal::ViewAccessorType<DevUniformCudaHipRt<TApi>, ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
     {
         static_assert(!std::is_const_v<TElem>, "The elem type of the buffer must not be const");
         static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer must not be const!");

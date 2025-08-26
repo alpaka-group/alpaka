@@ -16,26 +16,49 @@
 
 namespace alpaka::internal
 {
-    template<typename T, typename SFINAE = void>
-    inline constexpr bool isView = false;
-
-    // TODO(bgruber): replace this by a concept in C++20
-    template<typename TView>
-    inline constexpr bool isView<
-        TView,
-        std::void_t<
-            Idx<TView>,
-            Dim<TView>,
-            decltype(getPtrNative(std::declval<TView>())),
-            decltype(getPitchesInBytes(std::declval<TView>())),
-            decltype(getExtents(std::declval<TView>()))>>
-        = true;
 
     template<typename TView>
-    struct ViewAccessOps
+    concept ViewType = requires {
+        typename Idx<TView>;
+        typename Dim<TView>;
+        {
+            getPtrNative(std::declval<TView>())
+        };
+        {
+            getPitchesInBytes(std::declval<TView>())
+        };
+        {
+            getExtents(std::declval<TView>())
+        };
+    };
+
+    template<ViewType TView>
+    struct DeviceViewAccessor
     {
-        static_assert(isView<TView>);
+    private:
+        using value_type = Elem<TView>;
+        using pointer = value_type*;
+        using const_pointer = value_type const*;
+        using reference = value_type&;
+        using const_reference = value_type const&;
+        using Idx = alpaka::Idx<TView>;
+        using Dim = alpaka::Dim<TView>;
 
+    public:
+        ALPAKA_FN_HOST auto data() -> pointer
+        {
+            return getPtrNative(*static_cast<TView*>(this));
+        }
+
+        [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
+        {
+            return getPtrNative(*static_cast<TView const*>(this));
+        }
+    };
+
+    template<ViewType TView>
+    struct HostViewAccessor
+    {
     private:
         using value_type = Elem<TView>;
         using pointer = value_type*;
@@ -148,4 +171,24 @@ namespace alpaka::internal
             return *ptr_at(index);
         }
     };
+
+    struct DevCpu;
+
+    template<typename TDev>
+    struct ViewAccessor
+    {
+        template<ViewType TView>
+        using AccessorType = HostViewAccessor<TView>;
+    };
+
+    template<>
+    struct ViewAccessor<DevCpu>
+    {
+        template<ViewType TView>
+        using AccessorType = DeviceViewAccessor<TView>;
+    };
+
+    template<typename TDev, ViewType TView>
+    using ViewAccessorType = typename ViewAccessor<TDev>::template AccessorType<TView>;
+
 } // namespace alpaka::internal
