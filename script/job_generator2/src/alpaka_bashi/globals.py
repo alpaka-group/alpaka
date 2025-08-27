@@ -4,9 +4,11 @@ SPDX-License-Identifier: MPL-2.0
 This module contains constants used for the alpaka job generation.
 """
 
-from typing import List, Dict, Union
+from typing import List, Dict, Union, NamedTuple
 import packaging.version
 import bashi
+from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+
 
 # possible values of BUILD_TYPE
 BUILD_TYPE: bashi.Parameter = "build_type"
@@ -60,3 +62,107 @@ def get_version_aliases() -> Dict[bashi.ValueName, Dict[bashi.ValueVersion, str]
         version_aliases[val_name] = version_map_parsed
 
     return version_aliases
+
+
+# A valid backend combinations contains an host and device compiler and several enabled backends.
+CompilerBackendComb = NamedTuple(
+    "CompilerBackendComb",
+    [("host", ValueName), ("device", ValueName), ("backends", List[ValueName])],
+)
+
+
+_ALLOWED_NVCC_BACKENDS: List[ValueName] = [
+    ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+    ALPAKA_ACC_GPU_CUDA_ENABLE,
+]
+
+# Turn off OpenMP back-ends until Intel fixes https://github.com/intel/llvm/issues/10711
+_ALLOWED_ICPX_BACKENDS: List[ValueName] = [
+    ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+]
+
+# Use list to allow several combinations of backends for a host, device compiler combination
+# e.g. for the ICPX and the OneAPI CPU, GPU and FPGA backend
+ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
+    CompilerBackendComb(
+        GCC,
+        GCC,
+        [
+            ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+            ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+            ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        CLANG,
+        CLANG,
+        [
+            ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+            ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+            ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        GCC,
+        NVCC,
+        _ALLOWED_NVCC_BACKENDS,
+    ),
+    CompilerBackendComb(
+        CLANG,
+        NVCC,
+        _ALLOWED_NVCC_BACKENDS,
+    ),
+    # OpenMP is not supported for clang as cuda compiler
+    # https://github.com/alpaka-group/alpaka/issues/639
+    CompilerBackendComb(
+        CLANG_CUDA,
+        CLANG_CUDA,
+        [
+            ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+            ALPAKA_ACC_GPU_CUDA_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        HIPCC,
+        HIPCC,
+        [
+            ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_GPU_HIP_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        ICPX,
+        ICPX,
+        _ALLOWED_ICPX_BACKENDS
+        + [
+            ALPAKA_ACC_ONEAPI_CPU_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        ICPX,
+        ICPX,
+        _ALLOWED_ICPX_BACKENDS
+        + [
+            ALPAKA_ACC_ONEAPI_GPU_ENABLE,
+        ],
+    ),
+    CompilerBackendComb(
+        ICPX,
+        ICPX,
+        _ALLOWED_ICPX_BACKENDS
+        + [
+            ALPAKA_ACC_ONEAPI_FPGA_ENABLE,
+        ],
+    ),
+]
+
+RT_HOST_COMPILER_CUDA_SUPPORT: str = "rt_host_compiler_cuda_support"

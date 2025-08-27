@@ -23,16 +23,19 @@ def main() -> None:
     setup_row_printer()
 
     param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
-        software_versions=alpaka_bashi.ALPAKA_VERSIONS
+        software_versions=alpaka_bashi.get_alpaka_version()
     )
 
     alpaka_filter = alpaka_bashi.AlpakaFilter()
     runtime_infos = bashi.get_runtime_infos(param_matrix)
+    runtime_infos |= alpaka_bashi.get_runtime_infos()
 
     comb_list: bashi.CombinationList = bashi.generate_combination_list(
         parameter_value_matrix=param_matrix,
         runtime_infos=runtime_infos,
         custom_filter=alpaka_filter,
+        # change me to display which combinations passed and did not pass the filter chain
+        debug_print=bashi.FilterDebugMode.OFF,
     )
 
     print(f"number of combinations: {len(comb_list)}")
