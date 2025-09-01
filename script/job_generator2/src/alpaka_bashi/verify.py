@@ -222,6 +222,23 @@ def remove_non_used_nvcc_device_compiler(
             )
 
 
+def remove_hip_62_debug_build(
+    parameter_value_pairs: List[bashi.ParameterValuePair],
+    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
+):
+    """Remove combination of Hipcc and CMake debug build"""
+    for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+        bashi.remove_parameter_value_pairs(
+            parameter_value_pairs=parameter_value_pairs,
+            removed_parameter_value_pairs=removed_parameter_value_pairs,
+            parameter1=compiler_type,
+            value_name1=HIPCC,
+            value_version1=6.2,
+            parameter2=alpaka_bashi.globals.BUILD_TYPE,
+            value_version2=alpaka_bashi.globals.CMAKE_DEBUG,
+        )
+
+
 def verify(
     combination_list: bashi.CombinationList,
     param_value_matrix: bashi.ParameterValueMatrix,
@@ -250,6 +267,7 @@ def verify(
     remove_non_used_nvcc_device_compiler(
         expected_param_val_tuple, unexpected_param_val_tuple, run_infos
     )
+    remove_hip_62_debug_build(expected_param_val_tuple, unexpected_param_val_tuple)
 
     expected_param_val_okay = bashi.check_parameter_value_pair_in_combination_list(
         combination_list, expected_param_val_tuple

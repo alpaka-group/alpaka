@@ -40,15 +40,15 @@ def main() -> None:
 
     print(f"number of combinations: {len(comb_list)}")
 
-    if alpaka_bashi.verify(comb_list, param_matrix, runtime_infos):
-        print("Result is correct")
-        sys.exit(0)
-    else:
+    if not alpaka_bashi.verify(comb_list, param_matrix, runtime_infos):
         print("ERROR: Result is incorrect")
         sys.exit(1)
 
     # for c in comb_list:
     #     bashi.print_row_nice(c)
+
+    print("Result is correct")
+    sys.exit(0)
 
 
 if __name__ == "__main__":

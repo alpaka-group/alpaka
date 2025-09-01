@@ -116,6 +116,17 @@ class AlpakaFilter(bashi.FilterBase):
                 )
                 return False
 
+        # Rule: a3
+        if BUILD_TYPE in row and row[BUILD_TYPE].version == CMAKE_DEBUG_VER:
+            for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+                if (
+                    compiler_type in row
+                    and row[compiler_type].name == HIPCC
+                    and row[compiler_type].version == packaging.version.parse("6.2")
+                ):
+                    self.reason("Debug builds with HIP/ROCm 6.2 produce compiler errors.")
+                    return False
+
         if self.debug_print != bashi.FilterDebugMode.OFF:
             print("passed")
         return True

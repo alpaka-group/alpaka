@@ -14,7 +14,12 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 from bashi.types import ParameterValueTuple
 import alpaka_bashi.filter
 import alpaka_bashi.runtime_info
-from alpaka_bashi.globals import RT_HOST_COMPILER_CUDA_SUPPORT
+from alpaka_bashi.globals import (
+    RT_HOST_COMPILER_CUDA_SUPPORT,
+    BUILD_TYPE,
+    CMAKE_RELEASE,
+    CMAKE_DEBUG,
+)
 from utils import parse_param_value_tuples
 
 
@@ -171,3 +176,20 @@ class TestAlpakaFilter(unittest.TestCase):
                 f"{row[HOST_COMPILER].version}",
                 f"{row}",
             )
+
+    def test_valid_hipcc62_debug_build_a1(self):
+        for row in [
+            [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_RELEASE)],
+            [(HOST_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_RELEASE)],
+            [(HOST_COMPILER, HIPCC, 6.1), (BUILD_TYPE, CMAKE_DEBUG)],
+            [(HOST_COMPILER, HIPCC, 6.3), (BUILD_TYPE, CMAKE_DEBUG)],
+            [(HOST_COMPILER, HIPCC, 6.3), (BUILD_TYPE, CMAKE_RELEASE)],
+        ]:
+            self.assertTrue(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
+
+    def test_invalid_hipcc62_debug_build_a1(self):
+        for row in [
+            [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_DEBUG)],
+            [(BUILD_TYPE, CMAKE_DEBUG), (HOST_COMPILER, HIPCC, 6.2)],
+        ]:
+            self.assertFalse(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
