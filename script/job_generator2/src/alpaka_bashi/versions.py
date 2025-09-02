@@ -19,9 +19,6 @@ ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
     CXX_STANDARD: ["20"],
     BUILD_TYPE: BUILD_TYPES,
-    # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some
-    # conditions later
-    JOB_EXECUTION_TYPE: [JOB_EXECUTION_COMPILE_ONLY],
     MDSPAN: [ON, OFF],
 }
 

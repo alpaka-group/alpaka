@@ -16,7 +16,9 @@ description = "Job generator application for the alpaka CI."
 version = "1.0"
 # TODO: replace bashi repo with pypi
 dependencies = [
-"bashi @ git+https://git@github.com/SimeonEhrig/bashi@alpakaBashi"
+    "bashi @ git+https://git@github.com/SimeonEhrig/bashi@alpakaBashi",
+    "pyaml",
+    "typeguard"
 ]
 
 [project.scripts]

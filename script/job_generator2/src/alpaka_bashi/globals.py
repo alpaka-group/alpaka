@@ -14,10 +14,10 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 BUILD_TYPE: bashi.Parameter = "build_type"
 CMAKE_RELEASE: int = 0
 CMAKE_DEBUG: int = 1
-CMAKE_RELEASE_VER: packaging.version.Version = packaging.version.parse(str(CMAKE_RELEASE))
-CMAKE_DEBUG_VER: packaging.version.Version = packaging.version.parse(str(CMAKE_DEBUG))
+CMAKE_RELEASE_VER: ValueVersion = packaging.version.parse(str(CMAKE_RELEASE))
+CMAKE_DEBUG_VER: ValueVersion = packaging.version.parse(str(CMAKE_DEBUG))
 BUILD_TYPES: List[Union[str, int, float]] = [CMAKE_RELEASE, CMAKE_DEBUG]
-BUILD_TYPES_NAMES: Dict[str, packaging.version.Version] = {
+BUILD_TYPES_NAMES: Dict[str, ValueVersion] = {
     "Release": CMAKE_RELEASE_VER,
     "Debug": CMAKE_DEBUG_VER,
 }
@@ -26,23 +26,36 @@ BUILD_TYPES_NAMES: Dict[str, packaging.version.Version] = {
 JOB_EXECUTION_TYPE: bashi.Parameter = "job_execution_type"
 JOB_EXECUTION_COMPILE_ONLY: int = 0
 JOB_EXECUTION_RUNTIME: int = 1
-JOB_EXECUTION_COMPILE_ONLY_VER: packaging.version.Version = packaging.version.parse(
+JOB_EXECUTION_COMPILE_ONLY_VER: ValueVersion = packaging.version.parse(
     str(JOB_EXECUTION_COMPILE_ONLY)
 )
-JOB_EXECUTION_RUNTIME_VER: packaging.version.Version = packaging.version.parse(
-    str(JOB_EXECUTION_RUNTIME)
-)
+JOB_EXECUTION_RUNTIME_VER: ValueVersion = packaging.version.parse(str(JOB_EXECUTION_RUNTIME))
 JOB_EXECUTION_TYPES: List[Union[str, int, float]] = [
     JOB_EXECUTION_COMPILE_ONLY,
     JOB_EXECUTION_RUNTIME,
 ]
-JOB_EXECUTION_TYPES_NAMES: Dict[str, packaging.version.Version] = {
+JOB_EXECUTION_TYPES_NAMES: Dict[str, ValueVersion] = {
     "compile_only": JOB_EXECUTION_COMPILE_ONLY_VER,
     "runtime": JOB_EXECUTION_RUNTIME_VER,
 }
 
 # enable mdspan support
 MDSPAN: bashi.Parameter = "mdspan"
+
+# CI pipeline
+CI_PIPELINE_NAME: str = "stage_name"
+CI_PIPELINE_COMPILE_ONLY_VER: ValueVersion = packaging.version.parse("0")
+CI_PIPELINE_RUNTIME_CPU_VER: ValueVersion = packaging.version.parse("1")
+CI_PIPELINE_RUNTIME_GPU_VER: ValueVersion = packaging.version.parse("2")
+CI_PIPELINE_SPECIAL_VER: ValueVersion = packaging.version.parse("3")
+
+CI_PIPELINE_NAME_MAPPING: Dict[str, ValueVersion] = {
+    "compile_only": CI_PIPELINE_COMPILE_ONLY_VER,
+    "runtime_job_cpu": CI_PIPELINE_RUNTIME_CPU_VER,
+    "runtime_job_gpu": CI_PIPELINE_RUNTIME_GPU_VER,
+    # bring me back for special jobs, like clang-tidy
+    # "special_job": CI_PIPELINE_SPECIAL_VER,
+}
 
 
 def get_version_aliases() -> Dict[bashi.ValueName, Dict[bashi.ValueVersion, str]]:
@@ -55,6 +68,7 @@ def get_version_aliases() -> Dict[bashi.ValueName, Dict[bashi.ValueVersion, str]
     for val_name, version_map in [
         (BUILD_TYPE, BUILD_TYPES_NAMES),
         (JOB_EXECUTION_TYPE, JOB_EXECUTION_TYPES_NAMES),
+        (CI_PIPELINE_NAME, CI_PIPELINE_NAME_MAPPING),
     ]:
         version_map_parsed: Dict[bashi.ValueVersion, str] = {}
         for alias, ver in version_map.items():

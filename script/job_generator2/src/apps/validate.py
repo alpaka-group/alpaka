@@ -25,12 +25,6 @@ def main() -> None:
     validator.add_string_parameter(
         alpaka_bashi.BUILD_TYPE, "CMake build type.", alpaka_bashi.BUILD_TYPES_NAMES, "buildType"
     )
-    validator.add_string_parameter(
-        alpaka_bashi.JOB_EXECUTION_TYPE,
-        "Compiler only job or runtime job",
-        alpaka_bashi.JOB_EXECUTION_TYPES_NAMES,
-        "jobType",
-    )
     validator.add_software_version_parameter(
         name=alpaka_bashi.MDSPAN, help_text="Build with C++23 std::mdspan.", choices=["ON", "OFF"]
     )
@@ -38,10 +32,6 @@ def main() -> None:
         alpaka_bashi.BUILD_TYPE, [str(option) for option in alpaka_bashi.BUILD_TYPES]
     )
     validator.add_known_version(alpaka_bashi.MDSPAN, [OFF, ON])
-    validator.add_known_version(
-        alpaka_bashi.JOB_EXECUTION_TYPE,
-        [str(option) for option in alpaka_bashi.JOB_EXECUTION_TYPES],
-    )
 
     arg = validator.parser.parse_args()
     if arg.missing_parameters:
