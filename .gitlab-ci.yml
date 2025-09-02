@@ -27,14 +27,18 @@ generate:
     # TODO: remove me, if bashi is installed from pypi
     - apk update && apk add git
     - pip3 install script/job_generator2
-    - job-generator
+    - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
+      --split-pipeline
+      --pipeline-out-compile_only compile_only.yml
+      --pipeline-out-runtime_job_cpu runtime_cpu.yml
+      --pipeline-out-runtime_job_gpu runtime_gpu.yml
     # it is sufficient to verify once, as the same job matrix is generated, verified and then filtered each time
     # disable verify because we know that the generator is broken: https://github.com/thombashi/allpairspy/pull/10
     # - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --verify --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
     #- python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --split-waves --wave-out-compile_only_job=compile_only.yml --wave-out-runtime_job_gpu=runtime_gpu.yml --wave-out-runtime_job_cpu=runtime_cpu.yml
-    #- cat compile_only.yml
-    #- cat runtime_cpu.yml
-    #- cat runtime_gpu.yml
+    - cat compile_only.yml
+    - cat runtime_cpu.yml
+    - cat runtime_gpu.yml
   # artifacts:
   #   paths:
   #     - compile_only.yml
