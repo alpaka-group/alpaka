@@ -35,16 +35,18 @@
 		#endif
 
 		#define ALPAKA_VERSION_NUMBER(major, minor, patch)                                                                    \
-		    ((((major) % 1000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
+		    ((((major) % 10000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
 
 		#define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0llu, 0llu, 0llu)
 
 		#define ALPAKA_YYYYMMDD_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 10000llu), ((V) / 100llu) % 100llu, (V) % 100llu)
 
-		#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100llu) % 100llu, (V) % 100llu, 0llu)
+		#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100llu) % 10000llu, (V) % 100llu, 0llu)
 
 		#define ALPAKA_VVRRP_10_TO_VERSION(V)                                                                                 \
 		    ALPAKA_VERSION_NUMBER(((V) / 1000llu) % 100llu, ((V) / 10llu) % 100llu, (V) % 10llu)
+
+		#define ALPAKA_VRP_TO_VERSION(V) ALPAKA_VERSION_NUMBER((V) / 100llu, ((V) / 10llu) % 10llu, (V) % 10llu)
 
 		// ######## detect operating systems ########
 
@@ -117,7 +119,7 @@
 		// NVIDIA device compile
 		#if !defined(ALPAKA_ARCH_PTX)
 		#    if defined(__CUDA_ARCH__)
-		#        define ALPAKA_ARCH_PTX 1
+		#        define ALPAKA_ARCH_PTX ALPAKA_VRP_TO_VERSION(__CUDA_ARCH__)
 		#    else
 		#        define ALPAKA_ARCH_PTX 0
 		#    endif
