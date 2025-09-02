@@ -50,6 +50,9 @@ def main() -> None:
     #     bashi.print_row_nice(c)
 
     print("Result is correct", file=sys.stderr)
+
+    pipelines = alpaka_bashi.distribute_to_pipelines(comb_list)
+
     sys.exit(0)
 
 
