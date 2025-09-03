@@ -10,12 +10,33 @@ import yaml
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 import alpaka_bashi.globals
-from alpaka_bashi.globals import (
-    JOB_EXECUTION_TYPE,
-    CI_PIPELINE_NAME,
-)
+from alpaka_bashi.globals import CI_PIPELINE_NAME
 from alpaka_bashi.ci_yaml.names import get_job_name
-from alpaka_bashi.ci_yaml.base_jobs import get_dummy_job
+from alpaka_bashi.ci_yaml.base_jobs import get_base_job, get_dummy_job
+from alpaka_bashi.ci_yaml.images import set_image
+from alpaka_bashi.ci_yaml.variables import set_variables
+from alpaka_bashi.ci_yaml.tags import set_tags
+
+
+@typechecked
+def construct_job_yaml(combination: bashi.Combination, stage: str) -> Dict[str, Any]:
+    """Construct a GitLab CI test job body yaml from the given combination.
+
+    Args:
+        combination (bashi.Combination): combination
+        stage (str): Name of the pipeline stage.
+
+    Returns:
+        Dict[str, Any]: GitLab CI job body
+    """
+    job_body = get_base_job()
+
+    job_body["stage"] = stage
+    set_image(job_body, combination)
+    set_variables(job_body, combination)
+    set_tags(job_body, combination)
+
+    return job_body
 
 
 @typechecked
@@ -54,16 +75,7 @@ def get_job_yaml(
         if stage_name not in jobs["stages"]:
             jobs["stages"].append(stage_name)
 
-        job_body = {
-            "stage": stage_name,
-            "variables": {
-                "JOB_EXECUTION_TYPE": alpaka_bashi.globals.get_version_aliases()[
-                    JOB_EXECUTION_TYPE
-                ][comb[JOB_EXECUTION_TYPE].version],
-            },
-            "scripts": ['echo "Hello World"', True],
-        }
-        jobs[job_name] = job_body
+        jobs[job_name] = construct_job_yaml(comb, stage_name)
 
     return jobs
 

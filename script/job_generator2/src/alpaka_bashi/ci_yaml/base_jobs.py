@@ -8,6 +8,15 @@ configurations.
 from typing import Dict
 
 
+def get_base_job() -> Dict:
+    """Return the GitLab CI job body for a common test case. Include all default values."""
+    return {
+        "variables": {"ALPAKA_CI_OS_NAME": "Linux", "alpaka_CI": "GITLAB"},
+        "script": ['echo "Hello World"'],
+        "interruptible": True,
+    }
+
+
 def get_dummy_job() -> Dict:
     """Return GitLab CI job, which simply prints a message. Can be used, if no job is generated for
     a CI pipeline."""
