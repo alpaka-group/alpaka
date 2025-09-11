@@ -1,4 +1,4 @@
-/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego
+/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -41,64 +41,88 @@ namespace alpaka
     struct PlatformGenericSycl : interface::Implements<ConceptPlatform, PlatformGenericSycl<TTag>>
     {
         PlatformGenericSycl()
-            : platform{detail::SYCLDeviceSelector<TTag>{}}
-            , devices(platform.get_devices())
-            , context{sycl::context{
-                  devices,
-                  [](sycl::exception_list exceptions)
-                  {
-                      auto ss_err = std::stringstream{};
-                      ss_err << "Caught asynchronous SYCL exception(s):\n";
-                      for(std::exception_ptr e : exceptions)
-                      {
-                          try
-                          {
-                              std::rethrow_exception(e);
-                          }
-                          catch(sycl::exception const& err)
-                          {
-                              ss_err << err.what() << " (" << err.code() << ")\n";
-                          }
-                      }
-                      throw std::runtime_error(ss_err.str());
-                  }}}
         {
+            try
+            {
+                m_platform = sycl::platform(detail::SYCLDeviceSelector<TTag>{});
+                m_devices = m_platform->get_devices();
+                m_context = sycl::context{
+                    m_devices,
+                    [](sycl::exception_list exceptions)
+                    {
+                        auto ss_err = std::stringstream{};
+                        ss_err << "Caught asynchronous SYCL exception(s):\n";
+                        for(std::exception_ptr e : exceptions)
+                        {
+                            try
+                            {
+                                std::rethrow_exception(e);
+                            }
+                            catch(sycl::exception const& err)
+                            {
+                                ss_err << err.what() << " (" << err.code() << ")\n";
+                            }
+                        }
+                        throw std::runtime_error(ss_err.str());
+                    }};
+            }
+            catch(sycl::exception const&)
+            {
+                // An error was encountered while constructing the platform. For example, the platform
+                // may not be available, or it may not have any devices associated with it.
+                // Make sure that platform, devices and context data members are empty.
+                m_context.reset();
+                m_devices.clear();
+                m_platform.reset();
+            }
         }
 
         [[nodiscard]] auto syclPlatform() -> sycl::platform&
         {
-            return platform;
+            if(not m_platform.has_value())
+                throw std::runtime_error("The underlying SYCL platform is empty and invalid.");
+
+            return m_platform.value();
         }
 
         [[nodiscard]] auto syclPlatform() const -> sycl::platform const&
         {
-            return platform;
+            if(not m_platform.has_value())
+                throw std::runtime_error("The underlying SYCL platform is empty and invalid.");
+
+            return m_platform.value();
         }
 
         [[nodiscard]] auto syclDevices() -> std::vector<sycl::device>&
         {
-            return devices;
+            return m_devices;
         }
 
         [[nodiscard]] auto syclDevices() const -> std::vector<sycl::device> const&
         {
-            return devices;
+            return m_devices;
         }
 
         [[nodiscard]] auto syclContext() -> sycl::context&
         {
-            return context;
+            if(not m_context.has_value())
+                throw std::runtime_error("The underlying SYCL platform is empty and invalid.");
+
+            return m_context.value();
         }
 
         [[nodiscard]] auto syclContext() const -> sycl::context const&
         {
-            return context;
+            if(not m_context.has_value())
+                throw std::runtime_error("The underlying SYCL platform is empty and invalid.");
+
+            return m_context.value();
         }
 
     private:
-        sycl::platform platform;
-        std::vector<sycl::device> devices;
-        sycl::context context;
+        std::optional<sycl::platform> m_platform;
+        std::vector<sycl::device> m_devices;
+        std::optional<sycl::context> m_context;
     };
 
     namespace trait
