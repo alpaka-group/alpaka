@@ -16,7 +16,7 @@ TEST_CUDA_VER = packaging.version.parse("12.4")
 
 
 class TestOnlyCUDABackends(unittest.TestCase):
-    def test_only_cuda_valid(self):
+    def test_only_cuda_compiler_backends_valid(self):
         for backend_list in [
             [CompilerBackendComb(GCC, NVCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
             [CompilerBackendComb(ICPX, HIPCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
@@ -52,11 +52,11 @@ class TestOnlyCUDABackends(unittest.TestCase):
         ]:
 
             self.assertTrue(
-                alpaka_bashi.filter.only_cuda_backend(backend_list),
+                alpaka_bashi.filter.only_cuda_compiler_backends(backend_list),
                 backend_list,
             )
 
-    def test_only_cuda_invalid(self):
+    def test_only_cuda_compiler_backends_invalid(self):
         for backend_list in [
             [CompilerBackendComb(CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE])],
             [
@@ -83,6 +83,6 @@ class TestOnlyCUDABackends(unittest.TestCase):
         ]:
 
             self.assertFalse(
-                alpaka_bashi.filter.only_cuda_backend(backend_list),
+                alpaka_bashi.filter.only_cuda_compiler_backends(backend_list),
                 backend_list,
             )

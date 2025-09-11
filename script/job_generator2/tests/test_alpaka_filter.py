@@ -177,7 +177,7 @@ class TestAlpakaFilter(unittest.TestCase):
                 f"{row}",
             )
 
-    def test_valid_hipcc62_debug_build_a1(self):
+    def test_valid_hipcc62_debug_build_a3(self):
         for row in [
             [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_RELEASE)],
             [(HOST_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_RELEASE)],
@@ -187,9 +187,68 @@ class TestAlpakaFilter(unittest.TestCase):
         ]:
             self.assertTrue(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
 
-    def test_invalid_hipcc62_debug_build_a1(self):
+    def test_invalid_hipcc62_debug_build_a3(self):
         for row in [
             [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_DEBUG)],
             [(BUILD_TYPE, CMAKE_DEBUG), (HOST_COMPILER, HIPCC, 6.2)],
         ]:
-            self.assertFalse(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(), "Debug builds with HIP/ROCm 6.2 produce compiler errors."
+            )
+
+    def test_valid_ubuntu2204_a4(self):
+        for row in [
+            [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "24.04")],
+            [(DEVICE_COMPILER, CLANG, 17), (UBUNTU, "24.04")],
+            [
+                (HOST_COMPILER, ICPX, "2025.0.1"),
+                (DEVICE_COMPILER, ICPX, "2025.0.1"),
+                (UBUNTU, "24.04"),
+            ],
+            [(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON), (UBUNTU, "24.04")],
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4), (UBUNTU, "24.04")],
+            [
+                (HOST_COMPILER, HIPCC, 6.0),
+                (DEVICE_COMPILER, HIPCC, 6.0),
+                (ALPAKA_ACC_GPU_HIP_ENABLE, ON),
+                (UBUNTU, "22.04"),
+            ],
+            [
+                (HOST_COMPILER, HIPCC, 6.3),
+                (DEVICE_COMPILER, HIPCC, 6.3),
+                (ALPAKA_ACC_GPU_HIP_ENABLE, ON),
+                (UBUNTU, "24.04"),
+            ],
+        ]:
+            self.assertTrue(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
+
+    def test_invalid_ubuntu2204_a4(self):
+        for row in [
+            [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "22.04")],
+            [(HOST_COMPILER, CLANG, 16), (UBUNTU, "22.04")],
+            [(HOST_COMPILER, CLANG, 14), (DEVICE_COMPILER, NVCC, 12.4), (UBUNTU, "22.04")],
+            [(ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON), (UBUNTU, "22.04")],
+            [
+                (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
+                (HOST_COMPILER, CLANG, 16),
+                (UBUNTU, "22.04"),
+            ],
+            [
+                (HOST_COMPILER, ICPX, "2025.2.1"),
+                (UBUNTU, "22.04"),
+                (DEVICE_COMPILER, ICPX, "2025.2.1"),
+            ],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                "The compiler/backend combinations cannot not contain an enabled HIP compiler "
+                "and backend. Therefore Ubuntu versions older than 24.04 are not allowed",
+            )

@@ -16,31 +16,41 @@ import bashi
 class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
     def test_serial_cpu_is_always_on(self):
         input_row = parse_param_value_tuples([(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON)])
-        self.assertGreater(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)), 0)
+        self.assertGreater(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+        )
 
     def test_cpu_compiler_and_serial_cpu(self):
         input_row = parse_param_value_tuples(
             [(DEVICE_COMPILER, GCC, 8), (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON)]
         )
-        self.assertGreater(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)), 0)
+        self.assertGreater(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+        )
 
     def test_nvcc_compiler_and_hip_backend(self):
         input_row = parse_param_value_tuples(
             [(DEVICE_COMPILER, NVCC, 12.4), (ALPAKA_ACC_GPU_HIP_ENABLE, ON)]
         )
-        self.assertEqual(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)), 0)
+        self.assertEqual(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+        )
 
     def test_gcc_host_and_icpx_backend(self):
         input_row = parse_param_value_tuples(
             [(HOST_COMPILER, GCC, 12), (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON)]
         )
-        self.assertEqual(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)), 0)
+        self.assertEqual(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+        )
 
     def test_hipcc_compiler_and_disabled_cpu_backend(self):
         input_row = parse_param_value_tuples(
             [(DEVICE_COMPILER, HIPCC, 6.3), (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, OFF)]
         )
-        self.assertGreater(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)), 0)
+        self.assertGreater(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+        )
 
         input_row_2 = parse_param_value_tuples(
             [
@@ -49,7 +59,9 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
                 (ALPAKA_ACC_GPU_HIP_ENABLE, ON),
             ]
         )
-        self.assertGreater(len(alpaka_bashi.filter.get_valid_backend_combinations(input_row_2)), 0)
+        self.assertGreater(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row_2)), 0
+        )
 
     def test_icpx_compiler_and_different_sycl_backends_invalid(self):
         for sycl_backend in ONE_API_BACKENDS:
@@ -67,13 +79,13 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
                 + [(sycl_backend, ON)]
             )
             self.assertEqual(
-                len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)),
+                len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)),
                 1,
             )
         # icpx can be used for the three different one api backends
         self.assertEqual(
             len(
-                alpaka_bashi.filter.get_valid_backend_combinations(
+                alpaka_bashi.filter.get_valid_compiler_backend_combinations(
                     parse_param_value_tuples(
                         [(HOST_COMPILER, ICPX, "2025.0.4")],
                     )
@@ -91,7 +103,7 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
             ]
         )
         self.assertEqual(
-            len(alpaka_bashi.filter.get_valid_backend_combinations(input_row)),
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)),
             2,  # host compiler GCC and Clang
         )
 
@@ -111,13 +123,13 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
             # The last element of parameter_values invalidates all possible backend combinations.
             if len(row) < len(parameter_values):
                 self.assertGreater(
-                    len(alpaka_bashi.filter.get_valid_backend_combinations(row)),
+                    len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
                     0,
                     f"\nrow: {bashi.get_str_row_nice(row)}",
                 )
             else:
                 self.assertEqual(
-                    len(alpaka_bashi.filter.get_valid_backend_combinations(row)),
+                    len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
                     0,
                     f"\nrow: {bashi.get_str_row_nice(row)}",
                 )

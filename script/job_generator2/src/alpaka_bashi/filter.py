@@ -40,9 +40,11 @@ def all_backends_fine(
     return True
 
 
-def get_valid_backend_combinations(row: bashi.ParameterValueTuple) -> List[CompilerBackendComb]:
-    """Return a list of all possible backend combinations, which are still possible for the given
-    row.
+def get_valid_compiler_backend_combinations(
+    row: bashi.ParameterValueTuple,
+) -> List[CompilerBackendComb]:
+    """Return a list of all possible compiler and backend combinations, which are still possible
+    for the given row.
 
     Args:
         row (bashi.ParameterValueTuple): parameter-value-tuple
@@ -63,10 +65,20 @@ def get_valid_backend_combinations(row: bashi.ParameterValueTuple) -> List[Compi
     return valid_combs
 
 
-def only_cuda_backend(combinations: List[CompilerBackendComb]) -> bool:
-    """Return True, if CompilerBackendComb in the list, which contains the CUDA backend."""
+def only_cuda_compiler_backends(combinations: List[CompilerBackendComb]) -> bool:
+    """Return True, if there are only CompilerBackendComb in the list, which contains the CUDA
+    compilers and backend."""
     for comb in combinations:
         if ALPAKA_ACC_GPU_CUDA_ENABLE not in comb.backends:
+            return False
+    return True
+
+
+def no_hip_compiler_backends(combinations: List[CompilerBackendComb]) -> bool:
+    """Return True, if there is no CompilerBackendComb in the list, which contains the HIP compiler
+    and backend."""
+    for comb in combinations:
+        if ALPAKA_ACC_GPU_HIP_ENABLE in comb.backends:
             return False
     return True
 
@@ -94,13 +106,13 @@ class AlpakaFilter(bashi.FilterBase):
             bool: True, if parameter-value-tuple is valid.
         """
         # Rule: a1
-        valid_combs = get_valid_backend_combinations(row)
+        valid_combs = get_valid_compiler_backend_combinations(row)
         if len(valid_combs) == 0:
             self.reason("No valid backend combination available.")
             return False
 
         # Rule: a2
-        if only_cuda_backend(valid_combs):
+        if only_cuda_compiler_backends(valid_combs):
             if (
                 HOST_COMPILER in row
                 and row[HOST_COMPILER].name in (GCC, CLANG)
@@ -126,6 +138,15 @@ class AlpakaFilter(bashi.FilterBase):
                 ):
                     self.reason("Debug builds with HIP/ROCm 6.2 produce compiler errors.")
                     return False
+
+        # Rule: a4
+        if UBUNTU in row and row[UBUNTU].version < packaging.version.parse("24.04"):
+            if no_hip_compiler_backends(valid_combs):
+                self.reason(
+                    "The compiler/backend combinations cannot not contain an enabled HIP compiler "
+                    "and backend. Therefore Ubuntu versions older than 24.04 are not allowed"
+                )
+                return False
 
         if self.debug_print != bashi.FilterDebugMode.OFF:
             print("passed")

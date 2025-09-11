@@ -239,6 +239,42 @@ def remove_hip_62_debug_build(
         )
 
 
+def remove_ubuntu2204(
+    parameter_value_pairs: List[bashi.ParameterValuePair],
+    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
+):
+    """Except for some HIP versions, Ubuntu 22.04 should be not used.
+    See bashi.UBUNTU_HIP_VERSION_RANGE"""
+    for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+        for compiler in (GCC, CLANG, ICPX):
+            bashi.remove_parameter_value_pairs(
+                parameter_value_pairs=parameter_value_pairs,
+                removed_parameter_value_pairs=removed_parameter_value_pairs,
+                parameter1=compiler_type,
+                value_name1=compiler,
+                parameter2=UBUNTU,
+                value_version2="22.04",
+            )
+    for backend, version in [
+        (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
+        (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
+        (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ON),
+        (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON),
+        (ALPAKA_ACC_ONEAPI_CPU_ENABLE, ON),
+        (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON),
+        (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON),
+        (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
+    ]:
+        bashi.remove_parameter_value_pairs(
+            parameter_value_pairs=parameter_value_pairs,
+            removed_parameter_value_pairs=removed_parameter_value_pairs,
+            parameter1=backend,
+            value_version1=version,
+            parameter2=UBUNTU,
+            value_version2="22.04",
+        )
+
+
 def verify(
     combination_list: bashi.CombinationList,
     param_value_matrix: bashi.ParameterValueMatrix,
@@ -268,6 +304,7 @@ def verify(
         expected_param_val_tuple, unexpected_param_val_tuple, run_infos
     )
     remove_hip_62_debug_build(expected_param_val_tuple, unexpected_param_val_tuple)
+    remove_ubuntu2204(expected_param_val_tuple, unexpected_param_val_tuple)
 
     expected_param_val_okay = bashi.check_parameter_value_pair_in_combination_list(
         combination_list, expected_param_val_tuple
