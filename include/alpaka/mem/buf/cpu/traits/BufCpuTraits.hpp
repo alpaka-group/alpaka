@@ -1,4 +1,5 @@
-/* Copyright 2025 Anton Reinhard
+/* Copyright 2025 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
+ *                Anton Reinhard
  * SPDX-License-Identifier: MPL-2.0
  */
 #pragma once
@@ -164,7 +165,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The ConstBufCpu stream-ordered memory allocation capability trait specialization.
+    //! The BufCpu stream-ordered memory allocation capability trait specialization.
     template<typename TDim>
     struct HasAsyncBufSupport<TDim, DevCpu> : public std::true_type
     {
