@@ -19,6 +19,7 @@
 #include "alpaka/vec/Vec.hpp"
 
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <iosfwd>
 #include <type_traits>
@@ -44,6 +45,31 @@ namespace alpaka
                     pitchBytes[i - 1] = extent[i] * pitchBytes[i];
             return pitchBytes;
         }
+
+        //! Calculate the pitches from the extents and the one-dimensional pitch.
+        template<typename TElem, typename TDim, typename TIdx>
+        ALPAKA_FN_HOST_ACC inline constexpr auto calculatePitchesFromExtentsAndPitch(
+            Vec<TDim, TIdx> const& extent,
+            std::size_t pitch)
+        {
+            Vec<TDim, TIdx> pitchBytes{};
+            constexpr auto dim = TIdx{TDim::value};
+            if constexpr(dim > 0)
+                pitchBytes.back() = static_cast<TIdx>(sizeof(TElem));
+            if constexpr(dim > 1)
+            {
+                if(pitch == 0)
+                    pitchBytes[TDim::value - 2] = extent.back() * pitchBytes.back();
+                else
+                    pitchBytes[TDim::value - 2] = static_cast<TIdx>(
+                        (static_cast<std::size_t>(extent.back() * pitchBytes.back()) + pitch - 1) / pitch * pitch);
+            }
+            if constexpr(dim > 2)
+                for(TIdx i = TDim::value - 2; i > 0; i--)
+                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+            return pitchBytes;
+        }
+
     } // namespace detail
 
     //! The view traits.
