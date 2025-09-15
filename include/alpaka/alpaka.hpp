@@ -34393,7 +34393,8 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/cpu/traits/BufCpuTraits.hpp ==
 		// ==
-		/* Copyright 2025 Anton Reinhard
+		/* Copyright 2025 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
+		 *                Anton Reinhard
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 		// #pragma once
@@ -34558,7 +34559,7 @@
 		        }
 		    };
 
-		    //! The ConstBufCpu stream-ordered memory allocation capability trait specialization.
+		    //! The BufCpu stream-ordered memory allocation capability trait specialization.
 		    template<typename TDim>
 		    struct HasAsyncBufSupport<TDim, DevCpu> : public std::true_type
 		    {
@@ -35725,13 +35726,14 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/traits/BufGenericSyclTraits.hpp ==
 			// ==
-			/* Copyright 2025 Anton Reinhard
+			/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci, Anton Reinhard
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/buf/sycl/BufGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -35921,8 +35923,76 @@
 
 			    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
 			    template<typename TDim, concepts::Tag TTag>
-			    struct HasAsyncBufSupport<TDim, DevGenericSycl<TTag>> : std::false_type
+			    struct HasAsyncBufSupport<TDim, DevGenericSycl<TTag>> : std::true_type
 			    {
+			    };
+
+			    //! The BufGenericSycl stream-ordered memory allocation trait specialization.
+			    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
+			    struct AsyncBufAlloc<TElem, TDim, TIdx, DevGenericSycl<TTag>>
+			    {
+			        template<bool TBlocking, typename TExtent>
+			        ALPAKA_FN_HOST static auto allocAsyncBuf(
+			            detail::QueueGenericSyclBase<TTag, TBlocking> queue,
+			            TExtent const& extent) -> BufGenericSycl<TElem, TDim, TIdx, TTag>
+			        {
+			            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            if constexpr(TDim::value == 0)
+			                std::cout << __func__ << " ewb: " << sizeof(TElem) << '\n';
+			            else if constexpr(TDim::value == 1)
+			            {
+			                auto const width = getWidth(extent);
+
+			                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+			                std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << '\n';
+			            }
+			            else if constexpr(TDim::value == 2)
+			            {
+			                auto const width = getWidth(extent);
+			                auto const height = getHeight(extent);
+
+			                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+			                std::cout << __func__ << " ew: " << width << " eh: " << height << " ewb: " << widthBytes
+			                          << " pitch: " << widthBytes << '\n';
+			            }
+			            else if constexpr(TDim::value == 3)
+			            {
+			                auto const width = getWidth(extent);
+			                auto const height = getHeight(extent);
+			                auto const depth = getDepth(extent);
+
+			                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+			                std::cout << __func__ << " ew: " << width << " eh: " << height << " ed: " << depth
+			                          << " ewb: " << widthBytes << " pitch: " << widthBytes << '\n';
+			            }
+			#    endif
+
+			            sycl::queue q = queue.getNativeHandle();
+			            TElem* memPtr = sycl::malloc_device<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), q);
+			            auto deleter = [q](TElem* ptr) mutable
+			            {
+			                if constexpr(TBlocking)
+			                {
+			                    // If the queue is blocking, all operations submitted when the buffer goes out of scope should
+			                    // always have completed. Free the memory immediately, and wait for the free operation to complete.
+			                    // From SYCL 4.8.3.6: Note: Whether free is blocking or non-blocking is unspecified. Applications
+			                    // should not rely on free for synchronization, nor assume that free cannot cause deadlocks.
+			                    sycl::free(ptr, q);
+			                    q.wait();
+			                }
+			                else
+			                {
+			                    // If the queue is non-blocking, enqueue the free() operation in a host_task.
+			                    q.submit([&](sycl::handler& cgh) { //
+			                        cgh.host_task([=]() { sycl::free(ptr, q); });
+			                    });
+			                }
+			            };
+
+			            return BufGenericSycl<TElem, TDim, TIdx, TTag>(getDev(queue), memPtr, std::move(deleter), extent);
+			        }
 			    };
 
 			    //! The pinned/mapped memory allocation capability trait specialization.
@@ -35969,6 +36039,7 @@
 
 			// #pragma once
 			// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/buf/cpu/BufCpu.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/buf/sycl/ConstBufGenericSycl.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
