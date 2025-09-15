@@ -53,6 +53,7 @@ Individual chapters are based on the information of the chapters before.
    advanced/mapping.rst
    advanced/cmake.rst
    advanced/compiler.rst
+   advanced/simd.rst
 
 .. toctree::
    :caption: Extra Info

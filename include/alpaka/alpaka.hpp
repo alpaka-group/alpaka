@@ -227,3 +227,5 @@
 // vec
 #include "alpaka/vec/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
+// simd
+#include "alpaka/simd/Simd.hpp"
