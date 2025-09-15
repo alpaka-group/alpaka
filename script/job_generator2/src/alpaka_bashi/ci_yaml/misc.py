@@ -1,22 +1,24 @@
 """Copyright 2025 Simeon Ehrig
 SPDX-License-Identifier: MPL-2.0
 
-Get GitLab CI basic job yaml's. The job skeleton will be extended and modified for specific job
-configurations.
+Different GitLab CI yaml code snippets, which are not in an extra file.
 """
 
-from typing import Dict
+from typing import Dict, Any
+from typeguard import typechecked
 
 
-def get_base_job() -> Dict:
-    """Return the GitLab CI job body for a common test case. Include all default values."""
-    return {
-        "variables": {"ALPAKA_CI_OS_NAME": "Linux", "alpaka_CI": "GITLAB"},
-        "script": ['echo "Hello World"'],
-        "interruptible": True,
-    }
+@typechecked
+def set_misc_job_properties(job_body: Dict[str, Any]):
+    """Set different GitLab CI job yaml properties.
+
+    Args:
+        job_body (Dict[str, Any]): _description_
+    """
+    job_body["interruptible"] = True
 
 
+@typechecked
 def get_dummy_job() -> Dict:
     """Return GitLab CI job, which simply prints a message. Can be used, if no job is generated for
     a CI pipeline."""

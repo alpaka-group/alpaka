@@ -12,41 +12,56 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 import alpaka_bashi.globals
 from alpaka_bashi.globals import CI_PIPELINE_NAME
 from alpaka_bashi.ci_yaml.names import get_job_name
-from alpaka_bashi.ci_yaml.base_jobs import get_base_job, get_dummy_job
+from alpaka_bashi.ci_yaml.misc import get_dummy_job, set_misc_job_properties
 from alpaka_bashi.ci_yaml.images import set_image
 from alpaka_bashi.ci_yaml.variables import set_variables
 from alpaka_bashi.ci_yaml.tags import set_tags
+from alpaka_bashi.ci_yaml.scripts import set_script
 
 
 @typechecked
-def construct_job_yaml(combination: bashi.Combination, stage: str) -> Dict[str, Any]:
+def construct_job_yaml(
+    combination: bashi.Combination,
+    stage: str,
+    container_version: str,
+    image_check: bool,
+) -> Dict[str, Any]:
     """Construct a GitLab CI test job body yaml from the given combination.
 
     Args:
         combination (bashi.Combination): combination
         stage (str): Name of the pipeline stage.
+        container_version (str): Alpaka CI container tag.
+        image_check (bool): If true, check if alpaka CI image exist (requires internet connection).
 
     Returns:
         Dict[str, Any]: GitLab CI job body
     """
-    job_body = get_base_job()
+    job_body = {}
 
     job_body["stage"] = stage
-    set_image(job_body, combination)
+    set_image(job_body, combination, container_version, image_check)
     set_variables(job_body, combination)
+    set_script(job_body)
     set_tags(job_body, combination)
+    set_misc_job_properties(job_body)
 
     return job_body
 
 
 @typechecked
 def get_job_yaml(
-    combination_list: bashi.CombinationList, wave_sizes: Dict[ValueVersion, int] | None = None
+    combination_list: bashi.CombinationList,
+    container_version: str,
+    image_check: bool,
+    wave_sizes: Dict[ValueVersion, int] | None = None,
 ) -> Dict[str, Any]:
     """Generate for each combination a GitLab CI yaml.
 
     Args:
         combination_list (bashi.CombinationList): combination-list
+        container_version (str): Alpaka CI container tag.
+        image_check (bool): If true, check if alpaka CI image exist (requires internet connection).
         wave_sizes (Dict[ValueVersion, int] | None, optional): The wave size defines how many jobs
         can be in one stage of a CI pipeline. The key defines the pipeline and value maximum number
         of jobs in a CI stage. If a pipeline is not defined in the dict, put all jobs in the same
@@ -75,7 +90,7 @@ def get_job_yaml(
         if stage_name not in jobs["stages"]:
             jobs["stages"].append(stage_name)
 
-        jobs[job_name] = construct_job_yaml(comb, stage_name)
+        jobs[job_name] = construct_job_yaml(comb, stage_name, container_version, image_check)
 
     return jobs
 

@@ -30,6 +30,11 @@ def get_job_suffix(combination: bashi.Combination) -> str:
         if software in combination:
             if combination[software].name == CXX_STANDARD:
                 version_str += f"_cxx{str(combination[software].version)}"
+            elif combination[software].name == UBUNTU:
+                version_str += (
+                    f"_{combination[software].name}"
+                    f"{bashi.ubuntu_version_to_string(combination[software].version)}"
+                )
             elif combination[software].name == BUILD_TYPE:
                 continue
             elif combination[software].name == MDSPAN:

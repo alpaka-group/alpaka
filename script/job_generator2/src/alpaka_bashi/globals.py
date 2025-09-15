@@ -9,6 +9,10 @@ import packaging.version
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
+# alpaka sycl backend
+# the alpaka cmake variables does not distinguish between the ONE api backends
+# it uses other additional variables
+ALPAKA_ACC_SYCL_ENABLE: str = "alpaka_ACC_SYCL_ENABLE"
 
 # possible values of BUILD_TYPE
 BUILD_TYPE: bashi.Parameter = "build_type"

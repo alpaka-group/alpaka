@@ -113,7 +113,10 @@ def main() -> None:
 
     pipelines = alpaka_bashi.distribute_to_pipelines(comb_list)
 
-    wave_sizes = {alpaka_bashi.globals.CI_PIPELINE_COMPILE_ONLY_VER: 20}
+    wave_sizes = {
+        alpaka_bashi.CI_PIPELINE_COMPILE_ONLY_VER: 20,
+        alpaka_bashi.CI_PIPELINE_RUNTIME_CPU_VER: 20,
+    }
 
     # If the pipelines are not splitted and therefore written to different files, write everything
     # to stdout.
@@ -124,7 +127,9 @@ def main() -> None:
         single_pipeline: bashi.CombinationList = []
         for pipeline in pipelines.values():
             single_pipeline += pipeline
-        jobs = alpaka_bashi.get_job_yaml(single_pipeline, wave_sizes)
+        jobs = alpaka_bashi.get_job_yaml(
+            single_pipeline, str(args.version), args.no_image_check, wave_sizes
+        )
         alpaka_bashi.write_job_yaml(jobs, sys.stdout)
     else:
         for pipeline_ver, combinations in pipelines.items():
@@ -134,7 +139,9 @@ def main() -> None:
             output_path = getattr(args, f"pipeline-out-{pipeline_name}".replace("-", "_"))
 
             if len(combinations) > 0:
-                jobs = alpaka_bashi.get_job_yaml(combinations, wave_sizes)
+                jobs = alpaka_bashi.get_job_yaml(
+                    combinations, str(args.version), args.no_image_check, wave_sizes
+                )
             else:
                 jobs = alpaka_bashi.get_dummy_job_yaml(pipeline_name)
             with open(output_path, "w", encoding="utf-8") as output_file:

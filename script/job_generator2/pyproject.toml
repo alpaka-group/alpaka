@@ -19,7 +19,8 @@ dependencies = [
     "bashi @ git+https://git@github.com/SimeonEhrig/bashi@alpakaBashi",
     "pyaml",
     "types-PyYAML",
-    "typeguard"
+    "typeguard",
+    "python-gitlab"
 ]
 
 [project.scripts]

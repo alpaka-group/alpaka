@@ -31,14 +31,10 @@ def set_tags(job_body: Dict[str, Any], combination: bashi.Combination):
 
     if combination[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER:
         if combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version != OFF_VER:
-            # TODO: change me back after testing
-            # job_body["tags"] = ["x86_64", "cuda"]
-            job_body["tags"] = ["x86_64", "cpuonly"]
+            job_body["tags"] = ["x86_64", "cuda"]
             return
         if combination[ALPAKA_ACC_GPU_HIP_ENABLE].version != OFF_VER:
-            # TODO: change me back after testing
-            # job_body["tags"] = ["x86_64", "rocm"]
-            job_body["tags"] = ["x86_64", "cpuonly"]
+            job_body["tags"] = ["x86_64", "rocm"]
             return
 
         # cpu runtime jobs
