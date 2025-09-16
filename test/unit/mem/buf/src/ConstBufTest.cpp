@@ -41,7 +41,9 @@ namespace buftest
 
     template<typename TBuf>
     concept onlyConstNativePtr = requires(TBuf t) {
-        { alpaka::getPtrNative(t) } -> std::same_as<alpaka::Elem<std::remove_const_t<TBuf>> const*>;
+        {
+            alpaka::getPtrNative(t)
+        } -> std::same_as<alpaka::Elem<std::remove_const_t<TBuf>> const*>;
     };
 } // namespace buftest
 

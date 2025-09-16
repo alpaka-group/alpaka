@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "alpaka/acc/Tag.hpp"
+#include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/extent/Traits.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 
@@ -16,8 +18,10 @@
 namespace alpaka
 {
 
-    struct DevCpu;
-    struct DevCpuSycl;
+    class DevCpu;
+
+    template<concepts::Tag TTag>
+    class DevGenericSycl;
 
 } // namespace alpaka
 
@@ -28,9 +32,15 @@ namespace alpaka::internal
     concept ViewType = requires {
         typename Idx<TView>;
         typename Dim<TView>;
-        { getPtrNative(std::declval<TView>()) };
-        { getPitchesInBytes(std::declval<TView>()) };
-        { getExtents(std::declval<TView>()) };
+        {
+            getPtrNative(std::declval<TView>())
+        };
+        {
+            getPitchesInBytes(std::declval<TView>())
+        };
+        {
+            getExtents(std::declval<TView>())
+        };
     };
 
     template<ViewType TView>
@@ -188,7 +198,7 @@ namespace alpaka::internal
     };
 
     template<>
-    struct ViewAccessor<alpaka::DevCpuSycl>
+    struct ViewAccessor<alpaka::DevGenericSycl<alpaka::TagCpuSycl>>
     {
         template<ViewType TView>
         using AccessorType = HostViewAccessor<TView>;
