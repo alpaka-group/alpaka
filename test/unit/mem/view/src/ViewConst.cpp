@@ -43,6 +43,8 @@ namespace alpaka::test
 
         // test view accessors
         STATIC_REQUIRE(std::is_same_v<decltype(view.data()), float const*>);
+#if not defined(ALPAKA_ACC_GPU_CUDA_ENABLED) and not defined(ALPAKA_ACC_GPU_HIP_ENABLED)                              \
+    and not defined(ALPAKA_SYCL_ONEAPI_GPU) and not defined(ALPAKA_SYCL_ONEAPI_FPGA)
         if constexpr(TDim::value == 0)
         {
             STATIC_REQUIRE(std::is_same_v<decltype(*view), float const&>);
@@ -54,6 +56,7 @@ namespace alpaka::test
 
         STATIC_REQUIRE(std::is_same_v<decltype(view[alpaka::Vec<TDim, TIdx>::zeros()]), float const&>);
         STATIC_REQUIRE(std::is_same_v<decltype(view.at(alpaka::Vec<TDim, TIdx>::zeros())), float const&>);
+#endif
     }
 } // namespace alpaka::test
 

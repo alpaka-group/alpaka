@@ -275,12 +275,16 @@ static auto testBufferAccessorAdaptor(
     auto const base = reinterpret_cast<uintptr_t>(std::data(buf));
     auto const expected = base + static_cast<uintptr_t>((pitch * index).sum());
     INFO("element " << index << " expected at offset " << expected - base);
+#if not defined(ALPAKA_ACC_GPU_CUDA_ENABLED) and not defined(ALPAKA_ACC_GPU_HIP_ENABLED)                              \
+    and not defined(ALPAKA_SYCL_ONEAPI_GPU) and not defined(ALPAKA_SYCL_ONEAPI_FPGA)
     INFO("element " << index << " returned at offset " << reinterpret_cast<uintptr_t>(&buf[index]) - base);
+
     CHECK(reinterpret_cast<Elem*>(expected) == &buf[index]);
 
     // check that an out-of-bound access is detected
     if constexpr(Dim::value > 0)
         CHECK_THROWS_AS((void) buf.at(extent), std::out_of_range);
+#endif
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufAccessorAdaptorTest", "[memBuf]", alpaka::test::TestAccs)
