@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "alpaka/dim/Traits.hpp"
+#include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/extent/Traits.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 
@@ -172,20 +172,18 @@ namespace alpaka::internal
         }
     };
 
-    struct DevCpu;
-
     template<typename TDev>
     struct ViewAccessor
     {
         template<ViewType TView>
-        using AccessorType = HostViewAccessor<TView>;
+        using AccessorType = DeviceViewAccessor<TView>;
     };
 
     template<>
     struct ViewAccessor<DevCpu>
     {
         template<ViewType TView>
-        using AccessorType = DeviceViewAccessor<TView>;
+        using AccessorType = HostViewAccessor<TView>;
     };
 
     template<typename TDev, ViewType TView>
