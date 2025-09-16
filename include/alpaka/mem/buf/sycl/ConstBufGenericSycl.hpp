@@ -30,7 +30,7 @@ namespace alpaka
     //! The SYCL memory buffer.
     template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
     class ConstBufGenericSycl
-        : public internal::ViewAccessorType<DevGenericSycl, ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
+        : public internal::ViewAccessorType<DevGenericSycl<TTag>, ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
     {
     public:
         //! Constructor
