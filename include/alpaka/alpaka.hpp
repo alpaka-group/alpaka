@@ -26749,6 +26749,2016 @@
 	// ============================================================================
 
 // #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+// algo
+	// ============================================================================
+	// == ./include/alpaka/algo/Transform.hpp ==
+	// ==
+	/* Copyright 2025 Andrea Bocci, Simeon Ehrig
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/exec/UniformElements.hpp ==
+		// ==
+		// #pragma once
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/exec/ElementIndex.hpp ==
+			// ==
+			// #pragma once
+			namespace alpaka
+			{
+
+			    /* ElementIndex
+			     *
+			     * An aggregate that containes the `.global` and `.local` indices of an element along a given dimension.
+			     */
+
+			    template<typename TIdx>
+			    struct ElementIndex
+			    {
+			        TIdx global; // Index of the element along a given dimension, relative to the whole problem space.
+			        TIdx local; // Index of the element along a given dimension, relative to the current group.
+			    };
+
+			} // namespace alpaka
+			// ==
+			// == ./include/alpaka/exec/ElementIndex.hpp ==
+			// ============================================================================
+
+			// ============================================================================
+			// == ./include/alpaka/idx/Accessors.hpp ==
+			// ==
+			/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
+
+			// #include <utility>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    //! Get the indices requested.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TOrigin, typename TUnit, typename TIdx, typename TWorkDiv>
+			    ALPAKA_FN_HOST_ACC auto getIdx(TIdx const& idx, TWorkDiv const& workDiv) -> Vec<Dim<TWorkDiv>, Idx<TIdx>>
+			    {
+			        return trait::GetIdx<TIdx, TOrigin, TUnit>::getIdx(idx, workDiv);
+			    }
+
+			    //! Get the indices requested.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TOrigin, typename TUnit, typename TIdxWorkDiv>
+			    ALPAKA_FN_HOST_ACC auto getIdx(TIdxWorkDiv const& idxWorkDiv) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
+			    {
+			        return trait::GetIdx<TIdxWorkDiv, TOrigin, TUnit>::getIdx(idxWorkDiv, idxWorkDiv);
+			    }
+
+			    namespace trait
+			    {
+			        //! The grid block index get trait specialization for classes with IdxGbBase member type.
+			        template<typename TIdxGb>
+			        struct GetIdx<TIdxGb, origin::Grid, unit::Blocks>
+			        {
+			            using ImplementationBase = interface::ImplementationBase<ConceptIdxGb, TIdxGb>;
+
+			            //! \return The index of the current thread in the grid.
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            template<typename TWorkDiv>
+			            ALPAKA_FN_HOST_ACC static auto getIdx(TIdxGb const& idx, TWorkDiv const& workDiv)
+			                -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
+			            {
+			                return trait::GetIdx<ImplementationBase, origin::Grid, unit::Blocks>::getIdx(idx, workDiv);
+			            }
+			        };
+
+			        //! The block thread index get trait specialization for classes with IdxBtBase member type.
+			        template<typename TIdxBt>
+			        struct GetIdx<TIdxBt, origin::Block, unit::Threads>
+			        {
+			            using ImplementationBase = interface::ImplementationBase<ConceptIdxBt, TIdxBt>;
+
+			            //! \return The index of the current thread in the grid.
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            template<typename TWorkDiv>
+			            ALPAKA_FN_HOST_ACC static auto getIdx(TIdxBt const& idx, TWorkDiv const& workDiv)
+			                -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
+			            {
+			                return trait::GetIdx<ImplementationBase, origin::Block, unit::Threads>::getIdx(idx, workDiv);
+			            }
+			        };
+
+			        //! The grid thread index get trait specialization.
+			        template<typename TIdx>
+			        struct GetIdx<TIdx, origin::Grid, unit::Threads>
+			        {
+			            //! \return The index of the current thread in the grid.
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            template<typename TWorkDiv>
+			            ALPAKA_FN_HOST_ACC static auto getIdx(TIdx const& idx, TWorkDiv const& workDiv)
+			            {
+			                return alpaka::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
+			                           * getWorkDiv<origin::Block, unit::Threads>(workDiv)
+			                       + alpaka::getIdx<origin::Block, unit::Threads>(idx, workDiv);
+			            }
+			        };
+			    } // namespace trait
+
+			    //! Get the index of the first element this thread computes.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TIdxWorkDiv, typename TGridThreadIdx, typename TThreadElemExtent>
+			    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+			        [[maybe_unused]] TIdxWorkDiv const& idxWorkDiv,
+			        TGridThreadIdx const& gridThreadIdx,
+			        TThreadElemExtent const& threadElemExtent) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
+			    {
+			        return gridThreadIdx * threadElemExtent;
+			    }
+
+			    //! Get the index of the first element this thread computes.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TIdxWorkDiv, typename TGridThreadIdx>
+			    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(TIdxWorkDiv const& idxWorkDiv, TGridThreadIdx const& gridThreadIdx)
+			        -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
+			    {
+			        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
+			        return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
+			    }
+
+			    //! Get the index of the first element this thread computes.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TIdxWorkDiv>
+			    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(TIdxWorkDiv const& idxWorkDiv)
+			        -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
+			    {
+			        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(idxWorkDiv));
+			        return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx);
+			    }
+			} // namespace alpaka
+			// ==
+			// == ./include/alpaka/idx/Accessors.hpp ==
+			// ============================================================================
+
+
+		// #include <algorithm>    // amalgamate: file already included
+		// #include <cstddef>    // amalgamate: file already included
+		#include <type_traits>
+
+		namespace alpaka
+		{
+
+		    namespace detail
+		    {
+
+		        /* UniformElementsAlong
+		         *
+		         * `UniformElementsAlong<TAcc, Dim>(acc [, first], extent)` returns a one-dimensional iteratable range that
+		         * spans the element indices from `first` (inclusive) to `extent` (exlusive) along the `Dim` dimension. If
+		         * `first` is not specified, it defaults to 0. If `extent` is not specified, it defaults to the kernel grid
+		         * size along the `Dim` dimension.
+		         *
+		         * `uniformElementsAlong<Dim>(acc, ...)` is a shorthand for `UniformElementsAlong<TAcc, Dim>(acc, ...)` that
+		         * can infer the accelerator type from the argument.
+		         *
+		         * In a 1-dimensional kernel, `uniformElements(acc, ...)` is a shorthand for `UniformElementsAlong<TAcc,
+		         * 0>(acc, ...)`.
+		         *
+		         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
+		         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
+		         * when converting CUDA or HIP code, `uniformElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
+		         * `UniformElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
+		         *
+		         * To cover the problem space, different threads may execute a different number of iterations. As a result, it
+		         * is not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If
+		         * a block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner
+		         * loop over each group's elements, and synchronise only in the outer loop:
+		         *
+		         *  for (auto group : uniformGroupsAlong<Dim>(acc, extent)) {
+		         *    for (auto element : uniformGroupElementsAlong<Dim>(acc, group, extent)) {
+		         *       // first part of the computation
+		         *       // no synchronisations here
+		         *       ...
+		         *    }
+		         *    // wait for all threads to complete the first part
+		         *    alpaka::syncBlockThreads();
+		         *    for (auto element : uniformGroupElementsAlong<Dim>(acc, group, extent)) {
+		         *       // second part of the computation
+		         *       // no synchronisations here
+		         *       ...
+		         *    }
+		         *    // wait for all threads to complete the second part
+		         *    alpaka::syncBlockThreads();
+		         *    ...
+		         *  }
+		         *
+		         * Warp-level primitives require that all threads in the warp execute the same function. If `extent` is not a
+		         * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for
+		         * example, the kernel may hang. To avoid this problem, round up `extent` to a multiple of the warp size, and
+		         * check the element index explicitly inside the loop:
+		         *
+		         *  for (auto element : uniformElementsAlong<N-1>(acc, round_up_by(extent, alpaka::warp::getSize(acc)))) {
+		         *    bool flag = false;
+		         *    if (element < extent) {
+		         *      // do some work and compute a result flag only for the valid elements
+		         *      flag = do_some_work();
+		         *    }
+		         *    // check if any valid element had a positive result
+		         *    if (alpaka::warp::any(acc, flag)) {
+		         *      // ...
+		         *    }
+		         *  }
+		         *
+		         * Note that the use of warp-level primitives is usually suitable only for the fastest-looping dimension,
+		         * `N-1`.
+		         */
+
+		        template<concepts::Acc TAcc, std::size_t Dim>
+		        requires(alpaka::Dim<TAcc>::value >= Dim)
+		        class UniformElementsAlong
+		        {
+		        public:
+		            using Idx = alpaka::Idx<TAcc>;
+
+		            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc)
+		                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
+		                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
+		                , extent_{stride_}
+		            {
+		            }
+
+		            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc, Idx extent)
+		                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
+		                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
+		                , extent_{extent}
+		            {
+		            }
+
+		            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc, Idx first, Idx extent)
+		                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
+		                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_ + first}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
+		                , extent_{extent}
+		            {
+		            }
+
+		            class const_iterator;
+		            using iterator = const_iterator;
+
+		            ALPAKA_FN_ACC inline const_iterator begin() const
+		            {
+		                return const_iterator(elements_, stride_, extent_, first_);
+		            }
+
+		            ALPAKA_FN_ACC inline const_iterator end() const
+		            {
+		                return const_iterator(elements_, stride_, extent_, extent_);
+		            }
+
+		            class const_iterator
+		            {
+		                friend class UniformElementsAlong;
+
+		                ALPAKA_FN_ACC inline const_iterator(Idx elements, Idx stride, Idx extent, Idx first)
+		                    : elements_{elements}
+		                    ,
+		                    // we need to reduce the stride by on element range because index_ is later increased with each
+		                    // increment
+		                    stride_{stride - elements}
+		                    , extent_{extent}
+		                    , index_{std::min(first, extent)}
+		                {
+		                }
+
+		            public:
+		                ALPAKA_FN_ACC inline Idx operator*() const
+		                {
+		                    return index_;
+		                }
+
+		                // pre-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator& operator++()
+		                {
+		                    // increment the index along the elements processed by the current thread
+		                    ++indexElem_;
+		                    ++index_;
+		                    if(indexElem_ >= elements_)
+		                    {
+		                        indexElem_ = 0;
+		                        index_ += stride_;
+		                    }
+		                    if(index_ >= extent_)
+		                        index_ = extent_;
+
+		                    return *this;
+		                }
+
+		                // post-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator operator++(int)
+		                {
+		                    const_iterator old = *this;
+		                    ++(*this);
+		                    return old;
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
+		                {
+		                    return (*(*this) == *other);
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
+		                {
+		                    return not(*this == other);
+		                }
+
+		            private:
+		                // non-const to support iterator copy and assignment
+		                Idx elements_;
+		                Idx stride_;
+		                Idx extent_;
+		                // modified by the pre/post-increment operator
+		                Idx index_;
+		                Idx indexElem_ = 0;
+		            };
+
+		        private:
+		            Idx const elements_;
+		            Idx const first_;
+		            Idx const stride_;
+		            Idx const extent_;
+		        };
+
+		    } // namespace detail
+
+		    /* uniformElements
+		     *
+		     * `uniformElements(acc [, first], extent)` returns a one-dimensional iteratable range that spans the element
+		     * indices from `first` (inclusive) to `extent` (exlusive). If `first` is not specified, it defaults to 0. If
+		     * `extent` is not specified, it defaults to the kernel grid size.
+		     *
+		     * `uniformElements(acc, ...)` is a shorthand for `detail::UniformElementsAlong<TAcc, 0>(acc, ...)`.
+		     *
+		     * To cover the problem space, different threads may execute a different number of iterations. As a result, it is
+		     * not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If a
+		     * block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner loop
+		     * over each group's elements, and synchronise only in the outer loop:
+		     *
+		     *  for (auto group : uniformGroups(acc, extent)) {
+		     *    for (auto element : uniformGroupElements(acc, group, extent)) {
+		     *       // first part of the computation
+		     *       // no synchronisations here
+		     *       ...
+		     *    }
+		     *    // wait for all threads to complete the first part
+		     *    alpaka::syncBlockThreads();
+		     *    for (auto element : uniformGroupElements(acc, group, extent)) {
+		     *       // second part of the computation
+		     *       // no synchronisations here
+		     *       ...
+		     *    }
+		     *    // wait for all threads to complete the second part
+		     *    alpaka::syncBlockThreads();
+		     *    ...
+		     *  }
+		     *
+		     * Warp-level primitives require that all threads in the warp execute the same function. If `extent` is not a
+		     * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for example,
+		     * the kernel may hang. To avoid this problem, round up `extent` to a multiple of the warp size, and check the
+		     * element index explicitly inside the loop:
+		     *
+		     *  for (auto element : uniformElements(acc, round_up_by(extent, alpaka::warp::getSize(acc)))) {
+		     *    bool flag = false;
+		     *    if (element < extent) {
+		     *      // do some work and compute a result flag only for elements up to extent
+		     *      flag = do_some_work();
+		     *    }
+		     *    // check if any valid element had a positive result
+		     *    if (alpaka::warp::any(acc, flag)) {
+		     *      // ...
+		     *    }
+		     *  }
+		     *
+		     * Note that `uniformElements(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
+		     * use
+		     *   - `uniformElementsND(acc, ...)` to cover an N-dimensional problem space with a single loop;
+		     *   - `uniformElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
+		     *   - `uniformElementsAlongX(acc, ...)`, `uniformElementsAlongY(acc, ...)`, or `uniformElementsAlongZ(acc, ...)`
+		     *     to loop along the fastest, second-fastest, or third-fastest dimension.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value == 1)
+		    ALPAKA_FN_ACC inline auto uniformElements(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformElementsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformElementsAlong<Dim>
+		     *
+		     * `uniformElementsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformElementsAlong<TAcc, Dim>(acc, ...)`
+		     * that can infer the accelerator type from the argument.
+		     */
+
+		    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value >= Dim)
+		    ALPAKA_FN_ACC inline auto uniformElementsAlong(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformElementsAlongX, Y, Z
+		     *
+		     * Like `uniformElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
+		     * dimensions.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 0)
+		    ALPAKA_FN_ACC inline auto uniformElementsAlongX(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 1)
+		    ALPAKA_FN_ACC inline auto uniformElementsAlongY(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 2)
+		    ALPAKA_FN_ACC inline auto uniformElementsAlongZ(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    namespace detail
+		    {
+
+		        /* UniformElementsND
+		         *
+		         * `UniformElementsND(acc, extent)` returns an N-dimensional iteratable range that spans the element indices
+		         * required to cover the given problem size, indicated by `extent`.
+		         *
+		         * `uniformElementsND(acc, ...)` is an alias for `UniformElementsND<TAcc>(acc, ...)`.
+		         *
+		         * To cover the problem space, different threads may execute a different number of iterations. As a result, it
+		         * is not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If
+		         * a block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner
+		         * loop over each group's elements, and synchronise only in the outer loop:
+		         *
+		         *  for (auto group0 : uniformGroupsAlong<0>(acc, extent[0])) {
+		         *    for (auto group1 : uniformGroupsAlong<1>(acc, extent[1])) {
+		         *      for (auto element0 : uniformGroupElementsAlong<0>(acc, group0, extent[0])) {
+		         *        for (auto element1 : uniformGroupElementsAlong<1>(acc, group1, extent[1])) {
+		         *           // first part of the computation
+		         *           // no synchronisations here
+		         *           ...
+		         *        }
+		         *      }
+		         *      // wait for all threads to complete the first part
+		         *      alpaka::syncBlockThreads();
+		         *      for (auto element0 : uniformGroupElementsAlong<0>(acc, group0, extent[0])) {
+		         *        for (auto element1 : uniformGroupElementsAlong<1>(acc, group1, extent[1])) {
+		         *           // second part of the computation
+		         *           // no synchronisations here
+		         *           ...
+		         *        }
+		         *      }
+		         *      // wait for all threads to complete the second part
+		         *      alpaka::syncBlockThreads();
+		         *      ...
+		         *    }
+		         *  }
+		         *
+		         * For more details, see `UniformElementsAlong<TAcc, Dim>(acc, ...)`.
+		         */
+
+		        template<concepts::Acc TAcc>
+		        requires(alpaka::Dim<TAcc>::value > 0)
+		        class UniformElementsND
+		        {
+		        public:
+		            using Dim = alpaka::Dim<TAcc>;
+		            using Idx = alpaka::Idx<TAcc>;
+		            using Vec = alpaka::Vec<Dim, Idx>;
+
+		            ALPAKA_FN_ACC inline UniformElementsND(TAcc const& acc)
+		                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)}
+		                , thread_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc) * elements_}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc) * elements_}
+		                , extent_{stride_}
+		            {
+		            }
+
+		            ALPAKA_FN_ACC inline UniformElementsND(TAcc const& acc, Vec extent)
+		                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)}
+		                , thread_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc) * elements_}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc) * elements_}
+		                , extent_{extent}
+		            {
+		            }
+
+		            // tag used to construct an end iterator
+		            struct at_end_t
+		            {
+		            };
+
+		            class const_iterator;
+		            using iterator = const_iterator;
+
+		            ALPAKA_FN_ACC inline const_iterator begin() const
+		            {
+		                // check that all dimensions of the current thread index are within the extent
+		                if((thread_ < extent_).all())
+		                {
+		                    // construct an iterator pointing to the first element to be processed by the current thread
+		                    return const_iterator{this, thread_};
+		                }
+		                else
+		                {
+		                    // construct an end iterator, pointing post the end of the extent
+		                    return const_iterator{this, at_end_t{}};
+		                }
+		            }
+
+		            ALPAKA_FN_ACC inline const_iterator end() const
+		            {
+		                // construct an end iterator, pointing post the end of the extent
+		                return const_iterator{this, at_end_t{}};
+		            }
+
+		            class const_iterator
+		            {
+		                friend class UniformElementsND;
+
+		            public:
+		                ALPAKA_FN_ACC inline Vec operator*() const
+		                {
+		                    return index_;
+		                }
+
+		                // pre-increment the iterator
+		                ALPAKA_FN_ACC inline constexpr const_iterator operator++()
+		                {
+		                    increment();
+		                    return *this;
+		                }
+
+		                // post-increment the iterator
+		                ALPAKA_FN_ACC inline constexpr const_iterator operator++(int)
+		                {
+		                    const_iterator old = *this;
+		                    increment();
+		                    return old;
+		                }
+
+		                ALPAKA_FN_ACC inline constexpr bool operator==(const_iterator const& other) const
+		                {
+		                    return (index_ == other.index_);
+		                }
+
+		                ALPAKA_FN_ACC inline constexpr bool operator!=(const_iterator const& other) const
+		                {
+		                    return not(*this == other);
+		                }
+
+		            private:
+		                // construct an iterator pointing to the first element to be processed by the current thread
+		                ALPAKA_FN_ACC inline const_iterator(UniformElementsND const* loop, Vec first)
+		                    : loop_{loop}
+		                    , first_{alpaka::elementwise_min(first, loop->extent_)}
+		                    , range_{alpaka::elementwise_min(first + loop->elements_, loop->extent_)}
+		                    , index_{first_}
+		                {
+		                }
+
+		                // construct an end iterator, pointing post the end of the extent
+		                ALPAKA_FN_ACC inline const_iterator(UniformElementsND const* loop, at_end_t const&)
+		                    : loop_{loop}
+		                    , first_{loop_->extent_}
+		                    , range_{loop_->extent_}
+		                    , index_{loop_->extent_}
+		                {
+		                }
+
+		                template<size_t I>
+		                ALPAKA_FN_ACC inline constexpr bool nth_elements_loop()
+		                {
+		                    bool overflow = false;
+		                    ++index_[I];
+		                    if(index_[I] >= range_[I])
+		                    {
+		                        index_[I] = first_[I];
+		                        overflow = true;
+		                    }
+		                    return overflow;
+		                }
+
+		                template<size_t N>
+		                ALPAKA_FN_ACC inline constexpr bool do_elements_loops()
+		                {
+		                    if constexpr(N == 0)
+		                    {
+		                        // overflow
+		                        return true;
+		                    }
+		                    else
+		                    {
+		                        if(not nth_elements_loop<N - 1>())
+		                        {
+		                            return false;
+		                        }
+		                        else
+		                        {
+		                            return do_elements_loops<N - 1>();
+		                        }
+		                    }
+		                    ALPAKA_UNREACHABLE(false);
+		                }
+
+		                template<size_t I>
+		                ALPAKA_FN_ACC inline constexpr bool nth_strided_loop()
+		                {
+		                    bool overflow = false;
+		                    first_[I] += loop_->stride_[I];
+		                    if(first_[I] >= loop_->extent_[I])
+		                    {
+		                        first_[I] = loop_->thread_[I];
+		                        overflow = true;
+		                    }
+		                    index_[I] = first_[I];
+		                    range_[I] = std::min(first_[I] + loop_->elements_[I], loop_->extent_[I]);
+		                    return overflow;
+		                }
+
+		                template<size_t N>
+		                ALPAKA_FN_ACC inline constexpr bool do_strided_loops()
+		                {
+		                    if constexpr(N == 0)
+		                    {
+		                        // overflow
+		                        return true;
+		                    }
+		                    else
+		                    {
+		                        if(not nth_strided_loop<N - 1>())
+		                        {
+		                            return false;
+		                        }
+		                        else
+		                        {
+		                            return do_strided_loops<N - 1>();
+		                        }
+		                    }
+		                    ALPAKA_UNREACHABLE(false);
+		                }
+
+		                // increment the iterator
+		                ALPAKA_FN_ACC inline constexpr void increment()
+		                {
+		                    // linear N-dimensional loops over the elements associated to the thread;
+		                    // do_elements_loops<>() returns true if any of those loops overflows
+		                    if(not do_elements_loops<Dim::value>())
+		                    {
+		                        // the elements loops did not overflow, return the next index
+		                        return;
+		                    }
+
+		                    // strided N-dimensional loop over the threads in the kernel launch grid;
+		                    // do_strided_loops<>() returns true if any of those loops overflows
+		                    if(not do_strided_loops<Dim::value>())
+		                    {
+		                        // the strided loops did not overflow, return the next index
+		                        return;
+		                    }
+
+		                    // the iterator has reached or passed the end of the extent, clamp it to the extent
+		                    first_ = loop_->extent_;
+		                    range_ = loop_->extent_;
+		                    index_ = loop_->extent_;
+		                }
+
+		                // const pointer to the UniformElementsND that the iterator refers to
+		                UniformElementsND const* loop_;
+
+		                // modified by the pre/post-increment operator
+		                Vec first_; // first element processed by this thread
+		                Vec range_; // last element processed by this thread
+		                Vec index_; // current element processed by this thread
+		            };
+
+		        private:
+		            Vec const elements_;
+		            Vec const thread_;
+		            Vec const stride_;
+		            Vec const extent_;
+		        };
+
+		    } // namespace detail
+
+		    /* uniformElementsND
+		     *
+		     * `uniformElementsND(acc, ...)` is a shorthand for `detail::UniformElementsND<TAcc>(acc, ...)`.
+		     */
+
+		    template<concepts::Acc TAcc>
+		    requires(alpaka::Dim<TAcc>::value > 0)
+		    ALPAKA_FN_ACC inline auto uniformElementsND(TAcc const& acc)
+		    {
+		        return detail::UniformElementsND<TAcc>(acc);
+		    }
+
+		    template<concepts::Acc TAcc>
+		    requires(alpaka::Dim<TAcc>::value > 0)
+		    ALPAKA_FN_ACC inline auto uniformElementsND(
+		        TAcc const& acc,
+		        alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> extent)
+		    {
+		        return detail::UniformElementsND<TAcc>(acc, extent);
+		    }
+
+		    namespace detail
+		    {
+
+		        /* UniformGroupsAlong
+		         *
+		         * `UniformGroupsAlong<Dim>(acc, elements)` returns a one-dimensional iteratable range than spans the group
+		         * indices required to cover the given problem size along the `Dim` dimension, in units of the block size.
+		         * `elements` indicates the total number of elements, across all groups; if not specified, it defaults to the
+		         * kernel grid size along the `Dim` dimension.
+		         *
+		         * `uniformGroupsAlong<Dim>(acc, ...)` is a shorthand for `UniformGroupsAlong<TAcc, Dim>(acc, ...)` that can
+		         * infer the accelerator type from the argument.
+		         *
+		         * In a 1-dimensional kernel, `uniformGroups(acc, ...)` is a shorthand for `UniformGroupsAlong<Tacc, 0>(acc,
+		         * ...)`.
+		         *
+		         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
+		         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
+		         * when converting CUDA or HIP code, `uniformGroupsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
+		         * `UniformGroupsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
+		         *
+		         * `uniformGroupsAlong<Dim>(acc, ...)` should be called consistently by all the threads in a block. All
+		         * threads in a block see the same loop iterations, while threads in different blocks may see a different
+		         * number of iterations. If the work division has more blocks than the required number of groups, the first
+		         * blocks will perform one iteration of the loop, while the other blocks will exit the loop immediately. If the
+		         * work division has less blocks than the required number of groups, some of the blocks will perform more than
+		         * one iteration, in order to cover then whole problem space.
+		         *
+		         * If the problem size is not a multiple of the block size, the last group will process a number of elements
+		         * smaller than the block size. However, also in this case all threads in the block will execute the same
+		         * number of iterations of this loop: this makes it safe to use block-level synchronisations in the loop body.
+		         * It is left to the inner loop (or the user) to ensure that only the correct number of threads process any
+		         * data; this logic is implemented by `uniformGroupElementsAlong<Dim>(acc, group, elements)`.
+		         *
+		         * For example, if the block size is 64 and there are 400 elements
+		         *
+		         *   for (auto group: uniformGroupsAlong<Dim>(acc, 400)
+		         *
+		         * will return the group range from 0 to 6, distributed across all blocks in the work division: group 0 should
+		         * cover the elements from 0 to 63, group 1 should cover the elements from 64 to 127, etc., until the last
+		         * group, group 6, should cover the elements from 384 to 399. All the threads of the block will process this
+		         * last group; it is up to the inner loop to not process the non-existing elements after 399.
+		         *
+		         * If the work division has more than 7 blocks, the first 7 will perform one iteration of the loop, while the
+		         * other blocks will exit the loop immediately. For example if the work division has 8 blocks, the blocks from
+		         * 0 to 6 will process one group while block 7 will no process any.
+		         *
+		         * If the work division has less than 7 blocks, some of the blocks will perform more than one iteration of the
+		         * loop, in order to cover then whole problem space. For example if the work division has 4 blocks, block 0
+		         * will process the groups 0 and 4, block 1 will process groups 1 and 5, group 2 will process groups 2 and 6,
+		         * and block 3 will process group 3.
+		         *
+		         * See `UniformElementsAlong<TAcc, Dim>(acc, ...)` for a concrete example using `uniformGroupsAlong<Dim>` and
+		         * `uniformGroupElementsAlong<Dim>`.
+		         */
+
+		        template<concepts::Acc TAcc, std::size_t Dim>
+		        requires(alpaka::Dim<TAcc>::value >= Dim)
+		        class UniformGroupsAlong
+		        {
+		        public:
+		            using Idx = alpaka::Idx<TAcc>;
+
+		            ALPAKA_FN_ACC inline UniformGroupsAlong(TAcc const& acc)
+		                : first_{alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
+		                , extent_{stride_}
+		            {
+		            }
+
+		            // extent is the total number of elements (not blocks)
+		            ALPAKA_FN_ACC inline UniformGroupsAlong(TAcc const& acc, Idx extent)
+		                : first_{alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
+		                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
+		                , extent_{alpaka::core::divCeil(extent, alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim])}
+		            {
+		            }
+
+		            class const_iterator;
+		            using iterator = const_iterator;
+
+		            ALPAKA_FN_ACC inline const_iterator begin() const
+		            {
+		                return const_iterator(stride_, extent_, first_);
+		            }
+
+		            ALPAKA_FN_ACC inline const_iterator end() const
+		            {
+		                return const_iterator(stride_, extent_, extent_);
+		            }
+
+		            class const_iterator
+		            {
+		                friend class UniformGroupsAlong;
+
+		                ALPAKA_FN_ACC inline const_iterator(Idx stride, Idx extent, Idx first)
+		                    : stride_{stride}
+		                    , extent_{extent}
+		                    , first_{std::min(first, extent)}
+		                {
+		                }
+
+		            public:
+		                ALPAKA_FN_ACC inline Idx operator*() const
+		                {
+		                    return first_;
+		                }
+
+		                // pre-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator& operator++()
+		                {
+		                    // increment the first-element-in-block index by the grid stride
+		                    first_ += stride_;
+		                    if(first_ < extent_)
+		                        return *this;
+
+		                    // the iterator has reached or passed the end of the extent, clamp it to the extent
+		                    first_ = extent_;
+		                    return *this;
+		                }
+
+		                // post-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator operator++(int)
+		                {
+		                    const_iterator old = *this;
+		                    ++(*this);
+		                    return old;
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
+		                {
+		                    return (first_ == other.first_);
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
+		                {
+		                    return not(*this == other);
+		                }
+
+		            private:
+		                // non-const to support iterator copy and assignment
+		                Idx stride_;
+		                Idx extent_;
+		                // modified by the pre/post-increment operator
+		                Idx first_;
+		            };
+
+		        private:
+		            Idx const first_;
+		            Idx const stride_;
+		            Idx const extent_;
+		        };
+
+		    } // namespace detail
+
+		    /* uniformGroups
+		     *
+		     * `uniformGroups(acc, elements)` returns a one-dimensional iteratable range than spans the group indices required
+		     * to cover the given problem size, in units of the block size. `elements` indicates the total number of elements,
+		     * across all groups; if not specified, it defaults to the kernel grid size.
+		     *
+		     * `uniformGroups(acc, ...)` is a shorthand for `detail::UniformGroupsAlong<TAcc, 0>(acc, ...)`.
+		     *
+		     * `uniformGroups(acc, ...)` should be called consistently by all the threads in a block. All threads in a block
+		     * see the same loop iterations, while threads in different blocks may see a different number of iterations. If the
+		     * work division has more blocks than the required number of groups, the first blocks will perform one iteration of
+		     * the loop, while the other blocks will exit the loop immediately. If the work division has less blocks than the
+		     * required number of groups, some of the blocks will perform more than one iteration, in order to cover then whole
+		     * problem space.
+		     *
+		     * If the problem size is not a multiple of the block size, the last group will process a number of elements
+		     * smaller than the block size. However, also in this case all threads in the block will execute the same number of
+		     * iterations of this loop: this makes it safe to use block-level synchronisations in the loop body. It is left to
+		     * the inner loop (or the user) to ensure that only the correct number of threads process any data; this logic is
+		     * implemented by `uniformGroupElements(acc, group, elements)`.
+		     *
+		     * For example, if the block size is 64 and there are 400 elements
+		     *
+		     *   for (auto group: uniformGroups(acc, 400)
+		     *
+		     * will return the group range from 0 to 6, distributed across all blocks in the work division: group 0 should
+		     * cover the elements from 0 to 63, group 1 should cover the elements from 64 to 127, etc., until the last group,
+		     * group 6, should cover the elements from 384 to 399. All the threads of the block will process this last group;
+		     * it is up to the inner loop to not process the non-existing elements after 399.
+		     *
+		     * If the work division has more than 7 blocks, the first 7 will perform one iteration of the loop, while the other
+		     * blocks will exit the loop immediately. For example if the work division has 8 blocks, the blocks from 0 to 6
+		     * will process one group while block 7 will no process any.
+		     *
+		     * If the work division has less than 7 blocks, some of the blocks will perform more than one iteration of the
+		     * loop, in order to cover then whole problem space. For example if the work division has 4 blocks, block 0 will
+		     * process the groups 0 and 4, block 1 will process groups 1 and 5, group 2 will process groups 2 and 6, and block
+		     * 3 will process group 3.
+		     *
+		     * See `uniformElements(acc, ...)` for a concrete example using `uniformGroups` and `uniformGroupElements`.
+		     *
+		     * Note that `uniformGroups(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
+		     * use
+		     *   - `uniformGroupsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
+		     *   - `uniformGroupsAlongX(acc, ...)`, `uniformGroupsAlongY(acc, ...)`, or `uniformGroupsAlongZ(acc, ...)` to loop
+		     *     along the fastest, second-fastest, or third-fastest dimension.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value == 1)
+		    ALPAKA_FN_ACC inline auto uniformGroups(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformGroupsAlong<Dim>
+		     *
+		     * `uniformGroupsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformGroupsAlong<TAcc, Dim>(acc, ...)` that
+		     * can infer the accelerator type from the argument.
+		     */
+
+		    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value >= Dim)
+		    ALPAKA_FN_ACC inline auto uniformGroupsAlong(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformGroupsAlongX, Y, Z
+		     *
+		     * Like `uniformGroups` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
+		     * dimensions.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 0)
+		    ALPAKA_FN_ACC inline auto uniformGroupsAlongX(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 1)
+		    ALPAKA_FN_ACC inline auto uniformGroupsAlongY(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 2)
+		    ALPAKA_FN_ACC inline auto uniformGroupsAlongZ(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    namespace detail
+		    {
+
+		        /* UniformGroupElementsAlong
+		         *
+		         * `UniformGroupElementsAlong<TAcc, Dim>(acc, group, elements)` returns a one-dimensional iteratable range that
+		         * spans all the elements within the given `group` along dimension `Dim`, as obtained from
+		         * `UniformGroupsAlong<Dim>`, up to `elements` (exclusive). `elements` indicates the total number of elements
+		         * across all groups; if not specified, it defaults to the kernel grid size.
+		         *
+		         * `uniformGroupElementsAlong<Dim>(acc, ...)` is a shorthand for `UniformGroupElementsAlong<TAcc, Dim>(acc,
+		         * ...)` that can infer the accelerator type from the argument.
+		         *
+		         * In a 1-dimensional kernel, `uniformGroupElements(acc, ...)` is a shorthand for
+		         * `UniformGroupElementsAlong<0>(acc, ...)`.
+		         *
+		         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
+		         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
+		         * when converting CUDA or HIP code, `uniformGroupElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
+		         * `UniformGroupElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
+		         *
+		         * Iterating over the range yields values of type `ElementIndex`, that provide the `.global` and `.local`
+		         * indices of the corresponding element. The global index spans a subset of the range from 0 to `elements`
+		         * (excluded), while the local index spans the range from 0 to the block size (excluded).
+		         *
+		         * The loop will perform a number of iterations up to the number of elements per thread, stopping earlier if
+		         * the global element index reaches `elements`.
+		         *
+		         * If the problem size is not a multiple of the block size, different threads may execute a different number of
+		         * iterations. As a result, it is not safe to call `alpaka::syncBlockThreads()` within this loop. If a block
+		         * synchronisation is needed, one should split the loop, and synchronise the threads between the loops.
+		         * See `UniformElementsAlong<Dim>(acc, ...)` for a concrete example using `uniformGroupsAlong<Dim>` and
+		         * `uniformGroupElementsAlong<Dim>`.
+		         *
+		         * Warp-level primitives require that all threads in the warp execute the same function. If `elements` is not a
+		         * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for
+		         * example, the kernel may hang. To avoid this problem, round up `elements` to a multiple of the warp size, and
+		         * check the element index explicitly inside the loop:
+		         *
+		         *  for (auto element : uniformGroupElementsAlong<N-1>(acc, group, round_up_by(elements,
+		         * alpaka::warp::getSize(acc)))) { bool flag = false; if (element < elements) {
+		         *      // do some work and compute a result flag only for the valid elements
+		         *      flag = do_some_work();
+		         *    }
+		         *    // check if any valid element had a positive result
+		         *    if (alpaka::warp::any(acc, flag)) {
+		         *      // ...
+		         *    }
+		         *  }
+		         *
+		         * Note that the use of warp-level primitives is usually suitable only for the fastest-looping dimension,
+		         * `N-1`.
+		         */
+
+		        template<concepts::Acc TAcc, std::size_t Dim>
+		        requires(alpaka::Dim<TAcc>::value >= Dim)
+		        class UniformGroupElementsAlong
+		        {
+		        public:
+		            using Idx = alpaka::Idx<TAcc>;
+
+		            ALPAKA_FN_ACC inline UniformGroupElementsAlong(TAcc const& acc, Idx block)
+		                : first_{block * alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim]}
+		                , local_{alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[Dim] * alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
+		                , range_{local_ + alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
+		            {
+		            }
+
+		            ALPAKA_FN_ACC inline UniformGroupElementsAlong(TAcc const& acc, Idx block, Idx extent)
+		                : first_{block * alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim]}
+		                , local_{std::min(
+		                      extent - first_,
+		                      alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[Dim]
+		                          * alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim])}
+		                , range_{
+		                      std::min(extent - first_, local_ + alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim])}
+		            {
+		            }
+
+		            class const_iterator;
+		            using iterator = const_iterator;
+
+		            ALPAKA_FN_ACC inline const_iterator begin() const
+		            {
+		                return const_iterator(local_, first_, range_);
+		            }
+
+		            ALPAKA_FN_ACC inline const_iterator end() const
+		            {
+		                return const_iterator(range_, first_, range_);
+		            }
+
+		            class const_iterator
+		            {
+		                friend class UniformGroupElementsAlong;
+
+		                ALPAKA_FN_ACC inline const_iterator(Idx local, Idx first, Idx range)
+		                    : index_{local}
+		                    , first_{first}
+		                    , range_{range}
+		                {
+		                }
+
+		            public:
+		                ALPAKA_FN_ACC inline ElementIndex<Idx> operator*() const
+		                {
+		                    return ElementIndex<Idx>{index_ + first_, index_};
+		                }
+
+		                // pre-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator& operator++()
+		                {
+		                    // increment the index along the elements processed by the current thread
+		                    ++index_;
+		                    if(index_ < range_)
+		                        return *this;
+
+		                    // the iterator has reached or passed the end of the extent, clamp it to the extent
+		                    index_ = range_;
+		                    return *this;
+		                }
+
+		                // post-increment the iterator
+		                ALPAKA_FN_ACC inline const_iterator operator++(int)
+		                {
+		                    const_iterator old = *this;
+		                    ++(*this);
+		                    return old;
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
+		                {
+		                    return (index_ == other.index_);
+		                }
+
+		                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
+		                {
+		                    return not(*this == other);
+		                }
+
+		            private:
+		                // modified by the pre/post-increment operator
+		                Idx index_;
+		                // non-const to support iterator copy and assignment
+		                Idx first_;
+		                Idx range_;
+		            };
+
+		        private:
+		            Idx const first_;
+		            Idx const local_;
+		            Idx const range_;
+		        };
+
+		    } // namespace detail
+
+		    /* uniformGroupElements
+		     *
+		     * `uniformGroupElements(acc, group, elements)` returns a one-dimensional iteratable range that spans all the
+		     * elements within the given `group`, as obtained from `uniformGroups`, up to `elements` (exclusive). `elements`
+		     * indicates the total number of elements across all groups; if not specified, it defaults to the kernel grid size.
+		     *
+		     * `uniformGroupElements(acc, ...)` is a shorthand for `detail::UniformGroupElementsAlong<0>(acc, ...)`.
+		     *
+		     * Iterating over the range yields values of type `ElementIndex`, that provide the `.global` and `.local` indices
+		     * of the corresponding element. The global index spans a subset of the range from 0 to `elements` (excluded),
+		     * while the local index spans the range from 0 to the block size (excluded).
+		     *
+		     * The loop will perform a number of iterations up to the number of elements per thread, stopping earlier if the
+		     * global element index reaches `elements`.
+		     *
+		     * If the problem size is not a multiple of the block size, different threads may execute a different number of
+		     * iterations. As a result, it is not safe to call `alpaka::syncBlockThreads()` within this loop. If a block
+		     * synchronisation is needed, one should split the loop, and synchronise the threads between the loops.
+		     * See `uniformElements(acc, ...)` for a concrete example using `uniformGroups` and `uniformGroupElements`.
+		     *
+		     * Warp-level primitives require that all threads in the warp execute the same function. If `elements` is not a
+		     * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for example,
+		     * the kernel may hang. To avoid this problem, round up `elements` to a multiple of the warp size, and check the
+		     * element index explicitly inside the loop:
+		     *
+		     *  for (auto element : uniformGroupElements(acc, group, round_up_by(elements, alpaka::warp::getSize(acc)))) {
+		     *    bool flag = false;
+		     *    if (element < elements) {
+		     *      // do some work and compute a result flag only for the valid elements
+		     *      flag = do_some_work();
+		     *    }
+		     *    // check if any valid element had a positive result
+		     *    if (alpaka::warp::any(acc, flag)) {
+		     *      // ...
+		     *    }
+		     *  }
+		     *
+		     * Note that `uniformGroupElements(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional
+		     * kernels, use
+		     *   - `detail::UniformGroupElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension
+		     *     `Dim`;
+		     *   - `uniformGroupElementsAlongX(acc, ...)`, `uniformGroupElementsAlongY(acc, ...)`, or
+		     *     `uniformGroupElementsAlongZ(acc, ...)` to loop along the fastest, second-fastest, or third-fastest
+		     *     dimension.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value == 1)
+		    ALPAKA_FN_ACC inline auto uniformGroupElements(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupElementsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformGroupElementsAlong<Dim>
+		     *
+		     * `uniformGroupElementsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformGroupElementsAlong<TAcc,
+		     * Dim>(acc, ...)` that can infer the accelerator type from the argument.
+		     */
+
+		    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value >= Dim)
+		    ALPAKA_FN_ACC inline auto uniformGroupElementsAlong(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    /* uniformGroupElementsAlongX, Y, Z
+		     *
+		     * Like `uniformGroupElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
+		     * dimensions.
+		     */
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 0)
+		    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongX(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 1)
+		    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongY(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
+		    }
+
+		    template<concepts::Acc TAcc, typename... TArgs>
+		    requires(alpaka::Dim<TAcc>::value > 2)
+		    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongZ(TAcc const& acc, TArgs... args)
+		    {
+		        using Idx = alpaka::Idx<TAcc>;
+		        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
+		    }
+
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/exec/UniformElements.hpp ==
+		// ============================================================================
+
+	// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
+		// ==
+		/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
+
+		// #include <algorithm>    // amalgamate: file already included
+		// #include <array>    // amalgamate: file already included
+		// #include <cmath>    // amalgamate: file already included
+		// #include <functional>    // amalgamate: file already included
+		#include <set>
+		#include <type_traits>
+
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wswitch-default"
+		#endif
+
+		//! The alpaka library.
+		namespace alpaka
+		{
+		    //! The grid block extent subdivision restrictions.
+		    enum class GridBlockExtentSubDivRestrictions
+		    {
+		        EqualExtent, //!< The block thread extent will be equal in all dimensions.
+		        CloseToEqualExtent, //!< The block thread extent will be as close to equal as possible in all dimensions.
+		        Unrestricted, //!< The block thread extent will not have any restrictions.
+		    };
+
+		    namespace detail
+		    {
+		        //! Finds the largest divisor where divident % divisor == 0
+		        //! \param dividend The dividend.
+		        //! \param maxDivisor The maximum divisor.
+		        //! \return The biggest number that satisfies the following conditions:
+		        //!     1) dividend%ret==0
+		        //!     2) ret<=maxDivisor
+		        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+		        ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(T const& dividend, T const& maxDivisor) -> T
+		        {
+		            core::assertValueUnsigned(dividend);
+		            core::assertValueUnsigned(maxDivisor);
+		            ALPAKA_ASSERT(dividend >= maxDivisor);
+
+		            T divisor = maxDivisor;
+		            while(dividend % divisor != 0)
+		                --divisor;
+		            return divisor;
+		        }
+
+		        //! \param val The value to find divisors of.
+		        //! \param maxDivisor The maximum.
+		        //! \return A list of all divisors less then or equal to the given maximum.
+		        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+		        ALPAKA_FN_HOST auto allDivisorsLessOrEqual(T const& val, T const& maxDivisor) -> std::set<T>
+		        {
+		            std::set<T> divisorSet;
+
+		            core::assertValueUnsigned(val);
+		            core::assertValueUnsigned(maxDivisor);
+		            ALPAKA_ASSERT(maxDivisor <= val);
+
+		            for(T i(1); i <= std::min(val, maxDivisor); ++i)
+		            {
+		                if(val % i == 0)
+		                {
+		                    divisorSet.insert(static_cast<T>(val / i));
+		                }
+		            }
+
+		            return divisorSet;
+		        }
+		    } // namespace detail
+
+		    //! \tparam TDim The dimensionality of the accelerator device properties.
+		    //! \tparam TIdx The idx type of the accelerator device properties.
+		    //! \param accDevProps The maxima for the work division.
+		    //! \return If the accelerator device properties are valid.
+		    template<typename TDim, typename TIdx>
+		    ALPAKA_FN_HOST auto isValidAccDevProps(AccDevProps<TDim, TIdx> const& accDevProps) -> bool
+		    {
+		        // Check that the maximum counts are greater or equal 1.
+		        if((accDevProps.m_gridBlockCountMax < 1) || (accDevProps.m_blockThreadCountMax < 1)
+		           || (accDevProps.m_threadElemCountMax < 1))
+		        {
+		            return false;
+		        }
+
+		        // Store the maxima allowed for extents of grid, blocks and threads.
+		        auto const gridBlockExtentMax = subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax);
+		        auto const blockThreadExtentMax = subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax);
+		        auto const threadElemExtentMax = subVecEnd<TDim>(accDevProps.m_threadElemExtentMax);
+
+		        // Check that the extents for all dimensions are correct.
+		        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+		        {
+		            // Check that the maximum extents are greater or equal 1.
+		            if((gridBlockExtentMax[i] < 1) || (blockThreadExtentMax[i] < 1) || (threadElemExtentMax[i] < 1))
+		            {
+		                return false;
+		            }
+		        }
+
+		        return true;
+		    }
+
+		    //! Subdivides the given grid thread extent into blocks restricted by the maxima allowed.
+		    //! 1. The the maxima block, thread and element extent and counts
+		    //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
+		    //! 3. The requirement of the block extent.
+		    //!
+		    //! \param gridElemExtent The full extent of elements in the grid.
+		    //! \param threadElemExtent the number of elements computed per thread.
+		    //! \param accDevProps The maxima for the work division.
+		    //! \param kernelBlockThreadCountMax The maximum number of threads per block. If it is zero this argument is not
+		    //! used, device hard limits are used.
+		    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
+		    //! corresponding block thread extent.
+		    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
+		    //!     thread extent will be one in this dimension.
+		    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
+		    template<typename TDim, typename TIdx>
+		    ALPAKA_FN_HOST auto subDivideGridElems(
+		        Vec<TDim, TIdx> const& gridElemExtent,
+		        Vec<TDim, TIdx> const& threadElemExtent,
+		        AccDevProps<TDim, TIdx> const& accDevProps,
+		        TIdx kernelBlockThreadCountMax = static_cast<TIdx>(0u),
+		        bool blockThreadMustDivideGridThreadExtent = true,
+		        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
+		        = GridBlockExtentSubDivRestrictions::Unrestricted) -> WorkDivMembers<TDim, TIdx>
+		    {
+		        using Vec = Vec<TDim, TIdx>;
+		        using DimLoopInd = typename TDim::value_type;
+
+		        for(DimLoopInd i(0); i < TDim::value; ++i)
+		        {
+		            ALPAKA_ASSERT(gridElemExtent[i] >= 1);
+		            ALPAKA_ASSERT(threadElemExtent[i] >= 1);
+		            ALPAKA_ASSERT(threadElemExtent[i] <= accDevProps.m_threadElemExtentMax[i]);
+		        }
+		        ALPAKA_ASSERT(threadElemExtent.prod() <= accDevProps.m_threadElemCountMax);
+		        ALPAKA_ASSERT(isValidAccDevProps(accDevProps));
+
+		        // Handle threadElemExtent and compute gridThreadExtent. Afterwards, only the blockThreadExtent has to be
+		        // optimized.
+		        auto clippedThreadElemExtent = elementwise_min(threadElemExtent, gridElemExtent);
+		        auto const gridThreadExtent = [&]
+		        {
+		            Vec r;
+		            for(DimLoopInd i(0u); i < TDim::value; ++i)
+		                r[i] = core::divCeil(gridElemExtent[i], clippedThreadElemExtent[i]);
+		            return r;
+		        }();
+
+		        ///////////////////////////////////////////////////////////////////
+		        // Try to calculate an optimal blockThreadExtent.
+
+		        // Restrict the max block thread extent from the maximum possible to the grid thread extent.
+		        // This removes dimensions not required in the grid thread extent.
+		        // This has to be done before the blockThreadCountMax clipping to get the maximum correctly.
+		        auto blockThreadExtent = elementwise_min(accDevProps.m_blockThreadExtentMax, gridThreadExtent);
+
+		        // For equal block thread extent, restrict it to its minimum component.
+		        // For example (512, 256, 1024) will get (256, 256, 256).
+		        if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
+		            blockThreadExtent = Vec::all(blockThreadExtent.min() != TIdx(0) ? blockThreadExtent.min() : TIdx(1));
+
+		        // Choose kernelBlockThreadCountMax if it is not zero. It is less than the accelerator properties.
+		        TIdx const& blockThreadCountMax
+		            = (kernelBlockThreadCountMax != 0) ? kernelBlockThreadCountMax : accDevProps.m_blockThreadCountMax;
+
+		        // Block thread extent could be {1024,1024,1024} although max threads per block is 1024. Block thread extent
+		        // shows the max number of threads along each axis, it is not a measure to get max number of threads per block.
+		        // It must be further limited (clipped above) by the kernel limit along each axis, using device limits is not
+		        // enough.
+		        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+		        {
+		            blockThreadExtent[i] = std::min(blockThreadExtent[i], blockThreadCountMax);
+		        }
+
+		        // Make the blockThreadExtent product smaller or equal to the accelerator's limit.
+		        if(blockThreadCountMax == 1)
+		        {
+		            blockThreadExtent = Vec::all(core::nthRootFloor(blockThreadCountMax, TIdx{TDim::value}));
+		        }
+		        else if(blockThreadExtent.prod() > blockThreadCountMax)
+		        {
+		            switch(gridBlockExtentSubDivRestrictions)
+		            {
+		            case GridBlockExtentSubDivRestrictions::EqualExtent:
+		                blockThreadExtent = Vec::all(core::nthRootFloor(blockThreadCountMax, TIdx{TDim::value}));
+		                break;
+		            case GridBlockExtentSubDivRestrictions::CloseToEqualExtent:
+		                // Very primitive clipping. Just halve the largest value until it fits.
+		                while(blockThreadExtent.prod() > blockThreadCountMax)
+		                    blockThreadExtent[blockThreadExtent.maxElem()] /= TIdx{2};
+		                break;
+		            case GridBlockExtentSubDivRestrictions::Unrestricted:
+		                // Very primitive clipping. Just halve the smallest value (which is not 1) until it fits.
+		                while(blockThreadExtent.prod() > blockThreadCountMax)
+		                {
+		                    auto const it = std::min_element(
+		                        blockThreadExtent.begin(),
+		                        blockThreadExtent.end() - 1, //! \todo why omit the last element?
+		                        [](TIdx const& a, TIdx const& b)
+		                        {
+		                            if(a == TIdx{1})
+		                                return false;
+		                            if(b == TIdx{1})
+		                                return true;
+		                            return a < b;
+		                        });
+		                    *it /= TIdx{2};
+		                }
+		                break;
+		            }
+		        }
+
+
+		        // Make the block thread extent divide the grid thread extent.
+		        if(blockThreadMustDivideGridThreadExtent)
+		        {
+		            switch(gridBlockExtentSubDivRestrictions)
+		            {
+		            case GridBlockExtentSubDivRestrictions::EqualExtent:
+		                {
+		                    // For equal size block extent we have to compute the gcd of all grid thread extent that is less
+		                    // then the current maximal block thread extent. For this we compute the divisors of all grid
+		                    // thread extent less then the current maximal block thread extent.
+		                    std::array<std::set<TIdx>, TDim::value> gridThreadExtentDivisors;
+		                    for(DimLoopInd i(0u); i < TDim::value; ++i)
+		                    {
+		                        gridThreadExtentDivisors[i]
+		                            = detail::allDivisorsLessOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
+		                    }
+		                    // The maximal common divisor of all block thread extent is the optimal solution.
+		                    std::set<TIdx> intersects[2u];
+		                    for(DimLoopInd i(1u); i < TDim::value; ++i)
+		                    {
+		                        intersects[(i - 1u) % 2u] = gridThreadExtentDivisors[0];
+		                        intersects[(i) % 2u].clear();
+		                        set_intersection(
+		                            std::begin(intersects[(i - 1u) % 2u]),
+		                            std::end(intersects[(i - 1u) % 2u]),
+		                            std::begin(gridThreadExtentDivisors[i]),
+		                            std::end(gridThreadExtentDivisors[i]),
+		                            std::inserter(intersects[i % 2], std::begin(intersects[i % 2u])));
+		                    }
+		                    TIdx const maxCommonDivisor = *(--std::end(intersects[(TDim::value - 1) % 2u]));
+		                    blockThreadExtent = Vec::all(maxCommonDivisor);
+		                    break;
+		                }
+		            case GridBlockExtentSubDivRestrictions::CloseToEqualExtent:
+		                [[fallthrough]];
+		            case GridBlockExtentSubDivRestrictions::Unrestricted:
+		                for(DimLoopInd i(0u); i < TDim::value; ++i)
+		                {
+		                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
+		                }
+		                break;
+		            }
+		        }
+
+		        // grid blocks extent = grid thread / block thread extent. quotient is rounded up.
+		        auto gridBlockExtent = [&]
+		        {
+		            Vec r;
+		            for(DimLoopInd i = 0; i < TDim::value; ++i)
+		                r[i] = core::divCeil(gridThreadExtent[i], blockThreadExtent[i]);
+		            return r;
+		        }();
+
+
+		        // Store the maxima allowed for extents of grid, blocks and threads.
+		        auto const gridBlockExtentMax = subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax);
+		        auto const blockThreadExtentMax = subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax);
+		        auto const threadElemExtentMax = subVecEnd<TDim>(accDevProps.m_threadElemExtentMax);
+
+		        // Check that the extents for all dimensions are correct.
+		        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+		        {
+		            // Check that the maximum extents are greater or equal 1.
+		            if(gridBlockExtentMax[i] < gridBlockExtent[i])
+		            {
+		                gridBlockExtent[i] = gridBlockExtentMax[i];
+		            }
+		            if(blockThreadExtentMax[i] < blockThreadExtent[i])
+		            {
+		                blockThreadExtent[i] = blockThreadExtentMax[i];
+		            }
+		            if(threadElemExtentMax[i] < threadElemExtent[i])
+		            {
+		                clippedThreadElemExtent[i] = threadElemExtentMax[i];
+		            }
+		        }
+
+		        return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
+		    }
+
+		    //! Kernel start configuration to determine a valid work division
+		    //!
+		    //! \tparam TGridElemExtent The type of the grid element extent.
+		    //! \tparam TThreadElemExtent The type of the thread element extent.
+		    template<
+		        typename TAcc,
+		        typename TGridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>,
+		        typename TThreadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>>
+		    struct KernelCfg
+		    {
+		        //! The full extent of elements in the grid.
+		        TGridElemExtent const gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
+		        //! The number of elements computed per thread.
+		        TThreadElemExtent const threadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
+		        //! If this is true, the grid thread extent will be multiples of
+		        //! the corresponding block thread extent.
+		        //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
+		        //!     thread extent will be one in this dimension.
+		        bool blockThreadMustDivideGridThreadExtent = true;
+		        //! The grid block extent subdivision restrictions.
+		        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
+		            = GridBlockExtentSubDivRestrictions::Unrestricted;
+
+		        static_assert(
+		            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
+		            "The dimension of Acc and the dimension of TGridElemExtent have to be identical!");
+		        static_assert(
+		            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
+		            "The dimension of Acc and the dimension of TThreadElemExtent have to be identical!");
+		        static_assert(
+		            std::is_same_v<Idx<TGridElemExtent>, Idx<TAcc>>,
+		            "The idx type of Acc and the idx type of TGridElemExtent have to be identical!");
+		        static_assert(
+		            std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
+		            "The idx type of Acc and the idx type of TThreadElemExtent have to be identical!");
+		    };
+
+		    //! \tparam TDev The type of the device.
+		    //! \tparam TGridElemExtent The type of the grid element extent.
+		    //! \tparam TThreadElemExtent The type of the thread element extent.
+		    //! \param dev The device the work division should be valid for.
+		    //! \param kernelFnObj The kernel function object which should be executed.
+		    //! \param args The kernel invocation arguments.
+		    //! \return The work division for the accelerator based on the kernel and argument types
+		    template<
+		        typename TAcc,
+		        typename TDev,
+		        typename TGridElemExtent,
+		        typename TThreadElemExtent,
+		        typename TKernelFnObj,
+		        typename... TArgs>
+		    ALPAKA_FN_HOST auto getValidWorkDiv(
+		        KernelCfg<TAcc, TGridElemExtent, TThreadElemExtent> const& kernelCfg,
+		        [[maybe_unused]] TDev const& dev,
+		        TKernelFnObj const& kernelFnObj,
+		        TArgs&&... args) -> WorkDivMembers<Dim<TAcc>, Idx<TAcc>>
+		    {
+		        using Acc = TAcc;
+
+		        // Get max number of threads per block depending on the kernel function attributes.
+		        // For GPU backend; number of registers used by the kernel, local and shared memory usage of the kernel
+		        // determines the max number of threads per block. This number could be equal or less than the max number of
+		        // threads per block defined by device properties.
+		        auto const kernelFunctionAttributes
+		            = getFunctionAttributes<Acc>(dev, kernelFnObj, std::forward<TArgs>(args)...);
+		        auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+
+		        if constexpr(Dim<TGridElemExtent>::value == 0)
+		        {
+		            auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
+		            ALPAKA_ASSERT(kernelCfg.gridElemExtent == zero);
+		            ALPAKA_ASSERT(kernelCfg.threadElemExtent == zero);
+		            return WorkDivMembers<DimInt<0>, Idx<Acc>>{zero, zero, zero};
+		        }
+		        else
+		            return subDivideGridElems(
+		                getExtents(kernelCfg.gridElemExtent),
+		                getExtents(kernelCfg.threadElemExtent),
+		                getAccDevProps<Acc>(dev),
+		                static_cast<Idx<Acc>>(threadsPerBlock),
+		                kernelCfg.blockThreadMustDivideGridThreadExtent,
+		                kernelCfg.gridBlockExtentSubDivRestrictions);
+
+		        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
+		        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
+		    }
+
+		    //! Checks if the work division is supported
+		    //!
+		    //! \tparam TWorkDiv The type of the work division.
+		    //! \tparam TDim The dimensionality of the accelerator device properties.
+		    //! \tparam TIdx The idx type of the accelerator device properties.
+		    //! \param workDiv The work division to test for validity.
+		    //! \param accDevProps The maxima for the work division.
+		    //! \return If the work division is valid for the given accelerator device properties.
+		    template<typename TWorkDiv, typename TDim, typename TIdx>
+		    ALPAKA_FN_HOST auto isValidWorkDiv(TWorkDiv const& workDiv, AccDevProps<TDim, TIdx> const& accDevProps) -> bool
+		    {
+		        // Get the extents of grid, blocks and threads of the work division to check.
+		        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+		        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
+		        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
+
+		        // Check that the maximal counts are satisfied.
+		        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
+		        {
+		            return false;
+		        }
+		        if(accDevProps.m_blockThreadCountMax < blockThreadExtent.prod())
+		        {
+		            return false;
+		        }
+		        if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
+		        {
+		            return false;
+		        }
+
+		        // Check that the extents for all dimensions are correct.
+		        if constexpr(Dim<TWorkDiv>::value > 0)
+		        {
+		            // Store the maxima allowed for extents of grid, blocks and threads.
+		            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
+		            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
+		            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
+
+		            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
+		            {
+		                // No extent is allowed to be zero or greater then the allowed maximum.
+		                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
+		                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
+		                   || (threadElemExtentMax[i] < threadElemExtent[i]))
+		                {
+		                    return false;
+		                }
+		            }
+		        }
+
+		        return true;
+		    }
+
+		    //! Checks if the work division is supported
+		    //!
+		    //! \tparam TWorkDiv The type of the work division.
+		    //! \tparam TDim The dimensionality of the accelerator device properties.
+		    //! \tparam TIdx The idx type of the accelerator device properties.
+		    //! \param workDiv The work division to test for validity.
+		    //! \param accDevProps The maxima for the work division.
+		    //! \param kernelFunctionAttributes Kernel attributes, including the maximum number of threads per block that can
+		    //! be used by this kernel on the given device. This number can be equal to or smaller than the the number of
+		    //! threads per block supported by the device.
+		    //! \return Returns true if the work division is valid for the given accelerator device properties and for the
+		    //! given kernel. Otherwise returns false.
+		    template<typename TAcc, typename TWorkDiv, typename TDim, typename TIdx>
+		    ALPAKA_FN_HOST auto isValidWorkDiv(
+		        TWorkDiv const& workDiv,
+		        AccDevProps<TDim, TIdx> const& accDevProps,
+		        KernelFunctionAttributes const& kernelFunctionAttributes) -> bool
+		    {
+		        // Get the extents of grid, blocks and threads of the work division to check.
+		        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+		        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
+		        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
+		        // Use kernel properties to find the max threads per block for the kernel
+		        auto const threadsPerBlockForKernel = kernelFunctionAttributes.maxThreadsPerBlock;
+		        // Select the minimum to find the upper bound for the threads per block
+		        auto const allowedThreadsPerBlock = std::min(
+		            static_cast<TIdx>(threadsPerBlockForKernel),
+		            static_cast<TIdx>(accDevProps.m_blockThreadCountMax));
+		        // Check that the maximal counts are satisfied.
+		        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
+		        {
+		            return false;
+		        }
+		        if(allowedThreadsPerBlock < blockThreadExtent.prod())
+		        {
+		            return false;
+		        }
+		        if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
+		        {
+		            return false;
+		        }
+
+		        // Check that the extents for all dimensions are correct.
+		        if constexpr(Dim<TWorkDiv>::value > 0)
+		        {
+		            // Store the maxima allowed for extents of grid, blocks and threads.
+		            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
+		            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
+		            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
+
+		            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
+		            {
+		                // No extent is allowed to be zero or greater then the allowed maximum.
+		                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
+		                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
+		                   || (threadElemExtentMax[i] < threadElemExtent[i]))
+		                {
+		                    return false;
+		                }
+		            }
+		        }
+
+		        return true;
+		    }
+
+		    //! Checks if the work division is supported for the kernel on the device
+		    //!
+		    //! \tparam TAcc The accelerator to test the validity on.
+		    //! \tparam TDev The type of the device.
+		    //! \tparam TWorkDiv The type of work division to test for validity.
+		    //! \param workDiv The work division to test for validity.
+		    //! \param dev The device to test the work division for validity on.
+		    //! \param kernelFnObj The kernel function object which should be executed.
+		    //! \param args The kernel invocation arguments.
+		    //! \return Returns the value of isValidWorkDiv function.
+		    template<typename TAcc, typename TWorkDiv, typename TDev, typename TKernelFnObj, typename... TArgs>
+		    ALPAKA_FN_HOST auto isValidWorkDiv(
+		        TWorkDiv const& workDiv,
+		        TDev const& dev,
+		        TKernelFnObj const& kernelFnObj,
+		        TArgs&&... args) -> bool
+		    {
+		        return isValidWorkDiv<TAcc>(
+		            workDiv,
+		            getAccDevProps<TAcc>(dev),
+		            getFunctionAttributes<TAcc>(dev, kernelFnObj, std::forward<TArgs>(args)...));
+		    }
+
+		    //! Checks if the work division is supported by the device
+		    //!
+		    //! \tparam TAcc The accelerator to test the validity on.
+		    //! \param workDiv The work division to test for validity.
+		    //! \param dev The device to test the work division for validity on.
+		    //! \return If the work division is valid on this accelerator.
+		    template<typename TAcc, typename TWorkDiv, typename TDev>
+		    ALPAKA_FN_HOST auto isValidWorkDiv(TWorkDiv const& workDiv, TDev const& dev) -> bool
+		    {
+		        return isValidWorkDiv(workDiv, getAccDevProps<TAcc>(dev));
+		    }
+		} // namespace alpaka
+
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic pop
+		#endif
+		// ==
+		// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
+		// ============================================================================
+
+
+	#include <iterator>
+	#include <type_traits>
+
+	namespace alpaka
+	{
+
+	    namespace detail
+	    {
+
+	        template<typename TFn>
+	        struct TransformKernel
+	        {
+	            TFn fn;
+
+	            template<typename TAcc, typename T>
+	            ALPAKA_FN_ACC void operator()(TAcc const& acc, T const* in_ptr, T* out_ptr, alpaka::Idx<TAcc> size) const
+	            {
+	                static_assert(std::is_invocable_r_v<T, TFn, T> or std::is_invocable_r_v<T, TFn, TAcc const&, T>);
+
+	                static_assert(alpaka::Dim<TAcc>::value == 1u);
+	                using Idx = alpaka::Idx<TAcc>;
+
+	                for(Idx i : alpaka::uniformElements(acc, size))
+	                {
+	                    if constexpr(std::is_invocable_r_v<T, TFn, T>)
+	                    {
+	                        // std::is_invocable_r_v<T, TFn, T>
+	                        out_ptr[i] = fn(in_ptr[i]);
+	                    }
+	                    else
+	                    {
+	                        // std::is_invocable_r_v<T, TFn, TAcc const&, T>
+	                        out_ptr[i] = fn(acc, in_ptr[i]);
+	                    }
+	                }
+	            }
+	        };
+
+	        template<typename TFn>
+	        struct TransformKernelND
+	        {
+	            TFn fn;
+
+	            template<typename TAcc, typename T>
+	            ALPAKA_FN_ACC void operator()(
+	                TAcc const& acc,
+	                T const* in_ptr,
+	                alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> in_pithces,
+	                T* out_ptr,
+	                alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> out_pitches,
+	                alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> in_size) const
+	            {
+	                static_assert(std::is_invocable_r_v<T, TFn, T> or std::is_invocable_r_v<T, TFn, TAcc const&, T>);
+
+	                using Dim = alpaka::Dim<TAcc>;
+	                using Idx = alpaka::Idx<TAcc>;
+	                using Vec = alpaka::Vec<Dim, Idx>;
+
+	                for(Vec idx : alpaka::uniformElementsND(acc, in_size))
+	                {
+	                    auto p_in = reinterpret_cast<T const*>(
+	                        reinterpret_cast<uintptr_t>(in_ptr) + static_cast<uintptr_t>((idx * in_pithces).sum()));
+	                    auto p_out = reinterpret_cast<T*>(
+	                        reinterpret_cast<uintptr_t>(out_ptr) + static_cast<uintptr_t>((idx * out_pitches).sum()));
+	                    if constexpr(std::is_invocable_r_v<T, TFn, T>)
+	                    {
+	                        // std::is_invocable_r_v<T, TFn, T>
+	                        *p_out = fn(*p_in);
+	                    }
+	                    else
+	                    {
+	                        // std::is_invocable_r_v<T, TFn, TAcc const&, T>
+	                        *p_out = fn(acc, *p_in);
+	                    }
+	                }
+	            }
+	        };
+
+	    } // namespace detail
+
+	    /*
+	     * Applies asynchronously the given function `fn` to the elements of the input range starting at `in`,
+	     * and stores the result in the semi-open output range [`out_begin`,`out_end`), using the accelerator
+	     * back-end identified by `Tag`.
+	     */
+	    template<alpaka::concepts::Tag TTag, typename TQueue, typename T, typename TFn>
+	    void transform(TQueue& queue, T* out_begin, T* out_end, TFn&& fn, T* in)
+	    {
+	        using Idx = typename std::iterator_traits<T*>::difference_type;
+	        using Acc1D = alpaka::TagToAcc<TTag, alpaka::DimInt<1>, Idx>;
+
+	        static_assert(
+	            std::is_invocable_r_v<T, TFn, T> or std::is_invocable_r_v<T, TFn, Acc1D const&, T>,
+	            "TFn must accept either one argument (of type T) or two arguments (an accelerator and an argument of type "
+	            "T), and return a value of type T.");
+
+	        Idx size = std::distance(out_begin, out_end);
+	        detail::TransformKernel<TFn> kernel{fn};
+
+	        // Find a valid work division. This could be further optimised.
+	        auto const config
+	            = alpaka::KernelCfg<Acc1D>{size, Idx{1}, false, alpaka::GridBlockExtentSubDivRestrictions::Unrestricted};
+	        auto const grid = alpaka::getValidWorkDiv(config, alpaka::getDev(queue), kernel, in, out_begin, size);
+
+	        // Apply the fn function to all elements of the input range.
+	        alpaka::exec<Acc1D>(queue, grid, kernel, in, out_begin, size);
+	    }
+
+	    /*
+	     * Applies asynchronously the given function `fn` to the elements of the input buffer `in`,
+	     * and stores the result in the corresponding elements of the output buffer `out`,
+	     * using the accelerator back-end identified by `Tag`.
+	     */
+	    template<alpaka::concepts::Tag TTag, typename TQueue, typename TBuf, typename TFn, typename TConstBuf>
+	    void transform(TQueue& queue, TBuf& out, TFn&& fn, TConstBuf const& in)
+	    {
+	        // Check that the input and output buffers have compatible types.
+	        using Idx = alpaka::Idx<TConstBuf>;
+	        static_assert(
+	            std::is_same_v<alpaka::Idx<TBuf>, Idx>,
+	            "The input and output buffers must have the same index type.");
+	        using Dim = alpaka::Dim<TConstBuf>;
+	        static_assert(
+	            std::is_same_v<alpaka::Dim<TBuf>, Dim>,
+	            "The input and output buffers must have the same dimension.");
+	        using In = std::remove_const_t<alpaka::Elem<TConstBuf>>;
+	        using Out = alpaka::Elem<TBuf>;
+	        using Vec = alpaka::Vec<Dim, Idx>;
+	        using Acc = alpaka::TagToAcc<TTag, Dim, Idx>;
+
+	        static_assert(
+	            std::is_invocable_r_v<Out, TFn, In const> or std::is_invocable_r_v<Out, TFn, Acc const&, In const>,
+	            "TFn must accept either one argument (of the buffer's element type) or two arguments (an accelerator and "
+	            "the element type), and return a value of the buffer's element type.");
+
+	        // Check that the input and output buffers have the same size.
+	        Vec size = alpaka::getExtents(in);
+	        assert(alpaka::getExtents(out) == size and "The input and output buffers must have the same extents.");
+
+	        // Pass details of the input and output buffers to the kernel:
+	        //   - address of the first elements
+	        //   - pitches (in bytes) along all dimensions
+	        //   - number of elements along all dimensions
+	        detail::TransformKernelND<TFn> kernel{fn};
+
+	        // Find a valid work division. This could be further optimised.
+	        auto const config = alpaka::KernelCfg<Acc>{
+	            size,
+	            Vec::ones(),
+	            false,
+	            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted};
+	        auto const grid = alpaka::getValidWorkDiv(
+	            config,
+	            alpaka::getDev(queue),
+	            kernel,
+	            in.data(),
+	            alpaka::getPitchesInBytes(in),
+	            out.data(),
+	            alpaka::getPitchesInBytes(out),
+	            size);
+
+	        // Apply the fn function to all elements of the input buffer.
+	        alpaka::exec<Acc>(
+	            queue,
+	            grid,
+	            kernel,
+	            in.data(),
+	            alpaka::getPitchesInBytes(in),
+	            out.data(),
+	            alpaka::getPitchesInBytes(out),
+	            size);
+	    }
+
+	} // namespace alpaka
+	// ==
+	// == ./include/alpaka/algo/Transform.hpp ==
+	// ============================================================================
+
 // atomic
 // #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
 // #include "alpaka/atomic/AtomicGenericSycl.hpp"    // amalgamate: file already inlined
@@ -27861,157 +29871,13 @@
 
 // #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 // exec
-	// ============================================================================
-	// == ./include/alpaka/exec/ElementIndex.hpp ==
-	// ==
-	// #pragma once
-	namespace alpaka
-	{
-
-	    /* ElementIndex
-	     *
-	     * An aggregate that containes the `.global` and `.local` indices of an element along a given dimension.
-	     */
-
-	    template<typename TIdx>
-	    struct ElementIndex
-	    {
-	        TIdx global; // Index of the element along a given dimension, relative to the whole problem space.
-	        TIdx local; // Index of the element along a given dimension, relative to the current group.
-	    };
-
-	} // namespace alpaka
-	// ==
-	// == ./include/alpaka/exec/ElementIndex.hpp ==
-	// ============================================================================
-
+// #include "alpaka/exec/ElementIndex.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/exec/IndependentElements.hpp ==
 	// ==
 	// #pragma once
 	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-		// ============================================================================
-		// == ./include/alpaka/idx/Accessors.hpp ==
-		// ==
-		/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-		// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
-
-		// #include <utility>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    //! Get the indices requested.
-		    ALPAKA_NO_HOST_ACC_WARNING
-		    template<typename TOrigin, typename TUnit, typename TIdx, typename TWorkDiv>
-		    ALPAKA_FN_HOST_ACC auto getIdx(TIdx const& idx, TWorkDiv const& workDiv) -> Vec<Dim<TWorkDiv>, Idx<TIdx>>
-		    {
-		        return trait::GetIdx<TIdx, TOrigin, TUnit>::getIdx(idx, workDiv);
-		    }
-
-		    //! Get the indices requested.
-		    ALPAKA_NO_HOST_ACC_WARNING
-		    template<typename TOrigin, typename TUnit, typename TIdxWorkDiv>
-		    ALPAKA_FN_HOST_ACC auto getIdx(TIdxWorkDiv const& idxWorkDiv) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
-		    {
-		        return trait::GetIdx<TIdxWorkDiv, TOrigin, TUnit>::getIdx(idxWorkDiv, idxWorkDiv);
-		    }
-
-		    namespace trait
-		    {
-		        //! The grid block index get trait specialization for classes with IdxGbBase member type.
-		        template<typename TIdxGb>
-		        struct GetIdx<TIdxGb, origin::Grid, unit::Blocks>
-		        {
-		            using ImplementationBase = interface::ImplementationBase<ConceptIdxGb, TIdxGb>;
-
-		            //! \return The index of the current thread in the grid.
-		            ALPAKA_NO_HOST_ACC_WARNING
-		            template<typename TWorkDiv>
-		            ALPAKA_FN_HOST_ACC static auto getIdx(TIdxGb const& idx, TWorkDiv const& workDiv)
-		                -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
-		            {
-		                return trait::GetIdx<ImplementationBase, origin::Grid, unit::Blocks>::getIdx(idx, workDiv);
-		            }
-		        };
-
-		        //! The block thread index get trait specialization for classes with IdxBtBase member type.
-		        template<typename TIdxBt>
-		        struct GetIdx<TIdxBt, origin::Block, unit::Threads>
-		        {
-		            using ImplementationBase = interface::ImplementationBase<ConceptIdxBt, TIdxBt>;
-
-		            //! \return The index of the current thread in the grid.
-		            ALPAKA_NO_HOST_ACC_WARNING
-		            template<typename TWorkDiv>
-		            ALPAKA_FN_HOST_ACC static auto getIdx(TIdxBt const& idx, TWorkDiv const& workDiv)
-		                -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
-		            {
-		                return trait::GetIdx<ImplementationBase, origin::Block, unit::Threads>::getIdx(idx, workDiv);
-		            }
-		        };
-
-		        //! The grid thread index get trait specialization.
-		        template<typename TIdx>
-		        struct GetIdx<TIdx, origin::Grid, unit::Threads>
-		        {
-		            //! \return The index of the current thread in the grid.
-		            ALPAKA_NO_HOST_ACC_WARNING
-		            template<typename TWorkDiv>
-		            ALPAKA_FN_HOST_ACC static auto getIdx(TIdx const& idx, TWorkDiv const& workDiv)
-		            {
-		                return alpaka::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
-		                           * getWorkDiv<origin::Block, unit::Threads>(workDiv)
-		                       + alpaka::getIdx<origin::Block, unit::Threads>(idx, workDiv);
-		            }
-		        };
-		    } // namespace trait
-
-		    //! Get the index of the first element this thread computes.
-		    ALPAKA_NO_HOST_ACC_WARNING
-		    template<typename TIdxWorkDiv, typename TGridThreadIdx, typename TThreadElemExtent>
-		    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
-		        [[maybe_unused]] TIdxWorkDiv const& idxWorkDiv,
-		        TGridThreadIdx const& gridThreadIdx,
-		        TThreadElemExtent const& threadElemExtent) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
-		    {
-		        return gridThreadIdx * threadElemExtent;
-		    }
-
-		    //! Get the index of the first element this thread computes.
-		    ALPAKA_NO_HOST_ACC_WARNING
-		    template<typename TIdxWorkDiv, typename TGridThreadIdx>
-		    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(TIdxWorkDiv const& idxWorkDiv, TGridThreadIdx const& gridThreadIdx)
-		        -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
-		    {
-		        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
-		        return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
-		    }
-
-		    //! Get the index of the first element this thread computes.
-		    ALPAKA_NO_HOST_ACC_WARNING
-		    template<typename TIdxWorkDiv>
-		    ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(TIdxWorkDiv const& idxWorkDiv)
-		        -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
-		    {
-		        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(idxWorkDiv));
-		        return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx);
-		    }
-		} // namespace alpaka
-		// ==
-		// == ./include/alpaka/idx/Accessors.hpp ==
-		// ============================================================================
-
+	// #include "alpaka/idx/Accessors.hpp"    // amalgamate: file already inlined
 
 	// #include <algorithm>    // amalgamate: file already included
 	// #include <cstddef>    // amalgamate: file already included
@@ -28501,1114 +30367,7 @@
 	// == ./include/alpaka/exec/Once.hpp ==
 	// ============================================================================
 
-	// ============================================================================
-	// == ./include/alpaka/exec/UniformElements.hpp ==
-	// ==
-	// #pragma once
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/exec/ElementIndex.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/idx/Accessors.hpp"    // amalgamate: file already inlined
-
-	// #include <algorithm>    // amalgamate: file already included
-	// #include <cstddef>    // amalgamate: file already included
-	#include <type_traits>
-
-	namespace alpaka
-	{
-
-	    namespace detail
-	    {
-
-	        /* UniformElementsAlong
-	         *
-	         * `UniformElementsAlong<TAcc, Dim>(acc [, first], extent)` returns a one-dimensional iteratable range that
-	         * spans the element indices from `first` (inclusive) to `extent` (exlusive) along the `Dim` dimension. If
-	         * `first` is not specified, it defaults to 0. If `extent` is not specified, it defaults to the kernel grid
-	         * size along the `Dim` dimension.
-	         *
-	         * `uniformElementsAlong<Dim>(acc, ...)` is a shorthand for `UniformElementsAlong<TAcc, Dim>(acc, ...)` that
-	         * can infer the accelerator type from the argument.
-	         *
-	         * In a 1-dimensional kernel, `uniformElements(acc, ...)` is a shorthand for `UniformElementsAlong<TAcc,
-	         * 0>(acc, ...)`.
-	         *
-	         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
-	         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-	         * when converting CUDA or HIP code, `uniformElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
-	         * `UniformElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
-	         *
-	         * To cover the problem space, different threads may execute a different number of iterations. As a result, it
-	         * is not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If
-	         * a block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner
-	         * loop over each group's elements, and synchronise only in the outer loop:
-	         *
-	         *  for (auto group : uniformGroupsAlong<Dim>(acc, extent)) {
-	         *    for (auto element : uniformGroupElementsAlong<Dim>(acc, group, extent)) {
-	         *       // first part of the computation
-	         *       // no synchronisations here
-	         *       ...
-	         *    }
-	         *    // wait for all threads to complete the first part
-	         *    alpaka::syncBlockThreads();
-	         *    for (auto element : uniformGroupElementsAlong<Dim>(acc, group, extent)) {
-	         *       // second part of the computation
-	         *       // no synchronisations here
-	         *       ...
-	         *    }
-	         *    // wait for all threads to complete the second part
-	         *    alpaka::syncBlockThreads();
-	         *    ...
-	         *  }
-	         *
-	         * Warp-level primitives require that all threads in the warp execute the same function. If `extent` is not a
-	         * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for
-	         * example, the kernel may hang. To avoid this problem, round up `extent` to a multiple of the warp size, and
-	         * check the element index explicitly inside the loop:
-	         *
-	         *  for (auto element : uniformElementsAlong<N-1>(acc, round_up_by(extent, alpaka::warp::getSize(acc)))) {
-	         *    bool flag = false;
-	         *    if (element < extent) {
-	         *      // do some work and compute a result flag only for the valid elements
-	         *      flag = do_some_work();
-	         *    }
-	         *    // check if any valid element had a positive result
-	         *    if (alpaka::warp::any(acc, flag)) {
-	         *      // ...
-	         *    }
-	         *  }
-	         *
-	         * Note that the use of warp-level primitives is usually suitable only for the fastest-looping dimension,
-	         * `N-1`.
-	         */
-
-	        template<concepts::Acc TAcc, std::size_t Dim>
-	        requires(alpaka::Dim<TAcc>::value >= Dim)
-	        class UniformElementsAlong
-	        {
-	        public:
-	            using Idx = alpaka::Idx<TAcc>;
-
-	            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc)
-	                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
-	                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
-	                , extent_{stride_}
-	            {
-	            }
-
-	            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc, Idx extent)
-	                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
-	                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
-	                , extent_{extent}
-	            {
-	            }
-
-	            ALPAKA_FN_ACC inline UniformElementsAlong(TAcc const& acc, Idx first, Idx extent)
-	                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
-	                , first_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_ + first}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[Dim] * elements_}
-	                , extent_{extent}
-	            {
-	            }
-
-	            class const_iterator;
-	            using iterator = const_iterator;
-
-	            ALPAKA_FN_ACC inline const_iterator begin() const
-	            {
-	                return const_iterator(elements_, stride_, extent_, first_);
-	            }
-
-	            ALPAKA_FN_ACC inline const_iterator end() const
-	            {
-	                return const_iterator(elements_, stride_, extent_, extent_);
-	            }
-
-	            class const_iterator
-	            {
-	                friend class UniformElementsAlong;
-
-	                ALPAKA_FN_ACC inline const_iterator(Idx elements, Idx stride, Idx extent, Idx first)
-	                    : elements_{elements}
-	                    ,
-	                    // we need to reduce the stride by on element range because index_ is later increased with each
-	                    // increment
-	                    stride_{stride - elements}
-	                    , extent_{extent}
-	                    , index_{std::min(first, extent)}
-	                {
-	                }
-
-	            public:
-	                ALPAKA_FN_ACC inline Idx operator*() const
-	                {
-	                    return index_;
-	                }
-
-	                // pre-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator& operator++()
-	                {
-	                    // increment the index along the elements processed by the current thread
-	                    ++indexElem_;
-	                    ++index_;
-	                    if(indexElem_ >= elements_)
-	                    {
-	                        indexElem_ = 0;
-	                        index_ += stride_;
-	                    }
-	                    if(index_ >= extent_)
-	                        index_ = extent_;
-
-	                    return *this;
-	                }
-
-	                // post-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator operator++(int)
-	                {
-	                    const_iterator old = *this;
-	                    ++(*this);
-	                    return old;
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
-	                {
-	                    return (*(*this) == *other);
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
-	                {
-	                    return not(*this == other);
-	                }
-
-	            private:
-	                // non-const to support iterator copy and assignment
-	                Idx elements_;
-	                Idx stride_;
-	                Idx extent_;
-	                // modified by the pre/post-increment operator
-	                Idx index_;
-	                Idx indexElem_ = 0;
-	            };
-
-	        private:
-	            Idx const elements_;
-	            Idx const first_;
-	            Idx const stride_;
-	            Idx const extent_;
-	        };
-
-	    } // namespace detail
-
-	    /* uniformElements
-	     *
-	     * `uniformElements(acc [, first], extent)` returns a one-dimensional iteratable range that spans the element
-	     * indices from `first` (inclusive) to `extent` (exlusive). If `first` is not specified, it defaults to 0. If
-	     * `extent` is not specified, it defaults to the kernel grid size.
-	     *
-	     * `uniformElements(acc, ...)` is a shorthand for `detail::UniformElementsAlong<TAcc, 0>(acc, ...)`.
-	     *
-	     * To cover the problem space, different threads may execute a different number of iterations. As a result, it is
-	     * not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If a
-	     * block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner loop
-	     * over each group's elements, and synchronise only in the outer loop:
-	     *
-	     *  for (auto group : uniformGroups(acc, extent)) {
-	     *    for (auto element : uniformGroupElements(acc, group, extent)) {
-	     *       // first part of the computation
-	     *       // no synchronisations here
-	     *       ...
-	     *    }
-	     *    // wait for all threads to complete the first part
-	     *    alpaka::syncBlockThreads();
-	     *    for (auto element : uniformGroupElements(acc, group, extent)) {
-	     *       // second part of the computation
-	     *       // no synchronisations here
-	     *       ...
-	     *    }
-	     *    // wait for all threads to complete the second part
-	     *    alpaka::syncBlockThreads();
-	     *    ...
-	     *  }
-	     *
-	     * Warp-level primitives require that all threads in the warp execute the same function. If `extent` is not a
-	     * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for example,
-	     * the kernel may hang. To avoid this problem, round up `extent` to a multiple of the warp size, and check the
-	     * element index explicitly inside the loop:
-	     *
-	     *  for (auto element : uniformElements(acc, round_up_by(extent, alpaka::warp::getSize(acc)))) {
-	     *    bool flag = false;
-	     *    if (element < extent) {
-	     *      // do some work and compute a result flag only for elements up to extent
-	     *      flag = do_some_work();
-	     *    }
-	     *    // check if any valid element had a positive result
-	     *    if (alpaka::warp::any(acc, flag)) {
-	     *      // ...
-	     *    }
-	     *  }
-	     *
-	     * Note that `uniformElements(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
-	     * use
-	     *   - `uniformElementsND(acc, ...)` to cover an N-dimensional problem space with a single loop;
-	     *   - `uniformElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
-	     *   - `uniformElementsAlongX(acc, ...)`, `uniformElementsAlongY(acc, ...)`, or `uniformElementsAlongZ(acc, ...)`
-	     *     to loop along the fastest, second-fastest, or third-fastest dimension.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value == 1)
-	    ALPAKA_FN_ACC inline auto uniformElements(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformElementsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformElementsAlong<Dim>
-	     *
-	     * `uniformElementsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformElementsAlong<TAcc, Dim>(acc, ...)`
-	     * that can infer the accelerator type from the argument.
-	     */
-
-	    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value >= Dim)
-	    ALPAKA_FN_ACC inline auto uniformElementsAlong(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformElementsAlongX, Y, Z
-	     *
-	     * Like `uniformElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
-	     * dimensions.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 0)
-	    ALPAKA_FN_ACC inline auto uniformElementsAlongX(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 1)
-	    ALPAKA_FN_ACC inline auto uniformElementsAlongY(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 2)
-	    ALPAKA_FN_ACC inline auto uniformElementsAlongZ(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    namespace detail
-	    {
-
-	        /* UniformElementsND
-	         *
-	         * `UniformElementsND(acc, extent)` returns an N-dimensional iteratable range that spans the element indices
-	         * required to cover the given problem size, indicated by `extent`.
-	         *
-	         * `uniformElementsND(acc, ...)` is an alias for `UniformElementsND<TAcc>(acc, ...)`.
-	         *
-	         * To cover the problem space, different threads may execute a different number of iterations. As a result, it
-	         * is not safe to call `alpaka::syncBlockThreads()` and other block-level synchronisations within this loop. If
-	         * a block synchronisation is needed, one should split the loop into an outer loop over the groups and an inner
-	         * loop over each group's elements, and synchronise only in the outer loop:
-	         *
-	         *  for (auto group0 : uniformGroupsAlong<0>(acc, extent[0])) {
-	         *    for (auto group1 : uniformGroupsAlong<1>(acc, extent[1])) {
-	         *      for (auto element0 : uniformGroupElementsAlong<0>(acc, group0, extent[0])) {
-	         *        for (auto element1 : uniformGroupElementsAlong<1>(acc, group1, extent[1])) {
-	         *           // first part of the computation
-	         *           // no synchronisations here
-	         *           ...
-	         *        }
-	         *      }
-	         *      // wait for all threads to complete the first part
-	         *      alpaka::syncBlockThreads();
-	         *      for (auto element0 : uniformGroupElementsAlong<0>(acc, group0, extent[0])) {
-	         *        for (auto element1 : uniformGroupElementsAlong<1>(acc, group1, extent[1])) {
-	         *           // second part of the computation
-	         *           // no synchronisations here
-	         *           ...
-	         *        }
-	         *      }
-	         *      // wait for all threads to complete the second part
-	         *      alpaka::syncBlockThreads();
-	         *      ...
-	         *    }
-	         *  }
-	         *
-	         * For more details, see `UniformElementsAlong<TAcc, Dim>(acc, ...)`.
-	         */
-
-	        template<concepts::Acc TAcc>
-	        requires(alpaka::Dim<TAcc>::value > 0)
-	        class UniformElementsND
-	        {
-	        public:
-	            using Dim = alpaka::Dim<TAcc>;
-	            using Idx = alpaka::Idx<TAcc>;
-	            using Vec = alpaka::Vec<Dim, Idx>;
-
-	            ALPAKA_FN_ACC inline UniformElementsND(TAcc const& acc)
-	                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)}
-	                , thread_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc) * elements_}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc) * elements_}
-	                , extent_{stride_}
-	            {
-	            }
-
-	            ALPAKA_FN_ACC inline UniformElementsND(TAcc const& acc, Vec extent)
-	                : elements_{alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)}
-	                , thread_{alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc) * elements_}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc) * elements_}
-	                , extent_{extent}
-	            {
-	            }
-
-	            // tag used to construct an end iterator
-	            struct at_end_t
-	            {
-	            };
-
-	            class const_iterator;
-	            using iterator = const_iterator;
-
-	            ALPAKA_FN_ACC inline const_iterator begin() const
-	            {
-	                // check that all dimensions of the current thread index are within the extent
-	                if((thread_ < extent_).all())
-	                {
-	                    // construct an iterator pointing to the first element to be processed by the current thread
-	                    return const_iterator{this, thread_};
-	                }
-	                else
-	                {
-	                    // construct an end iterator, pointing post the end of the extent
-	                    return const_iterator{this, at_end_t{}};
-	                }
-	            }
-
-	            ALPAKA_FN_ACC inline const_iterator end() const
-	            {
-	                // construct an end iterator, pointing post the end of the extent
-	                return const_iterator{this, at_end_t{}};
-	            }
-
-	            class const_iterator
-	            {
-	                friend class UniformElementsND;
-
-	            public:
-	                ALPAKA_FN_ACC inline Vec operator*() const
-	                {
-	                    return index_;
-	                }
-
-	                // pre-increment the iterator
-	                ALPAKA_FN_ACC inline constexpr const_iterator operator++()
-	                {
-	                    increment();
-	                    return *this;
-	                }
-
-	                // post-increment the iterator
-	                ALPAKA_FN_ACC inline constexpr const_iterator operator++(int)
-	                {
-	                    const_iterator old = *this;
-	                    increment();
-	                    return old;
-	                }
-
-	                ALPAKA_FN_ACC inline constexpr bool operator==(const_iterator const& other) const
-	                {
-	                    return (index_ == other.index_);
-	                }
-
-	                ALPAKA_FN_ACC inline constexpr bool operator!=(const_iterator const& other) const
-	                {
-	                    return not(*this == other);
-	                }
-
-	            private:
-	                // construct an iterator pointing to the first element to be processed by the current thread
-	                ALPAKA_FN_ACC inline const_iterator(UniformElementsND const* loop, Vec first)
-	                    : loop_{loop}
-	                    , first_{alpaka::elementwise_min(first, loop->extent_)}
-	                    , range_{alpaka::elementwise_min(first + loop->elements_, loop->extent_)}
-	                    , index_{first_}
-	                {
-	                }
-
-	                // construct an end iterator, pointing post the end of the extent
-	                ALPAKA_FN_ACC inline const_iterator(UniformElementsND const* loop, at_end_t const&)
-	                    : loop_{loop}
-	                    , first_{loop_->extent_}
-	                    , range_{loop_->extent_}
-	                    , index_{loop_->extent_}
-	                {
-	                }
-
-	                template<size_t I>
-	                ALPAKA_FN_ACC inline constexpr bool nth_elements_loop()
-	                {
-	                    bool overflow = false;
-	                    ++index_[I];
-	                    if(index_[I] >= range_[I])
-	                    {
-	                        index_[I] = first_[I];
-	                        overflow = true;
-	                    }
-	                    return overflow;
-	                }
-
-	                template<size_t N>
-	                ALPAKA_FN_ACC inline constexpr bool do_elements_loops()
-	                {
-	                    if constexpr(N == 0)
-	                    {
-	                        // overflow
-	                        return true;
-	                    }
-	                    else
-	                    {
-	                        if(not nth_elements_loop<N - 1>())
-	                        {
-	                            return false;
-	                        }
-	                        else
-	                        {
-	                            return do_elements_loops<N - 1>();
-	                        }
-	                    }
-	                    ALPAKA_UNREACHABLE(false);
-	                }
-
-	                template<size_t I>
-	                ALPAKA_FN_ACC inline constexpr bool nth_strided_loop()
-	                {
-	                    bool overflow = false;
-	                    first_[I] += loop_->stride_[I];
-	                    if(first_[I] >= loop_->extent_[I])
-	                    {
-	                        first_[I] = loop_->thread_[I];
-	                        overflow = true;
-	                    }
-	                    index_[I] = first_[I];
-	                    range_[I] = std::min(first_[I] + loop_->elements_[I], loop_->extent_[I]);
-	                    return overflow;
-	                }
-
-	                template<size_t N>
-	                ALPAKA_FN_ACC inline constexpr bool do_strided_loops()
-	                {
-	                    if constexpr(N == 0)
-	                    {
-	                        // overflow
-	                        return true;
-	                    }
-	                    else
-	                    {
-	                        if(not nth_strided_loop<N - 1>())
-	                        {
-	                            return false;
-	                        }
-	                        else
-	                        {
-	                            return do_strided_loops<N - 1>();
-	                        }
-	                    }
-	                    ALPAKA_UNREACHABLE(false);
-	                }
-
-	                // increment the iterator
-	                ALPAKA_FN_ACC inline constexpr void increment()
-	                {
-	                    // linear N-dimensional loops over the elements associated to the thread;
-	                    // do_elements_loops<>() returns true if any of those loops overflows
-	                    if(not do_elements_loops<Dim::value>())
-	                    {
-	                        // the elements loops did not overflow, return the next index
-	                        return;
-	                    }
-
-	                    // strided N-dimensional loop over the threads in the kernel launch grid;
-	                    // do_strided_loops<>() returns true if any of those loops overflows
-	                    if(not do_strided_loops<Dim::value>())
-	                    {
-	                        // the strided loops did not overflow, return the next index
-	                        return;
-	                    }
-
-	                    // the iterator has reached or passed the end of the extent, clamp it to the extent
-	                    first_ = loop_->extent_;
-	                    range_ = loop_->extent_;
-	                    index_ = loop_->extent_;
-	                }
-
-	                // const pointer to the UniformElementsND that the iterator refers to
-	                UniformElementsND const* loop_;
-
-	                // modified by the pre/post-increment operator
-	                Vec first_; // first element processed by this thread
-	                Vec range_; // last element processed by this thread
-	                Vec index_; // current element processed by this thread
-	            };
-
-	        private:
-	            Vec const elements_;
-	            Vec const thread_;
-	            Vec const stride_;
-	            Vec const extent_;
-	        };
-
-	    } // namespace detail
-
-	    /* uniformElementsND
-	     *
-	     * `uniformElementsND(acc, ...)` is a shorthand for `detail::UniformElementsND<TAcc>(acc, ...)`.
-	     */
-
-	    template<concepts::Acc TAcc>
-	    requires(alpaka::Dim<TAcc>::value > 0)
-	    ALPAKA_FN_ACC inline auto uniformElementsND(TAcc const& acc)
-	    {
-	        return detail::UniformElementsND<TAcc>(acc);
-	    }
-
-	    template<concepts::Acc TAcc>
-	    requires(alpaka::Dim<TAcc>::value > 0)
-	    ALPAKA_FN_ACC inline auto uniformElementsND(
-	        TAcc const& acc,
-	        alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> extent)
-	    {
-	        return detail::UniformElementsND<TAcc>(acc, extent);
-	    }
-
-	    namespace detail
-	    {
-
-	        /* UniformGroupsAlong
-	         *
-	         * `UniformGroupsAlong<Dim>(acc, elements)` returns a one-dimensional iteratable range than spans the group
-	         * indices required to cover the given problem size along the `Dim` dimension, in units of the block size.
-	         * `elements` indicates the total number of elements, across all groups; if not specified, it defaults to the
-	         * kernel grid size along the `Dim` dimension.
-	         *
-	         * `uniformGroupsAlong<Dim>(acc, ...)` is a shorthand for `UniformGroupsAlong<TAcc, Dim>(acc, ...)` that can
-	         * infer the accelerator type from the argument.
-	         *
-	         * In a 1-dimensional kernel, `uniformGroups(acc, ...)` is a shorthand for `UniformGroupsAlong<Tacc, 0>(acc,
-	         * ...)`.
-	         *
-	         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
-	         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-	         * when converting CUDA or HIP code, `uniformGroupsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
-	         * `UniformGroupsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
-	         *
-	         * `uniformGroupsAlong<Dim>(acc, ...)` should be called consistently by all the threads in a block. All
-	         * threads in a block see the same loop iterations, while threads in different blocks may see a different
-	         * number of iterations. If the work division has more blocks than the required number of groups, the first
-	         * blocks will perform one iteration of the loop, while the other blocks will exit the loop immediately. If the
-	         * work division has less blocks than the required number of groups, some of the blocks will perform more than
-	         * one iteration, in order to cover then whole problem space.
-	         *
-	         * If the problem size is not a multiple of the block size, the last group will process a number of elements
-	         * smaller than the block size. However, also in this case all threads in the block will execute the same
-	         * number of iterations of this loop: this makes it safe to use block-level synchronisations in the loop body.
-	         * It is left to the inner loop (or the user) to ensure that only the correct number of threads process any
-	         * data; this logic is implemented by `uniformGroupElementsAlong<Dim>(acc, group, elements)`.
-	         *
-	         * For example, if the block size is 64 and there are 400 elements
-	         *
-	         *   for (auto group: uniformGroupsAlong<Dim>(acc, 400)
-	         *
-	         * will return the group range from 0 to 6, distributed across all blocks in the work division: group 0 should
-	         * cover the elements from 0 to 63, group 1 should cover the elements from 64 to 127, etc., until the last
-	         * group, group 6, should cover the elements from 384 to 399. All the threads of the block will process this
-	         * last group; it is up to the inner loop to not process the non-existing elements after 399.
-	         *
-	         * If the work division has more than 7 blocks, the first 7 will perform one iteration of the loop, while the
-	         * other blocks will exit the loop immediately. For example if the work division has 8 blocks, the blocks from
-	         * 0 to 6 will process one group while block 7 will no process any.
-	         *
-	         * If the work division has less than 7 blocks, some of the blocks will perform more than one iteration of the
-	         * loop, in order to cover then whole problem space. For example if the work division has 4 blocks, block 0
-	         * will process the groups 0 and 4, block 1 will process groups 1 and 5, group 2 will process groups 2 and 6,
-	         * and block 3 will process group 3.
-	         *
-	         * See `UniformElementsAlong<TAcc, Dim>(acc, ...)` for a concrete example using `uniformGroupsAlong<Dim>` and
-	         * `uniformGroupElementsAlong<Dim>`.
-	         */
-
-	        template<concepts::Acc TAcc, std::size_t Dim>
-	        requires(alpaka::Dim<TAcc>::value >= Dim)
-	        class UniformGroupsAlong
-	        {
-	        public:
-	            using Idx = alpaka::Idx<TAcc>;
-
-	            ALPAKA_FN_ACC inline UniformGroupsAlong(TAcc const& acc)
-	                : first_{alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
-	                , extent_{stride_}
-	            {
-	            }
-
-	            // extent is the total number of elements (not blocks)
-	            ALPAKA_FN_ACC inline UniformGroupsAlong(TAcc const& acc, Idx extent)
-	                : first_{alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
-	                , stride_{alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[Dim]}
-	                , extent_{alpaka::core::divCeil(extent, alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim])}
-	            {
-	            }
-
-	            class const_iterator;
-	            using iterator = const_iterator;
-
-	            ALPAKA_FN_ACC inline const_iterator begin() const
-	            {
-	                return const_iterator(stride_, extent_, first_);
-	            }
-
-	            ALPAKA_FN_ACC inline const_iterator end() const
-	            {
-	                return const_iterator(stride_, extent_, extent_);
-	            }
-
-	            class const_iterator
-	            {
-	                friend class UniformGroupsAlong;
-
-	                ALPAKA_FN_ACC inline const_iterator(Idx stride, Idx extent, Idx first)
-	                    : stride_{stride}
-	                    , extent_{extent}
-	                    , first_{std::min(first, extent)}
-	                {
-	                }
-
-	            public:
-	                ALPAKA_FN_ACC inline Idx operator*() const
-	                {
-	                    return first_;
-	                }
-
-	                // pre-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator& operator++()
-	                {
-	                    // increment the first-element-in-block index by the grid stride
-	                    first_ += stride_;
-	                    if(first_ < extent_)
-	                        return *this;
-
-	                    // the iterator has reached or passed the end of the extent, clamp it to the extent
-	                    first_ = extent_;
-	                    return *this;
-	                }
-
-	                // post-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator operator++(int)
-	                {
-	                    const_iterator old = *this;
-	                    ++(*this);
-	                    return old;
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
-	                {
-	                    return (first_ == other.first_);
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
-	                {
-	                    return not(*this == other);
-	                }
-
-	            private:
-	                // non-const to support iterator copy and assignment
-	                Idx stride_;
-	                Idx extent_;
-	                // modified by the pre/post-increment operator
-	                Idx first_;
-	            };
-
-	        private:
-	            Idx const first_;
-	            Idx const stride_;
-	            Idx const extent_;
-	        };
-
-	    } // namespace detail
-
-	    /* uniformGroups
-	     *
-	     * `uniformGroups(acc, elements)` returns a one-dimensional iteratable range than spans the group indices required
-	     * to cover the given problem size, in units of the block size. `elements` indicates the total number of elements,
-	     * across all groups; if not specified, it defaults to the kernel grid size.
-	     *
-	     * `uniformGroups(acc, ...)` is a shorthand for `detail::UniformGroupsAlong<TAcc, 0>(acc, ...)`.
-	     *
-	     * `uniformGroups(acc, ...)` should be called consistently by all the threads in a block. All threads in a block
-	     * see the same loop iterations, while threads in different blocks may see a different number of iterations. If the
-	     * work division has more blocks than the required number of groups, the first blocks will perform one iteration of
-	     * the loop, while the other blocks will exit the loop immediately. If the work division has less blocks than the
-	     * required number of groups, some of the blocks will perform more than one iteration, in order to cover then whole
-	     * problem space.
-	     *
-	     * If the problem size is not a multiple of the block size, the last group will process a number of elements
-	     * smaller than the block size. However, also in this case all threads in the block will execute the same number of
-	     * iterations of this loop: this makes it safe to use block-level synchronisations in the loop body. It is left to
-	     * the inner loop (or the user) to ensure that only the correct number of threads process any data; this logic is
-	     * implemented by `uniformGroupElements(acc, group, elements)`.
-	     *
-	     * For example, if the block size is 64 and there are 400 elements
-	     *
-	     *   for (auto group: uniformGroups(acc, 400)
-	     *
-	     * will return the group range from 0 to 6, distributed across all blocks in the work division: group 0 should
-	     * cover the elements from 0 to 63, group 1 should cover the elements from 64 to 127, etc., until the last group,
-	     * group 6, should cover the elements from 384 to 399. All the threads of the block will process this last group;
-	     * it is up to the inner loop to not process the non-existing elements after 399.
-	     *
-	     * If the work division has more than 7 blocks, the first 7 will perform one iteration of the loop, while the other
-	     * blocks will exit the loop immediately. For example if the work division has 8 blocks, the blocks from 0 to 6
-	     * will process one group while block 7 will no process any.
-	     *
-	     * If the work division has less than 7 blocks, some of the blocks will perform more than one iteration of the
-	     * loop, in order to cover then whole problem space. For example if the work division has 4 blocks, block 0 will
-	     * process the groups 0 and 4, block 1 will process groups 1 and 5, group 2 will process groups 2 and 6, and block
-	     * 3 will process group 3.
-	     *
-	     * See `uniformElements(acc, ...)` for a concrete example using `uniformGroups` and `uniformGroupElements`.
-	     *
-	     * Note that `uniformGroups(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional kernels,
-	     * use
-	     *   - `uniformGroupsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension `Dim`;
-	     *   - `uniformGroupsAlongX(acc, ...)`, `uniformGroupsAlongY(acc, ...)`, or `uniformGroupsAlongZ(acc, ...)` to loop
-	     *     along the fastest, second-fastest, or third-fastest dimension.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value == 1)
-	    ALPAKA_FN_ACC inline auto uniformGroups(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformGroupsAlong<Dim>
-	     *
-	     * `uniformGroupsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformGroupsAlong<TAcc, Dim>(acc, ...)` that
-	     * can infer the accelerator type from the argument.
-	     */
-
-	    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value >= Dim)
-	    ALPAKA_FN_ACC inline auto uniformGroupsAlong(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformGroupsAlongX, Y, Z
-	     *
-	     * Like `uniformGroups` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
-	     * dimensions.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 0)
-	    ALPAKA_FN_ACC inline auto uniformGroupsAlongX(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 1)
-	    ALPAKA_FN_ACC inline auto uniformGroupsAlongY(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 2)
-	    ALPAKA_FN_ACC inline auto uniformGroupsAlongZ(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    namespace detail
-	    {
-
-	        /* UniformGroupElementsAlong
-	         *
-	         * `UniformGroupElementsAlong<TAcc, Dim>(acc, group, elements)` returns a one-dimensional iteratable range that
-	         * spans all the elements within the given `group` along dimension `Dim`, as obtained from
-	         * `UniformGroupsAlong<Dim>`, up to `elements` (exclusive). `elements` indicates the total number of elements
-	         * across all groups; if not specified, it defaults to the kernel grid size.
-	         *
-	         * `uniformGroupElementsAlong<Dim>(acc, ...)` is a shorthand for `UniformGroupElementsAlong<TAcc, Dim>(acc,
-	         * ...)` that can infer the accelerator type from the argument.
-	         *
-	         * In a 1-dimensional kernel, `uniformGroupElements(acc, ...)` is a shorthand for
-	         * `UniformGroupElementsAlong<0>(acc, ...)`.
-	         *
-	         * In an N-dimensional kernel, dimension 0 is the one that increases more slowly (e.g. the outer loop),
-	         * followed by dimension 1, up to dimension N-1 that increases fastest (e.g. the inner loop). For convenience
-	         * when converting CUDA or HIP code, `uniformGroupElementsAlongX(acc, ...)`, `Y` and `Z` are shorthands for
-	         * `UniformGroupElementsAlong<TAcc, N-1>(acc, ...)`, `<N-2>` and `<N-3>`.
-	         *
-	         * Iterating over the range yields values of type `ElementIndex`, that provide the `.global` and `.local`
-	         * indices of the corresponding element. The global index spans a subset of the range from 0 to `elements`
-	         * (excluded), while the local index spans the range from 0 to the block size (excluded).
-	         *
-	         * The loop will perform a number of iterations up to the number of elements per thread, stopping earlier if
-	         * the global element index reaches `elements`.
-	         *
-	         * If the problem size is not a multiple of the block size, different threads may execute a different number of
-	         * iterations. As a result, it is not safe to call `alpaka::syncBlockThreads()` within this loop. If a block
-	         * synchronisation is needed, one should split the loop, and synchronise the threads between the loops.
-	         * See `UniformElementsAlong<Dim>(acc, ...)` for a concrete example using `uniformGroupsAlong<Dim>` and
-	         * `uniformGroupElementsAlong<Dim>`.
-	         *
-	         * Warp-level primitives require that all threads in the warp execute the same function. If `elements` is not a
-	         * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for
-	         * example, the kernel may hang. To avoid this problem, round up `elements` to a multiple of the warp size, and
-	         * check the element index explicitly inside the loop:
-	         *
-	         *  for (auto element : uniformGroupElementsAlong<N-1>(acc, group, round_up_by(elements,
-	         * alpaka::warp::getSize(acc)))) { bool flag = false; if (element < elements) {
-	         *      // do some work and compute a result flag only for the valid elements
-	         *      flag = do_some_work();
-	         *    }
-	         *    // check if any valid element had a positive result
-	         *    if (alpaka::warp::any(acc, flag)) {
-	         *      // ...
-	         *    }
-	         *  }
-	         *
-	         * Note that the use of warp-level primitives is usually suitable only for the fastest-looping dimension,
-	         * `N-1`.
-	         */
-
-	        template<concepts::Acc TAcc, std::size_t Dim>
-	        requires(alpaka::Dim<TAcc>::value >= Dim)
-	        class UniformGroupElementsAlong
-	        {
-	        public:
-	            using Idx = alpaka::Idx<TAcc>;
-
-	            ALPAKA_FN_ACC inline UniformGroupElementsAlong(TAcc const& acc, Idx block)
-	                : first_{block * alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim]}
-	                , local_{alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[Dim] * alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
-	                , range_{local_ + alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim]}
-	            {
-	            }
-
-	            ALPAKA_FN_ACC inline UniformGroupElementsAlong(TAcc const& acc, Idx block, Idx extent)
-	                : first_{block * alpaka::getWorkDiv<alpaka::Block, alpaka::Elems>(acc)[Dim]}
-	                , local_{std::min(
-	                      extent - first_,
-	                      alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[Dim]
-	                          * alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim])}
-	                , range_{
-	                      std::min(extent - first_, local_ + alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[Dim])}
-	            {
-	            }
-
-	            class const_iterator;
-	            using iterator = const_iterator;
-
-	            ALPAKA_FN_ACC inline const_iterator begin() const
-	            {
-	                return const_iterator(local_, first_, range_);
-	            }
-
-	            ALPAKA_FN_ACC inline const_iterator end() const
-	            {
-	                return const_iterator(range_, first_, range_);
-	            }
-
-	            class const_iterator
-	            {
-	                friend class UniformGroupElementsAlong;
-
-	                ALPAKA_FN_ACC inline const_iterator(Idx local, Idx first, Idx range)
-	                    : index_{local}
-	                    , first_{first}
-	                    , range_{range}
-	                {
-	                }
-
-	            public:
-	                ALPAKA_FN_ACC inline ElementIndex<Idx> operator*() const
-	                {
-	                    return ElementIndex<Idx>{index_ + first_, index_};
-	                }
-
-	                // pre-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator& operator++()
-	                {
-	                    // increment the index along the elements processed by the current thread
-	                    ++index_;
-	                    if(index_ < range_)
-	                        return *this;
-
-	                    // the iterator has reached or passed the end of the extent, clamp it to the extent
-	                    index_ = range_;
-	                    return *this;
-	                }
-
-	                // post-increment the iterator
-	                ALPAKA_FN_ACC inline const_iterator operator++(int)
-	                {
-	                    const_iterator old = *this;
-	                    ++(*this);
-	                    return old;
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator==(const_iterator const& other) const
-	                {
-	                    return (index_ == other.index_);
-	                }
-
-	                ALPAKA_FN_ACC inline bool operator!=(const_iterator const& other) const
-	                {
-	                    return not(*this == other);
-	                }
-
-	            private:
-	                // modified by the pre/post-increment operator
-	                Idx index_;
-	                // non-const to support iterator copy and assignment
-	                Idx first_;
-	                Idx range_;
-	            };
-
-	        private:
-	            Idx const first_;
-	            Idx const local_;
-	            Idx const range_;
-	        };
-
-	    } // namespace detail
-
-	    /* uniformGroupElements
-	     *
-	     * `uniformGroupElements(acc, group, elements)` returns a one-dimensional iteratable range that spans all the
-	     * elements within the given `group`, as obtained from `uniformGroups`, up to `elements` (exclusive). `elements`
-	     * indicates the total number of elements across all groups; if not specified, it defaults to the kernel grid size.
-	     *
-	     * `uniformGroupElements(acc, ...)` is a shorthand for `detail::UniformGroupElementsAlong<0>(acc, ...)`.
-	     *
-	     * Iterating over the range yields values of type `ElementIndex`, that provide the `.global` and `.local` indices
-	     * of the corresponding element. The global index spans a subset of the range from 0 to `elements` (excluded),
-	     * while the local index spans the range from 0 to the block size (excluded).
-	     *
-	     * The loop will perform a number of iterations up to the number of elements per thread, stopping earlier if the
-	     * global element index reaches `elements`.
-	     *
-	     * If the problem size is not a multiple of the block size, different threads may execute a different number of
-	     * iterations. As a result, it is not safe to call `alpaka::syncBlockThreads()` within this loop. If a block
-	     * synchronisation is needed, one should split the loop, and synchronise the threads between the loops.
-	     * See `uniformElements(acc, ...)` for a concrete example using `uniformGroups` and `uniformGroupElements`.
-	     *
-	     * Warp-level primitives require that all threads in the warp execute the same function. If `elements` is not a
-	     * multiple of the warp size, some of the warps may be incomplete, leading to undefined behaviour - for example,
-	     * the kernel may hang. To avoid this problem, round up `elements` to a multiple of the warp size, and check the
-	     * element index explicitly inside the loop:
-	     *
-	     *  for (auto element : uniformGroupElements(acc, group, round_up_by(elements, alpaka::warp::getSize(acc)))) {
-	     *    bool flag = false;
-	     *    if (element < elements) {
-	     *      // do some work and compute a result flag only for the valid elements
-	     *      flag = do_some_work();
-	     *    }
-	     *    // check if any valid element had a positive result
-	     *    if (alpaka::warp::any(acc, flag)) {
-	     *      // ...
-	     *    }
-	     *  }
-	     *
-	     * Note that `uniformGroupElements(acc, ...)` is only suitable for one-dimensional kernels. For N-dimensional
-	     * kernels, use
-	     *   - `detail::UniformGroupElementsAlong<Dim>(acc, ...)` to perform the iteration explicitly along dimension
-	     *     `Dim`;
-	     *   - `uniformGroupElementsAlongX(acc, ...)`, `uniformGroupElementsAlongY(acc, ...)`, or
-	     *     `uniformGroupElementsAlongZ(acc, ...)` to loop along the fastest, second-fastest, or third-fastest
-	     *     dimension.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value == 1)
-	    ALPAKA_FN_ACC inline auto uniformGroupElements(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupElementsAlong<TAcc, 0>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformGroupElementsAlong<Dim>
-	     *
-	     * `uniformGroupElementsAlong<Dim>(acc, ...)` is a shorthand for `detail::UniformGroupElementsAlong<TAcc,
-	     * Dim>(acc, ...)` that can infer the accelerator type from the argument.
-	     */
-
-	    template<std::size_t Dim, concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value >= Dim)
-	    ALPAKA_FN_ACC inline auto uniformGroupElementsAlong(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupElementsAlong<TAcc, Dim>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    /* uniformGroupElementsAlongX, Y, Z
-	     *
-	     * Like `uniformGroupElements` for N-dimensional kernels, along the fastest, second-fastest, and third-fastest
-	     * dimensions.
-	     */
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 0)
-	    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongX(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 1>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 1)
-	    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongY(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 2>(acc, static_cast<Idx>(args)...);
-	    }
-
-	    template<concepts::Acc TAcc, typename... TArgs>
-	    requires(alpaka::Dim<TAcc>::value > 2)
-	    ALPAKA_FN_ACC inline auto uniformGroupElementsAlongZ(TAcc const& acc, TArgs... args)
-	    {
-	        using Idx = alpaka::Idx<TAcc>;
-	        return detail::UniformGroupElementsAlong<TAcc, alpaka::Dim<TAcc>::value - 3>(acc, static_cast<Idx>(args)...);
-	    }
-
-	} // namespace alpaka
-	// ==
-	// == ./include/alpaka/exec/UniformElements.hpp ==
-	// ============================================================================
-
+// #include "alpaka/exec/UniformElements.hpp"    // amalgamate: file already inlined
 // extent
 // #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 // idx
@@ -32249,566 +33008,7 @@
 		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/queue/cuda-hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
-			// ============================================================================
-			// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
-			// ==
-			/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/kernel/KernelFunctionAttributes.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
-
-			// #include <algorithm>    // amalgamate: file already included
-			// #include <array>    // amalgamate: file already included
-			// #include <cmath>    // amalgamate: file already included
-			// #include <functional>    // amalgamate: file already included
-			#include <set>
-			#include <type_traits>
-
-			#if ALPAKA_COMP_CLANG
-			#    pragma clang diagnostic push
-			#    pragma clang diagnostic ignored "-Wswitch-default"
-			#endif
-
-			//! The alpaka library.
-			namespace alpaka
-			{
-			    //! The grid block extent subdivision restrictions.
-			    enum class GridBlockExtentSubDivRestrictions
-			    {
-			        EqualExtent, //!< The block thread extent will be equal in all dimensions.
-			        CloseToEqualExtent, //!< The block thread extent will be as close to equal as possible in all dimensions.
-			        Unrestricted, //!< The block thread extent will not have any restrictions.
-			    };
-
-			    namespace detail
-			    {
-			        //! Finds the largest divisor where divident % divisor == 0
-			        //! \param dividend The dividend.
-			        //! \param maxDivisor The maximum divisor.
-			        //! \return The biggest number that satisfies the following conditions:
-			        //!     1) dividend%ret==0
-			        //!     2) ret<=maxDivisor
-			        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
-			        ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(T const& dividend, T const& maxDivisor) -> T
-			        {
-			            core::assertValueUnsigned(dividend);
-			            core::assertValueUnsigned(maxDivisor);
-			            ALPAKA_ASSERT(dividend >= maxDivisor);
-
-			            T divisor = maxDivisor;
-			            while(dividend % divisor != 0)
-			                --divisor;
-			            return divisor;
-			        }
-
-			        //! \param val The value to find divisors of.
-			        //! \param maxDivisor The maximum.
-			        //! \return A list of all divisors less then or equal to the given maximum.
-			        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
-			        ALPAKA_FN_HOST auto allDivisorsLessOrEqual(T const& val, T const& maxDivisor) -> std::set<T>
-			        {
-			            std::set<T> divisorSet;
-
-			            core::assertValueUnsigned(val);
-			            core::assertValueUnsigned(maxDivisor);
-			            ALPAKA_ASSERT(maxDivisor <= val);
-
-			            for(T i(1); i <= std::min(val, maxDivisor); ++i)
-			            {
-			                if(val % i == 0)
-			                {
-			                    divisorSet.insert(static_cast<T>(val / i));
-			                }
-			            }
-
-			            return divisorSet;
-			        }
-			    } // namespace detail
-
-			    //! \tparam TDim The dimensionality of the accelerator device properties.
-			    //! \tparam TIdx The idx type of the accelerator device properties.
-			    //! \param accDevProps The maxima for the work division.
-			    //! \return If the accelerator device properties are valid.
-			    template<typename TDim, typename TIdx>
-			    ALPAKA_FN_HOST auto isValidAccDevProps(AccDevProps<TDim, TIdx> const& accDevProps) -> bool
-			    {
-			        // Check that the maximum counts are greater or equal 1.
-			        if((accDevProps.m_gridBlockCountMax < 1) || (accDevProps.m_blockThreadCountMax < 1)
-			           || (accDevProps.m_threadElemCountMax < 1))
-			        {
-			            return false;
-			        }
-
-			        // Store the maxima allowed for extents of grid, blocks and threads.
-			        auto const gridBlockExtentMax = subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax);
-			        auto const blockThreadExtentMax = subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax);
-			        auto const threadElemExtentMax = subVecEnd<TDim>(accDevProps.m_threadElemExtentMax);
-
-			        // Check that the extents for all dimensions are correct.
-			        for(typename TDim::value_type i(0); i < TDim::value; ++i)
-			        {
-			            // Check that the maximum extents are greater or equal 1.
-			            if((gridBlockExtentMax[i] < 1) || (blockThreadExtentMax[i] < 1) || (threadElemExtentMax[i] < 1))
-			            {
-			                return false;
-			            }
-			        }
-
-			        return true;
-			    }
-
-			    //! Subdivides the given grid thread extent into blocks restricted by the maxima allowed.
-			    //! 1. The the maxima block, thread and element extent and counts
-			    //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
-			    //! 3. The requirement of the block extent.
-			    //!
-			    //! \param gridElemExtent The full extent of elements in the grid.
-			    //! \param threadElemExtent the number of elements computed per thread.
-			    //! \param accDevProps The maxima for the work division.
-			    //! \param kernelBlockThreadCountMax The maximum number of threads per block. If it is zero this argument is not
-			    //! used, device hard limits are used.
-			    //! \param blockThreadMustDivideGridThreadExtent If this is true, the grid thread extent will be multiples of the
-			    //! corresponding block thread extent.
-			    //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
-			    //!     thread extent will be one in this dimension.
-			    //! \param gridBlockExtentSubDivRestrictions The grid block extent subdivision restrictions.
-			    template<typename TDim, typename TIdx>
-			    ALPAKA_FN_HOST auto subDivideGridElems(
-			        Vec<TDim, TIdx> const& gridElemExtent,
-			        Vec<TDim, TIdx> const& threadElemExtent,
-			        AccDevProps<TDim, TIdx> const& accDevProps,
-			        TIdx kernelBlockThreadCountMax = static_cast<TIdx>(0u),
-			        bool blockThreadMustDivideGridThreadExtent = true,
-			        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
-			        = GridBlockExtentSubDivRestrictions::Unrestricted) -> WorkDivMembers<TDim, TIdx>
-			    {
-			        using Vec = Vec<TDim, TIdx>;
-			        using DimLoopInd = typename TDim::value_type;
-
-			        for(DimLoopInd i(0); i < TDim::value; ++i)
-			        {
-			            ALPAKA_ASSERT(gridElemExtent[i] >= 1);
-			            ALPAKA_ASSERT(threadElemExtent[i] >= 1);
-			            ALPAKA_ASSERT(threadElemExtent[i] <= accDevProps.m_threadElemExtentMax[i]);
-			        }
-			        ALPAKA_ASSERT(threadElemExtent.prod() <= accDevProps.m_threadElemCountMax);
-			        ALPAKA_ASSERT(isValidAccDevProps(accDevProps));
-
-			        // Handle threadElemExtent and compute gridThreadExtent. Afterwards, only the blockThreadExtent has to be
-			        // optimized.
-			        auto clippedThreadElemExtent = elementwise_min(threadElemExtent, gridElemExtent);
-			        auto const gridThreadExtent = [&]
-			        {
-			            Vec r;
-			            for(DimLoopInd i(0u); i < TDim::value; ++i)
-			                r[i] = core::divCeil(gridElemExtent[i], clippedThreadElemExtent[i]);
-			            return r;
-			        }();
-
-			        ///////////////////////////////////////////////////////////////////
-			        // Try to calculate an optimal blockThreadExtent.
-
-			        // Restrict the max block thread extent from the maximum possible to the grid thread extent.
-			        // This removes dimensions not required in the grid thread extent.
-			        // This has to be done before the blockThreadCountMax clipping to get the maximum correctly.
-			        auto blockThreadExtent = elementwise_min(accDevProps.m_blockThreadExtentMax, gridThreadExtent);
-
-			        // For equal block thread extent, restrict it to its minimum component.
-			        // For example (512, 256, 1024) will get (256, 256, 256).
-			        if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
-			            blockThreadExtent = Vec::all(blockThreadExtent.min() != TIdx(0) ? blockThreadExtent.min() : TIdx(1));
-
-			        // Choose kernelBlockThreadCountMax if it is not zero. It is less than the accelerator properties.
-			        TIdx const& blockThreadCountMax
-			            = (kernelBlockThreadCountMax != 0) ? kernelBlockThreadCountMax : accDevProps.m_blockThreadCountMax;
-
-			        // Block thread extent could be {1024,1024,1024} although max threads per block is 1024. Block thread extent
-			        // shows the max number of threads along each axis, it is not a measure to get max number of threads per block.
-			        // It must be further limited (clipped above) by the kernel limit along each axis, using device limits is not
-			        // enough.
-			        for(typename TDim::value_type i(0); i < TDim::value; ++i)
-			        {
-			            blockThreadExtent[i] = std::min(blockThreadExtent[i], blockThreadCountMax);
-			        }
-
-			        // Make the blockThreadExtent product smaller or equal to the accelerator's limit.
-			        if(blockThreadCountMax == 1)
-			        {
-			            blockThreadExtent = Vec::all(core::nthRootFloor(blockThreadCountMax, TIdx{TDim::value}));
-			        }
-			        else if(blockThreadExtent.prod() > blockThreadCountMax)
-			        {
-			            switch(gridBlockExtentSubDivRestrictions)
-			            {
-			            case GridBlockExtentSubDivRestrictions::EqualExtent:
-			                blockThreadExtent = Vec::all(core::nthRootFloor(blockThreadCountMax, TIdx{TDim::value}));
-			                break;
-			            case GridBlockExtentSubDivRestrictions::CloseToEqualExtent:
-			                // Very primitive clipping. Just halve the largest value until it fits.
-			                while(blockThreadExtent.prod() > blockThreadCountMax)
-			                    blockThreadExtent[blockThreadExtent.maxElem()] /= TIdx{2};
-			                break;
-			            case GridBlockExtentSubDivRestrictions::Unrestricted:
-			                // Very primitive clipping. Just halve the smallest value (which is not 1) until it fits.
-			                while(blockThreadExtent.prod() > blockThreadCountMax)
-			                {
-			                    auto const it = std::min_element(
-			                        blockThreadExtent.begin(),
-			                        blockThreadExtent.end() - 1, //! \todo why omit the last element?
-			                        [](TIdx const& a, TIdx const& b)
-			                        {
-			                            if(a == TIdx{1})
-			                                return false;
-			                            if(b == TIdx{1})
-			                                return true;
-			                            return a < b;
-			                        });
-			                    *it /= TIdx{2};
-			                }
-			                break;
-			            }
-			        }
-
-
-			        // Make the block thread extent divide the grid thread extent.
-			        if(blockThreadMustDivideGridThreadExtent)
-			        {
-			            switch(gridBlockExtentSubDivRestrictions)
-			            {
-			            case GridBlockExtentSubDivRestrictions::EqualExtent:
-			                {
-			                    // For equal size block extent we have to compute the gcd of all grid thread extent that is less
-			                    // then the current maximal block thread extent. For this we compute the divisors of all grid
-			                    // thread extent less then the current maximal block thread extent.
-			                    std::array<std::set<TIdx>, TDim::value> gridThreadExtentDivisors;
-			                    for(DimLoopInd i(0u); i < TDim::value; ++i)
-			                    {
-			                        gridThreadExtentDivisors[i]
-			                            = detail::allDivisorsLessOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
-			                    }
-			                    // The maximal common divisor of all block thread extent is the optimal solution.
-			                    std::set<TIdx> intersects[2u];
-			                    for(DimLoopInd i(1u); i < TDim::value; ++i)
-			                    {
-			                        intersects[(i - 1u) % 2u] = gridThreadExtentDivisors[0];
-			                        intersects[(i) % 2u].clear();
-			                        set_intersection(
-			                            std::begin(intersects[(i - 1u) % 2u]),
-			                            std::end(intersects[(i - 1u) % 2u]),
-			                            std::begin(gridThreadExtentDivisors[i]),
-			                            std::end(gridThreadExtentDivisors[i]),
-			                            std::inserter(intersects[i % 2], std::begin(intersects[i % 2u])));
-			                    }
-			                    TIdx const maxCommonDivisor = *(--std::end(intersects[(TDim::value - 1) % 2u]));
-			                    blockThreadExtent = Vec::all(maxCommonDivisor);
-			                    break;
-			                }
-			            case GridBlockExtentSubDivRestrictions::CloseToEqualExtent:
-			                [[fallthrough]];
-			            case GridBlockExtentSubDivRestrictions::Unrestricted:
-			                for(DimLoopInd i(0u); i < TDim::value; ++i)
-			                {
-			                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
-			                }
-			                break;
-			            }
-			        }
-
-			        // grid blocks extent = grid thread / block thread extent. quotient is rounded up.
-			        auto gridBlockExtent = [&]
-			        {
-			            Vec r;
-			            for(DimLoopInd i = 0; i < TDim::value; ++i)
-			                r[i] = core::divCeil(gridThreadExtent[i], blockThreadExtent[i]);
-			            return r;
-			        }();
-
-
-			        // Store the maxima allowed for extents of grid, blocks and threads.
-			        auto const gridBlockExtentMax = subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax);
-			        auto const blockThreadExtentMax = subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax);
-			        auto const threadElemExtentMax = subVecEnd<TDim>(accDevProps.m_threadElemExtentMax);
-
-			        // Check that the extents for all dimensions are correct.
-			        for(typename TDim::value_type i(0); i < TDim::value; ++i)
-			        {
-			            // Check that the maximum extents are greater or equal 1.
-			            if(gridBlockExtentMax[i] < gridBlockExtent[i])
-			            {
-			                gridBlockExtent[i] = gridBlockExtentMax[i];
-			            }
-			            if(blockThreadExtentMax[i] < blockThreadExtent[i])
-			            {
-			                blockThreadExtent[i] = blockThreadExtentMax[i];
-			            }
-			            if(threadElemExtentMax[i] < threadElemExtent[i])
-			            {
-			                clippedThreadElemExtent[i] = threadElemExtentMax[i];
-			            }
-			        }
-
-			        return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
-			    }
-
-			    //! Kernel start configuration to determine a valid work division
-			    //!
-			    //! \tparam TGridElemExtent The type of the grid element extent.
-			    //! \tparam TThreadElemExtent The type of the thread element extent.
-			    template<
-			        typename TAcc,
-			        typename TGridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>,
-			        typename TThreadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>>
-			    struct KernelCfg
-			    {
-			        //! The full extent of elements in the grid.
-			        TGridElemExtent const gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
-			        //! The number of elements computed per thread.
-			        TThreadElemExtent const threadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones();
-			        //! If this is true, the grid thread extent will be multiples of
-			        //! the corresponding block thread extent.
-			        //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block
-			        //!     thread extent will be one in this dimension.
-			        bool blockThreadMustDivideGridThreadExtent = true;
-			        //! The grid block extent subdivision restrictions.
-			        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
-			            = GridBlockExtentSubDivRestrictions::Unrestricted;
-
-			        static_assert(
-			            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
-			            "The dimension of Acc and the dimension of TGridElemExtent have to be identical!");
-			        static_assert(
-			            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
-			            "The dimension of Acc and the dimension of TThreadElemExtent have to be identical!");
-			        static_assert(
-			            std::is_same_v<Idx<TGridElemExtent>, Idx<TAcc>>,
-			            "The idx type of Acc and the idx type of TGridElemExtent have to be identical!");
-			        static_assert(
-			            std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
-			            "The idx type of Acc and the idx type of TThreadElemExtent have to be identical!");
-			    };
-
-			    //! \tparam TDev The type of the device.
-			    //! \tparam TGridElemExtent The type of the grid element extent.
-			    //! \tparam TThreadElemExtent The type of the thread element extent.
-			    //! \param dev The device the work division should be valid for.
-			    //! \param kernelFnObj The kernel function object which should be executed.
-			    //! \param args The kernel invocation arguments.
-			    //! \return The work division for the accelerator based on the kernel and argument types
-			    template<
-			        typename TAcc,
-			        typename TDev,
-			        typename TGridElemExtent,
-			        typename TThreadElemExtent,
-			        typename TKernelFnObj,
-			        typename... TArgs>
-			    ALPAKA_FN_HOST auto getValidWorkDiv(
-			        KernelCfg<TAcc, TGridElemExtent, TThreadElemExtent> const& kernelCfg,
-			        [[maybe_unused]] TDev const& dev,
-			        TKernelFnObj const& kernelFnObj,
-			        TArgs&&... args) -> WorkDivMembers<Dim<TAcc>, Idx<TAcc>>
-			    {
-			        using Acc = TAcc;
-
-			        // Get max number of threads per block depending on the kernel function attributes.
-			        // For GPU backend; number of registers used by the kernel, local and shared memory usage of the kernel
-			        // determines the max number of threads per block. This number could be equal or less than the max number of
-			        // threads per block defined by device properties.
-			        auto const kernelFunctionAttributes
-			            = getFunctionAttributes<Acc>(dev, kernelFnObj, std::forward<TArgs>(args)...);
-			        auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
-
-			        if constexpr(Dim<TGridElemExtent>::value == 0)
-			        {
-			            auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
-			            ALPAKA_ASSERT(kernelCfg.gridElemExtent == zero);
-			            ALPAKA_ASSERT(kernelCfg.threadElemExtent == zero);
-			            return WorkDivMembers<DimInt<0>, Idx<Acc>>{zero, zero, zero};
-			        }
-			        else
-			            return subDivideGridElems(
-			                getExtents(kernelCfg.gridElemExtent),
-			                getExtents(kernelCfg.threadElemExtent),
-			                getAccDevProps<Acc>(dev),
-			                static_cast<Idx<Acc>>(threadsPerBlock),
-			                kernelCfg.blockThreadMustDivideGridThreadExtent,
-			                kernelCfg.gridBlockExtentSubDivRestrictions);
-
-			        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
-			        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
-			    }
-
-			    //! Checks if the work division is supported
-			    //!
-			    //! \tparam TWorkDiv The type of the work division.
-			    //! \tparam TDim The dimensionality of the accelerator device properties.
-			    //! \tparam TIdx The idx type of the accelerator device properties.
-			    //! \param workDiv The work division to test for validity.
-			    //! \param accDevProps The maxima for the work division.
-			    //! \return If the work division is valid for the given accelerator device properties.
-			    template<typename TWorkDiv, typename TDim, typename TIdx>
-			    ALPAKA_FN_HOST auto isValidWorkDiv(TWorkDiv const& workDiv, AccDevProps<TDim, TIdx> const& accDevProps) -> bool
-			    {
-			        // Get the extents of grid, blocks and threads of the work division to check.
-			        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
-			        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
-			        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
-
-			        // Check that the maximal counts are satisfied.
-			        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
-			        {
-			            return false;
-			        }
-			        if(accDevProps.m_blockThreadCountMax < blockThreadExtent.prod())
-			        {
-			            return false;
-			        }
-			        if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
-			        {
-			            return false;
-			        }
-
-			        // Check that the extents for all dimensions are correct.
-			        if constexpr(Dim<TWorkDiv>::value > 0)
-			        {
-			            // Store the maxima allowed for extents of grid, blocks and threads.
-			            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
-			            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
-			            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
-
-			            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
-			            {
-			                // No extent is allowed to be zero or greater then the allowed maximum.
-			                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
-			                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
-			                   || (threadElemExtentMax[i] < threadElemExtent[i]))
-			                {
-			                    return false;
-			                }
-			            }
-			        }
-
-			        return true;
-			    }
-
-			    //! Checks if the work division is supported
-			    //!
-			    //! \tparam TWorkDiv The type of the work division.
-			    //! \tparam TDim The dimensionality of the accelerator device properties.
-			    //! \tparam TIdx The idx type of the accelerator device properties.
-			    //! \param workDiv The work division to test for validity.
-			    //! \param accDevProps The maxima for the work division.
-			    //! \param kernelFunctionAttributes Kernel attributes, including the maximum number of threads per block that can
-			    //! be used by this kernel on the given device. This number can be equal to or smaller than the the number of
-			    //! threads per block supported by the device.
-			    //! \return Returns true if the work division is valid for the given accelerator device properties and for the
-			    //! given kernel. Otherwise returns false.
-			    template<typename TAcc, typename TWorkDiv, typename TDim, typename TIdx>
-			    ALPAKA_FN_HOST auto isValidWorkDiv(
-			        TWorkDiv const& workDiv,
-			        AccDevProps<TDim, TIdx> const& accDevProps,
-			        KernelFunctionAttributes const& kernelFunctionAttributes) -> bool
-			    {
-			        // Get the extents of grid, blocks and threads of the work division to check.
-			        auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
-			        auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
-			        auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
-			        // Use kernel properties to find the max threads per block for the kernel
-			        auto const threadsPerBlockForKernel = kernelFunctionAttributes.maxThreadsPerBlock;
-			        // Select the minimum to find the upper bound for the threads per block
-			        auto const allowedThreadsPerBlock = std::min(
-			            static_cast<TIdx>(threadsPerBlockForKernel),
-			            static_cast<TIdx>(accDevProps.m_blockThreadCountMax));
-			        // Check that the maximal counts are satisfied.
-			        if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
-			        {
-			            return false;
-			        }
-			        if(allowedThreadsPerBlock < blockThreadExtent.prod())
-			        {
-			            return false;
-			        }
-			        if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
-			        {
-			            return false;
-			        }
-
-			        // Check that the extents for all dimensions are correct.
-			        if constexpr(Dim<TWorkDiv>::value > 0)
-			        {
-			            // Store the maxima allowed for extents of grid, blocks and threads.
-			            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
-			            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
-			            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
-
-			            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
-			            {
-			                // No extent is allowed to be zero or greater then the allowed maximum.
-			                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
-			                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
-			                   || (threadElemExtentMax[i] < threadElemExtent[i]))
-			                {
-			                    return false;
-			                }
-			            }
-			        }
-
-			        return true;
-			    }
-
-			    //! Checks if the work division is supported for the kernel on the device
-			    //!
-			    //! \tparam TAcc The accelerator to test the validity on.
-			    //! \tparam TDev The type of the device.
-			    //! \tparam TWorkDiv The type of work division to test for validity.
-			    //! \param workDiv The work division to test for validity.
-			    //! \param dev The device to test the work division for validity on.
-			    //! \param kernelFnObj The kernel function object which should be executed.
-			    //! \param args The kernel invocation arguments.
-			    //! \return Returns the value of isValidWorkDiv function.
-			    template<typename TAcc, typename TWorkDiv, typename TDev, typename TKernelFnObj, typename... TArgs>
-			    ALPAKA_FN_HOST auto isValidWorkDiv(
-			        TWorkDiv const& workDiv,
-			        TDev const& dev,
-			        TKernelFnObj const& kernelFnObj,
-			        TArgs&&... args) -> bool
-			    {
-			        return isValidWorkDiv<TAcc>(
-			            workDiv,
-			            getAccDevProps<TAcc>(dev),
-			            getFunctionAttributes<TAcc>(dev, kernelFnObj, std::forward<TArgs>(args)...));
-			    }
-
-			    //! Checks if the work division is supported by the device
-			    //!
-			    //! \tparam TAcc The accelerator to test the validity on.
-			    //! \param workDiv The work division to test for validity.
-			    //! \param dev The device to test the work division for validity on.
-			    //! \return If the work division is valid on this accelerator.
-			    template<typename TAcc, typename TWorkDiv, typename TDev>
-			    ALPAKA_FN_HOST auto isValidWorkDiv(TWorkDiv const& workDiv, TDev const& dev) -> bool
-			    {
-			        return isValidWorkDiv(workDiv, getAccDevProps<TAcc>(dev));
-			    }
-			} // namespace alpaka
-
-			#if ALPAKA_COMP_CLANG
-			#    pragma clang diagnostic pop
-			#endif
-			// ==
-			// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
-			// ============================================================================
-
+		// #include "alpaka/workdiv/WorkDivHelpers.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 		// #include <stdexcept>    // amalgamate: file already included
