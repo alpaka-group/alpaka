@@ -2,7 +2,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include <alpaka/acc/Tag.hpp>
 #include <alpaka/mem/view/ViewConst.hpp>
+#include <alpaka/platform/Traits.hpp>
 #include <alpaka/test/Extent.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
@@ -12,6 +14,14 @@
 
 #include <numeric>
 #include <type_traits>
+
+namespace alpaka
+{
+
+    template<concepts::Tag TTag>
+    struct PlatformGenericSycl;
+
+} // namespace alpaka
 
 namespace alpaka::test
 {
@@ -43,20 +53,23 @@ namespace alpaka::test
 
         // test view accessors
         STATIC_REQUIRE(std::is_same_v<decltype(view.data()), float const*>);
-#if not defined(ALPAKA_ACC_GPU_CUDA_ENABLED) and not defined(ALPAKA_ACC_GPU_HIP_ENABLED)                              \
-    and not defined(ALPAKA_SYCL_ONEAPI_GPU) and not defined(ALPAKA_SYCL_ONEAPI_FPGA)
-        if constexpr(TDim::value == 0)
+        using Platform = alpaka::Platform<TAcc>;
+        if constexpr(
+            std::is_same_v<Platform, alpaka::PlatformCpu>
+            or std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagCpuSycl>)
         {
-            STATIC_REQUIRE(std::is_same_v<decltype(*view), float const&>);
-        }
-        else if constexpr(TDim::value == 1)
-        {
-            STATIC_REQUIRE(std::is_same_v<decltype(view[0]), float const&>);
-        }
+            if constexpr(TDim::value == 0)
+            {
+                STATIC_REQUIRE(std::is_same_v<decltype(*view), float const&>);
+            }
+            else if constexpr(TDim::value == 1)
+            {
+                STATIC_REQUIRE(std::is_same_v<decltype(view[0]), float const&>);
+            }
 
-        STATIC_REQUIRE(std::is_same_v<decltype(view[alpaka::Vec<TDim, TIdx>::zeros()]), float const&>);
-        STATIC_REQUIRE(std::is_same_v<decltype(view.at(alpaka::Vec<TDim, TIdx>::zeros())), float const&>);
-#endif
+            STATIC_REQUIRE(std::is_same_v<decltype(view[alpaka::Vec<TDim, TIdx>::zeros()]), float const&>);
+            STATIC_REQUIRE(std::is_same_v<decltype(view.at(alpaka::Vec<TDim, TIdx>::zeros())), float const&>);
+        }
     }
 } // namespace alpaka::test
 

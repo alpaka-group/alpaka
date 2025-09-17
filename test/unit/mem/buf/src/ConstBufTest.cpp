@@ -15,6 +15,14 @@
 #include <numeric>
 #include <type_traits>
 
+namespace alpaka
+{
+
+    template<concepts::Tag TTag>
+    struct PlatformGenericSycl;
+
+} // namespace alpaka
+
 namespace buftest
 {
     template<typename TDev, typename TDim, typename TElem, typename TIdx, typename TExtent>
@@ -80,11 +88,13 @@ static auto testConstBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> co
     // *getPtrNative(c_buf) = 0.f;  // <- this does not compile, as desired
 
     // check return types of the buffers
-#if not defined(ALPAKA_ACC_GPU_CUDA_ENABLED) and not defined(ALPAKA_ACC_GPU_HIP_ENABLED)                              \
-    and not defined(ALPAKA_SYCL_ONEAPI_GPU) and not defined(ALPAKA_SYCL_ONEAPI_FPGA)
-    STATIC_REQUIRE(std::is_same_v<decltype(buf[0]), Elem&>);
-    STATIC_REQUIRE(std::is_same_v<decltype(c_buf[0]), Elem const&>);
-#endif
+    using Platform = alpaka::Platform<TAcc>;
+    if constexpr(
+        std::is_same_v<Platform, alpaka::PlatformCpu> or std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagCpuSycl>)
+    {
+        STATIC_REQUIRE(std::is_same_v<decltype(buf[0]), Elem&>);
+        STATIC_REQUIRE(std::is_same_v<decltype(c_buf[0]), Elem const&>);
+    }
 
     // check movability construction of buffers
     STATIC_REQUIRE(std::movable<TBuf>);
