@@ -15,14 +15,6 @@
 #include <numeric>
 #include <type_traits>
 
-namespace alpaka
-{
-
-    template<concepts::Tag TTag>
-    struct PlatformGenericSycl;
-
-} // namespace alpaka
-
 namespace buftest
 {
     template<typename TDim, typename TDev, typename TElem, typename TIdx, typename TExtent>

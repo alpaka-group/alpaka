@@ -17,12 +17,7 @@
 
 namespace alpaka
 {
-
     class DevCpu;
-
-    template<concepts::Tag TTag>
-    class DevGenericSycl;
-
 } // namespace alpaka
 
 namespace alpaka::internal
@@ -197,12 +192,14 @@ namespace alpaka::internal
         using AccessorType = HostViewAccessor<TView>;
     };
 
+#ifdef ALPAKA_ACC_SYCL_ENABLED
     template<>
     struct ViewAccessor<alpaka::DevGenericSycl<alpaka::TagCpuSycl>>
     {
         template<ViewType TView>
         using AccessorType = HostViewAccessor<TView>;
     };
+#endif
 
     template<typename TDev, ViewType TView>
     using ViewAccessorType = typename ViewAccessor<TDev>::template AccessorType<TView>;

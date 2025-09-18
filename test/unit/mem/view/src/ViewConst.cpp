@@ -15,14 +15,6 @@
 #include <numeric>
 #include <type_traits>
 
-namespace alpaka
-{
-
-    template<concepts::Tag TTag>
-    struct PlatformGenericSycl;
-
-} // namespace alpaka
-
 namespace alpaka::test
 {
     template<typename TAcc, typename TQualifiedView, typename TDev, typename TQueue, typename TDim, typename TIdx>
