@@ -33827,7 +33827,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
 
@@ -33837,28 +33838,32 @@
 			#include <type_traits>
 			// #include <utility>    // amalgamate: file already included
 
+			namespace alpaka
+			{
+			    class DevCpu;
+			} // namespace alpaka
+
 			namespace alpaka::internal
 			{
-			    template<typename T, typename SFINAE = void>
-			    inline constexpr bool isView = false;
-
-			    // TODO(bgruber): replace this by a concept in C++20
-			    template<typename TView>
-			    inline constexpr bool isView<
-			        TView,
-			        std::void_t<
-			            Idx<TView>,
-			            Dim<TView>,
-			            decltype(getPtrNative(std::declval<TView>())),
-			            decltype(getPitchesInBytes(std::declval<TView>())),
-			            decltype(getExtents(std::declval<TView>()))>>
-			        = true;
 
 			    template<typename TView>
-			    struct ViewAccessOps
+			    concept ViewType = requires {
+			        typename Idx<TView>;
+			        typename Dim<TView>;
+			        {
+			            getPtrNative(std::declval<TView>())
+			        };
+			        {
+			            getPitchesInBytes(std::declval<TView>())
+			        };
+			        {
+			            getExtents(std::declval<TView>())
+			        };
+			    };
+
+			    template<ViewType TView>
+			    struct DeviceViewAccessor
 			    {
-			        static_assert(isView<TView>);
-
 			    private:
 			        using value_type = Elem<TView>;
 			        using pointer = value_type*;
@@ -33869,7 +33874,31 @@
 			        using Dim = alpaka::Dim<TView>;
 
 			    public:
-			        ALPAKA_FN_HOST auto data() -> pointer
+			        [[nodiscard]] ALPAKA_FN_HOST auto data() -> pointer
+			        {
+			            return getPtrNative(*static_cast<TView*>(this));
+			        }
+
+			        [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
+			        {
+			            return getPtrNative(*static_cast<TView const*>(this));
+			        }
+			    };
+
+			    template<ViewType TView>
+			    struct HostViewAccessor
+			    {
+			    private:
+			        using value_type = Elem<TView>;
+			        using pointer = value_type*;
+			        using const_pointer = value_type const*;
+			        using reference = value_type&;
+			        using const_reference = value_type const&;
+			        using Idx = alpaka::Idx<TView>;
+			        using Dim = alpaka::Dim<TView>;
+
+			    public:
+			        [[nodiscard]] ALPAKA_FN_HOST auto data() -> pointer
 			        {
 			            return getPtrNative(*static_cast<TView*>(this));
 			        }
@@ -33971,6 +34000,33 @@
 			            return *ptr_at(index);
 			        }
 			    };
+
+			    template<typename TDev>
+			    struct ViewAccessor
+			    {
+			        template<ViewType TView>
+			        using AccessorType = DeviceViewAccessor<TView>;
+			    };
+
+			    template<>
+			    struct ViewAccessor<alpaka::DevCpu>
+			    {
+			        template<ViewType TView>
+			        using AccessorType = HostViewAccessor<TView>;
+			    };
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+			    template<>
+			    struct ViewAccessor<alpaka::DevGenericSycl<alpaka::TagCpuSycl>>
+			    {
+			        template<ViewType TView>
+			        using AccessorType = HostViewAccessor<TView>;
+			    };
+			#endif
+
+			    template<typename TDev, ViewType TView>
+			    using ViewAccessorType = typename ViewAccessor<TDev>::template AccessorType<TView>;
+
 			} // namespace alpaka::internal
 			// ==
 			// == ./include/alpaka/mem/view/ViewAccessOps.hpp ==
@@ -33993,7 +34049,7 @@
 
 		    //! The CPU memory buffer.
 		    template<typename TElem, typename TDim, typename TIdx>
-		    class ConstBufCpu : public internal::ViewAccessOps<ConstBufCpu<TElem, TDim, TIdx>>
+		    class ConstBufCpu : public internal::ViewAccessorType<DevCpu, ConstBufCpu<TElem, TDim, TIdx>>
 		    {
 		    public:
 		        template<typename TExtent, typename Deleter>
@@ -34037,7 +34093,7 @@
 	{
 	    //! The CPU memory buffer template implementing muting accessors.
 	    template<typename TElem, typename TDim, typename TIdx>
-	    class BufCpu : public internal::ViewAccessOps<BufCpu<TElem, TDim, TIdx>>
+	    class BufCpu : public internal::ViewAccessorType<DevCpu, BufCpu<TElem, TDim, TIdx>>
 	    {
 	        using TBufImpl = detail::BufCpuImpl<TElem, TDim, TIdx>;
 
@@ -35144,7 +35200,8 @@
 
 			    //! The SYCL memory buffer.
 			    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-			    class ConstBufGenericSycl : public internal::ViewAccessOps<ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
+			    class ConstBufGenericSycl
+			        : public internal::ViewAccessorType<DevGenericSycl<TTag>, ConstBufGenericSycl<TElem, TDim, TIdx, TTag>>
 			    {
 			    public:
 			        //! Constructor
@@ -35199,7 +35256,8 @@
 		{
 		    //! The generic memory buffer template implementing muting accessors.
 		    template<typename TElem, typename TDim, typename TIdx, concepts::Tag TTag>
-		    class BufGenericSycl : public internal::ViewAccessOps<BufGenericSycl<TElem, TDim, TIdx, TTag>>
+		    class BufGenericSycl
+		        : public internal::ViewAccessorType<DevGenericSycl<TTag>, BufGenericSycl<TElem, TDim, TIdx, TTag>>
 		    {
 		        using TBufImpl = detail::BufGenericSyclImpl<TElem, TDim, TIdx, TTag>;
 
@@ -36645,7 +36703,8 @@
 
 		    //! The CUDA/HIP memory buffer.
 		    template<typename TApi, typename TElem, typename TDim, typename TIdx>
-		    struct ConstBufUniformCudaHipRt : internal::ViewAccessOps<ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+		    struct ConstBufUniformCudaHipRt
+		        : internal::ViewAccessorType<DevUniformCudaHipRt<TApi>, ConstBufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 		    {
 		        static_assert(!std::is_const_v<TElem>, "The elem type of the buffer must not be const");
 		        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer must not be const!");
@@ -37883,7 +37942,8 @@
 
 	    //! The generic memory buffer template implementing muting accessors.
 	    template<typename TApi, typename TElem, typename TDim, typename TIdx>
-	    class BufUniformCudaHipRt : public internal::ViewAccessOps<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+	    class BufUniformCudaHipRt
+	        : public internal::ViewAccessorType<DevUniformCudaHipRt<TApi>, BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 	    {
 	        using TBufImpl = detail::BufUniformCudaHipRtImpl<TApi, TElem, TDim, TIdx>;
 
@@ -38608,7 +38668,7 @@
 		{
 		    //! The memory view to wrap plain pointers.
 		    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-		    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		    struct ViewPlainPtr final : internal::ViewAccessorType<TDev, ViewPlainPtr<TDev, TElem, TDim, TIdx>>
 		    {
 		        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
@@ -39248,7 +39308,7 @@
 	    //! A non-modifiable wrapper around a view. This view acts as the wrapped view, but the underlying data is only
 	    //! exposed const-qualified.
 	    template<typename TView>
-	    struct ViewConst : internal::ViewAccessOps<ViewConst<TView>>
+	    struct ViewConst : internal::ViewAccessorType<alpaka::Dev<TView>, ViewConst<TView>>
 	    {
 	        static_assert(!std::is_const_v<TView>, "ViewConst must be instantiated with a non-const type");
 	        static_assert(
@@ -39573,7 +39633,7 @@
 	{
 	    //! A sub-view to a view.
 	    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	    class ViewSubView : public internal::ViewAccessOps<ViewSubView<TDev, TElem, TDim, TIdx>>
+	    class ViewSubView : public internal::ViewAccessorType<TDev, ViewSubView<TDev, TElem, TDim, TIdx>>
 	    {
 	        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
