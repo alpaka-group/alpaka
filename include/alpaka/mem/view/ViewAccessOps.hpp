@@ -51,7 +51,7 @@ namespace alpaka::internal
         using Dim = alpaka::Dim<TView>;
 
     public:
-        ALPAKA_FN_HOST auto data() -> pointer
+        [[nodiscard]] ALPAKA_FN_HOST auto data() -> pointer
         {
             return getPtrNative(*static_cast<TView*>(this));
         }
@@ -75,7 +75,7 @@ namespace alpaka::internal
         using Dim = alpaka::Dim<TView>;
 
     public:
-        ALPAKA_FN_HOST auto data() -> pointer
+        [[nodiscard]] ALPAKA_FN_HOST auto data() -> pointer
         {
             return getPtrNative(*static_cast<TView*>(this));
         }
