@@ -23,6 +23,14 @@ namespace alpaka::warp
         template<typename TWarp, typename TSfinae = void>
         struct GetSize;
 
+        //! The compile-time warp size trait.
+        template<typename TWarp, typename TSfinae = void>
+        struct GetSizeCompileTime;
+
+        //! The warp size upper-limit trait.
+        template<typename TWarp, typename TSfinae = void>
+        struct GetSizeUpperLimit;
+
         //! The all warp vote trait.
         template<typename TWarp, typename TSfinae = void>
         struct All;
@@ -68,12 +76,35 @@ namespace alpaka::warp
         return trait::GetSize<ImplementationBase>::getSize(warp);
     }
 
+    //! If the warp size is available as a compile-time constant returns its value; otherwise returns 0.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TWarp>
+    ALPAKA_FN_ACC constexpr auto getSizeCompileTime() -> std::int32_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, std::remove_cvref_t<TWarp>>;
+        return trait::GetSizeCompileTime<ImplementationBase>::getSizeCompileTime();
+    }
+
+    //! If the warp size is available as a compile-time constant returns its value; otherwise returns an upper limit on
+    //! the possible warp size values.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TWarp>
+    ALPAKA_FN_ACC constexpr auto getSizeUpperLimit() -> std::int32_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, std::remove_cvref_t<TWarp>>;
+        return trait::GetSizeUpperLimit<ImplementationBase>::getSizeUpperLimit();
+    }
+
     //! Returns a 32- or 64-bit unsigned integer (depending on the
     //! accelerator) whose Nth bit is set if and only if the Nth thread
     //! of the warp is active.
     //!
     //! Note: decltype for return type is required there, otherwise
-    //! compilcation with a CPU and a GPU accelerator enabled fails as it
+    //! compilation with a CPU and a GPU accelerator enabled fails as it
     //! tries to call device function from a host-device one. The reason
     //! is unclear, but likely related to deducing the return type.
     //!

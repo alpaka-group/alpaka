@@ -20,7 +20,25 @@ namespace alpaka::warp
         template<>
         struct GetSize<WarpSingleThread>
         {
-            static auto getSize(warp::WarpSingleThread const& /*warp*/)
+            static auto getSize(warp::WarpSingleThread const& /*warp*/) -> std::int32_t
+            {
+                return 1;
+            }
+        };
+
+        template<>
+        struct GetSizeCompileTime<WarpSingleThread>
+        {
+            static constexpr auto getSizeCompileTime() -> std::int32_t
+            {
+                return 1;
+            }
+        };
+
+        template<>
+        struct GetSizeUpperLimit<WarpSingleThread>
+        {
+            static constexpr auto getSizeUpperLimit() -> std::int32_t
             {
                 return 1;
             }

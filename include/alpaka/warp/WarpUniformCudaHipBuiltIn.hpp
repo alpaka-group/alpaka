@@ -41,6 +41,58 @@ namespace alpaka::warp
         };
 
         template<>
+        struct GetSizeCompileTime<WarpUniformCudaHipBuiltIn>
+        {
+            static constexpr auto getSizeCompileTime() -> std::int32_t
+            {
+#        if defined(__CUDA_ARCH__)
+                // CUDA always has a warp size of 32
+                return 32;
+#        elif defined(__HIP_DEVICE_COMPILE__)
+                // HIP/ROCm may have a wavefront of 32 or 64 depending on the target device
+#            if defined(__GFX9__)
+                // GCN 5.0 and CDNA GPUs have a wavefront size of 64
+                return 64;
+#            elif defined(__GFX10__) or defined(__GFX11__) or defined(__GFX12__)
+                // RDNA GPUs have a wavefront size of 32
+                return 32;
+#            else
+                // Unknown AMD GPU architecture
+                return 0;
+#            endif
+#        endif
+                // Host compilation
+                return 0;
+            }
+        };
+
+        template<>
+        struct GetSizeUpperLimit<WarpUniformCudaHipBuiltIn>
+        {
+            static constexpr auto getSizeUpperLimit() -> std::int32_t
+            {
+#        if defined(__CUDA_ARCH__)
+                // CUDA always has a warp size of 32
+                return 32;
+#        elif defined(__HIP_DEVICE_COMPILE__)
+                // HIP/ROCm may have a wavefront of 32 or 64 depending on the target device
+#            if defined(__GFX9__)
+                // GCN 5.0 and CDNA GPUs have a wavefront size of 64
+                return 64;
+#            elif defined(__GFX10__) or defined(__GFX11__) or defined(__GFX12__)
+                // RDNA GPUs have a wavefront size of 32
+                return 32;
+#            else
+                // Unknown AMD GPU architecture
+                return 64;
+#            endif
+#        endif
+                // Host compilation
+                return 64;
+            }
+        };
+
+        template<>
         struct Activemask<WarpUniformCudaHipBuiltIn>
         {
             __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
