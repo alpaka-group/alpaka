@@ -403,6 +403,12 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
                 message(WARNING "If you are using CUDA 11.3 please note of the following issue: https://github.com/alpaka-group/alpaka/issues/1857")
             endif()
 
+            # workaround: ISA code parsing when compiling as debug with clang as CUDA compiler
+            # https://github.com/llvm/llvm-project/issues/58491
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-g -Xarch_device -g0>")
+            endif()
+
             if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                 message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
             endif()
