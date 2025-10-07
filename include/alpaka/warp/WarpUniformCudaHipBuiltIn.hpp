@@ -43,7 +43,7 @@ namespace alpaka::warp
         template<>
         struct GetSizeCompileTime<WarpUniformCudaHipBuiltIn>
         {
-            static constexpr auto getSizeCompileTime() -> std::int32_t
+            __device__ static constexpr auto getSizeCompileTime() -> std::int32_t
             {
 #        if defined(__CUDA_ARCH__)
                 // CUDA always has a warp size of 32
@@ -58,7 +58,12 @@ namespace alpaka::warp
                 return 32;
 #            else
                 // Unknown AMD GPU architecture
+#                ifdef ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+                return ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+#                else
+#                    error The current AMD GPU architucture is not supported by this version of alpaka. You can define a default wavefront size setting the preprocessor macro ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
                 return 0;
+#                endif
 #            endif
 #        endif
                 // Host compilation
@@ -69,7 +74,7 @@ namespace alpaka::warp
         template<>
         struct GetSizeUpperLimit<WarpUniformCudaHipBuiltIn>
         {
-            static constexpr auto getSizeUpperLimit() -> std::int32_t
+            __device__ static constexpr auto getSizeUpperLimit() -> std::int32_t
             {
 #        if defined(__CUDA_ARCH__)
                 // CUDA always has a warp size of 32
@@ -84,7 +89,12 @@ namespace alpaka::warp
                 return 32;
 #            else
                 // Unknown AMD GPU architecture
+#                ifdef ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+                return ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+#                else
+#                    error The current AMD GPU architucture is not supported by this version of alpaka. You can define a default wavefront size setting the preprocessor macro ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
                 return 64;
+#                endif
 #            endif
 #        endif
                 // Host compilation
