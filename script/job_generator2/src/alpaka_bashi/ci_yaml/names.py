@@ -10,6 +10,8 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 from alpaka_bashi.globals import (
     MDSPAN,
     BUILD_TYPE,
+    CMAKE_RELEASE_VER,
+    CMAKE_DEBUG_VER,
     JOB_EXECUTION_TYPE,
     JOB_EXECUTION_COMPILE_ONLY_VER,
 )
@@ -42,6 +44,12 @@ def get_job_suffix(combination: bashi.Combination) -> str:
                     version_str += "_mdspan"
             else:
                 version_str += f"_{combination[software].name}{str(combination[software].version)}"
+
+    # make sure, that the build type is at the end of the name
+    if combination[BUILD_TYPE].version == CMAKE_RELEASE_VER:
+        version_str += "_release"
+    if combination[BUILD_TYPE].version == CMAKE_DEBUG_VER:
+        version_str += "_debug"
 
     return version_str
 
