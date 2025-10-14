@@ -3307,7 +3307,7 @@
 		            static_assert(start < end);
 		            constexpr size_t length = end - start;
 
-		            // Copy the demangled type name into an array, and add a null terminaton character
+		            // Copy the demangled type name into an array, and add a null terminaton character.
 		            std::array<char, length + 1> storage{};
 		            std::copy(embeddedType.data() + start, embeddedType.data() + end, storage.data());
 		            storage[length] = '\0';
@@ -3324,7 +3324,8 @@
 		        template<typename T>
 		        consteval std::string_view demangle()
 		        {
-		            return std::string_view{storage<T>.data(), storage<T>.size()};
+		            // Do not include the null terminaton character in the string_view.
+		            return std::string_view{storage<T>.data(), storage<T>.size() - 1};
 		        }
 
 		    } // namespace detail
