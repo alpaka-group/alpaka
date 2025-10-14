@@ -235,7 +235,7 @@
         },
         "hip": {
             "state": "yes",
-            "comment": "(HIP 6.2)"
+            "comment": "(HIP 6.2 - 6.3)"
         },
         "sycl": {
             "state": "no"
@@ -264,7 +264,38 @@
             "state": "no"
         },
         "hip": {
+            "state": "yes",
+            "comment": "(HIP 6.4)"
+        },
+        "sycl": {
             "state": "no"
+        }
+    },
+    "clang 20 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes"
+        },
+        "OMPthread": {
+            "state": "yes"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "yes",
+            "comment": "(HIP 7.0)"
         },
         "sycl": {
             "state": "no"

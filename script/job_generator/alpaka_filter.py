@@ -115,6 +115,7 @@ def alpaka_post_filter(row: List) -> bool:
         and (
             row_check_version(row, DEVICE_COMPILER, "==", "18")
             or row_check_version(row, DEVICE_COMPILER, "==", "19")
+            or row_check_version(row, DEVICE_COMPILER, "==", "20")
         )
         and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=", OFF_VER)
     ):
@@ -131,6 +132,12 @@ def alpaka_post_filter(row: List) -> bool:
 
         # no released nvcc version supports Clang 19 yet (latest release was CUDA 12.6)
         if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(
+            row, DEVICE_COMPILER, "<=", "12.6"
+        ):
+            return False
+
+        # no released nvcc version supports Clang 20 yet (latest release was CUDA 12.6)
+        if row_check_version(row, HOST_COMPILER, "==", "20") and row_check_version(
             row, DEVICE_COMPILER, "<=", "12.6"
         ):
             return False

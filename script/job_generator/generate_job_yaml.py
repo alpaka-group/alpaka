@@ -326,6 +326,12 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "17"
         elif job[DEVICE_COMPILER][VERSION] == "6.2":
             variables["ALPAKA_CI_CLANG_VER"] = "18"
+        elif job[DEVICE_COMPILER][VERSION] == "6.3":
+            variables["ALPAKA_CI_CLANG_VER"] = "18"
+        elif job[DEVICE_COMPILER][VERSION] == "6.4":
+            variables["ALPAKA_CI_CLANG_VER"] = "19"
+        elif job[DEVICE_COMPILER][VERSION] == "7.0":
+            variables["ALPAKA_CI_CLANG_VER"] = "20"
         else:
             raise RuntimeError(
                 "generate_job_yaml.job_variables(): unknown ROCm version: " f"{job[DEVICE_COMPILER][VERSION]}"

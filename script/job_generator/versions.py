@@ -12,7 +12,7 @@ from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-
 
 sw_versions: Dict[str, List[str]] = {
     GCC: ["11", "12", "13"],
-    CLANG: ["14", "15", "16", "17", "18", "19"],
+    CLANG: ["14", "15", "16", "17", "18", "19", "20"],
     NVCC: [
         "12.0",
         "12.1",
@@ -22,7 +22,7 @@ sw_versions: Dict[str, List[str]] = {
         "12.5",
         "12.6",
     ],
-    HIPCC: ["6.0", "6.1", "6.2"],
+    HIPCC: ["6.0", "6.1", "6.2", "6.3", "6.4", "7.0"],
     ICPX: ["2025.0"],
     # Contains all enabled back-ends.
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
