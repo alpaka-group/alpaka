@@ -9,7 +9,6 @@ from typeguard import typechecked
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
-
 sw_versions: Dict[str, List[str]] = {
     GCC: ["11", "12", "13"],
     CLANG: ["14", "15", "16", "17", "18", "19", "20"],
@@ -21,6 +20,8 @@ sw_versions: Dict[str, List[str]] = {
         "12.4",
         "12.5",
         "12.6",
+        "12.8",
+        "12.9",
     ],
     HIPCC: ["6.0", "6.1", "6.2", "6.3", "6.4", "7.0"],
     ICPX: ["2025.0"],

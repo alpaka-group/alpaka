@@ -130,15 +130,15 @@ def alpaka_post_filter(row: List) -> bool:
         ):
             return False
 
-        # no released nvcc version supports Clang 19 yet (latest release was CUDA 12.6)
+        # nvcc 12.8 is the minimum requirement for host compiler Clang 19
         if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(
             row, DEVICE_COMPILER, "<=", "12.6"
         ):
             return False
 
-        # no released nvcc version supports Clang 20 yet (latest release was CUDA 12.6)
+        # nvcc 13.0 is the minimum requirement for host compiler Clang 20
         if row_check_version(row, HOST_COMPILER, "==", "20") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.6"
+            row, DEVICE_COMPILER, "<=", "12.9"
         ):
             return False
 
