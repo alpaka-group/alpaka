@@ -41,6 +41,9 @@ else
         elif [[ "$(cat /etc/os-release)" == *"22.04"* ]]
         then
             ALPAKA_CUDA_DISTRO=ubuntu2204
+        elif [[ "$(cat /etc/os-release)" == *"24.04"* ]]
+        then
+            ALPAKA_CUDA_DISTRO=ubuntu2404
         fi
 
         # Set the correct CUDA downloads
@@ -89,8 +92,8 @@ else
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.0" ]
         then
             ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-0-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.0.0-525.60.13-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.0.1-525.85.12-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.1" ]
         then
@@ -101,8 +104,8 @@ else
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.2" ]
         then
             ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-2-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.2.1-535.86.10-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.2.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.2.2-535.104.05-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.2.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.3" ]
         then
@@ -113,14 +116,14 @@ else
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.4" ]
         then
             ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-4-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.4.0-550.54.14-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.4.1-550.54.15-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.4.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.5" ]
         then
             ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-5-local
-            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.5.0-555.42.02-1_amd64.deb
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.5.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.5.1-555.42.06-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
         elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.6" ]
         then
