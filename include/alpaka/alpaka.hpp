@@ -9119,6 +9119,14 @@
 			        template<typename TWarp, typename TSfinae = void>
 			        struct GetSize;
 
+			        //! The compile-time warp size trait.
+			        template<typename TWarp, typename TSfinae = void>
+			        struct GetSizeCompileTime;
+
+			        //! The warp size upper-limit trait.
+			        template<typename TWarp, typename TSfinae = void>
+			        struct GetSizeUpperLimit;
+
 			        //! The all warp vote trait.
 			        template<typename TWarp, typename TSfinae = void>
 			        struct All;
@@ -9164,12 +9172,35 @@
 			        return trait::GetSize<ImplementationBase>::getSize(warp);
 			    }
 
+			    //! If the warp size is available as a compile-time constant returns its value; otherwise returns 0.
+			    //!
+			    //! \tparam TWarp The warp implementation type.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TWarp>
+			    ALPAKA_FN_ACC constexpr auto getSizeCompileTime() -> std::int32_t
+			    {
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, std::remove_cvref_t<TWarp>>;
+			        return trait::GetSizeCompileTime<ImplementationBase>::getSizeCompileTime();
+			    }
+
+			    //! If the warp size is available as a compile-time constant returns its value; otherwise returns an upper limit on
+			    //! the possible warp size values.
+			    //!
+			    //! \tparam TWarp The warp implementation type.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TWarp>
+			    ALPAKA_FN_ACC constexpr auto getSizeUpperLimit() -> std::int32_t
+			    {
+			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, std::remove_cvref_t<TWarp>>;
+			        return trait::GetSizeUpperLimit<ImplementationBase>::getSizeUpperLimit();
+			    }
+
 			    //! Returns a 32- or 64-bit unsigned integer (depending on the
 			    //! accelerator) whose Nth bit is set if and only if the Nth thread
 			    //! of the warp is active.
 			    //!
 			    //! Note: decltype for return type is required there, otherwise
-			    //! compilcation with a CPU and a GPU accelerator enabled fails as it
+			    //! compilation with a CPU and a GPU accelerator enabled fails as it
 			    //! tries to call device function from a host-device one. The reason
 			    //! is unclear, but likely related to deducing the return type.
 			    //!
@@ -9430,7 +9461,25 @@
 		        template<>
 		        struct GetSize<WarpSingleThread>
 		        {
-		            static auto getSize(warp::WarpSingleThread const& /*warp*/)
+		            static auto getSize(warp::WarpSingleThread const& /*warp*/) -> std::int32_t
+		            {
+		                return 1;
+		            }
+		        };
+
+		        template<>
+		        struct GetSizeCompileTime<WarpSingleThread>
+		        {
+		            static constexpr auto getSizeCompileTime() -> std::int32_t
+		            {
+		                return 1;
+		            }
+		        };
+
+		        template<>
+		        struct GetSizeUpperLimit<WarpSingleThread>
+		        {
+		            static constexpr auto getSizeUpperLimit() -> std::int32_t
 		            {
 		                return 1;
 		            }
@@ -19699,6 +19748,26 @@
 			    };
 
 			    template<typename TDim>
+			    struct GetSizeCompileTime<warp::WarpGenericSycl<TDim>>
+			    {
+			        static constexpr auto getSizeCompileTime() -> std::int32_t
+			        {
+			            // SYCL sub-groups size is usually not known at compile time
+			            return 0;
+			        }
+			    };
+
+			    template<typename TDim>
+			    struct GetSizeUpperLimit<warp::WarpGenericSycl<TDim>>
+			    {
+			        static constexpr auto getSizeUpperLimit() -> std::int32_t
+			        {
+			            // See include/alpaka/kernel/SyclSubgroupSize.hpp for possible sub-group sizes.
+			            return 64;
+			        }
+			    };
+
+			    template<typename TDim>
 			    struct Activemask<warp::WarpGenericSycl<TDim>>
 			    {
 			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
@@ -25499,6 +25568,68 @@
 			            __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
 			            {
 			                return warpSize;
+			            }
+			        };
+
+			        template<>
+			        struct GetSizeCompileTime<WarpUniformCudaHipBuiltIn>
+			        {
+			            __device__ static constexpr auto getSizeCompileTime() -> std::int32_t
+			            {
+			#        if defined(__CUDA_ARCH__)
+			                // CUDA always has a warp size of 32
+			                return 32;
+			#        elif defined(__HIP_DEVICE_COMPILE__)
+			                // HIP/ROCm may have a wavefront of 32 or 64 depending on the target device
+			#            if defined(__GFX9__)
+			                // GCN 5.0 and CDNA GPUs have a wavefront size of 64
+			                return 64;
+			#            elif defined(__GFX10__) or defined(__GFX11__) or defined(__GFX12__)
+			                // RDNA GPUs have a wavefront size of 32
+			                return 32;
+			#            else
+			                // Unknown AMD GPU architecture
+			#                ifdef ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			                return ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			#                else
+			#                    error The current AMD GPU architucture is not supported by this version of alpaka. You can define a default wavefront size setting the preprocessor macro ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			                return 0;
+			#                endif
+			#            endif
+			#        endif
+			                // Host compilation
+			                return 0;
+			            }
+			        };
+
+			        template<>
+			        struct GetSizeUpperLimit<WarpUniformCudaHipBuiltIn>
+			        {
+			            __device__ static constexpr auto getSizeUpperLimit() -> std::int32_t
+			            {
+			#        if defined(__CUDA_ARCH__)
+			                // CUDA always has a warp size of 32
+			                return 32;
+			#        elif defined(__HIP_DEVICE_COMPILE__)
+			                // HIP/ROCm may have a wavefront of 32 or 64 depending on the target device
+			#            if defined(__GFX9__)
+			                // GCN 5.0 and CDNA GPUs have a wavefront size of 64
+			                return 64;
+			#            elif defined(__GFX10__) or defined(__GFX11__) or defined(__GFX12__)
+			                // RDNA GPUs have a wavefront size of 32
+			                return 32;
+			#            else
+			                // Unknown AMD GPU architecture
+			#                ifdef ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			                return ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			#                else
+			#                    error The current AMD GPU architucture is not supported by this version of alpaka. You can define a default wavefront size setting the preprocessor macro ALPAKA_DEFAULT_AMD_WAVEFRONT_SIZE
+			                return 64;
+			#                endif
+			#            endif
+			#        endif
+			                // Host compilation
+			                return 64;
 			            }
 			        };
 
