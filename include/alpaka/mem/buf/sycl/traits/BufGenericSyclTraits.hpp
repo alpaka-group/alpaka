@@ -296,6 +296,28 @@ namespace alpaka::trait
         }
     };
 
+    //! The unified (managed) memory allocation trait specialization for the SYCL devices.
+    template<concepts::Tag TTag, typename TElem, typename TDim, typename TIdx>
+    struct BufAllocManaged<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocManagedBuf(
+            DevCpu const& host,
+            PlatformGenericSycl<TTag> const& platform,
+            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+            // Allocate SYCL page-locked memory on the host, mapped into the SYCL platform's address space and
+            // accessible to all devices in the SYCL platform.
+            auto ctx = platform.syclContext();
+            TElem* memPtr = sycl::malloc_shared<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
+            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
+
+            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+        }
+    };
+
 } // namespace alpaka::trait
 
 #endif

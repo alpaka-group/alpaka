@@ -50,6 +50,10 @@ namespace alpaka
         {
         };
 
+        //! The managed (unified) memory allocator trait.
+        template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
+        struct BufAllocManaged;
+
         //! The trait to transform a mutable buffer into a constant one.
         template<typename TBuf>
         struct MakeConstBuf;
@@ -154,6 +158,24 @@ namespace alpaka
         TExtent const& extent = TExtent())
     {
         return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, platform, extent);
+    }
+
+    //! Allocates unified memory, accessible by all devices in the given platform.
+    //!
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TPlatform The platform from which the buffer is accessible.
+    //! \param host The host device to allocate the buffer on.
+    //! \param extent The extent of the buffer.
+    //! \return The newly allocated buffer.
+    template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
+    ALPAKA_FN_HOST auto allocManagedBuf(
+        DevCpu const& host,
+        TPlatform const& platform,
+        TExtent const& extent = TExtent())
+    {
+        return trait::BufAllocManaged<TPlatform, TElem, Dim<TExtent>, TIdx>::allocManagedBuf(host, platform, extent);
     }
 
     /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to

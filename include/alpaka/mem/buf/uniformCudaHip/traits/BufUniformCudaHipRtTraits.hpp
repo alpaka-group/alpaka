@@ -358,6 +358,30 @@ namespace alpaka::trait
             return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
         }
     };
+  
+    //! The unified (managed) memory allocation trait specialization for the CUDA/HIP devices.
+    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    struct BufAllocManaged<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocManagedBuf(
+            DevCpu const& host,
+            PlatformUniformCudaHipRt<TApi> const& /*platform*/,
+            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+            // Allocate CUDA/HIP unified (managed) memory accessible by both host and all CUDA/HIP devices.
+            TElem* memPtr = nullptr;
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::mallocManaged(
+                reinterpret_cast<void**>(&memPtr),
+                sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
+                TApi::memAttachGlobal));
+            auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::free(ptr)); };
+
+            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+        }
+    };
 
 } // namespace alpaka::trait
 

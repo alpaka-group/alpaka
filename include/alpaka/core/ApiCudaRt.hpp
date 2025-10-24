@@ -54,6 +54,9 @@ namespace alpaka
         static constexpr Flag_t hostMallocCoherent = cudaHostAllocDefault; // Not supported.
         static constexpr Flag_t hostMallocNonCoherent = cudaHostAllocDefault; // Not supported.
 
+        static constexpr Flag_t memAttachGlobal = cudaMemAttachGlobal; 
+        static constexpr Flag_t memAttachHost = cudaMemAttachHost; 
+
         static constexpr Flag_t hostRegisterDefault = cudaHostRegisterDefault;
         static constexpr Flag_t hostRegisterPortable = cudaHostRegisterPortable;
         static constexpr Flag_t hostRegisterMapped = cudaHostRegisterMapped;
@@ -295,6 +298,11 @@ namespace alpaka
             // Not implemented.
             return errorUnknown;
 #    endif
+        }
+        
+        static inline Error_t mallocManaged(void** ptr, size_t size, Flag_t flags)
+        {
+            return ::cudaMallocManaged(ptr, size, flags);
         }
 
         static inline Error_t mallocPitch(void** devPtr, size_t* pitch, size_t width, size_t height)

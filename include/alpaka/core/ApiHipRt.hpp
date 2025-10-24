@@ -56,6 +56,9 @@ namespace alpaka
         static constexpr Flag_t hostMallocCoherent = hipHostMallocCoherent;
         static constexpr Flag_t hostMallocNonCoherent = hipHostMallocNonCoherent;
 
+        static constexpr Flag_t memAttachGlobal = hipMemAttachGlobal; 
+        static constexpr Flag_t memAttachHost = hipMemAttachHost; 
+
         static constexpr Flag_t hostRegisterDefault = hipHostRegisterDefault;
         static constexpr Flag_t hostRegisterPortable = hipHostRegisterPortable;
         static constexpr Flag_t hostRegisterMapped = hipHostRegisterMapped;
@@ -334,6 +337,11 @@ namespace alpaka
             // Not implemented.
             return errorUnknown;
 #    endif
+        }
+
+        static inline Error_t mallocManaged(void** ptr, size_t size, Flag_t flags)
+        {
+            return ::hipMallocManaged(ptr, size, flags);
         }
 
         static inline Error_t mallocPitch(void** devPtr, size_t* pitch, size_t width, size_t height)

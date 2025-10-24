@@ -237,4 +237,18 @@ namespace alpaka::trait
         }
     };
 
+    //! The unified (managed) memory allocation trait specialization.
+    template<typename TElem, typename TDim, typename TIdx>
+    struct BufAllocManaged<PlatformCpu, TElem, TDim, TIdx>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocManagedBuf(
+            DevCpu const& host,
+            PlatformCpu const& /*platform*/,
+            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+        {
+            return allocBuf<TElem, TIdx>(host, extent);
+        }
+    };
+
 } // namespace alpaka::trait
