@@ -15,73 +15,22 @@
 #include <numeric>
 #include <type_traits>
 
-// namespace managed_buftest
-// {
-// #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-//     template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
-//     auto allocManagedBuf(alpaka::DevCpu const& host, TPlatform const& platform, TExtent const& extent) 
-//     {
-//         return alpaka::allocManagedBuf<TElem, TIdx, TExtent, TPlatform>(host, platform, extent);
-//     }
-// #endif
-// #if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-//     template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
-//     auto allocManagedBuf(alpaka::DevCpu const& host, TPlatform const& platform, TExtent const& extent) 
-//     {
-//         return alpaka::allocManagedBuf<TElem, TIdx, TExtent, TPlatform>(host, platform, extent);
-//     }
-// #endif
-// } // namespace managed_buftest
+// kernel that changes the elements of a buffer
+struct Kernel
+{
+    template <typename Acc, typename Buf>
+    ALPAKA_FN_ACC void operator()(Acc const& acc, Buf buf, int value) const
+    {
+        auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const extent = alpaka::getExtentProduct(buf);
 
-// template<typename TAcc>
-// static auto testManagedBuffer(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
-// {
-//     using Dev = alpaka::Dev<TAcc>;
-//     using Queue = alpaka::test::DefaultQueue<Dev>;
-    
-//     using Elem = float;
-//     using Dim = alpaka::Dim<TAcc>;
-//     using Idx = alpaka::Idx<TAcc>;
-//     using Extent = alpaka::Vec<Dim, Idx>;
-//     using Platform = alpaka::Platform<TAcc>;
-
-//     auto const platformAcc = alpaka::Platform<TAcc>{};
-//     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
-//     Queue queue(dev);
-
-//     // alpaka::mallocManaged
-//     //auto buf = alpaka::allocManagedBuf<Elem, Idx, Extent, Platform>(dev, platformAcc, extent);
-
-//     auto const host = alpaka::getDevByIdx(alpaka::PlatformCpu{}, 0);
-//     auto buf = alpaka::allocManagedBuf<Elem, Idx, Extent, Platform>(host, platformAcc, extent);
-
-//     auto const offset = alpaka::Vec<Dim, Idx>::zeros();
-//     alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
-
-//     alpaka::test::testViewMutable<TAcc>(queue, buf);
-// }
-
-
-// TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
-// {
-//     using Acc = TestType;
-//     using Dim = alpaka::Dim<Acc>;
-//     using Idx = alpaka::Idx<Acc>;
-//     testManagedBuffer<Acc>(alpaka::test::extentBuf<Dim, Idx>);
-// }
-
-// TEMPLATE_LIST_TEST_CASE("memBufManagedZeroSizeTest", "[memBuf]", alpaka::test::TestAccs)
-// {
-//     using Acc = TestType;
-//     using Dim = alpaka::Dim<Acc>;
-//     using Idx = alpaka::Idx<Acc>;
-
-//     auto const extent = alpaka::Vec<Dim, Idx>::zeros();
-
-//     testManagedBuffer<Acc>(extent);
-// }
-
-
+        if(idx < extent)
+        {
+            auto* data = alpaka::getPtrNative(buf);
+            data[idx] += value;
+        }
+    }
+};
 
 TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
 {
@@ -106,7 +55,72 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
 
     auto const extent = alpaka::test::extentBuf<Dim, Idx>;
 
-    auto buf = alpaka::allocManagedBuf<Elem, Idx, alpaka::Vec<Dim, Idx>, Platform>(devHost, platformAcc, extent);
+    auto buf = alpaka::allocManagedBuf<Elem, Idx>(devHost, platformAcc, extent);
+
+    constexpr Elem fillVal = 42;
+    alpaka::fill(queue, buf, fillVal);
+
+    alpaka::wait(queue);
+
+    // constexpr int value = 10;
+
+    // Idx const tpb = 256;
+    // Idx const ept = 1;
+    // Idx const blocks = (extent + tpb * ept - 1) / (tpb * ept);
+
+    // using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
+    // auto div = WorkDiv{blocks, tpb, ept};
+
+    // alpaka::exec<Acc>(
+    //     queue,
+    //     div,
+    //     Kernel{},
+    //     buf,
+    //     value
+    // );
+
+    // alpaka::wait(queue);
+
+    Idx const size = alpaka::getExtentProduct(buf);
+    auto* data = alpaka::getPtrNative(buf); 
+    bool passed = true;
+    for(Idx i = 0; i < size; ++i)
+    {
+        if(data[i] != fillVal /*+ value*/)
+        {
+            passed = false;
+        }
+    }
+    CHECK(passed);
+}
+
+
+
+TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Dev = alpaka::Dev<Acc>;
+    using Queue = alpaka::test::DefaultQueue<Dev>;
+    using Elem = int;
+    using Dim = alpaka::Dim<Acc>;
+    using Idx = alpaka::Idx<Acc>;
+    using Platform = alpaka::Platform<Acc>;
+
+    auto const platformHost = alpaka::PlatformCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+
+    auto const platformAcc = alpaka::Platform<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+
+    INFO("Test if unified memory works in: ");
+    INFO(alpaka::getName(dev));
+
+    Queue queue(dev);
+
+    auto const extent = alpaka::test::extentBuf<Dim, Idx>;
+
+    auto buf = alpaka::allocMappedBuf<Elem, Idx, alpaka::Vec<Dim, Idx>, Platform>(devHost, platformAcc, extent);
+    // maybe the last 2 template arguments are not necessary
 
     constexpr Elem fillVal = 42;
     alpaka::fill(queue, buf, fillVal);
