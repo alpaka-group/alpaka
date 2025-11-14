@@ -10,6 +10,7 @@
 #include "alpaka/mem/view/Traits.hpp"
 
 #include <cstdint>
+#include <span>
 #include <sstream>
 #include <stdexcept>
 #include <type_traits>
@@ -39,7 +40,7 @@ namespace alpaka::internal
     };
 
     template<ViewType TView>
-    struct DeviceViewAccessor
+    struct BaseViewAccessor
     {
     private:
         using value_type = Elem<TView>;
@@ -59,11 +60,76 @@ namespace alpaka::internal
         [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
         {
             return getPtrNative(*static_cast<TView const*>(this));
+        }
+
+        ALPAKA_FN_HOST auto begin() -> pointer requires(Dim::value == 1)
+        {
+            return data();
+        }
+
+        ALPAKA_FN_HOST auto begin() const -> pointer requires(Dim::value == 1)
+        {
+            return data();
+        }
+
+        ALPAKA_FN_HOST auto cbegin() const -> pointer requires(Dim::value == 1)
+        {
+            return data();
+        }
+
+        ALPAKA_FN_HOST auto end() -> pointer requires(Dim::value == 1)
+        {
+            return data() + getExtents(*static_cast<TView*>(this))[0];
+        }
+
+        ALPAKA_FN_HOST auto end() const -> pointer requires(Dim::value == 1)
+        {
+            return data() + getExtents(*static_cast<TView const*>(this))[0];
+        }
+
+        ALPAKA_FN_HOST auto cend() const -> pointer requires(Dim::value == 1)
+        {
+            return data() + getExtents(*static_cast<TView const*>(this))[0];
+        }
+
+        ALPAKA_FN_HOST auto rank() const -> Idx
+        {
+            return Dim::value;
+        }
+
+        ALPAKA_FN_HOST auto size() const -> Idx requires(Dim::value == 1)
+        {
+            return getExtents(*static_cast<TView const*>(this))[0];
+        }
+
+        ALPAKA_FN_HOST auto size() const -> Idx requires(Dim::value > 1)
+        {
+            return getExtents(*static_cast<TView const*>(this)).prod();
+        }
+
+        ALPAKA_FN_HOST auto extent(Idx dim) const -> Idx
+        {
+            return getExtents(*static_cast<TView const*>(this))[dim];
+        }
+
+        ALPAKA_FN_HOST auto extents() const -> Vec<Dim, Idx>;
+
+        ALPAKA_FN_HOST operator std::span<value_type const>() const requires(Dim::value == 1)
+        {
+            return std::span<value_type const>{data(), static_cast<std::size_t>(size())};
+        }
+
+        ALPAKA_FN_HOST operator std::span<value_type>() requires(Dim::value == 1)
+        {
+            return std::span<value_type>{data(), static_cast<std::size_t>(size())};
         }
     };
 
     template<ViewType TView>
-    struct HostViewAccessor
+    using DeviceViewAccessor = BaseViewAccessor<TView>;
+
+    template<ViewType TView>
+    struct HostViewAccessor : BaseViewAccessor<TView>
     {
     private:
         using value_type = Elem<TView>;
@@ -75,50 +141,40 @@ namespace alpaka::internal
         using Dim = alpaka::Dim<TView>;
 
     public:
-        [[nodiscard]] ALPAKA_FN_HOST auto data() -> pointer
-        {
-            return getPtrNative(*static_cast<TView*>(this));
-        }
-
-        [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
-        {
-            return getPtrNative(*static_cast<TView const*>(this));
-        }
-
         ALPAKA_FN_HOST auto operator*() -> reference
         {
             static_assert(Dim::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
-            return *data();
+            return *(this->data());
         }
 
         ALPAKA_FN_HOST auto operator*() const -> const_reference
         {
             static_assert(Dim::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
-            return *data();
+            return *(this->data());
         }
 
         ALPAKA_FN_HOST auto operator->() -> pointer
         {
             static_assert(Dim::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
-            return data();
+            return *(this->data());
         }
 
         ALPAKA_FN_HOST auto operator->() const -> const_pointer
         {
             static_assert(Dim::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
-            return data();
+            return this->data();
         }
 
         ALPAKA_FN_HOST auto operator[](Idx i) -> reference
         {
             static_assert(Dim::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
-            return data()[i];
+            return this->data()[i];
         }
 
         ALPAKA_FN_HOST auto operator[](Idx i) const -> const_reference
         {
             static_assert(Dim::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
-            return data()[i];
+            return this->data()[i];
         }
 
     private:
@@ -129,7 +185,7 @@ namespace alpaka::internal
                 std::is_convertible_v<TIdx, Idx>,
                 "the index type must be convertible to the index of the Buffer or View");
 
-            auto ptr = reinterpret_cast<std::uintptr_t>(data());
+            auto ptr = reinterpret_cast<std::uintptr_t>(this->data());
             if constexpr(Dim::value > 0)
             {
                 ptr += static_cast<std::uintptr_t>(
