@@ -16,17 +16,15 @@
 #include <type_traits>
 
 // kernel that changes the elements of a buffer
-struct Kernel
+struct ValueAddKernel
 {
-    template <typename Acc, typename Buf>
-    ALPAKA_FN_ACC void operator()(Acc const& acc, Buf buf, int value) const
+    template <typename Acc, typename TElem, typename TIdx>
+    ALPAKA_FN_ACC void operator()(Acc const& acc, TElem* data, int value, TIdx numElements) const
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
-        auto const extent = alpaka::getExtentProduct(buf);
 
-        if(idx < extent)
+        if (idx < numElements)
         {
-            auto* data = alpaka::getPtrNative(buf);
             data[idx] += value;
         }
     }
@@ -40,7 +38,6 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     using Elem = int;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
-    using Platform = alpaka::Platform<Acc>;
 
     auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
@@ -53,42 +50,60 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
 
     Queue queue(dev);
 
-    auto const extent = alpaka::test::extentBuf<Dim, Idx>;
+    // Define the work division
+    Idx const numElements(123456);
+    Idx const elementsPerThread(1u);
+
+    alpaka::Vec<Dim, Idx> extent = alpaka::Vec<Dim,Idx>::ones();
+    extent[0] = numElements;
+
+    alpaka::Vec<Dim, Idx> elemsPerThreadVec = alpaka::Vec<Dim,Idx>::ones();
+    elemsPerThreadVec[0] = elementsPerThread;
 
     auto buf = alpaka::allocManagedBuf<Elem, Idx>(devHost, platformAcc, extent);
 
     constexpr Elem fillVal = 42;
-    alpaka::fill(queue, buf, fillVal);
+    auto* hostPtr = alpaka::getPtrNative(buf);
+    for (Idx i=0; i<numElements; ++i) {
+        hostPtr[i] = fillVal;
+    }
 
+    constexpr int value = 10;
+
+    ValueAddKernel kernel;
+    alpaka::KernelCfg<Acc> const kernelCfg = {extent, elemsPerThreadVec};
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDiv(
+        kernelCfg,
+        dev,
+        kernel,
+        buf.data(),
+        value,
+        numElements);
+
+    std::cout << "Testing Kernel with scalar indices with a grid of "
+                << alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv) << " blocks x "
+                << alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv) << " threads x "
+                << alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(workDiv) << " elements...\n";
+
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
+        workDiv,
+        kernel,
+        buf.data(),
+        value,
+        numElements);
+
+    alpaka::enqueue(queue, taskKernel);
     alpaka::wait(queue);
 
-    // constexpr int value = 10;
-
-    // Idx const tpb = 256;
-    // Idx const ept = 1;
-    // Idx const blocks = (extent + tpb * ept - 1) / (tpb * ept);
-
-    // using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    // auto div = WorkDiv{blocks, tpb, ept};
-
-    // alpaka::exec<Acc>(
-    //     queue,
-    //     div,
-    //     Kernel{},
-    //     buf,
-    //     value
-    // );
-
-    // alpaka::wait(queue);
-
-    Idx const size = alpaka::getExtentProduct(buf);
-    auto* data = alpaka::getPtrNative(buf); 
     bool passed = true;
-    for(Idx i = 0; i < size; ++i)
+    for(Idx i = 0; i < numElements; ++i)
     {
-        if(data[i] != fillVal /*+ value*/)
+        if(hostPtr[i] != fillVal + value)
         {
             passed = false;
+            break;
         }
     }
     CHECK(passed);
@@ -119,8 +134,7 @@ TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
 
     auto const extent = alpaka::test::extentBuf<Dim, Idx>;
 
-    auto buf = alpaka::allocMappedBuf<Elem, Idx, alpaka::Vec<Dim, Idx>, Platform>(devHost, platformAcc, extent);
-    // maybe the last 2 template arguments are not necessary
+    auto buf = alpaka::allocMappedBuf<Elem, Idx>(devHost, platformAcc, extent);
 
     constexpr Elem fillVal = 42;
     alpaka::fill(queue, buf, fillVal);

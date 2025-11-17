@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
-# rm -rf build
+rm -rf build
 
-# mkdir -p build
+mkdir -p build
  cd build/
 
 #source scl_source enable gcc-toolset-14
@@ -25,41 +25,42 @@ set -e
 #   -DCMAKE_HIP_COMPILER=/opt/rocm-6.4.0/llvm/bin/amdclang++ \
 
 # CPU serial
-# cmake ~/cern/my-alpaka \
-#   -Dalpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=? \
-#   -Dalpaka_ACC_GPU_CUDA_ENABLE=ON \
+# cmake /data/user/mmichail/my-alpaka \
 #   -Dalpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE=ON \
 #   -Dalpaka_BUILD_EXAMPLES=ON \
 #   -Dalpaka_BUILD_BENCHMARKS=ON \
 #   -DBUILD_TESTING=ON \
-#   -DCMAKE_CXX_COMPILER=/usr/bin/g++-13 \
+#   -DCMAKE_CXX_COMPILER=/data/cmssw/el8_amd64_gcc12/external/gcc/12.3.1-40d504be6370b5a30e3947a6e575ca28/bin/g++ \
 #   -DALPAKA_CXX_STANDARD=20 \
 #   -L
 
 # CUDA
-cmake ~/cern/my-alpaka \
+cmake /data/user/mmichail/my-alpaka \
   -Dalpaka_ACC_GPU_CUDA_ENABLE=ON \
   -Dalpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE=ON \
   -Dalpaka_BUILD_EXAMPLES=ON \
   -Dalpaka_BUILD_BENCHMARKS=ON \
   -DBUILD_TESTING=ON \
-  -DCMAKE_CUDA_ARCHITECTURES=86 \
-  -DCMAKE_CXX_COMPILER=/usr/bin/g++-13 \
+  -DCMAKE_CUDA_ARCHITECTURES=75 \
+  -DCMAKE_CXX_COMPILER=/data/cmssw/el8_amd64_gcc12/external/gcc/12.3.1-40d504be6370b5a30e3947a6e575ca28/bin/g++ \
   -DALPAKA_CXX_STANDARD=20 \
   -L
 
 # HIP 
-# cmake ~/cern/my-alpaka \
+# cmake /data/user/mmichail/my-alpaka \
 #   -Dalpaka_ACC_GPU_HIP_ENABLE=ON \
 #   -Dalpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE=ON \
 #   -Dalpaka_BUILD_EXAMPLES=ON \
 #   -Dalpaka_BUILD_BENCHMARKS=ON \
 #   -DBUILD_TESTING=ON \
-#   -Dhip_DIR=/opt/rocm-6.4.0/lib/cmake/hip \
-#   -Drocrand_DIR=/opt/rocm-6.4.0/lib/cmake/rocrand \
-#   -DAMDDeviceLibs_DIR=/opt/rocm-6.4.0/lib/cmake/AMDDeviceLibs \
-#   -DCMAKE_HIP_ARCHITECTURES=gfx900 \
-#   -DCMAKE_CXX_COMPILER=/usr/bin/g++-13 \
+#   -DCMAKE_PREFIX_PATH=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043:/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/hip:/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/rocprim:/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/rocrand \
+#   -Dhip_DIR=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/lib/cmake/hip \
+#   -Dhiprand_DIR=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/lib/cmake/hiprand \
+#   -Drocrand_DIR=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/lib/cmake/rocrand \
+#   -Dhip-lang_DIR=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/lib/cmake/hip-lang \
+#   -Drocprim_DIR=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/rocprim/lib/cmake/rocprim \
+#   -DCMAKE_HIP_COMPILER=/data/cmssw/el8_amd64_gcc12/external/rocm/6.3.2-66f13eaf614440036cd25cbdffe8b043/llvm/bin/clang++ \
+#   -DCMAKE_HIP_ARCHITECTURES=gfx1100 \
 #   -DALPAKA_CXX_STANDARD=20 \
 #   -L
 
@@ -79,18 +80,18 @@ cmake ~/cern/my-alpaka \
 #./test/unit/mem/buf/memBufTest --list-tests
 
 # Build only the memBufTest target using all available cores
-# make memBufTest -j"$(nproc)"
+ make memBufTest -j"$(nproc)"
 
 # Run the built test executable
 # ./test/unit/mem/buf/memBufTest
 
 # Builds only the target named 'memBufTest' (your specific unit test)
-cmake --build . --target memBufTest -j$(nproc)
+#cmake --build . --target memBufTest -j$(nproc)
 
 # Runs only the test whose name matches 'memBufTest' using CTest
-ctest -R memBufTest --output-on-failure
+#ctest -R memBufTest --output-on-failure
 
-# ./test/unit/mem/buf/memBufTest -s -r compact
+./test/unit/mem/buf/memBufTest -s -r compact
 # # -s / --success  : show successful assertions & messages
 # # -r compact      : compact reporter (use -r console for verbose)
 
