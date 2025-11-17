@@ -48,6 +48,26 @@ namespace alpaka::warp::trait
     };
 
     template<typename TDim>
+    struct GetSizeCompileTime<warp::WarpGenericSycl<TDim>>
+    {
+        static constexpr auto getSizeCompileTime() -> std::int32_t
+        {
+            // SYCL sub-groups size is usually not known at compile time
+            return 0;
+        }
+    };
+
+    template<typename TDim>
+    struct GetSizeUpperLimit<warp::WarpGenericSycl<TDim>>
+    {
+        static constexpr auto getSizeUpperLimit() -> std::int32_t
+        {
+            // See include/alpaka/kernel/SyclSubgroupSize.hpp for possible sub-group sizes.
+            return 64;
+        }
+    };
+
+    template<typename TDim>
     struct Activemask<warp::WarpGenericSycl<TDim>>
     {
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
