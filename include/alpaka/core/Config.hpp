@@ -5,24 +5,12 @@
 
 #pragma once
 
+#include "alpaka/core/PP.hpp"
+
 #ifdef __INTEL_COMPILER
 #    warning                                                                                                          \
         "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)."
 #endif
-
-#define ALPAKA_VERSION_NUMBER(major, minor, patch)                                                                    \
-    ((((major) % 10000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
-
-#define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0llu, 0llu, 0llu)
-
-#define ALPAKA_YYYYMMDD_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 10000llu), ((V) / 100llu) % 100llu, (V) % 100llu)
-
-#define ALPAKA_YYYYMM_TO_VERSION(V) ALPAKA_VERSION_NUMBER(((V) / 100llu) % 10000llu, (V) % 100llu, 0llu)
-
-#define ALPAKA_VVRRP_10_TO_VERSION(V)                                                                                 \
-    ALPAKA_VERSION_NUMBER(((V) / 1000llu) % 100llu, ((V) / 10llu) % 100llu, (V) % 10llu)
-
-#define ALPAKA_VRP_TO_VERSION(V) ALPAKA_VERSION_NUMBER((V) / 100llu, ((V) / 10llu) % 10llu, (V) % 10llu)
 
 // ######## detect operating systems ########
 
@@ -97,18 +85,36 @@
 #    if defined(__CUDA_ARCH__)
 #        define ALPAKA_ARCH_PTX ALPAKA_VRP_TO_VERSION(__CUDA_ARCH__)
 #    else
-#        define ALPAKA_ARCH_PTX 0
+#        define ALPAKA_ARCH_PTX ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
 #    endif
 #endif
 
-// HIP device compile
-#if !defined(ALPAKA_ARCH_HSA)
+/** HIP device compile
+ *
+ * The version on the host side will always be ALPAKA_VERSION_NUMBER_NOT_AVAILABLE.
+ * On the device side unknown version will be set to ALPAKA_VERSION_NUMBER_NOT_AVAILABLE.
+ *
+ *  Rules:
+ *   - the last two digits will be handled as HEX values and support 0-9 and a-f
+ *   - gfx9xy (numeric): 9xy -> ALPAKA_VERSION_NUMBER(9,x,y)
+ *   - gfx10xy / gfx11xy: stxy -> ALPAKA_VERSION_NUMBER(st,x,y)
+ *   - Suffix: a == 10, b == 11, c == 12
+ *      - gfx90a -> ALPAKA_VERSION_NUMBER(9,0,10)
+ *      - gfx90c -> ALPAKA_VERSION_NUMBER(9,0,12)
+ */
+#if !defined(ALPAKA_ARCH_AMD)
 #    if defined(__HIP__) && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1
-#        define ALPAKA_ARCH_HSA 1
+#        define ALPAKA_ARCH_AMD ALPAKA_AMDGPU_ARCH
 #    else
-#        define ALPAKA_ARCH_HSA 0
+#        define ALPAKA_ARCH_AMD ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
 #    endif
 #endif
+
+/** HSA device compile
+ *
+ * This version is equal to ALPAKA_ARCH_AMD and is only carried for backwards compatibility to older ALPAKA versions.
+ */
+#define ALPAKA_ARCH_HSA ALPAKA_ARCH_AMD
 
 // ######## compiler ########
 
@@ -209,7 +215,7 @@
 #    if defined(__CUDACC__) || defined(__CUDA__)
 #        include <cuda.h>
 // CUDA doesn't give us a patch level for the last entry, just zero.
-#        define ALPAKA_LANG_CUDA ALPAKA_VVRRP_10_TO_VERSION(CUDART_VERSION)
+#        define ALPAKA_LANG_CUDA ALPAKA_VVRRP_TO_VERSION(CUDART_VERSION)
 #    else
 #        define ALPAKA_LANG_CUDA ALPAKA_VERSION_NUMBER_NOT_AVAILABLE
 #    endif
