@@ -56,8 +56,8 @@ namespace alpaka
         static constexpr Flag_t hostMallocCoherent = hipHostMallocCoherent;
         static constexpr Flag_t hostMallocNonCoherent = hipHostMallocNonCoherent;
 
-        static constexpr Flag_t memAttachGlobal = hipMemAttachGlobal; 
-        static constexpr Flag_t memAttachHost = hipMemAttachHost; 
+        static constexpr Flag_t memAttachGlobal = hipMemAttachGlobal;
+        static constexpr Flag_t memAttachHost = hipMemAttachHost;
 
         static constexpr Flag_t hostRegisterDefault = hipHostRegisterDefault;
         static constexpr Flag_t hostRegisterPortable = hipHostRegisterPortable;

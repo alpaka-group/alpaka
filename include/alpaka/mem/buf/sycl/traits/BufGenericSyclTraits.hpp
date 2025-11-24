@@ -308,10 +308,12 @@ namespace alpaka::trait
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            // Allocate SYCL page-locked memory on the host, mapped into the SYCL platform's address space and
+            // Allocate SYCL managed (unified) memory
             // accessible to all devices in the SYCL platform.
+            auto devices = platform.syclDevices();
+            auto dev = devices.front(); // sycl::device
             auto ctx = platform.syclContext();
-            TElem* memPtr = sycl::malloc_shared<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
+            TElem* memPtr = sycl::malloc_shared<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), dev, ctx);
             auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
 
             return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);

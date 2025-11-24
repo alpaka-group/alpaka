@@ -61,3 +61,6 @@ Pipfile.lock
 
 # user specific cmake preset settings
 CMakeUserPresets.json
+
+# custom ignores
+run.sh

@@ -358,7 +358,7 @@ namespace alpaka::trait
             return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
         }
     };
-  
+
     //! The unified (managed) memory allocation trait specialization for the CUDA/HIP devices.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct BufAllocManaged<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>

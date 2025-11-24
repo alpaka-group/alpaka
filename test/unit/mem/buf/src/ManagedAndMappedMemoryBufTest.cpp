@@ -18,12 +18,12 @@
 // kernel that changes the elements of a buffer
 struct ValueAddKernel
 {
-    template <typename Acc, typename TElem, typename TIdx>
+    template<typename Acc, typename TElem, typename TIdx>
     ALPAKA_FN_ACC void operator()(Acc const& acc, TElem* data, int value, TIdx numElements) const
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
 
-        if (idx < numElements)
+        if(idx < numElements)
         {
             data[idx] += value;
         }
@@ -54,17 +54,18 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     Idx const numElements(123456);
     Idx const elementsPerThread(1u);
 
-    alpaka::Vec<Dim, Idx> extent = alpaka::Vec<Dim,Idx>::ones();
+    alpaka::Vec<Dim, Idx> extent = alpaka::Vec<Dim, Idx>::ones();
     extent[0] = numElements;
 
-    alpaka::Vec<Dim, Idx> elemsPerThreadVec = alpaka::Vec<Dim,Idx>::ones();
+    alpaka::Vec<Dim, Idx> elemsPerThreadVec = alpaka::Vec<Dim, Idx>::ones();
     elemsPerThreadVec[0] = elementsPerThread;
 
     auto buf = alpaka::allocManagedBuf<Elem, Idx>(devHost, platformAcc, extent);
 
     constexpr Elem fillVal = 42;
     auto* hostPtr = alpaka::getPtrNative(buf);
-    for (Idx i=0; i<numElements; ++i) {
+    for(Idx i = 0; i < numElements; ++i)
+    {
         hostPtr[i] = fillVal;
     }
 
@@ -74,25 +75,14 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     alpaka::KernelCfg<Acc> const kernelCfg = {extent, elemsPerThreadVec};
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDiv(
-        kernelCfg,
-        dev,
-        kernel,
-        buf.data(),
-        value,
-        numElements);
+    auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, dev, kernel, buf.data(), value, numElements);
 
     std::cout << "Testing Kernel with scalar indices with a grid of "
-                << alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv) << " blocks x "
-                << alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv) << " threads x "
-                << alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(workDiv) << " elements...\n";
+              << alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv) << " blocks x "
+              << alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv) << " threads x "
+              << alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(workDiv) << " elements...\n";
 
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        buf.data(),
-        value,
-        numElements);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, buf.data(), value, numElements);
 
     alpaka::enqueue(queue, taskKernel);
     alpaka::wait(queue);
@@ -108,8 +98,6 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     }
     CHECK(passed);
 }
-
-
 
 TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
 {
@@ -142,7 +130,7 @@ TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
     alpaka::wait(queue);
 
     Idx const size = alpaka::getExtentProduct(buf);
-    auto* data = alpaka::getPtrNative(buf); 
+    auto* data = alpaka::getPtrNative(buf);
     bool passed = true;
     for(Idx i = 0; i < size; ++i)
     {
