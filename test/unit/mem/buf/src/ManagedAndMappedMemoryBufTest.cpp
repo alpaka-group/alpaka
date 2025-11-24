@@ -107,7 +107,6 @@ TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
     using Elem = int;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
-    using Platform = alpaka::Platform<Acc>;
 
     auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
