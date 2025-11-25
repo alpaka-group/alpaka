@@ -1,4 +1,4 @@
-/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+/* Copyright 2025 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
  *                Christian Kaever, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
