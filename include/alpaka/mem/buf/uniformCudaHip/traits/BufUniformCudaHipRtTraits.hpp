@@ -1,4 +1,4 @@
-/* Copyright 2025 Anton Reinhard
+/* Copyright 2025 Anton Reinhard, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -359,7 +359,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The unified (managed) memory allocation trait specialization for the CUDA/HIP devices.
+    //! The unified/managed memory allocation trait specialization for the CUDA/HIP devices.
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     struct BufAllocManaged<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
     {

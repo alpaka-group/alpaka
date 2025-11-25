@@ -1,4 +1,4 @@
-/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci, Anton Reinhard
+/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci, Anton Reinhard, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -296,7 +296,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The unified (managed) memory allocation trait specialization for the SYCL devices.
+    //! The unified/managed memory allocation trait specialization for the SYCL devices.
     template<concepts::Tag TTag, typename TElem, typename TDim, typename TIdx>
     struct BufAllocManaged<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>
     {
@@ -308,7 +308,7 @@ namespace alpaka::trait
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            // Allocate SYCL managed (unified) memory
+            // Allocate SYCL managed (unified) memory,
             // accessible to all devices in the SYCL platform.
             auto devices = platform.syclDevices();
             auto dev = devices.front(); // sycl::device

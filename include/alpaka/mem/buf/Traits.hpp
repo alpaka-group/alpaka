@@ -1,5 +1,5 @@
 /* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
- *                Christian Kaever
+ *                Christian Kaever, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -160,7 +160,7 @@ namespace alpaka
         return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, platform, extent);
     }
 
-    //! Allocates unified memory, accessible by all devices in the given platform.
+    //! Allocates unified/managed memory, accessible by all devices in the given platform.
     //!
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.

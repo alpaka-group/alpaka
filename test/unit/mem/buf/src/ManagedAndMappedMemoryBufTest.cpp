@@ -15,7 +15,7 @@
 #include <numeric>
 #include <type_traits>
 
-// kernel that changes the elements of a buffer
+// Kernel that adds a value to the elements of a buffer
 struct ValueAddKernel
 {
     template<typename Acc, typename TElem, typename TIdx>
@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
 
     Queue queue(dev);
 
-    // Define the work division
+    // Configure a 1D work division large enough to cover all elements
     Idx const numElements(123456);
     Idx const elementsPerThread(1u);
 
@@ -60,6 +60,7 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     alpaka::Vec<Dim, Idx> elemsPerThreadVec = alpaka::Vec<Dim, Idx>::ones();
     elemsPerThreadVec[0] = elementsPerThread;
 
+    // Allocate unified memory associated with the host device, accessible by both host and accelerator
     auto buf = alpaka::allocManagedBuf<Elem, Idx>(devHost, platformAcc, extent);
 
     constexpr Elem fillVal = 42;
@@ -74,7 +75,7 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     ValueAddKernel kernel;
     alpaka::KernelCfg<Acc> const kernelCfg = {extent, elemsPerThreadVec};
 
-    // Let alpaka calculate good block and grid sizes given our full problem extent
+    // Calculate work division
     auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, dev, kernel, buf.data(), value, numElements);
 
     std::cout << "Testing Kernel with scalar indices with a grid of "
@@ -82,11 +83,13 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
               << alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv) << " threads x "
               << alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(workDiv) << " elements...\n";
 
+    // Call of kernel to change the values of the buffer's elements
     auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, buf.data(), value, numElements);
 
     alpaka::enqueue(queue, taskKernel);
     alpaka::wait(queue);
 
+    // Verify that device writes are immediately visible on host without explicit copy 
     bool passed = true;
     for(Idx i = 0; i < numElements; ++i)
     {
@@ -114,7 +117,7 @@ TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
     auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
-    INFO("Test if unified memory works in: ");
+    INFO("Test if mapped memory works in: ");
     INFO(alpaka::getName(dev));
 
     Queue queue(dev);

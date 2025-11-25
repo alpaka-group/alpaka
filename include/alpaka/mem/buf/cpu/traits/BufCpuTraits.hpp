@@ -1,5 +1,5 @@
 /* Copyright 2025 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
- *                Anton Reinhard
+ *                Anton Reinhard, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 #pragma once
@@ -237,7 +237,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The unified (managed) memory allocation trait specialization.
+    //! The unified/managed memory allocation trait specialization.
     template<typename TElem, typename TDim, typename TIdx>
     struct BufAllocManaged<PlatformCpu, TElem, TDim, TIdx>
     {
