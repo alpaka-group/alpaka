@@ -89,7 +89,7 @@ TEMPLATE_LIST_TEST_CASE("memBufManagedTest", "[memBuf]", alpaka::test::TestAccs)
     alpaka::enqueue(queue, taskKernel);
     alpaka::wait(queue);
 
-    // Verify that device writes are immediately visible on host without explicit copy 
+    // Verify that device writes are immediately visible on host without explicit copy
     bool passed = true;
     for(Idx i = 0; i < numElements; ++i)
     {
