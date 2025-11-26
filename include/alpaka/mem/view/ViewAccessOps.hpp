@@ -67,12 +67,12 @@ namespace alpaka::internal
             return data();
         }
 
-        ALPAKA_FN_HOST auto begin() const -> pointer requires(Dim::value == 1)
+        ALPAKA_FN_HOST auto begin() const -> const_pointer requires(Dim::value == 1)
         {
             return data();
         }
 
-        ALPAKA_FN_HOST auto cbegin() const -> pointer requires(Dim::value == 1)
+        ALPAKA_FN_HOST auto cbegin() const -> const_pointer requires(Dim::value == 1)
         {
             return data();
         }
@@ -82,12 +82,12 @@ namespace alpaka::internal
             return data() + getExtents(*static_cast<TView*>(this))[0];
         }
 
-        ALPAKA_FN_HOST auto end() const -> pointer requires(Dim::value == 1)
+        ALPAKA_FN_HOST auto end() const -> const_pointer requires(Dim::value == 1)
         {
             return data() + getExtents(*static_cast<TView const*>(this))[0];
         }
 
-        ALPAKA_FN_HOST auto cend() const -> pointer requires(Dim::value == 1)
+        ALPAKA_FN_HOST auto cend() const -> const_pointer requires(Dim::value == 1)
         {
             return data() + getExtents(*static_cast<TView const*>(this))[0];
         }
@@ -116,12 +116,12 @@ namespace alpaka::internal
 
         ALPAKA_FN_HOST operator std::span<value_type const>() const requires(Dim::value == 1)
         {
-            return std::span<value_type const>{data(), static_cast<std::size_t>(size())};
+            return std::span<value_type const>{begin(), end()};
         }
 
         ALPAKA_FN_HOST operator std::span<value_type>() requires(Dim::value == 1)
         {
-            return std::span<value_type>{data(), static_cast<std::size_t>(size())};
+            return std::span<value_type>{begin(), end()};
         }
     };
 

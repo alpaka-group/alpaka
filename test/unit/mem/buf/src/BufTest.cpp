@@ -359,3 +359,33 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
         CHECK(read(buf2) == 1);
     } // both buffers destruct fine here
 }
+
+TEMPLATE_LIST_TEST_CASE("memBufAccessors", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Elem = std::size_t;
+    using Dim = alpaka::Dim<Acc>;
+
+    if constexpr(Dim::value == 1)
+    {
+        auto const platformHost = alpaka::PlatformCpu{};
+        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+        auto const platformAcc = alpaka::Platform<Acc>{};
+        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+        auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
+        auto const extent = alpaka::Vec<Dim, Idx>{};
+        auto foo = [](std::span<Elem>) { return true; };
+
+        auto buf = buftest::allocBuf<Dim, Elem, Idx>(dev, extent);
+
+        CHECK(buf.size() == extent[0]);
+        CHECK(buf.begin() == buf.data());
+        CHECK(buf.cbegin() == buf.data());
+        CHECK(buf.end() == buf.data() + buf.size());
+        CHECK(buf.cend() == buf.data() + buf.size());
+        CHECK((buf.end() - buf.begin()) == static_cast<long>(buf.size()));
+        CHECK((buf.cend() - buf.cbegin()) == static_cast<long>(buf.size()));
+        CHECK(foo(buf));
+    }
+}
