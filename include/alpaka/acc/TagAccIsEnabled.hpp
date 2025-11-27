@@ -40,7 +40,7 @@ namespace alpaka
         template<concepts::Tag TTag>
         struct DevType<TTag>
         {
-            using type = DevType<alpaka::TagToAcc<TTag, alpaka::DimInt<1>, int>>::type;
+            using type = typename DevType<alpaka::TagToAcc<TTag, alpaka::DimInt<1>, int>>::type;
         };
 
     } // namespace trait
