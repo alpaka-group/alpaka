@@ -13,6 +13,9 @@
 #endif
 
 #if ALPAKA_LANG_HIP
+#    if HIP_VERSION >= 60200000 && HIP_VERSION < 70000000
+#        define HIP_ENABLE_WARP_SYNC_BUILTINS
+#    endif
 // HIP defines some keywords like __forceinline__ in header files.
 #    include <hip/hip_runtime.h>
 #endif
