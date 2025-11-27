@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
+/* Copyright 2025 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
