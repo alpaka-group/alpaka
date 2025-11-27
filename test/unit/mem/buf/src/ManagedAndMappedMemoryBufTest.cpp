@@ -122,23 +122,53 @@ TEMPLATE_LIST_TEST_CASE("memBufMappedTest", "[memBuf]", alpaka::test::TestAccs)
 
     Queue queue(dev);
 
-    auto const extent = alpaka::test::extentBuf<Dim, Idx>;
+    // Configure a 1D work division large enough to cover all elements
+    Idx const numElements(123456);
+    Idx const elementsPerThread(1u);
 
+    alpaka::Vec<Dim, Idx> extent = alpaka::Vec<Dim, Idx>::ones();
+    extent[0] = numElements;
+
+    alpaka::Vec<Dim, Idx> elemsPerThreadVec = alpaka::Vec<Dim, Idx>::ones();
+    elemsPerThreadVec[0] = elementsPerThread;
+
+    // Allocate pinned host memory mapped to the accelerator, accessible by both host and device
     auto buf = alpaka::allocMappedBuf<Elem, Idx>(devHost, platformAcc, extent);
 
     constexpr Elem fillVal = 42;
-    alpaka::fill(queue, buf, fillVal);
+    auto* hostPtr = alpaka::getPtrNative(buf);
+    for(Idx i = 0; i < numElements; ++i)
+    {
+        hostPtr[i] = fillVal;
+    }
 
+    constexpr int value = 10;
+
+    ValueAddKernel kernel;
+    alpaka::KernelCfg<Acc> const kernelCfg = {extent, elemsPerThreadVec};
+
+    // Calculate work division
+    auto const workDiv = alpaka::getValidWorkDiv(kernelCfg, dev, kernel, buf.data(), value, numElements);
+
+    std::cout << "Testing Kernel with scalar indices with a grid of "
+              << alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv) << " blocks x "
+              << alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv) << " threads x "
+              << alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(workDiv) << " elements...\n";
+
+    // Call of kernel to change the values of the buffer's elements
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, buf.data(), value, numElements);
+
+    alpaka::enqueue(queue, taskKernel);
     alpaka::wait(queue);
 
-    Idx const size = alpaka::getExtentProduct(buf);
-    auto* data = alpaka::getPtrNative(buf);
+    // Verify that device writes to the mapped host memory are visible on the host without an explicit copy
     bool passed = true;
-    for(Idx i = 0; i < size; ++i)
+    for(Idx i = 0; i < numElements; ++i)
     {
-        if(data[i] != fillVal)
+        if(hostPtr[i] != fillVal + value)
         {
             passed = false;
+            break;
         }
     }
     CHECK(passed);
