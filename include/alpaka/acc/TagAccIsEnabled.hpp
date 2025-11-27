@@ -34,4 +34,15 @@ namespace alpaka
     //! list of all tags where the related accelerator is enabled
     using EnabledAccTags = alpaka::meta::Filter<AccTags, alpaka::AccIsEnabled>;
 
+    namespace trait
+    {
+
+        template<concepts::Tag TTag>
+        struct DevType<TTag>
+        {
+            using type = DevType<alpaka::TagToAcc<TTag, alpaka::DimInt<1>, int>>::type;
+        };
+
+    } // namespace trait
+
 } // namespace alpaka
