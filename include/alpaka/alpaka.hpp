@@ -3,7 +3,7 @@
 // ============================================================================
 // == ./include/alpaka/alpaka.hpp ==
 // ==
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
+/* Copyright 2025 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
  *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -10624,7 +10624,7 @@
 			// ============================================================================
 			// == ./include/alpaka/acc/Tag.hpp ==
 			// ==
-			/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
+			/* Copyright 2025 Simeon Ehrig, Jan Stephan, Andrea Bocci, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -10664,6 +10664,8 @@
 			    CREATE_ACC_TAG(TagGpuCudaRt);
 			    CREATE_ACC_TAG(TagGpuHipRt);
 			    CREATE_ACC_TAG(TagGpuSyclIntel);
+			    CREATE_ACC_TAG(TagGpuSyclNvidia);
+			    CREATE_ACC_TAG(TagGpuSyclAmd);
 
 			    namespace concepts
 			    {
@@ -10712,7 +10714,9 @@
 			        alpaka::TagGpuHipRt,
 			        alpaka::TagCpuSycl,
 			        alpaka::TagFpgaSyclIntel,
-			        alpaka::TagGpuSyclIntel>;
+			        alpaka::TagGpuSyclIntel,
+			        alpaka::TagGpuSyclNvidia,
+			        alpaka::TagGpuSyclAmd>;
 
 			    //!  \brief Function to print the names of each tag in the given tuple of tags
 			    //!  \tparam TTuple is the type of the tuple of tags
@@ -26851,6 +26855,50 @@
 	// ============================================================================
 
 	// ============================================================================
+	// == ./include/alpaka/acc/AccGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    //! The Amd GPU SYCL accelerator.
+	    //!
+	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Amd GPU target device.
+	    template<typename TDim, typename TIdx>
+	    using AccGpuSyclAmd = AccGenericSycl<TagGpuSyclAmd, TDim, TIdx>;
+
+	    namespace trait
+	    {
+	        template<typename TDim, typename TIdx>
+	        struct AccToTag<alpaka::AccGpuSyclAmd<TDim, TIdx>>
+	        {
+	            using type = alpaka::TagGpuSyclAmd;
+	        };
+
+	        template<typename TDim, typename TIdx>
+	        struct TagToAcc<alpaka::TagGpuSyclAmd, TDim, TIdx>
+	        {
+	            using type = alpaka::AccGpuSyclAmd<TDim, TIdx>;
+	        };
+	    } // namespace trait
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/acc/AccGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/acc/AccGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Aurora Perego
@@ -26892,6 +26940,50 @@
 	#endif
 	// ==
 	// == ./include/alpaka/acc/AccGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/acc/AccGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    //! The Nvidia GPU SYCL accelerator.
+	    //!
+	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Nvidia GPU target device.
+	    template<typename TDim, typename TIdx>
+	    using AccGpuSyclNvidia = AccGenericSycl<TagGpuSyclNvidia, TDim, TIdx>;
+
+	    namespace trait
+	    {
+	        template<typename TDim, typename TIdx>
+	        struct AccToTag<alpaka::AccGpuSyclNvidia<TDim, TIdx>>
+	        {
+	            using type = alpaka::TagGpuSyclNvidia;
+	        };
+
+	        template<typename TDim, typename TIdx>
+	        struct TagToAcc<alpaka::TagGpuSyclNvidia, TDim, TIdx>
+	        {
+	            using type = alpaka::AccGpuSyclNvidia<TDim, TIdx>;
+	        };
+	    } // namespace trait
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/acc/AccGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 // #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
@@ -29339,6 +29431,29 @@
 
 // #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
+	// == ./include/alpaka/dev/DevGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    using DevGpuSyclAmd = DevGenericSycl<TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/dev/DevGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Aurora Perego
@@ -29359,6 +29474,29 @@
 	#endif
 	// ==
 	// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/dev/DevGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    using DevGpuSyclNvidia = DevGenericSycl<TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/dev/DevGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -30065,6 +30203,29 @@
 
 // #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
+	// == ./include/alpaka/event/EventGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    using EventGpuSyclAmd = EventGenericSycl<TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/event/EventGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/event/EventGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Aurora Perego
@@ -30085,6 +30246,29 @@
 	#endif
 	// ==
 	// == ./include/alpaka/event/EventGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/event/EventGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    using EventGpuSyclNvidia = EventGenericSycl<TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/event/EventGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -33781,6 +33965,32 @@
 	// ============================================================================
 
 	// ============================================================================
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelGpuSyclAmd
+	        = TaskKernelGenericSycl<TagGpuSyclAmd, AccGpuSyclAmd<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Aurora Perego
@@ -33805,6 +34015,32 @@
 	#endif
 	// ==
 	// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    using TaskKernelGpuSyclNvidia
+	        = TaskKernelGenericSycl<TagGpuSyclNvidia, AccGpuSyclNvidia<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/kernel/TaskKernelGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 // #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
@@ -36832,6 +37068,33 @@
 	// ============================================================================
 
 	// ============================================================================
+	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/sycl/BufGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    template<typename TElem, typename TDim, typename TIdx>
+	    using ConstBufGpuSyclAmd = ConstBufGenericSycl<TElem, TDim, TIdx, TagGpuSyclAmd>;
+
+	    template<typename TElem, typename TDim, typename TIdx>
+	    using BufGpuSyclAmd = BufGenericSycl<TElem, TDim, TIdx, TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Luca Ferragina, Aurora Perego
@@ -36856,6 +37119,33 @@
 	#endif
 	// ==
 	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/sycl/BufGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    template<typename TElem, typename TDim, typename TIdx>
+	    using ConstBufGpuSyclNvidia = ConstBufGenericSycl<TElem, TDim, TIdx, TagGpuSyclNvidia>;
+
+	    template<typename TElem, typename TDim, typename TIdx>
+	    using BufGpuSyclNvidia = BufGenericSycl<TElem, TDim, TIdx, TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/mem/buf/sycl/specializations/BufGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -39338,7 +39628,7 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/global/DeviceGlobalGenericSycl.hpp ==
 	// ==
-	/* Copyright 2024 Aurora Perego
+	/* Copyright 2025 Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -39365,6 +39655,20 @@
 
 	        template<typename T>
 	        struct DevGlobalTrait<TagGpuSyclIntel, T>
+	        {
+	            // SYCL GPU implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagGpuSyclNvidia, T>
+	        {
+	            // SYCL GPU implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagGpuSyclAmd, T>
 	        {
 	            // SYCL GPU implementation
 	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
@@ -40836,6 +41140,48 @@
 	// ============================================================================
 
 	// ============================================================================
+	// == ./include/alpaka/platform/PlatformGpuSyclAmd.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        template<>
+	        struct SYCLDeviceSelector<TagGpuSyclAmd>
+	        {
+	            auto operator()(sycl::device const& dev) const -> int
+	            {
+	                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+	                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("AMD") != std::string::npos);
+
+	                return is_intel_gpu ? 1 : -1;
+	            }
+	        };
+	    } // namespace detail
+
+	    //! The SYCL device manager.
+	    using PlatformGpuSyclAmd = PlatformGenericSycl<TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/platform/PlatformGpuSyclAmd.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
@@ -40876,6 +41222,48 @@
 	#endif
 	// ==
 	// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/platform/PlatformGpuSyclNvidia.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        template<>
+	        struct SYCLDeviceSelector<TagGpuSyclNvidia>
+	        {
+	            auto operator()(sycl::device const& dev) const -> int
+	            {
+	                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+	                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("NVIDIA") != std::string::npos);
+
+	                return is_intel_gpu ? 1 : -1;
+	            }
+	        };
+	    } // namespace detail
+
+	    //! The SYCL device manager.
+	    using PlatformGpuSyclNvidia = PlatformGenericSycl<TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/platform/PlatformGpuSyclNvidia.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -41093,6 +41481,52 @@
 	// ============================================================================
 
 	// ============================================================================
+	// == ./include/alpaka/queue/QueueGpuSyclAmdBlocking.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    using QueueGpuSyclAmdBlocking = QueueGenericSyclBlocking<TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/queue/QueueGpuSyclAmdBlocking.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/queue/QueueGpuSyclAmdNonBlocking.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_AMD)
+
+	namespace alpaka
+	{
+	    using QueueGpuSyclAmdNonBlocking = QueueGenericSyclNonBlocking<TagGpuSyclAmd>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/queue/QueueGpuSyclAmdNonBlocking.hpp ==
+	// ============================================================================
+
+	// ============================================================================
 	// == ./include/alpaka/queue/QueueGpuSyclIntelBlocking.hpp ==
 	// ==
 	/* Copyright 2024 Jan Stephan, Aurora Perego
@@ -41136,6 +41570,52 @@
 	#endif
 	// ==
 	// == ./include/alpaka/queue/QueueGpuSyclIntelNonBlocking.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/queue/QueueGpuSyclNvidiaBlocking.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    using QueueGpuSyclNvidiaBlocking = QueueGenericSyclBlocking<TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/queue/QueueGpuSyclNvidiaBlocking.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/queue/QueueGpuSyclNvidiaNonBlocking.hpp ==
+	// ==
+	/* Copyright 2025 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
+
+	namespace alpaka
+	{
+	    using QueueGpuSyclNvidiaNonBlocking = QueueGenericSyclNonBlocking<TagGpuSyclNvidia>;
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/queue/QueueGpuSyclNvidiaNonBlocking.hpp ==
 	// ============================================================================
 
 	// ============================================================================
