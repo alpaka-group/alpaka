@@ -114,4 +114,3 @@ TEMPLATE_LIST_TEST_CASE("all", "[warp]", alpaka::test::TestAccs)
         }
     }
 }
-

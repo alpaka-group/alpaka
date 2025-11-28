@@ -34,7 +34,7 @@ namespace alpaka::warp
         template<>
         struct GetSize<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
+            static __device__ auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
             {
                 return warpSize;
             }
@@ -43,7 +43,7 @@ namespace alpaka::warp
         template<>
         struct GetSizeCompileTime<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static constexpr auto getSizeCompileTime() -> std::int32_t
+            static constexpr __device__ auto getSizeCompileTime() -> std::int32_t
             {
 #        if defined(__CUDA_ARCH__)
                 // CUDA always has a warp size of 32
@@ -74,7 +74,7 @@ namespace alpaka::warp
         template<>
         struct GetSizeUpperLimit<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static constexpr auto getSizeUpperLimit() -> std::int32_t
+            static constexpr __device__ auto getSizeUpperLimit() -> std::int32_t
             {
 #        if defined(__CUDA_ARCH__)
                 // CUDA always has a warp size of 32
@@ -105,7 +105,7 @@ namespace alpaka::warp
         template<>
         struct Activemask<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
+            static __device__ auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 -> std::uint32_t
 #        else
@@ -119,27 +119,26 @@ namespace alpaka::warp
         template<>
         struct All<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static auto all(
+            static __device__ auto all(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __all_sync(activemask(warp), predicate);
 #        else
                 return __all(predicate);
 #        endif
-
             }
         };
 
         template<>
         struct Any<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static auto any(
+            static __device__ auto any(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __any_sync(activemask(warp), predicate);
 #        else
                 return __any(predicate);
@@ -150,7 +149,7 @@ namespace alpaka::warp
         template<>
         struct Ballot<WarpUniformCudaHipBuiltIn>
         {
-            __device__ static auto ballot(
+            static __device__ auto ballot(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate)
             // return type is required by the compiler
@@ -160,7 +159,7 @@ namespace alpaka::warp
                 -> std::uint64_t
 #        endif
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __ballot_sync(activemask(warp), predicate);
             }
 #        else
@@ -172,16 +171,16 @@ namespace alpaka::warp
         struct Shfl<WarpUniformCudaHipBuiltIn>
         {
             template<typename T>
-            __device__ static auto shfl(
+            static __device__ auto shfl(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 T val,
                 int srcLane,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
-                return __shfl(val, srcLane, width);
+                    return __shfl(val, srcLane, width);
 #        endif
             }
         };
@@ -190,16 +189,16 @@ namespace alpaka::warp
         struct ShflUp<WarpUniformCudaHipBuiltIn>
         {
             template<typename T>
-            __device__ static auto shfl_up(
+            static __device__ auto shfl_up(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 T val,
                 std::uint32_t offset,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __shfl_up_sync(activemask(warp), val, offset, width);
 #        else
-                return __shfl_up(val, offset, width);
+                    return __shfl_up(val, offset, width);
 #        endif
             }
         };
@@ -208,16 +207,16 @@ namespace alpaka::warp
         struct ShflDown<WarpUniformCudaHipBuiltIn>
         {
             template<typename T>
-            __device__ static auto shfl_down(
+            static __device__ auto shfl_down(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 T val,
                 std::uint32_t offset,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __shfl_down_sync(activemask(warp), val, offset, width);
 #        else
-                return __shfl_down(val, offset, width);
+                    return __shfl_down(val, offset, width);
 #        endif
             }
         };
@@ -226,16 +225,16 @@ namespace alpaka::warp
         struct ShflXor<WarpUniformCudaHipBuiltIn>
         {
             template<typename T>
-            __device__ static auto shfl_xor(
+            static __device__ auto shfl_xor(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 T val,
                 std::int32_t mask,
                 std::int32_t width) -> T
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60200000)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && HIP_VERSION >= 60'200'000)
                 return __shfl_xor_sync(activemask(warp), val, mask, width);
 #        else
-                return __shfl_xor(val, mask, width);
+                    return __shfl_xor(val, mask, width);
 #        endif
             }
         };

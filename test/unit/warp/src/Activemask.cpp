@@ -127,4 +127,3 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
         }
     }
 }
-
