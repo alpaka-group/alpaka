@@ -20,7 +20,7 @@
 using namespace alpaka::test::unit::atomic;
 
 template<typename T1, typename T2>
-ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(T1 a, T2 b) -> bool
+constexpr auto equals(T1 a, T2 b) -> bool
 {
     return a == b;
 }
@@ -35,7 +35,6 @@ ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(double a, double b) -> bool
     return alpaka::math::floatEqualExactNoWarning(a, b);
 }
 
-ALPAKA_NO_HOST_ACC_WARNING
 template<typename THierarchy, typename TOp, typename TAcc, typename T>
 ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T operandOrig, T value) -> void
 {
@@ -70,133 +69,129 @@ ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T 
     }
 }
 
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename THierarchy, typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCombinations(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
-{
-    // helper variables to avoid compiler conversion warnings/errors
-    constexpr T one = static_cast<T>(1);
-    constexpr T two = static_cast<T>(2);
-    {
-        // left operand is half of the right
-        T const value = static_cast<T>(operandOrig / two);
-        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
-    }
-    {
-        // left operand is twice as large as the right
-        T const value = static_cast<T>(operandOrig * two);
-        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
-    }
-    {
-        // left operand is larger by one
-        T const value = static_cast<T>(operandOrig + one);
-        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
-    }
-    {
-        // left operand is smaller by one
-        T const value = static_cast<T>(operandOrig - one);
-        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
-    }
-    {
-        // both operands are equal
-        T const value = operandOrig;
-        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename THierarchy, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-
-    // with match
-    {
-        T const compare = operandOrig;
-        T const reference = value;
-        {
-            operand = operandOrig;
-            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
-            ALPAKA_CHECK(*success, equals(operandOrig, ret));
-            ALPAKA_CHECK(*success, equals(operand, reference));
-        }
-        {
-            operand = operandOrig;
-            T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
-            ALPAKA_CHECK(*success, equals(operandOrig, ret));
-            ALPAKA_CHECK(*success, equals(operand, reference));
-        }
-    }
-
-    // without match
-    {
-        T const compare = static_cast<T>(operandOrig + static_cast<T>(1));
-        T const reference = operandOrig;
-        {
-            operand = operandOrig;
-            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
-            ALPAKA_CHECK(*success, equals(operandOrig, ret));
-            ALPAKA_CHECK(*success, equals(operand, reference));
-        }
-        {
-            operand = operandOrig;
-            T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
-            ALPAKA_CHECK(*success, equals(operandOrig, ret));
-            ALPAKA_CHECK(*success, equals(operand, reference));
-        }
-    }
-}
-
-template<typename THierarchy, typename TAcc, typename T, typename Sfinae = void>
+template<typename THierarchy, typename TAcc, typename T, typename TOp, typename Sfinae = void>
 class AtomicTestKernel
 {
 public:
-    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
         auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
-
-        testAtomicCombinations<THierarchy, And>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Or>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Xor>(acc, success, operand, operandOrig);
-
-        if constexpr(std::is_unsigned_v<T>)
+        // helper variables to avoid compiler conversion warnings/errors
+        constexpr T one = static_cast<T>(1);
+        constexpr T two = static_cast<T>(2);
         {
-            // atomicInc / atomicDec are implemented only for unsigned integer types
-            testAtomicCombinations<THierarchy, Inc>(acc, success, operand, operandOrig);
-            testAtomicCombinations<THierarchy, Dec>(acc, success, operand, operandOrig);
+            // left operand is half of the right
+            T const value = static_cast<T>(operandOrig / two);
+            testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
         }
-
-        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
+        {
+            // left operand is twice as large as the right
+            T const value = static_cast<T>(operandOrig * two);
+            testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+        }
+        {
+            // left operand is larger by one
+            T const value = static_cast<T>(operandOrig + one);
+            testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+        }
+        {
+            // left operand is smaller by one
+            T const value = static_cast<T>(operandOrig - one);
+            testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+        }
+        {
+            // both operands are equal
+            T const value = operandOrig;
+            testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+        }
     }
 };
 
 template<typename THierarchy, typename TAcc, typename T>
-class AtomicTestKernel<THierarchy, TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
+class AtomicTestKernel<THierarchy, TAcc, T, Cas, void>
 {
 public:
-    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
         auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
-        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
+        T const value = static_cast<T>(4);
 
-        // Inc, Dec, Or, And, Xor are not supported on float/double types
+        // with match
+        {
+            T const compare = operandOrig;
+            T const reference = value;
+            {
+                operand = operandOrig;
+                T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
+                ALPAKA_CHECK(*success, equals(operandOrig, ret));
+                ALPAKA_CHECK(*success, equals(operand, reference));
+            }
+            {
+                operand = operandOrig;
+                T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
+                ALPAKA_CHECK(*success, equals(operandOrig, ret));
+                ALPAKA_CHECK(*success, equals(operand, reference));
+            }
+        }
 
-        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
+        // without match
+        {
+            T const compare = static_cast<T>(operandOrig + static_cast<T>(1));
+            T const reference = operandOrig;
+            {
+                operand = operandOrig;
+                T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
+                ALPAKA_CHECK(*success, equals(operandOrig, ret));
+                ALPAKA_CHECK(*success, equals(operand, reference));
+            }
+            {
+                operand = operandOrig;
+                T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
+                ALPAKA_CHECK(*success, equals(operandOrig, ret));
+                ALPAKA_CHECK(*success, equals(operand, reference));
+            }
+        }
     }
 };
+
+template<typename TAcc, typename T, typename TOp>
+void runTest(auto& fixture, T value)
+{
+    INFO(
+        "execute test: " << alpaka::core::demangled<TAcc> << ", Type:" << alpaka::core::demangled<T>
+                         << ", Operation:" << alpaka::core::demangled<TOp>);
+    // exclude all operations not supported for floating point types
+    constexpr bool skipFloatTestsFor
+        = std::is_floating_point_v<T>
+          && (std::is_same_v<TOp, Inc> || std::is_same_v<TOp, Dec> || std::is_same_v<TOp, Or>
+              || std::is_same_v<TOp, And> || std::is_same_v<TOp, Xor>);
+    if constexpr(!skipFloatTestsFor)
+    {
+        constexpr bool skipUnsignedTestsFor
+            = std::is_unsigned_v<T> && (std::is_same_v<TOp, Inc> || std::is_same_v<TOp, Dec>);
+        if constexpr(!skipUnsignedTestsFor)
+        {
+            AtomicTestKernel<alpaka::hierarchy::Threads, TAcc, T, TOp> kernelAtomicThreads;
+            REQUIRE(fixture(kernelAtomicThreads, value));
+
+            AtomicTestKernel<alpaka::hierarchy::Blocks, TAcc, T, TOp> kernelAtomicBlocks;
+            REQUIRE(fixture(kernelAtomicBlocks, value));
+
+            AtomicTestKernel<alpaka::hierarchy::Grids, TAcc, T, TOp> kernelAtomicGrids;
+            REQUIRE(fixture(kernelAtomicGrids, value));
+        }
+        else
+            INFO(
+                "  skip:" << alpaka::core::demangled<TAcc> << ", Type:" << alpaka::core::demangled<T>
+                          << ", Operation:" << alpaka::core::demangled<TOp>);
+    }
+    else
+        INFO(
+            "  skip:" << alpaka::core::demangled<TAcc> << ", Type:" << alpaka::core::demangled<T>
+                      << ", Operation:" << alpaka::core::demangled<TOp>);
+}
 
 template<typename TAcc, typename T>
 struct TestAtomicOperations
@@ -210,14 +205,11 @@ struct TestAtomicOperations
 
         T value = static_cast<T>(32);
 
-        AtomicTestKernel<alpaka::hierarchy::Threads, TAcc, T> kernelAtomicThreads;
-        REQUIRE(fixture(kernelAtomicThreads, value));
+        // It is required to create one kernel per tested operations else some compilers compile time e.g clang for HIP
+        // is exploding and the test will not compile within the CI wall time.
+        auto operations = std::make_tuple(Add{}, Sub{}, Exch{}, Min{}, Max{}, Inc{}, Dec{}, Or{}, And{}, Xor{}, Cas{});
 
-        AtomicTestKernel<alpaka::hierarchy::Blocks, TAcc, T> kernelAtomicBlocks;
-        REQUIRE(fixture(kernelAtomicBlocks, value));
-
-        AtomicTestKernel<alpaka::hierarchy::Grids, TAcc, T> kernelAtomicGrids;
-        REQUIRE(fixture(kernelAtomicGrids, value));
+        std::apply([&]<typename... TOp>(TOp...) { (runTest<TAcc, T, TOp>(fixture, value), ...); }, operations);
     }
 };
 
