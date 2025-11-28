@@ -1,3 +1,7 @@
+/* Copyright 2025 Simeon Ehrig, Simone Balducci
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 #pragma once
 
 // include all Acc's because of the struct AccIsEnabled
