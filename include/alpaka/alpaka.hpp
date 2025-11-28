@@ -11738,8 +11738,8 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/Traits.hpp ==
 			// ==
-			/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
-			 *                Christian Kaever
+			/* Copyright 2025 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+			 *                Christian Kaever, Maria Michailidi
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -12635,6 +12635,10 @@
 			        {
 			        };
 
+			        //! The managed (unified) memory allocator trait.
+			        template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
+			        struct BufAllocManaged;
+
 			        //! The trait to transform a mutable buffer into a constant one.
 			        template<typename TBuf>
 			        struct MakeConstBuf;
@@ -12739,6 +12743,24 @@
 			        TExtent const& extent = TExtent())
 			    {
 			        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, platform, extent);
+			    }
+
+			    //! Allocates unified/managed memory, accessible by all devices in the given platform.
+			    //!
+			    //! \tparam TElem The element type of the returned buffer.
+			    //! \tparam TIdx The linear index type of the buffer.
+			    //! \tparam TExtent The extent type of the buffer.
+			    //! \tparam TPlatform The platform from which the buffer is accessible.
+			    //! \param host The host device to allocate the buffer on.
+			    //! \param extent The extent of the buffer.
+			    //! \return The newly allocated buffer.
+			    template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
+			    ALPAKA_FN_HOST auto allocManagedBuf(
+			        DevCpu const& host,
+			        TPlatform const& platform,
+			        TExtent const& extent = TExtent())
+			    {
+			        return trait::BufAllocManaged<TPlatform, TElem, Dim<TExtent>, TIdx>::allocManagedBuf(host, platform, extent);
 			    }
 
 			    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
@@ -24362,7 +24384,7 @@
 					// ============================================================================
 					// == ./include/alpaka/core/ApiCudaRt.hpp ==
 					// ==
-					/* Copyright 2022 Andrea Bocci
+					/* Copyright 2025 Andrea Bocci, Maria Michailidi
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 
@@ -24416,6 +24438,9 @@
 					        static constexpr Flag_t hostMallocWriteCombined = cudaHostAllocWriteCombined;
 					        static constexpr Flag_t hostMallocCoherent = cudaHostAllocDefault; // Not supported.
 					        static constexpr Flag_t hostMallocNonCoherent = cudaHostAllocDefault; // Not supported.
+
+					        static constexpr Flag_t memAttachGlobal = cudaMemAttachGlobal;
+					        static constexpr Flag_t memAttachHost = cudaMemAttachHost;
 
 					        static constexpr Flag_t hostRegisterDefault = cudaHostRegisterDefault;
 					        static constexpr Flag_t hostRegisterPortable = cudaHostRegisterPortable;
@@ -24658,6 +24683,11 @@
 					            // Not implemented.
 					            return errorUnknown;
 					#    endif
+					        }
+
+					        static inline Error_t mallocManaged(void** ptr, size_t size, Flag_t flags)
+					        {
+					            return ::cudaMallocManaged(ptr, size, flags);
 					        }
 
 					        static inline Error_t mallocPitch(void** devPtr, size_t* pitch, size_t width, size_t height)
@@ -26329,7 +26359,7 @@
 		// ============================================================================
 		// == ./include/alpaka/core/ApiHipRt.hpp ==
 		// ==
-		/* Copyright 2022 Andrea Bocci
+		/* Copyright 2025 Andrea Bocci, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -26385,6 +26415,9 @@
 		        static constexpr Flag_t hostMallocWriteCombined = hipHostMallocWriteCombined;
 		        static constexpr Flag_t hostMallocCoherent = hipHostMallocCoherent;
 		        static constexpr Flag_t hostMallocNonCoherent = hipHostMallocNonCoherent;
+
+		        static constexpr Flag_t memAttachGlobal = hipMemAttachGlobal;
+		        static constexpr Flag_t memAttachHost = hipMemAttachHost;
 
 		        static constexpr Flag_t hostRegisterDefault = hipHostRegisterDefault;
 		        static constexpr Flag_t hostRegisterPortable = hipHostRegisterPortable;
@@ -26664,6 +26697,11 @@
 		            // Not implemented.
 		            return errorUnknown;
 		#    endif
+		        }
+
+		        static inline Error_t mallocManaged(void** ptr, size_t size, Flag_t flags)
+		        {
+		            return ::hipMallocManaged(ptr, size, flags);
 		        }
 
 		        static inline Error_t mallocPitch(void** devPtr, size_t* pitch, size_t width, size_t height)
@@ -34923,7 +34961,7 @@
 		// == ./include/alpaka/mem/buf/cpu/traits/BufCpuTraits.hpp ==
 		// ==
 		/* Copyright 2025 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
-		 *                Anton Reinhard
+		 *                Anton Reinhard, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 		// #pragma once
@@ -35156,6 +35194,20 @@
 		            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
 		        {
 		            // Allocate standard host memory.
+		            return allocBuf<TElem, TIdx>(host, extent);
+		        }
+		    };
+
+		    //! The unified/managed memory allocation trait specialization.
+		    template<typename TElem, typename TDim, typename TIdx>
+		    struct BufAllocManaged<PlatformCpu, TElem, TDim, TIdx>
+		    {
+		        template<typename TExtent>
+		        ALPAKA_FN_HOST static auto allocManagedBuf(
+		            DevCpu const& host,
+		            PlatformCpu const& /*platform*/,
+		            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+		        {
 		            return allocBuf<TElem, TIdx>(host, extent);
 		        }
 		    };
@@ -36257,7 +36309,7 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/traits/BufGenericSyclTraits.hpp ==
 			// ==
-			/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci, Anton Reinhard
+			/* Copyright 2025 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci, Anton Reinhard, Maria Michailidi
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -36548,6 +36600,30 @@
 			            // accessible to all devices in the SYCL platform.
 			            auto ctx = platform.syclContext();
 			            TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
+			            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
+
+			            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+			        }
+			    };
+
+			    //! The unified/managed memory allocation trait specialization for the SYCL devices.
+			    template<concepts::Tag TTag, typename TElem, typename TDim, typename TIdx>
+			    struct BufAllocManaged<PlatformGenericSycl<TTag>, TElem, TDim, TIdx>
+			    {
+			        template<typename TExtent>
+			        ALPAKA_FN_HOST static auto allocManagedBuf(
+			            DevCpu const& host,
+			            PlatformGenericSycl<TTag> const& platform,
+			            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+			        {
+			            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			            // Allocate SYCL managed (unified) memory,
+			            // accessible to all devices in the SYCL platform.
+			            auto devices = platform.syclDevices();
+			            auto dev = devices.front(); // sycl::device
+			            auto ctx = platform.syclContext();
+			            TElem* memPtr = sycl::malloc_shared<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), dev, ctx);
 			            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
 
 			            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
@@ -38218,7 +38294,7 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/uniformCudaHip/traits/BufUniformCudaHipRtTraits.hpp ==
 		// ==
-		/* Copyright 2025 Anton Reinhard
+		/* Copyright 2025 Anton Reinhard, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -38573,6 +38649,30 @@
 		                sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
 		                TApi::hostMallocMapped | TApi::hostMallocPortable));
 		            auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::hostFree(ptr)); };
+
+		            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+		        }
+		    };
+
+		    //! The unified/managed memory allocation trait specialization for the CUDA/HIP devices.
+		    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+		    struct BufAllocManaged<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+		    {
+		        template<typename TExtent>
+		        ALPAKA_FN_HOST static auto allocManagedBuf(
+		            DevCpu const& host,
+		            PlatformUniformCudaHipRt<TApi> const& /*platform*/,
+		            TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+		        {
+		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+		            // Allocate CUDA/HIP unified (managed) memory accessible by both host and all CUDA/HIP devices.
+		            TElem* memPtr = nullptr;
+		            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::mallocManaged(
+		                reinterpret_cast<void**>(&memPtr),
+		                sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
+		                TApi::memAttachGlobal));
+		            auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::free(ptr)); };
 
 		            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
 		        }
