@@ -1,5 +1,5 @@
 /* Copyright 2025 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan,
- *                Aurora Perego
+ *                Aurora Perego, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 

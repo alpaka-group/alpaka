@@ -1,4 +1,4 @@
-/* Copyright 2023 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2025 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -114,6 +114,12 @@ namespace alpaka::internal
 
         ALPAKA_FN_HOST auto extents() const -> Vec<Dim, Idx>;
 
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic push
+#    if __has_warning("-Wunsafe-buffer-usage-in-container")
+#        pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-container"
+#    endif
+#endif
         ALPAKA_FN_HOST operator std::span<value_type const>() const requires(Dim::value == 1)
         {
             return std::span<value_type const>{begin(), end()};
@@ -123,6 +129,9 @@ namespace alpaka::internal
         {
             return std::span<value_type>{begin(), end()};
         }
+#if ALPAKA_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
     };
 
     template<ViewType TView>
