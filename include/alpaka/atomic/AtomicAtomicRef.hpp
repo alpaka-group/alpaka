@@ -162,10 +162,11 @@ namespace alpaka
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
                 T old = ref;
-                T result = ((old >= value) ? 0 : static_cast<T>(old - 1));
+                T result = (old == static_cast<T>(0) || old > value) ? value : static_cast<T>(old - static_cast<T>(1));
                 while(!ref.compare_exchange_weak(old, result))
                 {
-                    result = ((old >= value) ? 0 : static_cast<T>(old - 1));
+                    result
+                        = (old == static_cast<T>(0) || old > value) ? value : static_cast<T>(old - static_cast<T>(1));
                 }
                 return old;
             }

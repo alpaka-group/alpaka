@@ -265,12 +265,20 @@ namespace alpaka
 #        pragma omp atomic capture compare
                 {
                     old = ref;
+
+#        if ALPAKA_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wfloat-equal"
+#        endif
                     // Do not remove the curly brackets of the if body else
                     // icpx 2024.0 is not able to compile the atomics.
                     if(ref == compare)
                     {
                         ref = value;
                     }
+#        if ALPAKA_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
                 }
                 return old;
             }
