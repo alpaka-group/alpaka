@@ -174,6 +174,7 @@
 #include "alpaka/mem/view/ViewConst.hpp"
 #include "alpaka/mem/view/ViewPlainPtr.hpp"
 #include "alpaka/mem/view/ViewStdArray.hpp"
+#include "alpaka/mem/view/ViewStdSpan.hpp"
 #include "alpaka/mem/view/ViewStdVector.hpp"
 #include "alpaka/mem/view/ViewSubView.hpp"
 // meta
