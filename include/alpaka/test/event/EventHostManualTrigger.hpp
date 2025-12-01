@@ -476,7 +476,7 @@ namespace alpaka::trait
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    if HIP_VERSION >= 60'200'000 && HIP_VERSION < 70'000'000
+#    if ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0) && ALPAKA_COMP_HIP < ALPAKA_VERSION_NUMBER(7, 0, 0)
 #        define HIP_ENABLE_WARP_SYNC_BUILTINS
 #    endif
 #    include <hip/hip_runtime.h>
