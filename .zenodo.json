@@ -3,19 +3,14 @@
   "description": "The alpaka library is a header-only C++20 abstraction library for accelerator development. Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.",
   "creators": [
     {
-      "name": "Widera, René",
-      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0000-0003-1642-0459"
-    },
-    {
       "name": "Bocci, Andrea",
       "affiliation": "CERN",
       "orcid": "0000-0002-6515-5666"
     },
     {
-      "name": "Almarzouqi, Abdulrahman",
-      "affiliation": "University of Bahrain",
-      "orcid": "0009-0001-7712-8139"
+      "name": "Widera, René",
+      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0000-0003-1642-0459"
     },
     {
       "name": "Balducci, Simone",
@@ -28,11 +23,6 @@
       "orcid": "0000-0002-8218-3116"
     },
     {
-      "name": "Lenz, Julian",
-      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0000-0001-5250-0005"
-    },
-    {
       "name": "Michailidi, Maria",
       "affiliation": "CERN",
       "orcid": "0009-0009-7518-3896"
@@ -41,18 +31,15 @@
       "name": "Perego, Aurora",
       "affiliation": "CERN",
       "orcid": "0009-0002-5210-6213"
-    },
-    {
-      "name": "Reinhard, Anton",
-      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0009-0004-6483-2137"
-    },
-    {
-      "name": "Yusufoglu, Mehmet",
-      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf"
     }
   ],
   "contributors": [
+    {
+      "name": "Almarzouqi, Abdulrahman",
+      "affiliation": "University of Bahrain",
+      "orcid": "0009-0001-7712-8139",
+      "type": "Other"
+    },
     {
       "name": "Bastrakov, Sergei",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
@@ -130,6 +117,12 @@
       "type": "Other"
     },
     {
+      "name": "Lenz, Julian",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0000-0001-5250-0005",
+      "type": "Other"
+    },
+    {
       "name": "Martin-Haugh, Stewart",
       "affiliation": "STFC Rutherford Appleton Laboratory",
       "orcid": "0000-0001-9457-1928",
@@ -149,7 +142,8 @@
     {
       "name": "Narwal, Tapish",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0000-0002-5726-2330"
+      "orcid": "0000-0002-5726-2330",
+      "type": "Other"
     },
     {
       "name": "Nash, Phil",
@@ -160,6 +154,12 @@
       "name": "Pantaleo, Felice",
       "affiliation": "CERN",
       "orcid": "0000-0003-3266-4357",
+      "type": "Other"
+    },
+    {
+      "name": "Reinhard, Anton",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0009-0004-6483-2137",
       "type": "Other"
     },
     {
@@ -224,6 +224,11 @@
       "name": "Young, Jeffrey",
       "affiliation": "Georgia Institute of Technology",
       "orcid": "0000-0001-9841-4057",
+      "type": "Other"
+    },
+    {
+      "name": "Yusufoglu, Mehmet",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
       "type": "Other"
     },
     {

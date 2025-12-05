@@ -2,6 +2,41 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [2.1.0] - 2026-12-XX
+
+### Added
+
+- Implement creation of CUDA/HIP Queue with external Stream #2531
+- Implement `alpaka::transform` #2544
+- Implement `concept alpaka::concepts::Acc` #2547
+- Implement `alpaka::exec<Tag>` #2550
+- Implement `alpaka::allocAsyncBuf()` for SYCL devices #2565
+- Implement compile-time warp size for SYCL, when available #2570
+- HIP: add `ALPAKA_ARCH_AMD` definition #2577
+- Feature accessors and span conversion for buffers # 2579
+- Add new backends: CUDA and HIP backends of oneAPI #2580
+- 
+### Changed
+
+- Use `__builtin_assume_aligned()` to promise the correct alignment #2537
+- Update Catch2 to v3.8.1 #2539
+- Separate ViewAccessOps for host and device views #2562
+- Extend `alpaka::allocAsyncBuf()` to N-dimensional buffers on CUDA/HIP devices #2566
+- Provide `atomicInc/Dec` overloads with deduced limit values #2583
+- Specialize DevType for accelerator Tags #2584
+- 
+### Fixed
+
+- Add missing `#include` for SYCL tags #2534
+- Fix windows operation system detection #2558
+- Fix version macros #2561
+- Do not crash if a SYCL platform is invalid or empty #2564
+- Do not include the null terminaton character in the demangled string_view #2571
+- Fix `SYCL_SUBGROUP_SIZE` macro for Sycl #2576
+- Fix `atomicDec()` for CPU #2581
+
+
 ## [2.0.0] - 2025-06-25
 
 ### Added
