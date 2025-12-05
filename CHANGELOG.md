@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [2.1.0] - 2026-12-XX
+## [2.1.0] - 2025-12-XX
 
 ### Added
 
@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Implement `alpaka::allocAsyncBuf()` for SYCL devices #2565
 - Implement compile-time warp size for SYCL, when available #2570
 - HIP: add `ALPAKA_ARCH_AMD` definition #2577
-- Feature accessors and span conversion for buffers # 2579
+- Feature accessors and span conversion for buffers #2579
 - Add new backends: CUDA and HIP backends of oneAPI #2580
 - 
 ### Changed
