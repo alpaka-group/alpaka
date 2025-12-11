@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [2.1.0] - 2025-12-XX
+## [2.1.0] - 2025-12-12
 
 ### Added
 
@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - HIP: add `ALPAKA_ARCH_AMD` definition #2577
 - Feature accessors and span conversion for buffers #2579
 - Add new backends: CUDA and HIP backends of oneAPI #2580
-- 
+
 ### Changed
 
 - Use `__builtin_assume_aligned()` to promise the correct alignment #2537
@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Extend `alpaka::allocAsyncBuf()` to N-dimensional buffers on CUDA/HIP devices #2566
 - Provide `atomicInc/Dec` overloads with deduced limit values #2583
 - Specialize DevType for accelerator Tags #2584
-- 
+
 ### Fixed
 
 - Add missing `#include` for SYCL tags #2534
