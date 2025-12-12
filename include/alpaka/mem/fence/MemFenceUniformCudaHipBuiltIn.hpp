@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2022 Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Tapish Narwal
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -6,7 +6,12 @@
 
 #include "alpaka/core/Config.hpp"
 #include "alpaka/core/Interface.hpp"
+#include "alpaka/core/PP.hpp"
 #include "alpaka/mem/fence/Traits.hpp"
+#include "alpaka/mem/order/MemOrderCuda.hpp"
+#include "alpaka/mem/order/MemOrderHip.hpp"
+
+#include <alpaka/mem/order/MemoryOrder.hpp>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -18,7 +23,6 @@ namespace alpaka
     };
 
 #    if !defined(ALPAKA_HOST_ONLY)
-
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 #            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #        endif
@@ -27,37 +31,184 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
+
+    namespace detail
+    {
+        template<alpaka::MemoryOrder TMemOrder>
+        [[maybe_unused]] static constexpr __device__ void cuda_ptx_fence_device([[maybe_unused]] TMemOrder order)
+        {
+#        if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(9, 0, 0)
+            // full acquire/release semantics support
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+            {
+                asm volatile("fence.acquire.sys;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+            {
+                asm volatile("fence.release.sys;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+            {
+                asm volatile("fence.acq_rel.sys;" ::);
+            }
+            else
+            { // Sequential consistency
+                asm volatile("fence.sc.sys;" ::);
+            }
+#        else
+            // only acq_rel and sc available
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+            {
+                asm volatile("fence.acq_rel.sys;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+            {
+                asm volatile("fence.acq_rel.sys;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+            {
+                asm volatile("fence.acq_rel.sys;" ::);
+            }
+            else
+            {
+                // Sequential consistency
+                asm volatile("fence.sc.sys;" ::);
+            }
+#        endif
+        }
+
+        template<alpaka::MemoryOrder TMemOrder>
+        [[maybe_unused]] static constexpr __device__ void cuda_ptx_fence_block([[maybe_unused]] TMemOrder order)
+        {
+#        if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(9, 0, 0)
+            // full acquire/release semantics support
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+            {
+                asm volatile("fence.acquire.cta;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+            {
+                asm volatile("fence.release.cta;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+            {
+                asm volatile("fence.acq_rel.cta;" ::);
+            }
+            else
+            { // Sequential consistency
+                asm volatile("fence.sc.cta;" ::);
+            }
+#        elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+            // only acq_rel and sc available
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+            {
+                asm volatile("fence.acq_rel.cta;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+            {
+                asm volatile("fence.acq_rel.cta;" ::);
+            }
+            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+            {
+                asm volatile("fence.acq_rel.cta;" ::);
+            }
+            else
+            { // Sequential consistency
+                asm volatile("fence.sc.cta;" ::);
+            }
+#        endif
+        }
+
+        template<alpaka::MemoryOrder TMemOrder>
+        [[maybe_unused]] static constexpr __device__ void cuda_mem_fence_block([[maybe_unused]] TMemOrder order)
+        {
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+                return;
+            }
+#        if ALPAKA_ARCH_PTX
+#            if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0)
+            __nv_atomic_thread_fence(MemOrderCuda::get(order), __NV_THREAD_SCOPE_BLOCK);
+#            elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+            cuda_ptx_fence_block(order);
+#            else
+            __threadfence_block();
+#            endif
+#        endif
+        }
+
+        template<alpaka::MemoryOrder TMemOrder>
+        [[maybe_unused]] static constexpr __device__ void cuda_mem_fence_device([[maybe_unused]] TMemOrder order)
+        {
+            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+            { // Relaxed ordering requires no fence
+                return;
+            }
+#        if ALPAKA_ARCH_PTX
+#            if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0)
+            __nv_atomic_thread_fence(MemOrderCuda::get(order), __NV_THREAD_SCOPE_DEVICE);
+#            elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+            cuda_ptx_fence_device(order);
+#            else
+            __threadfence();
+#            endif
+#        endif
+        }
+    } // namespace detail
+
     namespace trait
     {
         template<>
-        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Block>
+        struct MemFenceDefaultOrder<MemFenceUniformCudaHipBuiltIn>
         {
-            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Block const&)
+            using type = mem_order::SeqCst;
+            static constexpr auto value = mem_order::seq_cst;
+        };
+
+        template<MemoryOrder TMemOrder>
+        struct MemFence<MemFenceUniformCudaHipBuiltIn, TMemOrder, memory_scope::Block>
+        {
+            static __device__ auto mem_fence(
+                MemFenceUniformCudaHipBuiltIn const&,
+                TMemOrder order,
+                memory_scope::Block const&)
             {
-                __threadfence_block();
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                alpaka::detail::cuda_mem_fence_block(order);
+#        else
+                __builtin_amdgcn_fence(MemOrderHip::get(order), "workgroup");
+#        endif
             }
         };
 
-        template<>
-        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Grid>
+        template<MemoryOrder TMemOrder, typename TMemScope>
+        struct MemFence<MemFenceUniformCudaHipBuiltIn, TMemOrder, TMemScope>
         {
-            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Grid const&)
+            static __device__ auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, TMemOrder order, TMemScope const&)
             {
+                // Base case for grid and device scope fences.
                 // CUDA and HIP do not have a per-grid memory fence, so a device-level fence is used
-                __threadfence();
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                alpaka::detail::cuda_mem_fence_device(order);
+#        else
+                __builtin_amdgcn_fence(MemOrderHip::get(order), "agent");
+#        endif
             }
         };
 
-        template<>
-        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Device>
-        {
-            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Device const&)
-            {
-                __threadfence();
-            }
-        };
     } // namespace trait
-
 #    endif
 
 } // namespace alpaka
