@@ -312,7 +312,7 @@
 
 
 	#define ALPAKA_VERSION_MAJOR 2
-	#define ALPAKA_VERSION_MINOR 1
+	#define ALPAKA_VERSION_MINOR 2
 	#define ALPAKA_VERSION_PATCH 0
 
 	//! The alpaka library version number
