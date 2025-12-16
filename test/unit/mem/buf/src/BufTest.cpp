@@ -389,3 +389,22 @@ TEMPLATE_LIST_TEST_CASE("memBufAccessors", "[memBuf]", alpaka::test::TestAccs)
         CHECK(foo(buf));
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("memBufAllocDeducedIdx", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Elem = std::size_t;
+    using Dim = alpaka::Dim<Acc>;
+    auto const extent = alpaka::Vec<Dim, Idx>{};
+    auto const devHost = alpaka::getDevByIdx(alpaka::PlatformCpu{}, 0);
+    auto const devAcc = alpaka::getDevByIdx(alpaka::Platform<Acc>{}, 0);
+    auto queue = alpaka::Queue<Acc, alpaka::Blocking>{devAcc};
+
+    auto host_buf = alpaka::allocBuf<Elem>(devHost, extent);
+    auto dev_buf = alpaka::allocBuf<Elem>(devAcc, extent);
+    auto dev_buf_async = alpaka::allocAsyncBuf<Elem>(queue, extent);
+    auto dev_buf_async_supported = alpaka::allocAsyncBufIfSupported<Elem>(queue, extent);
+    auto buf_mapped = alpaka::allocMappedBuf<Elem>(devHost, alpaka::PlatformCpu{}, extent);
+    auto buf_managed = alpaka::allocManagedBuf<Elem>(devHost, alpaka::PlatformCpu{}, extent);
+}
