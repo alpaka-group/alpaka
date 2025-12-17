@@ -253,7 +253,7 @@ if(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
         if (NOT alpaka_HAS_STD_ATOMIC_REF)
             # search for boost only if std::atomic_ref is not supported
             set(_alpaka_BOOST_MIN_VER "1.74.0")
-            find_package(Boost ${_alpaka_BOOST_MIN_VER} REQUIRED
+            find_package(Boost ${_alpaka_BOOST_MIN_VER} REQUIRED CONFIG
                     OPTIONAL_COMPONENTS atomic)
             target_link_libraries(alpaka INTERFACE Boost::headers)
 
