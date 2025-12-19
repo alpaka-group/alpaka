@@ -165,7 +165,7 @@ namespace alpaka::internal
         ALPAKA_FN_HOST auto operator->() -> pointer
         {
             static_assert(Dim::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
-            return *(this->data());
+            return this->data();
         }
 
         ALPAKA_FN_HOST auto operator->() const -> const_pointer
