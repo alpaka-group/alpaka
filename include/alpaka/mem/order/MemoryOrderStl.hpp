@@ -39,5 +39,4 @@ namespace alpaka
         }
     };
 
-
 } // namespace alpaka

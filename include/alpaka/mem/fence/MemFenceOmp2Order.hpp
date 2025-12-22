@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci, Tapish Narwal
+/* Copyright 2025 Tapish Narwal
  * SPDX-License-Identifier: MPL-2.0
  */
 

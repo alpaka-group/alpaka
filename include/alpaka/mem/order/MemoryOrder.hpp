@@ -10,6 +10,7 @@ namespace alpaka
 {
     namespace mem_order
     {
+
         /**
          * The user requested memory order may be converted to a stronger memory order guarantee if the backend does
          * not support the requested memory ordering
@@ -45,7 +46,6 @@ namespace alpaka
         static constexpr Release release;
         static constexpr Acquire acquire;
         static constexpr Relaxed relaxed;
-
 
     } // namespace mem_order
 

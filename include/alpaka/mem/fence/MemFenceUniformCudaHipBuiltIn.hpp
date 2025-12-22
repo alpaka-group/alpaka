@@ -8,10 +8,9 @@
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/core/PP.hpp"
 #include "alpaka/mem/fence/Traits.hpp"
-#include "alpaka/mem/order/MemOrderCuda.hpp"
-#include "alpaka/mem/order/MemOrderHip.hpp"
-
-#include <alpaka/mem/order/MemoryOrder.hpp>
+#include "alpaka/mem/order/MemoryOrder.hpp"
+#include "alpaka/mem/order/MemoryOrderCuda.hpp"
+#include "alpaka/mem/order/MemoryOrderHip.hpp"
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 

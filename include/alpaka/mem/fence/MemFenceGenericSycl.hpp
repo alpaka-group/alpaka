@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/mem/fence/Traits.hpp"
-#include "alpaka/mem/order/MemOrderGenericSycl.hpp"
+#include "alpaka/mem/order/MemoryOrderGenericSycl.hpp"
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 

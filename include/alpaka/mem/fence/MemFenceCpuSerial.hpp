@@ -6,7 +6,7 @@
 
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/mem/fence/Traits.hpp"
-#include "alpaka/mem/order/MemOrderStl.hpp"
+#include "alpaka/mem/order/MemoryOrderStl.hpp"
 
 #include <atomic>
 
