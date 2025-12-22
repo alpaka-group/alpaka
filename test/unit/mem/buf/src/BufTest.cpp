@@ -360,6 +360,19 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
     } // both buffers destruct fine here
 }
 
+namespace
+{
+
+    struct DummyType
+    {
+        auto check() -> bool
+        {
+            return true;
+        }
+    };
+
+} // namespace
+
 TEMPLATE_LIST_TEST_CASE("memBufAccessors", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
@@ -367,12 +380,24 @@ TEMPLATE_LIST_TEST_CASE("memBufAccessors", "[memBuf]", alpaka::test::TestAccs)
     using Elem = std::size_t;
     using Dim = alpaka::Dim<Acc>;
 
+    auto const platformHost = alpaka::PlatformCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = alpaka::Platform<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+
+    // accessors for scalar buffers
+    {
+        auto buf = buftest::allocBuf<alpaka::DimInt<0u>, Elem, Idx>(devHost, alpaka::Vec<alpaka::DimInt<0u>, Idx>{});
+        *buf = 42u;
+        CHECK(*buf == 42);
+
+        auto buf2
+            = buftest::allocBuf<alpaka::DimInt<0u>, DummyType, Idx>(devHost, alpaka::Vec<alpaka::DimInt<0u>, Idx>{});
+        CHECK(buf2->check());
+    }
+
     if constexpr(Dim::value == 1)
     {
-        auto const platformHost = alpaka::PlatformCpu{};
-        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
-        auto const platformAcc = alpaka::Platform<Acc>{};
-        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
         auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
         auto const extent = alpaka::Vec<Dim, Idx>{};
         auto foo = [](std::span<Elem>) { return true; };
