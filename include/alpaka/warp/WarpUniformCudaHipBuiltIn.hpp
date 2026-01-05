@@ -112,7 +112,13 @@ namespace alpaka::warp
                 -> std::uint64_t
 #        endif
             {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __activemask();
+#        else
+                // No HIP intrinsic for it, emulate via ballot
+                return __ballot(1);
+#        endif
             }
         };
 
@@ -164,10 +170,10 @@ namespace alpaka::warp
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __ballot_sync(activemask(warp), predicate);
-            }
 #        else
                 return __ballot(predicate);
 #        endif
+            }
         };
 
         template<>
@@ -184,7 +190,7 @@ namespace alpaka::warp
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
-                    return __shfl(val, srcLane, width);
+                return __shfl(val, srcLane, width);
 #        endif
             }
         };
@@ -203,7 +209,7 @@ namespace alpaka::warp
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __shfl_up_sync(activemask(warp), val, offset, width);
 #        else
-                    return __shfl_up(val, offset, width);
+                return __shfl_up(val, offset, width);
 #        endif
             }
         };
@@ -222,7 +228,7 @@ namespace alpaka::warp
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __shfl_down_sync(activemask(warp), val, offset, width);
 #        else
-                    return __shfl_down(val, offset, width);
+                return __shfl_down(val, offset, width);
 #        endif
             }
         };
@@ -241,7 +247,7 @@ namespace alpaka::warp
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __shfl_xor_sync(activemask(warp), val, mask, width);
 #        else
-                    return __shfl_xor(val, mask, width);
+                return __shfl_xor(val, mask, width);
 #        endif
             }
         };
