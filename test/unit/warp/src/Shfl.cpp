@@ -97,6 +97,21 @@ struct alpaka::trait::WarpSize<ShflMultipleThreadWarpTestKernel<TWarpSize>, TAcc
 TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
+
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(__INTEL_LLVM_COMPILER) && __INTEL_LLVM_COMPILER < 20'250'300
+    if constexpr(alpaka::accMatchesTags<
+                     Acc,
+                     alpaka::TagCpuSycl,
+                     alpaka::TagGpuSyclIntel,
+                     alpaka::TagGpuSyclNvidia,
+                     alpaka::TagGpuSyclAmd,
+                     alpaka::TagFpgaSyclIntel,
+                     alpaka::TagGenericSycl>)
+    {
+        WARN("Test disabled for SYCL");
+        return;
+    }
+#else
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
@@ -143,4 +158,5 @@ TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
             }
         }
     }
+#endif
 }
