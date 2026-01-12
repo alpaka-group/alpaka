@@ -64,7 +64,7 @@ TEMPLATE_LIST_TEST_CASE("synchronize", "[gridSync]", alpaka::test::TestAccs)
 
         auto elementsPerThread = alpaka::Vec<Dim, Idx>::all(1);
         auto blocksPerGrid = alpaka::Vec<Dim, Idx>::all(1);
-        blocksPerGrid[0] = 200;
+        blocksPerGrid[0] = 224;
 
         // Allocate memory on the device.
         alpaka::Vec<alpaka::DimInt<1>, Idx> bufferExtent{
@@ -83,7 +83,7 @@ TEMPLATE_LIST_TEST_CASE("synchronize", "[gridSync]", alpaka::test::TestAccs)
             &success,
             alpaka::getPtrNative(deviceMemory));
 
-        blocksPerGrid[0] = std::min(static_cast<Idx>(maxBlocks), blocksPerGrid[0]);
+        blocksPerGrid[0] = static_cast<Idx>(maxBlocks);
         constexpr bool IsCooperative = true;
         alpaka::test::KernelExecutionFixture<Acc, IsCooperative> fixture(
             alpaka::WorkDivMembers<Dim, Idx>{blocksPerGrid, threadsPerBlock, elementsPerThread});

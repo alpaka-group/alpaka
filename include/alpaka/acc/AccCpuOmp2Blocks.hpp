@@ -236,7 +236,7 @@ namespace alpaka
             {
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
                 auto const maxBlocks = omp_get_max_threads();
-                if(gridBlockExtent.prod() != static_cast<TIdx>(maxBlocks))
+                if(gridBlockExtent.prod() > static_cast<TIdx>(maxBlocks))
                 {
                     throw std::runtime_error(
                         "The number of requested blocks is larger than maximuma of the device for OpenMP 2.0 blocks "

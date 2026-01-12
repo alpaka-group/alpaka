@@ -276,7 +276,25 @@ namespace alpaka
             size_t sharedMem,
             Stream_t stream)
         {
+#    if CUDART_VERSION >= 12060
             return ::cudaLaunchCooperativeKernel(func, gridDim, blockDim, args, sharedMem, stream);
+#    else
+            // Use C API for CUDA before 12.6
+#        if ALPAKA_COMP_GNUC
+#            pragma GCC diagnostic push
+#            pragma GCC diagnostic ignored "-Wconditionally-supported"
+#        endif
+            return ::cudaLaunchCooperativeKernel(
+                reinterpret_cast<void*>(func),
+                gridDim,
+                blockDim,
+                args,
+                sharedMem,
+                stream);
+#        if ALPAKA_COMP_GNUC
+#            pragma GCC diagnostic pop
+#        endif
+#    endif
         }
 
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)

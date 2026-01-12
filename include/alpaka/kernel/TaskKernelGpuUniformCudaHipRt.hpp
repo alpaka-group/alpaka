@@ -320,11 +320,15 @@ namespace alpaka
                 if constexpr(TCooperative)
                 {
                     // Get the maximum number of active blocks for the given kernel on the current device.
-                    int const maxActiveBlocks = getMaxActiveBlocks<TAcc>(
-                        getDev(queue),
-                        task.m_kernelFnObj,
-                        blockThreadExtent,
-                        threadElemExtent,
+                    int const maxActiveBlocks = std::apply(
+                        [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
+                            return getMaxActiveBlocks<TAcc>(
+                                getDev(queue),
+                                task.m_kernelFnObj,
+                                blockThreadExtent,
+                                threadElemExtent,
+                                args...);
+                        },
                         task.m_args);
 
 #            if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -333,7 +337,8 @@ namespace alpaka
                               << maxActiveBlocks << std::endl;
 #            endif
 
-                    if(gridBlockExtent.prod() > maxActiveBlocks)
+                    int const requestedBlocks = static_cast<int>(gridBlockExtent.prod());
+                    if(requestedBlocks < 0 || requestedBlocks > maxActiveBlocks)
                     {
                         using namespace std::literals;
                         throw std::runtime_error(
