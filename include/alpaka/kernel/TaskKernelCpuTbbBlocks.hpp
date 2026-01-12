@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber
+/* Copyright 2026 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 

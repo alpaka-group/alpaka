@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2026 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2024 Mykhailo Varvarin
+# Copyright 2026 Mykhailo Varvarin
 # SPDX-License-Identifier: ISC
 #
 

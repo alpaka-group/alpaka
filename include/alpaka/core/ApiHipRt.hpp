@@ -1,4 +1,4 @@
-/* Copyright 2025 Andrea Bocci, Maria Michailidi
+/* Copyright 2026 Andrea Bocci, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 

@@ -1,4 +1,4 @@
-/* Copyright 2025 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2026 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
 

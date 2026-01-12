@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017-2019 Benjamin Worpitz
+# Copyright 2017-2026 Benjamin Worpitz
 # SPDX-License-Identifier: MPL-2.0
 #
 

@@ -1,4 +1,4 @@
-/* Copyright 2025 Anton Reinhard, Maria Michailidi
+/* Copyright 2026 Anton Reinhard, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 

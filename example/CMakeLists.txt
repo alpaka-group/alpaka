@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Benjamin Worpitz, Jan Stephan
+# Copyright 2026 Benjamin Worpitz, Jan Stephan
 # SPDX-License-Identifier: ISC
 #
 

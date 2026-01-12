@@ -1,4 +1,4 @@
-/* Copyright 2024 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2026 Benjamin Worpitz, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 

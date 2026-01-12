@@ -1,4 +1,4 @@
-/* Copyright 2022 Andrea Bocci
+/* Copyright 2026 Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 

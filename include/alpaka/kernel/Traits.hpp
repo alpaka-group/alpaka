@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
+/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
  *                Andrea Bocci, Aurora Perego, Mehmet Yusufoglu
  * SPDX-License-Identifier: MPL-2.0
  */
