@@ -1,4 +1,4 @@
-/* Copyright 2024 Jan Stephan, Aurora Perego
+/* Copyright 2026 Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 

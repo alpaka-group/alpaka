@@ -1,4 +1,4 @@
-/* Copyright 2025 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+/* Copyright 2026 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber,
  *                Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */

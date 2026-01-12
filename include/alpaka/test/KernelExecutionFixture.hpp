@@ -1,4 +1,4 @@
-/* Copyright 2024 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
+/* Copyright 2026 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 

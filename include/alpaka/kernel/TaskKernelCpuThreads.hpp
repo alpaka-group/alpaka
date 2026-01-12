@@ -1,4 +1,4 @@
-/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2026 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 

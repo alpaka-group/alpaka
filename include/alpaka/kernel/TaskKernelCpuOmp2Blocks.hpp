@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2026 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -22,6 +22,7 @@
 #include "alpaka/platform/PlatformCpu.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
+#include <algorithm>
 #include <functional>
 #include <stdexcept>
 #include <tuple>
@@ -855,7 +856,13 @@ namespace alpaka
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " opening new parallel region." << std::endl;
 #    endif
-#    pragma omp parallel
+                // Do not start more threads than blocks: the grid synchronisation of cooperative kernels uses an
+                // OpenMP barrier, which waits for all the threads in the team, including those without a block.
+                // Clamp in a type that can represent both the number of blocks and the number of threads.
+                using T = std::common_type_t<TIdx, int>;
+                int const numThreads = static_cast<int>(
+                    std::clamp(static_cast<T>(numBlocksInGrid), T{1}, static_cast<T>(::omp_get_max_threads())));
+#    pragma omp parallel num_threads(numThreads)
                 parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
             }
         }

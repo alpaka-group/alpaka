@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Benjamin Worpitz, Jan Stephan, Antonio Di Pilato
+# Copyright 2026 Benjamin Worpitz, Jan Stephan, Antonio Di Pilato
 # SPDX-License-Identifier: MPL-2.0
 #
 

@@ -1,5 +1,5 @@
-/* Copyright 2024 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
- * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu
+/* Copyright 2026 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
+ * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu, Maria Michailidi
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -320,11 +320,15 @@ namespace alpaka
                 if constexpr(TCooperative)
                 {
                     // Get the maximum number of active blocks for the given kernel on the current device.
-                    int const maxActiveBlocks = getMaxActiveBlocks<TAcc>(
-                        getDev(queue),
-                        task.m_kernelFnObj,
-                        blockThreadExtent,
-                        threadElemExtent,
+                    int const maxActiveBlocks = std::apply(
+                        [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
+                            return getMaxActiveBlocks<TAcc>(
+                                getDev(queue),
+                                task.m_kernelFnObj,
+                                blockThreadExtent,
+                                threadElemExtent,
+                                args...);
+                        },
                         task.m_args);
 
 #            if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -333,7 +337,20 @@ namespace alpaka
                               << maxActiveBlocks << std::endl;
 #            endif
 
-                    if(gridBlockExtent.prod() > maxActiveBlocks)
+                    if(maxActiveBlocks <= 0)
+                    {
+                        using namespace std::literals;
+                        throw std::runtime_error(
+                            "The kernel "s + std::string(core::demangled<TKernelFnObj>)
+                            + " cannot be launched as a cooperative kernel with "s
+                            + std::to_string(blockThreadExtent.prod()) + " threads per block on the device "s
+                            + getAccName<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>()
+                            + ", because not even a single block can be active.\n"s
+                            + "Use alpaka::getMaxActiveBlocks(...) to check the block size at runtime."s);
+                    }
+
+                    int const requestedBlocks = static_cast<int>(gridBlockExtent.prod());
+                    if(requestedBlocks < 0 || requestedBlocks > maxActiveBlocks)
                     {
                         using namespace std::literals;
                         throw std::runtime_error(

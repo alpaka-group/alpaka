@@ -1,4 +1,4 @@
-/* Copyright 2025 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
+/* Copyright 2026 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -37,6 +37,7 @@
 #include "alpaka/core/Interface.hpp"
 #include "alpaka/core/Sycl.hpp"
 
+#include <algorithm>
 #include <cstddef>
 #ifdef __cpp_lib_format
 #    include <format>
@@ -113,6 +114,33 @@ namespace alpaka
     };
 } // namespace alpaka
 
+namespace alpaka::detail
+{
+    //! Whether the SYCL device can run cooperative kernels, i.e. kernels that synchronise all the work-items in the
+    //! grid: this requires the work-groups in the root group to make concurrent forward progress.
+    template<concepts::Tag TTag>
+    auto syclCooperativeLaunch([[maybe_unused]] sycl::device const& device) -> bool
+    {
+        if constexpr(std::is_same_v<TTag, TagFpgaSyclIntel>)
+        {
+            // cooperative kernels are not supported by the FPGA back-end
+            return false;
+        }
+        else
+        {
+#    ifdef SYCL_EXT_ONEAPI_FORWARD_PROGRESS
+            namespace syclex = sycl::ext::oneapi::experimental;
+            auto const caps = device.template get_info<
+                syclex::info::device::work_group_progress_capabilities<syclex::execution_scope::root_group>>();
+            return std::find(caps.begin(), caps.end(), syclex::forward_progress_guarantee::concurrent) != caps.end();
+#    else
+            // without the forward progress extension there is no way to check if the device supports it
+            return false;
+#    endif
+        }
+    }
+} // namespace alpaka::detail
+
 namespace alpaka::trait
 {
     //! The SYCL accelerator type trait specialization.
@@ -169,7 +197,7 @@ namespace alpaka::trait
                     // m_globalMemSizeBytes
                     getMemBytes(dev),
                     // m_cooperativeLaunch
-                    true};
+                    alpaka::detail::syclCooperativeLaunch<TTag>(device)};
         }
     };
 
