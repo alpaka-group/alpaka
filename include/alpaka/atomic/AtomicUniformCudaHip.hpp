@@ -273,7 +273,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicAdd(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -306,7 +310,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicAdd_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -358,7 +366,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicSub(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -407,7 +419,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicSub_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -461,7 +477,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicMin(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 
@@ -494,7 +514,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicMin_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -564,7 +588,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicMax(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -596,7 +624,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicMax_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -667,7 +699,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicExch(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -699,7 +735,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicExch_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -733,7 +773,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicInc(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
             // Note atomicInc doesn't have a direct __nv/hip_atomic equivalent, so we use the fence emulation
             return detail::atomicOrderEmulated(
@@ -756,7 +800,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicInc_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
             // Note atomicInc_block doesn't have a direct __nv/hip_atomic equivalent, so we use the fence emulation
             return detail::atomicOrderEmulated(
@@ -781,7 +829,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicDec(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
             // Note atomicDec doesn't have a direct __nv/hip_atomic or equivalent, so we use the fence emulation
             return detail::atomicOrderEmulated(
@@ -804,7 +856,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicDec_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
             // Note atomicDec_block doesn't have a direct __nv/hip_atomic equivalent, so we use the fence emulation
             return detail::atomicOrderEmulated(
@@ -829,7 +885,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicAnd(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -861,7 +921,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicAnd_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -895,7 +959,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicOr(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -927,7 +995,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicOr_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -961,7 +1033,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicXor(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #            if defined ALPAKA_ACC_GPU_CUDA_ENABLED
 #                if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
@@ -993,7 +1069,11 @@ inline namespace alpakaGlobal
         typename std::void_t<decltype(atomicXor_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
         : std::true_type
     {
-        static __device__ T atomic([[maybe_unused]] auto const& acc, T* add, T value, TMemOrder order)
+        static __device__ T atomic(
+            [[maybe_unused]] auto const& acc,
+            [[maybe_unused]] T* add,
+            [[maybe_unused]] T value,
+            [[maybe_unused]] TMemOrder order)
         {
 #                ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #                    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
