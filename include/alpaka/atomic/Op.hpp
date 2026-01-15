@@ -191,18 +191,8 @@ namespace alpaka
         {
             auto const old = *addr;
             auto& ref = *addr;
-
-// gcc-7.4.0 assumes for an optimization that a signed overflow does not occur here.
-// That's fine, so ignore that warning.
-#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wstrict-overflow"
-#endif
             // check if values are bit-wise equal
             ref = ((old == compare) ? value : old);
-#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
-#    pragma GCC diagnostic pop
-#endif
             return old;
         }
 
@@ -230,19 +220,10 @@ namespace alpaka
             auto const old = *addr;
             auto& ref = *addr;
 
-// gcc-7.4.0 assumes for an optimization that a signed overflow does not occur here.
-// That's fine, so ignore that warning.
-#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wstrict-overflow"
-#endif
             BitUnion o{old};
             BitUnion c{compare};
 
             ref = ((o.r == c.r) ? value : old);
-#if ALPAKA_COMP_GNUC && (ALPAKA_COMP_GNUC == ALPAKA_VERSION_NUMBER(7, 4, 0))
-#    pragma GCC diagnostic pop
-#endif
             return old;
         }
     };

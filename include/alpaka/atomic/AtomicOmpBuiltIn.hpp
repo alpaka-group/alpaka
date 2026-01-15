@@ -4,11 +4,14 @@
 
 #pragma once
 
+#include "alpaka/atomic/AtomicOmpMacros.hpp"
 #include "alpaka/atomic/Op.hpp"
 #include "alpaka/atomic/Traits.hpp"
 #include "alpaka/core/Config.hpp"
+#include "alpaka/mem/order/MemoryOrder.hpp"
 
 #ifdef _OPENMP
+
 
 namespace alpaka
 {
@@ -27,10 +30,10 @@ namespace alpaka
 #    if _OPENMP >= 201107
 
         //! The OpenMP accelerators atomic operation: ADD
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicAdd, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -39,11 +42,10 @@ namespace alpaka
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconversion"
 #        endif
-#        pragma omp atomic capture
-                {
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref += value;
-                }
+                });
 #        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
@@ -52,10 +54,10 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: SUB
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicSub, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -64,11 +66,10 @@ namespace alpaka
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconversion"
 #        endif
-#        pragma omp atomic capture
-                {
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref -= value;
-                }
+                });
 #        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
@@ -77,28 +78,27 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: EXCH
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicExch, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
-// atomically update ref, but capture the original value in old
-#        pragma omp atomic capture
-                {
+                // atomically update ref, but capture the original value in old
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref = value;
-                }
+                });
                 return old;
             }
         };
 
         //! The OpenMP accelerators atomic operation: AND
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicAnd, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -107,11 +107,10 @@ namespace alpaka
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconversion"
 #        endif
-#        pragma omp atomic capture
-                {
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref &= value;
-                }
+                });
 #        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
@@ -120,10 +119,10 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: OR
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicOr, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -132,11 +131,10 @@ namespace alpaka
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconversion"
 #        endif
-#        pragma omp atomic capture
-                {
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref |= value;
-                }
+                });
 #        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
@@ -145,10 +143,10 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: XOR
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicXor, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -157,11 +155,10 @@ namespace alpaka
 #            pragma GCC diagnostic push
 #            pragma GCC diagnostic ignored "-Wconversion"
 #        endif
-#        pragma omp atomic capture
-                {
+                ALPAKA_OMP_ATOMIC_CAPTURE_ORDER(TMemOrder, {
                     old = ref;
                     ref ^= value;
-                }
+                });
 #        if ALPAKA_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
@@ -176,16 +173,15 @@ namespace alpaka
 #    if _OPENMP >= 202011
 
         //! The OpenMP accelerators atomic operation: Min
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicMin, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
-// atomically update ref, but capture the original value in old
-#        pragma omp atomic capture compare
-                {
+                // atomically update ref, but capture the original value in old
+                ALPAKA_OMP_ATOMIC_CAPTURE_COMPARE_ORDER(TMemOrder, {
                     old = ref;
                     // Do not remove the curly brackets of the if body else
                     // icpx 2024.0 is not able to compile the atomics.
@@ -193,22 +189,21 @@ namespace alpaka
                     {
                         ref = value;
                     }
-                }
+                });
                 return old;
             }
         };
 
         //! The OpenMP accelerators atomic operation: Max
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicMax, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value, TMemOrder) -> T
             {
                 T old;
                 auto& ref(*addr);
-// atomically update ref, but capture the original value in old
-#        pragma omp atomic capture compare
-                {
+                // atomically update ref, but capture the original value in old
+                ALPAKA_OMP_ATOMIC_CAPTURE_COMPARE_ORDER(TMemOrder, {
                     old = ref;
                     // Do not remove the curly brackets of the if body else
                     // icpx 2024.0 is not able to compile the atomics.
@@ -216,16 +211,16 @@ namespace alpaka
                     {
                         ref = value;
                     }
-                }
+                });
                 return old;
             }
         };
 
         //! The OpenMP accelerators atomic operation: Inc
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicInc, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicInc, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 // TODO(bgruber): atomic increment with wrap around is not implementable in OpenMP 5.1
                 T old;
@@ -238,10 +233,10 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: Dec
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicDec, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicDec, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 // TODO(bgruber): atomic decrement with wrap around is not implementable in OpenMP 5.1
                 T old;
@@ -254,16 +249,16 @@ namespace alpaka
         };
 
         //! The OpenMP accelerators atomic operation: Cas
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicCas, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T compare, T value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T compare, T value, TMemOrder)
+                -> T
             {
                 T old;
                 auto& ref(*addr);
-// atomically update ref, but capture the original value in old
-#        pragma omp atomic capture compare
-                {
+                // atomically update ref, but capture the original value in old
+                ALPAKA_OMP_ATOMIC_CAPTURE_COMPARE_ORDER(TMemOrder, {
                     old = ref;
                     // Do not remove the curly brackets of the if body else
                     // icpx 2024.0 is not able to compile the atomics.
@@ -271,7 +266,7 @@ namespace alpaka
                     {
                         ref = value;
                     }
-                }
+                });
                 return old;
             }
         };
@@ -280,10 +275,10 @@ namespace alpaka
         //! The OpenMP accelerators atomic operation
         //
         // generic implementations for operations where native atomics are not available
-        template<typename TOp, typename T, typename THierarchy>
-        struct AtomicOp<TOp, AtomicOmpBuiltIn, T, THierarchy>
+        template<typename TOp, typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<TOp, AtomicOmpBuiltIn, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value, TMemOrder) -> T
             {
                 T old;
                 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all
@@ -299,7 +294,8 @@ namespace alpaka
                 AtomicOmpBuiltIn const&,
                 T* const addr,
                 T const& compare,
-                T const& value) -> T
+                T const& value,
+                TMemOrder) -> T
             {
                 T old;
                 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all

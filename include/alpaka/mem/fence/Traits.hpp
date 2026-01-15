@@ -34,6 +34,11 @@ namespace alpaka
         struct Device : MemoryScopeTag
         {
         };
+
+        static constexpr auto device = Device{};
+        static constexpr auto grid = Grid{};
+        static constexpr auto block = Block{};
+
     } // namespace memory_scope
 
     template<typename T>

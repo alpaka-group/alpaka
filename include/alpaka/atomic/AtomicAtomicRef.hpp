@@ -10,6 +10,8 @@
 
 #    include "alpaka/atomic/Traits.hpp"
 #    include "alpaka/core/Config.hpp"
+#    include "alpaka/mem/order/MemOrderStl.hpp"
+#    include "alpaka/mem/order/MemoryOrder.hpp"
 
 #    include <array>
 #    include <atomic>
@@ -17,6 +19,8 @@
 
 #    ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
 #        ifndef ALPAKA_HAS_STD_ATOMIC_REF
+#            include "alpaka/mem/order/MemOrderBoost.hpp"
+
 #            include <boost/atomic.hpp>
 #        endif
 
@@ -27,9 +31,11 @@ namespace alpaka
 #        if defined(ALPAKA_HAS_STD_ATOMIC_REF)
         template<typename T>
         using atomic_ref = std::atomic_ref<T>;
+        using MemOrderCpu = MemOrderStl;
 #        else
         template<typename T>
         using atomic_ref = boost::atomic_ref<T>;
+        using MemOrderCpu = MemOrderBoost;
 #        endif
     } // namespace detail
 
@@ -54,41 +60,44 @@ namespace alpaka
     namespace trait
     {
         //! The CPU accelerators AtomicAdd.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicAdd, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                return ref.fetch_add(value);
+                return ref.fetch_add(value, detail::MemOrderCpu::get(order));
             }
         };
 
         //! The CPU accelerators AtomicSub.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicSub, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                return ref.fetch_sub(value);
+                return ref.fetch_sub(value, detail::MemOrderCpu::get(order));
             }
         };
 
         //! The CPU accelerators AtomicMin.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicMin, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result = old;
                 result = std::min(result, value);
-                while(!ref.compare_exchange_weak(old, result))
+                while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)))
                 {
                     result = old;
                     result = std::min(result, value);
@@ -98,17 +107,18 @@ namespace alpaka
         };
 
         //! The CPU accelerators AtomicMax.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicMax, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result = old;
                 result = std::max(result, value);
-                while(!ref.compare_exchange_weak(old, result))
+                while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)))
                 {
                     result = old;
                     result = std::max(result, value);
@@ -118,16 +128,17 @@ namespace alpaka
         };
 
         //! The CPU accelerators AtomicExch.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicExch, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result = value;
-                while(!ref.compare_exchange_weak(old, result))
+                while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)))
                 {
                     result = value;
                 }
@@ -136,16 +147,17 @@ namespace alpaka
         };
 
         //! The CPU accelerators AtomicInc.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicInc, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicInc, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result = ((old >= value) ? 0 : static_cast<T>(old + 1));
-                while(!ref.compare_exchange_weak(old, result))
+                while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)))
                 {
                     result = ((old >= value) ? 0 : static_cast<T>(old + 1));
                 }
@@ -154,16 +166,17 @@ namespace alpaka
         };
 
         //! The CPU accelerators AtomicDec.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicDec, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicDec, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result = (old == static_cast<T>(0) || old > value) ? value : (old - static_cast<T>(1));
-                while(!ref.compare_exchange_weak(old, result))
+                while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)))
                 {
                     result = (old == static_cast<T>(0) || old > value) ? value : (old - static_cast<T>(1));
                 }
@@ -172,54 +185,58 @@ namespace alpaka
         };
 
         //! The CPU accelerators AtomicAnd.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicAnd, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                return ref.fetch_and(value);
+                return ref.fetch_and(value, detail::MemOrderCpu::get(order));
             }
         };
 
         //! The CPU accelerators AtomicOr.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicOr, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                return ref.fetch_or(value);
+                return ref.fetch_or(value, detail::MemOrderCpu::get(order));
             }
         };
 
         //! The CPU accelerators AtomicXor.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicXor, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value, TMemOrder order)
+                -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                return ref.fetch_xor(value);
+                return ref.fetch_xor(value, detail::MemOrderCpu::get(order));
             }
         };
 
         //! The CPU accelerators AtomicCas.
-        template<typename T, typename THierarchy>
-        struct AtomicOp<AtomicCas, AtomicAtomicRef, T, THierarchy>
+        template<typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicAtomicRef, T, TMemOrder, THierarchy>
         {
             ALPAKA_FN_HOST static auto atomicOp(
                 AtomicAtomicRef const&,
                 T* const addr,
                 T const& compare,
-                T const& value) -> T
+                T const& value,
+                TMemOrder order) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
                 alpaka::detail::atomic_ref<T> ref(*addr);
-                T old = ref;
+                T old = ref.load(detail::MemOrderCpu::get(order));
                 T result;
                 do
                 {
@@ -231,7 +248,7 @@ namespace alpaka
 #        if ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
 #            pragma GCC diagnostic pop
 #        endif
-                } while(!ref.compare_exchange_weak(old, result));
+                } while(!ref.compare_exchange_weak(old, result, detail::MemOrderCpu::get(order)));
                 return old;
             }
         };

@@ -16,10 +16,14 @@ namespace alpaka
     namespace trait
     {
         //! The NoOp atomic operation.
-        template<typename TOp, typename T, typename THierarchy>
-        struct AtomicOp<TOp, AtomicNoOp, T, THierarchy>
+        template<typename TOp, typename T, MemoryOrder TMemOrder, typename THierarchy>
+        struct AtomicOp<TOp, AtomicNoOp, T, TMemOrder, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicNoOp const& /* atomic */, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(
+                AtomicNoOp const& /* atomic */,
+                T* const addr,
+                T const& value,
+                TMemOrder) -> T
             {
                 return TOp()(addr, value);
             }

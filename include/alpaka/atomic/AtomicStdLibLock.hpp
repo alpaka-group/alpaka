@@ -6,6 +6,7 @@
 
 #include "alpaka/atomic/Traits.hpp"
 #include "alpaka/core/Config.hpp"
+#include "alpaka/mem/order/MemoryOrder.hpp"
 
 #include <array>
 #include <mutex>
@@ -25,7 +26,7 @@ namespace alpaka
     class AtomicStdLibLock
     {
     public:
-        template<typename TAtomic, typename TOp, typename T, typename THierarchy, typename TSfinae>
+        template<typename TOp, typename TAtomic, typename T, MemoryOrder TMemOrder, typename THierarchy>
         friend struct trait::AtomicOp;
 
         static constexpr auto nextPowerOf2(size_t const value, size_t const bit = 0u) -> size_t
@@ -75,14 +76,17 @@ namespace alpaka
     namespace trait
     {
         //! The CPU threads accelerator atomic operation.
-        template<typename TOp, typename T, typename THierarchy, size_t THashTableSize>
-        struct AtomicOp<TOp, AtomicStdLibLock<THashTableSize>, T, THierarchy>
+        template<typename TOp, typename T, MemoryOrder TMemOrder, typename THierarchy, size_t THashTableSize>
+        struct AtomicOp<TOp, AtomicStdLibLock<THashTableSize>, T, TMemOrder, THierarchy>
         {
             ALPAKA_FN_HOST static auto atomicOp(
                 AtomicStdLibLock<THashTableSize> const& atomic,
                 T* const addr,
-                T const& value) -> T
+                T const& value,
+                TMemOrder) -> T
             {
+                // Note: Memory order is ignored for mutex-based implementation
+                // as mutexes provide full sequential consistency
                 std::lock_guard<std::mutex> lock(atomic.getMutex(addr));
                 return TOp()(addr, value);
             }
@@ -91,8 +95,11 @@ namespace alpaka
                 AtomicStdLibLock<THashTableSize> const& atomic,
                 T* const addr,
                 T const& compare,
-                T const& value) -> T
+                T const& value,
+                TMemOrder) -> T
             {
+                // Note: Memory order is ignored for mutex-based implementation
+                // as mutexes provide full sequential consistency
                 std::lock_guard<std::mutex> lock(atomic.getMutex(addr));
                 return TOp()(addr, compare, value);
             }

@@ -6,37 +6,42 @@
 
 #include "alpaka/mem/order/MemoryOrder.hpp"
 
-#include <atomic>
 #include <concepts>
+
+#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+#    ifndef ALPAKA_HAS_STD_ATOMIC_REF
+#        include <boost/memory_order.hpp>
 
 namespace alpaka
 {
-    struct MemOrderStl
+    struct MemOrderBoost
     {
         template<MemoryOrder TMemOrder>
         static constexpr auto get(TMemOrder)
         {
             if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
             {
-                return std::memory_order::seq_cst;
+                return boost::memory_order::seq_cst;
             }
             if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
             {
-                return std::memory_order::acq_rel;
+                return boost::memory_order::acq_rel;
             }
             if constexpr(std::same_as<TMemOrder, mem_order::Release>)
             {
-                return std::memory_order::release;
+                return boost::memory_order::release;
             }
             if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
             {
-                return std::memory_order::acquire;
+                return boost::memory_order_acquire;
             }
             if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
             {
-                return std::memory_order::relaxed;
+                return boost::memory_order_relaxed;
             }
         }
     };
 
 } // namespace alpaka
+#    endif
+#endif

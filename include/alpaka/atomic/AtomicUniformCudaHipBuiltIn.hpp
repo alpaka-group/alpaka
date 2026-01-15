@@ -10,6 +10,7 @@
 #include "alpaka/core/Config.hpp"
 #include "alpaka/core/Decay.hpp"
 #include "alpaka/core/Unreachable.hpp"
+#include "alpaka/mem/order/MemoryOrder.hpp"
 
 #include <limits>
 #include <type_traits>
@@ -63,6 +64,7 @@ namespace alpaka::trait
             typename TOp,
             typename TAtomic,
             typename T,
+            alpaka::MemoryOrder TMemOrder,
             typename THierarchy,
             typename TSfinae = void,
             typename TDefer = void>
@@ -72,7 +74,8 @@ namespace alpaka::trait
             static __device__ auto atomic(
                 alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
                 T* const addr,
-                T const& value) -> T
+                T const& value,
+                TMemOrder order) -> T
             {
                 auto* const addressAsIntegralType = reinterpretAddress(addr);
                 using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
@@ -94,9 +97,13 @@ namespace alpaka::trait
                     assumed = old;
                     T v = *(reinterpret_cast<T*>(&assumed));
                     TOp{}(&v, value);
-                    using Cas = alpaka::trait::
-                        AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>;
-                    old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v));
+                    using Cas = alpaka::trait::AtomicOp<
+                        alpaka::AtomicCas,
+                        alpaka::AtomicUniformCudaHipBuiltIn,
+                        EmulatedType,
+                        TMemOrder,
+                        THierarchy>;
+                    old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v), order);
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
                 } while(assumed != old);
                 return *(reinterpret_cast<T*>(&old));
@@ -104,49 +111,56 @@ namespace alpaka::trait
         };
 
         //! Emulate AtomicCas with equivalent unisigned integral type
-        template<typename T, typename THierarchy>
-        struct EmulateAtomic<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
+        struct EmulateAtomic<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>
             : private EmulationBase
         {
             static __device__ auto atomic(
                 alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
                 T* const addr,
                 T const& compare,
-                T const& value) -> T
+                T const& value,
+                TMemOrder order) -> T
             {
                 auto* const addressAsIntegralType = reinterpretAddress(addr);
                 using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
                 EmulatedType reinterpretedCompare = reinterpretValue(compare);
                 EmulatedType reinterpretedValue = reinterpretValue(value);
 
-                auto old = alpaka::trait::
-                    AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>::
-                        atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue);
+                auto old = alpaka::trait::AtomicOp<
+                    alpaka::AtomicCas,
+                    alpaka::AtomicUniformCudaHipBuiltIn,
+                    EmulatedType,
+                    TMemOrder,
+                    THierarchy>::atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue, order);
 
                 return *(reinterpret_cast<T*>(&old));
             }
         };
 
         //! Emulate AtomicSub with atomicAdd
-        template<typename T, typename THierarchy>
-        struct EmulateAtomic<alpaka::AtomicSub, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
+        struct EmulateAtomic<alpaka::AtomicSub, alpaka::AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>
         {
             static __device__ auto atomic(
                 alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
                 T* const addr,
-                T const& value) -> T
+                T const& value,
+                TMemOrder order) -> T
             {
-                return alpaka::trait::AtomicOp<alpaka::AtomicAdd, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>::
-                    atomicOp(ctx, addr, -value);
+                return alpaka::trait::
+                    AtomicOp<alpaka::AtomicAdd, alpaka::AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>::
+                        atomicOp(ctx, addr, -value, order);
             }
         };
 
         //! AtomicDec can not be implemented for floating point types!
-        template<typename T, typename THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
         struct EmulateAtomic<
             alpaka::AtomicDec,
             alpaka::AtomicUniformCudaHipBuiltIn,
             T,
+            TMemOrder,
             THierarchy,
             std::enable_if_t<std::is_floating_point_v<T>>>
         {
@@ -160,11 +174,12 @@ namespace alpaka::trait
         };
 
         //! AtomicInc can not be implemented for floating point types!
-        template<typename T, typename THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
         struct EmulateAtomic<
             alpaka::AtomicInc,
             alpaka::AtomicUniformCudaHipBuiltIn,
             T,
+            TMemOrder,
             THierarchy,
             std::enable_if_t<std::is_floating_point_v<T>>>
         {
@@ -178,11 +193,12 @@ namespace alpaka::trait
         };
 
         //! AtomicAnd can not be implemented for floating point types!
-        template<typename T, typename THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
         struct EmulateAtomic<
             alpaka::AtomicAnd,
             alpaka::AtomicUniformCudaHipBuiltIn,
             T,
+            TMemOrder,
             THierarchy,
             std::enable_if_t<std::is_floating_point_v<T>>>
         {
@@ -196,11 +212,12 @@ namespace alpaka::trait
         };
 
         //! AtomicOr can not be implemented for floating point types!
-        template<typename T, typename THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
         struct EmulateAtomic<
             alpaka::AtomicOr,
             alpaka::AtomicUniformCudaHipBuiltIn,
             T,
+            TMemOrder,
             THierarchy,
             std::enable_if_t<std::is_floating_point_v<T>>>
         {
@@ -214,11 +231,12 @@ namespace alpaka::trait
         };
 
         //! AtomicXor can not be implemented for floating point types!
-        template<typename T, typename THierarchy>
+        template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
         struct EmulateAtomic<
             alpaka::AtomicXor,
             alpaka::AtomicUniformCudaHipBuiltIn,
             T,
+            TMemOrder,
             THierarchy,
             std::enable_if_t<std::is_floating_point_v<T>>>
         {
@@ -238,49 +256,60 @@ namespace alpaka::trait
     // - unsigned long int will be redirected to unsigned long long int or unsigned int implementation depending if
     //   unsigned long int is a 64 or 32bit data type.
     // - Atomics which are not available as builtin atomic will be emulated.
-    template<typename TOp, typename T, typename THierarchy>
-    struct AtomicOp<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>
+    template<typename TOp, typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
+    struct AtomicOp<TOp, AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>
     {
         static __device__ auto atomicOp(
-            AtomicUniformCudaHipBuiltIn const& ctx,
+            auto const& ctx,
             [[maybe_unused]] T* const addr,
-            [[maybe_unused]] T const& value) -> T
+            [[maybe_unused]] T const& value,
+            TMemOrder order) -> T
         {
             static_assert(
                 sizeof(T) == 4u || sizeof(T) == 8u,
                 "atomicOp<TOp, AtomicUniformCudaHipBuiltIn, T>(atomic, addr, value) is not supported! Only 64 and "
                 "32bit atomics are supported.");
 
-            if constexpr(::AlpakaBuiltInAtomic<TOp, T, THierarchy>::value)
-                return ::AlpakaBuiltInAtomic<TOp, T, THierarchy>::atomic(addr, value);
+            if constexpr(::AlpakaBuiltInAtomic<TOp, T, TMemOrder, THierarchy>::value)
+                return ::AlpakaBuiltInAtomic<TOp, T, TMemOrder, THierarchy>::atomic(ctx, addr, value, order);
 
             else if constexpr(std::is_same_v<unsigned long int, T>)
             {
-                if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::value)
-                    return ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::atomic(
+                if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<TOp, unsigned int, TMemOrder, THierarchy>::value)
+                    return ::AlpakaBuiltInAtomic<TOp, unsigned int, TMemOrder, THierarchy>::atomic(
+                        ctx,
                         reinterpret_cast<unsigned int*>(addr),
-                        static_cast<unsigned int>(value));
+                        static_cast<unsigned int>(value),
+                        order);
                 else if constexpr(
-                    sizeof(T) == 8u && ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::value) // LP64
+                    sizeof(T) == 8u
+                    && ::AlpakaBuiltInAtomic<TOp, unsigned long long int, TMemOrder, THierarchy>::value) // LP64
                 {
-                    return ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::atomic(
+                    return ::AlpakaBuiltInAtomic<TOp, unsigned long long int, TMemOrder, THierarchy>::atomic(
+                        ctx,
                         reinterpret_cast<unsigned long long int*>(addr),
-                        static_cast<unsigned long long int>(value));
+                        static_cast<unsigned long long int>(value),
+                        order);
                 }
             }
 
-            return detail::EmulateAtomic<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(ctx, addr, value);
+            return detail::EmulateAtomic<TOp, AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>::atomic(
+                ctx,
+                addr,
+                value,
+                order);
         }
     };
 
-    template<typename T, typename THierarchy>
-    struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>
+    template<typename T, alpaka::MemoryOrder TMemOrder, typename THierarchy>
+    struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>
     {
         static __device__ auto atomicOp(
-            [[maybe_unused]] AtomicUniformCudaHipBuiltIn const& ctx,
+            [[maybe_unused]] auto const& ctx,
             [[maybe_unused]] T* const addr,
             [[maybe_unused]] T const& compare,
-            [[maybe_unused]] T const& value) -> T
+            [[maybe_unused]] T const& value,
+            TMemOrder order) -> T
         {
             static_assert(
                 sizeof(T) == 4u || sizeof(T) == 8u,
@@ -288,32 +317,43 @@ namespace alpaka::trait
                 "supported! Only 64 and "
                 "32bit atomics are supported.");
 
-            if constexpr(::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::value)
-                return ::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::atomic(addr, compare, value);
+            if constexpr(::AlpakaBuiltInAtomic<AtomicCas, T, TMemOrder, THierarchy>::value)
+                return ::AlpakaBuiltInAtomic<AtomicCas, T, TMemOrder, THierarchy>::atomic(
+                    ctx,
+                    addr,
+                    compare,
+                    value,
+                    order);
 
             else if constexpr(std::is_same_v<unsigned long int, T>)
             {
-                if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::value)
-                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::atomic(
+                if constexpr(
+                    sizeof(T) == 4u && ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, TMemOrder, THierarchy>::value)
+                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, TMemOrder, THierarchy>::atomic(
+                        ctx,
                         reinterpret_cast<unsigned int*>(addr),
                         static_cast<unsigned int>(compare),
-                        static_cast<unsigned int>(value));
+                        static_cast<unsigned int>(value),
+                        order);
                 else if constexpr(
                     sizeof(T) == 8u
-                    && ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::value) // LP64
+                    && ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, TMemOrder, THierarchy>::value) // LP64
                 {
-                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::atomic(
+                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, TMemOrder, THierarchy>::atomic(
+                        ctx,
                         reinterpret_cast<unsigned long long int*>(addr),
                         static_cast<unsigned long long int>(compare),
-                        static_cast<unsigned long long int>(value));
+                        static_cast<unsigned long long int>(value),
+                        order);
                 }
             }
 
-            return detail::EmulateAtomic<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(
+            return detail::EmulateAtomic<AtomicCas, AtomicUniformCudaHipBuiltIn, T, TMemOrder, THierarchy>::atomic(
                 ctx,
                 addr,
                 compare,
-                value);
+                value,
+                order);
         }
     };
 } // namespace alpaka::trait

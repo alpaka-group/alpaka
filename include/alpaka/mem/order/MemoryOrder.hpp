@@ -46,7 +46,6 @@ namespace alpaka
         static constexpr Acquire acquire;
         static constexpr Relaxed relaxed;
 
-
     } // namespace mem_order
 
     template<typename T>
