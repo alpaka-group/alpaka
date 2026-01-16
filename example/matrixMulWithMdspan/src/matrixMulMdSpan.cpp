@@ -6,22 +6,21 @@
 // Needed for running example for all backends available; one by one
 #include <alpaka/example/ExecuteForEachAccTag.hpp>
 
-#include <experimental/mdspan>
 #include <iostream>
 
 //! Matrix multiplication example by using mdspan data structure
 
 //! Some simple type traits for checking the types
-//! isMdspan simply checks if a type is of type std::experimental::mdspan or not
+//! isMdspan simply checks if a type is of type alpaka::experimental::mdspan or not
 //! Primary template for is_mdspan (defaults to false)
 template<typename T>
 struct IsMdspan : std::false_type
 {
 };
 
-//! Specialization for mdspan with four template arguments
-template<typename ElementType, typename Extents, typename LayoutPolicy, typename AccessorPolicy>
-struct IsMdspan<std::experimental::mdspan<ElementType, Extents, LayoutPolicy, AccessorPolicy>> : std::true_type
+//! Specialization for mdspan
+template<typename... TArgs>
+struct IsMdspan<alpaka::experimental::mdspan<TArgs...>> : std::true_type
 {
 };
 

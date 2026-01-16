@@ -909,9 +909,10 @@ if (alpaka_USE_MDSPAN STREQUAL "SYSTEM")
 elseif (alpaka_USE_MDSPAN STREQUAL "FETCH")
     include(FetchContent)
     FetchContent_Declare(
+        # kokkos/mdspan as of 2025.12.11
         mdspan
         GIT_REPOSITORY https://github.com/kokkos/mdspan.git
-        GIT_TAG 973ef6415a6396e5f0a55cb4c99afd1d1d541681
+        GIT_TAG bcfcc9ea8fc5390b99261a4d8450c3f2fc18a7f2
     )
     # we don't use FetchContent_MakeAvailable(mdspan) since it would also install mdspan
     # see also: https://stackoverflow.com/questions/65527126/how-to-disable-installation-a-fetchcontent-dependency
@@ -925,10 +926,10 @@ elseif (alpaka_USE_MDSPAN STREQUAL "FETCH")
         endif()
     endif()
     if(${CMAKE_VERSION} VERSION_LESS "3.25.0")
-        get_target_property(mdspan_include_dir std::mdspan INTERFACE_INCLUDE_DIRECTORIES)
+        get_target_property(mdspan_include_dir mdspan::mdspan INTERFACE_INCLUDE_DIRECTORIES)
         target_include_directories(alpaka SYSTEM INTERFACE ${mdspan_include_dir})
     else()
-        target_link_libraries(alpaka INTERFACE std::mdspan)
+        target_link_libraries(alpaka INTERFACE mdspan::mdspan)
     endif()
     target_compile_definitions(alpaka INTERFACE ALPAKA_USE_MDSPAN)
 elseif (alpaka_USE_MDSPAN STREQUAL "OFF")
