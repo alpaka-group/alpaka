@@ -470,6 +470,9 @@
 						#endif
 
 						#if ALPAKA_LANG_HIP
+						#    if ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0) && ALPAKA_COMP_HIP < ALPAKA_VERSION_NUMBER(7, 0, 0)
+						#        define HIP_ENABLE_WARP_SYNC_BUILTINS
+						#    endif
 						// HIP defines some keywords like __forceinline__ in header files.
 						#    include <hip/hip_runtime.h>
 						#endif
@@ -19920,44 +19923,33 @@
 			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
 			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
 			        // Restrict to warpSize <= 32 for now.
-			        static auto activemask(warp::WarpGenericSycl<TDim> const& warp) -> std::uint32_t
+			        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> std::uint32_t
 			        {
-			            static_assert(!sizeof(warp), "activemask is not supported on SYCL");
-			            // SYCL does not have an API to get the activemask. It is also questionable (to me, bgruber) whether an
-			            // "activemask" even exists on some hardware architectures, since the idea is bound to threads being
-			            // "turned off" when they take different control flow in a warp. A SYCL implementation could run each
-			            // thread as a SIMD lane, in which cause the "thread" is always active, but some SIMD lanes are either
-			            // predicated off, or side-effects are masked out when writing them back.
-			            //
-			            // An implementation via oneAPI's sycl::ext::oneapi::group_ballot causes UB, because activemask is expected
-			            // to be callable when less than all threads are active in a warp (CUDA). But SYCL requires all threads of
-			            // a group to call the function.
-			            //
-			            // Intel's CUDA -> SYCL migration tool also suggests that there is no direct equivalent and the user must
-			            // rewrite their kernel logic. See also:
-			            // https://oneapi-src.github.io/SYCLomatic/dev_guide/diagnostic_ref/dpct1086.html
-
-			            return ~std::uint32_t{0};
+			            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
+			            auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
+			            std::uint32_t bits = 0;
+			            mask.extract_bits(bits);
+			            return bits;
 			        }
 			    };
 
 			    template<typename TDim>
 			    struct All<warp::WarpGenericSycl<TDim>>
 			    {
-			        static auto all(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
+			        static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto const sub_group = warp.m_item_warp.get_sub_group();
-			            return static_cast<std::int32_t>(sycl::all_of_group(sub_group, static_cast<bool>(predicate)));
+			            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
 			        }
 			    };
 
 			    template<typename TDim>
 			    struct Any<warp::WarpGenericSycl<TDim>>
 			    {
-			        static auto any(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
+			        static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto const sub_group = warp.m_item_warp.get_sub_group();
-			            return static_cast<std::int32_t>(sycl::any_of_group(sub_group, static_cast<bool>(predicate)));
+			            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
 			        }
 			    };
 
@@ -19967,9 +19959,9 @@
 			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
 			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
 			        // Restrict to warpSize <= 32 for now.
-			        static auto ballot(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::uint32_t
+			        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::uint32_t
 			        {
-			            auto const sub_group = warp.m_item_warp.get_sub_group();
+			            auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
 			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
 			            // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
 			            // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
@@ -19984,7 +19976,11 @@
 			    struct Shfl<warp::WarpGenericSycl<TDim>>
 			    {
 			        template<typename T>
-			        static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
+			        static auto shfl(
+			            warp::WarpGenericSycl<TDim> const& /*warp*/,
+			            T value,
+			            std::int32_t srcLane,
+			            std::int32_t width)
 			        {
 			            ALPAKA_ASSERT_ACC(width > 0);
 			            ALPAKA_ASSERT_ACC(srcLane >= 0);
@@ -19995,7 +19991,7 @@
 			               Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
 			               The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
 			               first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
 			            return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
@@ -20007,12 +20003,12 @@
 			    {
 			        template<typename T>
 			        static auto shfl_up(
-			            warp::WarpGenericSycl<TDim> const& warp,
+			            warp::WarpGenericSycl<TDim> const& /*warp*/,
 			            T value,
 			            std::uint32_t offset, /* must be the same for all work-items in the group */
 			            std::int32_t width)
 			        {
-			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const start_index = id / w * w;
@@ -20030,12 +20026,12 @@
 			    {
 			        template<typename T>
 			        static auto shfl_down(
-			            warp::WarpGenericSycl<TDim> const& warp,
+			            warp::WarpGenericSycl<TDim> const& /*warp*/,
 			            T value,
 			            std::uint32_t offset,
 			            std::int32_t width)
 			        {
-			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const end_index = (id / w + 1) * w;
@@ -20052,9 +20048,13 @@
 			    struct ShflXor<warp::WarpGenericSycl<TDim>>
 			    {
 			        template<typename T>
-			        static auto shfl_xor(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t mask, std::int32_t width)
+			        static auto shfl_xor(
+			            warp::WarpGenericSycl<TDim> const& /*warp*/,
+			            T value,
+			            std::int32_t mask,
+			            std::int32_t width)
 			        {
-			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const start_index = id / w * w;
@@ -22704,6 +22704,9 @@
 					#    endif
 
 					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+					#        if ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0) && ALPAKA_COMP_HIP < ALPAKA_VERSION_NUMBER(7, 0, 0)
+					#            define HIP_ENABLE_WARP_SYNC_BUILTINS
+					#        endif
 					#        include <hip/hip_runtime.h>
 					#    endif
 
@@ -25720,7 +25723,7 @@
 			        template<>
 			        struct GetSize<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
+			            static __device__ auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
 			            {
 			                return warpSize;
 			            }
@@ -25729,7 +25732,7 @@
 			        template<>
 			        struct GetSizeCompileTime<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static constexpr auto getSizeCompileTime() -> std::int32_t
+			            static constexpr __device__ auto getSizeCompileTime() -> std::int32_t
 			            {
 			#        if defined(__CUDA_ARCH__)
 			                // CUDA always has a warp size of 32
@@ -25760,7 +25763,7 @@
 			        template<>
 			        struct GetSizeUpperLimit<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static constexpr auto getSizeUpperLimit() -> std::int32_t
+			            static constexpr __device__ auto getSizeUpperLimit() -> std::int32_t
 			            {
 			#        if defined(__CUDA_ARCH__)
 			                // CUDA always has a warp size of 32
@@ -25791,14 +25794,15 @@
 			        template<>
 			        struct Activemask<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
+			            static __device__ auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 			                -> std::uint32_t
 			#        else
 			                -> std::uint64_t
 			#        endif
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
 			                return __activemask();
 			#        else
 			                // No HIP intrinsic for it, emulate via ballot
@@ -25810,12 +25814,13 @@
 			        template<>
 			        struct All<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto all(
+			            static __device__ auto all(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                std::int32_t predicate) -> std::int32_t
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __all_sync(0xffff'ffff, predicate);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __all_sync(activemask(warp), predicate);
 			#        else
 			                return __all(predicate);
 			#        endif
@@ -25825,12 +25830,13 @@
 			        template<>
 			        struct Any<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto any(
+			            static __device__ auto any(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                std::int32_t predicate) -> std::int32_t
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __any_sync(0xffff'ffff, predicate);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __any_sync(activemask(warp), predicate);
 			#        else
 			                return __any(predicate);
 			#        endif
@@ -25840,7 +25846,7 @@
 			        template<>
 			        struct Ballot<WarpUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto ballot(
+			            static __device__ auto ballot(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                std::int32_t predicate)
 			            // return type is required by the compiler
@@ -25850,8 +25856,9 @@
 			                -> std::uint64_t
 			#        endif
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __ballot_sync(0xffff'ffff, predicate);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __ballot_sync(activemask(warp), predicate);
 			#        else
 			                return __ballot(predicate);
 			#        endif
@@ -25862,14 +25869,15 @@
 			        struct Shfl<WarpUniformCudaHipBuiltIn>
 			        {
 			            template<typename T>
-			            __device__ static auto shfl(
+			            static __device__ auto shfl(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                T val,
 			                int srcLane,
 			                std::int32_t width) -> T
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_sync(0xffff'ffff, val, srcLane, width);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __shfl_sync(activemask(warp), val, srcLane, width);
 			#        else
 			                return __shfl(val, srcLane, width);
 			#        endif
@@ -25880,14 +25888,15 @@
 			        struct ShflUp<WarpUniformCudaHipBuiltIn>
 			        {
 			            template<typename T>
-			            __device__ static auto shfl_up(
+			            static __device__ auto shfl_up(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                T val,
 			                std::uint32_t offset,
 			                std::int32_t width) -> T
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_up_sync(0xffff'ffff, val, offset, width);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __shfl_up_sync(activemask(warp), val, offset, width);
 			#        else
 			                return __shfl_up(val, offset, width);
 			#        endif
@@ -25898,14 +25907,15 @@
 			        struct ShflDown<WarpUniformCudaHipBuiltIn>
 			        {
 			            template<typename T>
-			            __device__ static auto shfl_down(
+			            static __device__ auto shfl_down(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                T val,
 			                std::uint32_t offset,
 			                std::int32_t width) -> T
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_down_sync(0xffff'ffff, val, offset, width);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __shfl_down_sync(activemask(warp), val, offset, width);
 			#        else
 			                return __shfl_down(val, offset, width);
 			#        endif
@@ -25916,14 +25926,15 @@
 			        struct ShflXor<WarpUniformCudaHipBuiltIn>
 			        {
 			            template<typename T>
-			            __device__ static auto shfl_xor(
+			            static __device__ auto shfl_xor(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
 			                T val,
 			                std::int32_t mask,
 			                std::int32_t width) -> T
 			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_xor_sync(0xffff'ffff, val, mask, width);
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+			                return __shfl_xor_sync(activemask(warp), val, mask, width);
 			#        else
 			                return __shfl_xor(val, mask, width);
 			#        endif
