@@ -17,51 +17,11 @@ from alpaka_job_coverage.util import (
 
 
 def alpaka_post_filter(row: List) -> bool:
-    # debug builds with clang 15 and 16 as CUDA compiler produce a compiler error
-    # see here: https://github.com/llvm/llvm-project/issues/58491
-    if (
-        is_in_row(row, BUILD_TYPE)
-        and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
-        and row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
-    ):
-        for clang_cuda_version in ["15", "16", "17"]:
-            if row_check_version(row, HOST_COMPILER, "==", clang_cuda_version):
-                return False
-
-    # Debug builds with nvcc <= 11.6 produce compiler errors
-    if (
-        is_in_row(row, BUILD_TYPE)
-        and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
-        and row_check_name(row, DEVICE_COMPILER, "==", NVCC)
-        and row_check_version(row, DEVICE_COMPILER, "<=", "11.6")
-    ):
-        return False
-
-    # because of a compiler bug, we disable mdspan for NVCC <= 11.2
-    if (
-        row_check_version(row, MDSPAN, "==", ON_VER)
-        and row_check_name(row, DEVICE_COMPILER, "==", NVCC)
-        and row_check_version(row, DEVICE_COMPILER, "<=", "11.2")
-    ):
-        return False
-
     # OpenMP is not supported for clang as cuda compiler
     # https://github.com/alpaka-group/alpaka/issues/639
     if row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA) and (
         row_check_backend_version(row, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, "==", ON_VER)
         or row_check_backend_version(row, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, "==", ON_VER)
-    ):
-        return False
-
-    # there is a compiler bug in GCC 11.4 which avoids working with NVCC 11.5
-    if (
-        row_check_name(row, DEVICE_COMPILER, "==", NVCC)
-        and (
-            row_check_version(row, DEVICE_COMPILER, "==", "11.4")
-            or row_check_version(row, DEVICE_COMPILER, "==", "11.5")
-        )
-        and row_check_name(row, HOST_COMPILER, "==", GCC)
-        and row_check_version(row, HOST_COMPILER, "==", "11")
     ):
         return False
 
@@ -100,60 +60,68 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
-    # Clang-CUDA 18 only supports up to CUDA SDK 12.1
-    # if (
-    #     row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
-    #     and row_check_version(row, DEVICE_COMPILER, "==", "18")
-    #     and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.1")
-    # ):
-    #     return False
+    # Clang-CUDA has three support levels, full support, partial support, and if newer, then it throws a warning and continues.
+    # We only test unitl the partially supported version in the CI
 
-    # TODO(SimeonEhrig): disable Clang 18 and 19 as Clang-CUDA because of
-    # several bugs will be fixed in alpaka 2.0.0
+    # Clang-CUDA 16 and below officially only partially support as a maximum up to CUDA SDK 11.8, so we disable CI tests for these
+    if row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA) and row_check_version(row, DEVICE_COMPILER, "<=", "16"):
+        return False
+
+    # Clang-CUDA 17 fully supports up to CUDA SDK 11.8 and partially upto 12.1
     if (
         row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
-        and (
-            row_check_version(row, DEVICE_COMPILER, "==", "18")
-            or row_check_version(row, DEVICE_COMPILER, "==", "19")
-            or row_check_version(row, DEVICE_COMPILER, "==", "20")
-        )
-        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=", OFF_VER)
+        and row_check_version(row, DEVICE_COMPILER, "==", "17")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.1")
     ):
         return False
 
-    if row_check_name(row, DEVICE_COMPILER, "==", NVCC) and row_check_name(
-        row, HOST_COMPILER, "==", CLANG
+    # Clang-CUDA 18 fully supports up to CUDA SDK 12.3 (unless it is 18.0 which fully supports 12.1 only partially supports 12.3)
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+        and row_check_version(row, DEVICE_COMPILER, "==", "18")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.3")
     ):
+        return False
+
+    # Clang-CUDA 19 fully supports up to CUDA SDK 12.3 and partially upto 12.5
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+        and row_check_version(row, DEVICE_COMPILER, "==", "19")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.5")
+    ):
+        return False
+
+    # Clang-CUDA 20 fully supports up to CUDA SDK 12.3 and partially upto 12.8
+    if (
+        row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+        and row_check_version(row, DEVICE_COMPILER, "==", "20")
+        and row_check_backend_version(row, ALPAKA_ACC_GPU_CUDA_ENABLE, ">", "12.8")
+    ):
+        return False
+
+    if row_check_name(row, DEVICE_COMPILER, "==", NVCC) and row_check_name(row, HOST_COMPILER, "==", CLANG):
         # nvcc 12.5 is the minimum requirement for host compiler Clang 18
-        if row_check_version(row, HOST_COMPILER, "==", "18") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.5"
-        ):
+        if row_check_version(row, HOST_COMPILER, "==", "18") and row_check_version(row, DEVICE_COMPILER, "<=", "12.5"):
             return False
 
         # nvcc 12.8 is the minimum requirement for host compiler Clang 19
-        if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.6"
-        ):
+        if row_check_version(row, HOST_COMPILER, "==", "19") and row_check_version(row, DEVICE_COMPILER, "<=", "12.6"):
             return False
 
         # nvcc 13.0 is the minimum requirement for host compiler Clang 20
-        if row_check_version(row, HOST_COMPILER, "==", "20") and row_check_version(
-            row, DEVICE_COMPILER, "<=", "12.9"
-        ):
+        if row_check_version(row, HOST_COMPILER, "==", "20") and row_check_version(row, DEVICE_COMPILER, "<=", "12.9"):
             return False
 
     # the SYCL backends needs to be enabled if the icpx compiler is used
     if row_check_name(row, DEVICE_COMPILER, "==", ICPX):
-        if is_in_row(row, BACKENDS) and (
-            (ALPAKA_ACC_SYCL_ENABLE, ON_VER) not in row[param_map[BACKENDS]]
-        ):
+        if is_in_row(row, BACKENDS) and ((ALPAKA_ACC_SYCL_ENABLE, ON_VER) not in row[param_map[BACKENDS]]):
             return False
 
     # we use the Ubuntu 22.04 for
     # - HIP 6.0 until 6.2
     # - If Clang 14 and older is used
     # - If CUDA 12.3 and older is used, because the CUDA versions does not support the libstdc++ 13
-    #   which is provided by the Ubuntu host compiler GCC 13
+    # which is provided by the Ubuntu host compiler GCC 13
     # the ROCm Ubuntu support is handled by the alpaka-job-matrix-library
     if row_check_version(row, UBUNTU, "==", "22.04"):
         for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
@@ -162,17 +130,17 @@ def alpaka_post_filter(row: List) -> bool:
                     return False
 
             for compiler in (CLANG, CLANG_CUDA):
-                if row_check_name(
-                    row, compiler_type, "==", compiler
-                ) and row_check_version(row, compiler_type, ">", "14"):
+                if row_check_name(row, compiler_type, "==", compiler) and row_check_version(
+                    row, compiler_type, ">", "14"
+                ):
                     return False
 
     if row_check_version(row, UBUNTU, "==", "24.04"):
         for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
             for compiler in (CLANG, CLANG_CUDA):
-                if row_check_name(
-                    row, compiler_type, "==", compiler
-                ) and row_check_version(row, compiler_type, "<", "15"):
+                if row_check_name(row, compiler_type, "==", compiler) and row_check_version(
+                    row, compiler_type, "<", "15"
+                ):
                     return False
             if (
                 row_check_name(row, DEVICE_COMPILER, "==", NVCC)

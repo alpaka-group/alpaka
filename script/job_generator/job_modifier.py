@@ -113,8 +113,9 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
     for job in job_matrix:
         # the old Runner has Quadro P5000
         STANDARD_SM_LEVEL = "61"
-        if (ALPAKA_ACC_GPU_CUDA_ENABLE in job and 
-            version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) >= version.parse("13.0")):
+        if ALPAKA_ACC_GPU_CUDA_ENABLE in job and version.parse(
+            job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
+        ) >= version.parse("13.0"):
             # only on the new runner with Nvidia A100, the CUDA 13.0 builds are executed
             STANDARD_SM_LEVEL = "80"
         if (
@@ -141,14 +142,14 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
 
 
 def add_sycl_fpga_jobs(job_matrix: List[Dict[str, Tuple[str, str]]]) -> List[Dict[str, Tuple[str, str]]]:
-    """Duplicate each job with enabled backend ALPAKA_ACC_SYCL_ENABLE and set 
+    """Duplicate each job with enabled backend ALPAKA_ACC_SYCL_ENABLE and set
     the SYCL_DEVICE to SYCL_CPU for the first and SYCL_FPGA for the second job.
     All other jobs get a neutral SYCL_DEVICE entry.
 
     Args:
         job_matrix (List[Dict[str, Tuple[str, str]]]): Job matrix
     Return:
-        (List[Dict[str, Tuple[str, str]]]): Job matrix with duplicated and 
+        (List[Dict[str, Tuple[str, str]]]): Job matrix with duplicated and
         extended jobs
     """
     extended_job_matrix = []
@@ -167,7 +168,5 @@ def add_sycl_fpga_jobs(job_matrix: List[Dict[str, Tuple[str, str]]]) -> List[Dic
         else:
             job[SYCL_DEVICE] = ("", "")
             extended_job_matrix.append(job)
-            
-
 
     return extended_job_matrix

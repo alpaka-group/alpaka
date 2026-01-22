@@ -395,7 +395,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         if job[SYCL_DEVICE][NAME] == SYCL_CPU:
             variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
             variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
-        if job[SYCL_DEVICE][NAME] == SYCL_FPGA: 
+        if job[SYCL_DEVICE][NAME] == SYCL_FPGA:
             variables["alpaka_SYCL_ONEAPI_FPGA"] = "ON"
             variables["alpaka_SYCL_ONEAPI_FPGA_MODE"] = "emulation"
             variables["alpaka_SYCL_ONEAPI_FPGA_BOARD"] = ""
@@ -420,8 +420,7 @@ def job_tags(job: Dict[str, Tuple[str, str]]) -> List[str]:
     if ALPAKA_ACC_GPU_CUDA_ENABLE in job and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER:
         # CUDA 13.0+ does not support Pascal anymore
         # therefore we need to use the Nvidia A100
-        if (packaging.version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) 
-                >= packaging.version.parse("13")):
+        if packaging.version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) >= packaging.version.parse("13"):
             return ["x86_64", "cuda", "a100"]
         return ["x86_64", "cuda"]
     if ALPAKA_ACC_GPU_HIP_ENABLE in job and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] != OFF_VER:

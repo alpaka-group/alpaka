@@ -396,11 +396,9 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
         if(CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
             message(STATUS "clang is used as CUDA compiler")
 
-            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 14.0)
-                # clang-14 is the first version to fully support CUDA 11.x
-                message(FATAL_ERROR "clang as CUDA compiler requires at least clang-14.")
-            else()
-                message(WARNING "If you are using CUDA 11.3 please note of the following issue: https://github.com/alpaka-group/alpaka/issues/1857")
+            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 17.0)
+                # clang-17 is the first version to support CUDA 12.x
+                message(FATAL_ERROR "clang as CUDA compiler requires at least clang-17.")
             endif()
 
             # workaround: ISA code parsing when compiling as debug with clang as CUDA compiler
