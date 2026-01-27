@@ -8,6 +8,7 @@ from typeguard import typechecked
 import os
 import yaml
 import gitlab
+import packaging.version
 
 
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
@@ -417,6 +418,11 @@ def job_tags(job: Dict[str, Tuple[str, str]]) -> List[str]:
         return ["x86_64", "cpuonly"]
 
     if ALPAKA_ACC_GPU_CUDA_ENABLE in job and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER:
+        # CUDA 13.0+ does not support Pascal anymore
+        # therefore we need to use the Nvidia A100
+        if (packaging.version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) 
+                >= packaging.version.parse("13")):
+            return ["x86_64", "cuda", "a100"]
         return ["x86_64", "cuda"]
     if ALPAKA_ACC_GPU_HIP_ENABLE in job and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] != OFF_VER:
         return ["x86_64", "rocm"]

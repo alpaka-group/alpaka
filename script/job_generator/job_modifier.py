@@ -110,16 +110,19 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
     # test one job per nvcc version with SM level of the CI GPU and highest supported SM level
     missing_nvcc_versions = versions.sw_versions[NVCC][:]
 
-    STANDARD_SM_LEVEL = "61"
     for job in job_matrix:
+        # the old Runner has Quadro P5000
+        STANDARD_SM_LEVEL = "61"
+        if (ALPAKA_ACC_GPU_CUDA_ENABLE in job and 
+            version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) >= version.parse("13.0")):
+            # only on the new runner with Nvidia A100, the CUDA 13.0 builds are executed
+            STANDARD_SM_LEVEL = "80"
         if (
             job[DEVICE_COMPILER][NAME] == NVCC
             and job[DEVICE_COMPILER][VERSION] in missing_nvcc_versions
             and job[JOB_EXECUTION_TYPE][VERSION] == JOB_EXECUTION_COMPILE_ONLY
         ):
-            if version.parse(job[DEVICE_COMPILER][VERSION]) < version.parse("11.1"):
-                job[SM_LEVEL] = (SM_LEVEL, STANDARD_SM_LEVEL + ";80")
-            elif version.parse(job[DEVICE_COMPILER][VERSION]) < version.parse("11.5"):
+            if version.parse(job[DEVICE_COMPILER][VERSION]) < version.parse("11.5"):
                 job[SM_LEVEL] = (SM_LEVEL, STANDARD_SM_LEVEL + ";86")
             elif version.parse(job[DEVICE_COMPILER][VERSION]) < version.parse("11.8"):
                 job[SM_LEVEL] = (SM_LEVEL, STANDARD_SM_LEVEL + ";87")
