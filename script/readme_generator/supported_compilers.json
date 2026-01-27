@@ -298,7 +298,37 @@
         },
         "hip": {
             "state": "yes",
-            "comment": "(HIP 7.0)"
+            "comment": "(HIP 7.0, 7.1)"
+        },
+        "sycl": {
+            "state": "no"
+        }
+    },
+    "clang 22 (Linux)": {
+        "serial": {
+            "state": "no"
+        },
+        "OMPblock": {
+            "state": "no"
+        },
+        "OMPthread": {
+            "state": "no"
+        },
+        "thread": {
+            "state": "no"
+        },
+        "tbb": {
+            "state": "no"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "yes",
+            "comment": "(HIP 7.2)"
         },
         "sycl": {
             "state": "no"
