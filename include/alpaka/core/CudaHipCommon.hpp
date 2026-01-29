@@ -61,8 +61,36 @@ namespace alpaka
             __cuda_builtin_gridDim_t
 #    endif
             >;
-        using CudaHipBuiltinTypes4 = std::
-            tuple<char4, double4, float4, int4, long4, longlong4, short4, uchar4, uint4, ulong4, ulonglong4, ushort4>;
+        using CudaHipBuiltinTypes4 = std::tuple<
+            char4,
+            float4,
+            int4,
+            short4,
+            uchar4,
+            uint4,
+            ushort4,
+        // double4, long4, longlong4, ulong4, ulonglong4 is deprecated in
+        // CUDA 13.0 and will be removed in CUDA 14.0
+#    if defined(CUDART_VERSION) && (ALPAKA_VVRRP_TO_VERSION(CUDART_VERSION) >= ALPAKA_VERSION_NUMBER(13, 0, 0))
+            double4_16a,
+            double4_32a,
+            long4_16a,
+            long4_32a,
+            longlong4_16a,
+            longlong4_32a,
+            ulong4_16a,
+            ulong4_32a,
+            ulonglong4_16a,
+            ulonglong4_32a
+#    else
+            double4,
+            long4,
+            longlong4,
+            ulong4,
+            ulonglong4
+#    endif
+            >;
+
         using CudaHipBuiltinTypes = meta::
             Concatenate<CudaHipBuiltinTypes1, CudaHipBuiltinTypes2, CudaHipBuiltinTypes3, CudaHipBuiltinTypes4>;
 
