@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2026 Axel Hübl, Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -289,13 +289,13 @@ TEMPLATE_LIST_TEST_CASE("enqueueBenchmark", "[queue]", alpaka::test::TestQueues)
     };
 }
 
-TEMPLATE_LIST_TEST_CASE("isQueue", "[queue]", alpaka::test::TestQueues)
+TEMPLATE_LIST_TEST_CASE("concepts::Queue", "[queue]", alpaka::test::TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
 
-    REQUIRE(alpaka::isQueue<decltype(f.m_queue)>);
+    REQUIRE(alpaka::concepts::Queue<decltype(f.m_queue)>);
 }
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
