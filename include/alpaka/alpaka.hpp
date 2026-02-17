@@ -28480,6 +28480,7 @@
 		// #include <array>    // amalgamate: file already included
 		// #include <cmath>    // amalgamate: file already included
 		// #include <functional>    // amalgamate: file already included
+		#include <iterator>
 		#include <set>
 		#include <type_traits>
 
@@ -29018,7 +29019,7 @@
 		// ============================================================================
 
 
-	#include <iterator>
+	// #include <iterator>    // amalgamate: file already included
 	#include <type_traits>
 
 	namespace alpaka
