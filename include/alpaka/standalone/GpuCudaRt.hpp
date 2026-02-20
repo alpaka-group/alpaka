@@ -9,13 +9,3 @@
 #endif
 
 #include "alpaka/core/Config.hpp"
-
-#if defined(ALPAKA_COMP_CLANG_CUDA) && (ALPAKA_COMP_CLANG_CUDA == ALPAKA_VERSION_NUMBER(14, 0, 0))
-
-#    include <cuda.h>
-
-#    if(CUDART_VERSION == 11030)
-#        error "clang-14 cannot be used as CUDA compiler when using CUDA v11.3. See alpaka GitHub issue 1857."
-#    endif
-
-#endif

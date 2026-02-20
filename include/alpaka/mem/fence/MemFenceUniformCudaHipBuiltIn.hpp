@@ -33,6 +33,10 @@ namespace alpaka
 
     namespace detail
     {
+        // For CUDA > 12.8 the compiler inbuilt __nv_atomic_thread_fence is available for compute
+        // capability versions > 7. NVCC defines __CUDACC_DEVICE_ATOMIC_BUILTINS__ when built-in atomic functions are
+        // supported by the compute capability. Im not sure how this will work with clang-cuda. Currently the inline
+        // ptx version of the code is suffiecient for thread fences.
         template<alpaka::MemoryOrder TMemOrder>
         [[maybe_unused]] static constexpr __device__ void cuda_ptx_fence_device([[maybe_unused]] TMemOrder order)
         {
@@ -43,41 +47,41 @@ namespace alpaka
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
             {
-                asm volatile("fence.acquire.sys;" ::);
+                asm volatile("fence.acquire.gpu;" ::);
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
             {
-                asm volatile("fence.release.sys;" ::);
+                asm volatile("fence.release.gpu;" ::);
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
             {
-                asm volatile("fence.acq_rel.sys;" ::);
+                asm volatile("fence.acq_rel.gpu;" ::);
             }
             else
             { // Sequential consistency
-                asm volatile("fence.sc.sys;" ::);
+                asm volatile("fence.sc.gpu;" ::);
             }
-#        else
+#        elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
             // only acq_rel and sc available
             if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
             { // Relaxed ordering requires no fence
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
             {
-                asm volatile("fence.acq_rel.sys;" ::);
+                asm volatile("fence.acq_rel.gpu;" ::);
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
             {
-                asm volatile("fence.acq_rel.sys;" ::);
+                asm volatile("fence.acq_rel.gpu;" ::);
             }
             else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
             {
-                asm volatile("fence.acq_rel.sys;" ::);
+                asm volatile("fence.acq_rel.gpu;" ::);
             }
             else
             {
                 // Sequential consistency
-                asm volatile("fence.sc.sys;" ::);
+                asm volatile("fence.sc.gpu;" ::);
             }
 #        endif
         }
@@ -137,13 +141,15 @@ namespace alpaka
             { // Relaxed ordering requires no fence
                 return;
             }
-#        if ALPAKA_ARCH_PTX
-#            if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0)
-            __nv_atomic_thread_fence(MemOrderCuda::get(order), __NV_THREAD_SCOPE_BLOCK);
-#            elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+#        ifdef ALPAKA_CUDA_ATOMIC
+            ::cuda::atomic_thread_fence(MemOrderCuda::get(order), ::cuda::thread_scope_block);
+#        else
+#            if ALPAKA_ARCH_PTX
+#                if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
             cuda_ptx_fence_block(order);
-#            else
+#                else
             __threadfence_block();
+#                endif
 #            endif
 #        endif
         }
@@ -155,13 +161,15 @@ namespace alpaka
             { // Relaxed ordering requires no fence
                 return;
             }
-#        if ALPAKA_ARCH_PTX
-#            if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0)
-            __nv_atomic_thread_fence(MemOrderCuda::get(order), __NV_THREAD_SCOPE_DEVICE);
-#            elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+#        ifdef ALPAKA_CUDA_ATOMIC
+            ::cuda::atomic_thread_fence(MemOrderCuda::get(order), ::cuda::thread_scope_device);
+#        else
+#            if ALPAKA_ARCH_PTX
+#                if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
             cuda_ptx_fence_device(order);
-#            else
+#                else
             __threadfence();
+#                endif
 #            endif
 #        endif
         }

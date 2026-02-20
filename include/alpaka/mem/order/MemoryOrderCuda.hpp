@@ -10,8 +10,7 @@
 
 #include <concepts>
 
-#if defined ALPAKA_ACC_GPU_CUDA_ENABLED && ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
-
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 namespace alpaka
 {
     struct MemOrderCuda
@@ -19,6 +18,30 @@ namespace alpaka
         template<MemoryOrder TMemOrder>
         static constexpr auto get(TMemOrder)
         {
+#    ifdef ALPAKA_CUDA_ATOMIC
+            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+            {
+                return ::cuda::memory_order_seq_cst;
+            }
+            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+            {
+                return ::cuda::memory_order_acq_rel;
+            }
+            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+            {
+                return ::cuda::memory_order_release;
+            }
+            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+            {
+                return ::cuda::memory_order_acquire;
+            }
+            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+            {
+                return ::cuda::memory_order_relaxed;
+            }
+#    else
+#        if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
+
             if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
             {
                 return __NV_ATOMIC_SEQ_CST;
@@ -39,6 +62,8 @@ namespace alpaka
             {
                 return __NV_ATOMIC_RELAXED;
             }
+#        endif
+#    endif
         }
     };
 

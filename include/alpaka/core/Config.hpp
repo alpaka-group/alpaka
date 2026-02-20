@@ -81,6 +81,8 @@
 #endif
 
 // NVIDIA device compile
+// ALPAKA_ARCH_PTX is a misnomer as it holds the compute capability version (the virtual GPU architecture) and not the
+// PTX ISA version. This misnomer exists in CUDA as well. https://github.com/NVIDIA/cccl/issues/4081
 #if !defined(ALPAKA_ARCH_PTX)
 #    if defined(__CUDA_ARCH__)
 #        define ALPAKA_ARCH_PTX ALPAKA_VRP_TO_VERSION(__CUDA_ARCH__)

@@ -20,6 +20,18 @@
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #        include <cuda.h>
 #        include <cuda_runtime.h>
+#        if __has_include(<cuda/atomic>)
+#            define ALPAKA_CUDA_ATOMIC
+#            include <cuda/atomic>
+#            if ALPAKA_COMP_CLANG_CUDA && defined(_Float16)
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wreserved-identifier"
+// We see errors when using clang as the CUDA compiler if TBB is also enabled
+// Errors occour inside TBB because the _Float16 macro is redefined and pulled in from <cuda/atomic>
+#                undef _Float16
+#                pragma clang diagnostic pop
+#            endif
+#        endif
 #    endif
 
 #    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
