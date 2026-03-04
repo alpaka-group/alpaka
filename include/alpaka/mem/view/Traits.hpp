@@ -1,4 +1,4 @@
-/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
+/* Copyright 2026 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
  *                Aurora Perego, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -418,6 +418,12 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), viewSrc, getExtents(viewSrc)));
     }
 
+    namespace concepts
+    {
+        template<typename T>
+        concept DeviceProvider = alpaka::isDevice<T> || alpaka::isQueue<T>;
+    } // namespace concepts
+
     namespace detail
     {
         template<typename TDim, typename TView>
@@ -491,6 +497,20 @@ namespace alpaka
                 os << rowSuffix;
             }
         };
+
+        template<typename TDeviceProvider>
+        auto getDeviceFromProvider(TDeviceProvider const& provider)
+        {
+            if constexpr(alpaka::isDevice<TDeviceProvider>)
+            {
+                return provider;
+            }
+            else
+            {
+                return alpaka::getDev(provider);
+            }
+        }
+
     } // namespace detail
 
     //! Prints the content of the view to the given queue.
@@ -533,20 +553,21 @@ namespace alpaka
 
     //! Creates a view to a device pointer
     //!
-    //! \param dev Device from where pMem can be accessed.
+    //! \param dev Object from which the device can be obtained.
     //! \param pMem Pointer to memory. The pointer must be accessible from the given device.
     //! \param extent Number of elements represented by the pMem.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by pMem.
     //! \return A view to device memory.
-    template<typename TDev, typename TElem, typename TExtent>
+    template<concepts::DeviceProvider TDev, typename TElem, typename TExtent>
     auto createView(TDev const& dev, TElem* pMem, TExtent const& extent)
     {
         using Dim = alpaka::Dim<TExtent>;
         using Idx = alpaka::Idx<TExtent>;
         auto const extentVec = Vec<Dim, Idx>(extent);
-        return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(
-            dev,
+        auto device = detail::getDeviceFromProvider(dev);
+        return trait::CreateViewPlainPtr<decltype(device)>::createViewPlainPtr(
+            device,
             pMem,
             extentVec,
             detail::calculatePitchesFromExtents<TElem>(extentVec));
@@ -554,43 +575,46 @@ namespace alpaka
 
     //! Creates a view to a device pointer
     //!
-    //! \param dev Device from where pMem can be accessed.
+    //! \param dev Object from which the device can be obtained.
     //! \param pMem Pointer to memory. The pointer must be accessible from the given device.
     //! \param extent Number of elements represented by the pMem.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by pMem.
     //! \param pitch Pitch in bytes for each dimension. Dimensionality must be equal to extent.
     //! \return A view to device memory.
-    template<typename TDev, typename TElem, typename TExtent, typename TPitch>
+    template<concepts::DeviceProvider TDev, typename TElem, typename TExtent, typename TPitch>
     auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
     {
-        return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
+        auto device = detail::getDeviceFromProvider(dev);
+        return trait::CreateViewPlainPtr<decltype(device)>::createViewPlainPtr(device, pMem, extent, pitch);
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.
     //!
-    //! \param dev Device from which the container can be accessed.
+    //! \param dev Object from which the device can be obtained.
     //! \param con Contiguous container. The container must provide a `data()` method. The data held by the container
     //!            must be accessible from the given device. The `GetExtent` trait must be defined for the container.
     //! \return A view to device memory.
-    template<typename TDev, typename TContainer>
+    template<concepts::DeviceProvider TDev, typename TContainer>
     auto createView(TDev const& dev, TContainer& con)
     {
-        return createView(dev, std::data(con), getExtents(con));
+        auto const device = detail::getDeviceFromProvider(dev);
+        return createView(device, std::data(con), getExtents(con));
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.
     //!
-    //! \param dev Device from which the container can be accessed.
+    //! \param dev Object from which the device can be obtained.
     //! \param con Contiguous container. The container must provide a `data()` method. The data held by the container
     //!            must be accessible from the given device. The `GetExtent` trait must be defined for the container.
     //! \param extent Number of elements held by the container. Using a multi-dimensional extent will result in a
     //!               multi-dimensional view to the memory represented by the container.
     //! \return A view to device memory.
-    template<typename TDev, typename TContainer, typename TExtent>
+    template<concepts::DeviceProvider TDev, typename TContainer, typename TExtent>
     auto createView(TDev const& dev, TContainer& con, TExtent const& extent)
     {
-        return createView(dev, std::data(con), extent);
+        auto const device = detail::getDeviceFromProvider(dev);
+        return createView(device, std::data(con), extent);
     }
 
     //! Creates a sub view to an existing view.

@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2026 Axel Hübl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -113,6 +113,7 @@ TEMPLATE_LIST_TEST_CASE("createView", "[memView]", CreateViewTestTypes)
     using Dev = alpaka::DevCpu;
     auto const platform = alpaka::PlatformCpu{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
+    alpaka::test::DefaultQueue<Dev> queue(dev);
 
     TestType a{1, 2, 3, 4};
 
@@ -122,11 +123,21 @@ TEMPLATE_LIST_TEST_CASE("createView", "[memView]", CreateViewTestTypes)
         STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, int>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
         CHECK(alpaka::getExtents(view)[0] == 4);
+
+        auto view_from_queue = alpaka::createView(queue, a.data(), 4);
+        STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, int>>);
+        STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
+        CHECK(alpaka::getExtents(view)[0] == 4);
     }
 
     // container and size overload
     {
         auto view = alpaka::createView(dev, a, 4L);
+        STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, long>>);
+        STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
+        CHECK(alpaka::getExtents(view)[0] == 4);
+
+        auto view_from_queue = alpaka::createView(queue, a, 4L);
         STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, long>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
         CHECK(alpaka::getExtents(view)[0] == 4);
@@ -139,18 +150,23 @@ TEMPLATE_LIST_TEST_CASE("createView", "[memView]", CreateViewTestTypes)
             std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, std::size_t>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
         CHECK(alpaka::getExtents(view)[0] == 4);
+
+        auto view_from_queue = alpaka::createView(queue, a);
+        STATIC_REQUIRE(
+            std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, std::size_t>>);
+        STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
+        CHECK(alpaka::getExtents(view)[0] == 4);
     }
 
-    alpaka::test::DefaultQueue<Dev> queue(dev);
     decltype(a) b{0, 0, 0, 0};
 
     // test as temporaries to memcpy
-    alpaka::memcpy(queue, alpaka::createView(dev, b, std::size_t{4}), alpaka::createView(dev, a));
+    alpaka::memcpy(queue, alpaka::createView(queue, b, std::size_t{4}), alpaka::createView(queue, a));
     alpaka::wait(queue);
     CHECK(a == b);
 
     // test as temporaries to memset
-    alpaka::memset(queue, alpaka::createView(dev, a), 0);
+    alpaka::memset(queue, alpaka::createView(queue, a), 0);
     alpaka::wait(queue);
     CHECK(a == decltype(a){0, 0, 0, 0});
 }
@@ -213,12 +229,12 @@ TEMPLATE_LIST_TEST_CASE("createViewSpan", "[memView]", std::tuple<std::span<int>
 #endif
 
     // test as temporaries to memcpy
-    alpaka::memcpy(queue, alpaka::createView(dev, b, std::size_t{4}), alpaka::createView(dev, a));
+    alpaka::memcpy(queue, alpaka::createView(queue, b, std::size_t{4}), alpaka::createView(queue, a));
     alpaka::wait(queue);
     CHECK(std::equal(a.begin(), a.end(), b.begin()));
 
     // test as temporaries to memset
-    alpaka::memset(queue, alpaka::createView(dev, a), 0);
+    alpaka::memset(queue, alpaka::createView(queue, a), 0);
     alpaka::wait(queue);
     for(auto x : a)
     {
@@ -285,7 +301,7 @@ TEMPLATE_LIST_TEST_CASE("createViewConstSpan", "[memView]", std::tuple<std::span
 #endif
 
     // test as temporaries to memcpy
-    alpaka::memcpy(queue, alpaka::createView(dev, b, std::size_t{4}), alpaka::createView(dev, a));
+    alpaka::memcpy(queue, alpaka::createView(queue, b, std::size_t{4}), alpaka::createView(queue, a));
     alpaka::wait(queue);
     CHECK(std::equal(a.begin(), a.end(), b.begin()));
 }
