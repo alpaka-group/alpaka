@@ -141,6 +141,8 @@
 		#endif
 
 		// NVIDIA device compile
+		// ALPAKA_ARCH_PTX is a misnomer as it holds the compute capability version (the virtual GPU architecture) and not the
+		// PTX ISA version. This misnomer exists in CUDA as well. https://github.com/NVIDIA/cccl/issues/4081
 		#if !defined(ALPAKA_ARCH_PTX)
 		#    if defined(__CUDA_ARCH__)
 		#        define ALPAKA_ARCH_PTX ALPAKA_VRP_TO_VERSION(__CUDA_ARCH__)
@@ -6997,22 +6999,165 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceOmp2Blocks.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci, Tapish Narwal
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 			// ============================================================================
+			// == ./include/alpaka/mem/fence/MemFenceOmp2Order.hpp ==
+			// ==
+			/* Copyright 2025 Tapish Narwal
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/PP.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/mem/order/MemoryOrder.hpp ==
+				// ==
+				/* Copyright 2025 Tapish Narwal
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				#include <concepts>
+
+				namespace alpaka
+				{
+				    namespace mem_order
+				    {
+
+				        /**
+				         * The user requested memory order may be converted to a stronger memory order guarantee if the backend does
+				         * not support the requested memory ordering
+				         * If the user requests a memory ordering which is stronger than what is possible, we throw an error statically
+				         */
+
+				        struct MemoryOrderTag
+				        {
+				        };
+
+				        struct SeqCst : MemoryOrderTag
+				        {
+				        };
+
+				        struct AcqRel : MemoryOrderTag
+				        {
+				        };
+
+				        struct Release : MemoryOrderTag
+				        {
+				        };
+
+				        struct Acquire : MemoryOrderTag
+				        {
+				        };
+
+				        struct Relaxed : MemoryOrderTag
+				        {
+				        };
+
+				        static constexpr SeqCst seq_cst;
+				        static constexpr AcqRel acq_rel;
+				        static constexpr Release release;
+				        static constexpr Acquire acquire;
+				        static constexpr Relaxed relaxed;
+
+				    } // namespace mem_order
+
+				    template<typename T>
+				    concept MemoryOrder = std::derived_from<T, mem_order::MemoryOrderTag>;
+
+				} // namespace alpaka
+				// ==
+				// == ./include/alpaka/mem/order/MemoryOrder.hpp ==
+				// ============================================================================
+
+
+			// #include <atomic>    // amalgamate: file already included
+			// #include <concepts>    // amalgamate: file already included
+
+			#if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
+
+			#    if ALPAKA_OMP < ALPAKA_VERSION_NUMBER(2002, 03, 0)
+			#        ifdef(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
+			#            error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+			#        endif
+			#        ifdef(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
+			#            error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+			#        endif
+			#    endif
+
+			namespace alpaka::detail
+			{
+
+			    template<MemoryOrder TMemOrder>
+			    inline auto flushOmp(TMemOrder)
+			    {
+			        if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+			        {
+			            // sequenital consistency in openMP is only enforced in implicit flush.
+			            // We use std atomics since our openMP is limited to CPU backends
+			            std::atomic_thread_fence(std::memory_order::seq_cst);
+			        }
+			        else if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+			        {
+			            // Flush orderings were introduced in OpenMP 5.0
+			#    if ALPAKA_OMP >= ALPAKA_VERSION_NUMBER(2018, 11, 0)
+			#        pragma omp flush acq_rel
+			#    else
+			#        pragma omp flush
+			#    endif
+			        }
+			        else if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+			        {
+			            // Flush orderings were introduced in OpenMP 5.0
+			#    if ALPAKA_OMP >= ALPAKA_VERSION_NUMBER(2018, 11, 0)
+			#        pragma omp flush release
+			#    else
+			#        pragma omp flush
+			#    endif
+			        }
+			        else if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+			        {
+			            // Flush orderings were introduced in OpenMP 5.0
+			#    if ALPAKA_OMP >= ALPAKA_VERSION_NUMBER(2018, 11, 0)
+			#        pragma omp flush acquire
+			#    else
+			#        pragma omp flush
+			#    endif
+			        }
+			        else if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+			        {
+			            // Relaxed memory barrier is a no op
+			        }
+			        else
+			        {
+			            ALPAKA_UNREACHABLE();
+			        }
+			    }
+			} // namespace alpaka::detail
+
+			#endif
+			// ==
+			// == ./include/alpaka/mem/fence/MemFenceOmp2Order.hpp ==
+			// ============================================================================
+
+			// ============================================================================
 			// == ./include/alpaka/mem/fence/Traits.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan, Andrea Bocci
+			/* Copyright 2022 Jan Stephan, Andrea Bocci, Tapish Narwal
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
 
 			namespace alpaka
 			{
@@ -7022,28 +7167,45 @@
 
 			    namespace memory_scope
 			    {
+			        struct MemoryScopeTag
+			        {
+			        };
+
 			        //! Memory fences are observed by all threads in the same block.
-			        struct Block
+			        struct Block : MemoryScopeTag
 			        {
 			        };
 
 			        //! Memory fences are observed by all threads in the same grid.
-			        struct Grid
+			        struct Grid : MemoryScopeTag
 			        {
 			        };
 
 			        //! Memory fences are observed by all threads on the device.
-			        struct Device
+			        struct Device : MemoryScopeTag
 			        {
 			        };
 			    } // namespace memory_scope
+
+			    template<typename T>
+			    concept MemoryScope = std::derived_from<T, memory_scope::MemoryScopeTag>;
 
 			    //! The memory fence trait.
 			    namespace trait
 			    {
 			        //! The mem_fence trait.
-			        template<typename TMemFence, typename TMemScope, typename TSfinae = void>
+			        template<typename TMemFence, MemoryOrder TMemOrder, MemoryScope TMemScope, typename TSfinae = void>
 			        struct MemFence;
+
+			        template<typename TAcc>
+			        struct MemFenceDefaultOrder;
+
+			        template<typename TAcc>
+			        using MemFenceDefaultOrder_t = typename MemFenceDefaultOrder<TAcc>::type;
+
+			        template<typename TAcc>
+			        inline constexpr auto MemFenceDefaultOrder_v = MemFenceDefaultOrder<TAcc>::value;
+
 			    } // namespace trait
 
 			    //! Issues memory fence instructions.
@@ -7061,15 +7223,38 @@
 			    //
 			    //! \tparam TMemFence The memory fence implementation type.
 			    //! \tparam TMemScope The memory scope type.
+			    //! \tparam TMemOrder The memory order type.
 			    //! \param fence The memory fence implementation.
 			    //! \param scope The memory scope.
 			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TMemFence, typename TMemScope>
+			    template<typename TMemFence, MemoryOrder TMemOrder, MemoryScope TMemScope>
+			    ALPAKA_FN_ACC auto mem_fence(TMemFence const& fence, TMemOrder order, TMemScope const& scope) -> void
+			    {
+			        using ImplementationBase = interface::ImplementationBase<ConceptMemFence, TMemFence>;
+			        if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			        {
+			            // Relaxed ordering requires no fence.
+			            // Relaxed memory fences make no sense at all anyway. It is an oxymoron. This should not be used.
+			            // STL says it is a noop. https://en.cppreference.com/w/cpp/atomic/atomic_thread_fence.html
+			            // OpenMP does not provide a relaxed flush at all. https://www.openmp.org/spec-html/5.0/openmpsu96.html
+			            // Sycl says it is a noop. https://github.khronos.org/SYCL_Reference/iface/barriers-and-fences.html
+			            // When using relaxed with mem fences, nvcc generates PTX for a sequenitally consistent fence
+			            // This may be a problem also with HIP, so we explicitly skip it for all backends
+			        }
+			        else
+			        {
+			            trait::MemFence<ImplementationBase, TMemOrder, TMemScope>::mem_fence(fence, order, scope);
+			        }
+			    }
+
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TMemFence, MemoryScope TMemScope>
 			    ALPAKA_FN_ACC auto mem_fence(TMemFence const& fence, TMemScope const& scope) -> void
 			    {
 			        using ImplementationBase = interface::ImplementationBase<ConceptMemFence, TMemFence>;
-			        trait::MemFence<ImplementationBase, TMemScope>::mem_fence(fence, scope);
+			        mem_fence(fence, trait::MemFenceDefaultOrder_v<ImplementationBase>, scope);
 			    }
+
 			} // namespace alpaka
 			// ==
 			// == ./include/alpaka/mem/fence/Traits.hpp ==
@@ -7092,29 +7277,36 @@
 		    namespace trait
 		    {
 		        template<>
-		        struct MemFence<MemFenceOmp2Blocks, memory_scope::Block>
+		        struct MemFenceDefaultOrder<MemFenceOmp2Blocks>
 		        {
-		            static auto mem_fence(MemFenceOmp2Blocks const&, memory_scope::Block const&)
+		            using type = mem_order::AcqRel;
+		            static constexpr auto value = mem_order::acq_rel;
+		        };
+
+		        template<MemoryOrder TMemOrder>
+		        struct MemFence<MemFenceOmp2Blocks, TMemOrder, memory_scope::Block>
+		        {
+		            static auto mem_fence(MemFenceOmp2Blocks const&, TMemOrder, memory_scope::Block const&)
 		            {
 		                // Only one thread per block allowed -> no memory fence required on block level
 		            }
 		        };
 
-		        template<>
-		        struct MemFence<MemFenceOmp2Blocks, memory_scope::Grid>
+		        template<MemoryOrder TMemOrder>
+		        struct MemFence<MemFenceOmp2Blocks, TMemOrder, memory_scope::Grid>
 		        {
-		            static auto mem_fence(MemFenceOmp2Blocks const&, memory_scope::Grid const&)
+		            static auto mem_fence(MemFenceOmp2Blocks const&, TMemOrder order, memory_scope::Grid const&)
 		            {
-		#    pragma omp flush
+		                alpaka::detail::flushOmp(order);
 		            }
 		        };
 
-		        template<>
-		        struct MemFence<MemFenceOmp2Blocks, memory_scope::Device>
+		        template<MemoryOrder TMemOrder>
+		        struct MemFence<MemFenceOmp2Blocks, TMemOrder, memory_scope::Device>
 		        {
-		            static auto mem_fence(MemFenceOmp2Blocks const&, memory_scope::Device const&)
+		            static auto mem_fence(MemFenceOmp2Blocks const&, TMemOrder order, memory_scope::Device const&)
 		            {
-		#    pragma omp flush
+		                alpaka::detail::flushOmp(order);
 		            }
 		        };
 		    } // namespace trait
@@ -14876,12 +15068,13 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceOmp2Threads.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber
+		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Tapish Narwal
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/fence/MemFenceOmp2Order.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
@@ -14899,10 +15092,17 @@
 
 		    namespace trait
 		    {
-		        template<typename TMemScope>
-		        struct MemFence<MemFenceOmp2Threads, TMemScope>
+		        template<>
+		        struct MemFenceDefaultOrder<MemFenceOmp2Threads>
 		        {
-		            static auto mem_fence(MemFenceOmp2Threads const&, TMemScope const&)
+		            using type = mem_order::AcqRel;
+		            static constexpr auto value = mem_order::acq_rel;
+		        };
+
+		        template<MemoryOrder TMemOrder, MemoryScope TMemScope>
+		        struct MemFence<MemFenceOmp2Threads, TMemOrder, TMemScope>
+		        {
+		            static auto mem_fence(MemFenceOmp2Threads const&, TMemOrder order, TMemScope const&)
 		            {
 		                /*
 		                 * Intuitively, this pragma creates a fence on the block level.
@@ -14934,7 +15134,7 @@
 		                 *   a == 10 && b == 2
 		                 *   a == 10 && b == 20
 		                 */
-		#    pragma omp flush
+		                alpaka::detail::flushOmp(order);
 		#    ifdef _MSC_VER
 		                ; // MSVC needs an empty statement here or it diagnoses a syntax error
 		#    endif
@@ -15210,13 +15410,61 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceCpuSerial.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Andrea Bocci
+		/* Copyright 2022 Jan Stephan, Andrea Bocci, Tapish Narwal
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/mem/order/MemoryOrderStl.hpp ==
+			// ==
+			/* Copyright 2025 Tapish Narwal
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
+
+			// #include <atomic>    // amalgamate: file already included
+			// #include <concepts>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    struct MemOrderStl
+			    {
+			        template<MemoryOrder TMemOrder>
+			        static constexpr auto get(TMemOrder)
+			        {
+			            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+			            {
+			                return std::memory_order::seq_cst;
+			            }
+			            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+			            {
+			                return std::memory_order::acq_rel;
+			            }
+			            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+			            {
+			                return std::memory_order::release;
+			            }
+			            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+			            {
+			                return std::memory_order::acquire;
+			            }
+			            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+			            {
+			                return std::memory_order::relaxed;
+			            }
+			        }
+			    };
+
+			} // namespace alpaka
+			// ==
+			// == ./include/alpaka/mem/order/MemoryOrderStl.hpp ==
+			// ============================================================================
+
 
 		// #include <atomic>    // amalgamate: file already included
 
@@ -15230,30 +15478,37 @@
 		    namespace trait
 		    {
 		        template<>
-		        struct MemFence<MemFenceCpuSerial, memory_scope::Block>
+		        struct MemFenceDefaultOrder<MemFenceCpuSerial>
 		        {
-		            static auto mem_fence(MemFenceCpuSerial const&, memory_scope::Block const&)
+		            using type = mem_order::AcqRel;
+		            static constexpr auto value = mem_order::acq_rel;
+		        };
+
+		        template<MemoryOrder TMemOrder>
+		        struct MemFence<MemFenceCpuSerial, TMemOrder, memory_scope::Block>
+		        {
+		            static auto mem_fence(MemFenceCpuSerial const&, TMemOrder, memory_scope::Block const&)
 		            {
 		                /* Nothing to be done on the block level for the serial case. */
 		            }
 		        };
 
-		        template<>
-		        struct MemFence<MemFenceCpuSerial, memory_scope::Grid>
+		        template<MemoryOrder TMemOrder>
+		        struct MemFence<MemFenceCpuSerial, TMemOrder, memory_scope::Grid>
 		        {
-		            static auto mem_fence(MemFenceCpuSerial const&, memory_scope::Grid const&)
+		            static auto mem_fence(MemFenceCpuSerial const&, TMemOrder, memory_scope::Grid const&)
 		            {
 		                /* Nothing to be done on the grid level for the serial case. */
 		            }
 		        };
 
-		        template<typename TMemScope>
-		        struct MemFence<MemFenceCpuSerial, TMemScope>
+		        template<MemoryOrder TMemOrder, MemoryScope TMemScope>
+		        struct MemFence<MemFenceCpuSerial, TMemOrder, TMemScope>
 		        {
-		            static auto mem_fence(MemFenceCpuSerial const&, TMemScope const&)
+		            static auto mem_fence(MemFenceCpuSerial const&, TMemOrder order, TMemScope const&)
 		            {
 		                /* Enable device fences because we may want to synchronize with other (serial) kernels. */
-		                std::atomic_thread_fence(std::memory_order_acq_rel);
+		                std::atomic_thread_fence(MemOrderStl::get(order));
 		            }
 		        };
 		    } // namespace trait
@@ -18802,12 +19057,66 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/fence/MemFenceGenericSycl.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Tapish Narwal
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/mem/order/MemoryOrderGenericSycl.hpp ==
+				// ==
+				/* Copyright 2025 Tapish Narwal
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
+
+				// #include <concepts>    // amalgamate: file already included
+
+				#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+
+				    struct MemOrderSycl
+				    {
+				        template<MemoryOrder TMemOrder>
+				        static constexpr auto get(TMemOrder)
+				        {
+				            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+				            {
+				                return sycl::memory_order::seq_cst;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+				            {
+				                return sycl::memory_order::acq_rel;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+				            {
+				                return sycl::memory_order::release;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+				            {
+				                return sycl::memory_order::acquire;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+				            {
+				                return sycl::memory_order::relaxed;
+				            }
+				        }
+				    };
+
+				} // namespace alpaka
+
+				#endif
+				// ==
+				// == ./include/alpaka/mem/order/MemoryOrderGenericSycl.hpp ==
+				// ============================================================================
+
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -18849,13 +19158,20 @@
 
 			namespace alpaka::trait
 			{
-			    template<typename TMemScope>
-			    struct MemFence<MemFenceGenericSycl, TMemScope>
+			    template<>
+			    struct MemFenceDefaultOrder<MemFenceGenericSycl>
 			    {
-			        static auto mem_fence(MemFenceGenericSycl const&, TMemScope const&)
+			        using type = mem_order::AcqRel;
+			        static constexpr auto value = mem_order::acq_rel;
+			    };
+
+			    template<MemoryOrder TMemOrder, MemoryScope TMemScope>
+			    struct MemFence<MemFenceGenericSycl, TMemOrder, TMemScope>
+			    {
+			        static auto mem_fence(MemFenceGenericSycl const&, TMemOrder order, TMemScope const&)
 			        {
 			            static constexpr auto scope = alpaka::detail::SyclFenceProps<TMemScope>::scope;
-			            sycl::atomic_fence(sycl::memory_order::acq_rel, scope);
+			            sycl::atomic_fence(MemOrderSycl::get(order), scope);
 			        }
 			    };
 			} // namespace alpaka::trait
@@ -20475,13 +20791,14 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceCpu.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber
+		/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Tapish Narwal
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/order/MemoryOrderStl.hpp"    // amalgamate: file already inlined
 
 		// #include <atomic>    // amalgamate: file already included
 
@@ -20494,10 +20811,18 @@
 
 		    namespace trait
 		    {
-		        template<typename TMemScope>
-		        struct MemFence<MemFenceCpu, TMemScope>
+		        template<>
+		        struct MemFenceDefaultOrder<MemFenceCpu>
 		        {
-		            static auto mem_fence(MemFenceCpu const&, TMemScope const&)
+		            using type = mem_order::AcqRel;
+		            static constexpr auto value = mem_order::acq_rel;
+		        };
+
+		        template<MemoryOrder TMemOrder, MemoryScope TMemScope>
+		        struct MemFence<MemFenceCpu, TMemOrder, TMemScope>
+
+		        {
+		            static auto mem_fence(MemFenceCpu const&, TMemOrder order, TMemScope const&)
 		            {
 		                /*
 		                 * Intuitively, std::atomic_thread_fence creates a fence on the block level.
@@ -20530,7 +20855,7 @@
 		                 *   a == 10 && b == 20
 		                 */
 
-		                std::atomic_thread_fence(std::memory_order_acq_rel);
+		                std::atomic_thread_fence(MemOrderStl::get(order));
 		            }
 		        };
 		    } // namespace trait
@@ -22701,6 +23026,18 @@
 					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 					// #        include <cuda.h>    // amalgamate: file already included
 					#        include <cuda_runtime.h>
+					#        if __has_include(<cuda/atomic>)
+					#            define ALPAKA_CUDA_ATOMIC
+					#            include <cuda/atomic>
+					#            if ALPAKA_COMP_CLANG_CUDA && defined(_Float16)
+					#                pragma clang diagnostic push
+					#                pragma clang diagnostic ignored "-Wreserved-identifier"
+					// We see errors when using clang as the CUDA compiler if TBB is also enabled
+					// Errors occour inside TBB because the _Float16 macro is redefined and pulled in from <cuda/atomic>
+					#                undef _Float16
+					#                pragma clang diagnostic pop
+					#            endif
+					#        endif
 					#    endif
 
 					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
@@ -24375,14 +24712,145 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
+			/* Copyright 2022 Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Tapish Narwal
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/PP.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/mem/order/MemoryOrderCuda.hpp ==
+				// ==
+				/* Copyright 2025 Tapish Narwal
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/PP.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
+
+				// #include <concepts>    // amalgamate: file already included
+
+				#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+				namespace alpaka
+				{
+				    struct MemOrderCuda
+				    {
+				        template<MemoryOrder TMemOrder>
+				        static constexpr auto get(TMemOrder)
+				        {
+				#    ifdef ALPAKA_CUDA_ATOMIC
+				            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+				            {
+				                return ::cuda::memory_order_seq_cst;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+				            {
+				                return ::cuda::memory_order_acq_rel;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+				            {
+				                return ::cuda::memory_order_release;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+				            {
+				                return ::cuda::memory_order_acquire;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+				            {
+				                return ::cuda::memory_order_relaxed;
+				            }
+				#    else
+				#        if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(12, 8, 0) && ALPAKA_ARCH_PTX
+
+				            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+				            {
+				                return __NV_ATOMIC_SEQ_CST;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+				            {
+				                return __NV_ATOMIC_ACQ_REL;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+				            {
+				                return __NV_ATOMIC_RELEASE;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+				            {
+				                return __NV_ATOMIC_ACQUIRE;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+				            {
+				                return __NV_ATOMIC_RELAXED;
+				            }
+				#        endif
+				#    endif
+				        }
+				    };
+
+				} // namespace alpaka
+
+				#endif
+				// ==
+				// == ./include/alpaka/mem/order/MemoryOrderCuda.hpp ==
+				// ============================================================================
+
+				// ============================================================================
+				// == ./include/alpaka/mem/order/MemoryOrderHip.hpp ==
+				// ==
+				/* Copyright 2025 Tapish Narwal
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/mem/order/MemoryOrder.hpp"    // amalgamate: file already inlined
+
+				// #include <concepts>    // amalgamate: file already included
+
+				#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+
+				namespace alpaka
+				{
+				    struct MemOrderHip
+				    {
+				        template<MemoryOrder TMemOrder>
+				        static constexpr auto get(TMemOrder)
+				        {
+				            if constexpr(std::same_as<TMemOrder, mem_order::SeqCst>)
+				            {
+				                return __ATOMIC_SEQ_CST;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::AcqRel>)
+				            {
+				                return __ATOMIC_ACQ_REL;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Release>)
+				            {
+				                return __ATOMIC_RELEASE;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Acquire>)
+				            {
+				                return __ATOMIC_ACQUIRE;
+				            }
+				            if constexpr(std::same_as<TMemOrder, mem_order::Relaxed>)
+				            {
+				                return __ATOMIC_RELAXED;
+				            }
+				        }
+				    };
+
+				} // namespace alpaka
+
+				#endif
+				// ==
+				// == ./include/alpaka/mem/order/MemoryOrderHip.hpp ==
+				// ============================================================================
+
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -24394,7 +24862,6 @@
 			    };
 
 			#    if !defined(ALPAKA_HOST_ONLY)
-
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
 			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 			#        endif
@@ -24403,37 +24870,192 @@
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
+
+			    namespace detail
+			    {
+			        // For CUDA > 12.8 the compiler inbuilt __nv_atomic_thread_fence is available for compute
+			        // capability versions > 7. NVCC defines __CUDACC_DEVICE_ATOMIC_BUILTINS__ when built-in atomic functions are
+			        // supported by the compute capability. Im not sure how this will work with clang-cuda. Currently the inline
+			        // ptx version of the code is suffiecient for thread fences.
+			        template<alpaka::MemoryOrder TMemOrder>
+			        [[maybe_unused]] static constexpr __device__ void cuda_ptx_fence_device([[maybe_unused]] TMemOrder order)
+			        {
+			#        if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(9, 0, 0)
+			            // full acquire/release semantics support
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+			            {
+			                asm volatile("fence.acquire.gpu;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+			            {
+			                asm volatile("fence.release.gpu;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+			            {
+			                asm volatile("fence.acq_rel.gpu;" ::);
+			            }
+			            else
+			            { // Sequential consistency
+			                asm volatile("fence.sc.gpu;" ::);
+			            }
+			#        elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+			            // only acq_rel and sc available
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+			            {
+			                asm volatile("fence.acq_rel.gpu;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+			            {
+			                asm volatile("fence.acq_rel.gpu;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+			            {
+			                asm volatile("fence.acq_rel.gpu;" ::);
+			            }
+			            else
+			            {
+			                // Sequential consistency
+			                asm volatile("fence.sc.gpu;" ::);
+			            }
+			#        endif
+			        }
+
+			        template<alpaka::MemoryOrder TMemOrder>
+			        [[maybe_unused]] static constexpr __device__ void cuda_ptx_fence_block([[maybe_unused]] TMemOrder order)
+			        {
+			#        if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(9, 0, 0)
+			            // full acquire/release semantics support
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+			            {
+			                asm volatile("fence.acquire.cta;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+			            {
+			                asm volatile("fence.release.cta;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+			            {
+			                asm volatile("fence.acq_rel.cta;" ::);
+			            }
+			            else
+			            { // Sequential consistency
+			                asm volatile("fence.sc.cta;" ::);
+			            }
+			#        elif ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+			            // only acq_rel and sc available
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Acquire>)
+			            {
+			                asm volatile("fence.acq_rel.cta;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::Release>)
+			            {
+			                asm volatile("fence.acq_rel.cta;" ::);
+			            }
+			            else if constexpr(std::is_same_v<TMemOrder, mem_order::AcqRel>)
+			            {
+			                asm volatile("fence.acq_rel.cta;" ::);
+			            }
+			            else
+			            { // Sequential consistency
+			                asm volatile("fence.sc.cta;" ::);
+			            }
+			#        endif
+			        }
+
+			        template<alpaka::MemoryOrder TMemOrder>
+			        [[maybe_unused]] static constexpr __device__ void cuda_mem_fence_block([[maybe_unused]] TMemOrder order)
+			        {
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			                return;
+			            }
+			#        ifdef ALPAKA_CUDA_ATOMIC
+			            ::cuda::atomic_thread_fence(MemOrderCuda::get(order), ::cuda::thread_scope_block);
+			#        else
+			#            if ALPAKA_ARCH_PTX
+			#                if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+			            cuda_ptx_fence_block(order);
+			#                else
+			            __threadfence_block();
+			#                endif
+			#            endif
+			#        endif
+			        }
+
+			        template<alpaka::MemoryOrder TMemOrder>
+			        [[maybe_unused]] static constexpr __device__ void cuda_mem_fence_device([[maybe_unused]] TMemOrder order)
+			        {
+			            if constexpr(std::is_same_v<TMemOrder, mem_order::Relaxed>)
+			            { // Relaxed ordering requires no fence
+			                return;
+			            }
+			#        ifdef ALPAKA_CUDA_ATOMIC
+			            ::cuda::atomic_thread_fence(MemOrderCuda::get(order), ::cuda::thread_scope_device);
+			#        else
+			#            if ALPAKA_ARCH_PTX
+			#                if ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0)
+			            cuda_ptx_fence_device(order);
+			#                else
+			            __threadfence();
+			#                endif
+			#            endif
+			#        endif
+			        }
+			    } // namespace detail
+
 			    namespace trait
 			    {
 			        template<>
-			        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Block>
+			        struct MemFenceDefaultOrder<MemFenceUniformCudaHipBuiltIn>
 			        {
-			            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Block const&)
+			            using type = mem_order::SeqCst;
+			            static constexpr auto value = mem_order::seq_cst;
+			        };
+
+			        template<MemoryOrder TMemOrder>
+			        struct MemFence<MemFenceUniformCudaHipBuiltIn, TMemOrder, memory_scope::Block>
+			        {
+			            static __device__ auto mem_fence(
+			                MemFenceUniformCudaHipBuiltIn const&,
+			                TMemOrder order,
+			                memory_scope::Block const&)
 			            {
-			                __threadfence_block();
+			#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+			                alpaka::detail::cuda_mem_fence_block(order);
+			#        else
+			                __builtin_amdgcn_fence(MemOrderHip::get(order), "workgroup");
+			#        endif
 			            }
 			        };
 
-			        template<>
-			        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Grid>
+			        template<MemoryOrder TMemOrder, typename TMemScope>
+			        struct MemFence<MemFenceUniformCudaHipBuiltIn, TMemOrder, TMemScope>
 			        {
-			            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Grid const&)
+			            static __device__ auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, TMemOrder order, TMemScope const&)
 			            {
+			                // Base case for grid and device scope fences.
 			                // CUDA and HIP do not have a per-grid memory fence, so a device-level fence is used
-			                __threadfence();
+			#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+			                alpaka::detail::cuda_mem_fence_device(order);
+			#        else
+			                __builtin_amdgcn_fence(MemOrderHip::get(order), "agent");
+			#        endif
 			            }
 			        };
 
-			        template<>
-			        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Device>
-			        {
-			            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Device const&)
-			            {
-			                __threadfence();
-			            }
-			        };
 			    } // namespace trait
-
 			#    endif
 
 			} // namespace alpaka
