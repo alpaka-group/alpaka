@@ -150,10 +150,10 @@ def set_nvcc_variables(job_body: Dict[str, Any], combination: bashi.Combination)
     )
     if combination[HOST_COMPILER].name == GCC:
         job_body["variables"]["ALPAKA_CI_CXX"] = "g++"
-        job_body["variables"]["ALPAKA_CI_GCC_VER"] = str(combination[DEVICE_COMPILER].version)
+        job_body["variables"]["ALPAKA_CI_GCC_VER"] = str(combination[HOST_COMPILER].version)
     elif combination[HOST_COMPILER].name == CLANG:
         job_body["variables"]["ALPAKA_CI_CXX"] = "clang++"
-        job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(combination[DEVICE_COMPILER].version)
+        job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(combination[HOST_COMPILER].version)
     else:
         raise RuntimeError(f"Unknown nvcc host compiler {combination[HOST_COMPILER].name}")
 
