@@ -11,7 +11,7 @@ from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wil
 
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     GCC: [11, 12, 13],
-    CLANG: [14, 15, 16, 17, 18, 19],
+    CLANG: [15, 16, 17, 18, 19],
     NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6],
     HIPCC: [6.0, 6.1, 6.2],
     ICPX: ["2025.0"],

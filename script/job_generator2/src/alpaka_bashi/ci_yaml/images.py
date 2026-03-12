@@ -11,7 +11,7 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 import gitlab
 import alpaka_bashi.utils
 
-gitlab_image_cache: List[str] | None = None
+GITLAB_IMAGE_CACHE: List[str] | None = None
 
 # is used to display missing image warning one time
 image_warning_cache: List[str] = []
@@ -36,10 +36,10 @@ def get_images_from_registry(container_version: str) -> List[str]:
     Returns:
         List[str]: list of container images
     """
-    global gitlab_image_cache  # pylint: disable=global-statement
+    global GITLAB_IMAGE_CACHE  # pylint: disable=global-statement
 
-    if gitlab_image_cache is not None:
-        return gitlab_image_cache
+    if GITLAB_IMAGE_CACHE is not None:
+        return GITLAB_IMAGE_CACHE
 
     # hard coding the url and project ID is fine, because there is only one
     # container registry
@@ -51,16 +51,16 @@ def get_images_from_registry(container_version: str) -> List[str]:
     if not isinstance(repositories, list):
         repositories = [repositories]
 
-    gitlab_image_cache = []
+    GITLAB_IMAGE_CACHE = []
     # this process is actual pretty slow
     # maybe it does a HTML request each time if we iterate over repo.tags.list()
     # and get a new tag
     for repo in repositories:
         for tag in repo.tags.list():
             if tag.attributes["name"] == container_version:
-                gitlab_image_cache.append(tag.attributes["location"])
+                GITLAB_IMAGE_CACHE.append(tag.attributes["location"])
 
-    return gitlab_image_cache
+    return GITLAB_IMAGE_CACHE
 
 
 @typechecked
