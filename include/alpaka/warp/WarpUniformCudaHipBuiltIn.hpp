@@ -1,4 +1,5 @@
-/* Copyright 2023 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
+/* Copyright 2026 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego,
+ * Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -15,8 +16,13 @@
 namespace alpaka::warp
 {
     //! The GPU CUDA/HIP warp.
-    class WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
+    struct WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
     {
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+        using mask_type = std::uint32_t;
+#    else
+        using mask_type = std::uint64_t;
+#    endif
     };
 
 #    if !defined(ALPAKA_HOST_ONLY)
@@ -31,6 +37,7 @@ namespace alpaka::warp
 
     namespace trait
     {
+
         template<>
         struct GetSize<WarpUniformCudaHipBuiltIn>
         {
@@ -106,11 +113,7 @@ namespace alpaka::warp
         struct Activemask<WarpUniformCudaHipBuiltIn>
         {
             static __device__ auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                -> std::uint32_t
-#        else
-                -> std::uint64_t
-#        endif
+                -> WarpUniformCudaHipBuiltIn::mask_type
             {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
@@ -159,13 +162,7 @@ namespace alpaka::warp
         {
             static __device__ auto ballot(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                std::int32_t predicate)
-            // return type is required by the compiler
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                -> std::uint32_t
-#        else
-                -> std::uint64_t
-#        endif
+                std::int32_t predicate) -> WarpUniformCudaHipBuiltIn::mask_type
             {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))

@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+/* Copyright 2026 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  *
  * The implementations of Shfl::shfl(), ShflUp::shfl_up(), ShflDown::shfl_down() and ShflXor::shfl_xor() are derived
@@ -26,6 +26,8 @@ namespace alpaka::warp
     class WarpGenericSycl : public interface::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
     {
     public:
+        using mask_type = std::uint32_t;
+
         WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_warp{my_item}
         {
         }
@@ -36,6 +38,7 @@ namespace alpaka::warp
 
 namespace alpaka::warp::trait
 {
+
     template<typename TDim>
     struct GetSize<warp::WarpGenericSycl<TDim>>
     {
@@ -73,7 +76,7 @@ namespace alpaka::warp::trait
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
         // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
         // Restrict to warpSize <= 32 for now.
-        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> std::uint32_t
+        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> warp::WarpGenericSycl<TDim>::mask_type
         {
             sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
             auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
@@ -109,7 +112,8 @@ namespace alpaka::warp::trait
         // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
         // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
         // Restrict to warpSize <= 32 for now.
-        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::uint32_t
+        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate)
+            -> warp::WarpGenericSycl<TDim>::mask_type
         {
             auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
             auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));

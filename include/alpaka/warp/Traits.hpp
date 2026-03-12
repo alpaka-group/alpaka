@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego
+/* Copyright 2026 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -118,8 +118,7 @@ namespace alpaka::warp
     //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
-    ALPAKA_FN_ACC auto activemask(TWarp const& warp)
-        -> decltype(trait::Activemask<interface::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
+    ALPAKA_FN_ACC auto activemask(TWarp const& warp) -> typename TWarp::mask_type
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Activemask<ImplementationBase>::activemask(warp);
@@ -192,7 +191,7 @@ namespace alpaka::warp
     //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
-    ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate)
+    ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate) -> typename TWarp::mask_type
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Ballot<ImplementationBase>::ballot(warp, predicate);
