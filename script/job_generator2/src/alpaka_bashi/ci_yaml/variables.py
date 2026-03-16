@@ -126,7 +126,14 @@ def get_sm_level(combination: bashi.Combination) -> str:
         return nvidia_gpu_ci_runner_sm_level
 
     if combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version >= packaging.version.parse("12.0"):
-        return nvidia_gpu_ci_runner_sm_level + ";90"
+        if combination[DEVICE_COMPILER].name == NVCC:
+            return nvidia_gpu_ci_runner_sm_level + ";90"
+
+        # Clang 17 does not fully support CUDA 12.0 -> SM 90 is not working
+        if combination[DEVICE_COMPILER].name == CLANG_CUDA and combination[
+            DEVICE_COMPILER
+        ].version >= packaging.version.parse("18"):
+            return nvidia_gpu_ci_runner_sm_level + ";90"
 
     return nvidia_gpu_ci_runner_sm_level
 
