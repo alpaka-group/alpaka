@@ -5,6 +5,7 @@ Generate CI jobs for alpaka.
 """
 
 import sys
+import os
 import argparse
 import bashi
 import alpaka_bashi
@@ -73,6 +74,33 @@ def setup_row_printer() -> None:
         bashi.add_print_row_nice_version_alias(val_name, aliases)
 
 
+def get_filter(args: argparse.Namespace) -> str:
+    """Return filter string CI jobs. All jobs, which does not match the filter regex, will be
+    removed.
+
+    Ether the filter is set via command line argument --filter or via Git commit message with the
+    prefix `CI_FILTER:`.
+
+    Args:
+        args (argparse.Namespace): Command line arguments.
+
+    Returns:
+        str: The filter regex. Return empty string, if no filter was set.
+    """
+    commit_message_filter_prefix = "CI_FILTER:"
+    if os.getenv("CI_COMMIT_MESSAGE"):
+        commit_message: str = str(os.getenv("CI_COMMIT_MESSAGE"))
+        for line in commit_message.split("\n"):
+            striped_line = line.strip()
+            if striped_line.strip().startswith(commit_message_filter_prefix):
+                return striped_line[len(commit_message_filter_prefix) :].strip()
+
+    if args.filter:
+        return args.filter
+
+    return ""
+
+
 # pylint: disable=too-many-locals
 def main() -> None:
     """Entry point"""
@@ -105,6 +133,11 @@ def main() -> None:
         sys.exit(1)
 
     print("Result is correct", file=sys.stderr)
+
+    job_filter_name = get_filter(args)
+    if job_filter_name:
+        comb_list = alpaka_bashi.filter_combinations(comb_list, job_filter_name)
+        print(f"number of filtered combinations: {len(comb_list)}", file=sys.stderr)
 
     if args.print_combinations:
         for c in comb_list:
