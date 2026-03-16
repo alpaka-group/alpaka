@@ -8,6 +8,7 @@ Custom filter for alpaka specific filter rules.
 
 import unittest
 import io
+import itertools
 from typing import Optional, IO, Dict, Callable, cast
 from typeguard import typechecked
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
@@ -210,6 +211,8 @@ class TestAlpakaFilter(unittest.TestCase):
                 (UBUNTU, "24.04"),
             ],
             [(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON), (UBUNTU, "24.04")],
+            [(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON), (UBUNTU, "22.04")],
+            [(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF), (UBUNTU, "22.04")],
             [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4), (UBUNTU, "24.04")],
             [
                 (HOST_COMPILER, HIPCC, 6.0),
@@ -226,17 +229,10 @@ class TestAlpakaFilter(unittest.TestCase):
         ]:
             self.assertTrue(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
 
-    def test_invalid_ubuntu2204_a4(self):
+    def test_invalid_ubuntu2204_generic_compiler_a4(self):
         for row in [
             [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "22.04")],
-            [(HOST_COMPILER, CLANG, 16), (UBUNTU, "22.04")],
             [(HOST_COMPILER, CLANG, 14), (DEVICE_COMPILER, NVCC, 12.4), (UBUNTU, "22.04")],
-            [(ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON), (UBUNTU, "22.04")],
-            [
-                (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
-                (HOST_COMPILER, CLANG, 16),
-                (UBUNTU, "22.04"),
-            ],
             [
                 (HOST_COMPILER, ICPX, "2025.2.1"),
                 (UBUNTU, "22.04"),
@@ -249,6 +245,106 @@ class TestAlpakaFilter(unittest.TestCase):
             )
             self.assertEqual(
                 reason_msg.getvalue(),
-                "The compiler/backend combinations cannot not contain an enabled HIP compiler "
-                "and backend. Therefore Ubuntu versions older than 24.04 are not allowed",
+                "Only the HIPCC and Clang can be used on Ubuntu 24.04",
+            )
+
+    def test_invalid_ubuntu2204_clang_compiler_a4(self):
+        for row in [
+            [(DEVICE_COMPILER, CLANG, 17), (UBUNTU, "22.04")],
+            [(HOST_COMPILER, CLANG, 19), (UBUNTU, "22.04")],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                "Clang 16 and later will be tested on Ubuntu 24.04 and later.",
+            )
+
+    def test_invalid_ubuntu2204_backends_a4(self):
+        for backend in [
+            ALPAKA_ACC_ONEAPI_CPU_ENABLE,
+            ALPAKA_ACC_ONEAPI_GPU_ENABLE,
+            ALPAKA_ACC_ONEAPI_FPGA_ENABLE,
+            ALPAKA_ACC_GPU_CUDA_ENABLE,
+        ]:
+            row = [(backend, ON), (UBUNTU, "22.04")]
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                f"The backend {backend} will be not used on Ubuntu 22.04 and " "older.",
+            )
+
+    def test_valid_clang_ubuntu2204_a5(self):
+        for row in [
+            [(DEVICE_COMPILER, CLANG, 14), (UBUNTU, "22.04")],
+            [(DEVICE_COMPILER, CLANG, 16), (UBUNTU, "22.04")],
+            [(HOST_COMPILER, CLANG, 15), (UBUNTU, "22.04")],
+        ]:
+            self.assertTrue(alpaka_filter_typechecked(parse_param_value_tuples(row)), f"{row}")
+
+    def test_invalid_clang_ubuntu2204_wrong_ubuntu_a5(self):
+        for clang_version, ubuntu_version in itertools.product((14, 16), ("24.4", "26.4")):
+            for row in [
+                [(HOST_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
+                [(DEVICE_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
+            ]:
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"Clang {clang_version} does not support libc++-13 and later "
+                    f"of the host compiler of Ubuntu {ubuntu_version}",
+                )
+
+    def test_invalid_clang_ubuntu2204_nvcc12_a5(self):
+        for row in [
+            [(HOST_COMPILER, CLANG, 14), (DEVICE_COMPILER, NVCC, "12.0")],
+            [(HOST_COMPILER, CLANG, 16), (DEVICE_COMPILER, NVCC, "12.6")],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                f"NVCC {row[1][2]} is only available on UBUNTU 24.04 "
+                f"and later but Clang {row[0][2]} does not support 24.04 "
+                "and later.",
+            )
+
+    def test_invalid_clang_ubuntu2204_cuda12_a5(self):
+        for row in [
+            [(HOST_COMPILER, CLANG, 14), (ALPAKA_ACC_GPU_CUDA_ENABLE, "12.0")],
+            [(HOST_COMPILER, CLANG, 16), (ALPAKA_ACC_GPU_CUDA_ENABLE, "12.6")],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                f"CUDA {row[1][1]} is only available on UBUNTU 24.04 "
+                f"and later but Clang {row[0][2]} does not support 24.04 "
+                "and later.",
+            )
+
+    def test_invalid_clang_ubuntu2204_disabled_cpu_backend_a5(self):
+        for row in [
+            [(HOST_COMPILER, CLANG, 14), (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF)],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(parse_param_value_tuples(row), reason_msg), f"{row}"
+            )
+            self.assertEqual(
+                reason_msg.getvalue(),
+                f"Clang {row[0][2]} works only together with CPU backends.",
             )

@@ -105,6 +105,9 @@ class AlpakaFilter(bashi.FilterBase):
         Returns:
             bool: True, if parameter-value-tuple is valid.
         """
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-return-statements
+
         # Rule: a1
         valid_combs = get_valid_compiler_backend_combinations(row)
         if len(valid_combs) == 0:
@@ -140,13 +143,73 @@ class AlpakaFilter(bashi.FilterBase):
                     return False
 
         # Rule: a4
+        # OVERWORK: remove/overwork me, if bashi supports standard library
         if UBUNTU in row and row[UBUNTU].version < packaging.version.parse("24.04"):
-            if no_hip_compiler_backends(valid_combs):
-                self.reason(
-                    "The compiler/backend combinations cannot not contain an enabled HIP compiler "
-                    "and backend. Therefore Ubuntu versions older than 24.04 are not allowed"
-                )
-                return False
+            for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+                if compiler_type in row and row[compiler_type].name not in (CLANG, HIPCC):
+                    self.reason("Only the HIPCC and Clang can be used on Ubuntu 24.04")
+                    return False
+
+                if (
+                    compiler_type in row
+                    and row[compiler_type].name == CLANG
+                    and row[compiler_type].version > packaging.version.parse("16")
+                ):
+                    self.reason("Clang 16 and later will be tested on Ubuntu 24.04 and later.")
+                    return False
+
+            for backend in ONE_API_BACKENDS + [ALPAKA_ACC_GPU_CUDA_ENABLE]:
+                if backend in row and row[backend].version != OFF_VER:
+                    self.reason(
+                        f"The backend {row[backend].name} will be not used on Ubuntu 22.04 and "
+                        "older."
+                    )
+                    return False
+
+        # Rule: a5
+        # OVERWORK: remove/overwork me, if bashi supports standard library
+        for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+            if (
+                compiler_type in row
+                and row[compiler_type].name == CLANG
+                and row[compiler_type].version <= packaging.version.parse("16")
+            ):
+                if UBUNTU in row and row[UBUNTU].version >= packaging.version.parse("24.04"):
+                    self.reason(
+                        f"Clang {row[compiler_type].version} does not support libc++-13 and later "
+                        f"of the host compiler of Ubuntu {row[UBUNTU].version}"
+                    )
+                    return False
+
+                if (
+                    DEVICE_COMPILER in row
+                    and row[DEVICE_COMPILER].name == NVCC
+                    and row[DEVICE_COMPILER].version >= packaging.version.parse("12.0")
+                ):
+                    self.reason(
+                        f"NVCC {row[DEVICE_COMPILER].version} is only available on UBUNTU 24.04 "
+                        f"and later but Clang {row[HOST_COMPILER].version} does not support 24.04 "
+                        "and later."
+                    )
+                    return False
+
+                if ALPAKA_ACC_GPU_CUDA_ENABLE in row and row[
+                    ALPAKA_ACC_GPU_CUDA_ENABLE
+                ].version >= packaging.version.parse("12.0"):
+                    self.reason(
+                        f"CUDA {row[ALPAKA_ACC_GPU_CUDA_ENABLE].version} is only available on "
+                        f"UBUNTU 24.04 and later but Clang {row[HOST_COMPILER].version} does not "
+                        "support 24.04 and later."
+                    )
+                    return False
+
+                for cpu_backend in CPU_BACKENDS:
+                    if cpu_backend in row and row[cpu_backend].version == OFF_VER:
+                        self.reason(
+                            f"Clang {row[compiler_type].version} works only together with CPU "
+                            "backends."
+                        )
+                        return False
 
         if self.debug_print != bashi.FilterDebugMode.OFF:
             print("passed")

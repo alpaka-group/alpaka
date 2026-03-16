@@ -243,10 +243,10 @@ def remove_ubuntu2204(
     parameter_value_pairs: List[bashi.ParameterValuePair],
     removed_parameter_value_pairs: List[bashi.ParameterValuePair],
 ):
-    """Except for some HIP versions, Ubuntu 22.04 should be not used.
+    """Except for some HIP versions and Clang 16 and older, Ubuntu 22.04 should be not used.
     See bashi.UBUNTU_HIP_VERSION_RANGE"""
     for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
-        for compiler in (GCC, CLANG, ICPX):
+        for compiler in (GCC, ICPX):
             bashi.remove_parameter_value_pairs(
                 parameter_value_pairs=parameter_value_pairs,
                 removed_parameter_value_pairs=removed_parameter_value_pairs,
@@ -255,15 +255,20 @@ def remove_ubuntu2204(
                 parameter2=UBUNTU,
                 value_version2="22.04",
             )
+
+        bashi.remove_parameter_value_pairs_ranges(
+            parameter_value_pairs=parameter_value_pairs,
+            removed_parameter_value_pairs=removed_parameter_value_pairs,
+            parameter1=compiler_type,
+            value_name1=CLANG,
+            value_min_version1="17",
+            parameter2=UBUNTU,
+            value_max_version2="22.04",
+        )
     for backend, version in [
-        (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
-        (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
-        (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ON),
-        (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON),
         (ALPAKA_ACC_ONEAPI_CPU_ENABLE, ON),
         (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON),
         (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON),
-        (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
     ]:
         bashi.remove_parameter_value_pairs(
             parameter_value_pairs=parameter_value_pairs,
@@ -272,6 +277,65 @@ def remove_ubuntu2204(
             value_version1=version,
             parameter2=UBUNTU,
             value_version2="22.04",
+        )
+
+
+def remove_clang16_and_older_cuda(
+    parameter_value_pairs: List[bashi.ParameterValuePair],
+    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
+):
+    """Remove all combinations affecting Clang 16 and older and CUDA."""
+    bashi.remove_parameter_value_pairs_ranges(
+        parameter_value_pairs=parameter_value_pairs,
+        removed_parameter_value_pairs=removed_parameter_value_pairs,
+        parameter1=HOST_COMPILER,
+        value_name1=CLANG,
+        value_max_version1="16",
+        parameter2=DEVICE_COMPILER,
+        value_name2=NVCC,
+        value_min_version2=OFF,
+        value_min_version2_inclusive=False,
+    )
+
+    bashi.remove_parameter_value_pairs_ranges(
+        parameter_value_pairs=parameter_value_pairs,
+        removed_parameter_value_pairs=removed_parameter_value_pairs,
+        parameter1=HOST_COMPILER,
+        value_name1=CLANG,
+        value_max_version1="16",
+        parameter2=ALPAKA_ACC_GPU_CUDA_ENABLE,
+        value_min_version2=OFF,
+        value_min_version2_inclusive=False,
+    )
+
+    # remove disable TBB backend. Only if Clang is used as CUDA host compiler, TBB will be disabled.
+    bashi.remove_parameter_value_pairs_ranges(
+        parameter_value_pairs=parameter_value_pairs,
+        removed_parameter_value_pairs=removed_parameter_value_pairs,
+        parameter1=HOST_COMPILER,
+        value_name1=CLANG,
+        value_max_version1="16",
+        parameter2=ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+        value_max_version2=OFF,
+        value_min_version2_inclusive=False,
+    )
+
+
+def remove_ubuntu2404(
+    parameter_value_pairs: List[bashi.ParameterValuePair],
+    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
+):
+    """Remove the combination of Clang 16 and older and Ubuntu 24.04."""
+    for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
+
+        bashi.remove_parameter_value_pairs_ranges(
+            parameter_value_pairs=parameter_value_pairs,
+            removed_parameter_value_pairs=removed_parameter_value_pairs,
+            parameter1=compiler_type,
+            value_name1=CLANG,
+            value_max_version1="16",
+            parameter2=UBUNTU,
+            value_min_version2="24.04",
         )
 
 
@@ -305,6 +369,8 @@ def verify(
     )
     remove_hip_62_debug_build(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_ubuntu2204(expected_param_val_tuple, unexpected_param_val_tuple)
+    remove_clang16_and_older_cuda(expected_param_val_tuple, unexpected_param_val_tuple)
+    remove_ubuntu2404(expected_param_val_tuple, unexpected_param_val_tuple)
 
     expected_param_val_okay = bashi.check_parameter_value_pair_in_combination_list(
         combination_list, expected_param_val_tuple
