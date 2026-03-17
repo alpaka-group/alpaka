@@ -12,7 +12,7 @@ from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wil
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     GCC: [11, 12, 13],
     CLANG: [14, 15, 16, 17, 18, 19],
-    NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6],
+    NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0],
     HIPCC: [6.0, 6.1, 6.2],
     ICPX: ["2025.0"],
     UBUNTU: ["22.04", "24.04"],

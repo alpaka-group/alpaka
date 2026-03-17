@@ -120,7 +120,12 @@ def set_hipcc_variables(job_body: Dict[str, Any], combination: bashi.Combination
 @typechecked
 def get_sm_level(combination: bashi.Combination) -> str:
     """Get the CUDA SM level depending on the combination"""
-    nvidia_gpu_ci_runner_sm_level = "61"
+    if combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version < packaging.version.parse("13.0"):
+        # SM Level of the Nvidia Quadro P5000
+        nvidia_gpu_ci_runner_sm_level = "61"
+    else:
+        # with CUDA 13.0 SM 6.1 is deprecated, therefore we use the SM Level of the Nvidia A100
+        nvidia_gpu_ci_runner_sm_level = "80"
 
     if combination[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER:
         return nvidia_gpu_ci_runner_sm_level

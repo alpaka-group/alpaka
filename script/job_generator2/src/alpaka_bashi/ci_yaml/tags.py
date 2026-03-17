@@ -31,7 +31,12 @@ def set_tags(job_body: Dict[str, Any], combination: bashi.Combination):
 
     if combination[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER:
         if combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version != OFF_VER:
-            job_body["tags"] = ["x86_64", "cuda"]
+            if combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version < packaging.version.parse("13.0"):
+                job_body["tags"] = ["x86_64", "cuda"]
+                return
+            # with CUDA 13.0 we have to use the Nvidia A100, because the Nvidia Quadro P5000 is not
+            # supported anymore
+            job_body["tags"] = ["x86_64", "cuda", "a100"]
             return
         if combination[ALPAKA_ACC_GPU_HIP_ENABLE].version != OFF_VER:
             job_body["tags"] = ["x86_64", "rocm"]
