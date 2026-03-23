@@ -206,7 +206,7 @@ namespace alpaka::trait
     {
         template<bool TBlocking, typename TExtent>
         ALPAKA_FN_HOST static auto allocAsyncBuf(
-            detail::QueueGenericSyclBase<TTag, TBlocking> queue,
+            alpaka::detail::QueueGenericSyclBase<TTag, TBlocking> queue,
             TExtent const& extent) -> BufGenericSycl<TElem, TDim, TIdx, TTag>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
