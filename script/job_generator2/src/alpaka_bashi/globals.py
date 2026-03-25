@@ -184,3 +184,4 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
 ]
 
 RT_HOST_COMPILER_CUDA_SUPPORT: str = "rt_host_compiler_cuda_support"
+RT_CLANG_CUDA_MAX_CUDA_SUPPORT: str = "rt_clang_cuda_max_cuda_support"

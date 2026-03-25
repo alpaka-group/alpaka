@@ -9,6 +9,7 @@ import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 import alpaka_bashi.runtime_info
 import alpaka_bashi.globals
+from alpaka_bashi.runtime_info import ClangCUDAMaxSupportsCuda
 
 
 def remove_disabled_serial_backend(
@@ -339,6 +340,37 @@ def remove_ubuntu2404(
         )
 
 
+def remove_clang_cuda_not_used_backend_combinations(
+    parameter_value_pairs: List[bashi.ParameterValuePair],
+    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
+    run_infos: Dict[str, Callable[..., bool]],
+):
+    """This backend pairs are removed, because a CUDA SDK version cannot be used by the available
+    Clang-CUDA versions."""
+    if alpaka_bashi.globals.RT_CLANG_CUDA_MAX_CUDA_SUPPORT in run_infos:
+        max_cuda_version = cast(
+            ClangCUDAMaxSupportsCuda, run_infos[alpaka_bashi.globals.RT_CLANG_CUDA_MAX_CUDA_SUPPORT]
+        ).max_cuda_sdk_version
+
+        # the OpenMP backends can be only enabled with the nvcc
+        for other_backend in (
+            ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+        ):
+            bashi.remove_parameter_value_pairs_ranges(
+                parameter_value_pairs=parameter_value_pairs,
+                removed_parameter_value_pairs=removed_parameter_value_pairs,
+                parameter1=ALPAKA_ACC_GPU_CUDA_ENABLE,
+                value_min_version1=str(max_cuda_version),
+                value_min_version1_inclusive=False,
+                parameter2=other_backend,
+                value_min_version2=OFF,
+                value_min_version2_inclusive=True,
+                value_max_version2=OFF,
+                value_max_version2_inclusive=True,
+            )
+
+
 def verify(
     combination_list: bashi.CombinationList,
     param_value_matrix: bashi.ParameterValueMatrix,
@@ -356,7 +388,9 @@ def verify(
     """
 
     expected_param_val_tuple, unexpected_param_val_tuple = (
-        bashi.get_expected_bashi_parameter_value_pairs(param_value_matrix, run_infos)
+        bashi.get_expected_bashi_parameter_value_pairs(
+            param_value_matrix, run_infos, alpaka_bashi.get_alpaka_version_relation()
+        )
     )
 
     remove_disabled_serial_backend(expected_param_val_tuple, unexpected_param_val_tuple)
@@ -371,6 +405,9 @@ def verify(
     remove_ubuntu2204(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_clang16_and_older_cuda(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_ubuntu2404(expected_param_val_tuple, unexpected_param_val_tuple)
+    remove_clang_cuda_not_used_backend_combinations(
+        expected_param_val_tuple, unexpected_param_val_tuple, run_infos
+    )
 
     expected_param_val_okay = bashi.check_parameter_value_pair_in_combination_list(
         combination_list, expected_param_val_tuple

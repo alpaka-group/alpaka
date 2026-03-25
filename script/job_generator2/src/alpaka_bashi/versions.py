@@ -6,7 +6,9 @@ Software versions to be tested.
 
 from typing import Dict, List, Union
 import packaging.version
+import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from bashi.version.dependencies.clang_cuda import CLANG_CUDA_MAX_CUDA_VERSION, ClangCudaSDKSupport
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
@@ -62,3 +64,15 @@ def get_alpaka_version() -> Dict[str, List[Union[str, int, float]]]:
     alpaka_version[CLANG_CUDA] = clang_cuda_versions
 
     return alpaka_version
+
+
+def get_alpaka_version_relation() -> bashi.VersionRelation:
+    """Returns:
+    bashi.VersionRelation: bashi.VersionRelation object with alpaka specific modifications.
+    """
+    clang_cuda_max_cuda_version = CLANG_CUDA_MAX_CUDA_VERSION + [
+        ClangCudaSDKSupport("18", "12.3"),
+        ClangCudaSDKSupport("22", "13.0"),
+    ]
+
+    return bashi.VersionRelation(clang_cuda_max_cuda_version=clang_cuda_max_cuda_version)

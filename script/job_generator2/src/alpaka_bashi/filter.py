@@ -74,6 +74,15 @@ def only_cuda_compiler_backends(combinations: List[CompilerBackendComb]) -> bool
     return True
 
 
+def only_clang_cuda_compiler_backends(combinations: List[CompilerBackendComb]) -> bool:
+    """Return True, if only compiler backend combinations with the Clang-CUDA compiler exist."""
+    for comb in combinations:
+        host_compiler = comb[0]
+        if host_compiler != CLANG_CUDA:
+            return False
+    return True
+
+
 def no_hip_compiler_backends(combinations: List[CompilerBackendComb]) -> bool:
     """Return True, if there is no CompilerBackendComb in the list, which contains the HIP compiler
     and backend."""
@@ -89,9 +98,10 @@ class AlpakaFilter(bashi.FilterBase):
     def __init__(
         self,
         runtime_infos: Dict[str, Callable[..., bool]] | None = None,
+        version_relation: bashi.VersionRelation = bashi.VersionRelation(),
         output: IO[bashi.Parameter] | None = None,
     ):
-        super().__init__(runtime_infos, output)
+        super().__init__(runtime_infos, version_relation, output)
 
     def __call__(
         self,
@@ -114,8 +124,8 @@ class AlpakaFilter(bashi.FilterBase):
             self.reason("No valid backend combination available.")
             return False
 
-        # Rule: a2
         if only_cuda_compiler_backends(valid_combs):
+            # Rule: a2
             if (
                 HOST_COMPILER in row
                 and row[HOST_COMPILER].name in (GCC, CLANG)
@@ -128,6 +138,21 @@ class AlpakaFilter(bashi.FilterBase):
                     "Only backend combinations with CUDA backend possible. There is no CUDA SDK "
                     f"version, which supports the host compiler {row[HOST_COMPILER].name}-"
                     f"{row[HOST_COMPILER].version}"
+                )
+                return False
+
+            # Rule: a6
+            if (
+                RT_CLANG_CUDA_MAX_CUDA_SUPPORT in self.runtime_infos
+                and only_clang_cuda_compiler_backends(valid_combs)
+                and ALPAKA_ACC_GPU_CUDA_ENABLE in row
+                and not self.runtime_infos[RT_CLANG_CUDA_MAX_CUDA_SUPPORT](
+                    row[ALPAKA_ACC_GPU_CUDA_ENABLE].version
+                )
+            ):
+                self.reason(
+                    "There is no Clang-CUDA version in the combination list, which supports the "
+                    f"CUDA {row[ALPAKA_ACC_GPU_CUDA_ENABLE].version} SDK."
                 )
                 return False
 

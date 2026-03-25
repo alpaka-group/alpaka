@@ -89,8 +89,7 @@ def get_filter(args: argparse.Namespace) -> str:
     """
     commit_message_filter_prefix = "CI_FILTER:"
     if os.getenv("CI_COMMIT_MESSAGE"):
-        commit_message: str = str(os.getenv("CI_COMMIT_MESSAGE"))
-        for line in commit_message.split("\n"):
+        for line in os.getenv("CI_COMMIT_MESSAGE", "").split("\n"):
             striped_line = line.strip()
             if striped_line.strip().startswith(commit_message_filter_prefix):
                 return striped_line[len(commit_message_filter_prefix) :].strip()
@@ -112,18 +111,20 @@ def main() -> None:
         software_versions=alpaka_bashi.get_alpaka_version()
     )
 
+    version_relation = alpaka_bashi.get_alpaka_version_relation()
+
     alpaka_filter = alpaka_bashi.AlpakaFilter()
     runtime_infos = bashi.get_runtime_infos(param_matrix)
-    runtime_infos |= alpaka_bashi.get_runtime_infos()
+    runtime_infos |= alpaka_bashi.get_runtime_infos(version_relation)
 
     comb_list: bashi.CombinationList = bashi.generate_combination_list(
         parameter_value_matrix=param_matrix,
         runtime_infos=runtime_infos,
         custom_filter=alpaka_filter,
+        version_relation=version_relation,
         # change me to display which combinations passed and did not pass the filter chain
         debug_print=bashi.FilterDebugMode.OFF,
     )
-
     print(f"number of combinations: {len(comb_list)}", file=sys.stderr)
 
     alpaka_bashi.add_combinations_parameters(comb_list)

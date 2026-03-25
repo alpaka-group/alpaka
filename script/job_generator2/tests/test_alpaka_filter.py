@@ -11,12 +11,15 @@ import io
 import itertools
 from typing import Optional, IO, Dict, Callable, cast
 from typeguard import typechecked
+import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from bashi.types import ParameterValueTuple
+from bashi.version.dependencies.clang_cuda import ClangCudaSDKSupport
 import alpaka_bashi.filter
 import alpaka_bashi.runtime_info
 from alpaka_bashi.globals import (
     RT_HOST_COMPILER_CUDA_SUPPORT,
+    RT_CLANG_CUDA_MAX_CUDA_SUPPORT,
     BUILD_TYPE,
     CMAKE_RELEASE,
     CMAKE_DEBUG,
@@ -347,4 +350,80 @@ class TestAlpakaFilter(unittest.TestCase):
             self.assertEqual(
                 reason_msg.getvalue(),
                 f"Clang {row[0][2]} works only together with CPU backends.",
+            )
+
+    def test_valid_clang_cuda_cuda_sdk_a6(self):
+        clang_cuda_versions = {CLANG_CUDA: [14, 15, 16, 17, 18, 19]}
+        clang_cuda_sdk_support = [
+            ClangCudaSDKSupport("7", "9.2"),
+            ClangCudaSDKSupport("8", "10.0"),
+            ClangCudaSDKSupport("10", "10.1"),
+            ClangCudaSDKSupport("12", "11.0"),
+            ClangCudaSDKSupport("13", "11.2"),
+            ClangCudaSDKSupport("14", "11.5"),
+            ClangCudaSDKSupport("16", "11.8"),
+            ClangCudaSDKSupport("17", "12.1"),
+            ClangCudaSDKSupport("18", "12.3"),
+            ClangCudaSDKSupport("22", "13.0"),
+        ]
+
+        runtime_info: Dict[str, Callable[..., bool]] = {}
+        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = (
+            alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
+                bashi.VersionRelation(clang_cuda_max_cuda_version=clang_cuda_sdk_support),
+                clang_cuda_versions,
+            )
+        )
+
+        for row in [
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.0), (HOST_COMPILER, CLANG_CUDA, 17)],
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 11.5), (DEVICE_COMPILER, CLANG_CUDA, 14)],
+        ]:
+            self.assertTrue(
+                alpaka_filter_typechecked(
+                    row=parse_param_value_tuples(row), runtime_info=runtime_info
+                ),
+                f"{row}",
+            )
+
+    def test_invalid_clang_cuda_cuda_sdk_a6(self):
+        clang_cuda_versions = {CLANG_CUDA: [14, 15, 16, 17, 18, 19]}
+        clang_cuda_sdk_support = [
+            ClangCudaSDKSupport("7", "9.2"),
+            ClangCudaSDKSupport("8", "10.0"),
+            ClangCudaSDKSupport("10", "10.1"),
+            ClangCudaSDKSupport("12", "11.0"),
+            ClangCudaSDKSupport("13", "11.2"),
+            ClangCudaSDKSupport("14", "11.5"),
+            ClangCudaSDKSupport("16", "11.8"),
+            ClangCudaSDKSupport("17", "12.1"),
+            ClangCudaSDKSupport("18", "12.3"),
+            ClangCudaSDKSupport("22", "13.0"),
+        ]
+
+        runtime_info: Dict[str, Callable[..., bool]] = {}
+        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = (
+            alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
+                bashi.VersionRelation(clang_cuda_max_cuda_version=clang_cuda_sdk_support),
+                clang_cuda_versions,
+            )
+        )
+
+        for row in [
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.8), (HOST_COMPILER, CLANG_CUDA, 17)],
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 13.0), (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, OFF_VER)],
+            [(ALPAKA_ACC_GPU_CUDA_ENABLE, 13.2), (DEVICE_COMPILER, CLANG_CUDA, 19)],
+        ]:
+            reason_msg = io.StringIO()
+            self.assertFalse(
+                alpaka_filter_typechecked(
+                    row=parse_param_value_tuples(row), output=reason_msg, runtime_info=runtime_info
+                ),
+                f"{row}",
+            )
+
+            self.assertEqual(
+                reason_msg.getvalue(),
+                "There is no Clang-CUDA version in the combination list, which supports the "
+                f"CUDA {row[0][1]} SDK.",
             )

@@ -1,11 +1,11 @@
 """Filter rules which will generated during runtime depending on the input of the input
 parameter-value-matrix"""
 
-from typing import Dict, Callable
+from typing import Dict, Callable, Union
 import packaging.version
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
-from alpaka_bashi.globals import RT_HOST_COMPILER_CUDA_SUPPORT
+from alpaka_bashi.globals import RT_HOST_COMPILER_CUDA_SUPPORT, RT_CLANG_CUDA_MAX_CUDA_SUPPORT
 from alpaka_bashi.versions import get_alpaka_version
 
 
@@ -68,7 +68,28 @@ def get_rt_func_host_compiler_supports_cuda(
     return HostCompilerSupportsCuda(max_gcc_version, max_clang_version)
 
 
-def get_runtime_infos() -> Dict[str, Callable[..., bool]]:
+# pylint: disable=too-few-public-methods
+class ClangCUDAMaxSupportsCuda:
+    """Check if for the given CUDA SDK version any supported Clang-CUDA version exist."""
+
+    def __init__(
+        self,
+        version_relation: bashi.VersionRelation,
+        alpaka_versions: Dict[str, List[Union[str, int, float]]],
+    ):
+        self.max_cuda_sdk_version: bashi.ValueVersion = packaging.version.parse("0.0")
+
+        max_clang_cuda_version = packaging.version.parse(str(max(alpaka_versions[CLANG_CUDA])))
+        for clang_cuda_cuda_sdk in version_relation.get_clang_cuda_max_cuda_version():
+            if max_clang_cuda_version >= clang_cuda_cuda_sdk.clang_cuda:
+                self.max_cuda_sdk_version = clang_cuda_cuda_sdk.cuda
+                break
+
+    def __call__(self, cuda_sdk_version: bashi.ValueVersion) -> bool:
+        return cuda_sdk_version <= self.max_cuda_sdk_version
+
+
+def get_runtime_infos(version_relation: bashi.VersionRelation) -> Dict[str, Callable[..., bool]]:
     """Get several runtime filter rules for the given input parameter-value-matrix
 
     Args:
@@ -79,5 +100,8 @@ def get_runtime_infos() -> Dict[str, Callable[..., bool]]:
     """
     runtime_infos: Dict[str, Callable[..., bool]] = {}
     runtime_infos[RT_HOST_COMPILER_CUDA_SUPPORT] = get_rt_func_host_compiler_supports_cuda()
+    runtime_infos[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = ClangCUDAMaxSupportsCuda(
+        version_relation, get_alpaka_version()
+    )
 
     return runtime_infos

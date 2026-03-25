@@ -15,7 +15,7 @@ import alpaka_bashi
 def main() -> None:
     """Entry point function."""
 
-    validator = bashiValidate.Validator()
+    validator = bashiValidate.Validator(version_relation=alpaka_bashi.get_alpaka_version_relation())
     validator.parser.add_argument(
         "--missing-parameters",
         action="store_true",

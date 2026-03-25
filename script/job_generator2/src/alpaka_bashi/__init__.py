@@ -4,7 +4,11 @@ SPDX-License-Identifier: MPL-2.0
 alpaka_bashi package
 """
 
-from alpaka_bashi.versions import get_alpaka_version, get_version_aliases
+from alpaka_bashi.versions import (
+    get_alpaka_version,
+    get_version_aliases,
+    get_alpaka_version_relation,
+)
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_bashi.filter import AlpakaFilter
 from alpaka_bashi.verify import verify
