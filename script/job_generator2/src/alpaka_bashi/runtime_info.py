@@ -2,7 +2,8 @@
 parameter-value-matrix"""
 
 from typing import Dict, Callable, Union
-import packaging.version
+from typeguard import typechecked
+import packaging
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_bashi.globals import RT_HOST_COMPILER_CUDA_SUPPORT, RT_CLANG_CUDA_MAX_CUDA_SUPPORT
@@ -35,7 +36,9 @@ class HostCompilerSupportsCuda:
         return compiler_version <= self.max_versions[compiler_name]
 
 
+@typechecked
 def get_rt_func_host_compiler_supports_cuda(
+    version_relation: bashi.VersionRelation,
     input_versions: Dict[str, List[str | int | float]] | None = None,
 ) -> Callable[..., bool]:
     """This runtime info object contains the information for the given GCC, Clang and Nvcc versions,
@@ -57,11 +60,11 @@ def get_rt_func_host_compiler_supports_cuda(
 
     max_cuda_sdk_version = packaging.version.parse(str(max(input_versions[NVCC])))
 
-    for cuda_sdk_gcc in sorted(bashi.versions.NVCC_GCC_MAX_VERSION):
+    for cuda_sdk_gcc in sorted(version_relation.get_nvcc_gcc_max_version()):
         if cuda_sdk_gcc.nvcc <= max_cuda_sdk_version:
             max_gcc_version = cuda_sdk_gcc.host
 
-    for cuda_sdk_gcc in sorted(bashi.versions.NVCC_CLANG_MAX_VERSION):
+    for cuda_sdk_gcc in sorted(version_relation.get_nvcc_clang_max_version()):
         if cuda_sdk_gcc.nvcc <= max_cuda_sdk_version:
             max_clang_version = cuda_sdk_gcc.host
 
@@ -89,19 +92,25 @@ class ClangCUDAMaxSupportsCuda:
         return cuda_sdk_version <= self.max_cuda_sdk_version
 
 
-def get_runtime_infos(version_relation: bashi.VersionRelation) -> Dict[str, Callable[..., bool]]:
-    """Get several runtime filter rules for the given input parameter-value-matrix
+@typechecked
+def get_runtime_infos(
+    input_versions: Dict[str, List[Union[str, int, float]]], version_relation: bashi.VersionRelation
+) -> Dict[str, Callable[..., bool]]:
+    """Create filter rules depending of the software version in the input_versions.
 
     Args:
-        parameter_value_matrix (ParameterValueMatrix): parameter-value-matrix
+        input_versions (Dict[str, List[Union[str, int, float]]]): software versions
+        version_relation (bashi.VersionRelation): relations between different software versions
 
     Returns:
         Dict[str, Callable[..., bool]]: Dict of filter functions
     """
     runtime_infos: Dict[str, Callable[..., bool]] = {}
-    runtime_infos[RT_HOST_COMPILER_CUDA_SUPPORT] = get_rt_func_host_compiler_supports_cuda()
+    runtime_infos[RT_HOST_COMPILER_CUDA_SUPPORT] = get_rt_func_host_compiler_supports_cuda(
+        version_relation=version_relation, input_versions=input_versions
+    )
     runtime_infos[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = ClangCUDAMaxSupportsCuda(
-        version_relation, get_alpaka_version()
+        version_relation=version_relation, alpaka_versions=input_versions
     )
 
     return runtime_infos

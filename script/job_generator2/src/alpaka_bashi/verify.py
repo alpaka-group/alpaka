@@ -374,6 +374,7 @@ def remove_clang_cuda_not_used_backend_combinations(
 def verify(
     combination_list: bashi.CombinationList,
     param_value_matrix: bashi.ParameterValueMatrix,
+    version_relation: bashi.VersionRelation,
     run_infos: Dict[str, Callable[..., bool]],
 ) -> bool:
     """Check if all expected parameter-value-pairs exists in the combination-list.
@@ -389,7 +390,7 @@ def verify(
 
     expected_param_val_tuple, unexpected_param_val_tuple = (
         bashi.get_expected_bashi_parameter_value_pairs(
-            param_value_matrix, run_infos, alpaka_bashi.get_alpaka_version_relation()
+            param_value_matrix, version_relation, run_infos
         )
     )
 

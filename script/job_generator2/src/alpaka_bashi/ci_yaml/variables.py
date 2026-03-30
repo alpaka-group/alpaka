@@ -102,7 +102,7 @@ def set_hipcc_variables(job_body: Dict[str, Any], combination: bashi.Combination
     """Set variables which are specific if the hipcc is the device compiler."""
 
     def get_clang_version(hipcc_version):
-        for hipcc_clang in bashi.versions.HIPCC_CLANG_VERSION:
+        for hipcc_clang in bashi.version.dependencies.hipcc.HIPCC_CLANG_VERSION:
             if hipcc_clang.compiler == hipcc_version:
                 return hipcc_clang.clang
         raise RuntimeError(f"No Clang version for hipcc {hipcc_version}")
@@ -193,7 +193,7 @@ def set_icpx_variables(job_body: Dict[str, Any], combination: bashi.Combination)
     """Set variables which are specific if the icpx is the device compiler."""
 
     def get_clang_version(icpx_version):
-        for icpx_clang in bashi.versions.ICPX_CLANG_VERSION:
+        for icpx_clang in bashi.version.dependencies.icpx.ICPX_CLANG_VERSION:
             if icpx_clang.compiler == icpx_version:
                 return icpx_clang.clang
         raise RuntimeError(f"No Clang version for icpx {icpx_version}")

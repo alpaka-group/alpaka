@@ -107,15 +107,17 @@ def main() -> None:
 
     setup_row_printer()
 
+    software_versions = alpaka_bashi.get_alpaka_version()
+
     param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
-        software_versions=alpaka_bashi.get_alpaka_version()
+        software_versions=software_versions
     )
 
     version_relation = alpaka_bashi.get_alpaka_version_relation()
 
     alpaka_filter = alpaka_bashi.AlpakaFilter()
-    runtime_infos = bashi.get_runtime_infos(param_matrix)
-    runtime_infos |= alpaka_bashi.get_runtime_infos(version_relation)
+    runtime_infos = bashi.get_runtime_infos(param_matrix, version_relation)
+    runtime_infos |= alpaka_bashi.get_runtime_infos(software_versions, version_relation)
 
     comb_list: bashi.CombinationList = bashi.generate_combination_list(
         parameter_value_matrix=param_matrix,
@@ -129,7 +131,7 @@ def main() -> None:
 
     alpaka_bashi.add_combinations_parameters(comb_list)
 
-    if not alpaka_bashi.verify(comb_list, param_matrix, runtime_infos):
+    if not alpaka_bashi.verify(comb_list, param_matrix, version_relation, runtime_infos):
         print("ERROR: Result is incorrect", file=sys.stderr)
         sys.exit(1)
 

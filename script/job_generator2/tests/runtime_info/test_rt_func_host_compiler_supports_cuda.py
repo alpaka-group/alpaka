@@ -11,6 +11,7 @@ from typing import cast
 import packaging.version
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 import alpaka_bashi.runtime_info
+from alpaka_bashi.versions import get_alpaka_version_relation
 
 
 class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
@@ -22,7 +23,9 @@ class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
         }
         host_compiler_support_cuda = cast(
             alpaka_bashi.runtime_info.HostCompilerSupportsCuda,
-            alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(input_versions),
+            alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(
+                input_versions=input_versions, version_relation=get_alpaka_version_relation()
+            ),
         )
         self.assertEqual(
             host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("13")
@@ -53,7 +56,9 @@ class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
         }
         host_compiler_support_cuda = cast(
             alpaka_bashi.runtime_info.HostCompilerSupportsCuda,
-            alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(input_versions),
+            alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(
+                input_versions=input_versions, version_relation=get_alpaka_version_relation()
+            ),
         )
         self.assertEqual(
             host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("12")

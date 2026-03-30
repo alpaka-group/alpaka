@@ -24,6 +24,7 @@ from alpaka_bashi.globals import (
     CMAKE_RELEASE,
     CMAKE_DEBUG,
 )
+from alpaka_bashi.versions import get_alpaka_version_relation
 from utils import parse_param_value_tuples
 
 
@@ -95,7 +96,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
         runtime_info = {
             RT_HOST_COMPILER_CUDA_SUPPORT: alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(
-                input_versions
+                input_versions=input_versions, version_relation=get_alpaka_version_relation()
             )
         }
 
@@ -147,7 +148,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
         runtime_info = {
             RT_HOST_COMPILER_CUDA_SUPPORT: alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(
-                input_versions
+                input_versions=input_versions, version_relation=get_alpaka_version_relation()
             )
         }
 

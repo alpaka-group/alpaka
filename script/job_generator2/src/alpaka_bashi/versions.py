@@ -13,9 +13,9 @@ from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wil
 
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     GCC: [11, 12, 13],
-    CLANG: [14, 15, 16, 17, 18, 19],
+    CLANG: [14, 15, 16, 17, 18, 19, 20],
     NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0],
-    HIPCC: [6.0, 6.1, 6.2],
+    HIPCC: [6.0, 6.1, 6.2, 6.3, 6.4, 7.0],
     ICPX: ["2025.0"],
     UBUNTU: ["22.04", "24.04"],
     CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
@@ -35,7 +35,7 @@ def _get_clang_cuda_versions() -> List[Union[str, int, float]]:
     """
     min_cuda_version = packaging.version.parse(str(min(ALPAKA_VERSIONS[NVCC])))
     min_clang_cuda_version = packaging.version.parse("0")
-    for clang_cuda_sdk in sorted(bashi.versions.CLANG_CUDA_MAX_CUDA_VERSION):
+    for clang_cuda_sdk in sorted(CLANG_CUDA_MAX_CUDA_VERSION):
         if min_cuda_version <= clang_cuda_sdk.cuda:
             min_clang_cuda_version = clang_cuda_sdk.clang_cuda
             break
