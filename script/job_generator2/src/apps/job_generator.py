@@ -7,6 +7,7 @@ Generate CI jobs for alpaka.
 import sys
 import os
 import argparse
+import random
 import bashi
 import alpaka_bashi
 
@@ -30,15 +31,6 @@ def get_args() -> argparse.Namespace:
         type=str,
         default="",
         help="Filter the jobs with a Python regex that checks the job names.",
-    )
-
-    parser.add_argument(
-        "--reorder",
-        type=str,
-        default="",
-        help="Orders jobs by their names. Expects a string consisting of one or more Python regex. "
-        'The regex are separated by whitespaces. For example, the regex "^NVCC ^GCC" has the '
-        "behavior that all NVCC jobs are executed first and then all GCC jobs.",
     )
 
     parser.add_argument(
@@ -147,6 +139,9 @@ def main() -> None:
             bashi.print_row_nice(c)
         sys.exit(0)
 
+    # shuffle jobs to increase the chance to run different compiler in the first wave
+    random.Random(42).shuffle(comb_list)
+
     pipelines = alpaka_bashi.distribute_to_pipelines(comb_list)
 
     wave_sizes = {
@@ -164,8 +159,21 @@ def main() -> None:
         for pipeline in pipelines.values():
             single_pipeline += pipeline
         jobs = alpaka_bashi.get_job_yaml(
-            single_pipeline, str(args.version), args.no_image_check, wave_sizes
+            combination_list=single_pipeline,
+            container_version=str(args.version),
+            image_check=args.no_image_check,
+            stages=False,
+            wave_sizes=None,
         )
+        jobs |= alpaka_bashi.get_special_jobs(
+            container_version=str(args.version),
+            image_check=args.no_image_check,
+            stage_name="",
+            job_filter=job_filter_name,
+        )
+        if len(jobs) == 0:
+            jobs = alpaka_bashi.get_dummy_job_yaml()
+
         alpaka_bashi.write_job_yaml(jobs, sys.stdout)
     else:
         for pipeline_ver, combinations in pipelines.items():
@@ -174,12 +182,25 @@ def main() -> None:
             ][pipeline_ver]
             output_path = getattr(args, f"pipeline-out-{pipeline_name}".replace("-", "_"))
 
-            if len(combinations) > 0:
-                jobs = alpaka_bashi.get_job_yaml(
-                    combinations, str(args.version), args.no_image_check, wave_sizes
+            if pipeline_name == alpaka_bashi.CI_PIPELINE_SPECIAL:
+                jobs = alpaka_bashi.get_special_jobs(
+                    container_version=str(args.version),
+                    image_check=args.no_image_check,
+                    stage_name=pipeline_name,
+                    job_filter=job_filter_name,
                 )
             else:
+                jobs = alpaka_bashi.get_job_yaml(
+                    combination_list=combinations,
+                    container_version=str(args.version),
+                    image_check=args.no_image_check,
+                    stages=True,
+                    wave_sizes=wave_sizes,
+                )
+
+            if len(jobs) == 0:
                 jobs = alpaka_bashi.get_dummy_job_yaml(pipeline_name)
+
             with open(output_path, "w", encoding="utf-8") as output_file:
                 alpaka_bashi.write_job_yaml(jobs, output_file)
 

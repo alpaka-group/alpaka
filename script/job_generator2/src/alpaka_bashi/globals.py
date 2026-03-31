@@ -48,17 +48,20 @@ MDSPAN: bashi.Parameter = "mdspan"
 
 # CI pipeline
 CI_PIPELINE_NAME: str = "stage_name"
+CI_PIPELINE_COMPILE_ONLY: str = "compile_only"
 CI_PIPELINE_COMPILE_ONLY_VER: ValueVersion = packaging.version.parse("0")
+CI_PIPELINE_RUNTIME_CPU: str = "runtime_job_cpu"
 CI_PIPELINE_RUNTIME_CPU_VER: ValueVersion = packaging.version.parse("1")
+CI_PIPELINE_RUNTIME_GPU: str = "runtime_job_gpu"
 CI_PIPELINE_RUNTIME_GPU_VER: ValueVersion = packaging.version.parse("2")
+CI_PIPELINE_SPECIAL: str = "special_job"
 CI_PIPELINE_SPECIAL_VER: ValueVersion = packaging.version.parse("3")
 
 CI_PIPELINE_NAME_MAPPING: Dict[str, ValueVersion] = {
-    "compile_only": CI_PIPELINE_COMPILE_ONLY_VER,
-    "runtime_job_cpu": CI_PIPELINE_RUNTIME_CPU_VER,
-    "runtime_job_gpu": CI_PIPELINE_RUNTIME_GPU_VER,
-    # bring me back for special jobs, like clang-tidy
-    # "special_job": CI_PIPELINE_SPECIAL_VER,
+    CI_PIPELINE_COMPILE_ONLY: CI_PIPELINE_COMPILE_ONLY_VER,
+    CI_PIPELINE_RUNTIME_CPU: CI_PIPELINE_RUNTIME_CPU_VER,
+    CI_PIPELINE_RUNTIME_GPU: CI_PIPELINE_RUNTIME_GPU_VER,
+    CI_PIPELINE_SPECIAL: CI_PIPELINE_SPECIAL_VER,
 }
 
 

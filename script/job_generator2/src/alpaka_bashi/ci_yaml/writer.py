@@ -30,7 +30,7 @@ def construct_job_yaml(
 
     Args:
         combination (bashi.Combination): combination
-        stage (str): Name of the pipeline stage.
+        stage (str): Name of the pipeline stage. If empty, do not create stages.
         container_version (str): Alpaka CI container tag.
         image_check (bool): If true, check if alpaka CI image exist (requires internet connection).
 
@@ -39,7 +39,8 @@ def construct_job_yaml(
     """
     job_body = {}
 
-    job_body["stage"] = stage
+    if stage:
+        job_body["stage"] = stage
     set_image(job_body, combination, container_version, image_check)
     set_variables(job_body, combination)
     set_script(job_body)
@@ -54,6 +55,7 @@ def get_job_yaml(
     combination_list: bashi.CombinationList,
     container_version: str,
     image_check: bool,
+    stages: bool,
     wave_sizes: Dict[ValueVersion, int] | None = None,
 ) -> Dict[str, Any]:
     """Generate for each combination a GitLab CI yaml.
@@ -62,6 +64,7 @@ def get_job_yaml(
         combination_list (bashi.CombinationList): combination-list
         container_version (str): Alpaka CI container tag.
         image_check (bool): If true, check if alpaka CI image exist (requires internet connection).
+        stages (bool): If true, add stages.
         wave_sizes (Dict[ValueVersion, int] | None, optional): The wave size defines how many jobs
         can be in one stage of a CI pipeline. The key defines the pipeline and value maximum number
         of jobs in a CI stage. If a pipeline is not defined in the dict, put all jobs in the same
@@ -70,7 +73,10 @@ def get_job_yaml(
     Returns:
         Dict[str, Any]: GitLab CI job yaml's
     """
-    jobs: Dict[str, Any] = {"stages": []}
+    jobs: Dict[str, Any] = {}
+
+    if len(combination_list) > 0 and stages:
+        jobs["stages"] = []
 
     stage_job_counter: Dict[ValueVersion, int] = {}
     if wave_sizes is not None:
@@ -80,15 +86,19 @@ def get_job_yaml(
     for comb in combination_list:
         job_name = get_job_name(comb)
         wave_ver = comb[CI_PIPELINE_NAME].version
-        stage_name = alpaka_bashi.globals.get_version_aliases()[CI_PIPELINE_NAME][wave_ver]
 
-        if wave_sizes is not None and wave_ver in stage_job_counter:
-            # dived number of already generated jobs by the wave size and round down.
-            stage_name += f"_stage{int(stage_job_counter[wave_ver]/wave_sizes[wave_ver])}"
-            stage_job_counter[wave_ver] += 1
+        if stages:
+            stage_name = alpaka_bashi.globals.get_version_aliases()[CI_PIPELINE_NAME][wave_ver]
 
-        if stage_name not in jobs["stages"]:
-            jobs["stages"].append(stage_name)
+            if wave_sizes is not None and wave_ver in stage_job_counter:
+                # dived number of already generated jobs by the wave size and round down.
+                stage_name += f"_stage{int(stage_job_counter[wave_ver]/wave_sizes[wave_ver])}"
+                stage_job_counter[wave_ver] += 1
+
+            if stage_name not in jobs["stages"]:
+                jobs["stages"].append(stage_name)
+        else:
+            stage_name = ""
 
         jobs[job_name] = construct_job_yaml(comb, stage_name, container_version, image_check)
 
