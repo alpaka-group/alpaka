@@ -18,12 +18,21 @@ ALPAKA_ACC_SYCL_ENABLE: str = "alpaka_ACC_SYCL_ENABLE"
 BUILD_TYPE: bashi.Parameter = "build_type"
 CMAKE_RELEASE: int = 0
 CMAKE_DEBUG: int = 1
+CMAKE_RELEASE_WITH_DEBUG_INFO: int = 2
 CMAKE_RELEASE_VER: ValueVersion = packaging.version.parse(str(CMAKE_RELEASE))
 CMAKE_DEBUG_VER: ValueVersion = packaging.version.parse(str(CMAKE_DEBUG))
-BUILD_TYPES: List[Union[str, int, float]] = [CMAKE_RELEASE, CMAKE_DEBUG]
+CMAKE_RELEASE_WITH_DEBUG_INFO_VER: ValueVersion = packaging.version.parse(
+    str(CMAKE_RELEASE_WITH_DEBUG_INFO)
+)
+BUILD_TYPES: List[Union[str, int, float]] = [
+    CMAKE_RELEASE,
+    CMAKE_DEBUG,
+    CMAKE_RELEASE_WITH_DEBUG_INFO,
+]
 BUILD_TYPES_NAMES: Dict[str, ValueVersion] = {
     "Release": CMAKE_RELEASE_VER,
     "Debug": CMAKE_DEBUG_VER,
+    "RelWithDebInfo": CMAKE_RELEASE_WITH_DEBUG_INFO_VER,
 }
 
 # possible values of TEST_TYPE

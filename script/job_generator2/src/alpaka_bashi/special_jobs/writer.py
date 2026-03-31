@@ -3,7 +3,12 @@
 import re
 from typing import Dict, Any
 from typeguard import typechecked
-from .clang_analysis import get_clang_debug_analysis_job
+from .clang_analysis import get_clang_debug_analysis_job, get_clang_asan_job
+from .cuda import (
+    get_nvcc_relocatable_device_code_job,
+    get_nvcc_extended_lambda_off_job,
+    get_cuda_only_job,
+)
 
 
 @typechecked
@@ -30,7 +35,42 @@ def get_special_jobs(
         special_jobs["stages"] = [stage_name]
 
     special_jobs |= get_clang_debug_analysis_job(
-        "14", "3.25.3", container_version, stage_name, image_check
+        clang_version="14",
+        cmake_version="3.25.3",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
+    )
+    special_jobs |= get_clang_asan_job(
+        clang_version="16",
+        cmake_version="3.25.3",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
+    )
+    special_jobs |= get_nvcc_relocatable_device_code_job(
+        nvcc_version="12.0",
+        gcc_version="11",
+        cmake_version="3.26.5",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
+    )
+    special_jobs |= get_nvcc_extended_lambda_off_job(
+        nvcc_version="12.0",
+        gcc_version="11",
+        cmake_version="3.27.1",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
+    )
+    special_jobs |= get_cuda_only_job(
+        nvcc_version="12.5",
+        gcc_version="13",
+        cmake_version="3.30.3",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
     )
 
     if job_filter:
