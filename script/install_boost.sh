@@ -39,9 +39,9 @@ fi
 # check for C++ 20 std::atomic_ref support
 # if std::atomic_ref is not available, install boost::atomic_ref instead
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] && [ "${ALPAKA_CI_STDLIB}" == "libc++" ]; then
-    ${_CMAKE_EXE} ./script/hasStdAtomicRef -DCMAKE_CXX_FLAGS="-stdlib=libc++" -B /tmp/hasStdAtomicRef
+    ${_CMAKE_EXE} ./script/hasStdAtomicRef -DCMAKE_CXX_COMPILER=${ALPAKA_CI_CXX} -DCMAKE_CXX_FLAGS="-stdlib=libc++" -B /tmp/hasStdAtomicRef
 else
-    ${_CMAKE_EXE} ./script/hasStdAtomicRef -B /tmp/hasStdAtomicRef
+    ${_CMAKE_EXE} ./script/hasStdAtomicRef -DCMAKE_CXX_COMPILER=${ALPAKA_CI_CXX} -B /tmp/hasStdAtomicRef
 fi
 ${_CMAKE_EXE} --build /tmp/hasStdAtomicRef
 
