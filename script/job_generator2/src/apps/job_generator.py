@@ -11,6 +11,12 @@ import random
 import bashi
 import alpaka_bashi
 
+FILTER_MODE_ARGS = {
+    "off": bashi.FilterDebugMode.OFF,
+    "normal": bashi.FilterDebugMode.NORMAL,
+    "args": bashi.FilterDebugMode.VALIDATOR_ARGS,
+}
+
 
 def get_args() -> argparse.Namespace:
     """Define and parse the commandline arguments.
@@ -52,6 +58,18 @@ def get_args() -> argparse.Namespace:
         "--no-image-check",
         action="store_false",
         help="Disable registry check for existing Docker image.",
+    )
+
+    parser.add_argument(
+        "--debug-print",
+        type=str,
+        choices=FILTER_MODE_ARGS.keys(),
+        default="off",
+        help="Display Indicate which combinations passed through the filter chain and which did "
+        "not.Green text indicates that the combination passed through the filter chain; red text"
+        " indicates that it did not. Add the keyword `passed` if colored output is not available."
+        "Option `normal` is easy human readable output. If `args` is set, the output can be "
+        "directly passed to the validator",
     )
 
     return parser.parse_args()
@@ -117,7 +135,7 @@ def main() -> None:
         custom_filter=alpaka_filter,
         version_relation=version_relation,
         # change me to display which combinations passed and did not pass the filter chain
-        debug_print=bashi.FilterDebugMode.OFF,
+        debug_print=FILTER_MODE_ARGS[args.debug_print],
     )
     print(f"number of combinations: {len(comb_list)}", file=sys.stderr)
 

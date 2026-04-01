@@ -236,6 +236,4 @@ class AlpakaFilter(bashi.FilterBase):
                         )
                         return False
 
-        if self.debug_print != bashi.FilterDebugMode.OFF:
-            print("passed")
         return True

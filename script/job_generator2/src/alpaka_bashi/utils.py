@@ -5,7 +5,7 @@ Utils for the job-generator
 """
 
 from typeguard import typechecked
-import bashiValidate
+import termcolor
 
 
 @typechecked
@@ -15,4 +15,4 @@ def print_warn(msg: str):
     Args:
         msg (str): warning text
     """
-    print(bashiValidate.utils.cs(f"[WARNING]: {msg}", bashiValidate.utils.Color.YELLOW))
+    print(termcolor.colored(f"[WARNING]: {msg}", "yellow"))

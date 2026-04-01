@@ -6,6 +6,7 @@ Validate if a combination parameter-values is valid for alpaka.
 
 from typing import List
 import sys
+import termcolor
 import bashi
 from bashi.globals import ON, OFF
 import bashiValidate
@@ -46,9 +47,9 @@ def main() -> None:
 
         if len(missing_parameter) > 0:
             print(
-                bashiValidate.utils.cs(
+                termcolor.colored(
                     f"Missing parameter: {', '.join(missing_parameter)}",
-                    bashiValidate.utils.Color.YELLOW,
+                    "yellow",
                 )
             )
 
