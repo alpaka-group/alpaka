@@ -70,6 +70,20 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
     """Returns:
     bashi.VersionRelation: bashi.VersionRelation object with alpaka specific modifications.
     """
+    # bashi already offers numerous software relations. You can find all predefined relations
+    # here: https://github.com/alpaka-group/bashi/blob/main/src/bashi/version/relation.py
+    #
+    # Relationships can be easily extended. The following example assumes that bashi has already
+    # defined the relationship for Clang-CUDA 7 up to 17 and the CUDA SDK. The relationship is to be
+    # extended up to Clang-CUDA 22.
+    #
+    # clang_cuda_max_cuda_version = CLANG_CUDA_MAX_CUDA_VERSION + [
+    #    ClangCudaSDKSupport("18", "12.3"),
+    #    ClangCudaSDKSupport("22", "13.0"),
+    # ]
+    #
+    # bashi.VersionRelation(clang_cuda_max_cuda_version=clang_cuda_max_cuda_version)
+
     clang_cuda_max_cuda_version = CLANG_CUDA_MAX_CUDA_VERSION + [
         ClangCudaSDKSupport("18", "12.3"),
         ClangCudaSDKSupport("22", "13.0"),
