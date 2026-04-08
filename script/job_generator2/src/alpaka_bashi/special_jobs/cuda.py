@@ -2,9 +2,8 @@
 
 from typing import Dict, Any
 from typeguard import typechecked
-import packaging
 
-from bashi import Combination, ParameterValue
+import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_bashi.ci_yaml.writer import construct_job_yaml
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
@@ -38,44 +37,28 @@ def get_nvcc_relocatable_device_code_job(
     """
 
     job_body = construct_job_yaml(
-        combination=Combination(
-            {
-                HOST_COMPILER: ParameterValue(GCC, packaging.version.parse(gcc_version)),
-                DEVICE_COMPILER: ParameterValue(NVCC, packaging.version.parse(nvcc_version)),
-                CMAKE: ParameterValue(CMAKE, packaging.version.parse(cmake_version)),
-                UBUNTU: ParameterValue(UBUNTU, packaging.version.parse("24.04")),
-                CXX_STANDARD: ParameterValue(CXX_STANDARD, packaging.version.parse("20")),
-                BUILD_TYPE: ParameterValue(BUILD_TYPE, CMAKE_DEBUG_VER),
-                MDSPAN: ParameterValue(MDSPAN, OFF_VER),
-                JOB_EXECUTION_TYPE: ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                ),
-                CI_PIPELINE_NAME: ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
-                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_GPU_CUDA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_GPU_CUDA_ENABLE, packaging.version.parse(nvcc_version)
-                ),
-                ALPAKA_ACC_GPU_HIP_ENABLE: ParameterValue(ALPAKA_ACC_GPU_HIP_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_CPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_GPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_FPGA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF_VER
-                ),
-            }
+        combination=bashi.parse_combination(
+            [
+                (HOST_COMPILER, GCC, gcc_version),
+                (DEVICE_COMPILER, NVCC, nvcc_version),
+                (CMAKE, cmake_version),
+                (UBUNTU, "24.04"),
+                (CXX_STANDARD, "20"),
+                (BUILD_TYPE, CMAKE_DEBUG),
+                (MDSPAN, OFF),
+                (JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY),
+                (CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
+                (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
+                (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
+                (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON),
+                (ALPAKA_ACC_GPU_CUDA_ENABLE, nvcc_version),
+                (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF),
+            ]
         ),
         stage=stage_name,
         container_version=container_version,
@@ -119,44 +102,28 @@ def get_nvcc_extended_lambda_off_job(
     """
 
     job_body = construct_job_yaml(
-        combination=Combination(
-            {
-                HOST_COMPILER: ParameterValue(GCC, packaging.version.parse(gcc_version)),
-                DEVICE_COMPILER: ParameterValue(NVCC, packaging.version.parse(nvcc_version)),
-                CMAKE: ParameterValue(CMAKE, packaging.version.parse(cmake_version)),
-                UBUNTU: ParameterValue(UBUNTU, packaging.version.parse("24.04")),
-                CXX_STANDARD: ParameterValue(CXX_STANDARD, packaging.version.parse("20")),
-                BUILD_TYPE: ParameterValue(BUILD_TYPE, CMAKE_RELEASE_VER),
-                MDSPAN: ParameterValue(MDSPAN, OFF_VER),
-                JOB_EXECUTION_TYPE: ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                ),
-                CI_PIPELINE_NAME: ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
-                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON_VER
-                ),
-                ALPAKA_ACC_GPU_CUDA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_GPU_CUDA_ENABLE, packaging.version.parse(nvcc_version)
-                ),
-                ALPAKA_ACC_GPU_HIP_ENABLE: ParameterValue(ALPAKA_ACC_GPU_HIP_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_CPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_GPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_FPGA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF_VER
-                ),
-            }
+        combination=bashi.parse_combination(
+            [
+                (HOST_COMPILER, GCC, gcc_version),
+                (DEVICE_COMPILER, NVCC, nvcc_version),
+                (CMAKE, cmake_version),
+                (UBUNTU, "24.04"),
+                (CXX_STANDARD, "20"),
+                (BUILD_TYPE, CMAKE_RELEASE),
+                (MDSPAN, OFF),
+                (JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY),
+                (CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
+                (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
+                (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
+                (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON),
+                (ALPAKA_ACC_GPU_CUDA_ENABLE, nvcc_version),
+                (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF),
+            ]
         ),
         stage=stage_name,
         container_version=container_version,
@@ -200,44 +167,28 @@ def get_cuda_only_job(
     """
 
     job_body = construct_job_yaml(
-        combination=Combination(
-            {
-                HOST_COMPILER: ParameterValue(GCC, packaging.version.parse(gcc_version)),
-                DEVICE_COMPILER: ParameterValue(NVCC, packaging.version.parse(nvcc_version)),
-                CMAKE: ParameterValue(CMAKE, packaging.version.parse(cmake_version)),
-                UBUNTU: ParameterValue(UBUNTU, packaging.version.parse("24.04")),
-                CXX_STANDARD: ParameterValue(CXX_STANDARD, packaging.version.parse("20")),
-                BUILD_TYPE: ParameterValue(BUILD_TYPE, CMAKE_RELEASE_VER),
-                MDSPAN: ParameterValue(MDSPAN, OFF_VER),
-                JOB_EXECUTION_TYPE: ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                ),
-                CI_PIPELINE_NAME: ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
-                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ParameterValue(
-                    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, OFF_VER
-                ),
-                ALPAKA_ACC_GPU_CUDA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_GPU_CUDA_ENABLE, packaging.version.parse(nvcc_version)
-                ),
-                ALPAKA_ACC_GPU_HIP_ENABLE: ParameterValue(ALPAKA_ACC_GPU_HIP_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_CPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_GPU_ENABLE: ParameterValue(ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF_VER),
-                ALPAKA_ACC_ONEAPI_FPGA_ENABLE: ParameterValue(
-                    ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF_VER
-                ),
-            }
+        combination=bashi.parse_combination(
+            [
+                (HOST_COMPILER, GCC, gcc_version),
+                (DEVICE_COMPILER, NVCC, nvcc_version),
+                (CMAKE, cmake_version),
+                (UBUNTU, "24.04"),
+                (CXX_STANDARD, "20"),
+                (BUILD_TYPE, CMAKE_RELEASE),
+                (MDSPAN, OFF),
+                (JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY),
+                (CI_PIPELINE_NAME, CI_PIPELINE_SPECIAL_VER),
+                (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, OFF),
+                (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, OFF),
+                (ALPAKA_ACC_GPU_CUDA_ENABLE, nvcc_version),
+                (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF),
+            ]
         ),
         stage=stage_name,
         container_version=container_version,
