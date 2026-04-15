@@ -123,7 +123,7 @@ if [ "${alpaka_ACC_SYCL_ENABLE}" == "OFF" ]; then
     export alpaka_SYCL_ONEAPI_FPGA_BSP=${alpaka_SYCL_ONEAPI_FPGA_BSP:=""}
 else
     if !( [ "$alpaka_SYCL_ONEAPI_CPU" == "ON" ] || [ "$alpaka_SYCL_ONEAPI_GPU" == "ON" ] || [ "$alpaka_SYCL_ONEAPI_FPGA" == "ON" ] ); then
-        echo_red "ERROR: the SYCL CPU, GPU or FPGA device needs to enabled"
+        echo_red "ERROR: the SYCL CPU, GPU or FPGA device needs to be enabled"
         exit 1
     fi
 

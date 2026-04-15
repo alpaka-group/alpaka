@@ -156,12 +156,7 @@ def parse_expected_val_pairs(
 
         expected_val_pairs.append(
             bashi.utils.create_parameter_value_pair(
-                regular_entry_pair[0][0],
-                regular_entry_pair[0][1],
-                regular_entry_pair[0][2],
-                regular_entry_pair[1][0],
-                regular_entry_pair[1][1],
-                regular_entry_pair[1][2],
+                *chain(*regular_entry_pair)
             )
         )
 
