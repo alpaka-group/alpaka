@@ -52,7 +52,6 @@ env:
   TBB_ROOT: ${{ github.workspace }}/tbb
   ALPAKA_CI_CMAKE_DIR: ${{ github.workspace }}/CMake
   ALPAKA_CI_CUDA_DIR: ${{ github.workspace }}/CUDA
-  ALPAKA_CI_HIP_ROOT_DIR: ${{ github.workspace }}/hip
   ALPAKA_CI_SANITIZERS: ""
   ALPAKA_CI_ANALYSIS: OFF
   ALPAKA_CI_ONEAPI_VERSION: 2024.0

@@ -2,6 +2,7 @@
 
 from typing import cast, List, Tuple, TypeAlias
 from collections import OrderedDict
+from itertools import chain
 import packaging.version
 import bashi
 import bashi.utils
@@ -155,9 +156,7 @@ def parse_expected_val_pairs(
                 )
 
         expected_val_pairs.append(
-            bashi.utils.create_parameter_value_pair(
-                *chain(*regular_entry_pair)
-            )
+            bashi.utils.create_parameter_value_pair(*chain(*regular_entry_pair))
         )
 
     return expected_val_pairs

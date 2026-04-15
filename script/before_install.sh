@@ -164,8 +164,6 @@ fi
 # Install paths
 export ALPAKA_CI_CMAKE_DIR=$HOME/cmake
 export ALPAKA_CI_CUDA_DIR=$HOME/cuda
-export ALPAKA_CI_HIP_ROOT_DIR=$HOME/hip
-
 #-------------------------------------------------------------------------------
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then

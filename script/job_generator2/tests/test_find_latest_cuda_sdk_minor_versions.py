@@ -71,11 +71,9 @@ class TestFindLatestCudaSdkMinorVersions(unittest.TestCase):
             comb_list.append(parse_param_value_tuples(row))
 
         expected_result: Dict[ValueName, List[ValueVersion]] = {
-        GCC: sorted([packaging.version.parse(str(ver)) for ver in [12.1, 12.8]])
-        CLANG: sorted(
-            [packaging.version.parse(str(ver)) for ver in [11.1, 11.8, 12.1, 12.4]]
-        )
-        CLANG_CUDA: sorted([packaging.version.parse(str(ver)) for ver in [12.2]])
+            GCC: sorted([packaging.version.parse(str(ver)) for ver in [12.1, 12.8]]),
+            CLANG: sorted([packaging.version.parse(str(ver)) for ver in [11.1, 11.8, 12.1, 12.4]]),
+            CLANG_CUDA: sorted([packaging.version.parse(str(ver)) for ver in [12.2]]),
         }
 
         result = (
