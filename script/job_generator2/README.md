@@ -17,10 +17,7 @@ The `job-generator` uses `bashi`'s naming convention.
 The `job-generator` is a Python package and is very easy to install.
 
 ```bash
-# create an environment
-# other tools, like micromamba can be used instead
-python3 -m venv .env
-source .env/bin/activate
+# create a virtual environment with your favorite tool, then
 pip3 install .
 ```
 
@@ -55,10 +52,7 @@ If you want to modify the `job-generator` code, you can install it in an editabl
 This means that the `job-generator` command will run your modified code.
 
 ```bash
-# create an environment
-# other tools, like micromamba can be used instead
-python3 -m venv .env
-source .env/bin/activate
+# create a virtual environment with your favorite tool, then
 pip3 install --editable .
 ```
 

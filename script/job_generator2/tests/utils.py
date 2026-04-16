@@ -113,21 +113,8 @@ def parse_expected_val_pairs(
     """
     expected_val_pairs: List[bashi.ParameterValuePair] = []
     for pair_number, input_pair in enumerate(input_list):
-        if not isinstance(input_pair, tuple):
-            raise TypeError(f"{input_pair}\ninput_list[{pair_number}] is not a tuple")
-        if len(input_pair) != 2:
-            raise ValueError(
-                f"{input_pair}\ninput_list[{pair_number}] needs to be a tuple with two entries."
-            )
-
         regular_entry_pair: List[RegularParsableParameterValue] = []
         for entry_number, input_entry in enumerate(input_pair):
-            if input_entry[0] not in bashi.PARAMETERS:
-                raise ValueError(
-                    f"input_list[{pair_number}][{entry_number}][0] {input_entry}\n"
-                    "Parameter is unknown.\n"
-                )
-
             if input_entry[0] in (bashi.HOST_COMPILER, bashi.DEVICE_COMPILER):
                 compiler_input_entry = cast(CompilerParsableParameterValue, input_entry)
                 if len(compiler_input_entry) != 3:
@@ -136,11 +123,6 @@ def parse_expected_val_pairs(
                         "First value is HOST_COMPILER or DEVICE_COMPILER.\n"
                         "Therefore the tuple needs to contain three entries:"
                         "\n(<HOST_COMPILER|DEVICE_COMPILER>, <value-name>, <value-version>)"
-                    )
-                if compiler_input_entry[1] not in bashi.COMPILERS:
-                    raise ValueError(
-                        f"input_list[{pair_number}][{entry_number}][1] {compiler_input_entry}\n"
-                        "Compiler is unknown.\n"
                     )
                 regular_entry_pair.append(compiler_input_entry)
             else:

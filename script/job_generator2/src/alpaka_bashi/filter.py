@@ -83,15 +83,6 @@ def only_clang_cuda_compiler_backends(combinations: List[CompilerBackendComb]) -
     return True
 
 
-def no_hip_compiler_backends(combinations: List[CompilerBackendComb]) -> bool:
-    """Return True, if there is no CompilerBackendComb in the list, which contains the HIP compiler
-    and backend."""
-    for comb in combinations:
-        if ALPAKA_ACC_GPU_HIP_ENABLE in comb.backends:
-            return False
-    return True
-
-
 class AlpakaFilter(bashi.FilterBase):
     """Alpaka specific filter rules."""
 
