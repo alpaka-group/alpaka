@@ -14,10 +14,13 @@ import bashi
 
 
 class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
-    def test_serial_cpu_is_always_on(self):
-        input_row = parse_param_value_tuples([(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON)])
-        self.assertGreater(
-            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)), 0
+    def test_enabled_serial_cpu_is_always_required(self):
+        input_row = parse_param_value_tuples([(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, OFF)])
+        self.assertEqual(
+            len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)),
+            0,
+            "Each compiler backend combination requires an enabled serial CPU backend. "
+            "Therefore no combination with a disabled serial cpu backend can exist.",
         )
 
     def test_cpu_compiler_and_serial_cpu(self):
