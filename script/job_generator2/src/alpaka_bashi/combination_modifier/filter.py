@@ -23,10 +23,9 @@ def filter_combinations(
         bashi.CombinationList: filtered combination list
     """
     compiled_regex = re.compile(job_name_regex)
-    filtered_jobs: bashi.CombinationList = []
 
-    for combination in combination_list:
-        if compiled_regex.match(get_job_name(combination)):
-            filtered_jobs.append(combination)
-
-    return filtered_jobs
+    return [
+        combination
+        for combination in combination_list
+        if compiled_regex.match(get_job_name(combination))
+    ]

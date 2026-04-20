@@ -37,13 +37,13 @@ def main() -> None:
     arg = validator.parser.parse_args()
     if arg.missing_parameters:
         row = validator.get_row()
-        missing_parameter: List[str] = []
-
-        for parameter in bashi.get_parameter_value_matrix(
-            software_versions=alpaka_bashi.get_alpaka_version()
-        ).keys():
-            if parameter not in row:
-                missing_parameter.append(parameter)
+        missing_parameter: List[str] = [
+            parameter
+            for parameter in bashi.get_parameter_value_matrix(
+                software_versions=alpaka_bashi.get_alpaka_version()
+            ).keys()
+            if parameter not in row
+        ]
 
         if len(missing_parameter) > 0:
             print(

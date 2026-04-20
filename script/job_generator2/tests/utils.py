@@ -43,10 +43,9 @@ def parse_param_vals(
     Returns:
         List[ParameterValue]: List of parameter-values
     """
-    parsed_list: List[bashi.ParameterValue] = []
-
-    for param_val in param_vals:
-        parsed_list.append(parse_param_val(param_val))
+    parsed_list: List[bashi.ParameterValue] = [
+        parse_param_val(param_val) for param_val in param_vals
+    ]
 
     return parsed_list
 

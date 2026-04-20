@@ -51,14 +51,15 @@ def get_images_from_registry(container_version: str) -> List[str]:
     if not isinstance(repositories, list):
         repositories = [repositories]
 
-    GITLAB_IMAGE_CACHE = []
     # this process is actual pretty slow
     # maybe it does a HTML request each time if we iterate over repo.tags.list()
     # and get a new tag
-    for repo in repositories:
-        for tag in repo.tags.list():
-            if tag.attributes["name"] == container_version:
-                GITLAB_IMAGE_CACHE.append(tag.attributes["location"])
+    GITLAB_IMAGE_CACHE = [
+        tag.attributes["location"]
+        for repo in repositories
+        for tag in repo.tags.list()
+        if tag.attributes["name"] == container_version
+    ]
 
     return GITLAB_IMAGE_CACHE
 
