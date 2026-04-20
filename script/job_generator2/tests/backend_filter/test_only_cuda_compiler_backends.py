@@ -8,7 +8,7 @@ Custom filter for alpaka specific filter rules.
 
 import unittest
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
-import alpaka_bashi.filter
+import alpaka_bashi.alpaka_filter
 from alpaka_bashi.globals import CompilerBackendComb
 import packaging.version
 
@@ -54,7 +54,7 @@ class TestOnlyCUDABackends(unittest.TestCase):
         for backend_list in self.BACKEND_COMBINATIONS_VALID_CASE:
             with self.subTest(backend_list=backend_list):
                 self.assertTrue(
-                    alpaka_bashi.filter.only_cuda_compiler_backends(backend_list),
+                    alpaka_bashi.alpaka_filter.only_cuda_compiler_backends(backend_list),
                     backend_list,
                 )
 
@@ -87,6 +87,6 @@ class TestOnlyCUDABackends(unittest.TestCase):
         for backend_list in self.BACKEND_COMBINATIONS_INVALID_CASE:
             with self.subTest(backend_list=backend_list):
                 self.assertFalse(
-                    alpaka_bashi.filter.only_cuda_compiler_backends(backend_list),
+                    alpaka_bashi.alpaka_filter.only_cuda_compiler_backends(backend_list),
                     backend_list,
                 )
