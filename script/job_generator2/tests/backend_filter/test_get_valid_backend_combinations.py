@@ -68,23 +68,26 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
 
     def test_icpx_compiler_and_different_sycl_backends_invalid(self):
         for sycl_backend in ONE_API_BACKENDS:
-            other_sycl_backends = [
-                (other_back, OFF) for other_back in ONE_API_BACKENDS if other_back != sycl_backend
-            ]
-            input_row = parse_param_value_tuples(
-                [
-                    (DEVICE_COMPILER, ICPX, "2025.0.4"),
-                    (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
-                    (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, OFF),
-                    (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
+            with self.subTest(sycl_backend=sycl_backend):
+                other_sycl_backends = [
+                    (other_back, OFF)
+                    for other_back in ONE_API_BACKENDS
+                    if other_back != sycl_backend
                 ]
-                + other_sycl_backends
-                + [(sycl_backend, ON)]
-            )
-            self.assertEqual(
-                len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)),
-                1,
-            )
+                input_row = parse_param_value_tuples(
+                    [
+                        (DEVICE_COMPILER, ICPX, "2025.0.4"),
+                        (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
+                        (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, OFF),
+                        (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
+                    ]
+                    + other_sycl_backends
+                    + [(sycl_backend, ON)]
+                )
+                self.assertEqual(
+                    len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(input_row)),
+                    1,
+                )
         # icpx can be used for the three different one api backends
         self.assertEqual(
             len(
@@ -110,29 +113,30 @@ class TestAlpakaFilterValidGetBackendCombination(unittest.TestCase):
             2,  # host compiler GCC and Clang
         )
 
-    def test_growing_row(self):
-        parameter_values = [
-            (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
-            (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ON),
-            (DEVICE_COMPILER, GCC, 8),
-            (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
-            (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
-            (HOST_COMPILER, GCC, 8),
-            (ALPAKA_ACC_GPU_CUDA_ENABLE, ON),
-        ]
+    GROWING_ROW = [
+        (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
+        (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ON),
+        (DEVICE_COMPILER, GCC, 8),
+        (ALPAKA_ACC_GPU_HIP_ENABLE, OFF),
+        (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
+        (HOST_COMPILER, GCC, 8),
+        (ALPAKA_ACC_GPU_CUDA_ENABLE, ON),
+    ]
 
-        for i in range(1, len(parameter_values) + 1):
-            row = parse_param_value_tuples(parameter_values[:i])
-            # The last element of parameter_values invalidates all possible backend combinations.
-            if len(row) < len(parameter_values):
-                self.assertGreater(
-                    len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
-                    0,
-                    f"\nrow: {bashi.get_str_row_nice(row)}",
-                )
-            else:
-                self.assertEqual(
-                    len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
-                    0,
-                    f"\nrow: {bashi.get_str_row_nice(row)}",
-                )
+    def test_growing_row(self):
+        for i in range(1, len(self.GROWING_ROW) + 1):
+            row = parse_param_value_tuples(self.GROWING_ROW[:i])
+            with self.subTest(row=row):
+                # The last element of parameter_values invalidates all possible backend combinations.
+                if len(row) < len(self.GROWING_ROW):
+                    self.assertGreater(
+                        len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
+                        0,
+                        f"\nrow: {bashi.get_str_row_nice(row)}",
+                    )
+                else:
+                    self.assertEqual(
+                        len(alpaka_bashi.filter.get_valid_compiler_backend_combinations(row)),
+                        0,
+                        f"\nrow: {bashi.get_str_row_nice(row)}",
+                    )

@@ -6,17 +6,15 @@ SPDX-License-Identifier: MPL-2.0
 
 from typing import Dict, List
 import unittest
-import packaging.version
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
-from bashi.types import CombinationList
 import alpaka_bashi.combination_modifier.execution_type
 from utils import parse_param_value_tuples
 
 
 class TestFindLatestCudaSdkMinorVersions(unittest.TestCase):
-    def test_find_latest_cuda_sdk_minor_versions(self) -> None:
-        comb_list: CombinationList = []
-        for row in [
+    COMBINATION_LIST = [
+        parse_param_value_tuples(row)
+        for row in (
             [
                 (HOST_COMPILER, CLANG, 18),
                 (DEVICE_COMPILER, NVCC, 12.4),
@@ -67,9 +65,10 @@ class TestFindLatestCudaSdkMinorVersions(unittest.TestCase):
                 (DEVICE_COMPILER, CLANG_CUDA, 18),
                 (ALPAKA_ACC_GPU_CUDA_ENABLE, 12.2),
             ],
-        ]:
-            comb_list.append(parse_param_value_tuples(row))
+        )
+    ]
 
+    def test_find_latest_cuda_sdk_minor_versions(self) -> None:
         expected_result: Dict[ValueName, List[ValueVersion]] = {
             GCC: sorted([packaging.version.parse(str(ver)) for ver in [12.1, 12.8]]),
             CLANG: sorted([packaging.version.parse(str(ver)) for ver in [11.1, 11.8, 12.1, 12.4]]),
@@ -78,14 +77,15 @@ class TestFindLatestCudaSdkMinorVersions(unittest.TestCase):
 
         result = (
             alpaka_bashi.combination_modifier.execution_type.find_latest_cuda_sdk_minor_versions(
-                comb_list
+                self.COMBINATION_LIST
             )
         )
 
         for compiler in (GCC, CLANG, CLANG_CUDA):
-            sorted_result = sorted(result[compiler])
-            self.assertEqual(
-                sorted_result,
-                expected_result[compiler],
-                f"Compiler {compiler}: {sorted_result} != {expected_result[compiler]}",
-            )
+            with self.subTest(compiler=compiler):
+                sorted_result = sorted(result[compiler])
+                self.assertEqual(
+                    sorted_result,
+                    expected_result[compiler],
+                    f"Compiler {compiler}: {sorted_result} != {expected_result[compiler]}",
+                )

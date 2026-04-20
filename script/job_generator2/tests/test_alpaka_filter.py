@@ -9,11 +9,9 @@ Custom filter for alpaka specific filter rules.
 import unittest
 import io
 import itertools
-from typing import Optional, IO, Dict, Callable, cast
-from typeguard import typechecked
+from typing import Dict, Callable, cast
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
-from bashi.types import ParameterValueTuple
 from bashi.version.dependencies.clang_cuda import ClangCudaSDKSupport
 import alpaka_bashi.filter
 import alpaka_bashi.runtime_info
@@ -51,9 +49,10 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_valid_backend_combinations_a1(self):
         for row in self.VALID_BACKEND_COMBINATIONS:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
-            )
+            with self.subTest(row=row):
+                self.assertTrue(
+                    alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
+                )
 
     INVALID_BACKEND_COMBINATIONS = [
         [(ALPAKA_ACC_GPU_HIP_ENABLE, ON), (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON)],
@@ -73,14 +72,17 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_backend_combinations_a1(self):
         for row in self.INVALID_BACKEND_COMBINATIONS:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(), "No valid backend combination available.", f"{row}"
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(), "No valid backend combination available.", f"{row}"
+                )
 
     HOST_COMPILER_NVCC_VERSIONS = {
         GCC: [10, 11, 12, 13],
@@ -116,19 +118,20 @@ class TestAlpakaFilter(unittest.TestCase):
 
         for untyped_row in self.INVALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER:
             row = parse_param_value_tuples(untyped_row)
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
-                    row
-                ),
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                "Only backend combinations with CUDA backend possible. There is no CUDA SDK "
-                f"version, which supports the host compiler {row[HOST_COMPILER].name}-"
-                f"{row[HOST_COMPILER].version}",
-                f"{row}",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
+                        row
+                    ),
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    "Only backend combinations with CUDA backend possible. There is no CUDA SDK "
+                    f"version, which supports the host compiler {row[HOST_COMPILER].name}-"
+                    f"{row[HOST_COMPILER].version}",
+                    f"{row}",
+                )
 
     VALID_HIPCC_BUILD_CONFIGURATIONS = [
         [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_RELEASE)],
@@ -140,9 +143,10 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_valid_hipcc62_debug_build_a3(self):
         for row in self.VALID_HIPCC_BUILD_CONFIGURATIONS:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
-            )
+            with self.subTest(row=row):
+                self.assertTrue(
+                    alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
+                )
 
     INVALID_HIPCC_BUILD_CONFIGURATIONS = [
         [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_DEBUG)],
@@ -151,14 +155,17 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_hipcc62_debug_build_a3(self):
         for row in self.INVALID_HIPCC_BUILD_CONFIGURATIONS:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(), "Debug builds with HIP/ROCm 6.2 produce compiler errors."
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(), "Debug builds with HIP/ROCm 6.2 produce compiler errors."
+                )
 
     VALID_AVAILABLE_COMPILERS_ON_UBUNTU = [
         [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "24.04")],
@@ -188,9 +195,10 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_valid_ubuntu2204_a4(self):
         for row in self.VALID_AVAILABLE_COMPILERS_ON_UBUNTU:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
-            )
+            with self.subTest(row=row):
+                self.assertTrue(
+                    alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
+                )
 
     INVALID_AVAILABLE_COMPILERS_ON_UBUNTU = [
         [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "22.04")],
@@ -204,15 +212,18 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_ubuntu2204_generic_compiler_a4(self):
         for row in self.INVALID_AVAILABLE_COMPILERS_ON_UBUNTU:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                "Only the HIPCC and Clang can be used on Ubuntu 24.04",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    "Only the HIPCC and Clang can be used on Ubuntu 24.04",
+                )
 
     CLANG_COMPILER_VERSIONS_WHICH_ARE_NOT_AVAILABLE_ON_UBUNTU_2204 = [
         [(DEVICE_COMPILER, CLANG, 17), (UBUNTU, "22.04")],
@@ -221,15 +232,18 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_ubuntu2204_clang_compiler_a4(self):
         for row in self.CLANG_COMPILER_VERSIONS_WHICH_ARE_NOT_AVAILABLE_ON_UBUNTU_2204:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                "Clang 16 and later will be tested on Ubuntu 24.04 and later.",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    "Clang 16 and later will be tested on Ubuntu 24.04 and later.",
+                )
 
     BACKENDS_ARE_NOT_AVAILABLE_ON_UBUNTU_2204 = [
         ALPAKA_ACC_ONEAPI_CPU_ENABLE,
@@ -240,35 +254,8 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_ubuntu2204_backends_a4(self):
         for backend in self.BACKENDS_ARE_NOT_AVAILABLE_ON_UBUNTU_2204:
-            row = [(backend, ON), (UBUNTU, "22.04")]
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                f"The backend {backend} will be not used on Ubuntu 22.04 and " "older.",
-            )
-
-    AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204 = [
-        [(DEVICE_COMPILER, CLANG, 14), (UBUNTU, "22.04")],
-        [(DEVICE_COMPILER, CLANG, 16), (UBUNTU, "22.04")],
-        [(HOST_COMPILER, CLANG, 15), (UBUNTU, "22.04")],
-    ]
-
-    def test_valid_clang_ubuntu2204_a5(self):
-        for row in self.AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
-            )
-
-    def test_invalid_clang_ubuntu2204_wrong_ubuntu_a5(self):
-        for clang_version, ubuntu_version in itertools.product((14, 16), ("24.4", "26.4")):
-            for row in [
-                [(HOST_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
-                [(DEVICE_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
-            ]:
+            with self.subTest(backend=backend):
+                row = [(backend, ON), (UBUNTU, "22.04")]
                 reason_msg = io.StringIO()
                 self.assertFalse(
                     alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
@@ -278,9 +265,41 @@ class TestAlpakaFilter(unittest.TestCase):
                 )
                 self.assertEqual(
                     reason_msg.getvalue(),
-                    f"Clang {clang_version} does not support libc++-13 and later "
-                    f"of the host compiler of Ubuntu {ubuntu_version}",
+                    f"The backend {backend} will be not used on Ubuntu 22.04 and " "older.",
                 )
+
+    AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204 = [
+        [(DEVICE_COMPILER, CLANG, 14), (UBUNTU, "22.04")],
+        [(DEVICE_COMPILER, CLANG, 16), (UBUNTU, "22.04")],
+        [(HOST_COMPILER, CLANG, 15), (UBUNTU, "22.04")],
+    ]
+
+    def test_valid_clang_ubuntu2204_a5(self):
+        for row in self.AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204:
+            with self.subTest(row=row):
+                self.assertTrue(
+                    alpaka_bashi.filter.AlpakaFilter()(parse_param_value_tuples(row)), f"{row}"
+                )
+
+    def test_invalid_clang_ubuntu2204_wrong_ubuntu_a5(self):
+        for clang_version, ubuntu_version in itertools.product((14, 16), ("24.4", "26.4")):
+            for row in [
+                [(HOST_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
+                [(DEVICE_COMPILER, CLANG, clang_version), (UBUNTU, ubuntu_version)],
+            ]:
+                with self.subTest(row=row):
+                    reason_msg = io.StringIO()
+                    self.assertFalse(
+                        alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                            parse_param_value_tuples(row)
+                        ),
+                        f"{row}",
+                    )
+                    self.assertEqual(
+                        reason_msg.getvalue(),
+                        f"Clang {clang_version} does not support libc++-13 and later "
+                        f"of the host compiler of Ubuntu {ubuntu_version}",
+                    )
 
     NOT_AVAILABLE_NVCC_CLANG_VERSIONS_ON_UBUNTU_2204 = [
         [(HOST_COMPILER, CLANG, 14), (DEVICE_COMPILER, NVCC, "12.0")],
@@ -289,17 +308,20 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_clang_ubuntu2204_nvcc12_a5(self):
         for row in self.NOT_AVAILABLE_NVCC_CLANG_VERSIONS_ON_UBUNTU_2204:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                f"NVCC {row[1][2]} is only available on UBUNTU 24.04 "
-                f"and later but Clang {row[0][2]} does not support 24.04 "
-                "and later.",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"NVCC {row[1][2]} is only available on UBUNTU 24.04 "
+                    f"and later but Clang {row[0][2]} does not support 24.04 "
+                    "and later.",
+                )
 
     NOT_AVAILABLE_CUDA_SDK_CLANG_VERSIONS_ON_UBUNTU_2204 = [
         [(HOST_COMPILER, CLANG, 14), (ALPAKA_ACC_GPU_CUDA_ENABLE, "12.0")],
@@ -308,17 +330,20 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_clang_ubuntu2204_cuda12_a5(self):
         for row in self.NOT_AVAILABLE_CUDA_SDK_CLANG_VERSIONS_ON_UBUNTU_2204:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
-                f"{row}",
-            )
-            self.assertEqual(
-                reason_msg.getvalue(),
-                f"CUDA {row[1][1]} is only available on UBUNTU 24.04 "
-                f"and later but Clang {row[0][2]} does not support 24.04 "
-                "and later.",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"CUDA {row[1][1]} is only available on UBUNTU 24.04 "
+                    f"and later but Clang {row[0][2]} does not support 24.04 "
+                    "and later.",
+                )
 
     def test_invalid_clang_ubuntu2204_disabled_cpu_backend_a5(self):
         row = (HOST_COMPILER, CLANG, 14), (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF)
@@ -364,12 +389,13 @@ class TestAlpakaFilter(unittest.TestCase):
         )
 
         for row in self.VALID_CLANG_CUDA_SDK_COMBINATIONS:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter(runtime_infos=runtime_info)(
-                    parse_param_value_tuples(row)
-                ),
-                f"{row}",
-            )
+            with self.subTest(row=row):
+                self.assertTrue(
+                    alpaka_bashi.filter.AlpakaFilter(runtime_infos=runtime_info)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
 
     INVALID_CLANG_CUDA_SDK_COMBINATIONS = [
         [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.8), (HOST_COMPILER, CLANG_CUDA, 17)],
@@ -389,16 +415,17 @@ class TestAlpakaFilter(unittest.TestCase):
         )
 
         for row in self.INVALID_CLANG_CUDA_SDK_COMBINATIONS:
-            reason_msg = io.StringIO()
-            self.assertFalse(
-                alpaka_bashi.filter.AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
-                    parse_param_value_tuples(row)
-                ),
-                f"{row}",
-            )
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    alpaka_bashi.filter.AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
+                        parse_param_value_tuples(row)
+                    ),
+                    f"{row}",
+                )
 
-            self.assertEqual(
-                reason_msg.getvalue(),
-                "There is no Clang-CUDA version in the combination list, which supports the "
-                f"CUDA {row[0][1]} SDK.",
-            )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    "There is no Clang-CUDA version in the combination list, which supports the "
+                    f"CUDA {row[0][1]} SDK.",
+                )

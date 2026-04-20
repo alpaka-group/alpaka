@@ -46,10 +46,11 @@ class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
             host_compiler_support_cuda.get_max_version(CLANG), packaging.version.parse("18")
         )
         for compiler, version, expected_result in self.CASE1_TEST_DATA_RESULTS:
-            self.assertEqual(
-                host_compiler_support_cuda(compiler, packaging.version.parse(str(version))),
-                expected_result,
-            )
+            with self.subTest(compiler=compiler, version=version, expected_result=expected_result):
+                self.assertEqual(
+                    host_compiler_support_cuda(compiler, packaging.version.parse(str(version))),
+                    expected_result,
+                )
 
     HOST_COMPILER_NVCC_VERSIONS_CASE2 = {
         GCC: [10, 11, 12, 13],
