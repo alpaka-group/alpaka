@@ -5,7 +5,14 @@ It takes multiple compiler and software versions as input and generates a test m
 When you run the `job-generator` process, the output is a valid GitLab CI YAML file for CI.
 
 The `job-generator` uses the [bashi](https://github.com/alpaka-group/bashi/) library, which provides the functions for creating combinations.
-`bashi` contains most of the filter rules specific to alpaka. The `job-generator` primarily handles the generation of the GitLab CI YAML file based on the values of a combination.
+
+`bashi` is designed for use with alpaka-based projects such as alpaka itself, as well as projects that uses alpaka, such as [PIConGPU](https://github.com/ComputationalRadiationPhysics/picongpu/).
+Therefore, `bashi` provides a set of rules that define what is technically possible for alpaka-based applications.
+For example which nvcc version supports which gcc version.
+The `job-generator`, on the other hand, adds its own rules.
+Most of these rules reduce the testing effort, e.g., by allowing only a subset of possible backend combinations to reduce the number of test jobs.
+In addition to extent the rule set, the `job-generator` implements everything that happens after the combination list is generated.
+Most of the functionality involves generating the GitLab CI YAML code from the combination list.
 
 ## Naming
 
@@ -78,7 +85,8 @@ Sometimes, when running the `job-generator`, an exception of type `covertable.ex
 This can happen if a filter rule or a software rule is missing.
 `bashi` provides a [best practices guide](https://github.com/alpaka-group/bashi/blob/main/docs/rules.md) for resolving the issue.
 
-**Attention:** Since `job-generator` is based on `bashi`, different tool calls are required.
+**Attention:** This guide refers to the `example.py` file and the `bashi-validate` tool.
+If you are applying this guide to the `job-generator` package, you must use the `job-generator` application instead of `example.py` and `alpaka-validate` instead of `bashi-validate.`
 
 - To display which combinations the `job-generator` accepts and which it does not, run `job-generator --debug-print=args`. Green combinations pass and red ones are invalid. Run `job-generator --help` for more information.
 - Use `alpaka-validate` instead of `bashi-validate`. `alpaka-validate` uses the `bashi` filters as well as the alpaka-specific filter.
