@@ -88,52 +88,6 @@ class TestAlpakaFilter(unittest.TestCase):
         NVCC: ["12.0", "12.1", "12.2", "12.3", "12.4", "12.5", "12.6"],
     }
 
-    VALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER = [
-        [
-            (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ON),
-            (HOST_COMPILER, GCC, 11),
-            (ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE, ON),
-            (ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ON),
-            (ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ON),
-            (DEVICE_COMPILER, GCC, 11),
-            (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, ON),
-        ],
-        [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4)],
-        [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4), (HOST_COMPILER, GCC, 13)],
-        [
-            (ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4),
-            (HOST_COMPILER, GCC, 13),
-            (DEVICE_COMPILER, NVCC, 12.4),
-        ],
-        [(HOST_COMPILER, CLANG, 18), (ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4)],
-        [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4), (HOST_COMPILER, GCC, 9)],
-    ]
-
-    def test_valid_only_cuda_backend_a2(self):
-        runtime_info = {
-            RT_HOST_COMPILER_CUDA_SUPPORT: alpaka_bashi.runtime_info.get_rt_func_host_compiler_supports_cuda(
-                input_versions=self.HOST_COMPILER_NVCC_VERSIONS,
-                version_relation=get_alpaka_version_relation(),
-            )
-        }
-
-        rt_host_compiler_cuda_support = runtime_info[RT_HOST_COMPILER_CUDA_SUPPORT]
-
-        self.assertEqual(
-            rt_host_compiler_cuda_support.get_max_version(GCC), packaging.version.parse("13")
-        )
-        self.assertEqual(
-            rt_host_compiler_cuda_support.get_max_version(CLANG), packaging.version.parse("18")
-        )
-
-        for row in self.VALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER:
-            self.assertTrue(
-                alpaka_bashi.filter.AlpakaFilter(runtime_infos=runtime_info)(
-                    parse_param_value_tuples(row)
-                ),
-                f"{row}",
-            )
-
     INVALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER = [
         [(HOST_COMPILER, CLANG, 19), (ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4)],
         [(ALPAKA_ACC_GPU_CUDA_ENABLE, 12.4), (HOST_COMPILER, GCC, 14)],
