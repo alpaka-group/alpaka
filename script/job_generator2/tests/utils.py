@@ -88,6 +88,16 @@ def parse_param_value_tuples(input_list: List[ParsableParameterValue]) -> bashi.
     return row
 
 
+def parse_bashi_row(input_list: List[ParsableParameterValue]) -> bashi.BashiRow:
+    """Parse a list of tuples to a BashiRow. See parse_param_value_tuples()
+
+    Returns:
+        bashi.BashiRow: parameter-value-tuple
+    """
+
+    return bashi.BashiRow(parse_param_value_tuples(input_list))
+
+
 RegularParsableParameterValue: TypeAlias = Tuple[bashi.Parameter, bashi.ValueName, ParsableVersion]
 
 

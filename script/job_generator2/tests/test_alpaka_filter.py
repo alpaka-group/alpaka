@@ -23,7 +23,7 @@ from alpaka_bashi.globals import (
     CMAKE_DEBUG,
 )
 from alpaka_bashi.versions import get_alpaka_version_relation
-from utils import parse_param_value_tuples
+from utils import parse_bashi_row
 
 
 class TestAlpakaFilter(unittest.TestCase):
@@ -50,7 +50,7 @@ class TestAlpakaFilter(unittest.TestCase):
     def test_valid_backend_combinations_a1(self):
         for row in self.VALID_BACKEND_COMBINATIONS:
             with self.subTest(row=row):
-                self.assertTrue(AlpakaFilter()(parse_param_value_tuples(row)), f"{row}")
+                self.assertTrue(AlpakaFilter()(parse_bashi_row(row)), f"{row}")
 
     INVALID_BACKEND_COMBINATIONS = [
         [(ALPAKA_ACC_GPU_HIP_ENABLE, ON), (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON)],
@@ -73,7 +73,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -113,7 +113,7 @@ class TestAlpakaFilter(unittest.TestCase):
         )
 
         for untyped_row in self.INVALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER:
-            row = parse_param_value_tuples(untyped_row)
+            row = parse_bashi_row(untyped_row)
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
@@ -138,7 +138,7 @@ class TestAlpakaFilter(unittest.TestCase):
     def test_valid_hipcc62_debug_build_a3(self):
         for row in self.VALID_HIPCC_BUILD_CONFIGURATIONS:
             with self.subTest(row=row):
-                self.assertTrue(AlpakaFilter()(parse_param_value_tuples(row)), f"{row}")
+                self.assertTrue(AlpakaFilter()(parse_bashi_row(row)), f"{row}")
 
     INVALID_HIPCC_BUILD_CONFIGURATIONS = [
         [(DEVICE_COMPILER, HIPCC, 6.2), (BUILD_TYPE, CMAKE_DEBUG)],
@@ -150,7 +150,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -186,7 +186,7 @@ class TestAlpakaFilter(unittest.TestCase):
     def test_valid_ubuntu2204_a4(self):
         for row in self.VALID_AVAILABLE_COMPILERS_ON_UBUNTU:
             with self.subTest(row=row):
-                self.assertTrue(AlpakaFilter()(parse_param_value_tuples(row)), f"{row}")
+                self.assertTrue(AlpakaFilter()(parse_bashi_row(row)), f"{row}")
 
     INVALID_AVAILABLE_COMPILERS_ON_UBUNTU = [
         [(DEVICE_COMPILER, GCC, 14), (UBUNTU, "22.04")],
@@ -203,7 +203,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -221,7 +221,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -242,7 +242,7 @@ class TestAlpakaFilter(unittest.TestCase):
                 row = [(backend, ON), (UBUNTU, "22.04")]
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -259,7 +259,7 @@ class TestAlpakaFilter(unittest.TestCase):
     def test_valid_clang_ubuntu2204_a5(self):
         for row in self.AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204:
             with self.subTest(row=row):
-                self.assertTrue(AlpakaFilter()(parse_param_value_tuples(row)), f"{row}")
+                self.assertTrue(AlpakaFilter()(parse_bashi_row(row)), f"{row}")
 
     def test_invalid_clang_ubuntu2204_wrong_ubuntu_a5(self):
         for clang_version, ubuntu_version in itertools.product((14, 16), ("24.4", "26.4")):
@@ -270,7 +270,7 @@ class TestAlpakaFilter(unittest.TestCase):
                 with self.subTest(row=row):
                     reason_msg = io.StringIO()
                     self.assertFalse(
-                        AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                        AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                         f"{row}",
                     )
                     self.assertEqual(
@@ -289,7 +289,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -309,7 +309,7 @@ class TestAlpakaFilter(unittest.TestCase):
             with self.subTest(row=row):
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+                    AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
                     f"{row}",
                 )
                 self.assertEqual(
@@ -323,7 +323,7 @@ class TestAlpakaFilter(unittest.TestCase):
         row = (HOST_COMPILER, CLANG, 14), (ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE, OFF)
         reason_msg = io.StringIO()
         self.assertFalse(
-            AlpakaFilter(output=reason_msg)(parse_param_value_tuples(row)),
+            AlpakaFilter(output=reason_msg)(parse_bashi_row(row)),
             f"{row}",
         )
         self.assertEqual(
@@ -365,7 +365,7 @@ class TestAlpakaFilter(unittest.TestCase):
         for row in self.VALID_CLANG_CUDA_SDK_COMBINATIONS:
             with self.subTest(row=row):
                 self.assertTrue(
-                    AlpakaFilter(runtime_infos=runtime_info)(parse_param_value_tuples(row)),
+                    AlpakaFilter(runtime_infos=runtime_info)(parse_bashi_row(row)),
                     f"{row}",
                 )
 
@@ -391,7 +391,7 @@ class TestAlpakaFilter(unittest.TestCase):
                 reason_msg = io.StringIO()
                 self.assertFalse(
                     AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
-                        parse_param_value_tuples(row)
+                        parse_bashi_row(row)
                     ),
                     f"{row}",
                 )
