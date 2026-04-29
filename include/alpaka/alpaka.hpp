@@ -9354,7 +9354,7 @@
 		// ============================================================================
 		// == ./include/alpaka/warp/WarpSingleThread.hpp ==
 		// ==
-		/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego
+		/* Copyright 2026 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego, Simone Balducci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -9362,7 +9362,7 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/Traits.hpp ==
 			// ==
-			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego
+			/* Copyright 2026 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego, Simone Balducci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -9481,8 +9481,7 @@
 			    //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
 			    ALPAKA_NO_HOST_ACC_WARNING
 			    template<typename TWarp>
-			    ALPAKA_FN_ACC auto activemask(TWarp const& warp)
-			        -> decltype(trait::Activemask<interface::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
+			    ALPAKA_FN_ACC auto activemask(TWarp const& warp) -> typename TWarp::mask_type
 			    {
 			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Activemask<ImplementationBase>::activemask(warp);
@@ -9555,7 +9554,7 @@
 			    //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
 			    ALPAKA_NO_HOST_ACC_WARNING
 			    template<typename TWarp>
-			    ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate)
+			    ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate) -> typename TWarp::mask_type
 			    {
 			        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Ballot<ImplementationBase>::ballot(warp, predicate);
@@ -9719,12 +9718,14 @@
 		namespace alpaka::warp
 		{
 		    //! The single-threaded warp to emulate it on CPUs.
-		    class WarpSingleThread : public interface::Implements<ConceptWarp, WarpSingleThread>
+		    struct WarpSingleThread : public interface::Implements<ConceptWarp, WarpSingleThread>
 		    {
+		        using mask_type = std::uint32_t;
 		    };
 
 		    namespace trait
 		    {
+
 		        template<>
 		        struct GetSize<WarpSingleThread>
 		        {
@@ -9755,7 +9756,7 @@
 		        template<>
 		        struct Activemask<WarpSingleThread>
 		        {
-		            static auto activemask(warp::WarpSingleThread const& /*warp*/)
+		            static auto activemask(warp::WarpSingleThread const& /*warp*/) -> WarpSingleThread::mask_type
 		            {
 		                return 1u;
 		            }
@@ -9783,6 +9784,7 @@
 		        struct Ballot<WarpSingleThread>
 		        {
 		            static auto ballot(warp::WarpSingleThread const& /*warp*/, std::int32_t predicate)
+		                -> WarpSingleThread::mask_type
 		            {
 		                return predicate ? 1u : 0u;
 		            }
@@ -20189,7 +20191,7 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/WarpGenericSycl.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+			/* Copyright 2026 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego, Simone Balducci
 			 * SPDX-License-Identifier: MPL-2.0
 			 *
 			 * The implementations of Shfl::shfl(), ShflUp::shfl_up(), ShflDown::shfl_down() and ShflXor::shfl_xor() are derived
@@ -20216,6 +20218,8 @@
 			    class WarpGenericSycl : public interface::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
 			    {
 			    public:
+			        using mask_type = std::uint32_t;
+
 			        WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_warp{my_item}
 			        {
 			        }
@@ -20226,6 +20230,7 @@
 
 			namespace alpaka::warp::trait
 			{
+
 			    template<typename TDim>
 			    struct GetSize<warp::WarpGenericSycl<TDim>>
 			    {
@@ -20263,7 +20268,7 @@
 			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
 			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
 			        // Restrict to warpSize <= 32 for now.
-			        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> std::uint32_t
+			        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> warp::WarpGenericSycl<TDim>::mask_type
 			        {
 			            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
 			            auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
@@ -20299,7 +20304,8 @@
 			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
 			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
 			        // Restrict to warpSize <= 32 for now.
-			        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::uint32_t
+			        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate)
+			            -> warp::WarpGenericSycl<TDim>::mask_type
 			        {
 			            auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
 			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
@@ -26362,7 +26368,8 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/WarpUniformCudaHipBuiltIn.hpp ==
 			// ==
-			/* Copyright 2023 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
+			/* Copyright 2026 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego,
+			 * Simone Balducci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -26378,8 +26385,13 @@
 			namespace alpaka::warp
 			{
 			    //! The GPU CUDA/HIP warp.
-			    class WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
+			    struct WarpUniformCudaHipBuiltIn : public interface::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
 			    {
+			#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			        using mask_type = std::uint32_t;
+			#    else
+			        using mask_type = std::uint64_t;
+			#    endif
 			    };
 
 			#    if !defined(ALPAKA_HOST_ONLY)
@@ -26394,6 +26406,7 @@
 
 			    namespace trait
 			    {
+
 			        template<>
 			        struct GetSize<WarpUniformCudaHipBuiltIn>
 			        {
@@ -26469,11 +26482,7 @@
 			        struct Activemask<WarpUniformCudaHipBuiltIn>
 			        {
 			            static __device__ auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                -> std::uint32_t
-			#        else
-			                -> std::uint64_t
-			#        endif
+			                -> WarpUniformCudaHipBuiltIn::mask_type
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
 			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
@@ -26522,13 +26531,7 @@
 			        {
 			            static __device__ auto ballot(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-			                std::int32_t predicate)
-			            // return type is required by the compiler
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                -> std::uint32_t
-			#        else
-			                -> std::uint64_t
-			#        endif
+			                std::int32_t predicate) -> WarpUniformCudaHipBuiltIn::mask_type
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
 			            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
