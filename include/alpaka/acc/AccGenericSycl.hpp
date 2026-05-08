@@ -11,6 +11,7 @@
 #include "alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp"
 #include "alpaka/block/sync/BlockSyncGenericSycl.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
+#include "alpaka/grid/GridSyncGenericSycl.hpp"
 #include "alpaka/idx/bt/IdxBtGenericSycl.hpp"
 #include "alpaka/idx/gb/IdxGbGenericSycl.hpp"
 #include "alpaka/intrinsic/IntrinsicGenericSycl.hpp"
@@ -49,7 +50,14 @@
 
 namespace alpaka
 {
-    template<concepts::Tag TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<
+        concepts::Tag TTag,
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        bool TCooperative,
+        typename... TArgs>
     class TaskKernelGenericSycl;
 
     //! The SYCL accelerator.
@@ -65,6 +73,7 @@ namespace alpaka
         , public BlockSharedMemDynGenericSycl
         , public BlockSharedMemStGenericSycl
         , public BlockSyncGenericSycl<TDim>
+        , public GridSyncGenericSycl<TDim>
         , public IntrinsicGenericSycl
         , public MemFenceGenericSycl
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -94,6 +103,7 @@ namespace alpaka
             , BlockSharedMemDynGenericSycl{dyn_shared_acc}
             , BlockSharedMemStGenericSycl{st_shared_acc}
             , BlockSyncGenericSycl<TDim>{work_item}
+            , GridSyncGenericSycl<TDim>{work_item}
 #    ifndef ALPAKA_DISABLE_VENDOR_RNG
             , rand::RandGenericSycl<TDim>{work_item}
 #    endif
@@ -157,7 +167,9 @@ namespace alpaka::trait
                     // m_sharedMemSizeBytes
                     device.template get_info<sycl::info::device::local_mem_size>(),
                     // m_globalMemSizeBytes
-                    getMemBytes(dev)};
+                    getMemBytes(dev),
+                    // m_cooperativeLaunch
+                    true};
         }
     };
 
@@ -216,10 +228,34 @@ namespace alpaka::trait
     {
         static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         {
-            return TaskKernelGenericSycl<TTag, AccGenericSycl<TTag, TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>{
-                workDiv,
-                kernelFnObj,
-                std::forward<TArgs>(args)...};
+            return TaskKernelGenericSycl<
+                TTag,
+                AccGenericSycl<TTag, TDim, TIdx>,
+                TDim,
+                TIdx,
+                TKernelFnObj,
+                false,
+                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
+        }
+    };
+
+    //! The SYCL accelerator execution task type trait specialization.
+    template<typename TTag, typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+    struct CreateTaskCooperativeKernel<AccGenericSycl<TTag, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    {
+        static auto createTaskCooperativeKernel(
+            TWorkDiv const& workDiv,
+            TKernelFnObj const& kernelFnObj,
+            TArgs&&... args)
+        {
+            return TaskKernelGenericSycl<
+                TTag,
+                AccGenericSycl<TTag, TDim, TIdx>,
+                TDim,
+                TIdx,
+                TKernelFnObj,
+                true,
+                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
         }
     };
 

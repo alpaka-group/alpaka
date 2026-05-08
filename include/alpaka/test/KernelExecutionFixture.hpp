@@ -22,7 +22,7 @@
 namespace alpaka::test
 {
     //! The fixture for executing a kernel on a given accelerator.
-    template<typename TAcc>
+    template<typename TAcc, bool TCooperative = false>
     class KernelExecutionFixture
     {
     public:
@@ -69,7 +69,6 @@ namespace alpaka::test
             auto bufAccResult = allocBuf<bool, Idx>(m_device, static_cast<Idx>(1u));
             memset(m_queue, bufAccResult, static_cast<std::uint8_t>(true));
 
-
             alpaka::KernelCfg<Acc> const kernelCfg = {m_extent, Vec<Dim, Idx>::ones()};
 
             // set workdiv if it is not before
@@ -81,7 +80,15 @@ namespace alpaka::test
                     getPtrNative(bufAccResult),
                     std::forward<TArgs>(args)...);
 
-            exec<Tag>(m_queue, m_workDiv, kernelFnObj, getPtrNative(bufAccResult), std::forward<TArgs>(args)...);
+            if constexpr(TCooperative)
+                execCooperative<Tag>(
+                    m_queue,
+                    m_workDiv,
+                    kernelFnObj,
+                    getPtrNative(bufAccResult),
+                    std::forward<TArgs>(args)...);
+            else
+                exec<Tag>(m_queue, m_workDiv, kernelFnObj, getPtrNative(bufAccResult), std::forward<TArgs>(args)...);
 
             // Copy the result value to the host
             auto bufHostResult = allocBuf<bool, Idx>(m_devHost, static_cast<Idx>(1u));

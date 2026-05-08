@@ -307,14 +307,14 @@ namespace alpaka::trait
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__;
-            if constexpr(Dim::value >= 1)
+            if constexpr(TDim::value >= 1)
                 std::cout << " ew: " << getWidth(extent);
-            if constexpr(Dim::value >= 2)
+            if constexpr(TDim::value >= 2)
                 std::cout << " eh: " << getHeight(extent);
-            if constexpr(Dim::value >= 3)
+            if constexpr(TDim::value >= 3)
                 std::cout << " ed: " << getDepth(extent);
             std::cout << " ptr: " << memPtr;
-            if constexpr(Dim::value >= 2)
+            if constexpr(TDim::value >= 2)
                 std::cout << " rowpitch: " << pitch;
             std::cout << std::endl;
 #    endif
