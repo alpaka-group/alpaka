@@ -132,6 +132,13 @@ namespace alpaka::warp::trait
             mask.extract_bits(bits);
             return bits;
         }
+
+    	static auto ballot(warp::WarpGenericSycl<TDim> const& warp,
+        		   warp::WarpGenericSycl<TDim>::mask_type mask,
+        		   std::int32_t predicate) -> warp::WarpGenericSycl<TDim>::mask_type
+    	{
+            return ballot(warp, predicate) & mask;
+    	}
     };
 
     template<typename TDim>
@@ -158,6 +165,17 @@ namespace alpaka::warp::trait
             std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
             return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
         }
+
+        template<typename T>
+        static auto shfl(
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
+            warp::WarpGenericSycl<TDim>::mask_type mask,
+            T value,
+            std::int32_t srcLane,
+            std::int32_t width)
+        {
+            return shfl(value, srcLane, width);
+        }
     };
 
     template<typename TDim>
@@ -181,11 +199,52 @@ namespace alpaka::warp::trait
             }
             return result;
         }
+
+        template<typename T>
+        static auto shfl_up(
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
+            warp::WarpGenericSycl<TDim>::mask_type mask,
+            T value,
+            std::uint32_t offset, /* must be the same for all work-items in the group */
+            std::int32_t width)
+        {
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            std::uint32_t const w = static_cast<std::uint32_t>(width);
+            std::uint32_t const id = actual_group.get_local_linear_id();
+            std::uint32_t const start_index = id / w * w;
+            T result = sycl::shift_group_right(actual_group, value, offset);
+            if((id - start_index) < offset)
+            {
+                result = value;
+            }
+            return result;
+        }
+
     };
 
     template<typename TDim>
     struct ShflDown<warp::WarpGenericSycl<TDim>>
     {
+        template<typename T>
+        static auto shfl_down(
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
+            warp::WarpGenericSycl<TDim>::mask_type mask,
+            T value,
+            std::uint32_t offset,
+            std::int32_t width)
+        {
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            std::uint32_t const w = static_cast<std::uint32_t>(width);
+            std::uint32_t const id = actual_group.get_local_linear_id();
+            std::uint32_t const end_index = (id / w + 1) * w;
+            T result = sycl::shift_group_left(actual_group, value, offset);
+            if((id + offset) >= end_index)
+            {
+                result = value;
+            }
+            return result;
+        }
+
         template<typename T>
         static auto shfl_down(
             warp::WarpGenericSycl<TDim> const& /*warp*/,
@@ -204,6 +263,7 @@ namespace alpaka::warp::trait
             }
             return result;
         }
+
     };
 
     template<typename TDim>
@@ -224,6 +284,39 @@ namespace alpaka::warp::trait
             return sycl::select_from_group(actual_group, value, target_offset < w ? start_index + target_offset : id);
         }
     };
+
+    template<typename TDim>
+    struct Brev<warp::WarpGenericSycl<TDim>>
+    {
+    	static auto brev(warp::WarpGenericSycl<TDim> const& warp,
+        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> warp::WarpGenericSycl<TDim>::mask_type
+    	{
+            return sycl::ext::oneapi::bit_reverse(mask);
+    	}
+    };
+
+    template<typename TDim>
+    struct Clz<warp::WarpGenericSycl<TDim>>
+    {
+    	static auto clz(warp::WarpGenericSycl<TDim> const& warp,
+        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> std::uint32_t
+    	{
+            return sycl::ext::oneapi::clz(mask);
+    	}
+    }; 
+
+    template<typename TDim>
+    struct SyncWarpThreads<warp::WarpGenericSycl<TDim>>
+    {
+    	static auto syncWarpThreads(warp::WarpGenericSycl<TDim> const& warp,
+        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> void
+    	{
+            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            sycl::group_barrier(actual_group);
+    	}
+    };
+    
+
 } // namespace alpaka::warp::trait
 
 #endif
