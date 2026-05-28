@@ -82,8 +82,10 @@ namespace alpaka::warp
                 return predicate ? 1u : 0u;
             }
 
-            static auto ballot(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, std::int32_t predicate)
-                -> WarpSingleThread::mask_type
+            static auto ballot(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type mask,
+                std::int32_t predicate) -> WarpSingleThread::mask_type
             {
                 return (predicate ? 1u : 0u) & mask;
             }
@@ -191,10 +193,8 @@ namespace alpaka::warp
         template<>
         struct Brev<WarpSingleThread>
         {
-            static auto brev(
-                [[maybe_unused]] warp::WarpSingleThread const& warp,
-                WarpSingleThread::mask_type mask
-                ) -> WarpSingleThread::mask_type
+            static auto brev([[maybe_unused]] warp::WarpSingleThread const& warp, WarpSingleThread::mask_type mask)
+                -> WarpSingleThread::mask_type
             {
                 return mask;
             }
@@ -203,26 +203,22 @@ namespace alpaka::warp
         template<>
         struct Clz<WarpSingleThread>
         {
-            static auto clz(
-                [[maybe_unused]] warp::WarpSingleThread const& warp,
-                WarpSingleThread::mask_type mask
-                ) -> std::uint32_t
+            static auto clz([[maybe_unused]] warp::WarpSingleThread const& warp, WarpSingleThread::mask_type mask)
+                -> std::uint32_t
             {
                 return mask == 0 ? 1 : 0;
             }
-        }; 
-        
+        };
+
         template<>
         struct SyncWarpThreads<WarpSingleThread>
         {
             static auto syncWarpThreads(
                 [[maybe_unused]] warp::WarpSingleThread const& warp,
-                WarpSingleThread::mask_type mask
-                ) -> void
+                WarpSingleThread::mask_type mask) -> void
             {
             }
-        };           
-
+        };
 
 
     } // namespace trait

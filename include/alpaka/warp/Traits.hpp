@@ -37,7 +37,7 @@ namespace alpaka::warp
 
         //! Count leading zeros in a warp mask trait.
         template<typename TWarp, typename TSfinae = void>
-        struct Clz;        
+        struct Clz;
 
         //! The all warp vote trait.
         template<typename TWarp, typename TSfinae = void>
@@ -75,9 +75,9 @@ namespace alpaka::warp
         template<typename TWarp, typename TSfinae = void>
         struct MatchAny;
 
-        //! Warp-Synchronize trait. 
+        //! Warp-Synchronize trait.
         template<typename TWarp, typename TSfinae = void>
-        struct SyncWarp;        
+        struct SyncWarp;
     } // namespace trait
 
     //! Returns warp size.
@@ -235,7 +235,8 @@ namespace alpaka::warp
     //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
-    ALPAKA_FN_ACC auto ballot(TWarp const& warp, typename TWarp::mask_type mask, std::int32_t predicate) -> typename TWarp::mask_type
+    ALPAKA_FN_ACC auto ballot(TWarp const& warp, typename TWarp::mask_type mask, std::int32_t predicate) ->
+        typename TWarp::mask_type
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Ballot<ImplementationBase>::ballot(warp, mask, predicate);
@@ -275,7 +276,6 @@ namespace alpaka::warp
         return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
     }
 
-
     //! Exchange data between threads within a warp.
     //!
     //! Effectively executes:
@@ -305,12 +305,16 @@ namespace alpaka::warp
     //! \return val from the thread index srcLane.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
-    ALPAKA_FN_ACC auto shfl(TWarp const& warp, typename TWarp::mask_type mask, T value, std::int32_t srcLane, std::int32_t width = 0)
+    ALPAKA_FN_ACC auto shfl(
+        TWarp const& warp,
+        typename TWarp::mask_type mask,
+        T value,
+        std::int32_t srcLane,
+        std::int32_t width = 0)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Shfl<ImplementationBase>::shfl(warp, mask, value, srcLane, width ? width : getSize(warp));
     }
-
 
     //! Exchange data between threads within a warp.
     //! It copies from a lane with lower ID relative to caller.
@@ -383,7 +387,12 @@ namespace alpaka::warp
     //! \return val from the thread index lane ID.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
-    ALPAKA_FN_ACC auto shfl_up(TWarp const& warp, typename TWarp::mask_type mask, T value, std::uint32_t offset, std::int32_t width = 0)
+    ALPAKA_FN_ACC auto shfl_up(
+        TWarp const& warp,
+        typename TWarp::mask_type mask,
+        T value,
+        std::uint32_t offset,
+        std::int32_t width = 0)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::ShflUp<ImplementationBase>::shfl_up(warp, mask, value, offset, width ? width : getSize(warp));
@@ -461,10 +470,20 @@ namespace alpaka::warp
     //! \return val from the thread index lane ID.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
-    ALPAKA_FN_ACC auto shfl_down(TWarp const& warp, typename TWarp::mask_type mask, T value, std::uint32_t offset, std::int32_t width = 0)
+    ALPAKA_FN_ACC auto shfl_down(
+        TWarp const& warp,
+        typename TWarp::mask_type mask,
+        T value,
+        std::uint32_t offset,
+        std::int32_t width = 0)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::ShflDown<ImplementationBase>::shfl_down(warp, mask, value, offset, width ? width : getSize(warp));
+        return trait::ShflDown<ImplementationBase>::shfl_down(
+            warp,
+            mask,
+            value,
+            offset,
+            width ? width : getSize(warp));
     }
 
     //! Exchange data between threads within a warp.
@@ -528,7 +547,8 @@ namespace alpaka::warp
 
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
-    ALPAKA_FN_ACC auto match_any(TWarp const& warp, typename TWarp::mask_type mask, T value) -> typename TWarp::mask_type
+    ALPAKA_FN_ACC auto match_any(TWarp const& warp, typename TWarp::mask_type mask, T value) ->
+        typename TWarp::mask_type
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::MatchAny<ImplementationBase>::match_any(warp, mask, value);
@@ -559,7 +579,7 @@ namespace alpaka::warp
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Brev<ImplementationBase>::brev(warp, mask);
-    }    
+    }
 
     //! Evaluates predicate for all non-exited threads in a warp and returns
     //! a 32- or 64-bit unsigned integer (depending on the accelerator)
@@ -586,7 +606,7 @@ namespace alpaka::warp
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Clz<ImplementationBase>::clz(warp, mask);
-    }    
+    }
 
     //! Synchronizes all threads within the current warp mask.
     //!
@@ -598,6 +618,6 @@ namespace alpaka::warp
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         trait::SyncWarpThreads<ImplementationBase>::syncWarpThreads(warp);
-    }  
+    }
 
 } // namespace alpaka::warp

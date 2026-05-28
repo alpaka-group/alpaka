@@ -133,12 +133,13 @@ namespace alpaka::warp::trait
             return bits;
         }
 
-    	static auto ballot(warp::WarpGenericSycl<TDim> const& warp,
-        		   warp::WarpGenericSycl<TDim>::mask_type mask,
-        		   std::int32_t predicate) -> warp::WarpGenericSycl<TDim>::mask_type
-    	{
+        static auto ballot(
+            warp::WarpGenericSycl<TDim> const& warp,
+            warp::WarpGenericSycl<TDim>::mask_type mask,
+            std::int32_t predicate) -> warp::WarpGenericSycl<TDim>::mask_type
+        {
             return ballot(warp, predicate) & mask;
-    	}
+        }
     };
 
     template<typename TDim>
@@ -219,7 +220,6 @@ namespace alpaka::warp::trait
             }
             return result;
         }
-
     };
 
     template<typename TDim>
@@ -263,7 +263,6 @@ namespace alpaka::warp::trait
             }
             return result;
         }
-
     };
 
     template<typename TDim>
@@ -288,34 +287,35 @@ namespace alpaka::warp::trait
     template<typename TDim>
     struct Brev<warp::WarpGenericSycl<TDim>>
     {
-    	static auto brev(warp::WarpGenericSycl<TDim> const& warp,
-        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> warp::WarpGenericSycl<TDim>::mask_type
-    	{
+        static auto brev(warp::WarpGenericSycl<TDim> const& warp, warp::WarpGenericSycl<TDim>::mask_type mask)
+            -> warp::WarpGenericSycl<TDim>::mask_type
+        {
             return sycl::ext::oneapi::bit_reverse(mask);
-    	}
+        }
     };
 
     template<typename TDim>
     struct Clz<warp::WarpGenericSycl<TDim>>
     {
-    	static auto clz(warp::WarpGenericSycl<TDim> const& warp,
-        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> std::uint32_t
-    	{
+        static auto clz(warp::WarpGenericSycl<TDim> const& warp, warp::WarpGenericSycl<TDim>::mask_type mask)
+            -> std::uint32_t
+        {
             return sycl::ext::oneapi::clz(mask);
-    	}
-    }; 
+        }
+    };
 
     template<typename TDim>
     struct SyncWarpThreads<warp::WarpGenericSycl<TDim>>
     {
-    	static auto syncWarpThreads(warp::WarpGenericSycl<TDim> const& warp,
-        		   warp::WarpGenericSycl<TDim>::mask_type mask) -> void
-    	{
+        static auto syncWarpThreads(
+            warp::WarpGenericSycl<TDim> const& warp,
+            warp::WarpGenericSycl<TDim>::mask_type mask) -> void
+        {
             auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
             sycl::group_barrier(actual_group);
-    	}
+        }
     };
-    
+
 
 } // namespace alpaka::warp::trait
 
