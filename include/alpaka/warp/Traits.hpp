@@ -77,7 +77,7 @@ namespace alpaka::warp
 
         //! Warp-Synchronize trait.
         template<typename TWarp, typename TSfinae = void>
-        struct SyncWarp;
+        struct SyncWarpThreads;
     } // namespace trait
 
     //! Returns warp size.
@@ -602,7 +602,7 @@ namespace alpaka::warp
     //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
-    ALPAKA_FN_ACC auto Clz(TWarp const& warp, typename TWarp::mask_type mask) -> -> std::uint32_t
+    ALPAKA_FN_ACC auto Clz(TWarp const& warp, typename TWarp::mask_type mask) -> std::uint32_t
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Clz<ImplementationBase>::clz(warp, mask);

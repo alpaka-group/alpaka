@@ -314,21 +314,22 @@ namespace alpaka::warp
         template<>
         struct MatchAny<WarpUniformCudaHipBuiltIn>
         {
+	    template<typename T>	
             static __device__ auto match_any(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 WarpUniformCudaHipBuiltIn::mask_type mask,
                 T val) -> WarpUniformCudaHipBuiltIn::mask_type
             {
-#        if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && __CUDA_ARCH__ >= 700)                                            \
+#        if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                                            \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(7, 0, 0))
                 return __match_any_sync(mask, val);
 #        else
-                constexpr std::int32_t w_extent = getSizeCompileTime();
+                constexpr std::int32_t w_extent = GetSizeCompileTime<WarpUniformCudaHipBuiltIn>::getSizeCompileTime();
                 WarpUniformCudaHipBuiltIn::mask_type match = 0;
                 for(std::int32_t iter_lane_idx = 0; iter_lane_idx < w_extent; ++iter_lane_idx)
                 {
                     T iter_val = __shfl_sync(mask, val, iter_lane_idx, w_extent);
-                    WarpUniformCudaHipBuiltIn::mask_typ const iter_lane_mask = 1 << iter_lane_idx;
+                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask = static_cast<WarpUniformCudaHipBuiltIn::mask_type>( 1 << iter_lane_idx);
                     if(iter_val == val)
                         match |= iter_lane_mask;
                 }

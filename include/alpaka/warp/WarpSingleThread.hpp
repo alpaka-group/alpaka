@@ -183,6 +183,7 @@ namespace alpaka::warp
         template<>
         struct MatchAny<WarpSingleThread>
         {
+	    template<typename T>	
             static auto match_any(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, T val)
                 -> WarpSingleThread::mask_type
             {
@@ -215,7 +216,7 @@ namespace alpaka::warp
         {
             static auto syncWarpThreads(
                 [[maybe_unused]] warp::WarpSingleThread const& warp,
-                WarpSingleThread::mask_type mask) -> void
+                [[maybe_unused]] WarpSingleThread::mask_type mask) -> void
             {
             }
         };
