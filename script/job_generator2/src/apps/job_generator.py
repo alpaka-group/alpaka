@@ -173,11 +173,8 @@ def main() -> None:
     # applied on the different pipelines.
     # By the way, it also automatically sort the jobs by pipeline.
     if not args.split_pipeline:
-        single_pipeline: bashi.CombinationList = []
-        for pipeline in pipelines.values():
-            single_pipeline += pipeline
         jobs = alpaka_bashi.get_job_yaml(
-            combination_list=single_pipeline,
+            combination_list=list(chain(*pipelines.values())),
             container_version=str(args.version),
             image_check=args.no_image_check,
             stages=False,

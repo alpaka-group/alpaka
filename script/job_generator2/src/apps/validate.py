@@ -20,7 +20,7 @@ def main() -> None:
     validator.parser.add_argument(
         "--missing-parameters",
         action="store_true",
-        help="Display all missing parameters, which was not set via application argument",
+        help="Display all missing parameters not set via application argument",
     )
     validator.add_custom_filter(alpaka_bashi.AlpakaFilter())
     validator.add_string_parameter(

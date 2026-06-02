@@ -147,7 +147,7 @@ def find_latest_cuda_sdk_minor_versions(
 
 @typechecked
 def execution_type_cuda_backend(combination_list: bashi.CombinationList):
-    """Annotate for each hipcc version one job as runtime. The rest is compile time."""
+    """Annotate for each cuda version one job as runtime. The rest is compile time."""
     cuda_versions = find_latest_cuda_sdk_minor_versions(combination_list)
     for comb in combination_list:
         for host_compiler, device_compiler in (
