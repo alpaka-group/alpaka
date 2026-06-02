@@ -8,6 +8,7 @@ import sys
 import os
 import argparse
 import random
+from itertools import chain
 import bashi
 import alpaka_bashi
 
@@ -110,7 +111,81 @@ def get_filter(args: argparse.Namespace) -> str:
     return ""
 
 
-# pylint: disable=too-many-locals
+def write_single_file_job_configuration(
+    pipelines: dict[bashi.ValueVersion, bashi.CombinationList], args: argparse.Namespace
+):
+    """Write generated GitLab CI yaml code to stdout.
+
+    Args:
+        pipelines (dict[bashi.ValueVersion, bashi.CombinationList]): All CI pipelines and their
+            jobs.
+        args (argparse.Namespace): Application arguments.
+    """
+    job_filter_name = get_filter(args)
+
+    jobs = alpaka_bashi.get_job_yaml(
+        combination_list=list(chain(*pipelines.values())),
+        container_version=str(args.version),
+        image_check=args.no_image_check,
+        stages=False,
+        wave_sizes=None,
+    )
+    jobs |= alpaka_bashi.get_special_jobs(
+        container_version=str(args.version),
+        image_check=args.no_image_check,
+        stage_name="",
+        job_filter=job_filter_name,
+    )
+    if len(jobs) == 0:
+        jobs = alpaka_bashi.get_dummy_job_yaml()
+
+    alpaka_bashi.write_job_yaml(jobs, sys.stdout)
+
+
+def write_multiple_file_job_configuration(
+    pipelines: dict[bashi.ValueVersion, bashi.CombinationList],
+    wave_sizes: dict[bashi.ValueVersion, int],
+    args: argparse.Namespace,
+):
+    """Write generated GitLab CI yaml code to different files.
+
+    Args:
+        pipelines (dict[bashi.ValueVersion, bashi.CombinationList]): All CI pipelines and their
+        jobs.
+        wave_sizes (dict[bashi.ValueVersion, int]): Size of each wave.
+        args (argparse.Namespace): Application arguments.
+    """
+    job_filter_name = get_filter(args)
+
+    for pipeline_ver, combinations in pipelines.items():
+        pipeline_name = alpaka_bashi.get_version_aliases()[alpaka_bashi.globals.CI_PIPELINE_NAME][
+            pipeline_ver
+        ]
+        output_path = getattr(args, f"pipeline-out-{pipeline_name}".replace("-", "_"))
+
+        if pipeline_name == alpaka_bashi.CI_PIPELINE_SPECIAL:
+            jobs = alpaka_bashi.get_special_jobs(
+                container_version=str(args.version),
+                image_check=args.no_image_check,
+                stage_name=pipeline_name,
+                job_filter=job_filter_name,
+            )
+        else:
+            jobs = alpaka_bashi.get_job_yaml(
+                combination_list=combinations,
+                container_version=str(args.version),
+                image_check=args.no_image_check,
+                stages=True,
+                wave_sizes=wave_sizes,
+            )
+
+        if len(jobs) == 0:
+            jobs = alpaka_bashi.get_dummy_job_yaml(pipeline_name)
+
+        with open(output_path, "w", encoding="utf-8") as output_file:
+            alpaka_bashi.write_job_yaml(jobs, output_file)
+
+
 def main() -> None:
     """Entry point"""
     args = get_args()
@@ -162,62 +237,20 @@ def main() -> None:
 
     pipelines = alpaka_bashi.distribute_to_pipelines(comb_list)
 
-    wave_sizes = {
-        alpaka_bashi.CI_PIPELINE_COMPILE_ONLY_VER: 20,
-        alpaka_bashi.CI_PIPELINE_RUNTIME_CPU_VER: 20,
-    }
-
     # If the pipelines are not splitted and therefore written to different files, write everything
     # to stdout.
     # We split up the pipelines and merge again, because in the meantime reorder operations can be
     # applied on the different pipelines.
     # By the way, it also automatically sort the jobs by pipeline.
     if not args.split_pipeline:
-        jobs = alpaka_bashi.get_job_yaml(
-            combination_list=list(chain(*pipelines.values())),
-            container_version=str(args.version),
-            image_check=args.no_image_check,
-            stages=False,
-            wave_sizes=None,
-        )
-        jobs |= alpaka_bashi.get_special_jobs(
-            container_version=str(args.version),
-            image_check=args.no_image_check,
-            stage_name="",
-            job_filter=job_filter_name,
-        )
-        if len(jobs) == 0:
-            jobs = alpaka_bashi.get_dummy_job_yaml()
-
-        alpaka_bashi.write_job_yaml(jobs, sys.stdout)
+        write_single_file_job_configuration(pipelines, args)
     else:
-        for pipeline_ver, combinations in pipelines.items():
-            pipeline_name = alpaka_bashi.get_version_aliases()[
-                alpaka_bashi.globals.CI_PIPELINE_NAME
-            ][pipeline_ver]
-            output_path = getattr(args, f"pipeline-out-{pipeline_name}".replace("-", "_"))
+        wave_sizes = {
+            alpaka_bashi.CI_PIPELINE_COMPILE_ONLY_VER: 20,
+            alpaka_bashi.CI_PIPELINE_RUNTIME_CPU_VER: 20,
+        }
 
-            if pipeline_name == alpaka_bashi.CI_PIPELINE_SPECIAL:
-                jobs = alpaka_bashi.get_special_jobs(
-                    container_version=str(args.version),
-                    image_check=args.no_image_check,
-                    stage_name=pipeline_name,
-                    job_filter=job_filter_name,
-                )
-            else:
-                jobs = alpaka_bashi.get_job_yaml(
-                    combination_list=combinations,
-                    container_version=str(args.version),
-                    image_check=args.no_image_check,
-                    stages=True,
-                    wave_sizes=wave_sizes,
-                )
-
-            if len(jobs) == 0:
-                jobs = alpaka_bashi.get_dummy_job_yaml(pipeline_name)
-
-            with open(output_path, "w", encoding="utf-8") as output_file:
-                alpaka_bashi.write_job_yaml(jobs, output_file)
+        write_multiple_file_job_configuration(pipelines, wave_sizes, args)
 
     sys.exit(0)
 
