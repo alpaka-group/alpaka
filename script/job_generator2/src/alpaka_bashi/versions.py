@@ -60,7 +60,8 @@ def get_software_versions_for_alpaka() -> Dict[str, List[Union[str, int, float]]
 
     clang_cuda_versions = _get_clang_cuda_versions()
     # The alpaka filter function cannot handle the case, that Clang-CUDA compiler are missing.
-    # In the case, that the parameter-value-matrix is missing Clang-CUDA, we get a meaning full error.
+    # In the case, that the parameter-value-matrix is missing Clang-CUDA, we get a meaning full
+    # error.
     if len(clang_cuda_versions) == 0:
         raise RuntimeError("Alpaka custom filter does not work without Clang-CUDA version.")
 
