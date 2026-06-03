@@ -4,6 +4,7 @@ SPDX-License-Identifier: MPL-2.0
 Add the CI pipeline to the combinations.
 """
 
+from copy import deepcopy
 from typeguard import typechecked
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
@@ -20,9 +21,11 @@ from alpaka_bashi.globals import (
 
 # pylint: disable=too-many-branches
 @typechecked
-def add_ci_pipeline_type(combination_list: bashi.CombinationList):
+def add_ci_pipeline_type(combination_list: bashi.CombinationList) -> bashi.CombinationList:
     """Add the name of the CI pipeline."""
-    for comb in combination_list:
+    combination_list_copy = deepcopy(combination_list)
+
+    for comb in combination_list_copy:
         # GCC or Clang as CPU compiler
         if (
             comb[DEVICE_COMPILER].name in (GCC, CLANG)
@@ -73,3 +76,5 @@ def add_ci_pipeline_type(combination_list: bashi.CombinationList):
                     comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
                         CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_GPU_VER
                     )
+
+    return combination_list_copy

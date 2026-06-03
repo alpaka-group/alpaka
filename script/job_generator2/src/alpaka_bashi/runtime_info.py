@@ -7,7 +7,7 @@ import packaging
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_bashi.globals import RT_HOST_COMPILER_CUDA_SUPPORT, RT_CLANG_CUDA_MAX_CUDA_SUPPORT
-from alpaka_bashi.versions import get_alpaka_version
+from alpaka_bashi.versions import get_software_versions_for_alpaka
 
 
 class HostCompilerSupportsCuda:
@@ -56,7 +56,7 @@ def get_rt_func_host_compiler_supports_cuda(
     max_gcc_version = packaging.version.parse("0")
     max_clang_version = packaging.version.parse("0")
     if input_versions is None:
-        input_versions = get_alpaka_version()
+        input_versions = get_software_versions_for_alpaka()
 
     max_cuda_sdk_version = packaging.version.parse(str(max(input_versions[NVCC])))
 

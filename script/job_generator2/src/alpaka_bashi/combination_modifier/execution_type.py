@@ -4,6 +4,7 @@ SPDX-License-Identifier: MPL-2.0
 Add the job execution type to the combinations.
 """
 
+from copy import deepcopy
 from typing import Dict, List
 import packaging.version
 from typeguard import typechecked
@@ -18,9 +19,13 @@ import alpaka_bashi.versions
 
 
 @typechecked
-def execution_type_device_compiler_gcc_and_clang(combination_list: bashi.CombinationList):
+def execution_type_device_compiler_gcc_and_clang(
+    combination_list: bashi.CombinationList,
+) -> bashi.CombinationList:
     """Annotate all jobs where gcc or clang are the device compiler as runtime job."""
-    for comb in combination_list:
+    combination_list_copy = deepcopy(combination_list)
+
+    for comb in combination_list_copy:
         if comb[DEVICE_COMPILER].name in (GCC, CLANG) and comb[HOST_COMPILER].name in (GCC, CLANG):
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
@@ -31,15 +36,19 @@ def execution_type_device_compiler_gcc_and_clang(combination_list: bashi.Combina
                 JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER
             )
 
+    return combination_list_copy
+
 
 @typechecked
-def execution_type_hipcc(combination_list: bashi.CombinationList):
+def execution_type_hipcc(combination_list: bashi.CombinationList) -> bashi.CombinationList:
     """Annotate for each hipcc version one job as runtime. The rest is compile time."""
+    combination_list_copy = deepcopy(combination_list)
+
     hipcc_versions = [
         packaging.version.parse(str(ver))
-        for ver in alpaka_bashi.versions.get_alpaka_version()[HIPCC]
+        for ver in alpaka_bashi.versions.get_software_versions_for_alpaka()[HIPCC]
     ]
-    for comb in combination_list:
+    for comb in combination_list_copy:
         if comb[DEVICE_COMPILER].name == HIPCC:
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
@@ -56,12 +65,16 @@ def execution_type_hipcc(combination_list: bashi.CombinationList):
                     JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
                 )
 
+    return combination_list_copy
+
 
 @typechecked
-def execution_type_icpx(combination_list: bashi.CombinationList):
+def execution_type_icpx(combination_list: bashi.CombinationList) -> bashi.CombinationList:
     """Annotate all jobs with the OneAPI CPU backend as runtime job.
     Annotate all jobs with the OneAPI GPU and FPGA backend as compile only job."""
-    for comb in combination_list:
+    combination_list_copy = deepcopy(combination_list)
+
+    for comb in combination_list_copy:
         if comb[DEVICE_COMPILER].name == ICPX:
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
@@ -77,6 +90,8 @@ def execution_type_icpx(combination_list: bashi.CombinationList):
                     comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
                         JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
                     )
+
+    return combination_list_copy
 
 
 @typechecked
@@ -146,10 +161,12 @@ def find_latest_cuda_sdk_minor_versions(
 
 
 @typechecked
-def execution_type_cuda_backend(combination_list: bashi.CombinationList):
+def execution_type_cuda_backend(combination_list: bashi.CombinationList) -> bashi.CombinationList:
     """Annotate for each cuda version one job as runtime. The rest is compile time."""
-    cuda_versions = find_latest_cuda_sdk_minor_versions(combination_list)
-    for comb in combination_list:
+    combination_list_copy = deepcopy(combination_list)
+
+    cuda_versions = find_latest_cuda_sdk_minor_versions(combination_list_copy)
+    for comb in combination_list_copy:
         for host_compiler, device_compiler in (
             (GCC, NVCC),
             (CLANG, NVCC),
@@ -174,3 +191,5 @@ def execution_type_cuda_backend(combination_list: bashi.CombinationList):
                     comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
                         JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
                     )
+
+    return combination_list_copy

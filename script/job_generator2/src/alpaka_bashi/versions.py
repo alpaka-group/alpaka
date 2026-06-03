@@ -4,6 +4,7 @@ SPDX-License-Identifier: MPL-2.0
 Software versions to be tested.
 """
 
+from copy import deepcopy
 from typing import Dict, List, Union
 import packaging.version
 import bashi
@@ -46,7 +47,7 @@ def _get_clang_cuda_versions() -> List[Union[str, int, float]]:
     ]
 
 
-def get_alpaka_version() -> Dict[str, List[Union[str, int, float]]]:
+def get_software_versions_for_alpaka() -> Dict[str, List[Union[str, int, float]]]:
     """Return dict of all compiler and software versions, which should be used as input for the
     combination generator.
 
@@ -56,14 +57,14 @@ def get_alpaka_version() -> Dict[str, List[Union[str, int, float]]]:
     Returns:
         Dict[str, List[Union[str, int, float]]]: List of compiler and software versions.
     """
-    alpaka_version = ALPAKA_VERSIONS.copy()
 
     clang_cuda_versions = _get_clang_cuda_versions()
+    # The alpaka filter function cannot handle the case, that Clang-CUDA compiler are missing.
+    # In the case, that the parameter-value-matrix is missing Clang-CUDA, we get a meaning full error.
     if len(clang_cuda_versions) == 0:
         raise RuntimeError("Alpaka custom filter does not work without Clang-CUDA version.")
-    alpaka_version[CLANG_CUDA] = clang_cuda_versions
 
-    return alpaka_version
+    return deepcopy(ALPAKA_VERSIONS) | {CLANG_CUDA: clang_cuda_versions}
 
 
 def get_alpaka_version_relation() -> bashi.VersionRelation:

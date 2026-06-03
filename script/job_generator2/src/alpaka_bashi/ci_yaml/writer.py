@@ -51,7 +51,7 @@ def construct_job_yaml(
 
 
 @typechecked
-def get_job_yaml(
+def get_job_configuration(
     combination_list: bashi.CombinationList,
     container_version: str,
     image_check: bool,

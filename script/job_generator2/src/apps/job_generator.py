@@ -12,12 +12,6 @@ from itertools import chain
 import bashi
 import alpaka_bashi
 
-FILTER_MODE_ARGS = {
-    "off": bashi.FilterDebugMode.OFF,
-    "normal": bashi.FilterDebugMode.NORMAL,
-    "args": bashi.FilterDebugMode.VALIDATOR_ARGS,
-}
-
 
 def get_args() -> argparse.Namespace:
     """Define and parse the commandline arguments.
@@ -63,8 +57,8 @@ def get_args() -> argparse.Namespace:
 
     parser.add_argument(
         "--debug-print",
-        type=str,
-        choices=FILTER_MODE_ARGS.keys(),
+        type=bashi.FilterDebugMode,
+        choices=list(bashi.FilterDebugMode),
         default="off",
         help="Display Indicate which combinations passed through the filter chain and which did "
         "not.Green text indicates that the combination passed through the filter chain; red text"
@@ -85,7 +79,7 @@ def setup_row_printer() -> None:
         bashi.add_print_row_nice_version_alias(val_name, aliases)
 
 
-def get_filter(args: argparse.Namespace) -> str:
+def get_filter_name(args: argparse.Namespace) -> str:
     """Return filter string CI jobs. All jobs, which does not match the filter regex, will be
     removed.
 
@@ -121,9 +115,9 @@ def write_single_file_job_configuration(
             jobs.
         args (argparse.Namespace): Application arguments.
     """
-    job_filter_name = get_filter(args)
+    job_filter_name = get_filter_name(args)
 
-    jobs = alpaka_bashi.get_job_yaml(
+    jobs = alpaka_bashi.get_job_configuration(
         combination_list=list(chain(*pipelines.values())),
         container_version=str(args.version),
         image_check=args.no_image_check,
@@ -155,7 +149,7 @@ def write_multiple_file_job_configuration(
         wave_sizes (dict[bashi.ValueVersion, int]): Size of each wave.
         args (argparse.Namespace): Application arguments.
     """
-    job_filter_name = get_filter(args)
+    job_filter_name = get_filter_name(args)
 
     for pipeline_ver, combinations in pipelines.items():
         pipeline_name = alpaka_bashi.get_version_aliases()[alpaka_bashi.globals.CI_PIPELINE_NAME][
@@ -171,7 +165,7 @@ def write_multiple_file_job_configuration(
                 job_filter=job_filter_name,
             )
         else:
-            jobs = alpaka_bashi.get_job_yaml(
+            jobs = alpaka_bashi.get_job_configuration(
                 combination_list=combinations,
                 container_version=str(args.version),
                 image_check=args.no_image_check,
@@ -192,7 +186,7 @@ def main() -> None:
 
     setup_row_printer()
 
-    software_versions = alpaka_bashi.get_alpaka_version()
+    software_versions = alpaka_bashi.get_software_versions_for_alpaka()
 
     param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
         software_versions=software_versions
@@ -210,11 +204,11 @@ def main() -> None:
         custom_filter=alpaka_filter,
         version_relation=version_relation,
         # change me to display which combinations passed and did not pass the filter chain
-        debug_print=FILTER_MODE_ARGS[args.debug_print],
+        debug_print=args.debug_print,
     )
     print(f"number of combinations: {len(comb_list)}", file=sys.stderr)
 
-    alpaka_bashi.add_combinations_parameters(comb_list)
+    comb_list = alpaka_bashi.add_combinations_parameters(comb_list)
 
     if not alpaka_bashi.verify(comb_list, param_matrix, version_relation, runtime_infos):
         print("ERROR: Result is incorrect", file=sys.stderr)
@@ -222,7 +216,7 @@ def main() -> None:
 
     print("Result is correct", file=sys.stderr)
 
-    job_filter_name = get_filter(args)
+    job_filter_name = get_filter_name(args)
     if job_filter_name:
         comb_list = alpaka_bashi.filter_combinations(comb_list, job_filter_name)
         print(f"number of filtered combinations: {len(comb_list)}", file=sys.stderr)
