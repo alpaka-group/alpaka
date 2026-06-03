@@ -524,26 +524,32 @@ namespace alpaka::warp
         return trait::ShflXor<ImplementationBase>::shfl_xor(warp, value, mask, width ? width : getSize(warp));
     }
 
-    //! Evaluates predicate for all non-exited threads in a warp and returns
-    //! a 32- or 64-bit unsigned integer (depending on the accelerator)
-    //! whose Nth bit is set if and only if predicate evaluates to non-zero
-    //! for the Nth thread of the warp and the Nth thread is active.
+    //! Returns a mask of warp lanes whose value matches the value of the calling lane.
     //!
-    //! It follows the logic of __match_any(mask, value) in CUDA before version 9.0 and HIP,
-    //! the operation is applied for all active threads.
-    //! The modern CUDA counterpart would be __match_any_sync(mask, value).
-    //! Return type is 64-bit to fit all platforms.
+    //! The operation is restricted to the lanes selected by \p mask. For each
+    //! participating lane, the returned mask contains the lanes in \p mask for which
+    //! \p value compares equal to that lane's \p value.
+    //!
+    //! The mask type is implementation-defined and may be either 32 or 64 bits,
+    //! depending on the accelerator backend. The returned value has the same type
+    //! as the input mask.
+    //!
+    //! This function follows the semantics of the backend-specific match-any
+    //! operation. The CUDA counterpart is __match_any_sync(mask, value).
     //!
     //! Note:
-    //! * The programmer must ensure that all threads calling this function are executing
-    //!   the same line of code. In particular it is not portable to write
-    //!   if(a) {ballot} else {ballot}.
+    //! * The programmer must ensure that all lanes selected by \p mask call this
+    //!   function in convergence, i.e. they execute the same call with the same
+    //!   mask. Calling this function from different control-flow paths with the
+    //!   same participating lanes is not portable.
     //!
     //! \tparam TWarp The warp implementation type.
+    //! \tparam T The value type to compare across lanes.
     //! \param warp The warp implementation.
-    //! \param mask Lane mask based on the implementation (32- or 64-bit unsigned int)
-    //! \param value   value to broadcast.
-    //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
+    //! \param mask Lane mask selecting the participating lanes.
+    //! \param value Value contributed by the calling lane.
+    //! \return Mask of participating lanes whose value compares equal to the calling lane's value.
+
 
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
@@ -554,25 +560,21 @@ namespace alpaka::warp
         return trait::MatchAny<ImplementationBase>::match_any(warp, mask, value);
     }
 
-    //! Evaluates predicate for all non-exited threads in a warp and returns
-    //! a 32- or 64-bit unsigned integer (depending on the accelerator)
-    //! whose Nth bit is set if and only if predicate evaluates to non-zero
-    //! for the Nth thread of the warp and the Nth thread is active.
+    //! Reverses the bit order of a warp lane mask.
     //!
-    //! It follows the logic of __ballot(predicate) in CUDA before version 9.0 and HIP,
-    //! the operation is applied for all active threads.
-    //! The modern CUDA counterpart would be __ballot_sync(__activemask(), predicate).
-    //! Return type is 64-bit to fit all platforms.
+    //! The mask type is implementation-defined and may be either 32 or 64 bits,
+    //! depending on the accelerator backend. The returned value has the same type
+    //! as the input mask, with bit 0 moved to the most significant bit position,
+    //! bit 1 moved to the next-most-significant bit position, and so on.
     //!
-    //! Note:
-    //! * The programmer must ensure that all threads calling this function are executing
-    //!   the same line of code. In particular it is not portable to write
-    //!   if(a) {ballot} else {ballot}.
+    //! This function follows the semantics of the backend-specific bit-reversal
+    //! operation for the mask type used by the warp implementation.
     //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.
-    //! \param mask Lane mask based on the implementation (32- or 64-bit unsigned int)
-    //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
+    //! \param mask Lane mask based on the implementation, typically a 32- or 64-bit unsigned integer.
+    //! \return The bit-reversed value of \p mask.
+
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
     ALPAKA_FN_ACC auto brev(TWarp const& warp, typename TWarp::mask_type mask) -> typename TWarp::mask_type
@@ -581,28 +583,23 @@ namespace alpaka::warp
         return trait::Brev<ImplementationBase>::brev(warp, mask);
     }
 
-    //! Evaluates predicate for all non-exited threads in a warp and returns
-    //! a 32- or 64-bit unsigned integer (depending on the accelerator)
-    //! whose Nth bit is set if and only if predicate evaluates to non-zero
-    //! for the Nth thread of the warp and the Nth thread is active.
+    //! Counts the number of leading zero bits in a warp lane mask.
     //!
-    //! It follows the logic of __ballot(predicate) in CUDA before version 9.0 and HIP,
-    //! the operation is applied for all active threads.
-    //! The modern CUDA counterpart would be __ballot_sync(__activemask(), predicate).
-    //! Return type is 64-bit to fit all platforms.
+    //! The mask type is implementation-defined and may be either 32 or 64 bits,
+    //! depending on the accelerator backend. The result is the number of consecutive
+    //! zero bits starting from the most significant bit of the mask representation.
     //!
-    //! Note:
-    //! * The programmer must ensure that all threads calling this function are executing
-    //!   the same line of code. In particular it is not portable to write
-    //!   if(a) {ballot} else {ballot}.
+    //! This function follows the semantics of the backend-specific count-leading-zeros
+    //! operation for the mask type used by the warp implementation.
     //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.
-    //! \param mask Lane mask based on the implementation (32- or 64-bit unsigned int)
-    //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
+    //! \param mask Lane mask based on the implementation, typically a 32- or 64-bit unsigned integer.
+    //! \return Number of leading zero bits in \p mask.
+
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
-    ALPAKA_FN_ACC auto Clz(TWarp const& warp, typename TWarp::mask_type mask) -> std::uint32_t
+    ALPAKA_FN_ACC auto clz(TWarp const& warp, typename TWarp::mask_type mask) -> std::uint32_t
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::Clz<ImplementationBase>::clz(warp, mask);

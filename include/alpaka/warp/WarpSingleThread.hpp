@@ -107,7 +107,7 @@ namespace alpaka::warp
             template<typename T>
             static auto shfl(
                 warp::WarpSingleThread const& /*warp*/,
-                WarpSingleThread::mask_type mask,
+                WarpSingleThread::mask_type /*mask*/,
                 T val,
                 std::int32_t /*srcLane*/,
                 std::int32_t /*width*/)
@@ -132,7 +132,7 @@ namespace alpaka::warp
             template<typename T>
             static auto shfl_up(
                 warp::WarpSingleThread const& /*warp*/,
-                WarpSingleThread::mask_type mask,
+                WarpSingleThread::mask_type /*mask*/,
                 T val,
                 std::uint32_t /*srcLane*/,
                 std::int32_t /*width*/)
@@ -157,7 +157,7 @@ namespace alpaka::warp
             template<typename T>
             static auto shfl_down(
                 warp::WarpSingleThread const& /*warp*/,
-                WarpSingleThread::mask_type mask,
+                WarpSingleThread::mask_type /*mask*/,
                 T val,
                 std::uint32_t /*srcLane*/,
                 std::int32_t /*width*/)
@@ -184,7 +184,7 @@ namespace alpaka::warp
         struct MatchAny<WarpSingleThread>
         {
 	    template<typename T>	
-            static auto match_any(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, T val)
+            static auto match_any(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, T /*val*/)
                 -> WarpSingleThread::mask_type
             {
                 return mask;

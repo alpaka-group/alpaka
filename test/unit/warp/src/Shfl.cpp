@@ -88,6 +88,62 @@ struct ShflMultipleThreadWarpTestKernel
     }
 };
 
+template<std::uint32_t TWarpSize>
+struct MaskShflMultipleThreadWarpTestKernel
+{
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    {
+        auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        std::int32_t const warpExtent = alpaka::warp::getSize(acc);
+        // Test relies on having a single warp per thread block
+        ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
+        auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
+
+
+        auto const mask = alpaka::warp::activemask(acc);
+        using MaskType = decltype(mask);
+
+        ALPAKA_CHECK(*success, warpExtent > 1);
+
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, mask, 42, 0, warpExtent) == 42);
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, mask, threadIdxInWarp, 0, warpExtent) == 0);
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, mask, threadIdxInWarp, 1, warpExtent) == 1);
+        // Note the CUDA and HIP API-s differ on lane wrapping, but both agree it should not segfault
+        // https://github.com/ROCm-Developer-Tools/HIP-CPU/issues/14
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, mask, 5, -1, warpExtent) == 5);
+
+        auto const epsilon = std::numeric_limits<float>::epsilon();
+
+        // Test various widths
+        for(int width = 1; width < warpExtent; width *= 2)
+        {
+            for(int idx = 0; idx < width; idx++)
+            {
+                int const off = width * (threadIdxInWarp / width);
+                ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, mask, threadIdxInWarp, idx, width) == idx + off);
+                float const ans = alpaka::warp::shfl(acc, mask, 4.0f - float(threadIdxInWarp), idx, width);
+                float const expect = 4.0f - float(idx + off);
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+            }
+        }
+        // Some threads become inactive in the kernel to test that the warp operations
+        // properly operate on the active threads only
+        const MaskType updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
+        
+	for(int idx = 0; idx < warpExtent / 2; idx++)
+        {
+            ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, updated_mask, threadIdxInWarp, idx, warpExtent) == idx);
+            float const ans = alpaka::warp::shfl(acc, updated_mask, 4.0f - float(threadIdxInWarp), idx, warpExtent);
+            float const expect = 4.0f - float(idx);
+            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+        }
+    }
+};
+
+
 template<std::uint32_t TWarpSize, typename TAcc>
 struct alpaka::trait::WarpSize<ShflMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
     : std::integral_constant<std::uint32_t, TWarpSize>
@@ -139,22 +195,27 @@ TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
             if(warpExtent == 4)
             {
                 REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<4>{}));
+		REQUIRE(fixture(MaskShflMultipleThreadWarpTestKernel<4>{}));
             }
             else if(warpExtent == 8)
             {
                 REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<8>{}));
+		REQUIRE(fixture(MaskShflMultipleThreadWarpTestKernel<8>{}));
             }
             else if(warpExtent == 16)
             {
                 REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<16>{}));
+		REQUIRE(fixture(MaskShflMultipleThreadWarpTestKernel<16>{}));
             }
             else if(warpExtent == 32)
             {
                 REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<32>{}));
+		REQUIRE(fixture(MaskShflMultipleThreadWarpTestKernel<32>{}));
             }
             else if(warpExtent == 64)
             {
                 REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<64>{}));
+		REQUIRE(fixture(MaskShflMultipleThreadWarpTestKernel<64>{}));
             }
         }
     }
