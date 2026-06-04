@@ -15,6 +15,7 @@
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
+#include "alpaka/warp/Traits.hpp"
 #include "alpaka/workdiv/WorkDivHelpers.hpp"
 
 #include <iterator>
@@ -140,7 +141,7 @@ namespace alpaka
          * - lane 0 receives the total sum over the warp (used as the per-warp NNZ aggregate)
          */
 
-        template<concepts::Acc TAcc, bool all = true>
+        template<concepts::Acc TAcc, bool keep_total_sum = true>
         ALPAKA_FN_ACC ALPAKA_FN_INLINE std::uint32_t warp_exclusive_sum(
             TAcc const& acc,
             std::uint32_t const val,
@@ -149,16 +150,13 @@ namespace alpaka
             using mask_t = typename TAcc::mask_type;
 
             if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>)
-                return all ? val : 0;
-
-            mask_t const full_mask = warp::ballot(acc, true);
+                return keep_total_sum ? val : 0;
 
             constexpr std::uint32_t w_extent = warp::getSizeCompileTime<TAcc>();
 
-            std::uint32_t const local_offset = val;
+            std::uint32_t local_offset = val;
 
             // Do inclusive sum first:
-            // CMS_UNROLL_LOOP
             for(std::uint32_t step = 1; step < w_extent; step *= 2)
             {
                 auto const res = warp::shfl_up(acc, local_offset, step, w_extent);
@@ -166,9 +164,7 @@ namespace alpaka
                     local_offset += res;
             }
 
-            warp::syncWarpThreads(acc, full_mask);
-
-            if constexpr(all)
+            if constexpr(keep_total_sum)
             {
                 std::uint32_t const high_lane_idx = w_extent - 1;
 
@@ -260,7 +256,7 @@ namespace alpaka
 
             reduce_t result = in;
 
-            if constexpr(std::is_same_v<Device, alpaka::DevCpu>)
+            if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>)
                 return result;
 
             for(std::uint32_t offset = w_extent / 2; offset > 0; offset /= 2)
@@ -357,7 +353,7 @@ namespace alpaka
          * @return Exclusive prefix sum value for the current lane.
          */
 
-        template<concepts::Acc TAcc, bool all = true>
+        template<concepts::Acc TAcc, bool keep_total_sum = true>
         ALPAKA_FN_ACC ALPAKA_FN_INLINE auto warp_sparse_exclusive_sum(
             TAcc const& acc,
             typename TAcc::mask_type const mask,
@@ -367,7 +363,7 @@ namespace alpaka
             constexpr std::uint32_t w_extent = warp::getSizeCompileTime<TAcc>();
 
             if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>)
-                return all == false ? 0 : (mask == 0 ? 0 : val);
+                return keep_total_sum == false ? 0 : (mask == 0 ? 0 : val);
 
             // Non-active lanes should skip the reduction:
             if(is_work_lane<TAcc>(mask, lane_idx) == false)
@@ -399,7 +395,7 @@ namespace alpaka
                     local_offset += tmp_val;
             }
 
-            if constexpr(all)
+            if constexpr(keep_total_sum)
             {
                 std::uint32_t const high_lane_idx = get_physical_lane_idx(acc, mask, nActiveLanes - 1);
                 // send last lane value (total tile offset) to lane idx = low_lane_idx:

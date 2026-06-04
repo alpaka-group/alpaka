@@ -310,10 +310,10 @@ namespace alpaka::warp
         typename TWarp::mask_type mask,
         T value,
         std::int32_t srcLane,
-        std::int32_t width = 0)
+        std::int32_t width)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::Shfl<ImplementationBase>::shfl(warp, mask, value, srcLane, width ? width : getSize(warp));
+        return trait::Shfl<ImplementationBase>::shfl(warp, mask, value, srcLane, width);
     }
 
     //! Exchange data between threads within a warp.
@@ -392,10 +392,10 @@ namespace alpaka::warp
         typename TWarp::mask_type mask,
         T value,
         std::uint32_t offset,
-        std::int32_t width = 0)
+        std::int32_t width)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::ShflUp<ImplementationBase>::shfl_up(warp, mask, value, offset, width ? width : getSize(warp));
+        return trait::ShflUp<ImplementationBase>::shfl_up(warp, mask, value, offset, width);
     }
 
     //! Exchange data between threads within a warp.
@@ -475,15 +475,10 @@ namespace alpaka::warp
         typename TWarp::mask_type mask,
         T value,
         std::uint32_t offset,
-        std::int32_t width = 0)
+        std::int32_t width)
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::ShflDown<ImplementationBase>::shfl_down(
-            warp,
-            mask,
-            value,
-            offset,
-            width ? width : getSize(warp));
+        return trait::ShflDown<ImplementationBase>::shfl_down(warp, mask, value, offset, width);
     }
 
     //! Exchange data between threads within a warp.
@@ -614,7 +609,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto syncWarpThreads(TWarp const& warp, typename TWarp::mask_type mask) -> void
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        trait::SyncWarpThreads<ImplementationBase>::syncWarpThreads(warp);
+        trait::SyncWarpThreads<ImplementationBase>::syncWarpThreads(warp, mask);
     }
 
 } // namespace alpaka::warp
