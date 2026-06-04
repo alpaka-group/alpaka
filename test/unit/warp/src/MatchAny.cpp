@@ -1,4 +1,4 @@
- /* SPDX-License-Identifier: MPL-2.0
+/* SPDX-License-Identifier: MPL-2.0
  */
 
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -19,7 +19,7 @@ struct MatchAnySingleThreadWarpTestKernel
     {
         if constexpr(alpaka::Dim<TAcc>::value > 0)
             ALPAKA_CHECK(*success, alpaka::warp::getSize(acc) == 1);
-	std::int32_t const match_val = 0;
+        std::int32_t const match_val = 0;
         ALPAKA_CHECK(*success, alpaka::warp::match_any(acc, 1, match_val) == 1);
     }
 };
@@ -38,24 +38,27 @@ struct MatchAnyMultipleThreadWarpTestKernel
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
-	auto const mask = alpaka::warp::activemask(acc);
+        auto const mask = alpaka::warp::activemask(acc);
         using MaskType = decltype(mask);
 
         ALPAKA_CHECK(*success, warpExtent > 1);
 
-	std::int32_t const match_val = threadIdxInWarp & 1;
+        std::int32_t const match_val = threadIdxInWarp & 1;
 
         ALPAKA_CHECK(*success, alpaka::warp::match_any(acc, mask, warpExtent) == mask);
 
-        const MaskType match_mask = alpaka::warp::match_any(acc, mask, match_val);
+        MaskType const match_mask = alpaka::warp::match_any(acc, mask, match_val);
 
-	if ( threadIdxInWarp % 2 ) {
-	  MaskType const odd_mask = alpaka::warp::activemask(acc);
-          ALPAKA_CHECK(*success, match_mask == odd_mask);	  
-	} else {
-          MaskType const even_mask = alpaka::warp::activemask(acc);
-          ALPAKA_CHECK(*success, match_mask == even_mask); 		
-	}
+        if(threadIdxInWarp % 2)
+        {
+            MaskType const odd_mask = alpaka::warp::activemask(acc);
+            ALPAKA_CHECK(*success, match_mask == odd_mask);
+        }
+        else
+        {
+            MaskType const even_mask = alpaka::warp::activemask(acc);
+            ALPAKA_CHECK(*success, match_mask == even_mask);
+        }
     }
 };
 

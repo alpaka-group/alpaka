@@ -1,4 +1,4 @@
- /* SPDX-License-Identifier: MPL-2.0
+/* SPDX-License-Identifier: MPL-2.0
  */
 
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -19,7 +19,7 @@ struct BrevSingleThreadWarpTestKernel
     {
         if constexpr(alpaka::Dim<TAcc>::value > 0)
             ALPAKA_CHECK(*success, alpaka::warp::getSize(acc) == 1);
-	std::int32_t const match_val = 0;
+        std::int32_t const match_val = 0;
         ALPAKA_CHECK(*success, alpaka::warp::brev(acc, 1) == 1);
     }
 };
@@ -38,23 +38,24 @@ struct BrevMultipleThreadWarpTestKernel
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
-	auto const mask = alpaka::warp::activemask(acc);
+        auto const mask = alpaka::warp::activemask(acc);
         using MaskType = decltype(mask);
 
         ALPAKA_CHECK(*success, warpExtent > 1);
 
-	ALPAKA_CHECK(*success, alpaka::warp::brev(acc, mask) == mask);
+        ALPAKA_CHECK(*success, alpaka::warp::brev(acc, mask) == mask);
 
-	std::int32_t const ballot_val = threadIdxInWarp & 1;
+        std::int32_t const ballot_val = threadIdxInWarp & 1;
 
-        const MaskType odd_mask = alpaka::warp::ballot(acc, mask, ballot_val == 1);
+        MaskType const odd_mask = alpaka::warp::ballot(acc, mask, ballot_val == 1);
 
-	const MaskType brev_mask = alpaka::warp::brev(acc, odd_mask);
+        MaskType const brev_mask = alpaka::warp::brev(acc, odd_mask);
 
-	if ( threadIdxInWarp % 2 == 0 ) {
-	  MaskType const even_mask = alpaka::warp::activemask(acc);
-          ALPAKA_CHECK(*success, brev_mask == even_mask);	  
-	} 
+        if(threadIdxInWarp % 2 == 0)
+        {
+            MaskType const even_mask = alpaka::warp::activemask(acc);
+            ALPAKA_CHECK(*success, brev_mask == even_mask);
+        }
     }
 };
 

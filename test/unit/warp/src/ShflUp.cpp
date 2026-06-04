@@ -147,7 +147,7 @@ struct MaskShflUpMultipleThreadWarpTestKernel
                         == ((threadIdxInWarp - idx >= off) ? threadIdxInWarp - idx : threadIdxInWarp));
                 float const ans = alpaka::warp::shfl_up(
                     acc,
-		    mask,
+                    mask,
                     4.0f - float(threadIdxInWarp),
                     static_cast<std::uint32_t>(idx),
                     width);
@@ -159,7 +159,7 @@ struct MaskShflUpMultipleThreadWarpTestKernel
         }
         // Some threads become inactive in the kernel to test that the warp operations
         // properly operate on the active threads only
-        const MaskType updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
+        MaskType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
 
         for(int idx = 0; idx < warpExtent / 2; idx++)
         {
@@ -167,8 +167,12 @@ struct MaskShflUpMultipleThreadWarpTestKernel
                 *success,
                 alpaka::warp::shfl_up(acc, updated_mask, threadIdxInWarp, static_cast<std::uint32_t>(idx), warpExtent)
                     == ((threadIdxInWarp - idx >= 0) ? (threadIdxInWarp - idx) : threadIdxInWarp));
-            float const ans
-                = alpaka::warp::shfl_up(acc, updated_mask, 4.0f - float(threadIdxInWarp), static_cast<std::uint32_t>(idx), warpExtent);
+            float const ans = alpaka::warp::shfl_up(
+                acc,
+                updated_mask,
+                4.0f - float(threadIdxInWarp),
+                static_cast<std::uint32_t>(idx),
+                warpExtent);
             float const expect
                 = ((threadIdxInWarp - idx >= 0) ? (4.0f - float(threadIdxInWarp - idx))
                                                 : (4.0f - float(threadIdxInWarp)));
@@ -229,27 +233,27 @@ TEMPLATE_LIST_TEST_CASE("shfl_up", "[warp]", alpaka::test::TestAccs)
             if(warpExtent == 4)
             {
                 REQUIRE(fixture(ShflUpMultipleThreadWarpTestKernel<4>{}));
-		REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<4>{}));
+                REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<4>{}));
             }
             else if(warpExtent == 8)
             {
                 REQUIRE(fixture(ShflUpMultipleThreadWarpTestKernel<8>{}));
-		REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<8>{}));
+                REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<8>{}));
             }
             else if(warpExtent == 16)
             {
                 REQUIRE(fixture(ShflUpMultipleThreadWarpTestKernel<16>{}));
-		REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<16>{}));
+                REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<16>{}));
             }
             else if(warpExtent == 32)
             {
                 REQUIRE(fixture(ShflUpMultipleThreadWarpTestKernel<32>{}));
-		REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<32>{}));
+                REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<32>{}));
             }
             else if(warpExtent == 64)
             {
                 REQUIRE(fixture(ShflUpMultipleThreadWarpTestKernel<64>{}));
-		REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<64>{}));
+                REQUIRE(fixture(MaskShflUpMultipleThreadWarpTestKernel<64>{}));
             }
         }
     }

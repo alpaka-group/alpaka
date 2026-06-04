@@ -1,4 +1,4 @@
- /* SPDX-License-Identifier: MPL-2.0
+/* SPDX-License-Identifier: MPL-2.0
  */
 
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -37,17 +37,18 @@ struct ClzMultipleThreadWarpTestKernel
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
-	auto const mask = alpaka::warp::activemask(acc);
+        auto const mask = alpaka::warp::activemask(acc);
         using MaskType = decltype(mask);
 
         ALPAKA_CHECK(*success, warpExtent > 1);
 
         ALPAKA_CHECK(*success, alpaka::warp::clz(acc, mask) == 0);
 
-	if ( threadIdxInWarp < warpExtent - 3 ) {
-	  MaskType const updated_mask = alpaka::warp::activemask(acc);
-          ALPAKA_CHECK(*success, alpaka::warp::clz(acc, updated_mask) == 3);	  
-	} 
+        if(threadIdxInWarp < warpExtent - 3)
+        {
+            MaskType const updated_mask = alpaka::warp::activemask(acc);
+            ALPAKA_CHECK(*success, alpaka::warp::clz(acc, updated_mask) == 3);
+        }
     }
 };
 
