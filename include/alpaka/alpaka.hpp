@@ -3319,6 +3319,8 @@
 		 */
 
 		// #pragma once
+		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+
 		// #include <array>    // amalgamate: file already included
 		/** The following compilers does not use std::source_location therefore we do not include the header.
 		 * Including the header source_location would lead into compiler issues under the following conditions.
@@ -3388,8 +3390,14 @@
 		            std::array<char, length + 1> storage{};
 		            std::copy(embeddedType.data() + start, embeddedType.data() + end, storage.data());
 		            storage[length] = '\0';
-
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wnrvo"
+		#endif
 		            return storage;
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic pop
+		#endif
 		        }
 
 		        // Store the demangled type name as a null-terminated array of bytes.
@@ -12223,7 +12231,14 @@
 				            if constexpr(dim > 1)
 				                for(TIdx i = TDim::value - 1; i > 0; i--)
 				                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#    pragma clang diagnostic push
+				#    pragma clang diagnostic ignored "-Wnrvo"
+				#endif
 				            return pitchBytes;
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#    pragma clang diagnostic pop
+				#endif
 				        }
 
 				        //! Calculate the pitches from the extents and the one-dimensional pitch.
@@ -12247,7 +12262,14 @@
 				            if constexpr(dim > 2)
 				                for(TIdx i = TDim::value - 2; i > 0; i--)
 				                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#    pragma clang diagnostic push
+				#    pragma clang diagnostic ignored "-Wnrvo"
+				#endif
 				            return pitchBytes;
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#    pragma clang diagnostic pop
+				#endif
 				        }
 
 				    } // namespace detail
@@ -22310,6 +22332,7 @@
 			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 
+			// #include <bit>    // amalgamate: file already included
 			// #include <limits>    // amalgamate: file already included
 			#include <type_traits>
 
@@ -22331,27 +22354,23 @@
 			    {
 			        struct EmulationBase
 			        {
-			            //! reinterprets an address as an 32bit value for atomicCas emulation usage
-			            template<typename TAddressType>
-			            static __device__ auto reinterpretAddress(TAddressType* address)
-			                -> std::enable_if_t<sizeof(TAddressType) == 4u, unsigned int*>
-			            {
-			                return reinterpret_cast<unsigned int*>(address);
-			            }
+			            template<typename T>
+			            using AtomicCasType = std::conditional_t<
+			                sizeof(T) == 4u,
+			                unsigned int,
+			                std::conditional_t<sizeof(T) == 8u, unsigned long long int, void>>;
 
-			            //! reinterprets a address as an 64bit value for atomicCas emulation usage
-			            template<typename TAddressType>
-			            static __device__ auto reinterpretAddress(TAddressType* address)
-			                -> std::enable_if_t<sizeof(TAddressType) == 8u, unsigned long long int*>
-			            {
-			                return reinterpret_cast<unsigned long long int*>(address);
-			            }
+			            template<typename T>
+			            static __device__ auto reinterpretAddress(T* address)
+			                -> AtomicCasType<T>* requires(sizeof(T) == 4u || sizeof(T) == 8u) {
+			                    return reinterpret_cast<AtomicCasType<T>*>(address);
+			                }
 
-			            //! reinterprets a value to be usable for the atomicCAS emulation
-			            template<typename T_Type>
-			            static __device__ auto reinterpretValue(T_Type value)
+			            template<typename T>
+			            static __device__ auto reinterpretValue(T value)
+			                -> AtomicCasType<T> requires(sizeof(T) == 4u || sizeof(T) == 8u)
 			            {
-			                return *reinterpretAddress(&value);
+			                return std::bit_cast<AtomicCasType<T>>(value);
 			            }
 			        };
 
@@ -22376,8 +22395,8 @@
 			                auto* const addressAsIntegralType = reinterpretAddress(addr);
 			                using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
 
-			                // Emulating atomics with atomicCAS is mentioned in the programming guide too.
-			                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
+			// Emulating atomics with atomicCAS is mentioned in the programming guide too.
+			// http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 			#        if ALPAKA_LANG_HIP
 			#            if __has_builtin(__hip_atomic_load)
 			                EmulatedType old{__hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
@@ -22391,14 +22410,14 @@
 			                do
 			                {
 			                    assumed = old;
-			                    T v = *(reinterpret_cast<T*>(&assumed));
+			                    T v = std::bit_cast<T>(assumed);
 			                    TOp{}(&v, value);
 			                    using Cas = alpaka::trait::
 			                        AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>;
 			                    old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v));
 			                    // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
 			                } while(assumed != old);
-			                return *(reinterpret_cast<T*>(&old));
+			                return std::bit_cast<T>(old);
 			            }
 			        };
 
@@ -22422,7 +22441,7 @@
 			                    AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>::
 			                        atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue);
 
-			                return *(reinterpret_cast<T*>(&old));
+			                return std::bit_cast<T>(old);
 			            }
 			        };
 
@@ -22802,8 +22821,15 @@
 			                int predicate) -> int
 			            {
 			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic push
+			#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+			#            endif
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic pop
+			#            endif
 			                __syncthreads();
 			                if(threadIdx.x == 0)
 			                    tmp = 0;
@@ -22827,8 +22853,15 @@
 			                int predicate) -> int
 			            {
 			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic push
+			#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+			#            endif
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic pop
+			#            endif
 			                __syncthreads();
 			                if(threadIdx.x == 0)
 			                    tmp = 1;
@@ -22852,8 +22885,15 @@
 			                int predicate) -> int
 			            {
 			#        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic push
+			#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+			#            endif
 			                // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
 			                __shared__ int tmp;
+			#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+			#                pragma clang diagnostic pop
+			#            endif
 			                __syncthreads();
 			                if(threadIdx.x == 0)
 			                    tmp = 0;
@@ -29271,7 +29311,14 @@
 		            Vec r;
 		            for(DimLoopInd i(0u); i < TDim::value; ++i)
 		                r[i] = core::divCeil(gridElemExtent[i], clippedThreadElemExtent[i]);
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wnrvo"
+		#endif
 		            return r;
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic pop
+		#endif
 		        }();
 
 		        ///////////////////////////////////////////////////////////////////
@@ -29307,6 +29354,10 @@
 		        }
 		        else if(blockThreadExtent.prod() > blockThreadCountMax)
 		        {
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wswitch-default"
+		#endif
 		            switch(gridBlockExtentSubDivRestrictions)
 		            {
 		            case GridBlockExtentSubDivRestrictions::EqualExtent:
@@ -29336,12 +29387,19 @@
 		                }
 		                break;
 		            }
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic pop
+		#endif
 		        }
 
 
 		        // Make the block thread extent divide the grid thread extent.
 		        if(blockThreadMustDivideGridThreadExtent)
 		        {
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wswitch-default"
+		#endif
 		            switch(gridBlockExtentSubDivRestrictions)
 		            {
 		            case GridBlockExtentSubDivRestrictions::EqualExtent:
@@ -29381,6 +29439,9 @@
 		                }
 		                break;
 		            }
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic pop
+		#endif
 		        }
 
 		        // grid blocks extent = grid thread / block thread extent. quotient is rounded up.
@@ -29389,7 +29450,14 @@
 		            Vec r;
 		            for(DimLoopInd i = 0; i < TDim::value; ++i)
 		                r[i] = core::divCeil(gridThreadExtent[i], blockThreadExtent[i]);
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored "-Wnrvo"
+		#endif
 		            return r;
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#    pragma clang diagnostic pop
+		#endif
 		        }();
 
 
