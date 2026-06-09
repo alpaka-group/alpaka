@@ -47,8 +47,15 @@ namespace alpaka
                 int predicate) -> int
             {
 #        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+#            endif
                 // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
                 __shared__ int tmp;
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic pop
+#            endif
                 __syncthreads();
                 if(threadIdx.x == 0)
                     tmp = 0;
@@ -72,8 +79,15 @@ namespace alpaka
                 int predicate) -> int
             {
 #        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+#            endif
                 // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
                 __shared__ int tmp;
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic pop
+#            endif
                 __syncthreads();
                 if(threadIdx.x == 0)
                     tmp = 1;
@@ -97,8 +111,15 @@ namespace alpaka
                 int predicate) -> int
             {
 #        if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__ == 0 && ALPAKA_COMP_HIP
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wunique-object-duplication"
+#            endif
                 // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
                 __shared__ int tmp;
+#            if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#                pragma clang diagnostic pop
+#            endif
                 __syncthreads();
                 if(threadIdx.x == 0)
                     tmp = 0;

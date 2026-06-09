@@ -97,7 +97,14 @@ namespace alpaka
             if constexpr(dim > 1)
                 for(TIdx i = TDim::value - 1; i > 0; i--)
                     pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wnrvo"
+#endif
             return pitchBytes;
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic pop
+#endif
         }
 
         //! Calculate the pitches from the extents and the one-dimensional pitch.
@@ -121,7 +128,14 @@ namespace alpaka
             if constexpr(dim > 2)
                 for(TIdx i = TDim::value - 2; i > 0; i--)
                     pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wnrvo"
+#endif
             return pitchBytes;
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic pop
+#endif
         }
 
     } // namespace detail

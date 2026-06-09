@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "alpaka/core/Config.hpp"
+
 #include <array>
 /** The following compilers does not use std::source_location therefore we do not include the header.
  * Including the header source_location would lead into compiler issues under the following conditions.
@@ -79,8 +81,14 @@ namespace alpaka::core
             std::array<char, length + 1> storage{};
             std::copy(embeddedType.data() + start, embeddedType.data() + end, storage.data());
             storage[length] = '\0';
-
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wnrvo"
+#endif
             return storage;
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic pop
+#endif
         }
 
         // Store the demangled type name as a null-terminated array of bytes.

@@ -11,6 +11,7 @@
 #include "alpaka/core/Decay.hpp"
 #include "alpaka/core/Unreachable.hpp"
 
+#include <bit>
 #include <limits>
 #include <type_traits>
 
@@ -32,27 +33,23 @@ namespace alpaka::trait
     {
         struct EmulationBase
         {
-            //! reinterprets an address as an 32bit value for atomicCas emulation usage
-            template<typename TAddressType>
-            static __device__ auto reinterpretAddress(TAddressType* address)
-                -> std::enable_if_t<sizeof(TAddressType) == 4u, unsigned int*>
-            {
-                return reinterpret_cast<unsigned int*>(address);
-            }
+            template<typename T>
+            using AtomicCasType = std::conditional_t<
+                sizeof(T) == 4u,
+                unsigned int,
+                std::conditional_t<sizeof(T) == 8u, unsigned long long int, void>>;
 
-            //! reinterprets a address as an 64bit value for atomicCas emulation usage
-            template<typename TAddressType>
-            static __device__ auto reinterpretAddress(TAddressType* address)
-                -> std::enable_if_t<sizeof(TAddressType) == 8u, unsigned long long int*>
-            {
-                return reinterpret_cast<unsigned long long int*>(address);
-            }
+            template<typename T>
+            static __device__ auto reinterpretAddress(T* address)
+                -> AtomicCasType<T>* requires(sizeof(T) == 4u || sizeof(T) == 8u) {
+                    return reinterpret_cast<AtomicCasType<T>*>(address);
+                }
 
-            //! reinterprets a value to be usable for the atomicCAS emulation
-            template<typename T_Type>
-            static __device__ auto reinterpretValue(T_Type value)
+            template<typename T>
+            static __device__ auto reinterpretValue(T value)
+                -> AtomicCasType<T> requires(sizeof(T) == 4u || sizeof(T) == 8u)
             {
-                return *reinterpretAddress(&value);
+                return std::bit_cast<AtomicCasType<T>>(value);
             }
         };
 
@@ -77,8 +74,8 @@ namespace alpaka::trait
                 auto* const addressAsIntegralType = reinterpretAddress(addr);
                 using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
 
-                // Emulating atomics with atomicCAS is mentioned in the programming guide too.
-                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
+// Emulating atomics with atomicCAS is mentioned in the programming guide too.
+// http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 #        if ALPAKA_LANG_HIP
 #            if __has_builtin(__hip_atomic_load)
                 EmulatedType old{__hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
@@ -92,14 +89,14 @@ namespace alpaka::trait
                 do
                 {
                     assumed = old;
-                    T v = *(reinterpret_cast<T*>(&assumed));
+                    T v = std::bit_cast<T>(assumed);
                     TOp{}(&v, value);
                     using Cas = alpaka::trait::
                         AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>;
                     old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v));
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
                 } while(assumed != old);
-                return *(reinterpret_cast<T*>(&old));
+                return std::bit_cast<T>(old);
             }
         };
 
@@ -123,7 +120,7 @@ namespace alpaka::trait
                     AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>::
                         atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue);
 
-                return *(reinterpret_cast<T*>(&old));
+                return std::bit_cast<T>(old);
             }
         };
 

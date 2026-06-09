@@ -34,9 +34,18 @@ namespace buftest
         alpaka::memcpy(queueAcc, buf, bufHost);
         alpaka::wait(queueAcc);
 
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wnrvo"
+#endif
+
         // make the buffer constant and return only that
         auto const constBuf = alpaka::makeConstBuf(std::move(buf));
         return constBuf;
+
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#    pragma clang diagnostic pop
+#endif
     }
 
     template<typename TBuf>
