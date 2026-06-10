@@ -96,6 +96,8 @@ struct MaskBallotMultipleThreadWarpTestKernel
         // properly operate on the active threads only
         BallotResultType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
 
+	if( threadIdxInWarp >= warpExtent / 2 ) return;
+
         for(auto idx = 0; idx < warpExtent / 2; idx++)
         {
             ALPAKA_CHECK(
