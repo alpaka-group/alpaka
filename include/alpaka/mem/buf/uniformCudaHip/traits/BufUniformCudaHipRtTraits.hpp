@@ -255,10 +255,67 @@ namespace alpaka::trait
         }
     };
 
+    //! The CUDA/HIP caching memory allocation trait specialization.
+    template<typename TApi, typename TElem, typename Dim, typename TIdx, typename TAllocator>
+    struct BufAllocWithAllocator<TElem, Dim, TIdx, DevUniformCudaHipRt<TApi>, TAllocator>
+    {
+        template<typename TExtent>
+        ALPAKA_FN_HOST static auto allocBuf(
+            DevUniformCudaHipRt<TApi> const& dev,
+            TExtent const& extent,
+            TAllocator allocator) -> BufUniformCudaHipRt<TApi, TElem, Dim, TIdx>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
+
+            std::size_t const pitchBytes = static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem);
+            std::size_t const bytes = static_cast<std::size_t>(getExtentProduct(extent)) * sizeof(TElem);
+            void* const memPtr = allocator.allocate(bytes, alignof(TElem));
+            auto deleter = [alloc = std::move(allocator)](TElem* ptr) mutable { alloc.deallocate(ptr); };
+            return BufUniformCudaHipRt<TApi, TElem, Dim, TIdx>(
+                dev,
+                static_cast<TElem*>(memPtr),
+                std::move(deleter),
+                extent,
+                pitchBytes);
+        }
+    };
+
     //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
     template<typename TApi, typename TDim>
     struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>> : std::true_type
     {
+    };
+
+    //! The CUDA/HIP caching stream-ordered memory allocation trait specialization.
+    template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TAllocator>
+    struct AsyncBufAllocWithAllocator<TElem, TDim, TIdx, DevUniformCudaHipRt<TApi>, TAllocator>
+    {
+        template<typename TQueue, typename TExtent>
+        ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent, TAllocator allocator)
+            -> BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+            auto const dev = getDev(queue);
+            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
+
+            std::size_t const pitchBytes = static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem);
+            std::size_t const bytes = static_cast<std::size_t>(getExtentProduct(extent)) * sizeof(TElem);
+            void* const memPtr = allocator.allocate(bytes, alignof(TElem));
+            auto deleter = [l_queue = std::move(queue), alloc = std::move(allocator)](TElem* ptr) mutable
+            {
+                alpaka::wait(l_queue);
+                alloc.deallocate(ptr);
+            };
+            return BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>(
+                dev,
+                static_cast<TElem*>(memPtr),
+                std::move(deleter),
+                extent,
+                pitchBytes);
+        }
     };
 
     //! The CUDA/HIP stream-ordered memory allocation trait specialization.
