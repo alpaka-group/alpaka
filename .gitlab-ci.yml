@@ -12,7 +12,6 @@ stages:
   - generator
   - run-test-jobs
 
-
 variables:
   # container version of the generated jobs
   # should be merged with ALPAKA_GITLAB_CI_CONTAINER_VERSION
@@ -26,6 +25,7 @@ generate:
   script:
     # TODO: remove me, if bashi is installed from pypi
     - apk update && apk add git
+    - python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ bashi-ci
     - pip3 install script/job_generator2
     - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
       --split-pipeline

@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "alpaka-bashi"
 maintainers = [
-    {name = "Simeon Ehrig", email = "s.ehrig@hzdr.de"}, 
+    {name = "Simeon Ehrig", email = "s.ehrig@hzdr.de"},
 ]
 authors = [
-    {name = "Simeon Ehrig", email = "s.ehrig@hzdr.de"}, 
+    {name = "Simeon Ehrig", email = "s.ehrig@hzdr.de"},
 ]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,7 +16,6 @@ description = "Job generator application for the alpaka CI."
 version = "1.0"
 # TODO: replace bashi repo with pypi
 dependencies = [
-    "bashi @ git+https://git@github.com/SimeonEhrig/bashi@alpakaBashi",
     "pyaml",
     "types-PyYAML",
     "typeguard",
