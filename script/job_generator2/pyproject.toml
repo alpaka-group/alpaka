@@ -16,6 +16,7 @@ description = "Job generator application for the alpaka CI."
 version = "1.0"
 # TODO: replace bashi repo with pypi
 dependencies = [
+    "bashi-ci",
     "pyaml",
     "types-PyYAML",
     "typeguard",
