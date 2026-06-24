@@ -240,8 +240,8 @@ def main() -> None:
         write_single_file_job_configuration(pipelines, args)
     else:
         wave_sizes = {
-            alpaka_bashi.CI_PIPELINE_COMPILE_ONLY_VER: 20,
-            alpaka_bashi.CI_PIPELINE_RUNTIME_CPU_VER: 20,
+            alpaka_bashi.CI_PIPELINE_COMPILE_ONLY_VER: 30,
+            alpaka_bashi.CI_PIPELINE_RUNTIME_CPU_VER: 30,
         }
 
         write_multiple_file_job_configuration(pipelines, wave_sizes, args)
