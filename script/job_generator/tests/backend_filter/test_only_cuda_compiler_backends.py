@@ -7,9 +7,9 @@ Custom filter for alpaka specific filter rules.
 """
 
 import unittest
+import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 import alpaka_bashi.alpaka_filter
-from alpaka_bashi.globals import CompilerBackendComb
 import packaging.version
 
 TEST_CUDA_VER = packaging.version.parse("12.4")
@@ -17,10 +17,10 @@ TEST_CUDA_VER = packaging.version.parse("12.4")
 
 class TestOnlyCUDABackends(unittest.TestCase):
     BACKEND_COMBINATIONS_VALID_CASE = [
-        [CompilerBackendComb(GCC, NVCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
-        [CompilerBackendComb(ICPX, HIPCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
+        [bashi.CompilerBackendCombination(GCC, NVCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
+        [bashi.CompilerBackendCombination(ICPX, HIPCC, [ALPAKA_ACC_GPU_CUDA_ENABLE])],
         [
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 GCC,
                 NVCC,
                 [
@@ -31,7 +31,7 @@ class TestOnlyCUDABackends(unittest.TestCase):
             )
         ],
         [
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 CLANG,
                 NVCC,
                 [
@@ -39,7 +39,7 @@ class TestOnlyCUDABackends(unittest.TestCase):
                     ALPAKA_ACC_GPU_CUDA_ENABLE,
                 ],
             ),
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 CLANG_CUDA,
                 CLANG_CUDA,
                 [
@@ -59,23 +59,29 @@ class TestOnlyCUDABackends(unittest.TestCase):
                 )
 
     BACKEND_COMBINATIONS_INVALID_CASE = [
-        [CompilerBackendComb(CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE])],
         [
-            CompilerBackendComb(CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]),
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
+                CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]
+            )
+        ],
+        [
+            bashi.CompilerBackendCombination(
+                CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]
+            ),
+            bashi.CompilerBackendCombination(
                 ICPX, ICPX, [ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ALPAKA_ACC_ONEAPI_FPGA_ENABLE]
             ),
         ],
         [
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 CLANG_CUDA,
                 CLANG_CUDA,
                 [ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE, ALPAKA_ACC_GPU_CUDA_ENABLE],
             ),
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 ICPX, ICPX, [ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ALPAKA_ACC_ONEAPI_FPGA_ENABLE]
             ),
-            CompilerBackendComb(
+            bashi.CompilerBackendCombination(
                 GCC,
                 NVCC,
                 [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, ALPAKA_ACC_GPU_CUDA_ENABLE],

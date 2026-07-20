@@ -4,7 +4,7 @@ SPDX-License-Identifier: MPL-2.0
 This module contains constants used for the alpaka job generation.
 """
 
-from typing import List, Dict, Union, NamedTuple
+from typing import List, Dict, Union
 import packaging.version
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
@@ -94,13 +94,6 @@ def get_version_aliases() -> Dict[bashi.ValueName, Dict[bashi.ValueVersion, str]
     return version_aliases
 
 
-# A valid backend combinations contains an host and device compiler and several enabled backends.
-CompilerBackendComb = NamedTuple(
-    "CompilerBackendComb",
-    [("host", ValueName), ("device", ValueName), ("backends", List[ValueName])],
-)
-
-
 _ALLOWED_NVCC_BACKENDS: List[ValueName] = [
     ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
     ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
@@ -117,8 +110,8 @@ _ALLOWED_ICPX_BACKENDS: List[ValueName] = [
 
 # Use list to allow several combinations of backends for a host, device compiler combination
 # e.g. for the ICPX and the OneAPI CPU, GPU and FPGA backend
-ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
-    CompilerBackendComb(
+ALLOWED_BACKEND_COMBINATIONS: List[bashi.CompilerBackendCombination] = [
+    bashi.CompilerBackendCombination(
         GCC,
         GCC,
         [
@@ -129,7 +122,7 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         CLANG,
         CLANG,
         [
@@ -140,19 +133,19 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         GCC,
         NVCC,
         _ALLOWED_NVCC_BACKENDS,
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         CLANG,
         NVCC,
         _ALLOWED_NVCC_BACKENDS,
     ),
     # OpenMP is not supported for clang as cuda compiler
     # https://github.com/alpaka-group/alpaka/issues/639
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         CLANG_CUDA,
         CLANG_CUDA,
         [
@@ -161,7 +154,7 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_GPU_CUDA_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         HIPCC,
         HIPCC,
         [
@@ -169,7 +162,7 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_GPU_HIP_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         ICPX,
         ICPX,
         _ALLOWED_ICPX_BACKENDS
@@ -177,7 +170,7 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_ONEAPI_CPU_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         ICPX,
         ICPX,
         _ALLOWED_ICPX_BACKENDS
@@ -185,7 +178,7 @@ ALLOWED_BACKEND_COMBINATIONS: List[CompilerBackendComb] = [
             ALPAKA_ACC_ONEAPI_GPU_ENABLE,
         ],
     ),
-    CompilerBackendComb(
+    bashi.CompilerBackendCombination(
         ICPX,
         ICPX,
         _ALLOWED_ICPX_BACKENDS
