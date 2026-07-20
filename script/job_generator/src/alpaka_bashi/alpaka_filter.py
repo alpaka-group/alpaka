@@ -10,36 +10,6 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 
-def all_backends_fine(
-    row: bashi.BashiRow,
-    backends: List[ValueName],
-    all_available_backends: List[ValueName],
-) -> bool:
-    """Check if the combination of backends in a row is corresponding to at least one valid
-    combination of backends.
-
-    Args:
-        row (bashi.BashiRow): row with backends
-        backends (List[ValueName]): Backends which needs to be enabled.
-        all_available_backends (List[ValueName]): All available backends. If a backend is not in the
-            backends list, but in this list, it needs to be disabled.
-
-    Returns:
-        bool: True if all enabled backends of the `row` are defined in `backends` and all disabled
-            backends are defined in `all_available_backends`.
-    """
-    for backend in all_available_backends:
-        if backend in row:
-            if backend in backends:
-                if row[backend].version == OFF_VER:
-                    return False
-            else:
-                if row[backend].version != OFF_VER:
-                    return False
-
-    return True
-
-
 def get_valid_compiler_backend_combinations(
     row: bashi.BashiRow,
 ) -> List[CompilerBackendComb]:
@@ -59,7 +29,7 @@ def get_valid_compiler_backend_combinations(
             continue
         if row[DEVICE_COMPILER].name != device_compiler:
             continue
-        if all_backends_fine(row, backends, BACKENDS):
+        if bashi.all_backends_fine(row, backends, BACKENDS):
             valid_combs.append(comb)
 
     return valid_combs
