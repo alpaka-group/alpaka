@@ -5,6 +5,11 @@ Verify generated combinations.
 """
 
 from typing import Dict, Callable, List, cast
+from alpaka_bashi.versions import (
+    get_allowed_backend_combinations,
+    get_used_backends,
+    get_used_compiler_versions,
+)
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 import alpaka_bashi.runtime_info
@@ -75,57 +80,6 @@ def remove_disabled_backend_for_compiler(
                 parameter1=backend,
                 value_min_version1=OFF,
                 value_max_version1=OFF,
-                parameter2=parameter,
-                value_name2=value_name,
-            )
-
-
-def remove_enabled_backend_for_compiler(
-    parameter_value_pairs: List[bashi.ParameterValuePair],
-    removed_parameter_value_pairs: List[bashi.ParameterValuePair],
-):
-    """Remove all combination where a specific backend cannot be enabled for a given host or device
-    compiler"""
-    backend_compilers = {
-        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: [
-            (HOST_COMPILER, HIPCC),
-            (DEVICE_COMPILER, HIPCC),
-            (HOST_COMPILER, CLANG_CUDA),
-            (DEVICE_COMPILER, CLANG_CUDA),
-            (HOST_COMPILER, ICPX),
-            (DEVICE_COMPILER, ICPX),
-        ],
-        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: [
-            (HOST_COMPILER, HIPCC),
-            (DEVICE_COMPILER, HIPCC),
-            (HOST_COMPILER, CLANG_CUDA),
-            (DEVICE_COMPILER, CLANG_CUDA),
-            (HOST_COMPILER, ICPX),
-            (DEVICE_COMPILER, ICPX),
-        ],
-        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: [
-            (HOST_COMPILER, HIPCC),
-            (DEVICE_COMPILER, HIPCC),
-            (HOST_COMPILER, ICPX),
-            (DEVICE_COMPILER, ICPX),
-        ],
-        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: [
-            (HOST_COMPILER, HIPCC),
-            (DEVICE_COMPILER, HIPCC),
-            (HOST_COMPILER, CLANG_CUDA),
-            (DEVICE_COMPILER, CLANG_CUDA),
-            (DEVICE_COMPILER, NVCC),
-        ],
-    }
-
-    for backend, compilers in backend_compilers.items():
-        for parameter, value_name in compilers:
-            bashi.remove_parameter_value_pairs_ranges(
-                parameter_value_pairs,
-                removed_parameter_value_pairs,
-                parameter1=backend,
-                value_min_version1=ON,
-                value_max_version1=ON,
                 parameter2=parameter,
                 value_name2=value_name,
             )
@@ -396,7 +350,13 @@ def verify(
 
     remove_disabled_serial_backend(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_disabled_backend_for_compiler(expected_param_val_tuple, unexpected_param_val_tuple)
-    remove_enabled_backend_for_compiler(expected_param_val_tuple, unexpected_param_val_tuple)
+    bashi.remove_unsupported_compiler_backend_combinations(
+        expected_param_val_tuple,
+        unexpected_param_val_tuple,
+        list(get_used_compiler_versions().keys()),
+        get_used_backends(),
+        get_allowed_backend_combinations(),
+    )
     remove_simple_backend_backend_combinations(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_cuda_backend_backend_combinations(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_non_used_nvcc_device_compiler(
