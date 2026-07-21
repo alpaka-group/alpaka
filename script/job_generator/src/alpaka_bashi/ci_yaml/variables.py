@@ -17,6 +17,7 @@ from alpaka_bashi.globals import (
     CI_PIPELINE_COMPILE_ONLY_VER,
     MDSPAN,
 )
+from alpaka_bashi.versions import get_used_backends
 
 
 @typechecked
@@ -59,7 +60,7 @@ def set_generic_variables(job_body: Dict[str, Any], combination: bashi.Combinati
 def set_backend_variables(job_body: Dict[str, Any], combination: bashi.Combination):
     """Set all backend variables. A backend is ether enabled or disabled. Backend specific
     variables will be set another functions."""
-    for backend in bashi.BACKENDS:
+    for backend in get_used_backends():
         if backend == ALPAKA_ACC_GPU_CUDA_ENABLE:
             job_body["variables"][ALPAKA_ACC_GPU_CUDA_ENABLE] = (
                 "OFF" if combination[backend].version == OFF_VER else "ON"

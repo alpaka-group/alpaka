@@ -8,6 +8,7 @@ from typing import Dict, Callable, IO, List
 import bashi
 from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from alpaka_bashi.versions import get_used_backends, get_allowed_backend_combinations
 
 
 def only_cuda_compiler_backends(combinations: List[bashi.CompilerBackendCombination]) -> bool:
@@ -44,7 +45,7 @@ def check_only_valid_backend_combinations_a1(
     if (
         len(
             bashi.get_valid_compiler_backend_combinations(
-                row, ALLOWED_BACKEND_COMBINATIONS, BACKENDS
+                row, get_allowed_backend_combinations(), get_used_backends()
             )
         )
         == 0
@@ -66,7 +67,9 @@ def check_cuda_sdk_host_compiler_a2(row: bashi.BashiRow, alpaka_filter: "AlpakaF
         bool: True if passed.
     """
     if only_cuda_compiler_backends(
-        bashi.get_valid_compiler_backend_combinations(row, ALLOWED_BACKEND_COMBINATIONS, BACKENDS)
+        bashi.get_valid_compiler_backend_combinations(
+            row, get_allowed_backend_combinations(), get_used_backends()
+        )
     ):
         if (
             row[HOST_COMPILER].name in (GCC, CLANG)
@@ -210,13 +213,15 @@ def check_existing_clang_cuda_for_cuda_sdk_version_a6(
         bool: True if passed.
     """
     if only_cuda_compiler_backends(
-        bashi.get_valid_compiler_backend_combinations(row, ALLOWED_BACKEND_COMBINATIONS, BACKENDS)
+        bashi.get_valid_compiler_backend_combinations(
+            row, get_allowed_backend_combinations(), get_used_backends()
+        )
     ):
         if (
             RT_CLANG_CUDA_MAX_CUDA_SUPPORT in alpaka_filter.runtime_infos
             and only_clang_cuda_compiler_backends(
                 bashi.get_valid_compiler_backend_combinations(
-                    row, ALLOWED_BACKEND_COMBINATIONS, BACKENDS
+                    row, get_allowed_backend_combinations(), get_used_backends()
                 )
             )
             and ALPAKA_ACC_GPU_CUDA_ENABLE in row

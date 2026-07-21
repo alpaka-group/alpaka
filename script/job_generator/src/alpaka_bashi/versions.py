@@ -47,6 +47,129 @@ def _get_clang_cuda_versions() -> List[Union[str, int, float]]:
     ]
 
 
+def get_used_compiler_versions() -> dict[str, list[str | int | float]]:
+    """Return a dict of used compiler and it's versions.
+
+    Returns:
+        dict[str, list[str | int | float]]: The key is the compiler name and value contains all
+        versions.
+    """
+    return {name: versions for name, versions in ALPAKA_VERSIONS.items() if name in COMPILERS} | {
+        CLANG_CUDA: _get_clang_cuda_versions()
+    }
+
+
+def get_used_backends() -> list[str]:
+    """Return the list of backends, used by alpaka."""
+    return [
+        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+        ALPAKA_ACC_ONEAPI_CPU_ENABLE,
+        ALPAKA_ACC_ONEAPI_GPU_ENABLE,
+        ALPAKA_ACC_ONEAPI_FPGA_ENABLE,
+        ALPAKA_ACC_GPU_CUDA_ENABLE,
+        ALPAKA_ACC_GPU_HIP_ENABLE,
+    ]
+
+
+def get_allowed_backend_combinations() -> list[bashi.CompilerBackendCombination]:
+    """Return list of enabled backends for different host and device compiler combinations."""
+    allowed_nvcc_backends: List[ValueName] = [
+        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+        ALPAKA_ACC_GPU_CUDA_ENABLE,
+    ]
+
+    # Turn off OpenMP back-ends until Intel fixes https://github.com/intel/llvm/issues/10711
+    allowed_icpx_backends: List[ValueName] = [
+        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+    ]
+
+    return [
+        bashi.CompilerBackendCombination(
+            GCC,
+            GCC,
+            [
+                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+                ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+                ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+                ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            CLANG,
+            CLANG,
+            [
+                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+                ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+                ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+                ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            GCC,
+            NVCC,
+            allowed_nvcc_backends,
+        ),
+        bashi.CompilerBackendCombination(
+            CLANG,
+            NVCC,
+            allowed_nvcc_backends,
+        ),
+        # OpenMP is not supported for clang as cuda compiler
+        # https://github.com/alpaka-group/alpaka/issues/639
+        bashi.CompilerBackendCombination(
+            CLANG_CUDA,
+            CLANG_CUDA,
+            [
+                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+                ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+                ALPAKA_ACC_GPU_CUDA_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            HIPCC,
+            HIPCC,
+            [
+                ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+                ALPAKA_ACC_GPU_HIP_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            ICPX,
+            ICPX,
+            allowed_icpx_backends
+            + [
+                ALPAKA_ACC_ONEAPI_CPU_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            ICPX,
+            ICPX,
+            allowed_icpx_backends
+            + [
+                ALPAKA_ACC_ONEAPI_GPU_ENABLE,
+            ],
+        ),
+        bashi.CompilerBackendCombination(
+            ICPX,
+            ICPX,
+            allowed_icpx_backends
+            + [
+                ALPAKA_ACC_ONEAPI_FPGA_ENABLE,
+            ],
+        ),
+    ]
+
+
 def get_software_versions_for_alpaka() -> Dict[str, List[Union[str, int, float]]]:
     """Return dict of all compiler and software versions, which should be used as input for the
     combination generator.
