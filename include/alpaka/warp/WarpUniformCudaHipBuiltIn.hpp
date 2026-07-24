@@ -314,13 +314,13 @@ namespace alpaka::warp
         template<>
         struct MatchAny<WarpUniformCudaHipBuiltIn>
         {
-	    template<typename T>	
+            template<typename T>
             static __device__ auto match_any(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 WarpUniformCudaHipBuiltIn::mask_type mask,
                 T val) -> WarpUniformCudaHipBuiltIn::mask_type
             {
-#        if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                                            \
+#        if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(7, 0, 0))
                 return __match_any_sync(mask, val);
 #        else
@@ -329,11 +329,47 @@ namespace alpaka::warp
                 for(std::int32_t iter_lane_idx = 0; iter_lane_idx < w_extent; ++iter_lane_idx)
                 {
                     T iter_val = __shfl_sync(mask, val, iter_lane_idx, w_extent);
-                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask = static_cast<WarpUniformCudaHipBuiltIn::mask_type>( 1 << iter_lane_idx);
+                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask
+                        = static_cast<WarpUniformCudaHipBuiltIn::mask_type>(1 << iter_lane_idx);
                     if(iter_val == val)
                         match |= iter_lane_mask;
                 }
                 return match & mask;
+#        endif
+            }
+        };
+
+        template<>
+        struct MatchAll<WarpUniformCudaHipBuiltIn>
+        {
+            template<typename T>
+            static __device__ auto match_all(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val,
+                std::int32_t* predicate) -> WarpUniformCudaHipBuiltIn::mask_type
+            {
+#        if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(7, 0, 0))
+                return __match_all_sync(mask, val, predicate);
+#        else
+                constexpr std::int32_t w_extent = GetSizeCompileTime<WarpUniformCudaHipBuiltIn>::getSizeCompileTime();
+                std::int32_t p = 0;
+                for(std::int32_t iter_lane_idx = 0; iter_lane_idx < w_extent; ++iter_lane_idx)
+                {
+                    T iter_val = __shfl_sync(mask, val, iter_lane_idx, w_extent);
+                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask
+                        = static_cast<WarpUniformCudaHipBuiltIn::mask_type>(1 << iter_lane_idx);
+                    if(iter_val == val)
+                        p = 1;
+                }
+
+                WarpUniformCudaHipBuiltIn::mask_type updated_mask = __ballot_sync(mask, p);
+                bool const is_all = (updated_mask == mask);
+                if(is_all)
+                    *predicate = 0;
+                else
+                    *predicate = 1 return is_all ? mask : static_cast<WarpUniformCudaHipBuiltIn::mask_type>(0);
 #        endif
             }
         };
@@ -347,7 +383,7 @@ namespace alpaka::warp
             {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 return __brev(mask);
-#        elif (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+#        elif(defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __brevll(mask);
 #        else
                 return mask;
@@ -364,7 +400,7 @@ namespace alpaka::warp
             {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 return __clz(mask);
-#        elif (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+#        elif(defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __clzll(mask);
 #        else
                 return mask == 0 ? 1 : 0;

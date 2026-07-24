@@ -183,10 +183,25 @@ namespace alpaka::warp
         template<>
         struct MatchAny<WarpSingleThread>
         {
-	    template<typename T>	
+            template<typename T>
             static auto match_any(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, T /*val*/)
                 -> WarpSingleThread::mask_type
             {
+                return mask;
+            }
+        };
+
+        template<>
+        struct MatchAll<WarpSingleThread>
+        {
+            template<typename T>
+            static auto match_all(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type mask,
+                T /*val*/,
+                std::int32_t* predicat) -> WarpSingleThread::mask_type
+            {
+                *predicat = 1;
                 return mask;
             }
         };

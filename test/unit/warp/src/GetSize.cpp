@@ -50,33 +50,32 @@ TEMPLATE_LIST_TEST_CASE("getSize", "[warp]", alpaka::test::TestAccs)
     auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpSizes = alpaka::getWarpSizes(dev);
-    REQUIRE(
-        std::any_of(
-            begin(warpSizes),
-            end(warpSizes),
-            [](std::size_t ws)
+    REQUIRE(std::any_of(
+        begin(warpSizes),
+        end(warpSizes),
+        [](std::size_t ws)
+        {
+            alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(8));
+            if(ws == 4)
             {
-                alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(8));
-                if(ws == 4)
-                {
-                    return fixture(GetSizeTestKernel<4>{}, static_cast<std::int32_t>(ws));
-                }
-                else if(ws == 8)
-                {
-                    return fixture(GetSizeTestKernel<8>{}, static_cast<std::int32_t>(ws));
-                }
-                else if(ws == 16)
-                {
-                    return fixture(GetSizeTestKernel<16>{}, static_cast<std::int32_t>(ws));
-                }
-                else if(ws == 32)
-                {
-                    return fixture(GetSizeTestKernel<32>{}, static_cast<std::int32_t>(ws));
-                }
-                else if(ws == 64)
-                {
-                    return fixture(GetSizeTestKernel<64>{}, static_cast<std::int32_t>(ws));
-                }
-                return fixture(GetSizeTestKernel<0>{}, static_cast<std::int32_t>(ws));
-            }));
+                return fixture(GetSizeTestKernel<4>{}, static_cast<std::int32_t>(ws));
+            }
+            else if(ws == 8)
+            {
+                return fixture(GetSizeTestKernel<8>{}, static_cast<std::int32_t>(ws));
+            }
+            else if(ws == 16)
+            {
+                return fixture(GetSizeTestKernel<16>{}, static_cast<std::int32_t>(ws));
+            }
+            else if(ws == 32)
+            {
+                return fixture(GetSizeTestKernel<32>{}, static_cast<std::int32_t>(ws));
+            }
+            else if(ws == 64)
+            {
+                return fixture(GetSizeTestKernel<64>{}, static_cast<std::int32_t>(ws));
+            }
+            return fixture(GetSizeTestKernel<0>{}, static_cast<std::int32_t>(ws));
+        }));
 }

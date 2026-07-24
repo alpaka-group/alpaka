@@ -75,6 +75,10 @@ namespace alpaka::warp
         template<typename TWarp, typename TSfinae = void>
         struct MatchAny;
 
+        //! The match warp vote trait.
+        template<typename TWarp, typename TSfinae = void>
+        struct MatchAll;
+
         //! Warp-Synchronize trait.
         template<typename TWarp, typename TSfinae = void>
         struct SyncWarpThreads;
@@ -553,6 +557,15 @@ namespace alpaka::warp
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::MatchAny<ImplementationBase>::match_any(warp, mask, value);
+    }
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TWarp, typename T>
+    ALPAKA_FN_ACC auto match_all(TWarp const& warp, typename TWarp::mask_type mask, T value, std::int32_t* predicate)
+        -> typename TWarp::mask_type
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
+        return trait::MatchAll<ImplementationBase>::match_all(warp, mask, value, predicate);
     }
 
     //! Reverses the bit order of a warp lane mask.
