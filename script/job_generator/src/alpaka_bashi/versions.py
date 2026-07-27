@@ -36,7 +36,7 @@ def _get_clang_cuda_versions() -> List[Union[str, int, float]]:
     """
     min_cuda_version = packaging.version.parse(str(min(ALPAKA_VERSIONS[NVCC])))
     min_clang_cuda_version = packaging.version.parse("0")
-    for clang_cuda_sdk in sorted(CLANG_CUDA_MAX_CUDA_VERSION):
+    for clang_cuda_sdk in sorted(get_alpaka_version_relation().get_clang_cuda_max_cuda_version()):
         if min_cuda_version <= clang_cuda_sdk.cuda:
             min_clang_cuda_version = clang_cuda_sdk.clang_cuda
             break

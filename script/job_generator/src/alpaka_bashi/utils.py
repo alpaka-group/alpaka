@@ -4,6 +4,7 @@ SPDX-License-Identifier: MPL-2.0
 Utils for the job-generator
 """
 
+import sys
 from typeguard import typechecked
 import termcolor
 
@@ -15,4 +16,4 @@ def print_warn(msg: str):
     Args:
         msg (str): warning text
     """
-    print(termcolor.colored(f"[WARNING]: {msg}", "yellow"))
+    print(termcolor.colored(f"[WARNING]: {msg}", "yellow"), file=sys.stderr)
