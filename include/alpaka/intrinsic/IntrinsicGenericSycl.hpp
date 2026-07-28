@@ -52,6 +52,35 @@ namespace alpaka::trait
             return (value == 0l) ? 0 : static_cast<std::int32_t>(sycl::popcount(value ^ ~(-value)));
         }
     };
+
+    template<>
+    struct Brev<IntrinsicGenericSycl>
+    {
+        static auto brev(IntrinsicGenericSycl const&, std::uint32_t value) -> std::uint32_t
+        {
+            return sycl::ext::oneapi::bit_reverse(value);
+        }
+
+        static auto brev(IntrinsicGenericSycl const&, std::uint64_t value) -> std::uint64_t
+        {
+            return sycl::ext::oneapi::bit_reverse(value);
+        }
+    };
+
+    template<>
+    struct Clz<IntrinsicGenericSycl>
+    {
+        static auto clz(IntrinsicGenericSycl const&, std::uint32_t value) -> std::uint32_t
+        {
+            return sycl::ext::oneapi::clz(value);
+        }
+
+        static auto clz(IntrinsicGenericSycl const&, std::uint64_t value) -> std::int32_t
+        {
+            return sycl::ext::oneapi::clz(value);
+        }
+    };
+
 } // namespace alpaka::trait
 
 #endif

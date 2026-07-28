@@ -35,7 +35,7 @@ namespace alpaka
          * @return compute lane mask:
          */
         template<concepts::Acc TAcc>
-        ALPAKA_FN_ACC constexpr inline auto get_lane_mask(std::uint32_t const lane_idx) -> typename TAcc::mask_type
+        ALPAKA_FN_ACC inline constexpr auto get_lane_mask(std::uint32_t const lane_idx) -> typename TAcc::mask_type
         {
 #if defined(__HIP_DEVICE_COMPILE__) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             return (1ULL << lane_idx);
@@ -53,7 +53,7 @@ namespace alpaka
          * @return True if active, otherwise false.
          */
         template<concepts::Acc TAcc>
-        ALPAKA_FN_ACC constexpr inline bool is_work_lane(
+        ALPAKA_FN_ACC inline constexpr bool is_work_lane(
             typename TAcc::mask_type const work_mask,
             std::uint32_t const lane_idx)
         {
@@ -308,7 +308,7 @@ namespace alpaka
                 return in;
 
             // Compute the next power of two:
-            std::uint32_t const pow2 = w_extent - warp::clz(acc, nActiveLanes - 1);
+            std::uint32_t const pow2 = w_extent - alpaka::clz(acc, nActiveLanes - 1);
             std::uint32_t const pow2_boundary = 1 << pow2;
 
             std::uint32_t const logical_lane_idx = get_logical_lane_idx(acc, mask, lane_idx);
@@ -377,7 +377,7 @@ namespace alpaka
                             // sum
 
             // Compute the next power of two:
-            std::uint32_t const pow2 = w_extent - warp::clz(acc, nActiveLanes - 1);
+            std::uint32_t const pow2 = w_extent - alpaka::clz(acc, nActiveLanes - 1);
             std::uint32_t const pow2_boundary = 1 << pow2;
 
             std::uint32_t const logical_lane_idx = get_logical_lane_idx(acc, mask, lane_idx);

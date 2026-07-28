@@ -26,6 +26,15 @@ namespace alpaka
         //! The ffs trait.
         template<typename TWarp, typename TSfinae = void>
         struct Ffs;
+
+        //! The brev trait.
+        template<typename TWarp, typename TSfinae = void>
+        struct Brev;
+
+        //! The clz trait.
+        template<typename TWarp, typename TSfinae = void>
+        struct Clz;
+
     } // namespace trait
 
     //! Returns the number of 1 bits in the given 32-bit value.
@@ -81,4 +90,77 @@ namespace alpaka
         using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Ffs<ImplementationBase>::ffs(intrinsic, value);
     }
+
+    //! Reverses the bit order of a unsigned int value.
+    //!
+    //! This function follows the semantics of the backend-specific bit-reversal
+    //! operation for std::uint32_t.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    //! \param warp The warp implementation.
+    //! \param value Lane 32-bit unsigned integer.
+    //! \return The bit-reversed value of \p value.
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TIntrinsic>
+    ALPAKA_FN_ACC auto brev(TIntrinsic const& intrinsic, std::uint32_t value) -> std::uint32_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        return trait::Brev<ImplementationBase>::brev(intrinsic, value);
+    }
+
+    //! Reverses the bit order of a long unsigned int value.
+    //!
+    //! This function follows the semantics of the backend-specific bit-reversal
+    //! operation for std::uint64_t.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    //! \param warp The warp implementation.
+    //! \param value Lane 64-bit unsigned integer.
+    //! \return The bit-reversed value of \p value.
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TIntrinsic>
+    ALPAKA_FN_ACC auto brev(TIntrinsic const& intrinsic, std::uint64_t value) -> std::uint64_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        return trait::Brev<ImplementationBase>::brev(intrinsic, value);
+    }
+
+    //! Counts the number of leading zero bits in an unsigned int.
+    //!
+    //! This function follows the semantics of the backend-specific count-leading-zeros
+    //! operation for std::uint32_t.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    //! \param warp The warp implementation.
+    //! \param value input value 32-bit unsigned integer.
+    //! \return Number of leading zero bits in \p value.
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TIntrinsic>
+    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint32_t value) -> std::uint32_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        return trait::Clz<ImplementationBase>::clz(intrinsic, value);
+    }
+
+    //! Counts the number of leading zero bits in a long unsigned int.
+    //!
+    //! This function follows the semantics of the backend-specific count-leading-zeros
+    //! operation for std::uint64_t.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    //! \param warp The warp implementation.
+    //! \param value input value 64-bit unsigned integer.
+    //! \return Number of leading zero bits in \p value.
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TIntrinsic>
+    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint64_t value) -> std::uint32_t
+    {
+        using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
+        return trait::Clz<ImplementationBase>::clz(intrinsic, value);
+    }
+
 } // namespace alpaka

@@ -71,6 +71,39 @@ namespace alpaka
                 return static_cast<std::int32_t>(__ffsll(static_cast<long long>(value)));
             }
         };
+
+        template<>
+        struct Brev<IntrinsicUniformCudaHipBuiltIn>
+        {
+            static __device__ auto brev(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint32_t value)
+                -> std::uint32_t
+            {
+                return __brev(value);
+            }
+
+            static __device__ auto brev(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint64_t value)
+                -> std::uint64_t
+            {
+                return __brevll(value);
+            }
+        };
+
+        template<>
+        struct Clz<IntrinsicUniformCudaHipBuiltIn>
+        {
+            static __device__ auto clz(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint32_t value)
+                -> std::uint32_t
+            {
+                return __clz(value);
+            }
+
+            static __device__ auto brev(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint64_t value)
+                -> std::uint32_t
+            {
+                return __clzll(value);
+            }
+        };
+
     } // namespace trait
 
 #    endif

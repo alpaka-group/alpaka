@@ -207,26 +207,6 @@ namespace alpaka::warp
         };
 
         template<>
-        struct Brev<WarpSingleThread>
-        {
-            static auto brev([[maybe_unused]] warp::WarpSingleThread const& warp, WarpSingleThread::mask_type mask)
-                -> WarpSingleThread::mask_type
-            {
-                return mask;
-            }
-        };
-
-        template<>
-        struct Clz<WarpSingleThread>
-        {
-            static auto clz([[maybe_unused]] warp::WarpSingleThread const& warp, WarpSingleThread::mask_type mask)
-                -> std::uint32_t
-            {
-                return mask == 0 ? 1 : 0;
-            }
-        };
-
-        template<>
         struct SyncWarpThreads<WarpSingleThread>
         {
             static auto syncWarpThreads(

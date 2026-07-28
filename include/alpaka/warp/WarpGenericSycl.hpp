@@ -365,26 +365,6 @@ namespace alpaka::warp::trait
     };
 
     template<typename TDim>
-    struct Brev<warp::WarpGenericSycl<TDim>>
-    {
-        static auto brev(warp::WarpGenericSycl<TDim> const& warp, warp::WarpGenericSycl<TDim>::mask_type mask)
-            -> warp::WarpGenericSycl<TDim>::mask_type
-        {
-            return sycl::ext::oneapi::bit_reverse(mask);
-        }
-    };
-
-    template<typename TDim>
-    struct Clz<warp::WarpGenericSycl<TDim>>
-    {
-        static auto clz(warp::WarpGenericSycl<TDim> const& warp, warp::WarpGenericSycl<TDim>::mask_type mask)
-            -> std::uint32_t
-        {
-            return sycl::ext::oneapi::clz(mask);
-        }
-    };
-
-    template<typename TDim>
     struct SyncWarpThreads<warp::WarpGenericSycl<TDim>>
     {
         static auto syncWarpThreads(

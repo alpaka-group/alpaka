@@ -369,41 +369,8 @@ namespace alpaka::warp
                 if(is_all)
                     *predicate = 0;
                 else
-                    *predicate = 1 return is_all ? mask : static_cast<WarpUniformCudaHipBuiltIn::mask_type>(0);
-#        endif
-            }
-        };
-
-        template<>
-        struct Brev<WarpUniformCudaHipBuiltIn>
-        {
-            static __device__ auto brev(
-                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                WarpUniformCudaHipBuiltIn::mask_type mask) -> WarpUniformCudaHipBuiltIn::mask_type
-            {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __brev(mask);
-#        elif(defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
-                return __brevll(mask);
-#        else
-                return mask;
-#        endif
-            }
-        };
-
-        template<>
-        struct Clz<WarpUniformCudaHipBuiltIn>
-        {
-            static __device__ auto clz(
-                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                WarpUniformCudaHipBuiltIn::mask_type mask) -> std::uint32_t
-            {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return __clz(mask);
-#        elif(defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
-                return __clzll(mask);
-#        else
-                return mask == 0 ? 1 : 0;
+                    *predicate = 1;
+                return is_all ? mask : static_cast<WarpUniformCudaHipBuiltIn::mask_type>(0);
 #        endif
             }
         };

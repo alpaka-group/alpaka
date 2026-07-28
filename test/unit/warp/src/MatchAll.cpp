@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-struct BrevSingleThreadWarpTestKernel
+struct MatchAllSingleThreadWarpTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
@@ -20,12 +20,13 @@ struct BrevSingleThreadWarpTestKernel
         if constexpr(alpaka::Dim<TAcc>::value > 0)
             ALPAKA_CHECK(*success, alpaka::warp::getSize(acc) == 1);
         std::int32_t const match_val = 0;
-        ALPAKA_CHECK(*success, alpaka::warp::brev(acc, 1) == 1);
+        std::int32_t pred;
+        ALPAKA_CHECK(*success, alpaka::warp::match_all(acc, 1, match_val, &pred) == 1);
     }
 };
 
 template<std::uint32_t TWarpSize>
-struct BrevMultipleThreadWarpTestKernel
+struct MatchAllMultipleThreadWarpTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
@@ -43,29 +44,33 @@ struct BrevMultipleThreadWarpTestKernel
 
         ALPAKA_CHECK(*success, warpExtent > 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::brev(acc, mask) == mask);
+        std::int32_t const match_val = threadIdxInWarp & 1;
 
-        std::int32_t const ballot_val = threadIdxInWarp & 1;
+        std::int32_t pred;
+        ALPAKA_CHECK(*success, alpaka::warp::match_all(acc, mask, warpExtent, &pred) == mask);
 
-        MaskType const odd_mask = alpaka::warp::ballot(acc, mask, ballot_val == 1);
+        MaskType const match_mask = alpaka::warp::match_all(acc, mask, match_val, &pred);
 
-        MaskType const brev_mask = alpaka::warp::brev(acc, odd_mask);
-
-        if(threadIdxInWarp % 2 == 0)
+        if(threadIdxInWarp % 2)
+        {
+            MaskType const odd_mask = alpaka::warp::activemask(acc);
+            ALPAKA_CHECK(*success, match_mask == odd_mask);
+        }
+        else
         {
             MaskType const even_mask = alpaka::warp::activemask(acc);
-            ALPAKA_CHECK(*success, brev_mask == even_mask);
+            ALPAKA_CHECK(*success, match_mask == even_mask);
         }
     }
 };
 
 template<std::uint32_t TWarpSize, typename TAcc>
-struct alpaka::trait::WarpSize<BrevMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
+struct alpaka::trait::WarpSize<MatchAllMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
     : std::integral_constant<std::uint32_t, TWarpSize>
 {
 };
 
-TEMPLATE_LIST_TEST_CASE("brev", "[warp]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("match_all", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
 
@@ -95,7 +100,7 @@ TEMPLATE_LIST_TEST_CASE("brev", "[warp]", alpaka::test::TestAccs)
         if(scalar)
         {
             alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(4));
-            REQUIRE(fixture(BrevSingleThreadWarpTestKernel{}));
+            REQUIRE(fixture(MatchAllSingleThreadWarpTestKernel{}));
         }
         else
         {
@@ -109,23 +114,23 @@ TEMPLATE_LIST_TEST_CASE("brev", "[warp]", alpaka::test::TestAccs)
             auto fixture = ExecutionFixture{workDiv};
             if(warpExtent == 4)
             {
-                REQUIRE(fixture(BrevMultipleThreadWarpTestKernel<4>{}));
+                REQUIRE(fixture(MatchAllMultipleThreadWarpTestKernel<4>{}));
             }
             else if(warpExtent == 8)
             {
-                REQUIRE(fixture(BrevMultipleThreadWarpTestKernel<8>{}));
+                REQUIRE(fixture(MatchAllMultipleThreadWarpTestKernel<8>{}));
             }
             else if(warpExtent == 16)
             {
-                REQUIRE(fixture(BrevMultipleThreadWarpTestKernel<16>{}));
+                REQUIRE(fixture(MatchAllMultipleThreadWarpTestKernel<16>{}));
             }
             else if(warpExtent == 32)
             {
-                REQUIRE(fixture(BrevMultipleThreadWarpTestKernel<32>{}));
+                REQUIRE(fixture(MatchAllMultipleThreadWarpTestKernel<32>{}));
             }
             else if(warpExtent == 64)
             {
-                REQUIRE(fixture(BrevMultipleThreadWarpTestKernel<64>{}));
+                REQUIRE(fixture(MatchAllMultipleThreadWarpTestKernel<64>{}));
             }
         }
     }

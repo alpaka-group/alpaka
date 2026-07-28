@@ -559,6 +559,32 @@ namespace alpaka::warp
         return trait::MatchAny<ImplementationBase>::match_any(warp, mask, value);
     }
 
+    //! Returns a mask of warp lanes whose value matches the value of the calling lane.
+    //!
+    //! The operation is restricted to the lanes selected by \p mask. For each
+    //! participating lane, the returned mask contains the lanes in \p mask for which
+    //! \p value compares equal to that lane's \p value.
+    //!
+    //! The mask type is implementation-defined and may be either 32 or 64 bits,
+    //! depending on the accelerator backend. The returned value has the same type
+    //! as the input mask.
+    //!
+    //! This function follows the semantics of the backend-specific match-any
+    //! operation. The CUDA counterpart is __match_all_sync(mask, value, predicat).
+    //!
+    //! Note:
+    //! * The programmer must ensure that all lanes selected by \p mask call this
+    //!   function in convergence, i.e. they execute the same call with the same
+    //!   mask. Calling this function from different control-flow paths with the
+    //!   same participating lanes is not portable.
+    //!
+    //! \tparam TWarp The warp implementation type.
+    //! \tparam T The value type to compare across lanes.
+    //! \param warp The warp implementation.
+    //! \param mask Lane mask selecting the participating lanes.
+    //! \param value Value contributed by the calling lane.
+    //! \return Mask of participating lanes whose value compares equal to the calling lane's value.
+
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp, typename T>
     ALPAKA_FN_ACC auto match_all(TWarp const& warp, typename TWarp::mask_type mask, T value, std::int32_t* predicate)
@@ -566,51 +592,6 @@ namespace alpaka::warp
     {
         using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
         return trait::MatchAll<ImplementationBase>::match_all(warp, mask, value, predicate);
-    }
-
-    //! Reverses the bit order of a warp lane mask.
-    //!
-    //! The mask type is implementation-defined and may be either 32 or 64 bits,
-    //! depending on the accelerator backend. The returned value has the same type
-    //! as the input mask, with bit 0 moved to the most significant bit position,
-    //! bit 1 moved to the next-most-significant bit position, and so on.
-    //!
-    //! This function follows the semantics of the backend-specific bit-reversal
-    //! operation for the mask type used by the warp implementation.
-    //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
-    //! \param mask Lane mask based on the implementation, typically a 32- or 64-bit unsigned integer.
-    //! \return The bit-reversed value of \p mask.
-
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TWarp>
-    ALPAKA_FN_ACC auto brev(TWarp const& warp, typename TWarp::mask_type mask) -> typename TWarp::mask_type
-    {
-        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::Brev<ImplementationBase>::brev(warp, mask);
-    }
-
-    //! Counts the number of leading zero bits in a warp lane mask.
-    //!
-    //! The mask type is implementation-defined and may be either 32 or 64 bits,
-    //! depending on the accelerator backend. The result is the number of consecutive
-    //! zero bits starting from the most significant bit of the mask representation.
-    //!
-    //! This function follows the semantics of the backend-specific count-leading-zeros
-    //! operation for the mask type used by the warp implementation.
-    //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
-    //! \param mask Lane mask based on the implementation, typically a 32- or 64-bit unsigned integer.
-    //! \return Number of leading zero bits in \p mask.
-
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TWarp>
-    ALPAKA_FN_ACC auto clz(TWarp const& warp, typename TWarp::mask_type mask) -> std::uint32_t
-    {
-        using ImplementationBase = interface::ImplementationBase<ConceptWarp, TWarp>;
-        return trait::Clz<ImplementationBase>::clz(warp, mask);
     }
 
     //! Synchronizes all threads within the current warp mask.

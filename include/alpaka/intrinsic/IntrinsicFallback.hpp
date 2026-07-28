@@ -37,6 +37,53 @@ namespace alpaka
             }
             return result;
         }
+
+        template<typename TValue>
+        static auto brevFallback(TValue value) -> TValue
+        {
+            if(value == 0 || value == ~TValue{0})
+                return value;
+
+            TValue mask{1};
+            TValue result{0};
+
+            const std::uint32_t bits = sizeof(value) * 8;
+            for(std::uint32_t bit = 0; bit < bits; bit++)
+            {
+                if(value & mask)
+                {
+                    result |= mask << (bits - bit - 1);
+                }
+                mask = mask << 1;
+            }
+
+            return result;
+        }
+
+        template<typename TValue>
+        static auto clzFallback(TValue value) -> std::uint32_t
+        {
+            if(value == 0)
+                return 32;
+            else if(value == value == ~TValue{0})
+                return 0;
+            std::uint32_t n = 0;
+
+            TValue mask{1};
+
+            const std::uint32_t bits = sizeof(value) * 8;
+            for(std::uint32_t bit = 0; bit < bits; bit++)
+            {
+                if(value & mask == 0)
+                {
+                    n += 1;
+                }
+                mask = mask << 1;
+            }
+
+            return n;
+        }
+
     } // namespace detail
 
     //! The Fallback intrinsic.
@@ -73,5 +120,34 @@ namespace alpaka
                 return alpaka::detail::ffsFallback(value);
             }
         };
+
+        template<>
+        struct Brev<IntrinsicFallback>
+        {
+            static auto brev(IntrinsicFallback const& /*intrinsic*/, std::uint32_t value) -> std::uint32_t
+            {
+                return alpaka::detail::brevFallback(value);
+            }
+
+            static auto brev(IntrinsicFallback const& /*intrinsic*/, std::uint64_t value) -> std::uint64_t
+            {
+                return alpaka::detail::brevFallback(value);
+            }
+        };
+
+        template<>
+        struct Clz<IntrinsicFallback>
+        {
+            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint32_t value) -> std::uint32_t
+            {
+                return alpaka::detail::clzFallback(value);
+            }
+
+            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint64_t value) -> std::uint32_t
+            {
+                return alpaka::detail::clzFallback(value);
+            }
+        };
+
     } // namespace trait
 } // namespace alpaka
