@@ -272,18 +272,6 @@ namespace alpaka
 
     namespace detail
     {
-        //! Check that the return of TKernelFnObj is void
-        template<typename TAcc, typename TSfinae = void>
-        struct CheckFnReturnType
-        {
-            template<typename TKernelFnObj, typename... TArgs>
-            void operator()(TKernelFnObj const&, TArgs const&...)
-            {
-                using Result = std::invoke_result_t<TKernelFnObj, TAcc const&, TArgs const&...>;
-                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
-            }
-        };
-
         // asserts that T is trivially copyable. We put this in a separate function so we can see which T would fail
         // the test, when called from a fold expression.
         template<typename T>
@@ -333,9 +321,6 @@ namespace alpaka
     template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
     ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
     {
-        // check for void return type
-        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
-
 #if ALPAKA_COMP_NVCC
         static_assert(
             isKernelTriviallyCopyable<TKernelFnObj>,
@@ -380,6 +365,9 @@ namespace alpaka
     ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         -> void
     {
+        static_assert(
+            std::is_invocable_r_v<void, TKernelFnObj, TAcc const&, decltype(std::forward<TArgs>(args))...>,
+            "The kernel is not invocable with the given arguments!");
         enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
     }
 
@@ -402,12 +390,11 @@ namespace alpaka
     ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         -> void
     {
-        enqueue(
-            queue,
-            createTaskKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
-                workDiv,
-                kernelFnObj,
-                std::forward<TArgs>(args)...));
+        using Acc = TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>;
+        static_assert(
+            std::is_invocable_r_v<void, TKernelFnObj, Acc const&, decltype(std::forward<TArgs>(args))...>,
+            "The kernel is not invocable with the given arguments!");
+        enqueue(queue, createTaskKernel<Acc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
     }
 
 } // namespace alpaka
