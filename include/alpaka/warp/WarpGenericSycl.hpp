@@ -11,6 +11,7 @@
 #pragma once
 
 #include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Config.hpp"
 #include "alpaka/warp/Traits.hpp"
 
 #include <cstdint>
@@ -38,6 +39,13 @@ namespace alpaka::warp
 
 namespace alpaka::warp::trait
 {
+    // oneAPI up to 2025.3 uses sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group(),
+    // while oneAPI 2026.0 uses sycl::ext::oneapi::experimental::this_work_item::get_opportunistic_group()
+#    if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2026, 0, 0)
+    using sycl::ext::oneapi::experimental::this_work_item::get_opportunistic_group;
+#    else
+    using sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group;
+#    endif
 
     template<typename TDim>
     struct GetSize<warp::WarpGenericSycl<TDim>>
@@ -91,7 +99,7 @@ namespace alpaka::warp::trait
     {
         static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
-            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto activegroup = get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
         }
     };
@@ -101,7 +109,7 @@ namespace alpaka::warp::trait
     {
         static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
-            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto activegroup = get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
         }
     };
@@ -145,7 +153,7 @@ namespace alpaka::warp::trait
                Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
                The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
                first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
             return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
@@ -162,7 +170,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
@@ -185,7 +193,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset,
             std::int32_t width)
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const end_index = (id / w + 1) * w;
@@ -208,7 +216,7 @@ namespace alpaka::warp::trait
             std::int32_t mask,
             std::int32_t width)
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
