@@ -239,7 +239,7 @@ namespace alpaka
                 std::cout << "Aspects: " << '\n';
 
 #        if defined(ALPAKA_COMP_ICPX)
-#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
                 // These aspects are missing from oneAPI versions < 2023.2.0
                 if(device.has(sycl::aspect::emulated))
                     std::cout << "\t* emulated\n";
@@ -554,7 +554,7 @@ namespace alpaka
                 print_memory_orders(mem_orders);
 
 #        if defined(ALPAKA_COMP_ICPX)
-#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
                 // Not implemented in oneAPI < 2023.2.0
                 std::cout << "Supported memory orderings for sycl::atomic_fence: ";
                 auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
@@ -598,7 +598,7 @@ namespace alpaka
                 print_memory_scopes(mem_scopes);
 
 #        if defined(ALPAKA_COMP_ICPX)
-#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
                 // Not implemented in oneAPI < 2023.2.0
                 std::cout << "Supported memory scopes for sycl::atomic_fence: ";
                 auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();

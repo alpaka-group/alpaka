@@ -108,7 +108,7 @@ TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {
-        WARN("Test disabled for SYCL");
+        WARN("Test disabled for SYCL with oneAPI 2025.2 and older");
         return;
     }
 #else
