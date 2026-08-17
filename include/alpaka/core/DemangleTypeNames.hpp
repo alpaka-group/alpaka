@@ -81,12 +81,12 @@ namespace alpaka::core
             std::array<char, length + 1> storage{};
             std::copy(embeddedType.data() + start, embeddedType.data() + end, storage.data());
             storage[length] = '\0';
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wnrvo"
 #endif
             return storage;
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic pop
 #endif
         }

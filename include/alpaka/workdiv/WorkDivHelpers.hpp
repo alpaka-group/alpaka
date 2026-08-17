@@ -161,12 +161,12 @@ namespace alpaka
             Vec r;
             for(DimLoopInd i(0u); i < TDim::value; ++i)
                 r[i] = core::divCeil(gridElemExtent[i], clippedThreadElemExtent[i]);
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wnrvo"
 #endif
             return r;
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic pop
 #endif
         }();
@@ -300,12 +300,12 @@ namespace alpaka
             Vec r;
             for(DimLoopInd i = 0; i < TDim::value; ++i)
                 r[i] = core::divCeil(gridThreadExtent[i], blockThreadExtent[i]);
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wnrvo"
 #endif
             return r;
-#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 #    pragma clang diagnostic pop
 #endif
         }();
