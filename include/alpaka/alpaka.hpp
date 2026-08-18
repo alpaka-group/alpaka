@@ -3390,12 +3390,12 @@
 		            std::array<char, length + 1> storage{};
 		            std::copy(embeddedType.data() + start, embeddedType.data() + end, storage.data());
 		            storage[length] = '\0';
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic push
 		#    pragma clang diagnostic ignored "-Wnrvo"
 		#endif
 		            return storage;
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic pop
 		#endif
 		        }
@@ -12231,12 +12231,12 @@
 				            if constexpr(dim > 1)
 				                for(TIdx i = TDim::value - 1; i > 0; i--)
 				                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
-				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 				#    pragma clang diagnostic push
 				#    pragma clang diagnostic ignored "-Wnrvo"
 				#endif
 				            return pitchBytes;
-				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 				#    pragma clang diagnostic pop
 				#endif
 				        }
@@ -12262,12 +12262,12 @@
 				            if constexpr(dim > 2)
 				                for(TIdx i = TDim::value - 2; i > 0; i--)
 				                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
-				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 				#    pragma clang diagnostic push
 				#    pragma clang diagnostic ignored "-Wnrvo"
 				#endif
 				            return pitchBytes;
-				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+				#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 				#    pragma clang diagnostic pop
 				#endif
 				        }
@@ -29311,12 +29311,12 @@
 		            Vec r;
 		            for(DimLoopInd i(0u); i < TDim::value; ++i)
 		                r[i] = core::divCeil(gridElemExtent[i], clippedThreadElemExtent[i]);
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic push
 		#    pragma clang diagnostic ignored "-Wnrvo"
 		#endif
 		            return r;
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic pop
 		#endif
 		        }();
@@ -29450,12 +29450,12 @@
 		            Vec r;
 		            for(DimLoopInd i = 0; i < TDim::value; ++i)
 		                r[i] = core::divCeil(gridThreadExtent[i], blockThreadExtent[i]);
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic push
 		#    pragma clang diagnostic ignored "-Wnrvo"
 		#endif
 		            return r;
-		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 0, 0)
+		#if ALPAKA_COMP_CLANG >= ALPAKA_VERSION_NUMBER(21, 1, 0)
 		#    pragma clang diagnostic pop
 		#endif
 		        }();
