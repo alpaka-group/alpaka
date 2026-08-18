@@ -19472,7 +19472,7 @@
 			                std::cout << "Aspects: " << '\n';
 
 			#        if defined(ALPAKA_COMP_ICPX)
-			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
 			                // These aspects are missing from oneAPI versions < 2023.2.0
 			                if(device.has(sycl::aspect::emulated))
 			                    std::cout << "\t* emulated\n";
@@ -19787,7 +19787,7 @@
 			                print_memory_orders(mem_orders);
 
 			#        if defined(ALPAKA_COMP_ICPX)
-			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
 			                // Not implemented in oneAPI < 2023.2.0
 			                std::cout << "Supported memory orderings for sycl::atomic_fence: ";
 			                auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
@@ -19831,7 +19831,7 @@
 			                print_memory_scopes(mem_scopes);
 
 			#        if defined(ALPAKA_COMP_ICPX)
-			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(53, 2, 0)
+			#            if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2023, 2, 0)
 			                // Not implemented in oneAPI < 2023.2.0
 			                std::cout << "Supported memory scopes for sycl::atomic_fence: ";
 			                auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
@@ -20225,6 +20225,7 @@
 
 			// #pragma once
 			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
@@ -20252,6 +20253,13 @@
 
 			namespace alpaka::warp::trait
 			{
+			    // oneAPI up to 2025.3 uses sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group(),
+			    // while oneAPI 2026.0 uses sycl::ext::oneapi::experimental::this_work_item::get_opportunistic_group()
+			#    if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2026, 0, 0)
+			    using sycl::ext::oneapi::experimental::this_work_item::get_opportunistic_group;
+			#    else
+			    using sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group;
+			#    endif
 
 			    template<typename TDim>
 			    struct GetSize<warp::WarpGenericSycl<TDim>>
@@ -20305,7 +20313,7 @@
 			    {
 			        static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto activegroup = get_opportunistic_group();
 			            return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
 			        }
 			    };
@@ -20315,7 +20323,7 @@
 			    {
 			        static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto activegroup = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto activegroup = get_opportunistic_group();
 			            return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
 			        }
 			    };
@@ -20359,7 +20367,7 @@
 			               Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
 			               The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
 			               first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
 			            return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
@@ -20376,7 +20384,7 @@
 			            std::uint32_t offset, /* must be the same for all work-items in the group */
 			            std::int32_t width)
 			        {
-			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const start_index = id / w * w;
@@ -20399,7 +20407,7 @@
 			            std::uint32_t offset,
 			            std::int32_t width)
 			        {
-			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const end_index = (id / w + 1) * w;
@@ -20422,7 +20430,7 @@
 			            std::int32_t mask,
 			            std::int32_t width)
 			        {
-			            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
 			            std::uint32_t const id = actual_group.get_local_linear_id();
 			            std::uint32_t const start_index = id / w * w;
