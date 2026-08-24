@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include <alpaka/algo/WarpAlgos.hpp>
 #include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -129,17 +130,20 @@ struct MaskShflMultipleThreadWarpTestKernel
                 ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
             }
         }
+
         // Some threads become inactive in the kernel to test that the warp operations
         // properly operate on the active threads only
         MaskType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
 
-        for(int idx = 0; idx < warpExtent / 2; idx++)
-        {
-            ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, updated_mask, threadIdxInWarp, idx, warpExtent) == idx);
-            float const ans = alpaka::warp::shfl(acc, updated_mask, 4.0f - float(threadIdxInWarp), idx, warpExtent);
-            float const expect = 4.0f - float(idx);
-            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
-        }
+        if(alpaka::detail::is_work_lane<TAcc>(updated_mask, static_cast<std::uint32_t>(threadIdxInWarp)))
+            for(int idx = 0; idx < warpExtent / 2; idx++)
+            {
+                ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, updated_mask, threadIdxInWarp, idx, warpExtent) == idx);
+                float const ans
+                    = alpaka::warp::shfl(acc, updated_mask, 4.0f - float(threadIdxInWarp), idx, warpExtent);
+                float const expect = 4.0f - float(idx);
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+            }
     }
 };
 

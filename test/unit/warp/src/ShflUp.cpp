@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/algo/WarpAlgos.hpp>
 #include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -161,23 +162,29 @@ struct MaskShflUpMultipleThreadWarpTestKernel
         // properly operate on the active threads only
         MaskType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
 
-        for(int idx = 0; idx < warpExtent / 2; idx++)
-        {
-            ALPAKA_CHECK(
-                *success,
-                alpaka::warp::shfl_up(acc, updated_mask, threadIdxInWarp, static_cast<std::uint32_t>(idx), warpExtent)
-                    == ((threadIdxInWarp - idx >= 0) ? (threadIdxInWarp - idx) : threadIdxInWarp));
-            float const ans = alpaka::warp::shfl_up(
-                acc,
-                updated_mask,
-                4.0f - float(threadIdxInWarp),
-                static_cast<std::uint32_t>(idx),
-                warpExtent);
-            float const expect
-                = ((threadIdxInWarp - idx >= 0) ? (4.0f - float(threadIdxInWarp - idx))
-                                                : (4.0f - float(threadIdxInWarp)));
-            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
-        }
+        if(alpaka::detail::is_work_lane<TAcc>(updated_mask, static_cast<std::uint32_t>(threadIdxInWarp)))
+            for(int idx = 0; idx < warpExtent / 2; idx++)
+            {
+                ALPAKA_CHECK(
+                    *success,
+                    alpaka::warp::shfl_up(
+                        acc,
+                        updated_mask,
+                        threadIdxInWarp,
+                        static_cast<std::uint32_t>(idx),
+                        warpExtent)
+                        == ((threadIdxInWarp - idx >= 0) ? (threadIdxInWarp - idx) : threadIdxInWarp));
+                float const ans = alpaka::warp::shfl_up(
+                    acc,
+                    updated_mask,
+                    4.0f - float(threadIdxInWarp),
+                    static_cast<std::uint32_t>(idx),
+                    warpExtent);
+                float const expect
+                    = ((threadIdxInWarp - idx >= 0) ? (4.0f - float(threadIdxInWarp - idx))
+                                                    : (4.0f - float(threadIdxInWarp)));
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+            }
     }
 };
 

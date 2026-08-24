@@ -170,10 +170,13 @@ namespace alpaka
 
                 // send last lane value (total tile offset) to lane idx = low_lane_idx:
                 mask_t const active_mask = 1 | get_lane_mask<TAcc>(high_lane_idx);
-                std::uint32_t const tmp = warp::shfl(acc, active_mask, local_offset, high_lane_idx, w_extent);
+                if(is_work_lane<TAcc>(active_mask, lane_idx))
+                {
+                    std::uint32_t const tmp = warp::shfl(acc, active_mask, local_offset, high_lane_idx, w_extent);
 
-                if(lane_idx == 0)
-                    local_offset = tmp; // lane 0 keeps full (inclusive for the last lane) sum
+                    if(lane_idx == 0)
+                        local_offset = tmp; // lane 0 keeps full (inclusive for the last lane) sum
+                }
             }
             return lane_idx == 0 ? local_offset : local_offset - val; // we return exclusive sum!
         }

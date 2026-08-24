@@ -82,7 +82,7 @@ struct WarpAlgosTestKernel
 	} else {
 	  const float odd_sum = static_cast<float>((warpExtent / 2) * (warpExtent / 2));
           ALPAKA_CHECK(*success, parity_res == odd_sum);	  
-	}	  
+	}	      	
     }
 };
 

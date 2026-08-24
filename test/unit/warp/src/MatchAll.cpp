@@ -46,21 +46,19 @@ struct MatchAllMultipleThreadWarpTestKernel
 
         std::int32_t const match_val = threadIdxInWarp & 1;
 
+        MaskType const updated_mask = alpaka::warp::ballot(acc, mask, match_val != 0);
+
         std::int32_t pred;
         ALPAKA_CHECK(*success, alpaka::warp::match_all(acc, mask, warpExtent, &pred) == mask);
 
-        MaskType const match_mask = alpaka::warp::match_all(acc, mask, match_val, &pred);
+        if(match_val == 0)
+            return;
 
-        if(threadIdxInWarp % 2)
-        {
-            MaskType const odd_mask = alpaka::warp::activemask(acc);
-            ALPAKA_CHECK(*success, match_mask == odd_mask);
-        }
-        else
-        {
-            MaskType const even_mask = alpaka::warp::activemask(acc);
-            ALPAKA_CHECK(*success, match_mask == even_mask);
-        }
+        MaskType const match_mask = alpaka::warp::match_all(acc, updated_mask, match_val, &pred);
+
+        MaskType const new_mask = alpaka::warp::activemask(acc);
+
+        ALPAKA_CHECK(*success, match_mask == new_mask);
     }
 };
 
