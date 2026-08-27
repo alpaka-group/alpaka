@@ -4518,8 +4518,10 @@
 			    };
 
 			    template<typename TFirstIndex, typename... TRestIndices>
-			    ALPAKA_FN_HOST_ACC Vec(TFirstIndex&&, TRestIndices&&...)
-			        -> Vec<DimInt<1 + sizeof...(TRestIndices)>, std::decay_t<TFirstIndex>>;
+			#if ALPAKA_COMP_CLANG < ALPAKA_VERSION_NUMBER(22, 1, 0)
+			    ALPAKA_FN_HOST_ACC
+			#endif
+			    Vec(TFirstIndex&&, TRestIndices&&...) -> Vec<DimInt<1 + sizeof...(TRestIndices)>, std::decay_t<TFirstIndex>>;
 
 			    template<typename T>
 			    inline constexpr bool isVec = false;
@@ -10209,9 +10211,8 @@
 		    };
 
 		    //! Deduction guide for the constructor which can be called without explicit template type parameters
-		    ALPAKA_NO_HOST_ACC_WARNING
 		    template<typename TDim, typename TIdx>
-		    ALPAKA_FN_HOST_ACC WorkDivMembers(
+		    WorkDivMembers(
 		        alpaka::Vec<TDim, TIdx> const& gridBlockExtent,
 		        alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
 		        alpaka::Vec<TDim, TIdx> const& elemExtent) -> WorkDivMembers<TDim, TIdx>;
