@@ -164,10 +164,14 @@ consider citing us accordingly in your derived work and publications:
   archivePrefix = "arXiv",
   eprint    = {1706.10086},
   keywords  = {Computer Science - Distributed, Parallel, and Cluster Computing},
-  day       = {30},
-  month     = {Jun},
+  day       = {20},
+  month     = {October},
   year      = {2017},
+  pages     = {496-514},
+  publisher = {Springer International Publishing},
+  isbn      = {978-3-319-67630-2},
   url       = {https://arxiv.org/abs/1706.10086},
+  doi       = {10.1007/978-3-319-67630-2_36},
 }
 
 % Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -190,8 +194,10 @@ consider citing us accordingly in your derived work and publications:
   day       = {23},
   month     = {May},
   year      = {2016},
+  pages     = {631-640},
   publisher = {IEEE Computer Society},
   url       = {http://arxiv.org/abs/1602.08477},
+  doi       = {10.1109/IPDPSW.2016.50},
 }
 
 
