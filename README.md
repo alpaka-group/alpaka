@@ -156,7 +156,7 @@ consider citing us accordingly in your derived work and publications:
 % colocated with the
 %   "2017 ISC High Performance Conference"
 %   in Frankfurt, Germany
-@inproceedings{MathesP3MA2017,
+@inproceedings{MatthesP3MA2017,
   author    = {{Matthes}, A. and {Widera}, R. and {Zenker}, E. and {Worpitz}, B. and
                {Huebl}, A. and {Bussmann}, M.},
   title     = {Tuning and optimization for a variety of many-core architectures without changing a single line of implementation code
