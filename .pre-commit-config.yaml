@@ -43,3 +43,10 @@ repos:
       types_or: [python, pyi, jupyter]
       exclude: ^script/job_generator/
       args: [--line-length, "120"]
+# script/job_generator uses Black instead with default length of 100
+- repo: https://github.com/psf/black-pre-commit-mirror
+  rev: 24.10.0
+  hooks:
+    - id: black
+      name: black (script/job_generator)
+      files: ^script/job_generator/
