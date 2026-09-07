@@ -36,6 +36,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 option(alpaka_BUILD_EXAMPLES "Build the examples" OFF)
 option(alpaka_BUILD_BENCHMARKS "Build the benchmarks" OFF)
+option(alpaka_USE_STD_SIMD "Enable use of std::experimental::simd when available (fallback used otherwise)" ON)
 
 # Enable the test infrastructure only if alpaka is the top-level project
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -94,6 +95,15 @@ if(alpaka_BUILD_EXAMPLES OR alpaka_BUILD_BENCHMARKS OR BUILD_TESTING)
   endif()
 endif()
 include(${_alpaka_ROOT_DIR}/cmake/alpakaCommon.cmake)
+
+# Propagate SIMD usage selection
+if(alpaka_USE_STD_SIMD)
+  add_compile_definitions(ALPAKA_USE_STD_SIMD=1)
+  message(STATUS "std::experimental::simd usage enabled (if environment supports it)")
+else()
+  add_compile_definitions(ALPAKA_USE_STD_SIMD=0)
+  message(STATUS "std::experimental::simd usage disabled: forcing fallback PortableSimd")
+endif()
 
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_alpaka_SUFFIXED_INCLUDE_DIR}" "${_alpaka_SUFFIXED_INCLUDE_DIR}" "hpp" _alpaka_FILES_HEADER)
