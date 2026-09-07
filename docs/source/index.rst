@@ -81,12 +81,14 @@ Individual chapters are based on the information of the chapters before.
    tutorial/kernelFn.rst
    tutorial/vendorInterop.rst
    tutorial/algorithms.rst
+   tutorial/memoryPinning.rst
 
 .. toctree::
    :caption: Advanced
    :maxdepth: 2
 
    advanced/cmake.rst
+   advanced/properties.rst
    advanced/datastorage.rst
    advanced/benchmark.rst
    advanced/crosscompile.rst
