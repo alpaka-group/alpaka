@@ -204,7 +204,7 @@ def get_cuda_only_job(
 
     return {
         f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}"
-        "_release_extended_lambda_off_compile_only": job_body
+        "_release_extended_cudaonly_on_compile_only": job_body
     }
 
 
