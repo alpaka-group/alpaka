@@ -9,6 +9,7 @@
 #include "alpaka/executor.hpp"
 #include "alpaka/onHost/Event.hpp"
 #include "alpaka/onHost/FrameSpec.hpp"
+#include "alpaka/onHost/MemoryPolicyList.hpp"
 #include "alpaka/onHost/QueuePolicyList.hpp"
 #include "alpaka/onHost/concepts.hpp"
 #include "alpaka/onHost/internal/interface.hpp"
@@ -479,15 +480,54 @@ namespace alpaka::onHost
      * memory is destroyed. The deallocation is asynchronous performed in the queue which is used for the
      * allocation.
      */
-    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_Policies>
+    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_QueuePolicies>
     inline auto allocDeferred(
-        Queue<T_Device, T_Policies> const& queue,
+        Queue<T_Device, T_QueuePolicies> const& queue,
         alpaka::concepts::VectorOrScalar auto const& extents)
     {
+        return allocDeferred<T_Type>(queue, extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocDeferred()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocDeferred(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocDeferred<T_Type>(queue, extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocDeferred()
+     *
+     * @param policies Memory allocation policies, see @c onHost::alloc() for the supported placement preferences.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocDeferred(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
         Vec const extentsVec = extents;
-        return internal::AllocDeferred::Op<T_Type, std::decay_t<decltype(*queue.get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-            *queue.get(),
-            extentsVec);
+        return internal::AllocDeferred::Op<
+            T_Type,
+            std::decay_t<decltype(*queue.get())>,
+            ALPAKA_TYPEOF(extentsVec),
+            ALPAKA_TYPEOF(policies.getMemoryProperty())>{}(*queue.get(), extentsVec, policies.getMemoryProperty());
     }
 
     /** allocate memory that is accessible after it is processed in the queue
@@ -509,10 +549,48 @@ namespace alpaka::onHost
      * memory is destroyed. The deallocation is asynchronous performed in the queue which is used for the
      * allocation.
      */
-    template<typename T_Device, alpaka::concepts::QueuePolicyList T_Policies>
-    inline auto allocLikeDeferred(Queue<T_Device, T_Policies> const& queue, auto const& view)
+    template<typename T_Device, alpaka::concepts::QueuePolicyList T_QueuePolicies>
+    inline auto allocLikeDeferred(Queue<T_Device, T_QueuePolicies> const& queue, auto const& view)
     {
-        return allocDeferred<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(queue, internal::getExtents(view));
+        return allocLikeDeferred(queue, view, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocLikeDeferred()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocLikeDeferred(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        auto const& view,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocLikeDeferred(queue, view, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocLikeDeferred()
+     *
+     * @param policies Memory allocation policies, see @c onHost::alloc() for the supported placement preferences.
+     */
+    template<
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocLikeDeferred(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        auto const& view,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
+        return allocDeferred<alpaka::trait::GetValueType_t<ALPAKA_TYPEOF(view)>>(
+            queue,
+            internal::getExtents(view),
+            policies);
     }
 
     /** @} */

@@ -30,6 +30,13 @@ namespace alpaka
             template<typename T_Policy>
             constexpr bool operator()(T_Policy) const;
         };
+
+        /** Category tag for memory-allocation property policies. */
+        struct MemoryProperty
+        {
+            template<typename T_Policy>
+            constexpr bool operator()(T_Policy) const;
+        };
     } // namespace category
 
     namespace object
@@ -186,6 +193,84 @@ namespace alpaka
 
         constexpr auto disabled = Disabled{};
     } // namespace timing
+
+    namespace memoryProperty
+    {
+        namespace trait
+        {
+            template<typename T_MemoryProperty>
+            struct IsMemoryProperty : std::is_base_of<category::MemoryProperty, T_MemoryProperty>
+            {
+            };
+        } // namespace trait
+
+        template<typename T_MemoryProperty>
+        constexpr bool isMemoryProperty_v = trait::IsMemoryProperty<T_MemoryProperty>::value;
+    } // namespace memoryProperty
+
+    namespace concepts
+    {
+        /** Concept to check if a type selects a memory-allocation placement preference. */
+        template<typename T_MemoryProperty>
+        concept MemoryProperty = memoryProperty::isMemoryProperty_v<T_MemoryProperty>;
+    } // namespace concepts
+
+    namespace memoryProperty
+    {
+        constexpr bool operator==(alpaka::concepts::MemoryProperty auto lhs, alpaka::concepts::MemoryProperty auto rhs)
+        {
+            return std::is_same_v<ALPAKA_TYPEOF(lhs), ALPAKA_TYPEOF(rhs)>;
+        }
+
+        constexpr bool operator!=(alpaka::concepts::MemoryProperty auto lhs, alpaka::concepts::MemoryProperty auto rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        /** No explicit memory placement preference is requested, the backend uses its default strategy. */
+        struct Default : category::MemoryProperty
+        {
+            static std::string getName()
+            {
+                return "Default";
+            }
+        };
+
+        constexpr auto defaultProperty = Default{};
+
+        /** Prefer the memory node which offers the lowest access latency for the allocating CPU domain. */
+        struct BestLatency : category::MemoryProperty
+        {
+            static std::string getName()
+            {
+                return "BestLatency";
+            }
+        };
+
+        constexpr auto bestLatency = BestLatency{};
+
+        /** Prefer the memory node which offers the highest bandwidth for the allocating CPU domain. */
+        struct BestBandwidth : category::MemoryProperty
+        {
+            static std::string getName()
+            {
+                return "BestBandwidth";
+            }
+        };
+
+        constexpr auto bestBandwidth = BestBandwidth{};
+
+        /** Prefer the memory node which is most local to the allocating CPU domain. */
+        struct Locality : category::MemoryProperty
+        {
+            static std::string getName()
+            {
+                return "Locality";
+            }
+        };
+
+        constexpr auto locality = Locality{};
+    } // namespace memoryProperty
 
     namespace deviceKind
     {
@@ -384,6 +469,12 @@ namespace alpaka
         constexpr bool Timing::operator()(T_Policy) const
         {
             return alpaka::concepts::Timing<T_Policy>;
+        }
+
+        template<typename T_Policy>
+        constexpr bool MemoryProperty::operator()(T_Policy) const
+        {
+            return alpaka::concepts::MemoryProperty<T_Policy>;
         }
     } // namespace category
 } // namespace alpaka
