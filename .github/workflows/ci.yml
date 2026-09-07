@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
-    - uses: DoozyX/clang-format-lint-action@v0.16.2
+    - uses: DoozyX/clang-format-lint-action@v0.18.2
       with:
         clangFormatVersion: 16
         exclude: './thirdParty'
