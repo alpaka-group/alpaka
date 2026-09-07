@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Build Doxygen Documentation
-        uses: mattnotmitt/doxygen-action@v1.9
+        uses: mattnotmitt/doxygen-action@v1.12
         with:
           working-directory: docs
       - name: Upload HTML output as artifact
