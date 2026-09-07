@@ -731,10 +731,15 @@ namespace alpaka::onHost
         };
 
         /** OpenMP barrier is used. */
-        template<typename T_Type, typename T_Device, alpaka::concepts::Vector T_Extents>
-        struct AllocDeferred::Op<T_Type, cpu::OmpCollectiveQueue<T_Device>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Device,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocDeferred::Op<T_Type, cpu::OmpCollectiveQueue<T_Device>, T_Extents, T_Property>
         {
-            auto operator()(cpu::OmpCollectiveQueue<T_Device>& queue, T_Extents const& extents) const
+            auto operator()(cpu::OmpCollectiveQueue<T_Device>& queue, T_Extents const& extents, T_Property property)
+                const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::queue);
 
@@ -742,9 +747,10 @@ namespace alpaka::onHost
                     queue,
                     [&]
                     {
-                        return internal::AllocDeferred::Op<T_Type, cpu::Queue<T_Device>, T_Extents>{}(
+                        return internal::AllocDeferred::Op<T_Type, cpu::Queue<T_Device>, T_Extents, T_Property>{}(
                             *queue.m_parentQueue,
-                            extents);
+                            extents,
+                            property);
                     });
             }
         };

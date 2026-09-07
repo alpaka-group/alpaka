@@ -7,11 +7,15 @@
 #include "alpaka/api/host/hwloc/hwlocConfig.hpp"
 #include "alpaka/api/host/sysInfo.hpp"
 #include "alpaka/core/util.hpp"
+#include "alpaka/onHost/logger/logger.hpp"
+#include "alpaka/tag.hpp"
 #include "alpaka/unused.hpp"
 
 #include <cerrno>
+#include <concepts>
 #include <cstring>
 #include <fstream>
+#include <iostream>
 #include <limits>
 #include <optional>
 #include <sstream>
@@ -346,27 +350,27 @@ namespace alpaka::onHost::internal::hwloc
 #if ALPAKA_HAS_HWLOC
     /** Set the NUMA memory target for the memory range described by ptr and bytes. */
     template<typename T>
-    inline void pinPointerToNumaNode(T* const ptr, size_t bytes, hwloc_obj_t const node)
+    inline void pinPointerToNumaNode(T* const ptr, size_t bytes, hwloc_nodeset_t const nodeset)
     {
         if(ptr == nullptr || bytes == 0u)
             return;
 
-        if(node == nullptr)
-            throw std::runtime_error("NUMA node is null");
-
-        if(node->type != HWLOC_OBJ_NUMANODE)
-            throw std::runtime_error("Memory binding target is not a NUMA node");
-
-        if(node->nodeset == nullptr)
+        if(hwloc_bitmap_iszero(nodeset))
         {
-            throw std::runtime_error("NUMA node has no nodeset");
+            throw std::runtime_error("Nodeset is empty");
         }
 
-        hwloc_nodeset_t nodeset = hwloc_bitmap_dup(node->nodeset);
-        if(nodeset == nullptr)
-        {
-            throw std::bad_alloc();
-        }
+        char* str;
+        hwloc_bitmap_asprintf(&str, nodeset);
+        ALPAKA_LOG_INFO(
+            onHost::logger::memory,
+            [&]()
+            {
+                std::stringstream ss;
+                ss << "pinPointerToNumaNode{ ptr=" << ptr << ", bytes=" << bytes << ", nodeset=" << str << " }";
+                return ss.str();
+            });
+        free(str);
 
         int const rc = hwloc_set_area_membind(
             getTopology(),
@@ -374,9 +378,7 @@ namespace alpaka::onHost::internal::hwloc
             bytes,
             nodeset,
             HWLOC_MEMBIND_BIND,
-            HWLOC_MEMBIND_BYNODESET | HWLOC_MEMBIND_STRICT);
-
-        hwloc_bitmap_free(nodeset);
+            HWLOC_MEMBIND_BYNODESET | HWLOC_MEMBIND_STRICT | HWLOC_MEMBIND_MIGRATE);
 
         if(rc != 0)
         {
@@ -397,38 +399,185 @@ namespace alpaka::onHost::internal::hwloc
     }
 #endif
 
+#if ALPAKA_HAS_HWLOC
+    /** Translate an alpaka memory property tag to the underlying hwloc memory attribute id.
+     *
+     * @tparam T_Property Compile-time memory property tag, must be a placement preference (not
+     * memoryProperty::Default).
+     */
+    template<alpaka::concepts::MemoryProperty T_Property>
+    inline hwloc_memattr_id_t toHwloc(T_Property)
+    {
+        if constexpr(std::same_as<T_Property, memoryProperty::BestBandwidth>)
+            return HWLOC_MEMATTR_ID_BANDWIDTH;
+        else if constexpr(std::same_as<T_Property, memoryProperty::BestLatency>)
+            return HWLOC_MEMATTR_ID_LATENCY;
+        else if constexpr(std::same_as<T_Property, memoryProperty::Locality>)
+            return HWLOC_MEMATTR_ID_LOCALITY;
+        else
+            static_assert(sizeof(T_Property) == 0, "Unknown MemoryProperty");
+    }
+
+    inline hwloc_cpuset_t getInitiatorCpuset(hwloc_topology_t topology, uint32_t cpuDomainIdx)
+    {
+        if(cpuDomainIdx == allDomains)
+        {
+            return hwloc_get_root_obj(topology)->cpuset;
+        }
+
+        hwloc_obj_t cpuDomain = getCpuDomainObj(cpuDomainIdx);
+
+        if(cpuDomain == nullptr)
+        {
+            throw std::runtime_error("Invalid CPU domain");
+        }
+
+        return cpuDomain->cpuset;
+    }
+
+    /** Whether 'value' is preferable to the current 'baseValue' for the requested memory property.
+     *
+     * @tparam T_Property Compile-time memory property tag, must be a placement preference (not
+     * memoryProperty::Default).
+     */
+    template<alpaka::concepts::MemoryProperty T_Property>
+    inline bool isBestValue(hwloc_uint64_t value, hwloc_uint64_t baseValue, T_Property)
+    {
+        if constexpr(std::same_as<T_Property, memoryProperty::BestBandwidth>)
+            return value > baseValue;
+        else if constexpr(std::same_as<T_Property, memoryProperty::BestLatency>)
+            return value < baseValue;
+        else if constexpr(std::same_as<T_Property, memoryProperty::Locality>)
+            return value < baseValue;
+        else
+            static_assert(sizeof(T_Property) == 0, "Property can not be compared");
+    }
+#endif
+
     /** Set the default NUMA memory node for a CPU-domain memory range.
      *
      * @attention This method should be called before the memory is touched, else it may have no effect.
-     *            If a cpuDomainIdx contains more than one numa domain, the first numa domain will be used.
+     *            If a cpuDomainIdx contains more than one numa domain, the first numa domain will be used unless a
+     *            more specific placement policy is requested via `property`.
      *
      * @param ptr pointer address to pin, nullptr is valid input.
      * @param bytes the number of bytes to pin starting from the ptr address.
+     * @param property compile-time memory placement preference, see alpaka::memoryProperty.
      * @param cpuDomainIdx Index of the cpu group.
      */
-    template<typename T>
-    inline void pinPointer(T* const ptr, size_t bytes, uint32_t cpuDomainIdx)
+    template<typename T, alpaka::concepts::MemoryProperty T_Property>
+    inline void pinPointer(T* const ptr, size_t bytes, T_Property property, uint32_t cpuDomainIdx)
     {
 #if ALPAKA_HAS_HWLOC
-        if(cpuDomainIdx == allDomains)
+        if(cpuDomainIdx == allDomains && std::same_as<T_Property, memoryProperty::Default>)
             return;
 
         if(ptr == nullptr || bytes == 0u)
             return;
 
-        std::vector<hwloc_obj_t> const nodes = getMemoryNodes(getCpuDomainObj(cpuDomainIdx));
-        if(nodes.empty())
+        hwloc_topology_t topology = getTopology();
+        hwloc_nodeset_t pinningNodes = hwloc_bitmap_alloc();
+        if(pinningNodes == nullptr)
         {
-            throw std::runtime_error("CPU domain has no associated NUMA memory node");
+            throw std::bad_alloc();
         }
 
-        /** take the first numa domain
-         *
-         * @todo: this should be slectable during onHost::alloc()
-         */
-        pinPointerToNumaNode(ptr, bytes, nodes.front());
+        if constexpr(!std::same_as<T_Property, memoryProperty::Default>)
+        {
+            hwloc_memattr_id_t const attr = toHwloc(property);
+
+            // Domains to evaluate: either the single requested domain, or every domain on the
+            // machine when allDomains is requested. Each domain's memattr data is only valid
+            // when queried with that domain's own cpuset as initiator.
+            std::vector<hwloc_obj_t> const domainsToScan
+                = (cpuDomainIdx == allDomains) ? getCpuDomains()
+                                               : std::vector<hwloc_obj_t>{getCpuDomainObj(cpuDomainIdx)};
+
+            for(hwloc_obj_t domain : domainsToScan)
+            {
+                std::vector<hwloc_obj_t> const domainNodes = getMemoryNodes(domain);
+
+                hwloc_location location{};
+                location.type = HWLOC_LOCATION_TYPE_CPUSET;
+                location.location.cpuset = domain->cpuset;
+
+                hwloc_nodeset_t bestNodes = hwloc_bitmap_alloc();
+                if(bestNodes == nullptr)
+                {
+                    hwloc_bitmap_free(pinningNodes);
+                    throw std::bad_alloc();
+                }
+
+                constexpr auto Min = std::numeric_limits<hwloc_uint64_t>::min();
+                constexpr auto Max = std::numeric_limits<hwloc_uint64_t>::max();
+                hwloc_uint64_t best = isBestValue(Max, Min, property) ? Min : Max;
+
+                for(hwloc_obj_t node : domainNodes)
+                {
+                    hwloc_uint64_t value = 0;
+
+                    int err = hwloc_memattr_get_value(topology, attr, node, &location, 0, &value);
+
+                    if(err != 0 || value == 0)
+                        continue;
+
+                    if(isBestValue(value, best, property))
+                    {
+                        best = value;
+                        hwloc_bitmap_zero(bestNodes);
+                    }
+
+                    if(best == value)
+                    {
+                        hwloc_bitmap_or(bestNodes, bestNodes, node->nodeset);
+                    }
+                }
+
+                // Fall back to this domain's first NUMA node if the attribute wasn't available for it.
+                if(hwloc_bitmap_iszero(bestNodes) && !domainNodes.empty())
+                    hwloc_bitmap_or(bestNodes, bestNodes, domainNodes.front()->nodeset);
+
+                if(!hwloc_bitmap_iszero(bestNodes))
+                {
+                    hwloc_bitmap_or(pinningNodes, pinningNodes, bestNodes);
+                }
+
+                hwloc_bitmap_free(bestNodes);
+            }
+        }
+        else
+        {
+            /** Fallback
+             * Take first numa domain
+             * Only used when device is NumaCPU
+             */
+            // FIXME: - should a warning be added to warn the user when the fallback is used?
+            //        - should the default policy use best locality instead of the first numa?
+            hwloc_obj_t const cpuDomain
+                = (cpuDomainIdx == allDomains) ? hwloc_get_root_obj(topology) : getCpuDomainObj(cpuDomainIdx);
+            std::vector<hwloc_obj_t> const allnodes = getMemoryNodes(cpuDomain);
+            if(!allnodes.empty())
+                hwloc_bitmap_or(pinningNodes, pinningNodes, allnodes.front()->nodeset);
+        }
+
+        if(hwloc_bitmap_iszero(pinningNodes))
+        {
+            hwloc_bitmap_free(pinningNodes);
+            throw std::runtime_error("CPU domain has no associated NUMA memory node");
+        }
+        try
+        {
+            pinPointerToNumaNode(ptr, bytes, pinningNodes);
+        }
+        catch(...)
+        {
+            hwloc_bitmap_free(pinningNodes);
+            throw;
+        }
+
+        hwloc_bitmap_free(pinningNodes);
 #else
-        alpaka::unused(ptr, bytes, cpuDomainIdx);
+        alpaka::unused(ptr, bytes, property, cpuDomainIdx);
         return;
 #endif
     }

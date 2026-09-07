@@ -684,8 +684,12 @@ namespace alpaka::onHost
         /** The code is a copy of the Alloc::Op with the difference that the memory is allocated and freed
          * within a queue
          */
-        template<typename T_Type, typename T_Device, alpaka::concepts::Vector T_Extents>
-        struct AllocDeferred::Op<T_Type, cpu::Queue<T_Device>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Device,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocDeferred::Op<T_Type, cpu::Queue<T_Device>, T_Extents, T_Property>
         {
             static consteval uint32_t highestPowerOfTwo(uint32_t value)
             {
@@ -697,7 +701,7 @@ namespace alpaka::onHost
                 return result;
             }
 
-            auto operator()(cpu::Queue<T_Device>& queue, T_Extents const& extents) const
+            auto operator()(cpu::Queue<T_Device>& queue, T_Extents const& extents, T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::queue);
                 auto device = queue.getDevice();
@@ -710,7 +714,7 @@ namespace alpaka::onHost
                 auto queueDependency = queue.getSharedPtr();
 
                 T_Type* ptr = reinterpret_cast<T_Type*>(alpaka::core::alignedAlloc(alignment, memSizeInByte));
-                device->pinPointer(ptr, memSizeInByte);
+                device->pinPointer(ptr, memSizeInByte, property);
 
                 // queueDependency is captured to keep the device alive until the memory is deleted
                 auto deleter = [ptr, queueDep = std::move(queueDependency)]()

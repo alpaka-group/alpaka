@@ -1025,10 +1025,17 @@ namespace alpaka::onHost
         /** The code is a copy of the Alloc::Op with the difference that the memory is allocated and freed
          * within a queue
          */
-        template<typename T_Type, typename T_Device, alpaka::concepts::Vector T_Extents>
-        struct AllocDeferred::Op<T_Type, unifiedCudaHip::Queue<T_Device>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Device,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocDeferred::Op<T_Type, unifiedCudaHip::Queue<T_Device>, T_Extents, T_Property>
         {
-            auto operator()(unifiedCudaHip::Queue<T_Device>& queue, T_Extents const& extents) const
+            auto operator()(
+                unifiedCudaHip::Queue<T_Device>& queue,
+                T_Extents const& extents,
+                [[maybe_unused]] T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::queue);
                 using ApiInterface = typename T_Device::ApiInterface;

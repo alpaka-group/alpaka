@@ -345,37 +345,37 @@ namespace alpaka::onHost
 
         struct Alloc
         {
-            template<typename T_Type, typename T_Any, typename T_Extents>
+            template<typename T_Type, typename T_Any, typename T_Extents, alpaka::concepts::MemoryProperty T_Property>
             struct Op
             {
-                void operator()(T_Any& any, T_Extents const&) const;
+                void operator()(T_Any& any, T_Extents const&, T_Property) const;
             };
         };
 
         struct AllocDeferred
         {
-            template<typename T_Type, typename T_Any, typename T_Extents>
+            template<typename T_Type, typename T_Any, typename T_Extents, alpaka::concepts::MemoryProperty T_Property>
             struct Op
             {
-                void operator()(T_Any& any, T_Extents const&) const;
+                void operator()(T_Any& any, T_Extents const&, T_Property) const;
             };
         };
 
         struct AllocUnified
         {
-            template<typename T_Type, typename T_Any, typename T_Extents>
+            template<typename T_Type, typename T_Any, typename T_Extents, alpaka::concepts::MemoryProperty T_Property>
             struct Op
             {
-                void operator()(T_Any& any, T_Extents const&) const;
+                void operator()(T_Any& any, T_Extents const&, T_Property) const;
             };
         };
 
         struct AllocMapped
         {
-            template<typename T_Type, typename T_Any, typename T_Extents>
+            template<typename T_Type, typename T_Any, typename T_Extents, alpaka::concepts::MemoryProperty T_Property>
             struct Op
             {
-                void operator()(T_Any& any, T_Extents const&) const;
+                void operator()(T_Any& any, T_Extents const&, T_Property) const;
             };
         };
 

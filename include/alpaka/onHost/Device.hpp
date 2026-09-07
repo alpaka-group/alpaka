@@ -8,6 +8,7 @@
 #include "alpaka/interface.hpp"
 #include "alpaka/onHost/Event.hpp"
 #include "alpaka/onHost/EventPolicyList.hpp"
+#include "alpaka/onHost/MemoryPolicyList.hpp"
 #include "alpaka/onHost/Queue.hpp"
 #include "alpaka/onHost/QueuePolicyList.hpp"
 #include "alpaka/onHost/concepts.hpp"
@@ -207,6 +208,8 @@ namespace alpaka::onHost
      */
     /** Allocate memory on the given device
      *
+     * By default no explicit memory placement preference is used and the backend chooses its default strategy.
+     *
      * @tparam T_Type type of the data elements
      * @param device device handle
      * @param extents number of elements for each dimension
@@ -215,10 +218,48 @@ namespace alpaka::onHost
     template<typename T_Type>
     inline auto alloc(concepts::Device auto const& device, alpaka::concepts::VectorOrScalar auto const& extents)
     {
+        return alloc<T_Type>(device, extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc alloc()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto alloc(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return alloc<T_Type>(device, extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc alloc()
+     *
+     * @param policies Memory allocation policies. Supported policies are:
+     *   - Placement preference:
+     *    - memoryProperty::defaultProperty: no explicit preference, the backend chooses its default strategy.
+     *    - memoryProperty::bestLatency: prefer the memory node with the lowest access latency.
+     *    - memoryProperty::bestBandwidth: prefer the memory node with the highest bandwidth.
+     *    - memoryProperty::locality: prefer the memory node which is most local to the device.
+     */
+    template<typename T_Type, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto alloc(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
         Vec const extentsVec = extents;
-        return internal::Alloc::Op<T_Type, std::decay_t<decltype(*device.get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-            *device.get(),
-            extentsVec);
+        return internal::Alloc::Op<
+            T_Type,
+            std::decay_t<decltype(*device.get())>,
+            ALPAKA_TYPEOF(extentsVec),
+            ALPAKA_TYPEOF(policies.getMemoryProperty())>{}(*device.get(), extentsVec, policies.getMemoryProperty());
     }
 
     /** Allocate memory on the given device with unified virtual memory
@@ -236,10 +277,43 @@ namespace alpaka::onHost
     template<typename T_Type>
     inline auto allocUnified(concepts::Device auto const& device, alpaka::concepts::VectorOrScalar auto const& extents)
     {
+        return allocUnified<T_Type>(device, extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocUnified()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocUnified(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocUnified<T_Type>(device, extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocUnified()
+     *
+     * @param policies Memory allocation policies, see @c alloc() for the supported placement preferences.
+     */
+    template<typename T_Type, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocUnified(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
         Vec const extentsVec = extents;
-        return internal::AllocUnified::Op<T_Type, std::decay_t<decltype(*device.get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-            *device.get(),
-            extentsVec);
+        return internal::AllocUnified::Op<
+            T_Type,
+            std::decay_t<decltype(*device.get())>,
+            ALPAKA_TYPEOF(extentsVec),
+            ALPAKA_TYPEOF(policies.getMemoryProperty())>{}(*device.get(), extentsVec, policies.getMemoryProperty());
     }
 
     /** Allocates unified memory on the device associated with the given queue.
@@ -253,16 +327,49 @@ namespace alpaka::onHost
      * @param queue queue handle
      * @param extents number of elements for each dimension
      */
-    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_Policies>
+    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_QueuePolicies>
     inline auto allocUnified(
-        Queue<T_Device, T_Policies> const& queue,
+        Queue<T_Device, T_QueuePolicies> const& queue,
         alpaka::concepts::VectorOrScalar auto const& extents)
     {
-        Vec const extentsVec = extents;
-        return internal::AllocUnified::
-            Op<T_Type, std::decay_t<decltype(*queue.getDevice().get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-                *queue.getDevice().get(),
-                extentsVec);
+        return allocUnified<T_Type>(queue.getDevice(), extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocUnified()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocUnified(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocUnified<T_Type>(queue.getDevice(), extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocUnified()
+     *
+     * @param policies Memory allocation policies, see @c alloc() for the supported placement preferences.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocUnified(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
+        return allocUnified<T_Type>(queue.getDevice(), extents, policies);
     }
 
     /** Allocate pinned memory on the host which is mapped into the address space of the device
@@ -278,10 +385,43 @@ namespace alpaka::onHost
     template<typename T_Type>
     inline auto allocMapped(concepts::Device auto const& device, alpaka::concepts::VectorOrScalar auto const& extents)
     {
+        return allocMapped<T_Type>(device, extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocMapped()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocMapped(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocMapped<T_Type>(device, extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocMapped()
+     *
+     * @param policies Memory allocation policies, see @c alloc() for the supported placement preferences.
+     */
+    template<typename T_Type, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocMapped(
+        concepts::Device auto const& device,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
         Vec const extentsVec = extents;
-        return internal::AllocMapped::Op<T_Type, std::decay_t<decltype(*device.get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-            *device.get(),
-            extentsVec);
+        return internal::AllocMapped::Op<
+            T_Type,
+            std::decay_t<decltype(*device.get())>,
+            ALPAKA_TYPEOF(extentsVec),
+            ALPAKA_TYPEOF(policies.getMemoryProperty())>{}(*device.get(), extentsVec, policies.getMemoryProperty());
     }
 
     /** Allocate pinned memory on the host which is mapped into the address space of the device
@@ -294,12 +434,49 @@ namespace alpaka::onHost
      * @param queue queue handle
      * @param extents number of elements for each dimension
      */
-    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_Policies>
+    template<typename T_Type, typename T_Device, alpaka::concepts::QueuePolicyList T_QueuePolicies>
     inline auto allocMapped(
-        Queue<T_Device, T_Policies> const& queue,
+        Queue<T_Device, T_QueuePolicies> const& queue,
         alpaka::concepts::VectorOrScalar auto const& extents)
     {
-        return allocMapped<T_Type>(queue.getDevice(), extents);
+        return allocMapped<T_Type>(queue.getDevice(), extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocMapped()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocMapped(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocMapped<T_Type>(queue.getDevice(), extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocMapped()
+     *
+     * @param policies Memory allocation policies, see @c alloc() for the supported placement preferences.
+     */
+    template<
+        typename T_Type,
+        typename T_Device,
+        alpaka::concepts::QueuePolicyList T_QueuePolicies,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocMapped(
+        Queue<T_Device, T_QueuePolicies> const& queue,
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
+        return allocMapped<T_Type>(queue.getDevice(), extents, policies);
     }
 
     /** Allocate memory on the given device based on a view
@@ -314,7 +491,35 @@ namespace alpaka::onHost
      */
     inline auto allocLike(concepts::Device auto const& device, auto const& view)
     {
-        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view));
+        return allocLike(device, view, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocLike()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<alpaka::concepts::MemoryPolicy T_FirstPolicy, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocLike(
+        concepts::Device auto const& device,
+        auto const& view,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocLike(device, view, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocLike()
+     *
+     * @param policies Memory allocation policies, see @c alloc() for the supported placement preferences.
+     */
+    template<alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocLike(
+        concepts::Device auto const& device,
+        auto const& view,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
+        return alloc<alpaka::trait::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view), policies);
     }
 
     ///@}
