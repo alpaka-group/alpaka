@@ -12,6 +12,29 @@ using namespace alpaka;
 
 using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors))>;
 
+/** Test-only tag verifying that applications can register additional memory allocation policies. */
+struct TestMemoryPolicy
+{
+};
+
+template<>
+struct alpaka::trait::IsMemoryPolicy<TestMemoryPolicy> : std::true_type
+{
+};
+
+static_assert(alpaka::concepts::MemoryPolicy<TestMemoryPolicy>);
+
+constexpr auto defaultMemoryPolicies = onHost::MemoryPolicyList<>{};
+static_assert(alpaka::concepts::MemoryPolicyList<decltype(defaultMemoryPolicies)>);
+static_assert(defaultMemoryPolicies.getMemoryProperty() == memoryProperty::defaultProperty);
+
+constexpr auto testMemoryPolicies = onHost::MemoryPolicyList{memoryProperty::bestBandwidth, TestMemoryPolicy{}};
+static_assert(alpaka::concepts::MemoryPolicyList<decltype(testMemoryPolicies)>);
+static_assert(!alpaka::concepts::MemoryPolicyList<TestMemoryPolicy>);
+static_assert(testMemoryPolicies.getMemoryProperty() == memoryProperty::bestBandwidth);
+static_assert(testMemoryPolicies.hasPolicy(TestMemoryPolicy{}));
+static_assert(!testMemoryPolicies.hasPolicy(memoryProperty::bestLatency));
+
 struct IotaValidate
 {
     ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<int> auto success, concepts::IMdSpan auto in)
@@ -142,6 +165,51 @@ TEMPLATE_LIST_TEST_CASE("alloc zero bytes", "", TestDeviceSpecs)
     CHECK(deviceViewAsync.getExtents() == alpaka::Vec{dataSize});
     [[maybe_unused]] auto unifiedView = onHost::allocUnified<int>(device, dataSize);
     CHECK(unifiedView.getExtents() == alpaka::Vec{dataSize});
+}
+
+TEMPLATE_LIST_TEST_CASE("alloc with memory property", "", TestDeviceSpecs)
+{
+    auto deviceSpec = TestType{};
+
+    auto devSelector = onHost::makeDeviceSelector(deviceSpec);
+    if(!devSelector.isAvailable())
+    {
+        SUCCEED("No device available for " << deviceSpec.getName());
+        return;
+    }
+
+    onHost::Device device = devSelector.makeDevice(0);
+    INFO(deviceSpec.getApi().getName() << " on " << device.getName());
+
+    int dataSize = 42;
+
+    // A single, explicit policy tag.
+    [[maybe_unused]] auto hostBuffer = onHost::allocHost<int>(dataSize, memoryProperty::bestBandwidth);
+    CHECK(hostBuffer.getExtents() == alpaka::Vec{dataSize});
+
+    [[maybe_unused]] auto deviceView = onHost::alloc<int>(device, dataSize, memoryProperty::bestLatency);
+    CHECK(deviceView.getExtents() == alpaka::Vec{dataSize});
+
+    [[maybe_unused]] auto mappedView = onHost::allocMapped<int>(device, dataSize, memoryProperty::locality);
+    CHECK(mappedView.getExtents() == alpaka::Vec{dataSize});
+
+    [[maybe_unused]] auto unifiedView = onHost::allocUnified<int>(device, dataSize, memoryProperty::defaultProperty);
+    CHECK(unifiedView.getExtents() == alpaka::Vec{dataSize});
+
+    [[maybe_unused]] auto likeView = onHost::allocLike(device, deviceView, memoryProperty::bestBandwidth);
+    CHECK(likeView.getExtents() == deviceView.getExtents());
+
+    // An explicit onHost::MemoryPolicyList.
+    [[maybe_unused]] auto explicitPolicyView
+        = onHost::alloc<int>(device, dataSize, onHost::MemoryPolicyList{memoryProperty::bestBandwidth});
+    CHECK(explicitPolicyView.getExtents() == alpaka::Vec{dataSize});
+
+    auto queue = device.makeQueue();
+    [[maybe_unused]] auto deferredView = onHost::allocDeferred<int>(queue, dataSize, memoryProperty::bestBandwidth);
+    CHECK(deferredView.getExtents() == alpaka::Vec{dataSize});
+
+    [[maybe_unused]] auto likeDeferredView = onHost::allocLikeDeferred(queue, deviceView, memoryProperty::locality);
+    CHECK(likeDeferredView.getExtents() == deviceView.getExtents());
 }
 
 /** Evaluates on the host side that all rows start with an address which is a multiple of the alignment of the MdSpan
