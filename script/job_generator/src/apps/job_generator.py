@@ -152,9 +152,7 @@ def write_multiple_file_job_configuration(
     job_filter_name = get_filter_name(args)
 
     for pipeline_ver, combinations in pipelines.items():
-        pipeline_name = alpaka_bashi.get_version_aliases()[alpaka_bashi.globals.CI_PIPELINE_NAME][
-            pipeline_ver
-        ]
+        pipeline_name = alpaka_bashi.get_version_aliases()[alpaka_bashi.globals.CI_PIPELINE_NAME][pipeline_ver]
         output_path = getattr(args, f"pipeline-out-{pipeline_name}".replace("-", "_"))
 
         if pipeline_name == alpaka_bashi.CI_PIPELINE_SPECIAL:
@@ -188,9 +186,7 @@ def main() -> None:
 
     software_versions = alpaka_bashi.get_software_versions_for_alpaka()
 
-    param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
-        software_versions=software_versions
-    )
+    param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(software_versions=software_versions)
 
     version_relation = alpaka_bashi.get_alpaka_version_relation()
 

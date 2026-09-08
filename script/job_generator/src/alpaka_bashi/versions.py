@@ -40,11 +40,7 @@ def _get_clang_cuda_versions() -> List[Union[str, int, float]]:
         if min_cuda_version <= clang_cuda_sdk.cuda:
             min_clang_cuda_version = clang_cuda_sdk.clang_cuda
             break
-    return [
-        ver
-        for ver in ALPAKA_VERSIONS[CLANG]
-        if packaging.version.parse(str(ver)) >= min_clang_cuda_version
-    ]
+    return [ver for ver in ALPAKA_VERSIONS[CLANG] if packaging.version.parse(str(ver)) >= min_clang_cuda_version]
 
 
 def get_used_compiler_versions() -> dict[str, list[str | int | float]]:

@@ -48,9 +48,9 @@ def set_generic_variables(job_body: Dict[str, Any], combination: bashi.Combinati
     }
 
     variables["ALPAKA_CI_UBUNTU_VER"] = bashi.ubuntu_version_to_string(combination[UBUNTU].version)
-    variables["CMAKE_BUILD_TYPE"] = alpaka_bashi.globals.get_version_aliases()[
-        combination[BUILD_TYPE].name
-    ][combination[BUILD_TYPE].version]
+    variables["CMAKE_BUILD_TYPE"] = alpaka_bashi.globals.get_version_aliases()[combination[BUILD_TYPE].name][
+        combination[BUILD_TYPE].version
+    ]
 
     variables["ALPAKA_CI_RUN_TESTS"] = (
         "OFF" if combination[JOB_EXECUTION_TYPE].version == CI_PIPELINE_COMPILE_ONLY_VER else "ON"
@@ -77,9 +77,7 @@ def set_backend_variables(job_body: Dict[str, Any], combination: bashi.Combinati
                         return True
                 return False
 
-            job_body["variables"][ALPAKA_ACC_SYCL_ENABLE] = (
-                "ON" if one_api_backend_is_enabled() else "OFF"
-            )
+            job_body["variables"][ALPAKA_ACC_SYCL_ENABLE] = "ON" if one_api_backend_is_enabled() else "OFF"
         else:
             job_body["variables"][backend] = bashi.on_off_ver_to_str(combination[backend].version)
 
@@ -115,9 +113,7 @@ def set_hipcc_variables(job_body: Dict[str, Any], combination: bashi.Combination
     job_body["variables"]["ALPAKA_CI_HIP_VERSION"] = str(combination[DEVICE_COMPILER].version)
     job_body["variables"]["CMAKE_HIP_COMPILER"] = "clang++"
     job_body["variables"]["ALPAKA_CI_CXX"] = "clang++"
-    job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(
-        get_clang_version(combination[DEVICE_COMPILER].version)
-    )
+    job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(get_clang_version(combination[DEVICE_COMPILER].version))
     job_body["variables"]["CMAKE_HIP_ARCHITECTURES"] = "${CI_GPU_ARCH}"
     job_body["variables"]["ALPAKA_CI_STDLIB"] = "libstdc++"
 
@@ -157,16 +153,12 @@ def set_nvcc_variables(job_body: Dict[str, Any], combination: bashi.Combination)
     job_body["variables"]["ALPAKA_CI_CUDA_COMPILER"] = "nvcc"
     job_body["variables"]["ALPAKA_CI_STDLIB"] = "libstdc++"
     job_body["variables"]["CMAKE_CUDA_ARCHITECTURES"] = get_sm_level(combination)
-    job_body["variables"]["ALPAKA_CI_CUDA_VERSION"] = str(
-        combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version
-    )
+    job_body["variables"]["ALPAKA_CI_CUDA_VERSION"] = str(combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version)
     job_body["variables"]["alpaka_RELOCATABLE_DEVICE_CODE"] = "OFF"
     job_body["variables"]["alpaka_CUDA_SHOW_REGISTER"] = "OFF"
     job_body["variables"]["alpaka_CUDA_KEEP_FILES"] = "OFF"
     # mdspan requires experimental extended lambda
-    job_body["variables"]["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = bashi.on_off_ver_to_str(
-        combination[MDSPAN].version
-    )
+    job_body["variables"]["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = bashi.on_off_ver_to_str(combination[MDSPAN].version)
     if combination[HOST_COMPILER].name == GCC:
         job_body["variables"]["ALPAKA_CI_CXX"] = "g++"
         job_body["variables"]["ALPAKA_CI_GCC_VER"] = str(combination[HOST_COMPILER].version)
@@ -186,9 +178,7 @@ def set_clang_cuda_variables(job_body: Dict[str, Any], combination: bashi.Combin
     job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(combination[DEVICE_COMPILER].version)
     job_body["variables"]["ALPAKA_CI_STDLIB"] = "libstdc++"
     job_body["variables"]["CMAKE_CUDA_ARCHITECTURES"] = get_sm_level(combination)
-    job_body["variables"]["ALPAKA_CI_CUDA_VERSION"] = str(
-        combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version
-    )
+    job_body["variables"]["ALPAKA_CI_CUDA_VERSION"] = str(combination[ALPAKA_ACC_GPU_CUDA_ENABLE].version)
     job_body["variables"]["alpaka_RELOCATABLE_DEVICE_CODE"] = "OFF"
     job_body["variables"]["alpaka_CUDA_SHOW_REGISTER"] = "OFF"
     job_body["variables"]["alpaka_CUDA_KEEP_FILES"] = "OFF"
@@ -212,9 +202,7 @@ def set_icpx_variables(job_body: Dict[str, Any], combination: bashi.Combination)
     }
 
     job_body["variables"]["ALPAKA_CI_CXX"] = "icpx"
-    job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(
-        get_clang_version(combination[DEVICE_COMPILER].version)
-    )
+    job_body["variables"]["ALPAKA_CI_CLANG_VER"] = str(get_clang_version(combination[DEVICE_COMPILER].version))
     job_body["variables"]["ALPAKA_CI_ONEAPI_VERSION"] = str(combination[DEVICE_COMPILER].version)
     job_body["variables"]["ALPAKA_CI_STDLIB"] = "libstdc++"
     for backend, cmake_arg in backend_to_cmake_arg.items():

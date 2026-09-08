@@ -29,9 +29,7 @@ def main() -> None:
     validator.add_software_version_parameter(
         name=alpaka_bashi.MDSPAN, help_text="Build with C++23 std::mdspan.", choices=["ON", "OFF"]
     )
-    validator.add_known_version(
-        alpaka_bashi.BUILD_TYPE, [str(option) for option in alpaka_bashi.BUILD_TYPES]
-    )
+    validator.add_known_version(alpaka_bashi.BUILD_TYPE, [str(option) for option in alpaka_bashi.BUILD_TYPES])
     validator.add_known_version(alpaka_bashi.MDSPAN, [OFF, ON])
 
     arg = validator.parser.parse_args()

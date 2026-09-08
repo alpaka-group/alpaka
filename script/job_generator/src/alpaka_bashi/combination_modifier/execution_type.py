@@ -29,12 +29,9 @@ def execution_type_device_compiler_gcc_and_clang(
         if comb[DEVICE_COMPILER].name in (GCC, CLANG) and comb[HOST_COMPILER].name in (GCC, CLANG):
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
-                    "JOB_EXECUTION_TYPE is already defined in the combinations: "
-                    f"{bashi.get_str_row_nice(comb)}"
+                    "JOB_EXECUTION_TYPE is already defined in the combinations: " f"{bashi.get_str_row_nice(comb)}"
                 )
-            comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER
-            )
+            comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER)
 
     return combination_list_copy
 
@@ -45,25 +42,19 @@ def execution_type_hipcc(combination_list: bashi.CombinationList) -> bashi.Combi
     combination_list_copy = deepcopy(combination_list)
 
     hipcc_versions = [
-        packaging.version.parse(str(ver))
-        for ver in alpaka_bashi.versions.get_software_versions_for_alpaka()[HIPCC]
+        packaging.version.parse(str(ver)) for ver in alpaka_bashi.versions.get_software_versions_for_alpaka()[HIPCC]
     ]
     for comb in combination_list_copy:
         if comb[DEVICE_COMPILER].name == HIPCC:
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
-                    "JOB_EXECUTION_TYPE is already defined in the combinations: "
-                    f"{bashi.get_str_row_nice(comb)}"
+                    "JOB_EXECUTION_TYPE is already defined in the combinations: " f"{bashi.get_str_row_nice(comb)}"
                 )
             if comb[DEVICE_COMPILER].version in hipcc_versions:
-                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER
-                )
+                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER)
                 hipcc_versions.remove(comb[DEVICE_COMPILER].version)
             else:
-                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                )
+                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER)
 
     return combination_list_copy
 
@@ -78,18 +69,13 @@ def execution_type_icpx(combination_list: bashi.CombinationList) -> bashi.Combin
         if comb[DEVICE_COMPILER].name == ICPX:
             if JOB_EXECUTION_TYPE in comb:
                 raise RecursionError(
-                    "JOB_EXECUTION_TYPE is already defined in the combinations: "
-                    f"{bashi.get_str_row_nice(comb)}"
+                    "JOB_EXECUTION_TYPE is already defined in the combinations: " f"{bashi.get_str_row_nice(comb)}"
                 )
             if comb[ALPAKA_ACC_ONEAPI_CPU_ENABLE].version == ON_VER:
-                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                    JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER
-                )
+                comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER)
             for sycl_backend in (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ALPAKA_ACC_ONEAPI_FPGA_ENABLE):
                 if comb[sycl_backend].version == ON_VER:
-                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                        JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                    )
+                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER)
 
     return combination_list_copy
 
@@ -126,10 +112,7 @@ def find_latest_cuda_sdk_minor_versions(
             (CLANG, NVCC),
             (CLANG_CUDA, CLANG_CUDA),
         ):
-            if (
-                comb[HOST_COMPILER].name == host_compiler
-                and comb[DEVICE_COMPILER].name == device_compiler
-            ):
+            if comb[HOST_COMPILER].name == host_compiler and comb[DEVICE_COMPILER].name == device_compiler:
                 major_version = comb[ALPAKA_ACC_GPU_CUDA_ENABLE].version.major
                 if major_version == 0:
                     raise RuntimeError("Major version 0 should be not possible")
@@ -172,24 +155,16 @@ def execution_type_cuda_backend(combination_list: bashi.CombinationList) -> bash
             (CLANG, NVCC),
             (CLANG_CUDA, CLANG_CUDA),
         ):
-            if (
-                comb[HOST_COMPILER].name == host_compiler
-                and comb[DEVICE_COMPILER].name == device_compiler
-            ):
+            if comb[HOST_COMPILER].name == host_compiler and comb[DEVICE_COMPILER].name == device_compiler:
                 if JOB_EXECUTION_TYPE in comb:
                     raise RecursionError(
-                        "JOB_EXECUTION_TYPE is already defined in the combinations: "
-                        f"{bashi.get_str_row_nice(comb)}"
+                        "JOB_EXECUTION_TYPE is already defined in the combinations: " f"{bashi.get_str_row_nice(comb)}"
                     )
 
                 if comb[ALPAKA_ACC_GPU_CUDA_ENABLE].version in cuda_versions[host_compiler]:
-                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                        JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER
-                    )
+                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME_VER)
                     cuda_versions[host_compiler].remove(comb[ALPAKA_ACC_GPU_CUDA_ENABLE].version)
                 else:
-                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(
-                        JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER
-                    )
+                    comb[JOB_EXECUTION_TYPE] = bashi.ParameterValue(JOB_EXECUTION_TYPE, JOB_EXECUTION_COMPILE_ONLY_VER)
 
     return combination_list_copy
