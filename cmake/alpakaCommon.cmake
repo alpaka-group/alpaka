@@ -904,10 +904,10 @@ if (alpaka_USE_MDSPAN STREQUAL "SYSTEM")
 elseif (alpaka_USE_MDSPAN STREQUAL "FETCH")
     include(FetchContent)
     FetchContent_Declare(
-        # kokkos/mdspan as of 2025.12.11
+        # kokkos/mdspan as of 2026.08.19
         mdspan
         GIT_REPOSITORY https://github.com/kokkos/mdspan.git
-        GIT_TAG bcfcc9ea8fc5390b99261a4d8450c3f2fc18a7f2
+        GIT_TAG ef0adc1ca08b6eda520a7fd3fcfd8125662518e7
     )
     # we don't use FetchContent_MakeAvailable(mdspan) since it would also install mdspan
     # see also: https://stackoverflow.com/questions/65527126/how-to-disable-installation-a-fetchcontent-dependency
