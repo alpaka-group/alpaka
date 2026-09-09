@@ -126,6 +126,9 @@ namespace alpaka
                 return m_last_event;
             }
 
+            // Perfect forwarding of the task is a backend-specific workaround for oneAPI SYCL internally converting
+            // host tasks to std::function&&. The portable way is to pass the task by const reference, as done by
+            // the other backends.
             template<bool TBlocking, typename TTask>
             auto enqueue(TTask&& task) -> void
             {
