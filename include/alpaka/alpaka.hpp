@@ -10390,9 +10390,16 @@
 
 			    struct ConceptDev;
 
+			    namespace concepts
+			    {
+			        template<typename TDev>
+			        concept Device = requires { requires interface::ImplementsInterface<ConceptDev, std::decay_t<TDev>>::value; };
+			    } // namespace concepts
+
 			    //! True if TDev is a device, i.e. if it implements the ConceptDev concept.
 			    template<typename TDev>
-			    inline constexpr bool isDevice = interface::ImplementsInterface<ConceptDev, std::decay_t<TDev>>::value;
+			    [[deprecated("use the alpaka::concepts::Device instead.")]] inline constexpr bool isDevice
+			        = concepts::Device<TDev>;
 
 			    //! \return The device this object is bound to.
 			    template<typename T>
@@ -10560,9 +10567,16 @@
 				{
 				    struct ConceptQueue;
 
+				    namespace concepts
+				    {
+				        template<typename TQueue>
+				        concept Queue
+				            = requires { requires interface::ImplementsInterface<ConceptQueue, std::decay_t<TQueue>>::value; };
+				    } // namespace concepts
+
 				    //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.
 				    template<typename TQueue>
-				    inline constexpr bool isQueue = interface::ImplementsInterface<ConceptQueue, std::decay_t<TQueue>>::value;
+				    [[deprecated("use the alpaka::concepts::Queue instead.")]] inline constexpr bool isQueue = concepts::Queue<TQueue>;
 
 				    //! The queue traits.
 				    namespace trait
@@ -10628,9 +10642,17 @@
 			    {
 			    };
 
+			    namespace concepts
+			    {
+			        template<typename TPlatform>
+			        concept Platform
+			            = requires { requires interface::ImplementsInterface<ConceptPlatform, std::decay_t<TPlatform>>::value; };
+			    } // namespace concepts
+
 			    //! True if TPlatform is a platform, i.e. if it implements the ConceptPlatform concept.
 			    template<typename TPlatform>
-			    inline constexpr bool isPlatform = interface::ImplementsInterface<ConceptPlatform, TPlatform>::value;
+			    [[deprecated("use the alpaka::concepts::Platform instead.")]] inline constexpr bool isPlatform
+			        = concepts::Platform<TPlatform>;
 
 			    //! The platform traits.
 			    namespace trait
@@ -12570,7 +12592,7 @@
 				    namespace concepts
 				    {
 				        template<typename T>
-				        concept DeviceProvider = alpaka::isDevice<T> || alpaka::isQueue<T>;
+				        concept DeviceProvider = alpaka::concepts::Device<T> || alpaka::concepts::Queue<T>;
 				    } // namespace concepts
 
 				    namespace detail
@@ -12650,7 +12672,7 @@
 				        template<typename TDeviceProvider>
 				        auto getDeviceFromProvider(TDeviceProvider const& provider)
 				        {
-				            if constexpr(alpaka::isDevice<TDeviceProvider>)
+				            if constexpr(alpaka::concepts::Device<TDeviceProvider>)
 				            {
 				                return provider;
 				            }
@@ -35171,7 +35193,7 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/view/ViewAccessOps.hpp ==
 			// ==
-			/* Copyright 2025 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Simone Balducci
+			/* Copyright 2026 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Simone Balducci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -35193,11 +35215,10 @@
 			    class DevCpu;
 			} // namespace alpaka
 
-			namespace alpaka::internal
+			namespace alpaka::concepts
 			{
-
 			    template<typename TView>
-			    concept ViewType = requires {
+			    concept View = requires {
 			        typename Idx<TView>;
 			        typename Dim<TView>;
 			        {
@@ -35210,8 +35231,12 @@
 			            getExtents(std::declval<TView>())
 			        };
 			    };
+			} // namespace alpaka::concepts
 
-			    template<ViewType TView>
+			namespace alpaka::internal
+			{
+
+			    template<alpaka::concepts::View TView>
 			    struct BaseViewAccessor
 			    {
 			    private:
@@ -35306,10 +35331,10 @@
 			#endif
 			    };
 
-			    template<ViewType TView>
+			    template<alpaka::concepts::View TView>
 			    using DeviceViewAccessor = BaseViewAccessor<TView>;
 
-			    template<ViewType TView>
+			    template<alpaka::concepts::View TView>
 			    struct HostViewAccessor : BaseViewAccessor<TView>
 			    {
 			    private:
@@ -35418,14 +35443,14 @@
 			    template<typename TDev>
 			    struct ViewAccessor
 			    {
-			        template<ViewType TView>
+			        template<concepts::View TView>
 			        using AccessorType = DeviceViewAccessor<TView>;
 			    };
 
 			    template<>
 			    struct ViewAccessor<alpaka::DevCpu>
 			    {
-			        template<ViewType TView>
+			        template<concepts::View TView>
 			        using AccessorType = HostViewAccessor<TView>;
 			    };
 
@@ -35433,12 +35458,12 @@
 			    template<>
 			    struct ViewAccessor<alpaka::DevGenericSycl<alpaka::TagCpuSycl>>
 			    {
-			        template<ViewType TView>
+			        template<concepts::View TView>
 			        using AccessorType = HostViewAccessor<TView>;
 			    };
 			#endif
 
-			    template<typename TDev, ViewType TView>
+			    template<typename TDev, concepts::View TView>
 			    using ViewAccessorType = typename ViewAccessor<TDev>::template AccessorType<TView>;
 
 			} // namespace alpaka::internal
