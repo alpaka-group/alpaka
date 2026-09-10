@@ -3,6 +3,7 @@
 import re
 from typing import Dict, Any
 from typeguard import typechecked
+from alpaka_bashi.ci_yaml.writer import get_dummy_job_yaml
 from .clang_analysis import get_clang_debug_analysis_job, get_clang_asan_job
 from .cuda import (
     get_nvcc_relocatable_device_code_job,
@@ -80,5 +81,8 @@ def get_special_jobs(
             for job_name, job_body in special_jobs.items()
             if compiled_regex.match(job_name) or job_name == "stages"
         }
+
+    if len(special_jobs) == 0 or (len(special_jobs) == 1 and "stages" in special_jobs):
+        special_jobs = get_dummy_job_yaml(stage_name)
 
     return special_jobs
