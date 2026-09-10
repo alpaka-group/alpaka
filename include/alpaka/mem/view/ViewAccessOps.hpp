@@ -42,7 +42,7 @@ namespace alpaka::concepts
 namespace alpaka::internal
 {
 
-    template<alpaka::concepts::View TView>
+    template<concepts::View TView>
     struct BaseViewAccessor
     {
     private:
@@ -137,10 +137,10 @@ namespace alpaka::internal
 #endif
     };
 
-    template<alpaka::concepts::View TView>
+    template<concepts::View TView>
     using DeviceViewAccessor = BaseViewAccessor<TView>;
 
-    template<alpaka::concepts::View TView>
+    template<concepts::View TView>
     struct HostViewAccessor : BaseViewAccessor<TView>
     {
     private:
