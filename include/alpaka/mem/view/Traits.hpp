@@ -435,7 +435,7 @@ namespace alpaka
     namespace concepts
     {
         template<typename T>
-        concept DeviceProvider = alpaka::isDevice<T> || alpaka::isQueue<T>;
+        concept DeviceProvider = alpaka::concepts::Device<T> || alpaka::concepts::Queue<T>;
     } // namespace concepts
 
     namespace detail
@@ -515,7 +515,7 @@ namespace alpaka
         template<typename TDeviceProvider>
         auto getDeviceFromProvider(TDeviceProvider const& provider)
         {
-            if constexpr(alpaka::isDevice<TDeviceProvider>)
+            if constexpr(alpaka::concepts::Device<TDeviceProvider>)
             {
                 return provider;
             }
