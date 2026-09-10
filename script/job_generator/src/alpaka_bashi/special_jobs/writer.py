@@ -9,6 +9,7 @@ from .cuda import (
     get_nvcc_extended_lambda_off_job,
     get_cuda_only_job,
 )
+from alpaka_bashi.ci_yaml.writer import get_dummy_job_yaml
 
 
 @typechecked
@@ -80,5 +81,8 @@ def get_special_jobs(
             for job_name, job_body in special_jobs.items()
             if compiled_regex.match(job_name) or job_name == "stages"
         }
+
+    if len(special_jobs) == 0 or (len(special_jobs) == 1 and "stages" in special_jobs):
+        special_jobs = get_dummy_job_yaml(stage_name)
 
     return special_jobs
