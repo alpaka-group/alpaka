@@ -3,13 +3,13 @@
 import re
 from typing import Dict, Any
 from typeguard import typechecked
+from alpaka_bashi.ci_yaml.writer import get_dummy_job_yaml
 from .clang_analysis import get_clang_debug_analysis_job, get_clang_asan_job
 from .cuda import (
     get_nvcc_relocatable_device_code_job,
     get_nvcc_extended_lambda_off_job,
     get_cuda_only_job,
 )
-from alpaka_bashi.ci_yaml.writer import get_dummy_job_yaml
 
 
 @typechecked
