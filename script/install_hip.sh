@@ -23,7 +23,7 @@ else
     travis_retry apt-get -y --quiet update
     travis_retry apt-get -y --quiet install wget gnupg2
 
-    if [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -le "$(version "7.2.0")" ]; then
+    if [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -le "$(version "7.2.4")" ]; then
         # AMD container keys are outdated and must be updated
         source /etc/os-release
         wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
@@ -61,15 +61,15 @@ EOF
         travis_retry sudo DEBIAN_FRONTEND=noninteractive apt update
 
         # If configured, install rocm only for a specific GPU architecture. Otherwise install it for all architectures.
-        if [[ -n ${CMAKE_HIP_ARCHITECTURES+x} ]]; then
+        if [[ -n "${CMAKE_HIP_ARCHITECTURES}" ]]; then
             ROCM_PACKAGE_VERSION="${ALPAKA_CI_HIP_VERSION}-${CMAKE_HIP_ARCHITECTURES}"
         else
-            ROCM_PACKAGE_VERSION="${ALPAKA_CI_HIP_VERSION}-gfx906"
+            ROCM_PACKAGE_VERSION="${ALPAKA_CI_HIP_VERSION}"
         fi
 
         # TODO: It is not the minimal installation. There are many libraries, like fft and dnn are installed, which do not require.
         sudo DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
-            "amdrocm-core-dev${ROCM_PACKAGE_VERSION}"
+            "amdrocm-core-dev${ROCM_PACKAGE_VERSION}" "amdrocm-core${ROCM_PACKAGE_VERSION}"
 
         unset ROCM_PACKAGE_VERSION
     else
@@ -96,10 +96,10 @@ then
     travis_retry sudo apt install -y --no-install-recommends g++-11
 fi
 
-sudo update-alternatives --install /usr/bin/clang clang ${ROCM_PATH}/llvm/bin/clang 50
-sudo update-alternatives --install /usr/bin/clang++ clang++ ${ROCM_PATH}/llvm/bin/clang++ 50
-sudo update-alternatives --install /usr/bin/cc cc ${ROCM_PATH}/llvm/bin/clang 50
-sudo update-alternatives --install /usr/bin/c++ c++ ${ROCM_PATH}/llvm/bin/clang++ 50
+sudo update-alternatives --install /usr/bin/clang clang ${ROCM_PATH}/lib/llvm/bin/clang 50
+sudo update-alternatives --install /usr/bin/clang++ clang++ ${ROCM_PATH}/lib/llvm/bin/clang++ 50
+sudo update-alternatives --install /usr/bin/cc cc ${ROCM_PATH}/lib/llvm/bin/clang 50
+sudo update-alternatives --install /usr/bin/c++ c++ ${ROCM_PATH}/lib/llvm/bin/clang++ 50
 
 export LD_LIBRARY_PATH=${ROCM_PATH}/lib:${ROCM_PATH}/lib64:${ROCM_PATH}/hiprand/lib:${ROCM_PATH}/hip/lib:${ROCM_PATH}/llvm/lib:${LD_LIBRARY_PATH}
 export CMAKE_PREFIX_PATH=${ROCM_PATH}:${ROCM_PATH}/hiprand:${ROCM_PATH}/hip:${CMAKE_PREFIX_PATH:-}
