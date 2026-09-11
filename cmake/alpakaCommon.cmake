@@ -548,7 +548,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
         find_package(hip REQUIRED)
 
         set(_alpaka_HIP_MIN_VER 6.0)
-        set(_alpaka_HIP_MAX_VER 7.2)
+        set(_alpaka_HIP_MAX_VER 7.14)
 
         checkCompilerCXXSupport(HIP ${alpaka_MIN_CXX_STANDARD})
 

@@ -22,22 +22,61 @@ else
 
     travis_retry apt-get -y --quiet update
     travis_retry apt-get -y --quiet install wget gnupg2
-    # AMD container keys are outdated and must be updated
-    source /etc/os-release
-    wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
-    echo "deb https://repo.radeon.com/rocm/apt/${ALPAKA_CI_HIP_VERSION} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/rocm.list
-    travis_retry apt-get -y --quiet update
 
-    ALPAKA_CI_ROCM_VERSION=$ALPAKA_CI_HIP_VERSION
-    # append .0 if no patch level is defined
-    if ! echo $ALPAKA_CI_ROCM_VERSION | grep -Eq '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+'; then
-        ALPAKA_CI_ROCM_VERSION="${ALPAKA_CI_ROCM_VERSION}.0"
+    if [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -le "$(version "7.2.0")" ]; then
+        # AMD container keys are outdated and must be updated
+        source /etc/os-release
+        wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
+        echo "deb https://repo.radeon.com/rocm/apt/${ALPAKA_CI_HIP_VERSION} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/rocm.list
+        travis_retry apt-get -y --quiet update
+
+        ALPAKA_CI_ROCM_VERSION=$ALPAKA_CI_HIP_VERSION
+        # append .0 if no patch level is defined
+        if ! echo $ALPAKA_CI_ROCM_VERSION | grep -Eq '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+'; then
+            ALPAKA_CI_ROCM_VERSION="${ALPAKA_CI_ROCM_VERSION}.0"
+        fi
+
+        apt install --no-install-recommends -y rocm-llvm${ALPAKA_CI_ROCM_VERSION} hip-runtime-amd${ALPAKA_CI_ROCM_VERSION} rocm-dev${ALPAKA_CI_ROCM_VERSION} rocm-utils${ALPAKA_CI_ROCM_VERSION} rocrand-dev${ALPAKA_CI_ROCM_VERSION} rocminfo${ALPAKA_CI_ROCM_VERSION} rocm-cmake${ALPAKA_CI_ROCM_VERSION} rocm-device-libs${ALPAKA_CI_ROCM_VERSION} rocm-core${ALPAKA_CI_ROCM_VERSION} rocm-smi-lib${ALPAKA_CI_ROCM_VERSION}
+        if [ $(version ${ALPAKA_CI_ROCM_VERSION}) -ge $(version "6.0.0") ]; then
+            apt install --no-install-recommends -y hiprand-dev${ALPAKA_CI_ROCM_VERSION}
+        fi
+    elif [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -ge "$(version "7.14.0")" ]; then
+        sudo mkdir --parents --mode=0755 /etc/apt/keyrings
+        wget https://repo.amd.com/rocm/packages-multi-arch/gpg/rocm.gpg -O - |
+            gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg >/dev/null
+
+        # Prevents apt warnings when the script is run a second time.
+        # Delete and recreate the source list to ensure that the correct apt sources are set.
+        if [[ -f /etc/apt/sources.list.d/rocm.list ]]; then
+            sudo rm -rf /etc/apt/sources.list.d/rocm.list
+        fi
+
+        # require to set environment variable VERSION_ID
+        source /etc/os-release
+
+        sudo tee /etc/apt/sources.list.d/rocm.list <<EOF
+deb [arch=amd64 signed-by=/etc/apt/keyrings/amdrocm.gpg] https://repo.amd.com/rocm/packages-multi-arch/ubuntu${VERSION_ID//./} stable main
+EOF
+
+        travis_retry sudo DEBIAN_FRONTEND=noninteractive apt update
+
+        # If configured, install rocm only for a specific GPU architecture. Otherwise install it for all architectures.
+        if [[ -n ${CMAKE_HIP_ARCHITECTURES+x} ]]; then
+            ROCM_PACKAGE_VERSION="${ALPAKA_CI_HIP_VERSION}-${CMAKE_HIP_ARCHITECTURES}"
+        else
+            ROCM_PACKAGE_VERSION="${ALPAKA_CI_HIP_VERSION}-gfx906"
+        fi
+
+        # TODO: It is not the minimal installation. There are many libraries, like fft and dnn are installed, which do not require.
+        sudo DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
+            "amdrocm-core-dev${ROCM_PACKAGE_VERSION}"
+
+        unset ROCM_PACKAGE_VERSION
+    else
+        echo_red "ERROR: Installing ROCm 7.9 - 7.13 is not supported"
+        exit 1
     fi
 
-    apt install --no-install-recommends -y rocm-llvm${ALPAKA_CI_ROCM_VERSION} hip-runtime-amd${ALPAKA_CI_ROCM_VERSION} rocm-dev${ALPAKA_CI_ROCM_VERSION} rocm-utils${ALPAKA_CI_ROCM_VERSION} rocrand-dev${ALPAKA_CI_ROCM_VERSION} rocminfo${ALPAKA_CI_ROCM_VERSION} rocm-cmake${ALPAKA_CI_ROCM_VERSION} rocm-device-libs${ALPAKA_CI_ROCM_VERSION} rocm-core${ALPAKA_CI_ROCM_VERSION} rocm-smi-lib${ALPAKA_CI_ROCM_VERSION}
-    if [ $(version ${ALPAKA_CI_ROCM_VERSION}) -ge $(version "6.0.0") ]; then
-        apt install --no-install-recommends -y hiprand-dev${ALPAKA_CI_ROCM_VERSION}
-    fi
     export ROCM_PATH=/opt/rocm
 fi
 # ROCM_PATH required by HIP tools
