@@ -12592,7 +12592,7 @@
 				    namespace concepts
 				    {
 				        template<typename T>
-				        concept DeviceProvider = alpaka::concepts::Device<T> || alpaka::concepts::Queue<T>;
+				        concept DeviceProvider = Device<T> || Queue<T>;
 				    } // namespace concepts
 
 				    namespace detail
@@ -12672,7 +12672,7 @@
 				        template<typename TDeviceProvider>
 				        auto getDeviceFromProvider(TDeviceProvider const& provider)
 				        {
-				            if constexpr(alpaka::concepts::Device<TDeviceProvider>)
+				            if constexpr(concepts::Device<TDeviceProvider>)
 				            {
 				                return provider;
 				            }
@@ -29856,7 +29856,7 @@
 	     * and stores the result in the semi-open output range [`out_begin`,`out_end`), using the accelerator
 	     * back-end identified by `Tag`.
 	     */
-	    template<alpaka::concepts::Tag TTag, typename TQueue, typename T, typename TFn>
+	    template<concepts::Tag TTag, typename TQueue, typename T, typename TFn>
 	    void transform(TQueue& queue, T* out_begin, T* out_end, TFn&& fn, T* in)
 	    {
 	        using Idx = typename std::iterator_traits<T*>::difference_type;
@@ -29884,7 +29884,7 @@
 	     * and stores the result in the corresponding elements of the output buffer `out`,
 	     * using the accelerator back-end identified by `Tag`.
 	     */
-	    template<alpaka::concepts::Tag TTag, typename TQueue, typename TBuf, typename TFn, typename TConstBuf>
+	    template<concepts::Tag TTag, typename TQueue, typename TBuf, typename TFn, typename TConstBuf>
 	    void transform(TQueue& queue, TBuf& out, TFn&& fn, TConstBuf const& in)
 	    {
 	        // Check that the input and output buffers have compatible types.
@@ -35236,7 +35236,7 @@
 			namespace alpaka::internal
 			{
 
-			    template<alpaka::concepts::View TView>
+			    template<concepts::View TView>
 			    struct BaseViewAccessor
 			    {
 			    private:
@@ -35331,10 +35331,10 @@
 			#endif
 			    };
 
-			    template<alpaka::concepts::View TView>
+			    template<concepts::View TView>
 			    using DeviceViewAccessor = BaseViewAccessor<TView>;
 
-			    template<alpaka::concepts::View TView>
+			    template<concepts::View TView>
 			    struct HostViewAccessor : BaseViewAccessor<TView>
 			    {
 			    private:
