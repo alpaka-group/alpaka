@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/algo/WarpAlgos.hpp>
 #include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -112,6 +113,85 @@ struct ShflDownMultipleThreadWarpTestKernel
     }
 };
 
+template<std::uint32_t TWarpSize>
+struct MaskShflDownMultipleThreadWarpTestKernel
+{
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    {
+        auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        std::int32_t const warpExtent = alpaka::warp::getSize(acc);
+        // Test relies on having a single warp per thread block
+        ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
+        auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
+
+        auto const mask = alpaka::warp::activemask(acc);
+        using MaskType = decltype(mask);
+
+        ALPAKA_CHECK(*success, warpExtent > 1);
+
+        ALPAKA_CHECK(*success, alpaka::warp::shfl_down(acc, mask, 42, 0, warpExtent) == 42);
+        ALPAKA_CHECK(*success, alpaka::warp::shfl_down(acc, mask, threadIdxInWarp, 0, warpExtent) == threadIdxInWarp);
+        ALPAKA_CHECK(
+            *success,
+            alpaka::warp::shfl_down(acc, mask, threadIdxInWarp, 1, warpExtent)
+                == (threadIdxInWarp + 1 < warpExtent ? threadIdxInWarp + 1 : threadIdxInWarp));
+        auto const epsilon = std::numeric_limits<float>::epsilon();
+
+        // Test various widths
+        for(int width = 1; width < warpExtent; width *= 2)
+        {
+            for(int idx = 0; idx < width; idx++)
+            {
+                int const off = width * (threadIdxInWarp / width);
+                ALPAKA_CHECK(
+                    *success,
+                    alpaka::warp::shfl_down(acc, mask, threadIdxInWarp, static_cast<std::uint32_t>(idx), width)
+                        == ((threadIdxInWarp + idx < (width + off)) ? threadIdxInWarp + idx : threadIdxInWarp));
+                float const ans = alpaka::warp::shfl_down(
+                    acc,
+                    mask,
+                    4.0f - float(threadIdxInWarp),
+                    static_cast<std::uint32_t>(idx),
+                    width);
+                float const expect
+                    = ((threadIdxInWarp + idx < (width + off)) ? (4.0f - float(threadIdxInWarp + idx))
+                                                               : (4.0f - float(threadIdxInWarp)));
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+            }
+        }
+        // Some threads become inactive in the kernel to test that the warp operations
+        // properly operate on the active threads only
+        MaskType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
+
+        if(alpaka::detail::isWorkLane<TAcc>(updated_mask, static_cast<std::uint32_t>(threadIdxInWarp)))
+            for(int idx = 0; idx < warpExtent / 2; idx++)
+            {
+                auto const shfl = alpaka::warp::shfl_down(
+                    acc,
+                    updated_mask,
+                    threadIdxInWarp,
+                    static_cast<std::uint32_t>(idx),
+                    warpExtent);
+                float const ans = alpaka::warp::shfl_down(
+                    acc,
+                    updated_mask,
+                    4.0f - float(threadIdxInWarp),
+                    static_cast<std::uint32_t>(idx),
+                    warpExtent);
+                float const expect
+                    = ((threadIdxInWarp + idx < warpExtent / 2) ? (4.0f - float(threadIdxInWarp + idx)) : 0);
+                if(threadIdxInWarp + idx < warpExtent / 2)
+                {
+                    ALPAKA_CHECK(*success, shfl == threadIdxInWarp + idx);
+                    ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+                }
+            }
+    }
+};
+
 template<std::uint32_t TWarpSize, typename TAcc>
 struct alpaka::trait::WarpSize<ShflDownMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
     : std::integral_constant<std::uint32_t, TWarpSize>
@@ -164,22 +244,27 @@ TEMPLATE_LIST_TEST_CASE("shfl_down", "[warp]", alpaka::test::TestAccs)
             if(warpExtent == 4)
             {
                 REQUIRE(fixture(ShflDownMultipleThreadWarpTestKernel<4>{}));
+                REQUIRE(fixture(MaskShflDownMultipleThreadWarpTestKernel<4>{}));
             }
             else if(warpExtent == 8)
             {
                 REQUIRE(fixture(ShflDownMultipleThreadWarpTestKernel<8>{}));
+                REQUIRE(fixture(MaskShflDownMultipleThreadWarpTestKernel<8>{}));
             }
             else if(warpExtent == 16)
             {
                 REQUIRE(fixture(ShflDownMultipleThreadWarpTestKernel<16>{}));
+                REQUIRE(fixture(MaskShflDownMultipleThreadWarpTestKernel<16>{}));
             }
             else if(warpExtent == 32)
             {
                 REQUIRE(fixture(ShflDownMultipleThreadWarpTestKernel<32>{}));
+                REQUIRE(fixture(MaskShflDownMultipleThreadWarpTestKernel<32>{}));
             }
             else if(warpExtent == 64)
             {
                 REQUIRE(fixture(ShflDownMultipleThreadWarpTestKernel<64>{}));
+                REQUIRE(fixture(MaskShflDownMultipleThreadWarpTestKernel<64>{}));
             }
         }
     }
