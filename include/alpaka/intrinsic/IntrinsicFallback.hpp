@@ -61,20 +61,20 @@ namespace alpaka
         }
 
         template<typename TValue>
-        static auto clzFallback(TValue value) -> std::uint32_t
+        static auto clzFallback(TValue value) -> std::int32_t
         {
             if(value == 0)
                 return 32;
-            else if(value == value == ~TValue{0})
+            else if(value == ~TValue{0})
                 return 0;
-            std::uint32_t n = 0;
+            std::int32_t n = 0;
 
             TValue mask{1};
 
             const std::uint32_t bits = sizeof(value) * 8;
             for(std::uint32_t bit = 0; bit < bits; bit++)
             {
-                if(value & mask == 0)
+                if((value & mask) == 0)
                 {
                     n += 1;
                 }
@@ -138,12 +138,12 @@ namespace alpaka
         template<>
         struct Clz<IntrinsicFallback>
         {
-            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint32_t value) -> std::uint32_t
+            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint32_t value) -> std::int32_t
             {
                 return alpaka::detail::clzFallback(value);
             }
 
-            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint64_t value) -> std::uint32_t
+            static auto clz(IntrinsicFallback const& /*intrinsic*/, std::uint64_t value) -> std::int32_t
             {
                 return alpaka::detail::clzFallback(value);
             }

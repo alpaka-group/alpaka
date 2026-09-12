@@ -24,26 +24,26 @@ public:
         TInput const inputs[] = {0, 1, 3, 64, 256, 51362, std::numeric_limits<TInput>::max()};
         for(auto const input : inputs)
         {
-            std::uint32_t const expected = clzNaive(input);
-            std::uint32_t const actual = alpaka::clz(acc, input);
+            std::int32_t const expected = clzNaive(input);
+            std::int32_t const actual = alpaka::clz(acc, input);
             ALPAKA_CHECK(*success, actual == expected);
         }
     }
 
 private:
-    ALPAKA_FN_ACC static auto clzNaive(TInput value) -> std::uint32_t
+    ALPAKA_FN_ACC static auto clzNaive(TInput value) -> std::int32_t
     {
         if(value == 0)
             return sizeof(TInput) == 8 ? 32 : 64;
         else if(value == std::numeric_limits<TInput>::max())
             return 0;
-        std::uint32_t result = 0;
+        std::int32_t result = 0;
 
         TInput mask = 1;
 
         for(std::uint32_t i = 0; i < sizeof(TInput) * 8; i++)
         {
-            if(value & mask == 0)
+            if((value & mask) == 0)
             {
                 result += 1;
             }

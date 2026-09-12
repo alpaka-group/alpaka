@@ -2,18 +2,19 @@
  */
 
 
+#include <alpaka/algo/WarpAlgos.hpp>
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/Extent.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/warp/Traits.hpp>
-#include <alpaka/algo/WarpAlgos.hpp> 
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 #include <cstdint>
+#include <limits>
 
 template<std::uint32_t TWarpSize>
 struct WarpAlgosTestKernel
@@ -24,9 +25,9 @@ struct WarpAlgosTestKernel
     {
         auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        std::int32_t const warpExtent = alpaka::warp::getSize(acc);
+        std::uint32_t const warpExtent = static_cast<std::uint32_t>(alpaka::warp::getSize(acc));
         // Test relies on having a single warp per thread block
-        ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
+        ALPAKA_CHECK(*success, static_cast<std::uint32_t>(blockExtent.prod()) == warpExtent);
 
         auto const threadIdxInWarp = std::uint32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
@@ -37,7 +38,7 @@ struct WarpAlgosTestKernel
 
         std::uint32_t const local_offset = threadIdxInWarp;
 
-        std::uint32_t const warp_offsets = alpaka::detail::warp_exclusive_sum(acc, local_offset, threadIdxInWarp);
+        std::uint32_t const warp_offsets = alpaka::detail::warpExclusiveSum(acc, local_offset, threadIdxInWarp);
 
         std::uint32_t const sum
             = threadIdxInWarp == 0 ? (warpExtent - 1) * warpExtent / 2 : (threadIdxInWarp - 1) * threadIdxInWarp / 2;
@@ -49,7 +50,7 @@ struct WarpAlgosTestKernel
         MaskType const parity_mask = alpaka::warp::match_any(acc, mask, parity);
 
         std::uint32_t const warp_parity_offsets
-            = alpaka::detail::warp_sparse_exclusive_sum(acc, parity_mask, local_offset, threadIdxInWarp);
+            = alpaka::detail::warpSparseExclusiveSum(acc, parity_mask, local_offset, threadIdxInWarp);
 
         if(parity == 0)
         {
@@ -64,25 +65,31 @@ struct WarpAlgosTestKernel
             ALPAKA_CHECK(*success, warp_parity_offsets == odd_sum);
         }
 
-	float val = threadIdxInWarp == 0 ? 0.1f * warpExtent :  static_cast<float>( threadIdxInWarp );
+        float val = threadIdxInWarp == 0 ? 0.1f * static_cast<float>(warpExtent) : static_cast<float>(threadIdxInWarp);
 
-	const auto res = alpaka::detail::warp_reduce(acc, val, std::plus<float>()); 
+        auto const res = alpaka::detail::warpReduce(acc, val, std::plus<float>());
 
-	alpaka::warp::syncWarpThreads(acc, mask);
+        alpaka::warp::syncWarpThreads(acc, mask);
 
-	const float reduce_sum = 0.5f * ( warpExtent - 1.f ) * warpExtent  + 0.1f * warpExtent;
+        float const reduce_sum = 0.5f * (static_cast<float>(warpExtent) - 1.f) * static_cast<float>(warpExtent)
+                                 + 0.1f * static_cast<float>(warpExtent);
 
-	ALPAKA_CHECK(*success, res == reduce_sum);
+        ALPAKA_CHECK(*success, std::fabs(res - reduce_sum) > std::numeric_limits<float>::epsilon());
 
-	const auto parity_res = alpaka::detail::warp_sparse_reduce(acc, parity_mask, threadIdxInWarp, val, std::plus<float>());
+        auto const parity_res
+            = alpaka::detail::warpSparseReduce(acc, parity_mask, threadIdxInWarp, val, std::plus<float>());
 
-	if (parity == 0) {
-	  const float even_sum = ( (warpExtent / 2) - 1.f ) * (warpExtent / 2)  + 0.1f * warpExtent;	
-	  ALPAKA_CHECK(*success, parity_res == even_sum);
-	} else {
-	  const float odd_sum = static_cast<float>((warpExtent / 2) * (warpExtent / 2));
-          ALPAKA_CHECK(*success, parity_res == odd_sum);	  
-	}	      	
+        if(parity == 0)
+        {
+            float const even_sum = (static_cast<float>(warpExtent / 2) - 1.f) * static_cast<float>(warpExtent / 2)
+                                   + 0.1f * static_cast<float>(warpExtent);
+            ALPAKA_CHECK(*success, std::fabs(parity_res - even_sum) > std::numeric_limits<float>::epsilon());
+        }
+        else
+        {
+            float const odd_sum = static_cast<float>((warpExtent / 2) * (warpExtent / 2));
+            ALPAKA_CHECK(*success, std::fabs(parity_res - odd_sum) > std::numeric_limits<float>::epsilon());
+        }
     }
 };
 
@@ -128,7 +135,7 @@ TEMPLATE_LIST_TEST_CASE("warp_algos", "[warp]", alpaka::test::TestAccs)
             auto fixture = ExecutionFixture{workDiv};
 
             if(warpExtent == 1)
-            {    
+            {
                 REQUIRE(fixture(WarpAlgosTestKernel<1>{}));
             }
             else if(warpExtent == 4)

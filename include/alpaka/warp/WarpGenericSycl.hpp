@@ -332,7 +332,7 @@ namespace alpaka::warp::trait
         static auto matchAll(warp::WarpGenericSycl<TDim> const& warp, TValue const& value, std::int32_t& predicate) ->
             typename warp::WarpGenericSycl<TDim>::mask_type
         {
-            using mask_type = typename warp::WarpGenericSycl<TDim>::mask_type;
+            using MaskType = typename warp::WarpGenericSycl<TDim>::mask_type;
 
             auto const matchingMask = MatchAny<warp::WarpGenericSycl<TDim>>::matchAny(warp, value);
 
@@ -342,7 +342,7 @@ namespace alpaka::warp::trait
 
             predicate = static_cast<std::int32_t>(allMatch);
 
-            return allMatch ? activeMask : mask_type{0u};
+            return allMatch ? activeMask : MaskType{0u};
         }
 
         template<typename TValue>

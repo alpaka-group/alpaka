@@ -166,7 +166,7 @@ struct MaskShflDownMultipleThreadWarpTestKernel
         // properly operate on the active threads only
         MaskType const updated_mask = alpaka::warp::ballot(acc, mask, threadIdxInWarp < warpExtent / 2);
 
-        if(alpaka::detail::is_work_lane<TAcc>(updated_mask, static_cast<std::uint32_t>(threadIdxInWarp)))
+        if(alpaka::detail::isWorkLane<TAcc>(updated_mask, static_cast<std::uint32_t>(threadIdxInWarp)))
             for(int idx = 0; idx < warpExtent / 2; idx++)
             {
                 auto const shfl = alpaka::warp::shfl_down(

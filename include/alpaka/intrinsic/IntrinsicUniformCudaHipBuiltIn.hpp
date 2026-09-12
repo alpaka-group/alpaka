@@ -92,13 +92,13 @@ namespace alpaka
         struct Clz<IntrinsicUniformCudaHipBuiltIn>
         {
             static __device__ auto clz(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint32_t value)
-                -> std::uint32_t
+                -> std::int32_t
             {
                 return __clz(value);
             }
 
             static __device__ auto brev(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::uint64_t value)
-                -> std::uint32_t
+                -> std::int32_t
             {
                 return __clzll(value);
             }

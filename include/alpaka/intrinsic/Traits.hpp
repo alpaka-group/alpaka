@@ -96,8 +96,8 @@ namespace alpaka
     //! This function follows the semantics of the backend-specific bit-reversal
     //! operation for std::uint32_t.
     //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
+    //! \tparam TIntrinsic The intrinsic implementation type.
+    //! \param intrinsic The intrinsic implementation.
     //! \param value Lane 32-bit unsigned integer.
     //! \return The bit-reversed value of \p value.
 
@@ -114,8 +114,8 @@ namespace alpaka
     //! This function follows the semantics of the backend-specific bit-reversal
     //! operation for std::uint64_t.
     //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
+    //! \tparam TIntrinsic The intrinsic implementation type.
+    //! \param intrinsic The intrinsic implementation.
     //! \param value Lane 64-bit unsigned integer.
     //! \return The bit-reversed value of \p value.
 
@@ -132,14 +132,14 @@ namespace alpaka
     //! This function follows the semantics of the backend-specific count-leading-zeros
     //! operation for std::uint32_t.
     //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
+    //! \tparam TIntrinsic The intrinsic implementation type.
+    //! \param intrinsic The intrinsic implementation.
     //! \param value input value 32-bit unsigned integer.
     //! \return Number of leading zero bits in \p value.
 
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TIntrinsic>
-    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint32_t value) -> std::uint32_t
+    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint32_t value) -> std::int32_t
     {
         using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Clz<ImplementationBase>::clz(intrinsic, value);
@@ -150,14 +150,14 @@ namespace alpaka
     //! This function follows the semantics of the backend-specific count-leading-zeros
     //! operation for std::uint64_t.
     //!
-    //! \tparam TWarp The warp implementation type.
-    //! \param warp The warp implementation.
+    //! \tparam TIntrinsic The intrinsic implementation type.
+    //! \param intrinsic The intrinsic implementation.
     //! \param value input value 64-bit unsigned integer.
     //! \return Number of leading zero bits in \p value.
 
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TIntrinsic>
-    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint64_t value) -> std::uint32_t
+    ALPAKA_FN_ACC auto clz(TIntrinsic const& intrinsic, std::uint64_t value) -> std::int32_t
     {
         using ImplementationBase = interface::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
         return trait::Clz<ImplementationBase>::clz(intrinsic, value);

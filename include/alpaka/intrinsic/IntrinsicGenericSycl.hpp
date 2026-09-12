@@ -70,7 +70,7 @@ namespace alpaka::trait
     template<>
     struct Clz<IntrinsicGenericSycl>
     {
-        static auto clz(IntrinsicGenericSycl const&, std::uint32_t value) -> std::uint32_t
+        static auto clz(IntrinsicGenericSycl const&, std::uint32_t value) -> std::int32_t
         {
             return sycl::ext::oneapi::clz(value);
         }
