@@ -20,9 +20,8 @@ image_warning_cache: List[str] = []
 @typechecked
 def get_base_image(ubuntu_version) -> str:
     """Return the alpaka CI base image for the given Ubuntu version without container tag."""
-    return (
-        "registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu"
-        + bashi.ubuntu_version_to_string(ubuntu_version)
+    return "registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu" + bashi.ubuntu_version_to_string(
+        ubuntu_version
     )
 
 
@@ -92,9 +91,7 @@ def get_image_name(combination: bashi.Combination, container_version: str) -> st
 
 
 @typechecked
-def get_existing_image(
-    image_name: str, combination: bashi.Combination, container_version: str
-) -> str:
+def get_existing_image(image_name: str, combination: bashi.Combination, container_version: str) -> str:
     """Check if image exist in the container registry. If not, return container base image for the
     given combination.
 

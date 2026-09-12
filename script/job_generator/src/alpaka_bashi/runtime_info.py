@@ -30,9 +30,7 @@ class HostCompilerSupportsCuda:
         """
         return self.max_versions[compiler_name]
 
-    def __call__(
-        self, compiler_name: bashi.ValueName, compiler_version: bashi.ValueVersion
-    ) -> bool:
+    def __call__(self, compiler_name: bashi.ValueName, compiler_version: bashi.ValueVersion) -> bool:
         return compiler_version <= self.max_versions[compiler_name]
 
 

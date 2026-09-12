@@ -29,9 +29,7 @@ def only_clang_cuda_compiler_backends(combinations: List[bashi.CompilerBackendCo
     return True
 
 
-def check_only_valid_backend_combinations_a1(
-    row: bashi.BashiRow, alpaka_filter: "AlpakaFilter"
-) -> bool:
+def check_only_valid_backend_combinations_a1(row: bashi.BashiRow, alpaka_filter: "AlpakaFilter") -> bool:
     """
     Check if still possible valid backend combinations exist.
 
@@ -43,11 +41,7 @@ def check_only_valid_backend_combinations_a1(
         bool: True if passed.
     """
     if (
-        len(
-            bashi.get_valid_compiler_backend_combinations(
-                row, get_allowed_backend_combinations(), get_used_backends()
-            )
-        )
+        len(bashi.get_valid_compiler_backend_combinations(row, get_allowed_backend_combinations(), get_used_backends()))
         == 0
     ):
         alpaka_filter.reason("No valid backend combination available.")
@@ -67,9 +61,7 @@ def check_cuda_sdk_host_compiler_a2(row: bashi.BashiRow, alpaka_filter: "AlpakaF
         bool: True if passed.
     """
     if only_cuda_compiler_backends(
-        bashi.get_valid_compiler_backend_combinations(
-            row, get_allowed_backend_combinations(), get_used_backends()
-        )
+        bashi.get_valid_compiler_backend_combinations(row, get_allowed_backend_combinations(), get_used_backends())
     ):
         if (
             row[HOST_COMPILER].name in (GCC, CLANG)
@@ -100,9 +92,7 @@ def check_debug_build_hip_a3(row: bashi.BashiRow, alpaka_filter: "AlpakaFilter")
     """
     if row[BUILD_TYPE].version == CMAKE_DEBUG_VER:
         for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
-            if row[compiler_type].name == HIPCC and row[
-                compiler_type
-            ].version == packaging.version.parse("6.2"):
+            if row[compiler_type].name == HIPCC and row[compiler_type].version == packaging.version.parse("6.2"):
                 alpaka_filter.reason("Debug builds with HIP/ROCm 6.2 produce compiler errors.")
                 return False
     return True
@@ -129,18 +119,13 @@ def check_ubuntu_22_04_specifics_a4(row: bashi.BashiRow, alpaka_filter: "AlpakaF
                 alpaka_filter.reason("Only HIPCC and Clang will be tested on Ubuntu 22.04")
                 return False
 
-            if row[compiler_type].name == CLANG and row[
-                compiler_type
-            ].version > packaging.version.parse("16"):
+            if row[compiler_type].name == CLANG and row[compiler_type].version > packaging.version.parse("16"):
                 alpaka_filter.reason("Clang 17 and later will be tested on Ubuntu 24.04 and later.")
                 return False
 
         for backend in ONE_API_BACKENDS + [ALPAKA_ACC_GPU_CUDA_ENABLE]:
             if row[backend].version != OFF_VER:
-                alpaka_filter.reason(
-                    f"The backend {row[backend].name} will be not used on Ubuntu 22.04 and "
-                    "older."
-                )
+                alpaka_filter.reason(f"The backend {row[backend].name} will be not used on Ubuntu 22.04 and " "older.")
                 return False
     return True
 
@@ -161,9 +146,7 @@ def check_clang_16_and_older_a5(row: bashi.BashiRow, alpaka_filter: "AlpakaFilte
     """
     # OVERWORK: remove/overwork me, if bashi supports standard library
     for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
-        if row[compiler_type].name == CLANG and row[
-            compiler_type
-        ].version <= packaging.version.parse("16"):
+        if row[compiler_type].name == CLANG and row[compiler_type].version <= packaging.version.parse("16"):
             if row[UBUNTU].version >= packaging.version.parse("24.04"):
                 alpaka_filter.reason(
                     f"Clang {row[compiler_type].version} does not support libc++-13 and later "
@@ -171,9 +154,7 @@ def check_clang_16_and_older_a5(row: bashi.BashiRow, alpaka_filter: "AlpakaFilte
                 )
                 return False
 
-            if row[DEVICE_COMPILER].name == NVCC and row[
-                DEVICE_COMPILER
-            ].version >= packaging.version.parse("12.0"):
+            if row[DEVICE_COMPILER].name == NVCC and row[DEVICE_COMPILER].version >= packaging.version.parse("12.0"):
                 alpaka_filter.reason(
                     f"NVCC {row[DEVICE_COMPILER].version} is only available on UBUNTU 24.04 "
                     f"and later but Clang {row[HOST_COMPILER].version} does not support 24.04 "
@@ -192,16 +173,13 @@ def check_clang_16_and_older_a5(row: bashi.BashiRow, alpaka_filter: "AlpakaFilte
             for cpu_backend in CPU_BACKENDS:
                 if row[cpu_backend].version == OFF_VER:
                     alpaka_filter.reason(
-                        f"Clang {row[compiler_type].version} works only together with CPU "
-                        "backends."
+                        f"Clang {row[compiler_type].version} works only together with CPU " "backends."
                     )
                     return False
     return True
 
 
-def check_existing_clang_cuda_for_cuda_sdk_version_a6(
-    row: bashi.BashiRow, alpaka_filter: "AlpakaFilter"
-) -> bool:
+def check_existing_clang_cuda_for_cuda_sdk_version_a6(row: bashi.BashiRow, alpaka_filter: "AlpakaFilter") -> bool:
     """
     Check if a Clang-CUDA version exist, which supports the CUDA SDK version in the row.
 
@@ -213,9 +191,7 @@ def check_existing_clang_cuda_for_cuda_sdk_version_a6(
         bool: True if passed.
     """
     if only_cuda_compiler_backends(
-        bashi.get_valid_compiler_backend_combinations(
-            row, get_allowed_backend_combinations(), get_used_backends()
-        )
+        bashi.get_valid_compiler_backend_combinations(row, get_allowed_backend_combinations(), get_used_backends())
     ):
         if (
             RT_CLANG_CUDA_MAX_CUDA_SUPPORT in alpaka_filter.runtime_infos
@@ -225,9 +201,7 @@ def check_existing_clang_cuda_for_cuda_sdk_version_a6(
                 )
             )
             and ALPAKA_ACC_GPU_CUDA_ENABLE in row
-            and not alpaka_filter.runtime_infos[RT_CLANG_CUDA_MAX_CUDA_SUPPORT](
-                row[ALPAKA_ACC_GPU_CUDA_ENABLE].version
-            )
+            and not alpaka_filter.runtime_infos[RT_CLANG_CUDA_MAX_CUDA_SUPPORT](row[ALPAKA_ACC_GPU_CUDA_ENABLE].version)
         ):
             alpaka_filter.reason(
                 "There is no Clang-CUDA version in the combination list, which supports the "

@@ -71,8 +71,7 @@ def get_nvcc_relocatable_device_code_job(
     job_body["variables"]["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "OFF"
 
     return {
-        f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}"
-        "_debug_relocatable_device_code_compile_only": job_body
+        f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}" "_debug_relocatable_device_code_compile_only": job_body
     }
 
 
@@ -135,10 +134,7 @@ def get_nvcc_extended_lambda_off_job(
     job_body["variables"]["alpaka_CUDA_KEEP_FILES"] = "OFF"
     job_body["variables"]["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "OFF"
 
-    return {
-        f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}"
-        "_release_extended_lambda_off_compile_only": job_body
-    }
+    return {f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}" "_release_extended_lambda_off_compile_only": job_body}
 
 
 # pylint: disable=too-many-arguments
@@ -202,10 +198,7 @@ def get_cuda_only_job(
     job_body["variables"]["alpaka_CUDA_KEEP_FILES"] = "OFF"
     job_body["variables"]["alpaka_CUDA_EXPT_EXTENDED_LAMBDA"] = "ON"
 
-    return {
-        f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}"
-        "_release_extended_cudaonly_on_compile_only": job_body
-    }
+    return {f"linux_special_nvcc{nvcc_version}_gcc{gcc_version}" "_release_extended_cudaonly_on_compile_only": job_body}
 
 
 # pylint: enable=duplicate-code

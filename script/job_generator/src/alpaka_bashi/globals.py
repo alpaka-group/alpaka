@@ -21,9 +21,7 @@ CMAKE_DEBUG: int = 1
 CMAKE_RELEASE_WITH_DEBUG_INFO: int = 2
 CMAKE_RELEASE_VER: ValueVersion = packaging.version.parse(str(CMAKE_RELEASE))
 CMAKE_DEBUG_VER: ValueVersion = packaging.version.parse(str(CMAKE_DEBUG))
-CMAKE_RELEASE_WITH_DEBUG_INFO_VER: ValueVersion = packaging.version.parse(
-    str(CMAKE_RELEASE_WITH_DEBUG_INFO)
-)
+CMAKE_RELEASE_WITH_DEBUG_INFO_VER: ValueVersion = packaging.version.parse(str(CMAKE_RELEASE_WITH_DEBUG_INFO))
 BUILD_TYPES: List[Union[str, int, float]] = [
     CMAKE_RELEASE,
     CMAKE_DEBUG,
@@ -39,9 +37,7 @@ BUILD_TYPES_NAMES: Dict[str, ValueVersion] = {
 JOB_EXECUTION_TYPE: bashi.Parameter = "job_execution_type"
 JOB_EXECUTION_COMPILE_ONLY: int = 0
 JOB_EXECUTION_RUNTIME: int = 1
-JOB_EXECUTION_COMPILE_ONLY_VER: ValueVersion = packaging.version.parse(
-    str(JOB_EXECUTION_COMPILE_ONLY)
-)
+JOB_EXECUTION_COMPILE_ONLY_VER: ValueVersion = packaging.version.parse(str(JOB_EXECUTION_COMPILE_ONLY))
 JOB_EXECUTION_RUNTIME_VER: ValueVersion = packaging.version.parse(str(JOB_EXECUTION_RUNTIME))
 JOB_EXECUTION_TYPES: List[Union[str, int, float]] = [
     JOB_EXECUTION_COMPILE_ONLY,

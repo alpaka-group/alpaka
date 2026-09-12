@@ -47,17 +47,13 @@ def add_combinations_parameters(combination_list: bashi.CombinationList) -> bash
             if parameter in comb:
                 annotated_combinations[parameter] += 1
             else:
-                print(
-                    "Parameter {parameter} missing in combinations.\n"
-                    f"{bashi.get_str_row_nice(comb)}"
-                )
+                print("Parameter {parameter} missing in combinations.\n" f"{bashi.get_str_row_nice(comb)}")
 
     # check if all combinations have the required parameters
     for parameter, num_annotations in annotated_combinations.items():
         if num_annotations < num_combs:
             raise RuntimeError(
-                f"{num_combs - num_annotations} of {num_combs} combinations have no parameter "
-                f"{parameter}."
+                f"{num_combs - num_annotations} of {num_combs} combinations have no parameter " f"{parameter}."
             )
 
     return combination_list_copy

@@ -39,12 +39,8 @@ class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
                 version_relation=get_alpaka_version_relation(),
             ),
         )
-        self.assertEqual(
-            host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("13")
-        )
-        self.assertEqual(
-            host_compiler_support_cuda.get_max_version(CLANG), packaging.version.parse("18")
-        )
+        self.assertEqual(host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("13"))
+        self.assertEqual(host_compiler_support_cuda.get_max_version(CLANG), packaging.version.parse("18"))
         for compiler, version, expected_result in self.CASE1_TEST_DATA_RESULTS:
             with self.subTest(compiler=compiler, version=version, expected_result=expected_result):
                 self.assertEqual(
@@ -66,9 +62,5 @@ class TestRtFuncHostCompilerSupportsCuda(unittest.TestCase):
                 version_relation=get_alpaka_version_relation(),
             ),
         )
-        self.assertEqual(
-            host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("12")
-        )
-        self.assertEqual(
-            host_compiler_support_cuda.get_max_version(CLANG), packaging.version.parse("16")
-        )
+        self.assertEqual(host_compiler_support_cuda.get_max_version(GCC), packaging.version.parse("12"))
+        self.assertEqual(host_compiler_support_cuda.get_max_version(CLANG), packaging.version.parse("16"))

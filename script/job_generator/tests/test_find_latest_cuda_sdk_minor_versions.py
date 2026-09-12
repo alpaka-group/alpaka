@@ -75,10 +75,8 @@ class TestFindLatestCudaSdkMinorVersions(unittest.TestCase):
             CLANG_CUDA: sorted([packaging.version.parse(str(ver)) for ver in [12.2]]),
         }
 
-        result = (
-            alpaka_bashi.combination_modifier.execution_type.find_latest_cuda_sdk_minor_versions(
-                self.COMBINATION_LIST
-            )
+        result = alpaka_bashi.combination_modifier.execution_type.find_latest_cuda_sdk_minor_versions(
+            self.COMBINATION_LIST
         )
 
         for compiler in (GCC, CLANG, CLANG_CUDA):

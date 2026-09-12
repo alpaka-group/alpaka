@@ -32,20 +32,14 @@ def add_ci_pipeline_type(combination_list: bashi.CombinationList) -> bashi.Combi
             and comb[HOST_COMPILER].name in (GCC, CLANG)
             and comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER
         ):
-            comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_CPU_VER
-            )
+            comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_CPU_VER)
 
         # Hipcc compiler
         if comb[DEVICE_COMPILER].name == HIPCC:
             if comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_COMPILE_ONLY_VER:
-                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                    CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER
-                )
+                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER)
             if comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER:
-                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                    CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_GPU_VER
-                )
+                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_GPU_VER)
 
         # ICPX
         if comb[DEVICE_COMPILER].name == ICPX:
@@ -53,28 +47,20 @@ def add_ci_pipeline_type(combination_list: bashi.CombinationList) -> bashi.Combi
                 comb[ALPAKA_ACC_ONEAPI_CPU_ENABLE].version == ON_VER
                 and comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER
             ):
-                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                    CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_CPU_VER
-                )
+                comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_CPU_VER)
             for one_api_backend in (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ALPAKA_ACC_ONEAPI_FPGA_ENABLE):
                 if (
                     comb[one_api_backend].version == ON_VER
                     and comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_COMPILE_ONLY_VER
                 ):
-                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                        CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER
-                    )
+                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER)
 
         # CUDA
         for device_compiler in (NVCC, CLANG_CUDA):
             if comb[DEVICE_COMPILER].name == device_compiler:
                 if comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_COMPILE_ONLY_VER:
-                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                        CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER
-                    )
+                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_COMPILE_ONLY_VER)
                 if comb[JOB_EXECUTION_TYPE].version == JOB_EXECUTION_RUNTIME_VER:
-                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(
-                        CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_GPU_VER
-                    )
+                    comb[CI_PIPELINE_NAME] = bashi.ParameterValue(CI_PIPELINE_NAME, CI_PIPELINE_RUNTIME_GPU_VER)
 
     return combination_list_copy

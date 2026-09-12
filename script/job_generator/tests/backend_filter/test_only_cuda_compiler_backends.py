@@ -59,15 +59,9 @@ class TestOnlyCUDABackends(unittest.TestCase):
                 )
 
     BACKEND_COMBINATIONS_INVALID_CASE = [
+        [bashi.CompilerBackendCombination(CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE])],
         [
-            bashi.CompilerBackendCombination(
-                CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]
-            )
-        ],
-        [
-            bashi.CompilerBackendCombination(
-                CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]
-            ),
+            bashi.CompilerBackendCombination(CLANG_CUDA, CLANG_CUDA, [ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE]),
             bashi.CompilerBackendCombination(
                 ICPX, ICPX, [ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE, ALPAKA_ACC_ONEAPI_FPGA_ENABLE]
             ),

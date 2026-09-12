@@ -87,9 +87,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_only_valid_backend_combinations_a1(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_only_valid_backend_combinations_a1(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -126,12 +124,8 @@ class TestAlpakaFilter(unittest.TestCase):
             runtime_info[RT_HOST_COMPILER_CUDA_SUPPORT],
         )
 
-        self.assertEqual(
-            rt_host_compiler_cuda_support.get_max_version(GCC), packaging.version.parse("13")
-        )
-        self.assertEqual(
-            rt_host_compiler_cuda_support.get_max_version(CLANG), packaging.version.parse("18")
-        )
+        self.assertEqual(rt_host_compiler_cuda_support.get_max_version(GCC), packaging.version.parse("13"))
+        self.assertEqual(rt_host_compiler_cuda_support.get_max_version(CLANG), packaging.version.parse("18"))
 
         for untyped_row in self.INVALID_CUDA_BACKEND_COMBINATIONS_FOR_RT_FILTER:
             row = parse_bashi_row(untyped_row)
@@ -251,9 +245,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_ubuntu_22_04_specifics_a4(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_ubuntu_22_04_specifics_a4(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -277,9 +269,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_ubuntu_22_04_specifics_a4(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_ubuntu_22_04_specifics_a4(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -302,15 +292,11 @@ class TestAlpakaFilter(unittest.TestCase):
         for backend in self.BACKENDS_ARE_NOT_AVAILABLE_ON_UBUNTU_2204:
             with self.subTest(backend=backend):
                 row = [(backend, ON), (UBUNTU, "22.04")]
-                EXPECTED_ERROR_MSG = (
-                    f"The backend {backend} will be not used on Ubuntu 22.04 and older."
-                )
+                EXPECTED_ERROR_MSG = f"The backend {backend} will be not used on Ubuntu 22.04 and older."
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_ubuntu_22_04_specifics_a4(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_ubuntu_22_04_specifics_a4(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -331,9 +317,7 @@ class TestAlpakaFilter(unittest.TestCase):
     def test_valid_clang_ubuntu2204_a5(self):
         for row in self.AVAILABLE_CLANG_VERSIONS_ON_UBUNTU_2204:
             with self.subTest(row=row):
-                self.assertTrue(
-                    check_clang_16_and_older_a5(parse_bashi_row(row), AlpakaFilter()), f"{row}"
-                )
+                self.assertTrue(check_clang_16_and_older_a5(parse_bashi_row(row), AlpakaFilter()), f"{row}")
                 self.assertTrue(AlpakaFilter()(parse_bashi_row(row)), f"{row}")
 
     def test_invalid_clang_ubuntu2204_wrong_ubuntu_a5(self):
@@ -350,9 +334,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                     reason_msg = io.StringIO()
                     self.assertFalse(
-                        check_clang_16_and_older_a5(
-                            parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                        ),
+                        check_clang_16_and_older_a5(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                         f"{row}",
                     )
                     self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -380,9 +362,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_clang_16_and_older_a5(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_clang_16_and_older_a5(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -410,9 +390,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    check_clang_16_and_older_a5(
-                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
-                    ),
+                    check_clang_16_and_older_a5(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
                     f"{row}",
                 )
                 self.assertEqual(reason_msg.getvalue(), EXPECTED_ERROR_MSG, f"{row}")
@@ -464,13 +442,9 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_valid_clang_cuda_cuda_sdk_a6(self):
         runtime_info: Dict[str, Callable[..., bool]] = {}
-        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = (
-            alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
-                bashi.VersionRelation(
-                    clang_cuda_max_cuda_version=self.TEST_CLANG_CUDA_SDK_SUPPORT_TABLE
-                ),
-                self.CLANG_CUDA_VERSIONS,
-            )
+        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
+            bashi.VersionRelation(clang_cuda_max_cuda_version=self.TEST_CLANG_CUDA_SDK_SUPPORT_TABLE),
+            self.CLANG_CUDA_VERSIONS,
         )
 
         for row in self.VALID_CLANG_CUDA_SDK_COMBINATIONS:
@@ -494,13 +468,9 @@ class TestAlpakaFilter(unittest.TestCase):
 
     def test_invalid_clang_cuda_cuda_sdk_a6(self):
         runtime_info: Dict[str, Callable[..., bool]] = {}
-        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = (
-            alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
-                bashi.VersionRelation(
-                    clang_cuda_max_cuda_version=self.TEST_CLANG_CUDA_SDK_SUPPORT_TABLE
-                ),
-                self.CLANG_CUDA_VERSIONS,
-            )
+        runtime_info[RT_CLANG_CUDA_MAX_CUDA_SUPPORT] = alpaka_bashi.runtime_info.ClangCUDAMaxSupportsCuda(
+            bashi.VersionRelation(clang_cuda_max_cuda_version=self.TEST_CLANG_CUDA_SDK_SUPPORT_TABLE),
+            self.CLANG_CUDA_VERSIONS,
         )
 
         for row in self.INVALID_CLANG_CUDA_SDK_COMBINATIONS:
@@ -522,9 +492,7 @@ class TestAlpakaFilter(unittest.TestCase):
 
                 reason_msg = io.StringIO()
                 self.assertFalse(
-                    AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(
-                        parse_bashi_row(row)
-                    ),
+                    AlpakaFilter(output=reason_msg, runtime_infos=runtime_info)(parse_bashi_row(row)),
                     f"{row}",
                 )
 

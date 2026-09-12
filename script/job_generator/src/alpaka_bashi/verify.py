@@ -282,7 +282,6 @@ def remove_ubuntu2404(
 ):
     """Remove the combination of Clang 16 and older and Ubuntu 24.04."""
     for compiler_type in (HOST_COMPILER, DEVICE_COMPILER):
-
         bashi.remove_parameter_value_pairs_ranges(
             parameter_value_pairs=parameter_value_pairs,
             removed_parameter_value_pairs=removed_parameter_value_pairs,
@@ -342,10 +341,8 @@ def verify(
         bool: True if it found all pairs
     """
 
-    expected_param_val_tuple, unexpected_param_val_tuple = (
-        bashi.get_expected_bashi_parameter_value_pairs(
-            param_value_matrix, version_relation, run_infos
-        )
+    expected_param_val_tuple, unexpected_param_val_tuple = bashi.get_expected_bashi_parameter_value_pairs(
+        param_value_matrix, version_relation, run_infos
     )
 
     remove_disabled_serial_backend(expected_param_val_tuple, unexpected_param_val_tuple)
@@ -359,16 +356,12 @@ def verify(
     )
     remove_simple_backend_backend_combinations(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_cuda_backend_backend_combinations(expected_param_val_tuple, unexpected_param_val_tuple)
-    remove_non_used_nvcc_device_compiler(
-        expected_param_val_tuple, unexpected_param_val_tuple, run_infos
-    )
+    remove_non_used_nvcc_device_compiler(expected_param_val_tuple, unexpected_param_val_tuple, run_infos)
     remove_hip_62_debug_build(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_ubuntu2204(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_clang16_and_older_cuda(expected_param_val_tuple, unexpected_param_val_tuple)
     remove_ubuntu2404(expected_param_val_tuple, unexpected_param_val_tuple)
-    remove_clang_cuda_not_used_backend_combinations(
-        expected_param_val_tuple, unexpected_param_val_tuple, run_infos
-    )
+    remove_clang_cuda_not_used_backend_combinations(expected_param_val_tuple, unexpected_param_val_tuple, run_infos)
 
     expected_param_val_okay = bashi.check_parameter_value_pair_in_combination_list(
         combination_list, expected_param_val_tuple

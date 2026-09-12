@@ -43,9 +43,7 @@ def parse_param_vals(
     Returns:
         List[ParameterValue]: List of parameter-values
     """
-    parsed_list: List[bashi.ParameterValue] = [
-        parse_param_val(param_val) for param_val in param_vals
-    ]
+    parsed_list: List[bashi.ParameterValue] = [parse_param_val(param_val) for param_val in param_vals]
 
     return parsed_list
 
@@ -142,12 +140,8 @@ def parse_expected_val_pairs(
                         "\n(<parameter>, <value-version>)"
                     )
                 default_input_entry = cast(DefaultParsableParameterValue, input_entry)
-                regular_entry_pair.append(
-                    (default_input_entry[0], default_input_entry[0], default_input_entry[1])
-                )
+                regular_entry_pair.append((default_input_entry[0], default_input_entry[0], default_input_entry[1]))
 
-        expected_val_pairs.append(
-            bashi.utils.create_parameter_value_pair(*chain(*regular_entry_pair))
-        )
+        expected_val_pairs.append(bashi.utils.create_parameter_value_pair(*chain(*regular_entry_pair)))
 
     return expected_val_pairs
