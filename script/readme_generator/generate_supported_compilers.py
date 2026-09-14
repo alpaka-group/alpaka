@@ -136,7 +136,8 @@ if __name__ == "__main__":
     default_readme_path = os.path.abspath(os.path.join(script_path, "../..", "README.md"))
 
     parser = argparse.ArgumentParser(
-        description="Creates a Markdown table for the supported compilers from " "the configuration file."
+        description="Creates a Markdown table for the supported compilers from "
+        "the configuration file."
     )
     parser.add_argument(
         "-c",
@@ -204,10 +205,18 @@ if __name__ == "__main__":
             sys.exit(0)
         else:
             print()
-            print("Please the check the configuration file " "'./script/readme_generator/supported_compilers.json'")
-            print("Generate a new table with " "'./script/readme_generator/generate_supported_compilers.py'")
+            print(
+                "Please the check the configuration file "
+                "'./script/readme_generator/supported_compilers.json'"
+            )
+            print(
+                "Generate a new table with "
+                "'./script/readme_generator/generate_supported_compilers.py'"
+            )
             print("Copy the output in the README.md")
             print(
-                "Verify the README.md with " "'./script/readme_generator/generate_supported_compilers.py " "--verify'"
+                "Verify the README.md with "
+                "'./script/readme_generator/generate_supported_compilers.py "
+                "--verify'"
             )
             sys.exit(1)
