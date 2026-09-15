@@ -178,7 +178,7 @@ else
         if [ -z "$(ls -A ${ALPAKA_CI_CUDA_DIR})" ]
         then
             mkdir -p "${ALPAKA_CI_CUDA_DIR}"
-            travis_retry wget --no-verbose -O "${ALPAKA_CI_CUDA_DIR}"/"${ALPAKA_CUDA_PKG_FILE_NAME}" "${ALPAKA_CUDA_PKG_FILE_PATH}"
+            retry_cmd wget --no-verbose -O "${ALPAKA_CI_CUDA_DIR}"/"${ALPAKA_CUDA_PKG_FILE_NAME}" "${ALPAKA_CUDA_PKG_FILE_PATH}"
         fi
         sudo dpkg --install "${ALPAKA_CI_CUDA_DIR}"/"${ALPAKA_CUDA_PKG_FILE_NAME}"
 
@@ -186,15 +186,15 @@ else
         if [ "${ALPAKA_CUDA_OLD_KEYS}" = true ]
         then
             # For all versions < 11.7
-            travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent gnupg2
-            travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
-            travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
+            retry_cmd sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent gnupg2
+            retry_cmd sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
+            retry_cmd sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
         else
             # Since 11.7 the keys are shipped as part of the local repository.
             sudo cp /var/${ALPAKA_CUDA_PKG_DEB_NAME}/cuda-*-keyring.gpg /usr/share/keyrings
         fi
 
-        travis_retry sudo apt-get -y --quiet update
+        retry_cmd sudo apt-get -y --quiet update
 
         # Install CUDA
         # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
@@ -213,7 +213,7 @@ else
 
         if [ "${ALPAKA_CI_CUDA_COMPILER}" == "clang++" ]
         then
-            travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-multilib
+            retry_cmd sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-multilib
         fi
 
         # clean up
