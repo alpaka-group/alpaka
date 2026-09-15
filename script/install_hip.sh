@@ -20,13 +20,13 @@ if agc-manager -e rocm@${ALPAKA_CI_HIP_VERSION} ; then
 else
     echo_yellow "<INSTALL: ROCm ${ALPAKA_CI_HIP_VERSION}>"
 
-    travis_retry apt-get -y --quiet update
-    travis_retry apt-get -y --quiet install wget gnupg2
+    retry_cmd apt-get -y --quiet update
+    retry_cmd apt-get -y --quiet install wget gnupg2
     # AMD container keys are outdated and must be updated
     source /etc/os-release
     wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
     echo "deb https://repo.radeon.com/rocm/apt/${ALPAKA_CI_HIP_VERSION} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/rocm.list
-    travis_retry apt-get -y --quiet update
+    retry_cmd apt-get -y --quiet update
 
     ALPAKA_CI_ROCM_VERSION=$ALPAKA_CI_HIP_VERSION
     # append .0 if no patch level is defined
@@ -51,10 +51,10 @@ export PATH=${ROCM_PATH}/llvm/bin:$PATH
 # Workaround if clang uses the stdlibc++. The stdlibc++-9 does not support C++20, therefore we install the stdlibc++-11. Clang automatically uses the latest stdlibc++ version.
 if [[ "$(cat /etc/os-release)" =~ "20.04" ]] && [ "${alpaka_CXX_STANDARD}" == "20" ];
 then
-    travis_retry sudo apt install -y --no-install-recommends software-properties-common
+    retry_cmd sudo apt install -y --no-install-recommends software-properties-common
     sudo apt-add-repository ppa:ubuntu-toolchain-r/test -y
-    travis_retry sudo apt update
-    travis_retry sudo apt install -y --no-install-recommends g++-11
+    retry_cmd sudo apt update
+    retry_cmd sudo apt install -y --no-install-recommends g++-11
 fi
 
 sudo update-alternatives --install /usr/bin/clang clang ${ROCM_PATH}/llvm/bin/clang 50
