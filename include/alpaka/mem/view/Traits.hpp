@@ -337,11 +337,16 @@ namespace alpaka
             std::is_same_v<DstElem, std::remove_const_t<SrcElem>>,
             "The source and destination view must have the same element type!");
 
+        // The extent and the views may use different index types; compare them in a type that can
+        // represent all of the values involved, to avoid both compilation errors and truncation.
+        [[maybe_unused]] auto const extents = getExtents(extent);
+        using SrcCommon [[maybe_unused]] = std::common_type_t<Idx<TExtent>, Idx<TViewSrc>>;
+        using DstCommon [[maybe_unused]] = std::common_type_t<Idx<TExtent>, Idx<TViewDst>>;
         assert(
-            (extent <= getExtents(viewSrc)).all()
+            (castVec<SrcCommon>(extents) <= castVec<SrcCommon>(getExtents(viewSrc))).all()
             && "The memcpy extent must not be larger than the source view's extent!");
         assert(
-            (extent <= getExtents(viewDst)).all()
+            (castVec<DstCommon>(extents) <= castVec<DstCommon>(getExtents(viewDst))).all()
             && "The memcpy extent must not be larger than the destination view's extent!");
 
         return trait::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(
