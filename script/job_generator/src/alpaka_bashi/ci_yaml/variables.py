@@ -17,7 +17,7 @@ from alpaka_bashi.globals import (
     CI_PIPELINE_COMPILE_ONLY_VER,
     MDSPAN,
 )
-from alpaka_bashi.versions import get_used_backends
+from alpaka_bashi.versions import get_used_backends, get_hipcc_clang_versions
 
 
 @typechecked
@@ -107,7 +107,7 @@ def set_hipcc_variables(job_body: Dict[str, Any], combination: bashi.Combination
     """Set variables which are specific if the hipcc is the device compiler."""
 
     def get_clang_version(hipcc_version):
-        for hipcc_clang in bashi.version.dependencies.hipcc.HIPCC_CLANG_VERSION:
+        for hipcc_clang in get_hipcc_clang_versions():
             if hipcc_clang.compiler == hipcc_version:
                 return hipcc_clang.clang
         raise RuntimeError(f"No Clang version for hipcc {hipcc_version}")
