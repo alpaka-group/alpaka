@@ -37,6 +37,33 @@ namespace alpaka::warp
     };
 } // namespace alpaka::warp
 
+namespace alpaka::warp::detail
+{
+    // On Intel GPUs, the SYCL group operations used to implement the warp operations (group_ballot(),
+    // get_opportunistic_group() and the group algorithms) give wrong results when some work-items have returned
+    // early from the kernel, and the code calling them is not inlined, for example when compiling with -O0,
+    // -fno-inline or -fno-inline-functions. In these cases the work-items that have returned are still counted as
+    // members of the group. Clang-based compilers, like icpx, define __NO_INLINE__ in these cases.
+    // Define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK to disable this check, for example if the kernels using the warp
+    // operations never return early.
+#    if defined(ALPAKA_SYCL_ONEAPI_GPU) && defined(__NO_INLINE__) && !defined(ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK)
+    constexpr bool syclWarpRequiresInlining = true;
+#    else
+    constexpr bool syclWarpRequiresInlining = false;
+#    endif
+
+    // Dependent on the template parameter, so that the static_assert is only evaluated when a warp operation is used.
+    template<typename TDim>
+    inline constexpr bool syclWarpSupported = not syclWarpRequiresInlining;
+} // namespace alpaka::warp::detail
+
+#    define ALPAKA_SYCL_WARP_CHECK_INLINE                                                                             \
+        static_assert(                                                                                                \
+            alpaka::warp::detail::syclWarpSupported<TDim>,                                                            \
+            "The alpaka warp operations give wrong results on Intel GPUs when the SYCL code is compiled without "     \
+            "inlining (e.g. -O0, -fno-inline or -fno-inline-functions). Enable optimisations (-O1 or higher) and "    \
+            "inlining, or define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK if the kernels never return early.")
+
 namespace alpaka::warp::trait
 {
     // oneAPI up to 2025.3 uses sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group(),
@@ -86,6 +113,8 @@ namespace alpaka::warp::trait
         // Restrict to warpSize <= 32 for now.
         static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> warp::WarpGenericSycl<TDim>::mask_type
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
             auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
             std::uint32_t bits = 0;
@@ -99,6 +128,8 @@ namespace alpaka::warp::trait
     {
         static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto activegroup = get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
         }
@@ -109,6 +140,8 @@ namespace alpaka::warp::trait
     {
         static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto activegroup = get_opportunistic_group();
             return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
         }
@@ -123,6 +156,8 @@ namespace alpaka::warp::trait
         static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate)
             -> warp::WarpGenericSycl<TDim>::mask_type
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
             auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
             // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
@@ -144,6 +179,8 @@ namespace alpaka::warp::trait
             std::int32_t srcLane,
             std::int32_t width)
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             ALPAKA_ASSERT_ACC(width > 0);
             ALPAKA_ASSERT_ACC(srcLane >= 0);
 
@@ -170,6 +207,8 @@ namespace alpaka::warp::trait
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
@@ -193,6 +232,8 @@ namespace alpaka::warp::trait
             std::uint32_t offset,
             std::int32_t width)
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
@@ -216,6 +257,8 @@ namespace alpaka::warp::trait
             std::int32_t mask,
             std::int32_t width)
         {
+            ALPAKA_SYCL_WARP_CHECK_INLINE;
+
             auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
@@ -225,5 +268,7 @@ namespace alpaka::warp::trait
         }
     };
 } // namespace alpaka::warp::trait
+
+#    undef ALPAKA_SYCL_WARP_CHECK_INLINE
 
 #endif
