@@ -79,6 +79,20 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
         WARN("Test disabled for SYCL with oneAPI 2025.2 and older");
         return;
     }
+#elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU) && defined(__NO_INLINE__)                   \
+    && !defined(ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK)
+    if constexpr(alpaka::accMatchesTags<
+                     Acc,
+                     alpaka::TagCpuSycl,
+                     alpaka::TagGpuSyclIntel,
+                     alpaka::TagGpuSyclNvidia,
+                     alpaka::TagGpuSyclAmd,
+                     alpaka::TagFpgaSyclIntel,
+                     alpaka::TagGenericSycl>)
+    {
+        WARN("Test disabled for SYCL on Intel GPUs when compiling without inlining (e.g. -O0 or -fno-inline)");
+        return;
+    }
 #else
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
