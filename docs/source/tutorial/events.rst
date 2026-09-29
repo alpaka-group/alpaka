@@ -1,7 +1,7 @@
 Events and Synchronization
 ==========================
 
-As soon as you need to know if a tasks in a queue is already executed or you think about task parallelism you need events.
+As soon as you need to know if a task in a queue is already executed or you think about task parallelism you need events.
 This allows to describe dependencies between tasks in different queues without blocking the host thread.
 In *alpaka*, queues describe execution order, and events describe dependencies between queues.
 
@@ -11,8 +11,8 @@ Queue Rules
 - Operations inside one queue execute in FIFO order.
 - Different queues may run independently.
 - ``onHost::wait(queue)`` waits until all work in that queue is complete.
-- ``onHost::wait(event)`` waits until the event has been processed which means that all previous enqueues tasks are completed.
-- ``queue1.waitFor(event)`` inserts a dependency so work in ``queue1`` enqueued after starts only after the event is reached.
+- ``onHost::wait(event)`` waits until the event has been processed which means that all previously enqueued tasks are completed.
+- ``queue1.waitFor(event)`` inserts a dependency so work enqueued in ``queue1`` afterwards starts only after the event is reached.
 
 Use Cases
 ---------

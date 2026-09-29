@@ -41,9 +41,9 @@ The interaction of the main user facing concepts can be seen in the following fi
 
 For each type of ``Device`` there is a ``DeviceSelector`` for enumerating the available ``Device``s.
 A ``Device`` is the requirement for creating ``Queues`` and ``Events`` as it is for allocating ``SharedBuffers`` on the respective ``Device``.
-``SharedBuffers`` can be copied, their memory be byte-wise set or filled with element-wise.
+``SharedBuffers`` can be copied, their memory can be byte-wise set or filled element-wise.
 The location of the ``SharedBuffer`` data can be on the host, on the host but mapped into the device address space, directly on the device or even in a unified memory space shared between host and device.
-Copying, setting or filling a view requires the corresponding ``Copy``, ``Set`` or ``Fill` tasks to be enqueued into the ``Queue``.
+Copying, setting or filling a view requires the corresponding ``Copy``, ``Set`` or ``Fill`` tasks to be enqueued into the ``Queue``.
 An ``Event`` can be enqueued into a ``Queue`` and its completion state can be queried by the user.
 It is possible to wait for (synchronize with) a single ``Event``, a ``Queue`` or a whole ``Device``.
 An ``Executor`` can be enqueued into a ``Queue`` and will execute the ``Kernel`` (after all previous tasks in the queue have been completed).

@@ -1,7 +1,7 @@
 Queue
 =====
 
-A queue provides the ability to describe the order in which tasks such as kernel, memory operations, etc. are executed.
+A queue provides the ability to describe the order in which tasks such as kernels, memory operations, etc. are executed.
 If you are familiar with CUDA/HIP, a queue is comparable to a *Stream*.
 Everything that is placed in a queue is executed according to the FIFO principle (first in, first out).
 Different queues may run independently.

@@ -38,7 +38,7 @@ A dot product in one line
 ```c++
 using namespace alpaka;
 
-// Select the CPU device and the corresponding asynchronious queue.
+// Select the CPU device and the corresponding asynchronous queue.
 auto device = onHost::DeviceSelector(api::host, deviceKind::cpu).makeDevice(0);
 auto queue = device.makeQueue();
 

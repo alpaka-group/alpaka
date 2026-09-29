@@ -9,7 +9,7 @@ Abstraction
    Besides allowing to test different parallelization strategies this also makes it possible to port algorithms to new, yet unsupported, platforms.
 
 Parallelism and memory hierarchies at all levels need to be exploited in order to achieve performance portability across various types of accelerators.
-Within this chapter an abstraction will be derive that tries to provide a maximum of parallelism while simultaneously considering implementability and applicability in hardware.
+Within this chapter an abstraction will be derived that tries to provide a maximum of parallelism while simultaneously considering implementability and applicability in hardware.
 
 Looking at the current HPC hardware landscape, we often see nodes with multiple sockets/processors extended by accelerators like GPUs, each with their own processing units.
 Within a CPU there are cores with hyper-threads, vector units and a large caching infrastructure.
@@ -44,7 +44,7 @@ This can be implemented via two threads executing two different tasks.
 The valid dependencies between tasks within an application can be defined as a DAG (directed acyclic graph) in all cases.
 The tasks are represented by nodes and the dependencies by edges.
 In this model, a task is ready to be executed if the number of incoming edges is zero.
-After a task finished it's work, it is removed from the graph as well as all of it's outgoing edges,.
+After a task finished its work, it is removed from the graph as well as all of its outgoing edges.
 This reduces the number of incoming edges of subsequent tasks.
 
 The problem with this model is the inherent overhead and the missing hardware and API support.
@@ -55,7 +55,7 @@ Depending on the size of the graph and the number of edges this can be a huge ov
 Tasks can be enqueued into an out-of-order command queue combined with events that have to be finished before the newly enqueued task can be started.
 Tasks in the command queue with unmet dependencies are skipped and subsequent ones are executed.
 The ``CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE`` property of a command queue is an optional feature only supported by few vendors.
-Therefore, it can not be assumed to be available on all systems.
+Therefore, it cannot be assumed to be available on all systems.
 
 *CUDA*, *HIP* on the other hand does currently (version CUDA@13.0 and HIP@6.4) not support such out-of-order queues in any way.
 The user has to define dependencies explicitly through the order the tasks are enqueued into the queues (called streams in *CUDA*).
@@ -105,7 +105,7 @@ This ideal one-to-one mapping of data elements to threads leads to the execution
 The uniform function executed by each of the threads is called a kernel.
 Some algorithms such as reductions require the possibility to synchronize or communicate between threads to calculate a correct result in a time optimal manner.
 Therefore our basic abstraction requires a n-dimensional grid of synchronizable threads each executing the same kernel.
-The following figure shows an hypothetical processing unit that could optimally execute this data parallel task.
+The following figure shows a hypothetical processing unit that could optimally execute this data parallel task.
 The threads are mapped one-to-one to the cores of the processor.
 For a time optimal execution, the cores have to have an all-to-all equal length connection for communication and synchronization.
 
@@ -118,7 +118,7 @@ Registers
 +++++++++
 
 All variables with default scope within a kernel are automatically saved in registers and are not shared automatically.
-This memory is local to each thread and can not be accessed by other threads.
+This memory is local to each thread and cannot be accessed by other threads.
 
 Global Memory
 +++++++++++++
@@ -175,7 +175,7 @@ With the current abstraction only independent parallelism via blocks and synchro
 However, there are more variants of parallelism in real hardware.
 Because all threads in the grid are executing the same kernel and even the same instruction at the same time when ignoring divergent control flows, a lot of chip space can be saved.
 Multiple threads can be executed in perfect synchronicity, which is also called lock-step.
-A group of such threads executing the same instruction at the same time is called a warp .
+A group of such threads executing the same instruction at the same time is called a warp.
 All threads within a warp share a single instruction pointer (IP), and all cores executing the threads share one instruction fetch (IF) and instruction decode (ID) unit.
 
 .. image:: /images/warp.png
@@ -266,6 +266,6 @@ By emulating unsupported or ignoring redundant levels of parallelism, algorithms
 
 Depending on the queue a task is enqueued into, grids will either run in sequential order within the same queue or in parallel in different queues.
 They can be synchronized by using events.
-Blocks can not be synchronized and therefore can use the whole spectrum of parallelism ranging from fully parallel up to fully sequential execution depending on the device.
+Blocks cannot be synchronized and therefore can use the whole spectrum of parallelism ranging from fully parallel up to fully sequential execution depending on the device.
 Warps combine the execution of multiple threads in lock-step and can be synchronized implicitly by synchronizing the threads they contain.
 Threads within a block are executed in parallel warps and each thread computes a number of data elements sequentially.

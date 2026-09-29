@@ -62,11 +62,11 @@ If less user data is required than the load command can load, so-called padding 
 For example, an Nvidia GPU can load 128 bytes with a single load command.
 If we have a matrix with 32-bit integers (4 bytes) and 5 rows with 30 elements each, each row requires 120 bytes.
 To ensure that each row can be loaded with a single load command and that no data from a second row is loaded, which would result in some rows requiring multiple load commands, 8 bytes of padding bytes are added.
-The same principals are required for vectorization on CPU.
+The same principles are required for vectorization on CPU.
 
 When the padding bytes are added, the ``Extents`` can no longer be used to calculate the memory location of a specific element.
 The ``Extents`` assume that the memory is contiguous.
-``Pitches`` solves this problem: it is a multidimensional value where each component stores the number of bytes required to jump to the next element within the corresponding dimension, including the padding bytes.
+``Pitches`` solve this problem: they are multidimensional values where each component stores the number of bytes required to jump to the next element within the corresponding dimension, including the padding bytes.
 The innermost dimension (``x``) pitch is ``sizeof(value_type)``, the next dimension (``y``) pitch is the byte-stride of a full row including padding, and so on for higher dimensions.
 In general, given an N-dimensional zero-based index, the dot product (element-wise multiplication and sum) of the index with the pitches yields the byte offset from the start of the buffer to that data element.
 In the simplest case, when 1D ``Data Storage`` is used, the size of the value type in bytes is the pitch value.

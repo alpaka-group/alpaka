@@ -23,7 +23,7 @@ Typical use cases for different dimensions are:
 
 - 1D frames for flat vectors and simple reductions.
 - 2D frames for images, matrices, and most stencil codes.
-- 3D frames for volumetric problems, such as the position of particles in a space.
+- 3D frames for volumetric problems, such as the position of particles in space.
 - ND frames for algorithms that have more than three natural dimensions, such as position coordinates and discretized time, e.g., to build a layered detector within our particle simulation.
 
 Keep in mind that the rightmost index, usually ``x``, is the fastest varying dimension in *alpaka* buffers.
@@ -51,7 +51,7 @@ The structure is still the same as in the one-dimensional tutorial:
 - Build ``IdxRange{extents}`` to describe the full valid multidimensional index domain.
 - Map worker threads via ``makeIdxMap`` to the range.
 - Guard the boundary cells, to avoid out-of-bounds accesses.
-- The own element is updated depending on the neighbor data and maybe the own element. Indices are relative calculated compare to the index of the own output coordinate.
+- The element itself is updated depending on the neighbor data and maybe on the element itself. Indices are calculated relative to the index of the own output coordinate.
 - Update neighbor locations by adding or subtracting direction vectors from the current ``Vec`` index.
 
 This is the natural alpaka style for stencil code.

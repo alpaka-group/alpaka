@@ -7,7 +7,7 @@ Logging
 
 Sometimes it is useful to get an overview about function call and additional low level information.
 Logging gives you a lightweight overview with a reduced callstack and meta information.
-Mostly leaf operation which calling native backends e.g.CUDA, HIP, and SYCL are instrumented.
+Mostly leaf operations which call native backends e.g. CUDA, HIP, and SYCL are instrumented.
 Via logging channels the scope of information can be filtered.
 
 .. _logging-level:
@@ -32,13 +32,13 @@ CMake Logging Options
    - ``static`` - will enable compile time logging where the logging level can be selected in CMake, additional CMake option ``alpaka_LOG_STATIC_*`` will be available.
    - ``dynamic`` - will enable runtime logging where the logging level can be selected via the environment variable ``ALPAKA_LOG_DYNAMIC_LVL=<lvl>``
 
-     - ``lvl`` - is the number of :ref:`logging-level` or the sum of multiple lvl to select multiple levels at the within the same output
+     - ``lvl`` - is the number of :ref:`logging-level` or the sum of multiple lvl to select multiple levels within the same output
 
   If logging is off there will be no runtime overhead introduced.
 
-   - ``static`` - will introduce small overhead for message formating and the output.
+   - ``static`` - will introduce small overhead for message formatting and the output.
      If a logging level is disabled these messages will be removed at compile time and no runtime overhead is introduced.
-   - ``dynamic``  - will introduce overhead for message formating and additional small overhead for a runtime lookup (one if condition).
+   - ``dynamic``  - will introduce overhead for message formatting and additional small overhead for a runtime lookup (one if condition).
 
 * ``alpaka_LOG_FUNCTIONS=<X>`` - where ``X`` can be ``ON`` or ``OFF`` create a reduced call stack and show the function entry and exit. The exit will show the time in milliseconds between the entry and exit of the function.
 
@@ -48,7 +48,7 @@ CMake Logging Options
      [Memory][-] void internal::generic::fill(auto:463&, auto:464, auto:465&&, T_Value) [with T_Value = unsigned int; auto:463 = onHost::cpu::Queue<...> > >; auto:464 = exec::CpuOmpBlocks; auto:465 = alpaka::View<...> >, alpaka::Alignment<...> >] 0.247257 ms
 
 * ``alpaka_LOG_INFO=<X>`` - where ``X`` can be ``ON` or ``OFF`` provides meta information to different functions and objects.
-  The alement of the output is the absolute path and line number of the file where the logging message is coming from
+  The element of the output is the absolute path and line number of the file where the logging message is coming from
 
   .. code:: c++
 
@@ -93,7 +93,7 @@ C++ Code logging
   :cpp:class:`alpaka::onHost::logger::Queue`
   :cpp:class:`alpaka::onHost::logger::Kernel`
 
-* The logger function macro marking the scope of an function, ``ALPAKA_LOG_FUNCTION()`` must be on the very beginning of the function.
+* The logger function macro marking the scope of a function, ``ALPAKA_LOG_FUNCTION()`` must be on the very beginning of the function.
   The entry is the macro function call and the exit is logged when the current scope is ending.
   This means ``ALPAKA_LOG_FUNCTION()`` is scope aware.
 

@@ -69,9 +69,9 @@ For example:
 
 * ``alpakaFnDispatch(VectorAdd, ...)`` provides a generic implementation.
 * ``alpakaFnDispatch(VectorAdd::Spec<api::Cuda, T_DeviceKind>, ...)`` provides a CUDA-specific implementation.
-* ``alpakaFnDispatch(VectorAdd::Spec<api::OneApi, deviceKind::IntelGpu>, ...)`` provides a implementation for the Intel GPU accessed via OneApi. (not used in this example)
+* ``alpakaFnDispatch(VectorAdd::Spec<api::OneApi, deviceKind::IntelGpu>, ...)`` provides an implementation for the Intel GPU accessed via OneApi. (not used in this example)
 
-If the kernel is executed on a queue for an CUDA device, the CUDA specialization is selected.
+If the kernel is executed on a queue for a CUDA device, the CUDA specialization is selected.
 For all other backends, the generic implementation is used automatically.
 This allows application code to remain unchanged while backend-specific optimizations are added where needed.
 

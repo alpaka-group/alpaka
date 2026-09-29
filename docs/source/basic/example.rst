@@ -6,7 +6,7 @@ Code Example
 Play online with Compiler Explorer
 ++++++++++++++++++++++++++++++++++
 
-The followed example can be executed online using `Godbolt Compiler Explorer <https://godbolt.org/z/K8q5q66Mn>`__. [#f1]_
+The following example can be executed online using `Godbolt Compiler Explorer <https://godbolt.org/z/K8q5q66Mn>`__. [#f1]_
 
 .. literalinclude:: ../../snippets/example/000_elementWiseMultiplication.cpp
    :language: cpp
@@ -30,7 +30,7 @@ The following example shows a small vector add example written with alpaka that 
    :language: C++
    :caption: vectorAdd.cpp
 
-We recommend to use CMake for integrating alpaka into your own project.
+We recommend using CMake for integrating alpaka into your own project.
 
 The following example shows a minimal example of a ``CMakeLists.txt`` that uses alpaka:
 

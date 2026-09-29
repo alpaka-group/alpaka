@@ -29,7 +29,7 @@ To configure, build and run the tests of a specific preset, run the following co
    # run test of the preset
    ctest --preset rel-host-cpu-gcc
 
-All presets are configure and build in a subfolder of the ``<alpaka_project_root>/build`` folder.
+All presets are configured and built in a subfolder of the ``<alpaka_project_root>/build`` folder.
 
 Modifying and Extending Presets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -96,7 +96,7 @@ Arguments
 
 .. tip::
 
-    The executor ``exec::cpuSerial`` is always available and does not require any special CMake flags beside linking the taget ``alpaka::alpaka`` or ``alpaka::host``.
+    The executor ``exec::cpuSerial`` is always available and does not require any special CMake flags beside linking the target ``alpaka::alpaka`` or ``alpaka::host``.
 
 
 ``alpaka_CXX_STANDARD``
@@ -161,10 +161,10 @@ Arguments
 ``alpaka_LANGUAGE_SEPARATION``
   .. code-block:: markdown
 
-     Enable that C++ files for CUDA and HIP will be copied to an unique folder and compiled from there, instead of using the original file.
-     If this option is set to ``OFF`` and and the same C++ file is used twice in the project within two different CMake targets where one is linking against ``alpaka::host`` and the other to ``alpaka::cuda`` or ``alpaka::hip`` both will use the CUDA/HIP compiler for compilation.
+     Enable that C++ files for CUDA and HIP will be copied to a unique folder and compiled from there, instead of using the original file.
+     If this option is set to ``OFF`` and the same C++ file is used twice in the project within two different CMake targets where one is linking against ``alpaka::host`` and the other to ``alpaka::cuda`` or ``alpaka::hip`` both will use the CUDA/HIP compiler for compilation.
      In the default case where the option is set to ``ON`` one target is compiled with the native CXX compiler and the other with the CUDA/HIP compiler.
-     CUDA/HIP compiler have sometimes problems to compile any C++ code, therefor try to avoid setting this option to ``OFF`` because you lose the possibility to root heterogeneous code to the native CXX compiler.
+     CUDA/HIP compiler have sometimes problems to compile any C++ code, therefore try to avoid setting this option to ``OFF`` because you lose the possibility to root heterogeneous code to the native CXX compiler.
 
      **Attention:** Only when this option is enabled can the same source code file be compiled and linked for multiple APIs (CUDA, HIP, ...) within the same build.
 
@@ -365,7 +365,7 @@ Intel oneAPI Threading Building Blocks
 Executors
 ^^^^^^^^^
 
-  With the following flags you can choose the available executes within the compile time C++ list ``exec::enabledExecutors``.
+  With the following flags you can choose the available executors within the compile time C++ list ``exec::enabledExecutors``.
   ``exec::allExecutors`` will always have all alpaka executors listed independent of the chosen CMake flags.
 
 ``alpaka_EXEC_CpuSerial``
@@ -402,7 +402,7 @@ Executors
 Available during the Installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following option are only available during the installation of alpaka, i.e., when building the alpaka library itself.
+The following options are only available during the installation of alpaka, i.e., when building the alpaka library itself.
 
 ``alpaka_EXAMPLES``
   .. code-block:: markdown
@@ -520,7 +520,7 @@ These relative paths may become invalid after ``alpaka_finalize()`` is called, b
 Examples
 --------
 
-- standard application enabling API's depending on the cmake dependencies selected
+- standard application enabling APIs depending on the selected cmake dependencies
 
    .. code-block:: cmake
 
@@ -542,7 +542,7 @@ Examples
        add_executable(fooTarget src/main.cpp)
        target_link_libraries(fooTarget PRIVATE fooShared)
 
-- standard application which prefer manual selection of the API's
+- standard application which prefers manual selection of the APIs
 
    .. code-block:: cmake
 

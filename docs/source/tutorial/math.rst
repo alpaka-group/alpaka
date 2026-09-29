@@ -10,7 +10,7 @@ To this end, *alpaka* uses the native math functions of the :ref:`api` (e.g., CU
 Element-wise Math
 -----------------
 
-The example is similar to the vector addition, iterate over the data with ``makeIdxMap`` and call math functions on each element.
+The example is similar to the vector addition: iterate over the data with ``makeIdxMap`` and call math functions on each element.
 
   .. literalinclude:: ../../snippets/example/140_math.cpp
     :language: cpp

@@ -3,14 +3,14 @@ Views and Subviews
 
 Buffers are objects returned by memory allocation methods. They own the data stored in memory and track the lifetime of that memory. They follow the :ref:`buffer concept <i_buffer>`.
 On the other hand, :ref:`Views <i_view>` only point to memory but do not own it and can be used within a kernel in addition to on the host.
-Unlike an :ref:`MdSpan <i_mdspan>`, the :ref:`Views <i_view>` contains information about which :ref:`api` was used to allocate the memory.
+Unlike an :ref:`MdSpan <i_mdspan>`, the :ref:`Views <i_view>` contain information about which :ref:`api` was used to allocate the memory.
 This information is required for certain functions, such as copying memory.
 
-View are typically used when:
+Views are typically used when:
 
 - You already have a host container such as ``std::vector`` and want to use it with *alpaka*.
 - You want to work only on parts of a buffer, for example a slice, halo region, or tile.
-- You want to use the data of an buffer within a kernel without copying it.
+- You want to use the data of a buffer within a kernel without copying it.
 
 Creating a View
 ---------------
@@ -23,8 +23,8 @@ You can create a non-owning view from *alpaka* buffers and then derive a subview
     :end-before: END-TUTORIAL-bufferViewCreation
     :dedent:
 
-Creating a view from a STL vector is supported too.
-The subview creating is the same as for buffers.
+Creating a view from an STL vector is supported too.
+Creating a subview is the same as for buffers.
 
   .. literalinclude:: ../../snippets/example/070_views.cpp
     :language: cpp

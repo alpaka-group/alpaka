@@ -7,9 +7,9 @@ alpaka's memory allocation methods return a *DataStorage* object that implements
 The ``alpaka::concepts::IBuffer`` interface requires that the lifetime of the memory be tracked.
 One implementation of this interface is the ``alpaka::onHost::SharedBuffer`` handle.
 It behaves like a ``std::shared_ptr<>`` from the standard library.
-When the last instance going out of scope, the memory is freed.
+When the last instance goes out of scope, the memory is freed.
 
-- If a *DataStorage* handle allow it, copying a handle is a shallow copy of the handle and does not duplicate the data.
+- If a *DataStorage* handle allows it, copying a handle is a shallow copy of the handle and does not duplicate the data.
 - A deep copy of the memory must be explicitly triggered using ``alpaka::onHost::memcpy()``.
 - A buffer is **not** initialized with default values.
 - The *extents*, which describe the number of elements per dimension, should be ``>=1``. The *extents* can have any dimensionality.

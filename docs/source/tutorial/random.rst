@@ -25,7 +25,7 @@ Uniform Random Numbers
     :end-before: END-TUTORIAL-randomKernel
     :dedent:
 
-This example the engine ``rand::engine::Philox4x32x10`` and used the distribution ``rand::distribution::UniformReal<float>`` with the half-open interval ``[0, 1)`` interval ``rand::interval::co``.
+This example uses the engine ``rand::engine::Philox4x32x10`` and the distribution ``rand::distribution::UniformReal<float>`` with the half-open interval ``[0, 1)`` interval ``rand::interval::co``.
 The configuration of intervals is explained in the :ref:`random_number_intervals` section.
 The distribution is used to create a random index per element in the output data container.
 
@@ -87,7 +87,7 @@ Monte Carlo Pi
 
 A classic example is `Monte Carlo <https://en.wikipedia.org/wiki/Monte_Carlo_method>`__ estimation of pi.
 Draw points in the square ``[0, 1) x [0, 1)``, count how many land inside the unit quarter circle, and estimate ``pi`` from that ratio.
-The half-open interval matches array-style data access avoids awkward endpoint corner cases.
+The half-open interval matches array-style data access and avoids awkward endpoint corner cases.
 
 In the example each worker draws one point, writes ``1`` if the point falls inside the quarter circle, and then a reduction adds up all hits.
 

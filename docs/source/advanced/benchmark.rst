@@ -15,7 +15,7 @@ If you like to run benchmarks you should set at least the following CMake variab
   # with HIP enabled
   # -DCMAKE_HIP_FLAGS="-ftree-vectorize -march=native"
 
-You can benchmark bableStream for different number of elements e.g. with a simple loop
+You can benchmark BabelStream for different number of elements e.g. with a simple loop
 
 .. code-block::
 

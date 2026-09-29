@@ -2,7 +2,7 @@ Memory Fences
 =============
 
 ``onAcc::memFence`` is a visibility and ordering primitive inside kernels.
-It is not a barrier, therefore not wait for other threads to reach the same point.
+It is not a barrier, therefore it does not wait for other threads to reach the same point.
 Instead, it tells the backend how data writes before the fence must become visible relative to data reads and writes after the fence.
 
 With a `scope <../doxygen/namespacealpaka_1_1onAcc_1_1scope.html>`_ you define between which thread hierarchy levels the visibility guarantee applies.

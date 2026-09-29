@@ -97,7 +97,7 @@ The swizzle operator is using :ref:`cvec`, which will be shown later.
 
 Sometimes it is useful to assign values only to a few components.
 The next example permutes the initial vector and broadcast-assigns a scalar to all selected components only.
-Note that you can only assign vectors with the same dimensionality and value type, or scalars those are lossless convertible.
+Note that you can only assign vectors with the same dimensionality and value type, or scalars that are losslessly convertible.
 
   .. literalinclude:: ../../snippets/example/010_vector.cpp
     :language: cpp
@@ -105,7 +105,7 @@ Note that you can only assign vectors with the same dimensionality and value typ
     :end-before: END-TUTORIAL-vectorSwizzleRef
     :dedent:
 
-Since most vector operators work element wise, you need sometimes reduction methods like ``sum()`` or ``product()`` to accumulate all components to a single scalar value.
+Since most vector operators work element-wise, you sometimes need reduction methods like ``sum()`` or ``product()`` to accumulate all components to a single scalar value.
 
   .. literalinclude:: ../../snippets/example/010_vector.cpp
     :language: cpp

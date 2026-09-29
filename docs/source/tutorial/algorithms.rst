@@ -58,7 +58,7 @@ Default Functor (SIMD)
 ``````````````````````
 
 The functor takes SIMD packs as input and returns SIMD packs.
-Although the operations are still written as if they were working with scalar types, but they are applied in parallel to many elements.
+Although the operations are still written as if they were working with scalar types, they are applied in parallel to many elements.
 
     .. literalinclude:: ../../snippets/example/130_algorithms.cpp
         :language: cpp
@@ -79,7 +79,7 @@ StencilFunc
 
 The ``StencilFunc`` functor accepts ``SimdPtr`` as arguments.
 A ``SimdPtr`` supports ``operator[]`` for relative indexing, enabling stencil operations.
-The dimension of the ``SimdPtr`` arguments is the same like the in- and output :ref:`basic-data-storage` object.
+The dimension of the ``SimdPtr`` arguments is the same as the in- and output :ref:`basic-data-storage` object.
 
 The following example is a 2D stencil code.
 
@@ -89,7 +89,7 @@ The following example is a 2D stencil code.
         :end-before: END-TUTORIAL-transformFunctorStencilFunc
         :dedent:
 
-You must ensure memory accesses stay in bounds. Typically a sub-view of the in- und output buffer is created that excludes the halo.
+You must ensure memory accesses stay in bounds. Typically a sub-view of the in- and output buffer is created that excludes the halo.
 
     .. literalinclude:: ../../snippets/example/130_algorithms.cpp
         :language: cpp
@@ -102,7 +102,7 @@ You must ensure memory accesses stay in bounds. Typically a sub-view of the in- 
 Iota
 ----
 
-``onHost::iota`` fills one or more output buffers with a linear sequence of scalar indies.
+``onHost::iota`` fills one or more output buffers with a linear sequence of scalar indices.
 For multidimensional buffers, the linear value increases fastest in the last dimension.
 In this example we start the enumeration with 10.
 
@@ -132,9 +132,9 @@ Transform-Reduce
 
 ``transformReduce`` combines a data transformation step with a reduction step.
 It is used for dot products, weighted sums, norms, and many "compute a value per element and then accumulate it" patterns.
-The first functor is the binary reduction operator. The second one is the element-wise transform and must accept as many arguments as there are input :ref:`basic-data-storage` object passed to ``onHost::transformReduce``.
-Compared to ``std::transform_reduce`` the function support any amount of input :ref:`basic-data-storage` object.
-The following example iterates through ``inputBuffer1`` and ``inputBuffer2``, multiplies ``inputBuffer1[i]`` by ``inputBuffer2[i]``, and accumulate the products.
+The first functor is the binary reduction operator. The second one is the element-wise transform and must accept as many arguments as there are input :ref:`basic-data-storage` objects passed to ``onHost::transformReduce``.
+Compared to ``std::transform_reduce`` the function supports any amount of input :ref:`basic-data-storage` objects.
+The following example iterates through ``inputBuffer1`` and ``inputBuffer2``, multiplies ``inputBuffer1[i]`` by ``inputBuffer2[i]``, and accumulates the products.
 
   .. literalinclude:: ../../snippets/example/130_algorithms.cpp
     :language: cpp
@@ -190,7 +190,7 @@ Scan
 
 Unlike the other algorithms in this chapter, the current scan implementation is restricted to one-dimensional data.
 That fits common `prefix-sum <https://en.wikipedia.org/wiki/Prefix_sum>`_ use cases such as offsets, compaction maps, and cumulative counters, where the logical input is already a linear sequence.
-This examples uses an explicit temporary storage where the size is provided via ``getScanBufferSize``, this can be used to optimize the performance in cases where scan is called multiple times.
+This example uses an explicit temporary storage where the size is provided via ``getScanBufferSize``, this can be used to optimize the performance in cases where scan is called multiple times.
 
   .. literalinclude:: ../../snippets/example/130_algorithms.cpp
     :language: cpp
@@ -210,7 +210,7 @@ Generators Instead of Input Buffers
 
 Several *alpaka* algorithms also accept generators as inputs.
 That is useful when one input is synthetic, such as a linear index, and you do not want to materialize another buffer that consumes memory just to hold it.
-``LinearizedIdxGenerator`` generates scalar indexes from n-dimensional indexes and behaves like a `IDataSource <../doxygen/conceptalpaka_1_1concepts_1_1impl_1_1IDataSource.html>`_.
+``LinearizedIdxGenerator`` generates scalar indices from n-dimensional indices and behaves like an `IDataSource <../doxygen/conceptalpaka_1_1concepts_1_1impl_1_1IDataSource.html>`_.
 It behaves like a virtual buffer whose value at each position is the corresponding linear index.
 In this example, we add a value from one input buffer to the generated index.
 

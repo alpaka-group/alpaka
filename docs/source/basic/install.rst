@@ -5,13 +5,13 @@ Installation
 
 .. note::
 
-  You will find in the documentation very often the name *alpaka* and for directories ``alpaka3``, you will maybe wonder why we are not consequent using ``alpaka3`` everywhere.
+  You will find in the documentation very often the name *alpaka* and for directories ``alpaka3``, you will maybe wonder why we are not consistently using ``alpaka3`` everywhere.
   The reason for this is that the complete code base will be copied to https://github.com/alpaka-group/alpaka after the first release, therefore options are already named ``alpaka``.
 
 **Installing dependencies**
 
 *alpaka* requires a modern C++ compiler (g++, clang++, nvcc, icpx).
-**CMake** is the preferred system for configuration the build tree, building and installing.
+**CMake** is the preferred system for configuring the build tree, building and installing.
 
 In order to install **CMake**:
 
@@ -59,8 +59,8 @@ If you only install *alpaka* without enabling tests, examples or benchmarks CMak
   cmake -DCMAKE_INSTALL_PREFIX=/install/alpaka3 ..
   cmake --install .
 
-The next CMake code snipped shows you to integrate the installed *alpaka* library in your application.
-You have now the possibility to select the compiler, enable dependency's to target different compute devices.
+The next CMake code snippet shows you how to integrate the installed *alpaka* library in your application.
+You now have the possibility to select the compiler and enable dependencies to target different compute devices.
 Examples and brief description can be found in the follow up section :ref:`tests-and-examples`
 
 .. code-block:: cmake
@@ -72,7 +72,7 @@ Examples and brief description can be found in the follow up section :ref:`tests
   alpaka_finalize(myTarget)
   # ...
 
-The next commands should be executed in the terminal and assumes that you prepend the environment variable ``CMAKE_PREFIX_PATH``
+The next commands should be executed in the terminal and assume that you prepend the environment variable ``CMAKE_PREFIX_PATH``
 with the path `/install/alpaka3`, that CMake knows where *alpaka* can be found.
 
 .. code-block:: bash
@@ -90,7 +90,7 @@ With CMake it is possible to use *alpaka* without installation, you can simply p
   # Clone alpaka from github.com
   git clone --branch dev https://github.com/alpaka-group/alpaka3.git
 
-The next CMake code is very similar to the usage of a installed alpaka version with the difference that you should use ``add_subdirectory()`` instead of CMake's ``find_package()``
+The next CMake code is very similar to the usage of an installed alpaka version with the difference that you should use ``add_subdirectory()`` instead of CMake's ``find_package()``
 
 .. code-block:: cmake
 
@@ -168,7 +168,7 @@ You can select different device specifications at CMake configuration time using
   
 .. code-block:: bash
 
-    # NVIDIA CUDA DEVIC SPEC
+    # NVIDIA CUDA DEVICE SPEC
     cmake .. -DmyApp_DEVICE_SPEC="cuda:nvidiaGpu"
     # build and run
     cmake --build . --parallel
@@ -195,7 +195,7 @@ Tests and Examples
 
 The examples and tests can be compiled before the installation of alpaka see :ref:`install-alpaka`.
 They will use alpaka headers from the source directory.
-The recipies shown here assume you have installed spack packages for specific compiler versions and that alpaka is relative to the build folder available.
+The recipes shown here assume you have installed spack packages for specific compiler versions and that alpaka is available relative to the build folder.
 
 **Load dependencies**
 
@@ -227,18 +227,18 @@ The recipies shown here assume you have installed spack packages for specific co
 
 **Enable accelerators:**
 
-alpaka uses different api's and executors to run kernels on different processors.
+alpaka uses different APIs and executors to run kernels on different processors.
 To use a specific accelerator in alpaka, two steps are required.
 
 1. Enable the accelerator during the CMake configuration time of the project.
 2. Select a specific accelerator in the source code.
 
-By default, only the host API is available which allows to use the executors 'serial' to running on CPUs without using multithreading.
+By default, only the host API is available which allows to use the executor 'serial' to run on CPUs without using multithreading.
 If OpenMP is available on the system, additionally the executor `cpuOmpBlocks` can be used to run on all cores of the CPU.
 If oneAPI TBB is available on the system, additionally the executor `cpuTbbBlocks` can be used to run on all cores of the CPU.
 CMake option `alpaka_DEP_*` controls whether a parallelization framework is used and introduces a dependency on third-party libraries.
-This allows the usage of the coresponding executor e.g. `gpuCuda`, `gpuHip` or `oneApi`
-`alpaka_EXEC_*` activates or deactivates which execution schemas will be used for examples/test and benchmarks.
+This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or `oneApi`
+`alpaka_EXEC_*` activates or deactivates which execution schemes will be used for examples/tests and benchmarks.
 
 **compile for CPU only (serial and OpenMP):**
 

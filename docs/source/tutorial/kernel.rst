@@ -51,8 +51,8 @@ The function call ``onAcc::makeIdxMap(acc, onAcc::worker::threadsInGrid, IdxRang
 
 - All elements in ``out`` are processed by the worker group independently of the parallelism specified via :ref:`FrameSpec <frame>` [#f3]_.
 - This ensures that no out-of-range memory access happens.
-- Indies provided by ``onAcc::makeIdxMap`` for each worker group are optimized based on the used :ref:`device` of the :ref:`queue` and the :ref:`executor`.
-  They can be used for a one to one mapping to memory.
+- Indices provided by ``onAcc::makeIdxMap`` for each worker group are optimized based on the used :ref:`device` of the :ref:`queue` and the :ref:`executor`.
+  They can be used for a one-to-one mapping to memory.
   Resulting in a contiguous, chunked access pattern on the CPU and a strided access pattern on GPU-like devices.
 
 ``onAcc::makeIdxMap`` offers many more features needed for performance optimization.
@@ -100,7 +100,7 @@ Typical Beginner Mistakes
 - Forgetting to copy the result back to the host after the kernel.
 - Forgetting to wait before reading host-side results from a non-blocking queue.
 - Choosing a one-dimensional frame for naturally multidimensional code and then reimplementing manual index arithmetic in the kernel.
-- Calculating your own thread ID and use it to access the data, rather than accessing the data via ``onAcc::makeIdxMap``.
+- Calculating your own thread ID and using it to access the data, rather than accessing the data via ``onAcc::makeIdxMap``.
 
 Complete Source File
 --------------------

@@ -3,7 +3,7 @@
 Shared Memory
 =============
 
-Shared memory is a scratchpad memory accessible only by threads within thread block in a kernel.
+Shared memory is a scratchpad memory accessible only by threads within a thread block in a kernel.
 It is useful when several threads in the same block need to reuse the same data or communicate through a fast local data chunk.
 Typical use cases are, chunked stencil kernels, block-local reductions and scans, transposes, and small reusable data sets loaded once and consumed many times.
 The amount of shared memory per thread block depends on the device and is usually limited to around 64 KiB, so it is not a good choice for large data sets.
@@ -19,7 +19,7 @@ A Single Shared Value
 Not every shared-memory kernel needs a shared data chunk. Sometimes one shared scalar is enough.
 The next example is a very simple form of a global reduction with atomics.
 All threads within a thread block accumulate into a shared memory thread block partial result.
-After all threads in the thread block finished a single thread is accumulating the partial result into the output.
+After all threads in the thread block have finished, a single thread accumulates the partial result into the output.
 
   .. literalinclude:: ../../snippets/example/120_sharedMemory.cpp
     :language: cpp
@@ -37,12 +37,12 @@ The important detail is that the scalar still belongs to the whole thread block,
 Static Shared Memory Array
 --------------------------
 
-The next example is showing a chunk-wise permutation of the indices.
-For each chunk the id's should be stored in reverse order into the output.
+The next example shows a chunk-wise permutation of the indices.
+For each chunk the IDs should be stored in reverse order into the output.
 The frame extent from the kernel launch parameters and the chunk extents are not required to match.
-The chunks extent is a ``CVec`` and therefore known at compile time, this allows its usage as extents to declare static shared memory.
+The chunk extent is a ``CVec`` and therefore known at compile time, this allows its usage as extents to declare static shared memory.
 Static shared memory compared to dynamic shared memory, shown in the next example,
-has the benefits that the developer is not required to manage the shared memory chunk by hand and in case it is multidimensional it provides address calculations optimizations.
+has the benefit that the developer is not required to manage the shared memory chunk by hand and in case it is multidimensional it provides address calculation optimizations.
 
   .. literalinclude:: ../../snippets/example/120_sharedMemory.cpp
     :language: cpp
@@ -139,8 +139,8 @@ Practical Advice
 - Shared memory is not initialized automatically.
 - Every thread that reads shared data written by other threads usually needs a block synchronization first.
 - Reusing the same shared-memory id returns the same storage again; a different id gives you different storage.
-- use ``declareSharedVar()`` for a single shared scalar or one small fixed object.
-- Use ``declareSharedMdArray()`` multidimensional data.
+- Use ``declareSharedVar()`` for a single shared scalar or one small fixed object.
+- Use ``declareSharedMdArray()`` for multidimensional data.
 - Use ``getDynSharedMem()`` when the temporary size depends on kernel arguments.
 - Start with small chunks and a simple mapping before trying to micro-optimize the memory layout.
 

@@ -2,7 +2,7 @@ Cross Compile
 =============
 
 Sometimes it is necessary to cross compile alpaka for a different architecture.
-Here we provide a small example how to compile on x86 f for RISC-V on the test system https://riscv.epcc.ed.ac.uk/
+Here we provide a small example how to compile on x86 for RISC-V on the test system https://riscv.epcc.ed.ac.uk/
 
 .. code-block:: bash
 

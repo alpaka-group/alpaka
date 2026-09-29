@@ -77,7 +77,7 @@ Device Kind
 The ``Device Kind`` determines which type of processor we want to use.
 The combination of :ref:`api` and ``Device Kind`` defines a specific processor type, and is called a ``DeviceSpec`` in alpaka.
 Depending on the system, zero, one, or many processors may be available (e.g., in multi-GPU systems).
-Each of these processors is an own :ref:`Device`.
+Each of these processors is its own :ref:`Device`.
 
 The following device types are available:
 
@@ -102,7 +102,7 @@ In alpaka, we use a combination of :ref:`api` and :ref:`device_kind` to select d
 The programmatic approach is described in the :ref:`Device Selection <device-selection>` section of the ``Getting Started`` tutorial.
 
 Each device is controlled separately by the :ref:`host`.
-This means that if a :ref:`kernel` is to be run on two GPUs in a system, then one possible way to do it would be to select GPU 0 (device 0) first and start the kernel there, and then select GPU 1 (device 1)  and then start the same kernel there again.
+This means that if a :ref:`kernel` is to be run on two GPUs in a system, then one possible way to do it would be to select GPU 0 (device 0) first and start the kernel there, and then select GPU 1 (device 1) and then start the same kernel there again.
 
 .. [#f5] Depending on the :ref:`device_kind`, a system can provide a different number of CPUs. On a system with two sockets, there may be one CPU device if the :ref:`device_kind` is ``CPU``, or two CPU devices if the :ref:`device_kind` is ``numaCPU``.
 
