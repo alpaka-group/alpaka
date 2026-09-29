@@ -163,7 +163,7 @@ namespace alpaka::onHost
 
     } // namespace trait
 
-    consteval bool isPlatformAvaiable(alpaka::concepts::Api auto api)
+    consteval bool isPlatformAvailable(alpaka::concepts::Api auto api)
     {
         return trait::IsPlatformAvailable::Op<std::decay_t<decltype(api)>>::value;
     }
