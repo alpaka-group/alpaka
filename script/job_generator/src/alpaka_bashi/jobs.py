@@ -173,7 +173,7 @@ def get_special_jobs(
         )
 
     special_jobs |= get_clang_tidy_job(
-        compiler_version=packaging.version.parse("21"),
+        compiler_version=packaging.version.parse("23"),
         container_version=container_version,
         stage_name=stage_name,
         image_check=image_check,
