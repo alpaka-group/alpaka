@@ -19,7 +19,7 @@
 
 namespace alpaka
 {
-    /** @brief Non owning view to data
+    /** @brief A non-owning view of a data region.
      *
      * This view is only holding a pointer to real data, copying the view is cheap.
      * Const-ness of the view instance is propagated to the data region.
@@ -33,6 +33,11 @@ namespace alpaka
         alpaka::concepts::Alignment T_MemAlignment = Alignment<>>
     struct View;
 
+    /** @brief Create a view whose innermost dimension is contiguous.
+     *
+     * The API is obtained from @p anyWithApi. Pitches are calculated from the
+     * extents and element type. The view does not own data.
+     */
     template<typename T_ValueType, concepts::Alignment T_MemAlignment = Alignment<>>
     inline constexpr auto makeView(
         auto&& anyWithApi,
@@ -44,6 +49,12 @@ namespace alpaka
         return View{getApi(ALPAKA_FORWARD(anyWithApi)), pointer, extents, pitchMd, memAlignment};
     }
 
+    /** @brief Create a view whose innermost dimension is contiguous.
+     *
+     * Use this overload for data whose layout cannot be described by pitches
+     * calculated from the extents, such as a subregion of a larger allocation.
+     * The API is obtained from @p anyWithApi; the view does not own the data.
+     */
     template<typename T_ValueType, concepts::Alignment T_MemAlignment = Alignment<>>
     inline constexpr auto makeView(
         auto&& anyWithApi,
@@ -56,6 +67,25 @@ namespace alpaka
         return View{getApi(ALPAKA_FORWARD(anyWithApi)), pointer, extents, pitches, memAlignment};
     }
 
+    /** @brief Create a view of @p any using an explicitly chosen API.
+     *
+     * Data, extents, pitches, and alignment are obtained from @p any. The view
+     * refers to the same data and does not own the data. The @p api is derived from @p anyWithApi.
+     */
+    inline constexpr auto makeView(alpaka::concepts::Api auto&& anyWithApi, auto&& any)
+    {
+        return View{
+            internal::getApi(ALPAKA_FORWARD(anyWithApi)),
+            onHost::data(ALPAKA_FORWARD(any)),
+            onHost::getExtents(ALPAKA_FORWARD(any)),
+            onHost::getPitches(ALPAKA_FORWARD(any)),
+            alpaka::getAlignment(ALPAKA_FORWARD(any))};
+    }
+
+    /** @brief Create a view whose innermost dimension is contiguous.
+     *
+     * The resulting view refers to the same data; it does not keep @p any alive.
+     */
     inline constexpr auto makeView(auto&& any)
     {
         return View{
