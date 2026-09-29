@@ -38,14 +38,8 @@ if [[ "$compiler_name" == "clang" && "$APCI_HIP" == 0 ]]; then
 
         ci_wget https://apt.llvm.org/llvm-snapshot.gpg.key /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 
-        case "${compiler_version}" in
-        20)
-            echo_run add-apt-repository -y "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main"
-            ;;
-        21)
-            echo_run add-apt-repository -y "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-21 main"
-            ;;
-        esac
+        echo_run add-apt-repository -y \
+            "deb https://apt.llvm.org/noble/ llvm-toolchain-noble-${compiler_version} main"
 
         clang_apt_package_list=(
             "clang-${compiler_version}"

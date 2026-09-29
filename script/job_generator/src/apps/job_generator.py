@@ -36,6 +36,12 @@ def get_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--no-verification",
+        action="store_true",
+        help="Disable verification of the combination and continue generating the GitLab CI yaml code.",
+    )
+
+    parser.add_argument(
         "--filter",
         type=str,
         default="",
@@ -107,11 +113,14 @@ def main() -> None:
 
     comb_list = alpaka_bashi.add_combinations_parameters(comb_list)
 
-    if not alpaka_bashi.verify(comb_list, param_matrix, version_relation, runtime_infos):
-        print("ERROR: Result is incorrect", file=sys.stderr)
-        sys.exit(1)
-
-    print("Result is correct", file=sys.stderr)
+    if not args.no_verification:
+        if not alpaka_bashi.verify(comb_list, param_matrix, version_relation, runtime_infos):
+            print("ERROR: Result is incorrect", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print("Result is correct", file=sys.stderr)
+    else:
+        alpaka_bashi.print_warn("Skip verification step")
 
     job_filter_name = alpaka_bashi.get_filter_name(args)
     if job_filter_name:

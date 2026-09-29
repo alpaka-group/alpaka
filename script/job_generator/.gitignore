@@ -1,1 +1,4 @@
 alpaka_bashi.egg-info
+# simply a folder, where I can store job-generator outputs to compare different versions
+# only for development
+tmp_out

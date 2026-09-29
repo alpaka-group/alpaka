@@ -32,13 +32,13 @@ from bashi.globals import (
 from bashi.version.dependencies.base_version_support import ClangBase
 from bashi.version.dependencies.clang_cuda import CLANG_CUDA_MAX_CUDA_VERSION, ClangCudaSDKSupport
 from bashi.version.dependencies.hipcc import HIPCC_CLANG_VERSION
-from bashi.version.dependencies.nvcc import NVCC_GCC_MAX_VERSION, NvccHostSupport
+from bashi.version.dependencies.nvcc import NVCC_CLANG_MAX_VERSION, NVCC_GCC_MAX_VERSION, NvccHostSupport
 
 from alpaka_bashi.globals import BUILD_TYPE, BUILD_TYPES, HWLOC
 
 ALPAKA_VERSIONS: dict[str, list[str | int | float]] = {
     GCC: [12, 13, 14, 15, 16],
-    CLANG: [17, 18, 19, 20, 21],
+    CLANG: [17, 18, 19, 20, 21, 22, 23],
     NVCC: [12.5, 12.6, 12.8, 12.9, 13.0, 13.1, 13.2, 13.3, 13.4],
     HIPCC: [6.3, 6.4, 7.0, 7.1, 7.2, 7.14, 10.0],
     ICPX: ["2025.1", "2025.2", "2025.3", "2026.0", "2026.1"],
@@ -160,12 +160,17 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
         # Clang 20 + CUDA 12.8 is not official supported but alpaka 3.x is working with it
         ClangCudaSDKSupport("20", "12.8"),
         ClangCudaSDKSupport("22", "13.0"),
+        ClangCudaSDKSupport("23", "13.2"),
     ]
 
     # Supported compilers:
     # https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#host-compiler-support-policy
     nvcc_gcc_max_version = NVCC_GCC_MAX_VERSION + [
         NvccHostSupport("13.4", "16"),
+    ]
+
+    nvcc_clang_max_version = NVCC_CLANG_MAX_VERSION + [
+        NvccHostSupport("13.4", "22"),
     ]
 
     hipcc_clang_version = HIPCC_CLANG_VERSION + [
@@ -177,4 +182,5 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
         clang_cuda_max_cuda_version=clang_cuda_max_cuda_version,
         hipcc_clang_version=hipcc_clang_version,
         nvcc_gcc_max_version=nvcc_gcc_max_version,
+        nvcc_clang_max_version=nvcc_clang_max_version,
     )

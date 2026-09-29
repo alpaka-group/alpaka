@@ -39,8 +39,19 @@ if(CMAKE_CUDA_COMPILER)
         message(STATUS "Optional CUDAToolkit not found, cub scan implementation will be disabled.")
     else()
         message(STATUS "Found optional CUDAToolkit, version " ${CUDAToolkit_VERSION})
-
-        set(HAS_CUDA_CUB 1)
+        if(
+            CMAKE_CUDA_COMPILER_ID STREQUAL "Clang"
+            AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 23.0
+            AND ${CUDAToolkit_VERSION} VERSION_GREATER_EQUAL "13.1"
+            AND ${CUDAToolkit_VERSION} VERSION_LESS "13.3"
+        )
+            # Clang>=23 can not be used with CCCL due to compile issues
+            # https://github.com/NVIDIA/cccl/issues/7896
+            # This issue should be fixed with CCCL shipped by CUDA 13.3+
+            message(WARNING "CUDAToolkit will not be used due to incompatibilities with the clang CUDA compiler")
+        else()
+            set(HAS_CUDA_CUB 1)
+        endif()
     endif()
 endif()
 

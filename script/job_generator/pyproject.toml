@@ -16,7 +16,7 @@ description = "Job generator application for the alpaka CI."
 version = "1.0"
 
 dependencies = [
-    "bashi-ci == 1.1",
+    "bashi-ci == 1.1.4",
     "pyaml",
     "types-PyYAML",
     "typeguard",
