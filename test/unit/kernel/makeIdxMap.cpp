@@ -78,7 +78,7 @@ void runTest(Queue& queue, Exec exec, Extent const& extentsAndFrameSize, Policy 
 }
 
 /* The test is using iota to prove that each value in the buffer is set via makeIdxMap.
- * Additionally, we atomically count taht each value is only set by a single thread and not twice.
+ * Additionally, we atomically count that each value is only set by a single thread and not twice.
  * We test with different buffer extents, frame extents and policies for makeIdxMap to cover different edge cases of
  * the makeIdxMap implementation.
  */

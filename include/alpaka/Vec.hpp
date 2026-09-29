@@ -839,7 +839,7 @@ namespace alpaka
      * @param dim N-dimensional dim of the index space (N can be one dimension less compared to idx)
      * @param idx N-dimensional index within the index space
      *            @attention behaviour is undefined for negative index
-     *            @attention if idx is outside of dim the result will be outside of the the index domain too
+     *            @attention if idx is outside of dim the result will be outside of the index domain too
      * @return linear index within the index domain
      *
      * @{

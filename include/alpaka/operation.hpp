@@ -209,7 +209,7 @@ namespace alpaka::operation
         ALPAKA_FN_HOST_ACC auto operator()(T* addr, T const& compare, T const& value) const -> T
         {
             static_assert(sizeof(T) == 4u || sizeof(T) == 8u, "Cas is supporting only 32bit and 64bit values!");
-            // Type to reinterpret to to perform the bit comparison
+            // Type to reinterpret to perform the bit comparison
             using BitType = std::conditional_t<sizeof(T) == 4u, unsigned int, unsigned long long>;
 
             // type used to have a safe way to reinterpret the data into another type

@@ -19,7 +19,7 @@ namespace alpaka
         /** Automatic executor selection
          *
          * If this executor is used in alpaka interfaces, the best fitting available executor will automatically
-         * select. The selection based often on the device or queue provided in the interfaces.
+         * select. The selection is often based on the device or queue provided in the interfaces.
          */
         struct AnyExecutor
         {

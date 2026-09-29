@@ -41,8 +41,8 @@ namespace alpaka::onHost
          * we check if we know based on macro defines provided by the compiler which subgroup sizes (warp size) are
          * supported for the device ther kernel is currently compiled. In cases, where the macro definition to detect
          * the target device is not in the list (file: core/syclConfig.hpp) we allow all subgroup sizes generated from
-         * the runtime dispatcher in this trait. This is also the case if we not compile ahead of time for a device.
-         * @attention If a warning `-Wincorrect-sub-group-size` is shown this mean we generated a kernel with an
+         * the runtime dispatcher in this trait. This is also the case if we do not compile ahead of time for a device.
+         * @attention If a warning `-Wincorrect-sub-group-size` is shown this means we generated a kernel with an
          * unsupported warp size, triggered by the on host runtime dispatch in this trait.
          *
          * The reason why we do not want to execute the runtime dispatch within the parallel_for, equal to what

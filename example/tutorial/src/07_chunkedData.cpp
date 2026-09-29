@@ -12,11 +12,11 @@
 /** @file
  *
  * In the previous example we showed how to handle thread indices by hand to iterate over 1 and 3-dimensional data.
- * There are very seldom cases where you need this explict control over threads and blocks. Very often handling thread
+ * There are very seldom cases where you need this explicit control over threads and blocks. Very often handling thread
  * indices by hand will result in performance issues at least on CPU devices.
  *
  * This example will show how you can iterate with frames, which can be seen as data index chunks without explicit
- * calculate thread indices by hand. The code is is easy to write and read and will mostly be faster on CPU and GPU
+ * calculate thread indices by hand. The code is easy to write and read and will mostly be faster on CPU and GPU
  * devices.
  */
 

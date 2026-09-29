@@ -21,7 +21,7 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
  *
  * The stencil functor is getting a SimdPtr as input which allows to call the operator[] to change the index.
  * In this test we do not shift the memory to avoid out of memory access.
- * We cannot use generic lambdas with CUDA therefor we need to write a functor.
+ * We cannot use generic lambdas with CUDA therefore we need to write a functor.
  */
 struct StencilAddWithAcc
 {

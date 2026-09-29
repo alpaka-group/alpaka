@@ -32,7 +32,7 @@ namespace alpaka::onHost
      *   @see ScalarFunc.
      * @param transformFn The function to apply to each element of the input data.
      *   The functor should support Simd packages. If not you can enforce the element wise execution by wrapping into
-     * ScalarFunc. If you would like to support stencil executions wrapp fn into StencilFunc. StencilFunc is
+     * ScalarFunc. If you would like to support stencil executions wrap fn into StencilFunc. StencilFunc is
      * getting all arguments as SimdPtr. If StencilFunc is used you should take care to not read outside of valid
      * memory ranges by using sub-views to your input and output data. Optionally a transformFn can have an accelerator
      * as first argument.
@@ -40,7 +40,7 @@ namespace alpaka::onHost
      * arguments as input data is provided. An optional argument for the accelerator is support as first argument if
      * needed.
      *
-     * examples for a identity unary transform functor:
+     * examples for an identity unary transform functor:
      * @code{.cpp}
      *   struct Foo {
      *      constexpr auto operator()(onAcc::concepts::Acc auto const&, concepts::SimdPtr auto const& a) const {

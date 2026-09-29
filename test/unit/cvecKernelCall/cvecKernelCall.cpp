@@ -33,7 +33,7 @@ struct KernelCVecFrameExtents
         [[maybe_unused]] alpaka::concepts::CVector auto blockThreadCount2 = acc[alpaka::layer::thread].count();
         static_assert(blockThreadCount2 == blockThreadCount);
 
-        // warp size must be accessible at compile time, this is only possible if we us ethe accelerator type
+        // warp size must be accessible at compile time, this is only possible if we use the accelerator type
         constexpr uint32_t warpSize = ALPAKA_TYPEOF(acc)::getWarpSize();
         constexpr uint32_t warpSizeFn = onAcc::warp::getSize<T_Acc>();
 
@@ -74,7 +74,7 @@ struct KernelCVecThreadExtents
         static_assert(blockThreadCount.x() == 1u);
         result[0] = blockThreadCount.x() == 1u;
 
-        // warp size must be accessible at compile time, this is only possible if we us ethe accelerator type
+        // warp size must be accessible at compile time, this is only possible if we use the accelerator type
         constexpr uint32_t warpSize = ALPAKA_TYPEOF(acc)::getWarpSize();
         constexpr uint32_t warpSizeFn = onAcc::warp::getSize<T_Acc>();
 

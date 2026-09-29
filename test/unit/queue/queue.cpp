@@ -170,7 +170,7 @@ TEMPLATE_LIST_TEST_CASE("iota4D", "", TestApis)
 
 /** Test index container dimension slicing
  *
- * @todo This is a very bad example for slicing. Find a better usefull example.
+ * @todo This is a very bad example for slicing. Find a better useful example.
  */
 template<typename T_Selection>
 struct IotaKernelNDSelection

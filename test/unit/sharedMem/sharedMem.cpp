@@ -72,7 +72,7 @@ TEMPLATE_LIST_TEST_CASE("block shared iota", "[sharedMem]", TestApis)
 /** Validate shared memory aliasing and uniqueness.
  *
  * If a id during the shared memory declaration is used twice the same memory should be returned.
- * Different id's should produce independant shared memory.
+ * Different id's should produce independent shared memory.
  */
 struct SharedMemAlias
 {

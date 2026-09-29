@@ -9,7 +9,7 @@
 TEST_CASE("config macros", "")
 {
     STATIC_REQUIRE(ALPAKA_VERSION_NUMBER(2025, 2, 1) == 202'500'200'001);
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_VERSION_NUMBER(12025, 2, 1) == 202'500'200'001);
     STATIC_REQUIRE(ALPAKA_VERSION_NUMBER(12025, 2, 1) == ALPAKA_VERSION_NUMBER(2025, 2, 1));
 
@@ -18,26 +18,26 @@ TEST_CASE("config macros", "")
 
     STATIC_REQUIRE(ALPAKA_YYYYMMDD_TO_VERSION(20'250'201) == 202'500'200'001);
     STATIC_REQUIRE(ALPAKA_YYYYMMDD_TO_VERSION(20'250'201) == ALPAKA_VERSION_NUMBER(2025, 2, 1));
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_YYYYMMDD_TO_VERSION(120'250'201) == ALPAKA_VERSION_NUMBER(2025, 2, 1));
 
     STATIC_REQUIRE(ALPAKA_YYYYMM_TO_VERSION(202502) == 202'500'200'000);
     STATIC_REQUIRE(ALPAKA_YYYYMM_TO_VERSION(202502) == ALPAKA_VERSION_NUMBER(2025, 2, 0));
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_YYYYMM_TO_VERSION(1'202'502) == ALPAKA_VERSION_NUMBER(2025, 2, 0));
 
     STATIC_REQUIRE(ALPAKA_VVRRP_TO_VERSION(12081) == 1'200'800'001);
     STATIC_REQUIRE(ALPAKA_VVRRP_TO_VERSION(12081) == ALPAKA_VERSION_NUMBER(12, 8, 1));
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_VVRRP_TO_VERSION(12'345'081) == ALPAKA_VERSION_NUMBER(2345, 8, 1));
 
     STATIC_REQUIRE(ALPAKA_VRP_TO_VERSION(751) == 700'500'001);
     STATIC_REQUIRE(ALPAKA_VRP_TO_VERSION(751) == ALPAKA_VERSION_NUMBER(7, 5, 1));
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_VRP_TO_VERSION(1'234'567) == ALPAKA_VERSION_NUMBER(2345, 6, 7));
 
     STATIC_REQUIRE(ALPAKA_VRRPP_TO_VERSION(120503) == 1'200'500'003);
     STATIC_REQUIRE(ALPAKA_VRRPP_TO_VERSION(120503) == ALPAKA_VERSION_NUMBER(12, 5, 3));
-    // to long major version should be cut to 4 digits
+    // too long major version should be cut to 4 digits
     STATIC_REQUIRE(ALPAKA_VRRPP_TO_VERSION(123'451'513) == ALPAKA_VERSION_NUMBER(2345, 15, 13));
 }

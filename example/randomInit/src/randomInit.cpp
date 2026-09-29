@@ -48,7 +48,7 @@ bool validateHistogram(auto const& histogram, int32_t const expectedValue)
 }
 
 //! Kernel to generate random numbers and fill the histogram
-//! This kernel uses an uniform random integer generator and uses a bit manipulator-scaler to generate uniform float
+//! This kernel uses a uniform random integer generator and uses a bit manipulator-scaler to generate uniform float
 //! random numbers in the range [0, 1). The generated random numbers are then scaled to fit into the histogram bins.
 //! The histogram is filled by atomically incrementing the bin count for each generated number.
 //! The kernel uses the Philox engine to generate random numbers.

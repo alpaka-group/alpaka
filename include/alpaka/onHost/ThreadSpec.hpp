@@ -106,7 +106,7 @@ namespace alpaka::onHost
         /** Concept to check if a type is a ThreadSpec
          *
          * @tparam T Type to check
-         * @tparam T_IndexType enforce a index type of the thread specification, if not provided the type is not
+         * @tparam T_IndexType enforce an index type of the thread specification, if not provided the type is not
          * checked
          * @tparam T_dim enforce a dimensionality of the thread specification, if not provided the value is not
          * checked

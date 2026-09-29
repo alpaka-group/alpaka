@@ -12,9 +12,9 @@ namespace alpaka::onHost
 {
     /** Transform the input data with the given function and write the result to the output data.
      *
-     * fn can be a lambda function if all arguments are specialized. This fully specialized functor must mostly wrapped
-     * by @see ScalarFunc. Generic lambdas are for some backends e.g. CUDA/HIP not supported. A lambda must be of the
-     * following form and should capture arguments only by copy.
+     * fn can be a lambda function if all arguments are specialized. This fully specialized functor must mostly be
+     * wrapped by @see ScalarFunc. Generic lambdas are for some backends e.g. CUDA/HIP not supported. A lambda must be
+     * of the following form and should capture arguments only by copy.
      *
      * @code{.cpp}
      *   [] ALPAKA_FN_ACC(){};
@@ -25,13 +25,13 @@ namespace alpaka::onHost
      * @param out The output data to write the result to.
      * @param fn The function to apply to each element of the input data.
      *   The functor should support Simd packages. If not you can enforce the element wise execution by wrapping into
-     * @see ScalarFunc. If you would like to support stencil executions wrapp fn into @see StencilFunc. StencilFunc is
+     * @see ScalarFunc. If you would like to support stencil executions wrap fn into @see StencilFunc. StencilFunc is
      * getting all arguments as @see SimdPtr. If StencilFunc is used you should take care to not read outside of valid
-     * memory ranges by using sub-views to your input and output data. Optionally a fn can have a accelerator as first
+     * memory ranges by using sub-views to your input and output data. Optionally a fn can have an accelerator as first
      * argument.
      * @param in The input data to transform, all input data is passed to fn.
      *
-     * examples for a identity unary transform functor:
+     * examples for an identity unary transform functor:
      * @code{.cpp}
      *   struct Foo {
      *      constexpr auto operator()(onAcc::concepts::Acc auto const&, concepts::SimdPtr auto const& a) const {

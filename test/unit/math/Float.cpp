@@ -42,14 +42,14 @@ TEMPLATE_LIST_TEST_CASE("mathOpsFloat", "[math] [operator]", TestAccFunctorTuple
      *   - but it is easy to add a new Range:: enum-type with custom edge cases
      *  - some tests may fail if ALPAKA_CUDA_FAST_MATH is turned on
      * - nan typically fails every test, but could be normal defined behaviour
-     * - inf/-inf typically dont fail a test
+     * - inf/-inf typically do not fail a test
      * - for easy debugging the << operator is overloaded for Buffer objects
      * - arguments are generated between 0 and 1000
      *     and the default argument-buffer-extent is 1000
      * The arguments are generated in DataGen.hpp and can easily be modified.
      * The arguments depend on the Range:: enum-type specified for each functor.
      * ----------------------------------------------------------------------
-     * - each functor has an arity and a array of ranges
+     * - each functor has an arity and an array of ranges
      *     - there is one args Buffer and one results Buffer
      *         - each buffer encapsulated the host/device communication
      *         - as well as the data access and the initialisation

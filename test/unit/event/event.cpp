@@ -88,7 +88,7 @@ concept CanMakeEvent = requires(T_Queue const& queue, T_Policies... policies) { 
 
 /** This test takes care that kernel in different queues can run concurrent and if we can communicate between host and
  * the device via mapped memory. Even if the concurrent queue test says true it could be that kernels can run under the
- * condition we test concurrent but if to many blocking kernel are enqueued they can not run concurrent.
+ * condition we test concurrent but if too many blocking kernel are enqueued they can not run concurrent.
  */
 TEMPLATE_LIST_TEST_CASE("device analysis", "", TestApis)
 {

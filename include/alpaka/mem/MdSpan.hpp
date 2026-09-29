@@ -99,7 +99,7 @@ namespace alpaka
 
         /** get origin pointer
          *
-         * If the pointer is const and therefore read only depends on T_Type and not the const-ness of MdSPan.
+         * If the pointer is const and therefore read only depends on T_Type and not the const-ness of MdSpan.
          */
         constexpr const_pointer data() const
         {

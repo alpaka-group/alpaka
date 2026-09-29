@@ -129,8 +129,8 @@
 
 #        elif(/* generate code ahead of time for x86_64 CPUs */                                                       \
               defined(__SYCL_TARGET_INTEL_X86_64__) && __SYCL_TARGET_INTEL_X86_64__)
-// @attention ony CPU side detachment of SYCL kernel we limit the CPU currently to max warp group size of 32, therefore
-// 64 is removed from this list
+// @attention only CPU side detachment of SYCL kernel we limit the CPU currently to max warp group size of 32,
+// therefore 64 is removed from this list
 #            define ALPAKA_SYCL_SUBGROUP_SIZE (1 | 2 | 4 | 8 | 16 | 32)
 
 #        elif /* NVIDIA Maxwell architecture (compute capability 5.0) */                                              \
@@ -340,7 +340,7 @@
 
 #    else
 
-// ony the host side we need to allow all possible variants of a subgroup size else kernel will not be build
+// only the host side we need to allow all possible variants of a subgroup size else kernel will not be build
 #        define ALPAKA_SYCL_SUBGROUP_SIZE (0xFFFF'FFFF) /* host compilation */
 
 #    endif // __SYCL_DEVICE_ONLY__

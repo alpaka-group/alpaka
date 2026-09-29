@@ -21,7 +21,7 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
  *
  * The stencil functor is getting a SimdPtr as input which allows to call the operator[] to change the index.
  * In this test we do not shift the memory to avoid out of memory access.
- * We cannot use generic lambdas with CUDA therefor we need to write a functor
+ * We cannot use generic lambdas with CUDA therefore we need to write a functor
  */
 struct StencilAdd
 {
@@ -159,7 +159,7 @@ TEMPLATE_LIST_TEST_CASE("transform", "", TestBackends)
         std::make_tuple(StencilFunc{StencilAddWithAcc{}}, std::plus{}, TestWithMdSpan{}),
         /* We can use a lambda function because the types are explicitly defined.
          * Generic lambdas would not be supported for CUDA/HIP
-         * Wrapp the functor as ScalarFunc because math::min() cannot be executed on a Simd pack.
+         * Wrap the functor as ScalarFunc because math::min() cannot be executed on a Simd pack.
          * This enforces that the functor is evaluated on scalar values and not SIMD packs.
          * Memory loads and stores will be vectorized.
          */
@@ -256,7 +256,7 @@ TEMPLATE_LIST_TEST_CASE("transform generator", "", TestBackends)
         std::make_tuple(StencilFunc{StencilAddWithAcc{}}, std::plus{}, TestWithGenerator{}),
         /* We can use a lambda function because the types are explicitly defined.
          * Generic lambdas would not be supported for CUDA/HIP
-         * Wrapp the functor as ScalarFunc because math::min() cannot be executed on a Simd pack.
+         * Wrap the functor as ScalarFunc because math::min() cannot be executed on a Simd pack.
          * This enforces that the functor is evaluated on scalar values and not SIMD packs.
          * Memory loads and stores will be vectorized.
          */

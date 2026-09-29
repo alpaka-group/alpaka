@@ -4,7 +4,7 @@
 
 /** This test is testing the special queue OmpCollectiveQueue.
  *
- * The queue is **NOT** part of official alpaka, therefore is must be included separately.
+ * The queue is **NOT** part of official alpaka, therefore it must be included separately.
  * The test is skipped if alpaka tests are build without OpenMP support.
  */
 

@@ -240,8 +240,8 @@ namespace alpaka
         /** True if MdSpanArray is pointing to valid memory.
          *
          * @details
-         * An MdSpanArray remains valid even after being moved. The reason is, that it use stack memory which cannot be
-         * freed.
+         * An MdSpanArray remains valid even after being moved. The reason is, that it uses stack memory which cannot
+         * be freed.
          */
         [[nodiscard]] constexpr explicit operator bool() const noexcept
         {

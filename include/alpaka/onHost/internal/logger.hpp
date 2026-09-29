@@ -24,7 +24,7 @@ namespace alpaka::onHost::logger::internal
      *
      * The output is not buffered and will be written immediately, it is **NOT** threadsafe.
      *
-     * @todo seperate the indention level from the writer
+     * @todo separate the indention level from the writer
      * @todo write additional logger, std::cout and thread save logger
      */
     struct StdErr

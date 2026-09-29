@@ -19,7 +19,7 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
 
 namespace myTest
 {
-    // This functor des not support Simd and must be wrapped by ScalarFunc
+    // This functor does not support Simd and must be wrapped by ScalarFunc
     struct MinValue
     {
         constexpr auto operator()(auto const& a, auto const& b) const
@@ -37,7 +37,7 @@ namespace myTest
         onAcc::atomicMin(acc, dest, src);
     }
 
-    // This functor des not support Simd and must be wrapped by ScalarFunc
+    // This functor does not support Simd and must be wrapped by ScalarFunc
     struct MaxValue
     {
         constexpr auto operator()(auto const& a, auto const& b) const

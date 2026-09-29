@@ -62,7 +62,7 @@ namespace alpaka::onAcc
                     return metaDataSize * maxNumUniqueAllocations;
                 }
 
-                /* With oneApi 2025.2 the behaviour of shared memory allocation has changed. IT behaves like cuda
+                /* With oneApi 2025.2 the behaviour of shared memory allocation has changed. It behaves like cuda
                  * shared memory. Therefore, we need a unique data type to avoid pointer aliasing. Using the helper
                  * class for data alignment is backward compatible to previous versions. The reason for using std::byte
                  * is that this guaranteed support for data types which are not trivially constructible.
