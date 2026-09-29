@@ -61,7 +61,7 @@ namespace alpaka::onHost
         Queue<T_Device, T_Policies> const& queue,
         alpaka::concepts::Executor auto const exec,
         T_DataType const& neutralElement,
-        alpaka::concepts::IMdSpan auto out,
+        alpaka::concepts::IMdSpan auto&& out,
         auto&& binaryReduceFn,
         auto&& transformFn,
         alpaka::concepts::IDataSource auto&&... in)
@@ -73,7 +73,7 @@ namespace alpaka::onHost
                 queue,
                 defaultExecutor(queue.getDevice()),
                 neutralElement,
-                out,
+                ALPAKA_FORWARD(out),
                 ALPAKA_FORWARD(binaryReduceFn),
                 ALPAKA_FORWARD(transformFn),
                 ALPAKA_FORWARD(in)...);
@@ -83,7 +83,7 @@ namespace alpaka::onHost
                 queue,
                 exec,
                 neutralElement,
-                out,
+                ALPAKA_FORWARD(out),
                 ALPAKA_FORWARD(binaryReduceFn),
                 ALPAKA_FORWARD(transformFn),
                 ALPAKA_FORWARD(in)...);
@@ -97,7 +97,7 @@ namespace alpaka::onHost
     inline void transformReduce(
         Queue<T_Device, T_Policies> const& queue,
         T_DataType const& neutralElement,
-        alpaka::concepts::IMdSpan auto out,
+        alpaka::concepts::IMdSpan auto&& out,
         auto&& binaryReduceFn,
         auto&& transformFn,
         alpaka::concepts::IDataSource auto&&... in)
@@ -107,7 +107,7 @@ namespace alpaka::onHost
             queue,
             defaultExecutor(queue.getDevice()),
             neutralElement,
-            out,
+            ALPAKA_FORWARD(out),
             ALPAKA_FORWARD(binaryReduceFn),
             ALPAKA_FORWARD(transformFn),
             ALPAKA_FORWARD(in)...);

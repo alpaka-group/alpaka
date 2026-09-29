@@ -381,8 +381,8 @@ namespace alpaka::onHost::internal
         auto& queue,
         alpaka::onHost::concepts::Device auto& devAcc,
         alpaka::concepts::Executor auto& exec,
-        alpaka::concepts::IMdSpan auto& buffer,
-        alpaka::concepts::IMdSpan auto& outputVec,
+        alpaka::concepts::IMdSpan auto&& buffer,
+        alpaka::concepts::IMdSpan auto&& outputVec,
         alpaka::concepts::IDataSource auto& inputVec)
     {
         using Data = typename ALPAKA_TYPEOF(inputVec)::value_type;
@@ -436,16 +436,18 @@ namespace alpaka::onHost::internal
             // enqueue the kernel execution tasks
             queue.enqueue(
                 frameSpec,
-                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, outputVec, increments});
+                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, ALPAKA_FORWARD(outputVec), increments});
 
             // always recurse into exclusive scan
             scan<exclusiveScan>(queue, devAcc, exec, bufferNext, increments, increments);
-            queue.enqueue(frameSpec, KernelBundle{addIncrements, chunkExtent, increments, outputVec});
+            queue.enqueue(frameSpec, KernelBundle{addIncrements, chunkExtent, increments, ALPAKA_FORWARD(outputVec)});
         }
         else
         {
             // problem fits within 1 frame
-            queue.enqueue(frameSpec, KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, outputVec});
+            queue.enqueue(
+                frameSpec,
+                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, ALPAKA_FORWARD(outputVec)});
         }
     }
 
@@ -454,7 +456,7 @@ namespace alpaka::onHost::internal
         auto& queue,
         alpaka::onHost::concepts::Device auto& devAcc,
         alpaka::concepts::Executor auto& exec,
-        alpaka::concepts::IMdSpan auto& outputVec,
+        alpaka::concepts::IMdSpan auto&& outputVec,
         alpaka::concepts::IDataSource auto const& inputVec)
     {
         using Data = ALPAKA_TYPEOF(inputVec)::value_type;
@@ -464,7 +466,7 @@ namespace alpaka::onHost::internal
          */
         auto buf = onHost::alloc<char>(devAcc, scanBufferSize<Data>(inputVec.getExtents()));
 
-        scan<T_scanType>(queue, devAcc, exec, buf, outputVec, inputVec);
+        scan<T_scanType>(queue, devAcc, exec, buf, ALPAKA_FORWARD(outputVec), inputVec);
 
         buf.keepAlive(queue);
     }

@@ -134,7 +134,7 @@ namespace alpaka::onHost::internal
         auto const& queue,
         alpaka::concepts::Executor auto const exec,
         T_DataType const& neutralElement,
-        alpaka::concepts::IMdSpan auto out,
+        alpaka::concepts::IMdSpan auto&& out,
         auto&& reduceFn,
         auto&& transformFn,
         auto&& in0,
@@ -185,7 +185,7 @@ namespace alpaka::onHost::internal
                 return ss.str();
             });
 
-        onHost::fill(queue, out, neutralElement, out.getExtents().fill(1));
+        onHost::fill(queue, ALPAKA_FORWARD(out), neutralElement, out.getExtents().fill(1));
         queue.enqueue(
             frameSpec,
             KernelBundle{
@@ -194,7 +194,7 @@ namespace alpaka::onHost::internal
                 chunkExtents,
                 extentMd,
                 neutralElement,
-                out,
+                ALPAKA_FORWARD(out),
                 ALPAKA_FORWARD(reduceFn),
                 ALPAKA_FORWARD(transformFn),
                 ALPAKA_FORWARD(in0),

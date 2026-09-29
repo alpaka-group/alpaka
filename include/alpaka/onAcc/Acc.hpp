@@ -172,15 +172,15 @@ namespace alpaka::onAcc
     template<typename T, size_t T_uniqueId>
     constexpr decltype(auto) declareSharedMdArray(
         concepts::Acc auto const& acc,
-        alpaka::concepts::CVector auto const& extent)
+        alpaka::concepts::CVector auto const& extents)
     {
-        using CArrayType = typename CArrayType<T, ALPAKA_TYPEOF(extent)>::type;
+        using CArrayType = typename CArrayType<T, ALPAKA_TYPEOF(extents)>::type;
         /* XOR with hash to avoid issues in case the user is using the same id to create an array and normal shared
          * variables.
          */
         constexpr size_t id = T_uniqueId ^ 0x9e37'79b9'7f4a'7c15;
         constexpr auto alignment = Alignment<alignof(T)>{};
-        return MdSpanArray<CArrayType, typename ALPAKA_TYPEOF(extent)::value_type, ALPAKA_TYPEOF(alignment)>{
+        return MdSpanArray<CArrayType, typename ALPAKA_TYPEOF(extents)::value_type, ALPAKA_TYPEOF(alignment)>{
             declareSharedVar<CArrayType, id>(acc)};
     }
 

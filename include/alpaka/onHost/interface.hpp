@@ -128,9 +128,22 @@ namespace alpaka::onHost
      * @param handle object exposing a native handle
      * @return the native handle returned by the backend-specific implementation
      */
-    inline auto getNativeHandle(auto const& handle)
+    inline auto getNativeHandle(alpaka::concepts::HasGet auto&& handle)
     {
         return internal::getNativeHandle(*handle.get());
+    }
+
+    /** Get the native handle.
+     *
+     * The native handle can be passed to the underlying backend API
+     * (e.g. CUDA, HIP, OpenMP) for low-level operations.
+     *
+     * @param any object providing a native handle
+     * @return the native handle returned by the backend-specific implementation
+     */
+    inline auto getNativeHandle(auto&& any)
+    {
+        return internal::getNativeHandle(ALPAKA_FORWARD(any));
     }
 
     /** wait for all work to be finished
@@ -139,7 +152,7 @@ namespace alpaka::onHost
      *
      * @param handle queue/device/event
      */
-    inline void wait(alpaka::concepts::HasGet auto& handle)
+    inline void wait(alpaka::concepts::HasGet auto&& handle)
     {
         return internal::wait(*handle.get());
     }

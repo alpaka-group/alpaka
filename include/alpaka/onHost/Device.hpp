@@ -186,7 +186,7 @@ namespace alpaka::onHost
             return internal::GetFreeGlobalMemBytes::Op<ALPAKA_TYPEOF(*m_device.get())>{}(*m_device.get());
         }
 
-        constexpr auto getDeviceKind() const
+        constexpr alpaka::concepts::DeviceKind auto getDeviceKind() const
         {
             return T_DeviceKind{};
         }

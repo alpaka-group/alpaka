@@ -48,7 +48,7 @@ namespace alpaka::onAcc
             }
         };
 
-        inline constexpr Block block{};
+        constexpr Block block{};
 
         /**
          * @brief Scope for atomic and fence operations visible across all thread blocks on the same device.
@@ -67,7 +67,7 @@ namespace alpaka::onAcc
             }
         };
 
-        inline constexpr Device device{};
+        constexpr Device device{};
 
         /**
          * @brief Scope for atomic and fence operations with system-wide visibility.
@@ -90,7 +90,7 @@ namespace alpaka::onAcc
             }
         };
 
-        inline constexpr System system{};
+        constexpr System system{};
     } // namespace scope
 
     namespace concepts
