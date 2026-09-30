@@ -11556,24 +11556,20 @@
 
 		    namespace detail
 		    {
-		        //! Check that the return of TKernelFnObj is void
-		        template<typename TAcc, typename TSfinae = void>
-		        struct CheckFnReturnType
-		        {
-		            template<typename TKernelFnObj, typename... TArgs>
-		            void operator()(TKernelFnObj const&, TArgs const&...)
-		            {
-		                using Result = std::invoke_result_t<TKernelFnObj, TAcc const&, TArgs const&...>;
-		                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
-		            }
-		        };
-
 		        // asserts that T is trivially copyable. We put this in a separate function so we can see which T would fail
 		        // the test, when called from a fold expression.
 		        template<typename T>
 		        inline void assertKernelArgIsTriviallyCopyable()
 		        {
 		            static_assert(isKernelArgumentTriviallyCopyable<T>, "The kernel argument T must be trivially copyable!");
+		        }
+
+		        template<typename TKernelFnObj, typename TAcc, typename... TArgs>
+		        ALPAKA_FN_HOST_ACC auto checkKernelReturnType(TKernelFnObj const&, TAcc const&, TArgs&&...) -> void
+		        {
+		            static_assert(
+		                std::is_invocable_r_v<void, TKernelFnObj const&, TAcc const&, TArgs&&...>,
+		                "The kernel is not invocable with the given arguments!");
 		        }
 		    } // namespace detail
 
@@ -11617,9 +11613,6 @@
 		    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
 		    ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
 		    {
-		        // check for void return type
-		        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
-
 		#if ALPAKA_COMP_NVCC
 		        static_assert(
 		            isKernelTriviallyCopyable<TKernelFnObj>,
@@ -11686,12 +11679,8 @@
 		    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
 		        -> void
 		    {
-		        enqueue(
-		            queue,
-		            createTaskKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
-		                workDiv,
-		                kernelFnObj,
-		                std::forward<TArgs>(args)...));
+		        using Acc = TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>;
+		        enqueue(queue, createTaskKernel<Acc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
 		    }
 
 		} // namespace alpaka
@@ -27318,23 +27307,6 @@
 		        };
 		    } // namespace trait
 
-		    namespace detail
-		    {
-		        //! specialization of the TKernelFnObj return type evaluation
-		        //
-		        // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
-		        // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
-		        // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
-		        template<typename TApi, typename TDim, typename TIdx>
-		        struct CheckFnReturnType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
-		        {
-		            template<typename TKernelFnObj, typename... TArgs>
-		            void operator()(TKernelFnObj const&, TArgs const&...)
-		            {
-		            }
-		        };
-		    } // namespace detail
-
 		    namespace trait
 		    {
 		        //! The GPU CUDA accelerator execution task type trait specialization.
@@ -32895,6 +32867,13 @@
 	#    endif
 	                acc.m_gridBlockIdx = mapIdx<TDim::value>(index, gridBlockExtent);
 
+	                std::apply(
+	                    [&](auto&&... argsWithAcc) {
+	                        detail::checkKernelReturnType(
+	                            m_kernelFnObj,
+	                            std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
+	                    },
+	                    std::tuple_cat(std::tie(acc), m_args));
 	                std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
 	                // After a block has been processed, the shared memory has to be deleted.
@@ -33214,6 +33193,13 @@
 	                            }
 	                        }
 
+	                        std::apply(
+	                            [&](auto&&... argsWithAcc) {
+	                                detail::checkKernelReturnType(
+	                                    m_kernelFnObj,
+	                                    std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
+	                            },
+	                            std::tuple_cat(std::tie(acc), m_args));
 	                        std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
 	                        // Wait for all threads to finish before deleting the shared memory.
@@ -33400,6 +33386,13 @@
 	                {
 	                    acc.m_gridBlockIdx = blockThreadIdx;
 
+	                    std::apply(
+	                        [&](auto&&... argsWithAcc) {
+	                            detail::checkKernelReturnType(
+	                                m_kernelFnObj,
+	                                std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
+	                        },
+	                        std::tuple_cat(std::tie(acc), m_args));
 	                    std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
 	                    // After a block has been processed, the shared memory has to be deleted.
@@ -33891,6 +33884,7 @@
 		                sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]                   \
 		            {                                                                                                         \
 		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+		                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
 		                std::apply(                                                                                           \
 		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 		                    k_args);                                                                                          \
@@ -33903,6 +33897,7 @@
 		                sycl::nd_item<TDim::value> work_item)                                                                 \
 		            {                                                                                                         \
 		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+		                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
 		                std::apply(                                                                                           \
 		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 		                    k_args);                                                                                          \
@@ -34281,6 +34276,13 @@
 	                            acc.m_gridBlockIdx
 	                                = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(i)), gridBlockExtent);
 
+	                            std::apply(
+	                                [&](auto&&... argsWithAcc) {
+	                                    detail::checkKernelReturnType(
+	                                        m_kernelFnObj,
+	                                        std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
+	                                },
+	                                std::tuple_cat(std::tie(acc), m_args));
 	                            std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
 	                            freeSharedVars(acc);
@@ -34527,6 +34529,7 @@
 	            syncBlockThreads(acc);
 
 	            // Execute the kernel itself.
+	            detail::checkKernelReturnType(kernelFnObj, std::as_const(acc), args...);
 	            kernelFnObj(std::as_const(acc), args...);
 
 	            // We have to sync all threads here because if a thread would finish before all threads have been started,
