@@ -18,6 +18,16 @@ namespace alpaka::test
     template<typename T>
     constexpr bool isApproxEqual(T const& a, T const& b)
     {
+        if constexpr(std::is_floating_point_v<T>)
+        {
+            // NaN is not equal to anything, including itself, so a NaN produced by
+            // both the alpaka and the std:: reference implementation would be
+            // reported as a mismatch. This is a legitimate result for some inputs
+            // (e.g. an infinite operand for remainders or modulo), therefore two
+            // NaNs are treated as equal here.
+            if(std::isnan(a) && std::isnan(b))
+                return true;
+        }
         return a == Catch::Approx(b).margin(std::numeric_limits<T>::epsilon());
     }
 
