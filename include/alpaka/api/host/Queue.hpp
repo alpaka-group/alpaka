@@ -27,6 +27,7 @@
 #include <cstdint>
 #include <cstring>
 #include <future>
+#include <mutex>
 
 namespace alpaka::onHost
 {
@@ -93,9 +94,12 @@ namespace alpaka::onHost
 
             /** Mutex to ensure sequential execution of tasks and operation if the queue is blocking.
              *
-             * For non-blocking queue @c m_workerThread is taking care of the execution order
+             * For non-blocking queue @c m_workerThread is taking care of the execution order.
+             * The mutex is recursive because a task may release resources owned by the queue,
+             * e.g. a deferred SharedBuffer deleter submits the free into this queue from within a
+             * task which already holds the lock.
              */
-            std::mutex m_mutex;
+            std::recursive_mutex m_mutex;
 
             /** Submit a task to the queue.
              *
@@ -110,7 +114,7 @@ namespace alpaka::onHost
                 ALPAKA_LOG_FUNCTION(onHost::logger::queue);
                 if(m_isBlocking)
                 {
-                    std::lock_guard<std::mutex> lk(m_mutex);
+                    std::lock_guard<std::recursive_mutex> lk(m_mutex);
                     m_isBlockingTaskExecuted = true;
                     fn();
                     // silent tsan warnings: The promise is fulfilled directly and only a future which is true is
@@ -332,7 +336,7 @@ namespace alpaka::onHost
                         /* a blocking queue must acquire this lock to ensure that all pending host tasks
                          * have finished
                          */
-                        std::lock_guard<std::mutex> queueLock(queue.m_mutex);
+                        std::lock_guard<std::recursive_mutex> queueLock(queue.m_mutex);
                         // Nothing to do if it has been re-enqueued to a later position in the queue.
                         if(enqueueCount == event.m_enqueueCount)
                         {
@@ -390,7 +394,7 @@ namespace alpaka::onHost
                             /* a blocking queue must acquire this lock to ensure that all pending host tasks
                              * have finished
                              */
-                            std::lock_guard<std::mutex> queueLock(queue.m_mutex);
+                            std::lock_guard<std::recursive_mutex> queueLock(queue.m_mutex);
                             std::shared_future sFuture = event.m_future;
                             eventLock.unlock();
                             sFuture.get();

@@ -105,3 +105,31 @@ TEMPLATE_LIST_TEST_CASE("allocDeferred", "", TestApis)
     for(int i = 0; i < testRounds; ++i)
         allocDeferredExplicitWait(device, exec);
 }
+
+/** A deferred buffer owned by a blocking queue must survive being released from
+ * inside a task running on that same queue.
+ *
+ * The deferred allocation registers a deleter which submits the free into the
+ * owning queue. If that release happens from within a blocking queue task, the
+ * queue already holds its mutex; the queue mutex must be recursive so that the
+ * re-entrant submit() does not deadlock.
+ */
+TEST_CASE("allocDeferred release inside blocking queue task", "")
+{
+    onHost::Queue queue = onHost::makeHostDevice().makeQueue(queueKind::blocking);
+
+    auto buffer
+        = std::make_shared<ALPAKA_TYPEOF(onHost::allocDeferred<int>(queue, 8))>(onHost::allocDeferred<int>(queue, 8));
+    onHost::fill(queue, *buffer, 42);
+
+    bool destroyed = false;
+    // The buffer must be destroyed while the queue is executing this task.
+    queue.enqueueHostFn(
+        [&]
+        {
+            buffer.reset();
+            destroyed = true;
+        });
+
+    REQUIRE(destroyed);
+}
