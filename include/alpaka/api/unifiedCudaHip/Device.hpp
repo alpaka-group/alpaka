@@ -42,9 +42,9 @@ namespace alpaka::onHost
             ~Device()
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::device);
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::setDevice(getNativeHandle()));
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::deviceSynchronize());
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::deviceReset());
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::setDevice(getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::deviceSynchronize());
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::deviceReset());
             }
 
             Device(Device const&) = delete;

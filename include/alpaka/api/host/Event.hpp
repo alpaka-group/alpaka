@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <cstring>
 #include <future>
+#include <iostream>
 #include <sstream>
 
 namespace alpaka::onHost
@@ -41,7 +42,16 @@ namespace alpaka::onHost
             ~Event()
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::event);
-                internal::wait(*this);
+                try
+                {
+                    internal::wait(*this);
+                }
+                catch(...)
+                {
+                    std::cerr << "Waiting for the host event failed during destruction, e.g. a callback task "
+                                 "threw."
+                              << std::endl;
+                }
             }
 
             Event(Event const&) = delete;

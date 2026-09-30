@@ -77,10 +77,12 @@ namespace alpaka::onHost
             ~Event()
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::event);
-                onHost::internal::wait(*this);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(
                     ApiInterface,
                     ApiInterface::setDevice(internal::getNativeHandle(*m_device.get())));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(
+                    ApiInterface,
+                    ApiInterface::eventSynchronize(getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::eventDestroy(getNativeHandle()));
             }
 
@@ -148,7 +150,7 @@ namespace alpaka::onHost
 
             friend struct onHost::internal::IsEventComplete;
 
-            bool isEventComplete() noexcept
+            bool isEventComplete()
             {
                 typename ApiInterface::Error_t ret = ApiInterface::success;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
