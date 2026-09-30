@@ -52,10 +52,8 @@ def check_clang_host_compiler_supported_cuda_sdk_a2(row: bashi.BashiRow, alpaka_
     Returns:
         bool: True if passed.
     """
-    if (
-        row[HOST_COMPILER].name == CLANG
-        and row[ALPAKA_ACC_GPU_CUDA_ENABLE].version > OFF_VER
-        and row[ALPAKA_ACC_GPU_CUDA_ENABLE].version < packaging.version.parse("13.3")
+    if row[HOST_COMPILER].name == CLANG and OFF_VER < row[ALPAKA_ACC_GPU_CUDA_ENABLE].version < packaging.version.parse(
+        "13.3"
     ):
         alpaka_filter.reason("Clang as nvcc host compiler is only working since CUDA 13.3.")
         return False
