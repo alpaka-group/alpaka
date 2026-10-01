@@ -112,7 +112,7 @@ namespace alpaka
                 std::remove_const_t<KernelFn>,
                 T_Acc,
                 RemoveRestrict_t<ALPAKA_TYPEOF(onHost::makeAccessibleOnAcc(std::declval<T_Args>()))>...>)
-        constexpr auto operator()(T_Acc const& acc) const
+        ALPAKA_FN_INLINE constexpr auto operator()(T_Acc const& acc) const
         {
             static_assert(
                 std::is_invocable_v<
@@ -134,7 +134,8 @@ namespace alpaka
                  * these he should use a non const copy in the kernel function signature. This is the reason why we can
                  * not keep const correctness for buffers and view within the copy-constructor of these.
                  */
-                [&](alpaka::concepts::KernelArg auto const&... args) constexpr { m_kernelFn(acc, args...); },
+                [&](alpaka::concepts::KernelArg auto const&... args) ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS(constexpr)
+                { m_kernelFn(acc, args...); },
                 m_args);
         }
 

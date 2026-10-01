@@ -1,5 +1,6 @@
-/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego,
- * Tim Hanel SPDX-License-Identifier: MPL-2.0
+/* Copyright 2026 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego,
+ * Tim Hanel, Bernhard Manfred Gruber
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
@@ -111,6 +112,28 @@
 // For gcc, clang, and clang-based compilers like Intel icpx
 #    define ALPAKA_FN_INLINE [[gnu::always_inline]] inline
 #endif
+
+/** Inline lambda function and add additional attributes.
+ *
+ * Places the always_inline attribute where the compiler accepts it in a lambda
+ * declaration.
+ * Pass lambda specifiers such as mutable as arguments.
+ *
+ * @code{.cpp}
+ * auto foo = []() ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS(constexpr){ return 1;}
+ * @endcode
+ */
+#if (ALPAKA_COMP_CLANG && !ALPAKA_COMP_NVCC) || ALPAKA_COMP_ICPX
+#    define ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS(...) __attribute__((always_inline)) __VA_ARGS__
+#elif ALPAKA_COMP_GNUC || ALPAKA_COMP_NVCC
+#    define ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS(...) __VA_ARGS__ __attribute__((always_inline))
+#else
+#    define ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS(...) __VA_ARGS__
+#    warning ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS not defined for this compiler
+#endif
+
+//! Gives strong indication to the compiler to inline the attributed lambda.
+#define ALPAKA_LAMBDA_INLINE ALPAKA_LAMBDA_INLINE_WITH_SPECIFIERS()
 
 //! This macro defines a variable lying in global accelerator device memory.
 //!
