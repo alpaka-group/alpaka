@@ -234,7 +234,7 @@ namespace alpaka::onHost
         {
             [[nodiscard]] static bool isQueueBlockingTaskExecuted(cpu::Queue<T_Device>& queue)
             {
-                return queue.m_isBlockingTaskExecuted.load();
+                return queue.m_blockingTaskExecutionDepth.load() != 0u;
             }
         };
 

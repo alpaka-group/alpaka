@@ -8,6 +8,8 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <memory>
+
 using namespace alpaka;
 
 using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors))>;
@@ -132,4 +134,39 @@ TEST_CASE("allocDeferred release inside blocking queue task", "")
         });
 
     REQUIRE(destroyed);
+}
+
+/** While a blocking task is still running, an in-task release of a deferred buffer must not make the queue
+ * look empty.
+ *
+ * The release submits the free re-entrantly into the same blocking queue (nested submit). With a plain
+ * "is a task executed" boolean the nested return cleared the flag while the outer task was still running,
+ * so isQueueEmpty() reported true and a wait(queue) inside the task returned before the outer task finished.
+ * An execution depth counter keeps the queue non-empty until the outermost blocking task returned.
+ */
+TEST_CASE("allocDeferred in-task release keeps blocking queue non-empty", "")
+{
+    onHost::Queue queue = onHost::makeHostDevice().makeQueue(queueKind::blocking);
+
+    using Buffer = ALPAKA_TYPEOF(onHost::allocDeferred<int>(queue, 8));
+    auto heldBuffer = std::make_unique<Buffer>(onHost::allocDeferred<int>(queue, 8));
+    onHost::fill(queue, *heldBuffer, 42);
+
+    bool queueEmptyInsideTask = true;
+
+    queue.enqueueHostFn(
+        [&]
+        {
+            // Release the deferred buffer from within this running blocking task. Its deleter submits the
+            // free into the same queue, i.e. a nested submit happens while this outer task is still running.
+            heldBuffer.reset();
+
+            // The queue must still report that a (the outer) task is executed. A plain boolean flag is
+            // cleared again by the nested submit, making this observation incorrectly true.
+            queueEmptyInsideTask = queue.isEmpty();
+        });
+
+    // A wait() must not observe the task as complete while it is still running.
+    CHECK(queueEmptyInsideTask == false);
+    onHost::wait(queue);
 }

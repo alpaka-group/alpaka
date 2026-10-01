@@ -84,13 +84,15 @@ namespace alpaka::onHost
             uint32_t m_numaIdx = 0u;
             bool m_isBlocking{false};
 
-            /** Flag to show if a blocking tasks is executed
+            /** Number of blocking tasks currently being executed.
              *
              * This variable is only used if m_isBlocking == true.
              *
-             * state: If true a thread is executing a blocking tasks, else false.
+             * The value is a depth counter because a blocking task can re-enter the queue, e.g. a deferred
+             * SharedBuffer deleter submits the free into the queue from within a task which is already running.
+             * The queue is only empty (no task is executed) once the depth reached zero again.
              */
-            std::atomic<bool> m_isBlockingTaskExecuted{false};
+            std::atomic<uint32_t> m_blockingTaskExecutionDepth{0u};
 
             /** Mutex to ensure sequential execution of tasks and operation if the queue is blocking.
              *
@@ -115,7 +117,20 @@ namespace alpaka::onHost
                 if(m_isBlocking)
                 {
                     std::lock_guard<std::recursive_mutex> lk(m_mutex);
-                    m_isBlockingTaskExecuted = true;
+                    ++m_blockingTaskExecutionDepth;
+
+                    /* Decrement on every exit path, also if fn() throws, so that the depth always reflects the
+                     * number of blocking tasks which are currently executed. */
+                    struct DepthGuard
+                    {
+                        std::atomic<uint32_t>& depth;
+
+                        ~DepthGuard()
+                        {
+                            --depth;
+                        }
+                    } depthGuard{m_blockingTaskExecutionDepth};
+
                     fn();
                     // silent tsan warnings: The promise is fulfilled directly and only a future which is true is
                     // returned, there can not be a data race in between.
@@ -130,7 +145,6 @@ namespace alpaka::onHost
 #if defined(__GNUC__) && !defined(__clang__)
 #    pragma GCC diagnostic pop
 #endif
-                    m_isBlockingTaskExecuted = false;
                     // to keep the uniform interface with the non-blocking case,
                     // return by moving the f since it is move-only
                     return f;
@@ -273,7 +287,7 @@ namespace alpaka::onHost
                 if(m_isBlocking)
                 {
                     // check if the queue is currently executing a blocking task
-                    return !m_isBlockingTaskExecuted;
+                    return m_blockingTaskExecutionDepth.load() == 0u;
                 }
                 else
                 {
