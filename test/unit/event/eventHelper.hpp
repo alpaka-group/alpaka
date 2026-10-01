@@ -68,7 +68,7 @@ namespace alpaka::test::event
                  * kernel with atomic operations, the second kernel is not running in parallel on the same backends.
                  * Using a volatile pointer showed to work best with all backends.
                  */
-                while(triggerData == 0)
+                while(*triggerData == 0)
                 {
                     if(++foo >= maxNumTriggerReads)
                     {
