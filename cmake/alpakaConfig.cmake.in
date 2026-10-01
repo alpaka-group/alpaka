@@ -9,15 +9,15 @@
 # Common.
 
 # alpaka root directory
-set(_alpaka_ROOT_DIR "@CMAKE_INSTALL_PREFIX@")
+set(_alpaka_ROOT_DIR "${PACKAGE_PREFIX_DIR}")
 # Compiler feature tests.
 set(_alpaka_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 # Tests, this is required because the used compiler can differ compared to the compiler used for installation.
 set(_alpaka_FEATURE_TESTS_DIR "${_alpaka_CMAKE_DIR}/test")
-set(_alpaka_TESTS_DIR "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_DATAROOTDIR@/test")
+set(_alpaka_TESTS_DIR "@PACKAGE_CMAKE_INSTALL_DATAROOTDIR@/test")
 
-set(_alpaka_INCLUDE_DIRECTORY "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@")
+set(_alpaka_INCLUDE_DIRECTORY "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
 include("${_alpaka_CMAKE_DIR}/alpakaCommon.cmake")
 

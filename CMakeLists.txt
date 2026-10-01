@@ -125,6 +125,7 @@ configure_package_config_file(
     ${_alpaka_ROOT_DIR}/cmake/alpakaConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/alpakaConfig.cmake
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/alpaka
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_DATAROOTDIR
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/alpakaConfig.cmake DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/alpaka)

@@ -157,7 +157,7 @@ if(NOT TARGET alpaka)
 
     target_include_directories(
         alpaka_target_host
-        INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        INTERFACE $<BUILD_INTERFACE:${_alpaka_INCLUDE_DIRECTORY}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
     target_compile_features(alpaka_target_headers INTERFACE cxx_std_${alpaka_CXX_STANDARD})
 

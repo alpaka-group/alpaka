@@ -41,7 +41,7 @@ if(CMAKE_CUDA_COMPILER)
     add_library(alpaka_target_cuda INTERFACE)
     add_library(alpaka::cuda ALIAS alpaka_target_cuda)
     target_link_libraries(alpaka_target_cuda INTERFACE alpaka::host)
-    set_property(TARGET alpaka_target_cuda PROPERTY CUDA_STANDARD ${alpaka_CXX_STANDARD})
+    target_compile_features(alpaka_target_cuda INTERFACE cuda_std_${alpaka_CXX_STANDARD})
 
     alpaka_compiler_option(CUDA_SHOW_REGISTER "Show kernel registers and create device ASM" DEFAULT)
     alpaka_compiler_option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" DEFAULT)
