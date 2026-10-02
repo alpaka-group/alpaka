@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.1] - 2025-12-19
+
+### Fixed
+
+- Fix the buffer and view arrow operator #2600
+
+
 ## [2.1.0] - 2025-12-12
 
 ### Added
@@ -34,7 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Do not crash if a SYCL platform is invalid or empty #2564
 - Do not include the null terminaton character in the demangled string_view #2571
 - Fix `SYCL_SUBGROUP_SIZE` macro for Sycl #2576
-- Fix `atomicDec()` for CPU #2581
+- Fix `atomicDec()` for CPU #2582
 
 
 ## [2.0.0] - 2025-06-25
