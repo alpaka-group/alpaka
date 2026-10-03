@@ -152,7 +152,10 @@ TEMPLATE_LIST_TEST_CASE("shfl_xor", "[warp]", alpaka::test::TestAccs)
             auto const gridBlockExtent = alpaka::Vec<Dim, Idx>::all(2);
             // Enforce one warp per thread block
             auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
-            blockThreadExtent[0] = static_cast<Idx>(warpExtent);
+            // Put the whole warp along the innermost (fastest) dimension: the SYCL CPU device forms sub-groups
+            // only along it, while GPUs form warps from the linearised thread index.
+            constexpr auto innermost = Dim::value > 0 ? Dim::value - 1 : 0;
+            blockThreadExtent[innermost] = static_cast<Idx>(warpExtent);
             auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
             auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
             auto fixture = ExecutionFixture{workDiv};

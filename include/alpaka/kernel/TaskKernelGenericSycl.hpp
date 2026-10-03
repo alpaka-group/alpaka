@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/acc/AccGenericSycl.hpp"
+#include "alpaka/acc/Tag.hpp"
 #include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/Config.hpp"
 #include "alpaka/core/Sycl.hpp"
@@ -23,6 +24,7 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -118,6 +120,23 @@ namespace alpaka
             auto k_args = m_args;
 
             constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
+
+            // The SYCL CPU device forms sub-groups only along the innermost (fastest) dimension of the work-group,
+            // while GPUs (and CUDA and HIP) form warps from the linearised thread index. For multi-dimensional kernels
+            // that require a warp size, the innermost block extent must be a multiple of the warp size, otherwise the
+            // warps would be split and the warp operations would give wrong results.
+            if constexpr(std::is_same_v<TTag, TagCpuSycl> && TDim::value > 1 && sub_group_size > 0)
+            {
+                auto const innermost = static_cast<std::size_t>(group_items[TDim::value - 1]);
+                if(innermost % sub_group_size != 0)
+                {
+                    throw std::runtime_error(
+                        "On the SYCL CPU device, the innermost block extent (" + std::to_string(innermost)
+                        + ") must be a multiple of the warp size (" + std::to_string(sub_group_size)
+                        + ") because sub-groups are formed only along the innermost dimension");
+                }
+            }
+
             bool supported = false;
 
             if constexpr(sub_group_size == 0)
