@@ -9,6 +9,7 @@ from .cuda import (
     get_nvcc_relocatable_device_code_job,
     get_nvcc_extended_lambda_off_job,
     get_cuda_only_job,
+    get_clang_cuda_debug_job,
 )
 
 
@@ -68,6 +69,15 @@ def get_special_jobs(
     special_jobs |= get_cuda_only_job(
         nvcc_version="12.5",
         gcc_version="13",
+        cmake_version="3.30.3",
+        container_version=container_version,
+        stage_name=stage_name,
+        image_check=image_check,
+    )
+
+    special_jobs |= get_clang_cuda_debug_job(
+        clang_cuda_version="20",
+        cuda_version="12.8",
         cmake_version="3.30.3",
         container_version=container_version,
         stage_name=stage_name,

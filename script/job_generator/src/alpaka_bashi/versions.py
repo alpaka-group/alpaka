@@ -13,16 +13,17 @@ from bashi.version.dependencies.base_version_support import ClangBase
 from bashi.version.dependencies.clang_cuda import CLANG_CUDA_MAX_CUDA_VERSION, ClangCudaSDKSupport
 from bashi.version.dependencies.hipcc import HIPCC_CLANG_VERSION
 from bashi.version.dependencies.icpx import ICPX_CLANG_VERSION
+from bashi.version.dependencies.nvcc import NVCC_CLANG_MAX_VERSION, NvccHostSupport
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     GCC: [11, 12, 13],
-    CLANG: [14, 15, 16, 17, 18, 19, 20],
+    CLANG: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
     NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0, 13.1, 13.2, 13.3, 13.4],
     HIPCC: [6.0, 6.1, 6.2, 6.3, 6.4, 7.0, 7.1, 7.2, 7.14, 10.0],
     ICPX: ["2025.0", "2025.3", "2026.0", "2026.1"],
     UBUNTU: ["22.04", "24.04"],
-    CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3"],
+    CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3", "3.31.8"],
     CXX_STANDARD: ["20"],
     BUILD_TYPE: BUILD_TYPES,
     MDSPAN: [ON, OFF],
@@ -215,6 +216,20 @@ def get_icpx_clang_versions() -> List[ClangBase]:
     ]
 
 
+def get_nvcc_clang_max_versions() -> List[NvccHostSupport]:
+    """Returns:
+    List[NvccHostSupport]: For each nvcc version the latest supported Clang host compiler.
+    """
+    # NVCC versions newer than the latest entry are assumed to support any Clang version,
+    # so each newer NVCC version needs an explicit entry.
+    return NVCC_CLANG_MAX_VERSION + [
+        NvccHostSupport("13.1", "21"),
+        NvccHostSupport("13.2", "21"),
+        NvccHostSupport("13.3", "21"),
+        NvccHostSupport("13.4", "22"),
+    ]
+
+
 def get_alpaka_version_relation() -> bashi.VersionRelation:
     """Returns:
     bashi.VersionRelation: bashi.VersionRelation object with alpaka specific modifications.
@@ -233,13 +248,19 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
     #
     # bashi.VersionRelation(clang_cuda_max_cuda_version=clang_cuda_max_cuda_version)
 
+    # The latest CUDA version known by each Clang release (see clang/include/clang/Basic/Cuda.h).
     clang_cuda_max_cuda_version = CLANG_CUDA_MAX_CUDA_VERSION + [
         ClangCudaSDKSupport("18", "12.3"),
-        ClangCudaSDKSupport("22", "13.0"),
+        ClangCudaSDKSupport("19", "12.5"),
+        ClangCudaSDKSupport("20", "12.8"),
+        ClangCudaSDKSupport("21", "12.8"),
+        ClangCudaSDKSupport("22", "12.9"),
+        ClangCudaSDKSupport("23", "13.2"),
     ]
 
     return bashi.VersionRelation(
         clang_cuda_max_cuda_version=clang_cuda_max_cuda_version,
         hipcc_clang_version=get_hipcc_clang_versions(),
         icpx_clang_version=get_icpx_clang_versions(),
+        nvcc_clang_max_version=get_nvcc_clang_max_versions(),
     )

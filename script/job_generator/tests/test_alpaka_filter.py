@@ -22,6 +22,7 @@ from alpaka_bashi.alpaka_filter import (
     check_clang_16_and_older_a5,
     check_existing_clang_cuda_for_cuda_sdk_version_a6,
     check_oneapi_fpga_a7,
+    check_clang_cuda_cuda_13_cmake_a8,
 )
 import alpaka_bashi.runtime_info
 from alpaka_bashi.globals import (
@@ -609,5 +610,82 @@ class TestAlpakaFilter(unittest.TestCase):
                     reason_msg.getvalue(),
                     f"ICPX {version} requires the oneAPI CPU or GPU backend, because the oneAPI "
                     "FPGA backend is not available.",
+                    f"{row}",
+                )
+
+    VALID_CLANG_CUDA_CMAKE_CONFIGURATIONS = [
+        # CUDA 12 works with all CMake versions
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "12.9"),
+            (CMAKE, "3.25.3"),
+        ],
+        # CUDA 13 requires CMake 3.31.8, or 4.0.3 and newer
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.0"),
+            (CMAKE, "3.31.8"),
+        ],
+        [(HOST_COMPILER, CLANG_CUDA, "23"), (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.2"), (CMAKE, "4.0.3")],
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.2"),
+            (CMAKE, "4.1.0"),
+        ],
+        # nvcc is not affected
+        [(DEVICE_COMPILER, NVCC, "13.2"), (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.2"), (CMAKE, "3.25.3")],
+        # the CUDA backend is disabled
+        [(HOST_COMPILER, CLANG_CUDA, "23"), (ALPAKA_ACC_GPU_CUDA_ENABLE, OFF), (CMAKE, "3.25.3")],
+        # incomplete rows
+        [(DEVICE_COMPILER, CLANG_CUDA, "23"), (CMAKE, "3.25.3")],
+        [(DEVICE_COMPILER, CLANG_CUDA, "23"), (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.0")],
+        [(ALPAKA_ACC_GPU_CUDA_ENABLE, "13.0"), (CMAKE, "3.25.3")],
+    ]
+
+    def test_valid_clang_cuda_cuda_13_cmake_a8(self):
+        for row in self.VALID_CLANG_CUDA_CMAKE_CONFIGURATIONS:
+            with self.subTest(row=row):
+                self.assertTrue(
+                    check_clang_cuda_cuda_13_cmake_a8(parse_bashi_row(row), AlpakaFilter()),
+                    f"{row}",
+                )
+
+    INVALID_CLANG_CUDA_CMAKE_CONFIGURATIONS = [
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.0"),
+            (CMAKE, "3.26.4"),
+        ],
+        [
+            (HOST_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.2"),
+            (CMAKE, "3.30.3"),
+        ],
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.2"),
+            (CMAKE, "3.31.7"),
+        ],
+        [
+            (DEVICE_COMPILER, CLANG_CUDA, "23"),
+            (ALPAKA_ACC_GPU_CUDA_ENABLE, "13.1"),
+            (CMAKE, "4.0.2"),
+        ],
+    ]
+
+    def test_invalid_clang_cuda_cuda_13_cmake_a8(self):
+        for row in self.INVALID_CLANG_CUDA_CMAKE_CONFIGURATIONS:
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    check_clang_cuda_cuda_13_cmake_a8(
+                        parse_bashi_row(row), AlpakaFilter(output=reason_msg)
+                    ),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"CMake {row[2][1]} cannot identify Clang-CUDA with CUDA {row[1][1]}, CMake "
+                    "3.31.8 or 4.0.3 and newer is required.",
                     f"{row}",
                 )

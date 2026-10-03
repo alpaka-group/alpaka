@@ -402,8 +402,10 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
 
             # workaround: ISA code parsing when compiling as debug with clang as CUDA compiler
-            # https://github.com/llvm/llvm-project/issues/58491
-            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            # https://github.com/llvm/llvm-project/issues/58491, fixed in clang 20.1.0
+            # workaround: ptxas from CUDA 12.2 and older crashes on the device debug information for sm_90
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug"
+               AND (CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 20.1.0 OR CUDAToolkit_VERSION VERSION_LESS 12.3))
                 alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-g -Xarch_device -g0>")
             endif()
 
