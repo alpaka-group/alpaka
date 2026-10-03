@@ -36,8 +36,12 @@ else
     components=(
         intel-oneapi-common-vars                                      # Contains /opt/intel/oneapi/setvars.sh - has no version number
         intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" # Contains icpx compiler and SYCL runtime
-        intel-oneapi-compiler-fpga-"${ALPAKA_CI_ONEAPI_VERSION}"      # Containes the FPGA support package
     )
+    # The FPGA support package is distributed only up to oneAPI 2025.0
+    if [ "$(printf '%s\n' "${ALPAKA_CI_ONEAPI_VERSION}" 2025.0 | sort -V | head -n1)" == "${ALPAKA_CI_ONEAPI_VERSION}" ]
+    then
+        components+=(intel-oneapi-compiler-fpga-"${ALPAKA_CI_ONEAPI_VERSION}") # Contains the FPGA support package
+    fi
     retry_cmd sudo apt-get install -y "${components[@]}"
 
     set +eu

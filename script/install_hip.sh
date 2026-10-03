@@ -41,8 +41,18 @@ else
             apt install --no-install-recommends -y hiprand-dev${ALPAKA_CI_ROCM_VERSION}
         fi
     elif [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -ge "$(version "7.14.0")" ]; then
+        # ROCm 7.14 is distributed from the multi-arch repository,
+        # ROCm 10.0 and later from the stable repository.
+        if [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -ge "$(version "10.0.0")" ]; then
+            ROCM_APT_REPO_URL=https://stable.repo.amd.com/rocm/core/packages
+            ROCM_APT_KEY_URL=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+        else
+            ROCM_APT_REPO_URL=https://repo.amd.com/rocm/packages-multi-arch
+            ROCM_APT_KEY_URL=https://repo.amd.com/rocm/packages-multi-arch/gpg/rocm.gpg
+        fi
+
         sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-        wget https://repo.amd.com/rocm/packages-multi-arch/gpg/rocm.gpg -O - |
+        wget "${ROCM_APT_KEY_URL}" -O - |
             gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg >/dev/null
 
         # Prevents apt warnings when the script is run a second time.
@@ -55,7 +65,7 @@ else
         source /etc/os-release
 
         sudo tee /etc/apt/sources.list.d/rocm.list <<EOF
-deb [arch=amd64 signed-by=/etc/apt/keyrings/amdrocm.gpg] https://repo.amd.com/rocm/packages-multi-arch/ubuntu${VERSION_ID//./} stable main
+deb [arch=amd64 signed-by=/etc/apt/keyrings/amdrocm.gpg] ${ROCM_APT_REPO_URL}/ubuntu${VERSION_ID//./} stable main
 EOF
 
         retry_cmd sudo DEBIAN_FRONTEND=noninteractive apt update
@@ -71,7 +81,7 @@ EOF
         sudo DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
             "amdrocm-core-dev${ROCM_PACKAGE_VERSION}" "amdrocm-core${ROCM_PACKAGE_VERSION}"
 
-        unset ROCM_PACKAGE_VERSION
+        unset ROCM_PACKAGE_VERSION ROCM_APT_REPO_URL ROCM_APT_KEY_URL
     else
         echo_red "ERROR: Installing ROCm 7.9 - 7.13 is not supported"
         exit 1
