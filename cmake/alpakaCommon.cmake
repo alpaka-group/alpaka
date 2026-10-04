@@ -725,6 +725,15 @@ if(alpaka_ACC_SYCL_ENABLE)
             string(REPLACE ";" "," alpaka_SYCL_ONEAPI_GPU_DEVICES "${alpaka_SYCL_ONEAPI_GPU_DEVICES}")
 
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU_NVIDIA")
+
+            # oneAPI 2025.0 cannot compile the CUDA device code with debug symbols: ptxas fails on the debug information
+            if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 2025.0 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 2025.1)
+                if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                    message(FATAL_ERROR "The SYCL backend for NVIDIA GPUs does not support Debug builds with oneAPI ${CMAKE_CXX_COMPILER_VERSION}, because ptxas fails on the device debug information. Use a different build type or a different version of oneAPI.")
+                endif()
+                # with multi-config generators the build type is known only at build time
+                target_compile_definitions(alpaka INTERFACE "$<$<CONFIG:Debug>:ALPAKA_SYCL_ONEAPI_GPU_NVIDIA_DEBUG_UNSUPPORTED>")
+            endif()
         endif()
 
         if(alpaka_SYCL_ONEAPI_GPU_AMD)
