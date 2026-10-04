@@ -23,6 +23,7 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -64,7 +65,9 @@
             });
 
 #    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
-        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
+        throw std::runtime_error(                                                                                     \
+            "The SYCL targets do not support the sub-group size " + std::to_string(sub_group_size)                    \
+            + " required by the kernel on " + getAccName<TAcc>());                                                    \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
             [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
@@ -194,7 +197,9 @@ namespace alpaka
 
                 // this subgroup size is not supported, raise an exception
                 if(not supported)
-                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
+                    throw std::runtime_error(
+                        "The SYCL targets do not support the sub-group size " + std::to_string(sub_group_size)
+                        + " required by the kernel on " + getAccName<TAcc>());
             }
         }
 

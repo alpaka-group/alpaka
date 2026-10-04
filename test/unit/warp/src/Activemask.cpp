@@ -66,7 +66,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
 
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(__INTEL_LLVM_COMPILER) && __INTEL_LLVM_COMPILER < 20'250'300
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(__INTEL_LLVM_COMPILER) && __INTEL_LLVM_COMPILER < 20'250'200
     if constexpr(alpaka::accMatchesTags<
                      Acc,
                      alpaka::TagCpuSycl,
@@ -76,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {
-        WARN("Test disabled for SYCL with oneAPI 2025.2 and older");
+        WARN("Test disabled for SYCL with oneAPI 2025.1 and older");
         return;
     }
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU) && defined(__NO_INLINE__)                   \

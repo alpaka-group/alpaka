@@ -68,7 +68,7 @@ TEMPLATE_LIST_TEST_CASE("any", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
 
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && ALPAKA_COMP_ICPX < ALPAKA_VERSION_NUMBER(2025, 3, 0)
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && ALPAKA_COMP_ICPX < ALPAKA_VERSION_NUMBER(2025, 2, 0)
     if constexpr(alpaka::accMatchesTags<
                      Acc,
                      alpaka::TagCpuSycl,
@@ -78,7 +78,7 @@ TEMPLATE_LIST_TEST_CASE("any", "[warp]", alpaka::test::TestAccs)
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {
-        WARN("Test disabled for SYCL with oneAPI 2025.2 and older");
+        WARN("Test disabled for SYCL with oneAPI 2025.1 and older");
         return;
     }
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU) && defined(__NO_INLINE__)                   \
