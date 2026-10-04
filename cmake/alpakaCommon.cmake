@@ -407,6 +407,17 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
                 alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-g -Xarch_device -g0>")
             endif()
 
+            # CUDA 13 moved the CCCL headers (libcu++, CUB, Thrust) to include/cccl: nvcc adds it to the include
+            # path automatically, clang does not
+            if(CUDAToolkit_VERSION VERSION_GREATER_EQUAL 13.0)
+                foreach(_CUDA_INCLUDE_DIR IN LISTS CUDAToolkit_INCLUDE_DIRS)
+                    if(IS_DIRECTORY "${_CUDA_INCLUDE_DIR}/cccl")
+                        target_include_directories(alpaka SYSTEM INTERFACE "${_CUDA_INCLUDE_DIR}/cccl")
+                    endif()
+                endforeach()
+                unset(_CUDA_INCLUDE_DIR)
+            endif()
+
             if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                 message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
             endif()
