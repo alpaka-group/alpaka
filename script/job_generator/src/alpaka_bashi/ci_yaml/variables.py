@@ -12,6 +12,7 @@ import alpaka_bashi.globals
 from alpaka_bashi.globals import (
     ALPAKA_ACC_SYCL_ENABLE,
     BUILD_TYPE,
+    CMAKE_RELEASE_WITH_DEBUG_INFO_VER,
     JOB_EXECUTION_TYPE,
     JOB_EXECUTION_RUNTIME_VER,
     CI_PIPELINE_COMPILE_ONLY_VER,
@@ -58,8 +59,11 @@ def set_generic_variables(job_body: Dict[str, Any], combination: bashi.Combinati
     variables["alpaka_CXX_STANDARD"] = str(combination[CXX_STANDARD].version)
     variables["ALPAKA_TEST_MDSPAN"] = bashi.on_off_ver_to_str(combination[MDSPAN].version)
 
-    # Set 2 GB of required RAM per compile process.
-    variables["ALPAKA_CI_REQUIRED_RAM_PER_BUILD_THREAD_BYTES"] = 2 * pow(1024, 3)
+    # Set 2 GB of required RAM per compile process, or 4 GB for RelWithDebInfo
+    if combination[BUILD_TYPE].version == CMAKE_RELEASE_WITH_DEBUG_INFO_VER:
+        variables["ALPAKA_CI_REQUIRED_RAM_PER_BUILD_THREAD_BYTES"] = 4 * pow(1024, 3)
+    else:
+        variables["ALPAKA_CI_REQUIRED_RAM_PER_BUILD_THREAD_BYTES"] = 2 * pow(1024, 3)
 
 
 @typechecked
