@@ -63,6 +63,37 @@ static_assert(
 static_assert(onHost::isMemoryPropertySupportedBy_v<memoryProperty::Locality, TestDeviceWithLocality>);
 static_assert(!onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, TestDeviceWithLocality>);
 
+// hasProperty() scans left to right and returns the first property the device implements, properties belonging to
+// another kind of device are skipped.
+static_assert(
+    onHost::hasProperty(
+        TestDeviceWithLocality{},
+        memoryProperty::bestBandwidth,
+        memoryProperty::locality,
+        memoryProperty::defaultProperty)
+    == memoryProperty::locality);
+
+// The leftmost supported property wins, even when a later one is supported too.
+static_assert(
+    onHost::hasProperty(TestDeviceWithLocality{}, memoryProperty::locality, memoryProperty::defaultProperty)
+    == memoryProperty::locality);
+
+// Nothing in the list is supported, the universally available default is returned.
+static_assert(
+    onHost::hasProperty(
+        TestDeviceWithoutMemoryProperties{},
+        memoryProperty::bestBandwidth,
+        memoryProperty::locality,
+        memoryProperty::defaultProperty)
+    == memoryProperty::defaultProperty);
+
+// The fallback is never implicit: a list which the device cannot satisfy is a compile time error, so
+//   onHost::hasProperty(TestDeviceWithoutMemoryProperties{}, memoryProperty::bestBandwidth)
+// does not compile. Accepting the backend default has to be written down as the trailing entry below.
+static_assert(
+    onHost::hasProperty(TestDeviceWithoutMemoryProperties{}, memoryProperty::defaultProperty)
+    == memoryProperty::defaultProperty);
+
 struct IotaValidate
 {
     ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<int> auto success, concepts::IMdSpan auto in)
@@ -219,37 +250,58 @@ TEMPLATE_LIST_TEST_CASE("alloc with memory property", "", TestDeviceSpecs)
     auto queue = device.makeQueue();
     // A queue resolves to the memory properties of its device.
     static_assert(
-        onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, ALPAKA_TYPEOF(queue)>
-        == onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, ALPAKA_TYPEOF(device)>);
+        onHost::hasProperty(queue, memoryProperty::bestBandwidth, memoryProperty::defaultProperty)
+        == onHost::hasProperty(device, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
 
-    // Host allocations always run on a CPU device, therefore the properties can be requested unconditionally.
-    [[maybe_unused]] auto hostBuffer = onHost::allocHost<int>(dataSize, memoryProperty::bestBandwidth);
+    // allocHost() takes no device argument, it always allocates on the host CPU device. Query that device to
+    // learn which properties it implements, which depends on whether alpaka was built with hwloc.
+    auto hostDevice = onHost::makeHostDevice();
+    [[maybe_unused]] auto hostBuffer = onHost::allocHost<int>(
+        dataSize,
+        onHost::hasProperty(hostDevice, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
     CHECK(hostBuffer.getExtents() == alpaka::Vec{dataSize});
 
-    // Device allocations stay on memoryProperty::defaultProperty, which every device implements. Passing a
-    // placement preference a backend does not implement is rejected at compile time.
-    [[maybe_unused]] auto deviceView = onHost::alloc<int>(device, dataSize, memoryProperty::defaultProperty);
+    // Device allocations use hasProperty() so that the same source compiles for every backend, a property which the
+    // device does not implement is rejected at compile time when it is passed directly.
+    [[maybe_unused]] auto deviceView = onHost::alloc<int>(
+        device,
+        dataSize,
+        onHost::hasProperty(device, memoryProperty::bestLatency, memoryProperty::defaultProperty));
     CHECK(deviceView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto mappedView = onHost::allocMapped<int>(device, dataSize, memoryProperty::defaultProperty);
+    [[maybe_unused]] auto mappedView = onHost::allocMapped<int>(
+        device,
+        dataSize,
+        onHost::hasProperty(device, memoryProperty::locality, memoryProperty::defaultProperty));
     CHECK(mappedView.getExtents() == alpaka::Vec{dataSize});
 
     [[maybe_unused]] auto unifiedView = onHost::allocUnified<int>(device, dataSize, memoryProperty::defaultProperty);
     CHECK(unifiedView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto likeView = onHost::allocLike(device, deviceView, memoryProperty::defaultProperty);
+    [[maybe_unused]] auto likeView = onHost::allocLike(
+        device,
+        deviceView,
+        onHost::hasProperty(device, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
     CHECK(likeView.getExtents() == deviceView.getExtents());
 
     // An explicit onHost::MemoryPolicyList.
-    [[maybe_unused]] auto explicitPolicyView
-        = onHost::alloc<int>(device, dataSize, onHost::MemoryPolicyList{memoryProperty::defaultProperty});
+    [[maybe_unused]] auto explicitPolicyView = onHost::alloc<int>(
+        device,
+        dataSize,
+        onHost::MemoryPolicyList{
+            onHost::hasProperty(device, memoryProperty::bestBandwidth, memoryProperty::defaultProperty)});
     CHECK(explicitPolicyView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto deferredView = onHost::allocDeferred<int>(queue, dataSize, memoryProperty::defaultProperty);
+    [[maybe_unused]] auto deferredView = onHost::allocDeferred<int>(
+        queue,
+        dataSize,
+        onHost::hasProperty(queue, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
     CHECK(deferredView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto likeDeferredView
-        = onHost::allocLikeDeferred(queue, deviceView, memoryProperty::defaultProperty);
+    [[maybe_unused]] auto likeDeferredView = onHost::allocLikeDeferred(
+        queue,
+        deviceView,
+        onHost::hasProperty(queue, memoryProperty::locality, memoryProperty::defaultProperty));
     CHECK(likeDeferredView.getExtents() == deviceView.getExtents());
 }
 

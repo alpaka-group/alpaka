@@ -286,6 +286,92 @@ namespace alpaka::onHost
             memoryProperty::allProperties);
     }
 
+    namespace detail
+    {
+        /** Left to right scan for the first implemented property, see onHost::hasProperty(). */
+        template<typename T_Target>
+        constexpr alpaka::concepts::MemoryProperty auto firstSupportedProperty(T_Target const& deviceOrQueue)
+        {
+            // Unreachable, hasProperty() rejects an exhausted list at compile time. Present so that the recursion
+            // terminates and the return type stays deducible while the diagnostic is reported.
+            alpaka::unused(deviceOrQueue);
+            return memoryProperty::defaultProperty;
+        }
+
+        template<
+            typename T_Target,
+            alpaka::concepts::MemoryProperty T_FirstProperty,
+            alpaka::concepts::MemoryProperty... T_Properties>
+        constexpr alpaka::concepts::MemoryProperty auto firstSupportedProperty(
+            T_Target const& deviceOrQueue,
+            T_FirstProperty firstProperty,
+            T_Properties... properties)
+        {
+            if constexpr(isMemoryPropertySupportedBy_v<T_FirstProperty, T_Target>)
+            {
+                alpaka::unused(properties...);
+                return firstProperty;
+            }
+            else
+            {
+                alpaka::unused(firstProperty);
+                return firstSupportedProperty(deviceOrQueue, properties...);
+            }
+        }
+    } // namespace detail
+
+    /** Pick the first memory property out of a preference list which the device implements.
+     *
+     * @details
+     * The allocation functions reject a memory property which the device does not implement at compile time. This
+     * helper is the way to express "use the best placement this device offers" instead: the properties are scanned
+     * from left to right and the first one the device implements is returned. A property belonging to a different
+     * kind of device is simply skipped, so one source stays portable across backends.
+     *
+     * The whole selection happens at compile time, the returned type is the selected property tag.
+     *
+     * @code{.cpp}
+     * // compile time error, a GPU does not implement a NUMA placement preference
+     * auto a = onHost::alloc<int>(gpuDevice, extents, memoryProperty::bestBandwidth);
+     *
+     * // returns memoryProperty::locality on a CPU device, because someGpuProperty is skipped
+     * auto property = onHost::hasProperty(
+     *     cpuDevice,
+     *     someGpuProperty,
+     *     memoryProperty::locality,
+     *     memoryProperty::defaultProperty);
+     * auto b = onHost::alloc<int>(cpuDevice, extents, property);
+     * @endcode
+     *
+     * @attention The fallback is never implicit. If the device implements none of the listed properties the call is
+     * a compile time error, so that a request is not quietly turned into something else. Accepting the backend's
+     * default placement has to be written down by ending the list with memoryProperty::defaultProperty, which every
+     * device implements.
+     *
+     * @attention A property which the device implements can still be unavailable on the machine the program runs
+     * on, for example when hwloc cannot resolve it. That case is reported as a runtime warning on std::cerr and the
+     * allocation falls back to the default placement.
+     *
+     * @param deviceOrQueue Device or queue the allocation will be performed on.
+     * @param properties Memory properties in decreasing order of preference, at least one of which the device must
+     * implement.
+     * @return The first property of the list which the device implements.
+     */
+    template<typename T_Target, alpaka::concepts::MemoryProperty... T_Properties>
+    constexpr alpaka::concepts::MemoryProperty auto hasProperty(
+        T_Target const& deviceOrQueue,
+        T_Properties... properties)
+    {
+        static_assert(
+            (isMemoryPropertySupportedBy_v<T_Properties, T_Target> || ...),
+            "This device implements none of the requested alpaka::memoryProperty tags. End the list with "
+            "alpaka::memoryProperty::defaultProperty to state explicitly that the backend default placement is "
+            "acceptable, or query onHost::supportedMemoryProperties(device) for the properties this device "
+            "implements.");
+
+        return detail::firstSupportedProperty(deviceOrQueue, properties...);
+    }
+
     constexpr auto supportedDevices(auto const api)
     {
         return meta::filter(
