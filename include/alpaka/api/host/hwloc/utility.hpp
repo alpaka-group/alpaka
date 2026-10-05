@@ -13,10 +13,11 @@
 
 #include <cerrno>
 #include <concepts>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <iostream>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -103,6 +104,58 @@ namespace alpaka::onHost::internal::hwloc
     inline hwloc_topology_t getTopology()
     {
         return TopologyCache::instance().get();
+    }
+
+    /** Owning RAII wrapper for an hwloc bitmap.
+     *
+     * hwloc bitmaps are C resources. Owning them explicitly keeps every early return and every throwing call in
+     * between (e.g. getCpuDomainObj()) leak free.
+     */
+    class Bitmap
+    {
+    public:
+        Bitmap() : m_bitmap{hwloc_bitmap_alloc()}
+        {
+            if(m_bitmap == nullptr)
+            {
+                throw std::bad_alloc();
+            }
+        }
+
+        ~Bitmap()
+        {
+            hwloc_bitmap_free(m_bitmap);
+        }
+
+        Bitmap(Bitmap const&) = delete;
+        Bitmap& operator=(Bitmap const&) = delete;
+        Bitmap(Bitmap&&) = delete;
+        Bitmap& operator=(Bitmap&&) = delete;
+
+        hwloc_bitmap_t get() const noexcept
+        {
+            return m_bitmap;
+        }
+
+        operator hwloc_bitmap_t() const noexcept
+        {
+            return m_bitmap;
+        }
+
+    private:
+        hwloc_bitmap_t m_bitmap;
+    };
+
+    /** Human readable representation of a bitmap, used for logging only. */
+    inline std::string toString(hwloc_const_bitmap_t bitmap)
+    {
+        char* raw = nullptr;
+        if(hwloc_bitmap_asprintf(&raw, bitmap) < 0 || raw == nullptr)
+        {
+            return "<unknown>";
+        }
+        std::unique_ptr<char, void (*)(void*)> const owner{raw, &std::free};
+        return std::string{raw};
     }
 
     /** Check if there are CPUs under the object
@@ -360,17 +413,15 @@ namespace alpaka::onHost::internal::hwloc
             throw std::runtime_error("Nodeset is empty");
         }
 
-        char* str;
-        hwloc_bitmap_asprintf(&str, nodeset);
         ALPAKA_LOG_INFO(
             onHost::logger::memory,
             [&]()
             {
                 std::stringstream ss;
-                ss << "pinPointerToNumaNode{ ptr=" << ptr << ", bytes=" << bytes << ", nodeset=" << str << " }";
+                ss << "pinPointerToNumaNode{ ptr=" << ptr << ", bytes=" << bytes << ", nodeset=" << toString(nodeset)
+                   << " }";
                 return ss.str();
             });
-        free(str);
 
         int const rc = hwloc_set_area_membind(
             getTopology(),
@@ -418,23 +469,6 @@ namespace alpaka::onHost::internal::hwloc
             static_assert(sizeof(T_Property) == 0, "Unknown MemoryProperty");
     }
 
-    inline hwloc_cpuset_t getInitiatorCpuset(hwloc_topology_t topology, uint32_t cpuDomainIdx)
-    {
-        if(cpuDomainIdx == allDomains)
-        {
-            return hwloc_get_root_obj(topology)->cpuset;
-        }
-
-        hwloc_obj_t cpuDomain = getCpuDomainObj(cpuDomainIdx);
-
-        if(cpuDomain == nullptr)
-        {
-            throw std::runtime_error("Invalid CPU domain");
-        }
-
-        return cpuDomain->cpuset;
-    }
-
     /** Whether 'value' is preferable to the current 'baseValue' for the requested memory property.
      *
      * @tparam T_Property Compile-time memory property tag, must be a placement preference (not
@@ -475,15 +509,11 @@ namespace alpaka::onHost::internal::hwloc
         if(ptr == nullptr || bytes == 0u)
             return;
 
-        hwloc_topology_t topology = getTopology();
-        hwloc_nodeset_t pinningNodes = hwloc_bitmap_alloc();
-        if(pinningNodes == nullptr)
-        {
-            throw std::bad_alloc();
-        }
+        Bitmap const pinningNodes;
 
         if constexpr(!std::same_as<T_Property, memoryProperty::Default>)
         {
+            hwloc_topology_t const topology = getTopology();
             hwloc_memattr_id_t const attr = toHwloc(property);
 
             // Domains to evaluate: either the single requested domain, or every domain on the
@@ -493,6 +523,8 @@ namespace alpaka::onHost::internal::hwloc
                 = (cpuDomainIdx == allDomains) ? getCpuDomains()
                                                : std::vector<hwloc_obj_t>{getCpuDomainObj(cpuDomainIdx)};
 
+            Bitmap const bestNodes;
+
             for(hwloc_obj_t domain : domainsToScan)
             {
                 std::vector<hwloc_obj_t> const domainNodes = getMemoryNodes(domain);
@@ -501,12 +533,7 @@ namespace alpaka::onHost::internal::hwloc
                 location.type = HWLOC_LOCATION_TYPE_CPUSET;
                 location.location.cpuset = domain->cpuset;
 
-                hwloc_nodeset_t bestNodes = hwloc_bitmap_alloc();
-                if(bestNodes == nullptr)
-                {
-                    hwloc_bitmap_free(pinningNodes);
-                    throw std::bad_alloc();
-                }
+                hwloc_bitmap_zero(bestNodes);
 
                 constexpr auto Min = std::numeric_limits<hwloc_uint64_t>::min();
                 constexpr auto Max = std::numeric_limits<hwloc_uint64_t>::max();
@@ -537,12 +564,7 @@ namespace alpaka::onHost::internal::hwloc
                 if(hwloc_bitmap_iszero(bestNodes) && !domainNodes.empty())
                     hwloc_bitmap_or(bestNodes, bestNodes, domainNodes.front()->nodeset);
 
-                if(!hwloc_bitmap_iszero(bestNodes))
-                {
-                    hwloc_bitmap_or(pinningNodes, pinningNodes, bestNodes);
-                }
-
-                hwloc_bitmap_free(bestNodes);
+                hwloc_bitmap_or(pinningNodes, pinningNodes, bestNodes);
             }
         }
         else
@@ -553,29 +575,17 @@ namespace alpaka::onHost::internal::hwloc
              */
             // FIXME: - should a warning be added to warn the user when the fallback is used?
             //        - should the default policy use best locality instead of the first numa?
-            hwloc_obj_t const cpuDomain
-                = (cpuDomainIdx == allDomains) ? hwloc_get_root_obj(topology) : getCpuDomainObj(cpuDomainIdx);
-            std::vector<hwloc_obj_t> const allnodes = getMemoryNodes(cpuDomain);
+            std::vector<hwloc_obj_t> const allnodes = getMemoryNodes(getCpuDomainObj(cpuDomainIdx));
             if(!allnodes.empty())
                 hwloc_bitmap_or(pinningNodes, pinningNodes, allnodes.front()->nodeset);
         }
 
         if(hwloc_bitmap_iszero(pinningNodes))
         {
-            hwloc_bitmap_free(pinningNodes);
             throw std::runtime_error("CPU domain has no associated NUMA memory node");
         }
-        try
-        {
-            pinPointerToNumaNode(ptr, bytes, pinningNodes);
-        }
-        catch(...)
-        {
-            hwloc_bitmap_free(pinningNodes);
-            throw;
-        }
 
-        hwloc_bitmap_free(pinningNodes);
+        pinPointerToNumaNode(ptr, bytes, pinningNodes);
 #else
         alpaka::unused(ptr, bytes, property, cpuDomainIdx);
         return;
