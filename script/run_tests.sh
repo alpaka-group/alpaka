@@ -35,12 +35,22 @@ then
         # export NVCOMPILER_ACC_NOTIFY=3 # exceeds mximum log length
     fi
 
+    # use a string rather than an array: with "set -u", bash 3.2 (the default on macOS) treats an empty array as unset
+    CTEST_ARGS=""
+    function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+    # the grid synchronisation tests may hang in debug builds with ROCm 6.x
+    if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${CMAKE_BUILD_TYPE:-}" == "Debug" ] && [ -n "${ALPAKA_CI_HIP_VERSION:-}" ] && [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -lt "$(version "7.0")" ]
+    then
+        echo_yellow "<SKIP: grid synchronisation tests in debug builds with ROCm ${ALPAKA_CI_HIP_VERSION}>"
+        CTEST_ARGS="${CTEST_ARGS} -E ^(gridSyncTest|helloWorldGridSync)$"
+    fi
+
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
     then
-        ctest --output-on-failure
+        ctest --output-on-failure ${CTEST_ARGS}
     elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
-        ctest --output-on-failure -C ${CMAKE_BUILD_TYPE}
+        ctest --output-on-failure -C ${CMAKE_BUILD_TYPE} ${CTEST_ARGS}
     fi
 
     cd ..
