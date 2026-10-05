@@ -522,6 +522,14 @@ namespace alpaka::onHost
         alpaka::concepts::VectorOrScalar auto const& extents,
         MemoryPolicyList<T_Policies...> const& policies)
     {
+        static_assert(
+            isMemoryPropertySupportedBy_v<
+                ALPAKA_TYPEOF(policies.getMemoryProperty()),
+                ALPAKA_TYPEOF(queue.getDevice())>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
         return internal::AllocDeferred::Op<
             T_Type,

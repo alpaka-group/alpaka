@@ -12,6 +12,7 @@
 #include "alpaka/onHost/concepts.hpp"
 #include "alpaka/tag.hpp"
 
+#include <concepts>
 #include <type_traits>
 
 namespace alpaka::onHost
@@ -46,6 +47,33 @@ namespace alpaka::onHost
             struct Op : std::false_type
             {
             };
+        };
+
+        /** Declares whether a device is able to honor a memory allocation property.
+         *
+         * A backend must specialize this trait with std::true_type for every alpaka::memoryProperty it can
+         * implement. Properties which are not declared are rejected at compile time by the allocation functions,
+         * so that a request is never silently dropped.
+         *
+         * memoryProperty::Default is accepted by every device without being declared,
+         * see isMemoryPropertySupportedBy_v. Declaring it here is allowed but has no effect.
+         *
+         * @tparam T_Property Memory property tag to query.
+         * @tparam T_Device Native device type or a device handle.
+         */
+        struct IsMemoryPropertySupportedBy
+        {
+            template<alpaka::concepts::MemoryProperty T_Property, typename T_Device>
+            struct Op : std::false_type
+            {
+            };
+        };
+
+        /** Resolve a device handle to the native device type. */
+        template<alpaka::concepts::MemoryProperty T_Property, internal::concepts::DeviceHandle T_DeviceHandle>
+        struct IsMemoryPropertySupportedBy::Op<T_Property, T_DeviceHandle>
+            : IsMemoryPropertySupportedBy::Op<T_Property, typename T_DeviceHandle::element_type>
+        {
         };
 
         template<typename T_Kernel, concepts::ThreadSpec T_Spec>
@@ -190,6 +218,72 @@ namespace alpaka::onHost
     constexpr auto defaultExecutor(internal::concepts::DeviceHandle auto deviceHandle)
     {
         return std::get<0>(supportedExecutors(deviceHandle, exec::allExecutors));
+    }
+
+    namespace detail
+    {
+        /** Device type an allocation target refers to.
+         *
+         * Allocation entry points accept either a device or a queue, both name the same device.
+         */
+        template<typename T_Target>
+        struct AllocationDevice
+        {
+            using type = T_Target;
+        };
+
+        template<typename T_Target>
+        requires requires(T_Target const& target) { target.getDevice(); }
+        struct AllocationDevice<T_Target>
+        {
+            using type = ALPAKA_TYPEOF(std::declval<T_Target const&>().getDevice());
+        };
+
+        template<typename T_Target>
+        using AllocationDevice_t = typename AllocationDevice<std::remove_cvref_t<T_Target>>::type;
+    } // namespace detail
+
+    /** Whether a device is able to honor a memory allocation property.
+     *
+     * memoryProperty::Default requests no placement at all and is therefore always accepted, every other property
+     * has to be declared by the backend through trait::IsMemoryPropertySupportedBy.
+     *
+     * @tparam T_Property Memory property tag, e.g. ALPAKA_TYPEOF(memoryProperty::bestBandwidth).
+     * @tparam T_Target Device handle, native device type or queue, e.g. ALPAKA_TYPEOF(device).
+     */
+    template<alpaka::concepts::MemoryProperty T_Property, typename T_Target>
+    constexpr bool isMemoryPropertySupportedBy_v
+        = std::same_as<std::remove_cvref_t<T_Property>, memoryProperty::Default>
+          || trait::IsMemoryPropertySupportedBy::
+              Op<std::remove_cvref_t<T_Property>, detail::AllocationDevice_t<T_Target>>::value;
+
+    /** @copydoc isMemoryPropertySupportedBy_v
+     *
+     * @param property Memory property to query.
+     * @param deviceOrQueue Device or queue the property would be applied to.
+     */
+    constexpr bool isMemoryPropertySupportedBy(
+        alpaka::concepts::MemoryProperty auto property,
+        auto const& deviceOrQueue)
+    {
+        alpaka::unused(property, deviceOrQueue);
+        return isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(property), ALPAKA_TYPEOF(deviceOrQueue)>;
+    }
+
+    /** All memory properties the given device is able to honor.
+     *
+     * @param deviceOrQueue Device or queue handle.
+     * @return Tuple of memory property tags, always contains memoryProperty::defaultProperty.
+     */
+    constexpr auto supportedMemoryProperties(auto const& deviceOrQueue)
+    {
+        alpaka::unused(deviceOrQueue);
+        return meta::filter(
+            // the variable template is used instead of isMemoryPropertySupportedBy() because gcc14 is stricter in
+            // the detection which functions can be evaluated at compile time
+            [](auto property) constexpr
+            { return isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(property), ALPAKA_TYPEOF(deviceOrQueue)>; },
+            memoryProperty::allProperties);
     }
 
     constexpr auto supportedDevices(auto const api)

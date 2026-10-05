@@ -270,6 +270,12 @@ namespace alpaka
         };
 
         constexpr auto locality = Locality{};
+
+        /** All memory placement preferences known to alpaka.
+         *
+         * Used to enumerate the properties a device supports, see onHost::supportedMemoryProperties().
+         */
+        constexpr auto allProperties = std::make_tuple(defaultProperty, bestLatency, bestBandwidth, locality);
     } // namespace memoryProperty
 
     namespace deviceKind

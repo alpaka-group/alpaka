@@ -9,6 +9,7 @@
 #include "alpaka/onHost/DeviceSelector.hpp"
 #include "alpaka/onHost/MemoryPolicyList.hpp"
 #include "alpaka/onHost/concepts.hpp"
+#include "alpaka/onHost/trait.hpp"
 #include "alpaka/tag.hpp"
 #include "alpaka/trait.hpp"
 #include "alpaka/unused.hpp"
@@ -234,6 +235,12 @@ namespace alpaka::onHost
         MemoryPolicyList<T_Policies...> const& policies)
     {
         auto device = makeHostDevice<T_ValueType>();
+        static_assert(
+            isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(policies.getMemoryProperty()), ALPAKA_TYPEOF(device)>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
         return internal::Alloc::Op<
             T_ValueType,

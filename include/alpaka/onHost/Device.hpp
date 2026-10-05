@@ -13,6 +13,7 @@
 #include "alpaka/onHost/QueuePolicyList.hpp"
 #include "alpaka/onHost/concepts.hpp"
 #include "alpaka/onHost/internal/interface.hpp"
+#include "alpaka/onHost/trait.hpp"
 #include "alpaka/tag.hpp"
 #include "alpaka/utility.hpp"
 
@@ -254,6 +255,12 @@ namespace alpaka::onHost
         alpaka::concepts::VectorOrScalar auto const& extents,
         MemoryPolicyList<T_Policies...> const& policies)
     {
+        static_assert(
+            isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(policies.getMemoryProperty()), ALPAKA_TYPEOF(device)>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
         return internal::Alloc::Op<
             T_Type,
@@ -308,6 +315,12 @@ namespace alpaka::onHost
         alpaka::concepts::VectorOrScalar auto const& extents,
         MemoryPolicyList<T_Policies...> const& policies)
     {
+        static_assert(
+            isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(policies.getMemoryProperty()), ALPAKA_TYPEOF(device)>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
         return internal::AllocUnified::Op<
             T_Type,
@@ -418,6 +431,12 @@ namespace alpaka::onHost
         alpaka::concepts::VectorOrScalar auto const& extents,
         MemoryPolicyList<T_Policies...> const& policies)
     {
+        static_assert(
+            isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(policies.getMemoryProperty()), ALPAKA_TYPEOF(device)>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
         return internal::AllocMapped::Op<
             T_Type,

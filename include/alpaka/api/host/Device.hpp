@@ -221,6 +221,20 @@ namespace alpaka::onHost
         {
         };
 #endif
+
+        /** The CPU backend places host memory on NUMA nodes, therefore it implements all placement preferences.
+         *
+         * Without hwloc the placement is a no-op, the properties stay valid so that a single source keeps
+         * compiling with and without hwloc.
+         */
+        template<alpaka::concepts::MemoryProperty T_Property, typename T_Platform>
+        requires(
+            std::same_as<T_Property, memoryProperty::BestLatency>
+            || std::same_as<T_Property, memoryProperty::BestBandwidth>
+            || std::same_as<T_Property, memoryProperty::Locality>)
+        struct IsMemoryPropertySupportedBy::Op<T_Property, cpu::Device<T_Platform>> : std::true_type
+        {
+        };
     } // namespace trait
 
     namespace internal
