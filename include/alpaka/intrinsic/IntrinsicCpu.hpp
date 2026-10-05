@@ -84,5 +84,42 @@ namespace alpaka
                 ALPAKA_UNREACHABLE(0);
             }
         };
+
+        template<>
+        struct Brev<IntrinsicCpu>
+        {
+            template<typename Integral>
+            static auto brev(IntrinsicCpu const& /*intrinsic*/, Integral value) -> Integral
+            {
+#if(ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG || ALPAKA_COMP_MSVC)
+                if(value == 0 || value == ~Integral{0})
+                    return value;
+                return alpaka::detail::brevFallback(value);
+#endif
+                ALPAKA_UNREACHABLE(0);
+            }
+        };
+
+        template<>
+        struct Clz<IntrinsicCpu>
+        {
+            template<typename Integral>
+            static auto clz(IntrinsicCpu const& /*intrinsic*/, Integral value) -> std::int32_t
+            {
+                if(value == 0)
+                    return (sizeof(Integral) * 8);
+#ifdef __cpp_lib_bitops
+                return std::countl_zero(static_cast<std::make_unsigned_t<Integral>>(value));
+#elif ALPAKA_COMP_GNUC || ALPAKA_COMP_CLANG
+                if constexpr(sizeof(Integral) == 8)
+                    return __builtin_clzll(value);
+                else
+                    return __builtin_clz(value);
+#else
+                return alpaka::detail::clzFallback(value);
+#endif
+                ALPAKA_UNREACHABLE(0);
+            }
+        };
     } // namespace trait
 } // namespace alpaka
