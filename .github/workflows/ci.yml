@@ -76,6 +76,7 @@ env:
 
 jobs:
   clang-format:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
@@ -93,6 +94,7 @@ jobs:
         path: format.patch
 
   ci:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     needs: clang-format
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}

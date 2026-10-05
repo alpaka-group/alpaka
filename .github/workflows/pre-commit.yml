@@ -7,6 +7,7 @@ on:
   pull_request:
 jobs:
   pre-commit:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     name: run pre-commit checks
     runs-on: ubuntu-latest
     steps:

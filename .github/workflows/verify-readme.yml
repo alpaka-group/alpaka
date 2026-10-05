@@ -6,6 +6,7 @@ on: [push, pull_request]
 
 jobs:
   check-readme:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7

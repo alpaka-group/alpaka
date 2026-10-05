@@ -2,6 +2,7 @@ name: ci-job-generator
 on: [push, pull_request]
 jobs:
   mypy-linter:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     name: run mypy linter
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +23,7 @@ jobs:
           mypy ./script/job_generator/src
 
   pylint-linter:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     name: run pylint linter
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +44,7 @@ jobs:
           pylint ./script/job_generator/src
 
   unit-tests:
+    if: false  # [TEMPORARY] disabled, run only the AMD GPU jobs on GitLab
     name: run unit tests
     runs-on: ubuntu-latest
     steps:

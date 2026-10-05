@@ -8,6 +8,7 @@ import sys
 import os
 import argparse
 import random
+from copy import deepcopy
 from itertools import chain
 import bashi
 import alpaka_bashi
@@ -220,6 +221,17 @@ def main() -> None:
     if job_filter_name:
         comb_list = alpaka_bashi.filter_combinations(comb_list, job_filter_name)
         print(f"number of filtered combinations: {len(comb_list)}", file=sys.stderr)
+
+    # [TEMPORARY] run each selected job both as a Debug and as a Release build
+    both_build_types: bashi.CombinationList = []
+    for comb in comb_list:
+        for build_type in (alpaka_bashi.CMAKE_DEBUG_VER, alpaka_bashi.CMAKE_RELEASE_VER):
+            new_comb = deepcopy(comb)
+            new_comb[alpaka_bashi.BUILD_TYPE] = bashi.ParameterValue(alpaka_bashi.BUILD_TYPE, build_type)
+            if new_comb not in both_build_types:
+                both_build_types.append(new_comb)
+    comb_list = both_build_types
+    print(f"[TEMPORARY] number of Debug and Release combinations: {len(comb_list)}", file=sys.stderr)
 
     if args.print_combinations:
         for c in comb_list:

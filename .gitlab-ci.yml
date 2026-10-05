@@ -24,7 +24,9 @@ generate:
   image: python:3.13-alpine
   script:
     - pip3 install script/job_generator
+    # [TEMPORARY] run only the HIP runtime jobs for ROCm 7.0, 7.2 and 7.14
     - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
+      --filter '^linux_hipcc7\.(0|2|14)_cmake'
       --split-pipeline
       --pipeline-out-compile_only compile_only.yml
       --pipeline-out-runtime_job_cpu runtime_cpu.yml
@@ -45,6 +47,9 @@ generate:
 
 run-compile-only-test:
   stage: run-test-jobs
+  # [TEMPORARY] disabled
+  rules:
+    - when: never
   trigger:
     include:
       - artifact: compile_only.yml
@@ -53,6 +58,9 @@ run-compile-only-test:
 
 run-runtime-cpu-test:
   stage: run-test-jobs
+  # [TEMPORARY] disabled
+  rules:
+    - when: never
   trigger:
     include:
       - artifact: runtime_cpu.yml
@@ -69,6 +77,9 @@ run-runtime-gpu-test:
 
 run-special-test:
   stage: run-test-jobs
+  # [TEMPORARY] disabled
+  rules:
+    - when: never
   trigger:
     include:
       - artifact: special.yml
