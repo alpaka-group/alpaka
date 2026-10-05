@@ -52,7 +52,7 @@
 
 namespace alpaka
 {
-    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
     class TaskKernelCpuOmp2Blocks;
 
     //! The CPU OpenMP 2.0 block accelerator.
@@ -90,7 +90,7 @@ namespace alpaka
 
     public:
         // Partial specialization with the correct TDim and TIdx is not allowed.
-        template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
+        template<typename TDim2, typename TIdx2, typename TKernelFnObj, bool TCooperative, typename... TArgs>
         friend class ::alpaka::TaskKernelCpuOmp2Blocks;
 
         AccCpuOmp2Blocks(AccCpuOmp2Blocks const&) = delete;
@@ -219,7 +219,7 @@ namespace alpaka
                         + getAccName<AccCpuOmp2Blocks<TDim, TIdx>>() + ". Threads per block should be 1!");
                 }
 
-                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, false, TArgs...>(
                     workDiv,
                     kernelFnObj,
                     std::forward<TArgs>(args)...);
@@ -246,7 +246,7 @@ namespace alpaka
                         + ". Use getMaxActiveBlocks().");
                 }
 
-                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, true, TArgs...>(
                     workDiv,
                     kernelFnObj,
                     std::forward<TArgs>(args)...);
