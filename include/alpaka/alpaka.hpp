@@ -17146,10 +17146,13 @@
 			                        std::vector<std::size_t> warp_sizes
 			                            = device.template get_info<sycl::info::device::sub_group_sizes>();
 			                        // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently
-			                        // does not
-			                        auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
-			                        if(find64 != warp_sizes.end())
-			                            warp_sizes.erase(find64);
+			                        // does not. Other devices, like AMD GPUs, may support only a sub-group size of 64.
+			                        if(device.is_cpu())
+			                        {
+			                            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+			                            if(find64 != warp_sizes.end())
+			                                warp_sizes.erase(find64);
+			                        }
 			                        // Sort the warp sizes in decreasing order
 			                        std::sort(warp_sizes.begin(), warp_sizes.end(), std::greater<>{});
 			                        m_deviceProperties->warpSizes = std::move(warp_sizes);
@@ -20432,11 +20435,13 @@
 			 */
 
 			// #pragma once
+			// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
+			#include <type_traits>
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -20459,32 +20464,104 @@
 			    };
 			} // namespace alpaka::warp
 
+			// The SYCL warp operations are implemented with the SYCL group functions (group_ballot(), the group algorithms,
+			// get_opportunistic_group(), select_from_group(), ...), which work only on some backends and with some oneAPI
+			// versions:
+			//   - Intel/Altera FPGAs: not supported (the FPGA backend is available only up to oneAPI 2025.0, where they do not
+			//     work);
+			//   - AMD GPUs: not supported (the Codeplay plugin, available up to oneAPI 2025.2, does not implement the SPIR-V group
+			//     operations they use);
+			//   - Intel CPUs and GPUs: supported starting from oneAPI 2025.2. Up to oneAPI 2026.1 they give wrong results when
+			//     some work-items have returned early from the kernel, and the code calling them is not inlined, for example
+			//     when compiling with -O0, -fno-inline or -fno-inline-functions: the work-items that have returned are still
+			//     counted as members of the group. Clang-based compilers, like icpx, define __NO_INLINE__ in these cases.
+			//     Define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK to disable this check, for example if the kernels using the warp
+			//     operations never return early;
+			//   - NVIDIA GPUs: supported starting from oneAPI 2025.0.
+			// Using the warp operations where they are not supported fails at compile time, with one of these messages.
+			#    define ALPAKA_SYCL_WARP_UNSUPPORTED_FPGA "The alpaka warp operations are not supported on Intel/Altera FPGAs."
+			#    define ALPAKA_SYCL_WARP_UNSUPPORTED_AMD                                                                          \
+			        "The alpaka warp operations are not supported by the SYCL backend on AMD GPUs."
+			#    if ALPAKA_COMP_ICPX < ALPAKA_VERSION_NUMBER(2025, 2, 0)
+			#        define ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL                                                                    \
+			            "The alpaka warp operations require oneAPI 2025.2 or newer on Intel CPUs and GPUs."
+			#    elif ALPAKA_COMP_ICPX < ALPAKA_VERSION_NUMBER(2026, 2, 0) && defined(__NO_INLINE__)                              \
+			        && !defined(ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK)
+			#        define ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL                                                                    \
+			            "The alpaka warp operations give wrong results on Intel CPUs and GPUs with oneAPI 2026.1 and older, "     \
+			            "when the SYCL code is compiled without inlining (e.g. -O0, -fno-inline or -fno-inline-functions). "      \
+			            "Enable optimisations (-O1 or higher) and inlining, or define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK if "  \
+			            "the kernels never return early."
+			#    endif
+			#    if ALPAKA_COMP_ICPX < ALPAKA_VERSION_NUMBER(2025, 0, 0)
+			#        define ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA                                                                   \
+			            "The alpaka warp operations require oneAPI 2025.0 or newer on NVIDIA GPUs."
+			#    endif
+
+			// Each SYCL kernel is compiled for all the targets, so the check is done in the device compilation for each target.
+			#    ifdef __SYCL_DEVICE_ONLY__
+			#        if defined(__NVPTX__)
+			#            ifdef ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA
+			#                define ALPAKA_SYCL_WARP_UNSUPPORTED ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA
+			#            endif
+			#        elif defined(__AMDGCN__)
+			#            define ALPAKA_SYCL_WARP_UNSUPPORTED ALPAKA_SYCL_WARP_UNSUPPORTED_AMD
+			#        elif defined(ALPAKA_SYCL_ONEAPI_FPGA) && !defined(ALPAKA_SYCL_ONEAPI_GPU)                                    \
+			            && !(defined(__SYCL_TARGET_INTEL_X86_64__) && __SYCL_TARGET_INTEL_X86_64__)
+			// The FPGA target does not define a specific macro. The SYCL headers define all the __SYCL_TARGET_*__ macros, with a
+			// value of 1 for the current target and 0 for the others.
+			#            define ALPAKA_SYCL_WARP_UNSUPPORTED ALPAKA_SYCL_WARP_UNSUPPORTED_FPGA
+			#        elif defined(ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL)
+			// Intel CPUs and GPUs, and generic SPIR-V targets
+			#            define ALPAKA_SYCL_WARP_UNSUPPORTED ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL
+			#        endif
+			#    endif
+
 			namespace alpaka::warp::detail
 			{
-			    // On Intel GPUs, the SYCL group operations used to implement the warp operations (group_ballot(),
-			    // get_opportunistic_group() and the group algorithms) give wrong results when some work-items have returned
-			    // early from the kernel, and the code calling them is not inlined, for example when compiling with -O0,
-			    // -fno-inline or -fno-inline-functions. In these cases the work-items that have returned are still counted as
-			    // members of the group. Clang-based compilers, like icpx, define __NO_INLINE__ in these cases.
-			    // Define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK to disable this check, for example if the kernels using the warp
-			    // operations never return early.
-			#    if defined(ALPAKA_SYCL_ONEAPI_GPU) && defined(__NO_INLINE__) && !defined(ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK)
-			    constexpr bool syclWarpRequiresInlining = true;
+			    //! Return why the SYCL warp operations are not supported for the accelerator tag TTag, or nullptr if they are
+			    //! supported.
+			    template<typename TTag>
+			    constexpr auto syclWarpUnsupportedReason() -> char const*
+			    {
+			        if constexpr(std::is_same_v<TTag, TagFpgaSyclIntel>)
+			        {
+			            return ALPAKA_SYCL_WARP_UNSUPPORTED_FPGA;
+			        }
+			        else if constexpr(std::is_same_v<TTag, TagGpuSyclAmd>)
+			        {
+			            return ALPAKA_SYCL_WARP_UNSUPPORTED_AMD;
+			        }
+			        else if constexpr(std::is_same_v<TTag, TagGpuSyclNvidia>)
+			        {
+			#    ifdef ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA
+			            return ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA;
 			#    else
-			    constexpr bool syclWarpRequiresInlining = false;
+			            return nullptr;
 			#    endif
+			        }
+			        else
+			        {
+			            // Intel CPUs and GPUs, and generic SYCL targets
+			#    ifdef ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL
+			            return ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL;
+			#    else
+			            return nullptr;
+			#    endif
+			        }
+			    }
 
 			    // Dependent on the template parameter, so that the static_assert is only evaluated when a warp operation is used.
 			    template<typename TDim>
-			    inline constexpr bool syclWarpSupported = not syclWarpRequiresInlining;
+			    inline constexpr bool syclWarpDependentFalse = false;
 			} // namespace alpaka::warp::detail
 
-			#    define ALPAKA_SYCL_WARP_CHECK_INLINE                                                                             \
-			        static_assert(                                                                                                \
-			            alpaka::warp::detail::syclWarpSupported<TDim>,                                                            \
-			            "The alpaka warp operations give wrong results on Intel GPUs when the SYCL code is compiled without "     \
-			            "inlining (e.g. -O0, -fno-inline or -fno-inline-functions). Enable optimisations (-O1 or higher) and "    \
-			            "inlining, or define ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK if the kernels never return early.")
+			#    ifdef ALPAKA_SYCL_WARP_UNSUPPORTED
+			#        define ALPAKA_SYCL_WARP_CHECK                                                                                \
+			            static_assert(alpaka::warp::detail::syclWarpDependentFalse<TDim>, ALPAKA_SYCL_WARP_UNSUPPORTED)
+			#    else
+			#        define ALPAKA_SYCL_WARP_CHECK static_assert(true)
+			#    endif
 
 			namespace alpaka::warp::trait
 			{
@@ -20535,7 +20612,7 @@
 			        // Restrict to warpSize <= 32 for now.
 			        static auto activemask(warp::WarpGenericSycl<TDim> const& /*warp*/) -> warp::WarpGenericSycl<TDim>::mask_type
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
 			            auto const mask = sycl::ext::oneapi::group_ballot(sg, true);
@@ -20550,7 +20627,7 @@
 			    {
 			        static auto all(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto activegroup = get_opportunistic_group();
 			            return static_cast<std::int32_t>(sycl::all_of_group(activegroup, static_cast<bool>(predicate)));
@@ -20562,7 +20639,7 @@
 			    {
 			        static auto any(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate) -> std::int32_t
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto activegroup = get_opportunistic_group();
 			            return static_cast<std::int32_t>(sycl::any_of_group(activegroup, static_cast<bool>(predicate)));
@@ -20578,7 +20655,7 @@
 			        static auto ballot(warp::WarpGenericSycl<TDim> const& /*warp*/, std::int32_t predicate)
 			            -> warp::WarpGenericSycl<TDim>::mask_type
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto sub_group = sycl::ext::oneapi::this_work_item::get_sub_group();
 			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
@@ -20601,7 +20678,7 @@
 			            std::int32_t srcLane,
 			            std::int32_t width)
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            ALPAKA_ASSERT_ACC(width > 0);
 			            ALPAKA_ASSERT_ACC(srcLane >= 0);
@@ -20629,7 +20706,7 @@
 			            std::uint32_t offset, /* must be the same for all work-items in the group */
 			            std::int32_t width)
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
@@ -20654,7 +20731,7 @@
 			            std::uint32_t offset,
 			            std::int32_t width)
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
@@ -20679,7 +20756,7 @@
 			            std::int32_t mask,
 			            std::int32_t width)
 			        {
-			            ALPAKA_SYCL_WARP_CHECK_INLINE;
+			            ALPAKA_SYCL_WARP_CHECK;
 
 			            auto actual_group = get_opportunistic_group();
 			            std::uint32_t const w = static_cast<std::uint32_t>(width);
@@ -20691,7 +20768,12 @@
 			    };
 			} // namespace alpaka::warp::trait
 
-			#    undef ALPAKA_SYCL_WARP_CHECK_INLINE
+			#    undef ALPAKA_SYCL_WARP_CHECK
+			#    undef ALPAKA_SYCL_WARP_UNSUPPORTED
+			#    undef ALPAKA_SYCL_WARP_UNSUPPORTED_FPGA
+			#    undef ALPAKA_SYCL_WARP_UNSUPPORTED_AMD
+			#    undef ALPAKA_SYCL_WARP_UNSUPPORTED_INTEL
+			#    undef ALPAKA_SYCL_WARP_UNSUPPORTED_NVIDIA
 
 			#endif
 			// ==
@@ -27992,6 +28074,12 @@
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU_NVIDIA)
 
+	// Set by CMake for Debug builds with oneAPI 2025.0, see cmake/alpakaCommon.cmake
+	#    ifdef ALPAKA_SYCL_ONEAPI_GPU_NVIDIA_DEBUG_UNSUPPORTED
+	#        error                                                                                                        \
+	            "The SYCL backend for NVIDIA GPUs does not support Debug builds with oneAPI 2025.0, because ptxas fails on the device debug information. Use a different build type or a different version of oneAPI."
+	#    endif
+
 	namespace alpaka
 	{
 	    //! The Nvidia GPU SYCL accelerator.
@@ -33499,6 +33587,7 @@
 
 		// #pragma once
 		// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
@@ -33863,6 +33952,7 @@
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
 		// #include <stdexcept>    // amalgamate: file already included
+		// #include <string>    // amalgamate: file already included
 		// #include <tuple>    // amalgamate: file already included
 		#include <type_traits>
 		// #include <utility>    // amalgamate: file already included
@@ -33904,7 +33994,9 @@
 		            });
 
 		#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
-		        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
+		        throw std::runtime_error(                                                                                     \
+		            "The SYCL targets do not support the sub-group size " + std::to_string(sub_group_size)                    \
+		            + " required by the kernel on " + getAccName<TAcc>());                                                    \
 		        cgh.parallel_for(                                                                                             \
 		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
 		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
@@ -33956,6 +34048,23 @@
 		            auto k_args = m_args;
 
 		            constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
+
+		            // The SYCL CPU device forms sub-groups only along the innermost (fastest) dimension of the work-group,
+		            // while GPUs (and CUDA and HIP) form warps from the linearised thread index. For multi-dimensional kernels
+		            // that require a warp size, the innermost block extent must be a multiple of the warp size, otherwise the
+		            // warps would be split and the warp operations would give wrong results.
+		            if constexpr(std::is_same_v<TTag, TagCpuSycl> && TDim::value > 1 && sub_group_size > 0)
+		            {
+		                auto const innermost = static_cast<std::size_t>(group_items[TDim::value - 1]);
+		                if(innermost % sub_group_size != 0)
+		                {
+		                    throw std::runtime_error(
+		                        "On the SYCL CPU device, the innermost block extent (" + std::to_string(innermost)
+		                        + ") must be a multiple of the warp size (" + std::to_string(sub_group_size)
+		                        + ") because sub-groups are formed only along the innermost dimension");
+		                }
+		            }
+
 		            bool supported = false;
 
 		            if constexpr(sub_group_size == 0)
@@ -34034,7 +34143,9 @@
 
 		                // this subgroup size is not supported, raise an exception
 		                if(not supported)
-		                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
+		                    throw std::runtime_error(
+		                        "The SYCL targets do not support the sub-group size " + std::to_string(sub_group_size)
+		                        + " required by the kernel on " + getAccName<TAcc>());
 		            }
 		        }
 
