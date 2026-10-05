@@ -35,6 +35,34 @@ static_assert(testMemoryPolicies.getMemoryProperty() == memoryProperty::bestBand
 static_assert(testMemoryPolicies.hasPolicy(TestMemoryPolicy{}));
 static_assert(!testMemoryPolicies.hasPolicy(memoryProperty::bestLatency));
 
+/** Test-only device which declares no memory property support at all. */
+struct TestDeviceWithoutMemoryProperties
+{
+};
+
+/** Test-only device which implements memoryProperty::Locality only. */
+struct TestDeviceWithLocality
+{
+};
+
+template<>
+struct alpaka::onHost::trait::IsMemoryPropertySupportedBy::Op<memoryProperty::Locality, TestDeviceWithLocality>
+    : std::true_type
+{
+};
+
+// A placement preference must be opt-in per device, memoryProperty::Default is always available.
+static_assert(
+    !onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, TestDeviceWithoutMemoryProperties>);
+static_assert(!onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestLatency, TestDeviceWithoutMemoryProperties>);
+static_assert(!onHost::isMemoryPropertySupportedBy_v<memoryProperty::Locality, TestDeviceWithoutMemoryProperties>);
+static_assert(onHost::isMemoryPropertySupportedBy_v<memoryProperty::Default, TestDeviceWithoutMemoryProperties>);
+static_assert(
+    std::tuple_size_v<ALPAKA_TYPEOF(onHost::supportedMemoryProperties(TestDeviceWithoutMemoryProperties{}))> == 1u);
+
+static_assert(onHost::isMemoryPropertySupportedBy_v<memoryProperty::Locality, TestDeviceWithLocality>);
+static_assert(!onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, TestDeviceWithLocality>);
+
 struct IotaValidate
 {
     ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<int> auto success, concepts::IMdSpan auto in)
@@ -183,32 +211,45 @@ TEMPLATE_LIST_TEST_CASE("alloc with memory property", "", TestDeviceSpecs)
 
     int dataSize = 42;
 
-    // A single, explicit policy tag.
+    // memoryProperty::defaultProperty is supported by every device, therefore it never needs a guard.
+    static_assert(onHost::isMemoryPropertySupportedBy(memoryProperty::defaultProperty, device));
+    // A device always reports at least memoryProperty::defaultProperty as supported.
+    static_assert(std::tuple_size_v<ALPAKA_TYPEOF(onHost::supportedMemoryProperties(device))> >= 1u);
+
+    auto queue = device.makeQueue();
+    // A queue resolves to the memory properties of its device.
+    static_assert(
+        onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, ALPAKA_TYPEOF(queue)>
+        == onHost::isMemoryPropertySupportedBy_v<memoryProperty::BestBandwidth, ALPAKA_TYPEOF(device)>);
+
+    // Host allocations always run on a CPU device, therefore the properties can be requested unconditionally.
     [[maybe_unused]] auto hostBuffer = onHost::allocHost<int>(dataSize, memoryProperty::bestBandwidth);
     CHECK(hostBuffer.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto deviceView = onHost::alloc<int>(device, dataSize, memoryProperty::bestLatency);
+    // Device allocations stay on memoryProperty::defaultProperty, which every device implements. Passing a
+    // placement preference a backend does not implement is rejected at compile time.
+    [[maybe_unused]] auto deviceView = onHost::alloc<int>(device, dataSize, memoryProperty::defaultProperty);
     CHECK(deviceView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto mappedView = onHost::allocMapped<int>(device, dataSize, memoryProperty::locality);
+    [[maybe_unused]] auto mappedView = onHost::allocMapped<int>(device, dataSize, memoryProperty::defaultProperty);
     CHECK(mappedView.getExtents() == alpaka::Vec{dataSize});
 
     [[maybe_unused]] auto unifiedView = onHost::allocUnified<int>(device, dataSize, memoryProperty::defaultProperty);
     CHECK(unifiedView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto likeView = onHost::allocLike(device, deviceView, memoryProperty::bestBandwidth);
+    [[maybe_unused]] auto likeView = onHost::allocLike(device, deviceView, memoryProperty::defaultProperty);
     CHECK(likeView.getExtents() == deviceView.getExtents());
 
     // An explicit onHost::MemoryPolicyList.
     [[maybe_unused]] auto explicitPolicyView
-        = onHost::alloc<int>(device, dataSize, onHost::MemoryPolicyList{memoryProperty::bestBandwidth});
+        = onHost::alloc<int>(device, dataSize, onHost::MemoryPolicyList{memoryProperty::defaultProperty});
     CHECK(explicitPolicyView.getExtents() == alpaka::Vec{dataSize});
 
-    auto queue = device.makeQueue();
-    [[maybe_unused]] auto deferredView = onHost::allocDeferred<int>(queue, dataSize, memoryProperty::bestBandwidth);
+    [[maybe_unused]] auto deferredView = onHost::allocDeferred<int>(queue, dataSize, memoryProperty::defaultProperty);
     CHECK(deferredView.getExtents() == alpaka::Vec{dataSize});
 
-    [[maybe_unused]] auto likeDeferredView = onHost::allocLikeDeferred(queue, deviceView, memoryProperty::locality);
+    [[maybe_unused]] auto likeDeferredView
+        = onHost::allocLikeDeferred(queue, deviceView, memoryProperty::defaultProperty);
     CHECK(likeDeferredView.getExtents() == deviceView.getExtents());
 }
 
