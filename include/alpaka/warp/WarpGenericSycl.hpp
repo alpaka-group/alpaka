@@ -248,7 +248,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const start_index = id / w * w;
@@ -272,7 +272,7 @@ namespace alpaka::warp::trait
             std::uint32_t offset,
             std::int32_t width)
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             std::uint32_t const w = static_cast<std::uint32_t>(width);
             std::uint32_t const id = actual_group.get_local_linear_id();
             std::uint32_t const end_index = (id / w + 1) * w;
@@ -414,7 +414,7 @@ namespace alpaka::warp::trait
             warp::WarpGenericSycl<TDim> const& warp,
             warp::WarpGenericSycl<TDim>::mask_type mask) -> void
         {
-            auto actual_group = sycl::ext::oneapi::experimental::this_kernel::get_opportunistic_group();
+            auto actual_group = get_opportunistic_group();
             sycl::group_barrier(actual_group);
         }
     };
