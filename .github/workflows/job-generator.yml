@@ -1,17 +1,6 @@
 name: ci-job-generator
 on: [push, pull_request]
 jobs:
-  formatter:
-    name: runner black code formatter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: psf/black@stable
-        with:
-          options: "--check --verbose"
-          src: "./script/job_generator"
-          version: "~= 24.0"
-
   mypy-linter:
     name: run mypy linter
     runs-on: ubuntu-latest

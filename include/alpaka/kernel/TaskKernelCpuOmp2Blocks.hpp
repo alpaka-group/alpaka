@@ -900,6 +900,13 @@ namespace alpaka
 #    endif
                 acc.m_gridBlockIdx = mapIdx<TDim::value>(index, gridBlockExtent);
 
+                std::apply(
+                    [&](auto&&... argsWithAcc) {
+                        detail::checkKernelReturnType(
+                            m_kernelFnObj,
+                            std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
+                    },
+                    std::tuple_cat(std::tie(acc), m_args));
                 std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
                 // After a block has been processed, the shared memory has to be deleted.

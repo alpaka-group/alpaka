@@ -155,6 +155,7 @@ namespace alpaka
             syncBlockThreads(acc);
 
             // Execute the kernel itself.
+            detail::checkKernelReturnType(kernelFnObj, std::as_const(acc), args...);
             kernelFnObj(std::as_const(acc), args...);
 
             // We have to sync all threads here because if a thread would finish before all threads have been started,

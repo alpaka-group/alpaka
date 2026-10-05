@@ -101,21 +101,12 @@ namespace alpaka
         return trait::AsyncBufAlloc<TElem, Dim<TExtent>, Idx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
 
-    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
-       figure out that the template parameters are attached to a C++17 inline variable. */
-#if ALPAKA_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdocumentation"
-#endif
     //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
     //!
     //! \tparam TDev The type of device to allocate the buffer on.
     //! \tparam TDim The dimensionality of the buffer to allocate.
     template<typename TDev, typename TDim>
     inline constexpr bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
-#if ALPAKA_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
 
     //! If supported, allocates stream-ordered memory on the given queue and the associated device.
     //! Otherwise, allocates regular memory on the device associated to the queue.
@@ -187,20 +178,11 @@ namespace alpaka
         return trait::BufAllocManaged<TPlatform, TElem, Dim<TExtent>, Idx>::allocManagedBuf(host, platform, extent);
     }
 
-    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
-       figure out that the template parameters are attached to a C++17 inline variable. */
-#if ALPAKA_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdocumentation"
-#endif
     //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.
     //!
     //! \tparam TPlatform The platform from which the buffer is accessible.
     template<typename TPlatform>
     inline constexpr bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
-#if ALPAKA_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
 
     //! If supported, allocates pinned/mapped host memory, accessible by all devices in the given platform.
     //! Otherwise, allocates regular host memory.

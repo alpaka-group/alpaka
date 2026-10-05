@@ -77,7 +77,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 12.4 - 13.0)"
+            "comment": "(CUDA 12.4 - 13.3)"
         },
         "CUDAclang": {
             "state": "none"
@@ -291,7 +291,7 @@
         },
         "CUDAnvcc": {
             "state": "yes",
-            "comment": "(CUDA 13.0)"
+            "comment": "(CUDA 13.0 - 13.3)"
         },
         "CUDAclang": {
             "state": "no"

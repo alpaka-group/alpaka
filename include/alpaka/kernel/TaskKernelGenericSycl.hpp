@@ -44,6 +44,7 @@
                 sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]                   \
             {                                                                                                         \
                 auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
                 std::apply(                                                                                           \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \
@@ -56,6 +57,7 @@
                 sycl::nd_item<TDim::value> work_item)                                                                 \
             {                                                                                                         \
                 auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
                 std::apply(                                                                                           \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \

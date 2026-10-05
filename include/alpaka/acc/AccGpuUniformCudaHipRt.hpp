@@ -261,23 +261,6 @@ namespace alpaka
         };
     } // namespace trait
 
-    namespace detail
-    {
-        //! specialization of the TKernelFnObj return type evaluation
-        //
-        // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
-        // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
-        // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
-        template<typename TApi, typename TDim, typename TIdx>
-        struct CheckFnReturnType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
-        {
-            template<typename TKernelFnObj, typename... TArgs>
-            void operator()(TKernelFnObj const&, TArgs const&...)
-            {
-            }
-        };
-    } // namespace detail
-
     namespace trait
     {
         //! The GPU CUDA accelerator execution task type trait specialization.
