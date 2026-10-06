@@ -81,7 +81,7 @@ This library uses C++20 (or newer when available).
 
 Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.
 
-[^1]: Due to an [LLVM bug](https://github.com/llvm/llvm-project/issues/58491) in debug mode only release builds are supported.
+[^1]: Clang-CUDA does not generate debug symbols for device code in debug builds with clang older than 20.1.0, due to an [LLVM bug](https://github.com/llvm/llvm-project/issues/58491), or with CUDA older than 12.3, because `ptxas` crashes on the device debug information for `sm_90`.
 [^2]: Currently, the unit tests are compiled but not executed.
 
 Dependencies
