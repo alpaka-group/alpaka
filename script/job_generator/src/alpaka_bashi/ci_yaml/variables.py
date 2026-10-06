@@ -36,7 +36,6 @@ def set_generic_variables(job_body: Dict[str, Any], combination: bashi.Combinati
         "alpaka_ENABLE_WERROR": "ON",
         "ALPAKA_CI_ANALYSIS": "OFF",
         "ALPAKA_CI_SANITIZERS": "",
-        "ALPAKA_CI_BUILD_JOBS": "$CI_CPUS",
         "OMP_NUM_THREADS": "$CI_CPUS",
         "alpaka_ACC_GPU_CUDA_ONLY_MODE": "OFF",
         "alpaka_ACC_GPU_HIP_ONLY_MODE": "OFF",
@@ -58,6 +57,9 @@ def set_generic_variables(job_body: Dict[str, Any], combination: bashi.Combinati
     variables["ALPAKA_CI_CMAKE_VER"] = str(combination[CMAKE].version)
     variables["alpaka_CXX_STANDARD"] = str(combination[CXX_STANDARD].version)
     variables["ALPAKA_TEST_MDSPAN"] = bashi.on_off_ver_to_str(combination[MDSPAN].version)
+
+    # Set 2 GB of required RAM per compile process.
+    variables["ALPAKA_CI_REQUIRED_RAM_PER_BUILD_THREAD_BYTES"] = 2 * pow(1024, 3)
 
 
 @typechecked
