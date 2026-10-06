@@ -29,8 +29,10 @@ else
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 
     # focal = 20.04; jammy = 22.04
+    # Ubuntu 24.04 (noble) provides Clang up to version 20, newer versions are installed from apt.llvm.org
     if { [ "${ALPAKA_CI_UBUNTU_NAME}" == "focal" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 13 ]; } || \
-    { [ "${ALPAKA_CI_UBUNTU_NAME}" == "jammy" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 15 ]; }
+    { [ "${ALPAKA_CI_UBUNTU_NAME}" == "jammy" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 15 ]; } || \
+    { [ "${ALPAKA_CI_UBUNTU_NAME}" == "noble" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 21 ]; }
     then
         sudo add-apt-repository -y "deb http://apt.llvm.org/${ALPAKA_CI_UBUNTU_NAME}/ llvm-toolchain-${ALPAKA_CI_UBUNTU_NAME}-$ALPAKA_CI_CLANG_VER main"
     fi
