@@ -12,13 +12,17 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 from bashi.version.dependencies.base_version_support import ClangBase
 from bashi.version.dependencies.clang_cuda import CLANG_CUDA_MAX_CUDA_VERSION, ClangCudaSDKSupport
 from bashi.version.dependencies.hipcc import HIPCC_CLANG_VERSION
-from bashi.version.dependencies.nvcc import NVCC_CLANG_MAX_VERSION, NvccHostSupport
+from bashi.version.dependencies.nvcc import (
+    NVCC_CLANG_MAX_VERSION,
+    NVCC_GCC_MAX_VERSION,
+    NvccHostSupport,
+)
 from alpaka_bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     GCC: [11, 12, 13],
     CLANG: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-    NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0, 13.1, 13.2, 13.3],
+    NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0, 13.1, 13.2, 13.3, 13.4],
     HIPCC: [6.0, 6.1, 6.2, 6.3, 6.4, 7.0, 7.1, 7.2, 7.14],
     ICPX: ["2025.0"],
     UBUNTU: ["22.04", "24.04"],
@@ -203,6 +207,20 @@ def get_hipcc_clang_versions() -> List[ClangBase]:
     ]
 
 
+def get_nvcc_gcc_max_versions() -> List[NvccHostSupport]:
+    """Returns:
+    List[NvccHostSupport]: For each nvcc version the latest supported GCC host compiler.
+    """
+    # NVCC versions newer than the latest entry are assumed to support any GCC version,
+    # so each newer NVCC version needs an explicit entry.
+    return NVCC_GCC_MAX_VERSION + [
+        NvccHostSupport("13.1", "15"),
+        NvccHostSupport("13.2", "15"),
+        NvccHostSupport("13.3", "15"),
+        NvccHostSupport("13.4", "16"),
+    ]
+
+
 def get_nvcc_clang_max_versions() -> List[NvccHostSupport]:
     """Returns:
     List[NvccHostSupport]: For each nvcc version the latest supported Clang host compiler.
@@ -213,6 +231,7 @@ def get_nvcc_clang_max_versions() -> List[NvccHostSupport]:
         NvccHostSupport("13.1", "21"),
         NvccHostSupport("13.2", "21"),
         NvccHostSupport("13.3", "21"),
+        NvccHostSupport("13.4", "22"),
     ]
 
 
@@ -247,5 +266,6 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
     return bashi.VersionRelation(
         clang_cuda_max_cuda_version=clang_cuda_max_cuda_version,
         hipcc_clang_version=get_hipcc_clang_versions(),
+        nvcc_gcc_max_version=get_nvcc_gcc_max_versions(),
         nvcc_clang_max_version=get_nvcc_clang_max_versions(),
     )

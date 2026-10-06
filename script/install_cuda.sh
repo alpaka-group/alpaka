@@ -170,8 +170,16 @@ else
             ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_13.3.1-610.43.02-1_amd64.deb
             ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/13.3.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
+        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "13.4" ]
+        then
+            # Starting from CUDA 13.4 the local installers no longer bundle the NVIDIA driver,
+            # so the package name does not contain the driver version any more.
+            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-13-4-local
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_13.4.2-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/13.4.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_OLD_KEYS=false
         else
-            echo CUDA versions other than 11.2-13.3 are not currently supported on linux!
+            echo CUDA versions other than 11.2-13.4 are not currently supported on linux!
         fi
 
         # First install the local repository.
