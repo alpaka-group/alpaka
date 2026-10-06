@@ -18,7 +18,11 @@ from alpaka_bashi.globals import (
     CI_PIPELINE_COMPILE_ONLY_VER,
     MDSPAN,
 )
-from alpaka_bashi.versions import get_used_backends, get_hipcc_clang_versions
+from alpaka_bashi.versions import (
+    get_used_backends,
+    get_hipcc_clang_versions,
+    get_icpx_clang_versions,
+)
 
 
 @typechecked
@@ -206,7 +210,7 @@ def set_icpx_variables(job_body: Dict[str, Any], combination: bashi.Combination)
     """Set variables which are specific if the icpx is the device compiler."""
 
     def get_clang_version(icpx_version):
-        for icpx_clang in bashi.version.dependencies.icpx.ICPX_CLANG_VERSION:
+        for icpx_clang in get_icpx_clang_versions():
             if icpx_clang.compiler == icpx_version:
                 return icpx_clang.clang
         raise RuntimeError(f"No Clang version for icpx {icpx_version}")

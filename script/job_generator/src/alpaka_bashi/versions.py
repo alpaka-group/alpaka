@@ -12,6 +12,7 @@ from bashi.globals import *  # pylint: disable=wildcard-import,unused-wildcard-i
 from bashi.version.dependencies.base_version_support import ClangBase
 from bashi.version.dependencies.clang_cuda import CLANG_CUDA_MAX_CUDA_VERSION, ClangCudaSDKSupport
 from bashi.version.dependencies.hipcc import HIPCC_CLANG_VERSION
+from bashi.version.dependencies.icpx import ICPX_CLANG_VERSION
 from bashi.version.dependencies.nvcc import (
     NVCC_CLANG_MAX_VERSION,
     NVCC_GCC_MAX_VERSION,
@@ -24,7 +25,7 @@ ALPAKA_VERSIONS: Dict[str, List[Union[str, int, float]]] = {
     CLANG: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
     NVCC: [12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.8, 12.9, 13.0, 13.1, 13.2, 13.3, 13.4],
     HIPCC: [6.0, 6.1, 6.2, 6.3, 6.4, 7.0, 7.1, 7.2, 7.14, 10.0],
-    ICPX: ["2025.0"],
+    ICPX: ["2025.0", "2025.2", "2025.3", "2026.0", "2026.1"],
     UBUNTU: ["22.04", "24.04"],
     CMAKE: ["3.25.3", "3.26.4", "3.27.9", "3.28.6", "3.29.8", "3.30.3", "3.31.8"],
     CXX_STANDARD: ["20"],
@@ -209,6 +210,19 @@ def get_hipcc_clang_versions() -> List[ClangBase]:
     ]
 
 
+def get_icpx_clang_versions() -> List[ClangBase]:
+    """Returns:
+    List[ClangBase]: For each ICPX version the used Clang version.
+    """
+    return ICPX_CLANG_VERSION + [
+        ClangBase("2025.1", "20"),
+        ClangBase("2025.2", "21"),
+        ClangBase("2025.3", "21"),
+        ClangBase("2026.0", "22"),
+        ClangBase("2026.1", "22"),
+    ]
+
+
 def get_nvcc_gcc_max_versions() -> List[NvccHostSupport]:
     """Returns:
     List[NvccHostSupport]: For each nvcc version the latest supported GCC host compiler.
@@ -268,6 +282,7 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
     return bashi.VersionRelation(
         clang_cuda_max_cuda_version=clang_cuda_max_cuda_version,
         hipcc_clang_version=get_hipcc_clang_versions(),
+        icpx_clang_version=get_icpx_clang_versions(),
         nvcc_gcc_max_version=get_nvcc_gcc_max_versions(),
         nvcc_clang_max_version=get_nvcc_clang_max_versions(),
     )

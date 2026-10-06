@@ -407,11 +407,139 @@
         },
         "OMPblock": {
             "state": "yes",
-            "comment": "[^1]"
+            "comment": "[^4]"
         },
         "OMPthread": {
             "state": "yes",
-            "comment": "[^1]"
+            "comment": "[^4]"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "no"
+        },
+        "sycl": {
+            "state": "yes",
+            "comment": "[^2]"
+        }
+    },
+    "icpx 2025.2 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "OMPthread": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "no"
+        },
+        "sycl": {
+            "state": "yes",
+            "comment": "[^2]"
+        }
+    },
+    "icpx 2025.3 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "OMPthread": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "no"
+        },
+        "sycl": {
+            "state": "yes",
+            "comment": "[^2]"
+        }
+    },
+    "icpx 2026.0 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "OMPthread": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "thread": {
+            "state": "yes"
+        },
+        "tbb": {
+            "state": "yes"
+        },
+        "CUDAnvcc": {
+            "state": "no"
+        },
+        "CUDAclang": {
+            "state": "no"
+        },
+        "hip": {
+            "state": "no"
+        },
+        "sycl": {
+            "state": "yes",
+            "comment": "[^2]"
+        }
+    },
+    "icpx 2026.1 (Linux)": {
+        "serial": {
+            "state": "yes"
+        },
+        "OMPblock": {
+            "state": "yes",
+            "comment": "[^4]"
+        },
+        "OMPthread": {
+            "state": "yes",
+            "comment": "[^4]"
         },
         "thread": {
             "state": "yes"
