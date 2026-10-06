@@ -22,6 +22,7 @@ from alpaka_bashi.alpaka_filter import (
     check_clang_16_and_older_a5,
     check_existing_clang_cuda_for_cuda_sdk_version_a6,
     check_clang_cuda_cuda_13_cmake_a7,
+    check_oneapi_fpga_a8,
 )
 import alpaka_bashi.runtime_info
 from alpaka_bashi.globals import (
@@ -605,5 +606,86 @@ class TestAlpakaFilter(unittest.TestCase):
                     reason_msg.getvalue(),
                     f"CMake {row[2][1]} cannot identify Clang-CUDA with CUDA {row[1][1]}, CMake "
                     "3.31.8 or 4.0.3 and newer is required.",
+                    f"{row}",
+                )
+
+    VALID_ONEAPI_FPGA_CONFIGURATIONS = [
+        [(DEVICE_COMPILER, ICPX, "2025.0"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON)],
+        [(DEVICE_COMPILER, ICPX, "2025.0.1"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON)],
+        [(DEVICE_COMPILER, ICPX, "2026.1"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF)],
+        [(DEVICE_COMPILER, ICPX, "2026.1"), (ALPAKA_ACC_ONEAPI_CPU_ENABLE, ON)],
+        [(DEVICE_COMPILER, GCC, 13), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, OFF)],
+        [
+            (DEVICE_COMPILER, ICPX, "2025.0"),
+            (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+            (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+        ],
+        [
+            (DEVICE_COMPILER, ICPX, "2026.1"),
+            (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+            (ALPAKA_ACC_ONEAPI_GPU_ENABLE, ON),
+        ],
+    ]
+
+    def test_valid_oneapi_fpga_a8(self):
+        for row in self.VALID_ONEAPI_FPGA_CONFIGURATIONS:
+            with self.subTest(row=row):
+                self.assertTrue(
+                    check_oneapi_fpga_a8(parse_bashi_row(row), AlpakaFilter()),
+                    f"{row}",
+                )
+
+    INVALID_ONEAPI_FPGA_CONFIGURATIONS = [
+        ([(DEVICE_COMPILER, ICPX, "2025.3"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON)], "2025.3"),
+        ([(DEVICE_COMPILER, ICPX, "2026.0"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON)], "2026.0"),
+        ([(HOST_COMPILER, ICPX, "2026.1"), (ALPAKA_ACC_ONEAPI_FPGA_ENABLE, ON)], "2026.1"),
+    ]
+
+    def test_invalid_oneapi_fpga_a8(self):
+        for row, version in self.INVALID_ONEAPI_FPGA_CONFIGURATIONS:
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    check_oneapi_fpga_a8(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"The oneAPI FPGA backend is not available with ICPX {version}, the FPGA "
+                    "compiler is only distributed up to oneAPI 2025.0.",
+                    f"{row}",
+                )
+
+    INVALID_ONEAPI_NO_BACKEND_CONFIGURATIONS = [
+        (
+            [
+                (DEVICE_COMPILER, ICPX, "2025.3"),
+                (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+            ],
+            "2025.3",
+        ),
+        (
+            [
+                (HOST_COMPILER, ICPX, "2026.1"),
+                (ALPAKA_ACC_ONEAPI_CPU_ENABLE, OFF),
+                (ALPAKA_ACC_ONEAPI_GPU_ENABLE, OFF),
+            ],
+            "2026.1",
+        ),
+    ]
+
+    def test_invalid_oneapi_no_backend_a8(self):
+        for row, version in self.INVALID_ONEAPI_NO_BACKEND_CONFIGURATIONS:
+            with self.subTest(row=row):
+                reason_msg = io.StringIO()
+                self.assertFalse(
+                    check_oneapi_fpga_a8(parse_bashi_row(row), AlpakaFilter(output=reason_msg)),
+                    f"{row}",
+                )
+                self.assertEqual(
+                    reason_msg.getvalue(),
+                    f"ICPX {version} requires the oneAPI CPU or GPU backend, because the oneAPI "
+                    "FPGA backend is not available.",
                     f"{row}",
                 )

@@ -295,6 +295,12 @@ endif()
 # Find TBB.
 if(alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE)
     find_package(TBB 2021.4.0.0 REQUIRED)
+    if(alpaka_ACC_SYCL_ENABLE)
+        # The oneAPI OpenCL CPU runtime, loaded by the SYCL runtime, links the release TBB library (libtbb.so.12).
+        # Linking the debug TBB library (libtbb_debug.so.12) in Debug builds would load both libraries in the same
+        # process, which may crash at exit (e.g. with oneTBB 2022.3). Use the release TBB library also in Debug builds.
+        set_target_properties(TBB::tbb PROPERTIES MAP_IMPORTED_CONFIG_DEBUG "RELEASE;DEBUG")
+    endif()
     target_link_libraries(alpaka INTERFACE TBB::tbb)
 endif()
 
