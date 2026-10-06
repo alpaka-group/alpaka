@@ -3,7 +3,7 @@
 // ============================================================================
 // == ./include/alpaka/alpaka.hpp ==
 // ==
-/* Copyright 2025 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
+/* Copyright 2026 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
  *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -519,7 +519,8 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuOmp2Blocks.hpp ==
 	// ==
-	/* Copyright 2025 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci,
+	 * Maria Michailidi
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -3614,6 +3615,93 @@
 		} // namespace alpaka::core
 		// ==
 		// == ./include/alpaka/core/DemangleTypeNames.hpp ==
+		// ============================================================================
+
+		// ============================================================================
+		// == ./include/alpaka/grid/GridSyncBarrierCpuOmp.hpp ==
+		// ==
+		/* Copyright 2026 Mykhailo Varvarin
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/grid/Traits.hpp ==
+			// ==
+			/* Copyright 2026 Mykhailo Varvarin
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+
+			namespace alpaka
+			{
+			    struct ConceptGridSync
+			    {
+			    };
+
+			    //! The grid synchronization traits.
+			    namespace trait
+			    {
+			        //! The grid synchronization operation trait.
+			        template<typename TGridSync, typename TSfinae = void>
+			        struct SyncGridThreads;
+
+			    } // namespace trait
+
+			    //! Synchronizes all threads within the current grid. Works only for cooperative kernels.
+			    //! NOTE: when compiled with CUDA Clang default build type locks up if numberOfBlocks > 2 * multiProcessorCount.
+			    //! https://github.com/llvm/llvm-project/issues/98886
+			    //!
+			    //! \tparam TGridSync The grid synchronization implementation type.
+			    //! \param gridSync The grid synchronization implementation.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TGridSync>
+			    ALPAKA_FN_ACC auto syncGridThreads(TGridSync const& gridSync) -> void
+			    {
+			        using ImplementationBase = interface::ImplementationBase<ConceptGridSync, TGridSync>;
+			        trait::SyncGridThreads<ImplementationBase>::syncGridThreads(gridSync);
+			    }
+
+
+			} // namespace alpaka
+			// ==
+			// == ./include/alpaka/grid/Traits.hpp ==
+			// ============================================================================
+
+
+		#ifdef _OPENMP
+
+		namespace alpaka
+		{
+		    //! The grid synchronization for OMP accelerators.
+		    class GridSyncOmp : public interface::Implements<ConceptGridSync, GridSyncOmp>
+		    {
+		    };
+
+		    namespace trait
+		    {
+		        template<>
+		        struct SyncGridThreads<GridSyncOmp>
+		        {
+		            ALPAKA_NO_HOST_ACC_WARNING
+		            ALPAKA_FN_ACC static auto syncGridThreads(GridSyncOmp const& /*gridSync*/) -> void
+		            {
+		#    pragma omp barrier
+		            }
+		        };
+
+		    } // namespace trait
+
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/grid/GridSyncBarrierCpuOmp.hpp ==
 		// ============================================================================
 
 		// ============================================================================
@@ -10479,7 +10567,7 @@
 			// ============================================================================
 			// == ./include/alpaka/acc/AccDevProps.hpp ==
 			// ==
-			/* Copyright 2024 Benjamin Worpitz, Bernhard Manfred Gruber
+			/* Copyright 2026 Benjamin Worpitz, Bernhard Manfred Gruber
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -10510,6 +10598,7 @@
 			        TIdx m_threadElemCountMax; //!< The maximum number of elements in a threads.
 			        size_t m_sharedMemSizeBytes; //!< The size of shared memory per block
 			        size_t m_globalMemSizeBytes; //!< The size of global memory
+			        bool m_cooperativeLaunch; //!< The support for launch of cooperative kernels
 			    };
 			} // namespace alpaka
 			// ==
@@ -11035,7 +11124,7 @@
 		// ============================================================================
 		// == ./include/alpaka/kernel/Traits.hpp ==
 		// ==
-		/* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
+		/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
 		 *                Andrea Bocci, Aurora Perego, Mehmet Yusufoglu
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
@@ -11320,6 +11409,19 @@
 		            typename TSfinae = void*/>
 		        struct CreateTaskKernel;
 
+		        //! The cooperative kernel execution task creation trait.
+		        template<
+		            typename TAcc,
+		            typename TWorkDiv,
+		            typename TKernelFnObj,
+		            typename... TArgs/*,
+		            typename TSfinae = void*/>
+		        struct CreateTaskCooperativeKernel;
+
+		        //! Get maximum requested blocks for cooperative kernel trait.
+		        template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+		        struct MaxActiveBlocks;
+
 		        //! The trait for getting the size of the block shared dynamic memory of a kernel.
 		        //!
 		        //! \tparam TKernelFnObj The kernel function object.
@@ -11464,6 +11566,7 @@
 		#endif
 		    ALPAKA_NO_HOST_ACC_WARNING
 		    template<typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
+
 		    ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
 		        TKernelFnObj const& kernelFnObj,
 		        Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
@@ -11494,6 +11597,80 @@
 		            dev,
 		            kernelFnObj,
 		            std::forward<TArgs>(args)...);
+		    }
+
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored                                                                                  \
+		        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+		#endif
+		    //! \tparam TAcc The accelerator type.
+		    //! \param device The device for which the maximum block count should be calculated.
+		    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+		    //! \param blockThreadExtent The block thread extent.
+		    //! \param threadElemExtent The thread element extent.
+		    //! \param args... The kernel invocation arguments.
+		    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+		    //! specified extents.
+		    //!
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic pop
+		#endif
+		    ALPAKA_NO_HOST_ACC_WARNING
+		    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+		    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+		        TDev const& device,
+		        TKernelFnObj const& kernelFnObj,
+		        alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+		        alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+		        TArgs const&... args) -> int
+		    {
+		        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, TDim, TIdx, TArgs...>::getMaxActiveBlocks(
+		            kernelFnObj,
+		            device,
+		            blockThreadExtent,
+		            threadElemExtent,
+		            args...);
+		    }
+
+		    //! Returns the maximum block aount for cooperative kernle launch on the device.
+		    //!  Note that grid sync and other cooperative launch fucntioanlity is not guaranteed to work if you don't use
+		    //!  createTaskCooperativeKernel()
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored                                                                                  \
+		        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+		#endif
+		    //! \tparam TAcc The accelerator type.
+		    //! \param device The device for which the maximum block count should be calculated.
+		    //! \param kernelFnObj The kernel object for which the maximum block count should be calculated.
+		    //! \param blockThreadExtent The block thread extent.
+		    //! \param threadElemExtent The thread element extent.
+		    //! \param args... The kernel invocation arguments.
+		    //! \return The maximum block count with which the device can launch the specified cooperative kernel with
+		    //! specified extents.
+		    //!
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic pop
+		#endif
+		    ALPAKA_NO_HOST_ACC_WARNING
+		    template<typename TAcc, typename TDev, typename TKernelFnObj, typename TIdx, typename... TArgs>
+
+		    ALPAKA_FN_HOST_ACC auto getMaxActiveBlocks(
+		        TDev const& device,
+		        TKernelFnObj const& kernelFnObj,
+		        TIdx const& blockThreadExtent,
+		        TIdx const& threadElemExtent,
+		        TArgs const&... args) -> int
+		    {
+		        auto const v_blockThreadExtent = Vec<DimInt<1>, TIdx>(blockThreadExtent);
+		        auto const v_threadElemExtent = Vec<DimInt<1>, TIdx>(threadElemExtent);
+		        return trait::MaxActiveBlocks<TAcc, TDev, TKernelFnObj, DimInt<1>, TIdx, TArgs...>::getMaxActiveBlocks(
+		            kernelFnObj,
+		            device,
+		            v_blockThreadExtent,
+		            v_threadElemExtent,
+		            args...);
 		    }
 
 		#if ALPAKA_COMP_CLANG
@@ -11598,8 +11775,13 @@
 		    template<typename T>
 		    inline constexpr bool isKernelTriviallyCopyable = IsKernelTriviallyCopyable<T>::value;
 
-		//! @}
+		    //! @}
 
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored                                                                                  \
+		        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+		#endif
 		//! Creates a kernel execution task.
 		//!
 		//! \tparam TAcc The accelerator type.
@@ -11633,6 +11815,53 @@
 		                  << std::endl;
 		#endif
 		        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
+		            workDiv,
+		            kernelFnObj,
+		            std::forward<TArgs>(args)...);
+		    }
+
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored                                                                                  \
+		        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+		#endif
+		//! Creates a cooperative kernel execution task.
+		//! Allows to use grid sync, but disables dynamic parallelism and enforces a hardware limit on the number of blocks.
+		//!
+		//! \tparam TAcc The accelerator type.
+		//! \param workDiv The index domain work division.
+		//! \param kernelFnObj The kernel function object which should be executed.
+		//! \param args,... The kernel invocation arguments.
+		//! \return The kernel execution task.
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic pop
+		#endif
+		    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+		    ALPAKA_FN_HOST auto createTaskCooperativeKernel(
+		        TWorkDiv const& workDiv,
+		        TKernelFnObj const& kernelFnObj,
+		        TArgs&&... args)
+		    {
+		#if ALPAKA_COMP_NVCC
+		        static_assert(
+		            isKernelTriviallyCopyable<TKernelFnObj>,
+		            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
+		#else
+		        static_assert(isKernelTriviallyCopyable<TKernelFnObj>, "Kernels must be trivially copyable!");
+		#endif
+		        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
+		        static_assert(
+		            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
+		            "The dimensions of TAcc and TWorkDiv have to be identical!");
+		        static_assert(
+		            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
+		            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
+
+		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+		        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
+		                  << std::endl;
+		#endif
+		        return trait::CreateTaskCooperativeKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskCooperativeKernel(
 		            workDiv,
 		            kernelFnObj,
 		            std::forward<TArgs>(args)...);
@@ -11681,6 +11910,36 @@
 		    {
 		        using Acc = TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>;
 		        enqueue(queue, createTaskKernel<Acc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
+		    }
+
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic push
+		#    pragma clang diagnostic ignored                                                                                  \
+		        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+		#endif
+		//! Executes the given kernel in cooperative mode in the given queue.
+		//!
+		//! \tparam TTag The tag type.
+		//! \param queue The queue to enqueue the view copy task into.
+		//! \param workDiv The index domain work division.
+		//! \param kernelFnObj The kernel function object which should be executed.
+		//! \param args,... The kernel invocation arguments.
+		#if ALPAKA_COMP_CLANG
+		#    pragma clang diagnostic pop
+		#endif
+		    template<concepts::Tag TTag, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+		    ALPAKA_FN_HOST auto execCooperative(
+		        TQueue& queue,
+		        TWorkDiv const& workDiv,
+		        TKernelFnObj const& kernelFnObj,
+		        TArgs&&... args) -> void
+		    {
+		        enqueue(
+		            queue,
+		            createTaskCooperativeKernel<TagToAcc<TTag, Dim<std::decay_t<TWorkDiv>>, Idx<std::decay_t<TWorkDiv>>>>(
+		                workDiv,
+		                kernelFnObj,
+		                std::forward<TArgs>(args)...));
 		    }
 
 		} // namespace alpaka
@@ -14675,7 +14934,7 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
 	    class TaskKernelCpuOmp2Blocks;
 
 	    //! The CPU OpenMP 2.0 block accelerator.
@@ -14696,6 +14955,7 @@
 	        , public BlockSharedMemDynMember<>
 	        , public BlockSharedMemStMember<>
 	        , public BlockSyncNoOp
+	        , public GridSyncOmp
 	        , public IntrinsicCpu
 	        , public MemFenceOmp2Blocks
 	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -14712,7 +14972,7 @@
 
 	    public:
 	        // Partial specialization with the correct TDim and TIdx is not allowed.
-	        template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
+	        template<typename TDim2, typename TIdx2, typename TKernelFnObj, bool TCooperative, typename... TArgs>
 	        friend class ::alpaka::TaskKernelCpuOmp2Blocks;
 
 	        AccCpuOmp2Blocks(AccCpuOmp2Blocks const&) = delete;
@@ -14780,7 +15040,9 @@
 	                        // m_sharedMemSizeBytes
 	                        static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes()),
 	                        // m_globalMemSizeBytes
-	                        getMemBytes(dev)};
+	                        getMemBytes(dev),
+	                        // m_cooperativeLaunch
+	                        true};
 	            }
 	        };
 
@@ -14839,7 +15101,34 @@
 	                        + getAccName<AccCpuOmp2Blocks<TDim, TIdx>>() + ". Threads per block should be 1!");
 	                }
 
-	                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+	                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, false, TArgs...>(
+	                    workDiv,
+	                    kernelFnObj,
+	                    std::forward<TArgs>(args)...);
+	            }
+	        };
+
+	        //! The CPU OpenMP 2.0 block accelerator execution cooperative task type trait specialization.
+	        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+	        struct CreateTaskCooperativeKernel<AccCpuOmp2Blocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+	                TWorkDiv const& workDiv,
+	                TKernelFnObj const& kernelFnObj,
+	                TArgs&&... args)
+	            {
+	                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+	                auto const maxBlocks = omp_get_max_threads();
+	                if(gridBlockExtent.prod() > static_cast<TIdx>(maxBlocks))
+	                {
+	                    throw std::runtime_error(
+	                        "The number of requested blocks is larger than maximuma of the device for OpenMP 2.0 blocks "
+	                        "accelerator. Requested: "
+	                        + std::to_string(gridBlockExtent.prod()) + ", maximum allowed: " + std::to_string(maxBlocks)
+	                        + ". Use getMaxActiveBlocks().");
+	                }
+
+	                return TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, true, TArgs...>(
 	                    workDiv,
 	                    kernelFnObj,
 	                    std::forward<TArgs>(args)...);
@@ -14882,7 +15171,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuOmp2Threads.hpp ==
 	// ==
-	/* Copyright 2025 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -15128,6 +15417,7 @@
 		// ============================================================================
 
 	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/idx/bt/IdxBtOmp.hpp ==
 		// ==
@@ -15453,6 +15743,7 @@
 	        , public BlockSharedMemDynMember<>
 	        , public BlockSharedMemStMemberMasterSync<>
 	        , public BlockSyncBarrierOmp
+	        , public GridSyncOmp
 	        , public IntrinsicCpu
 	        , public MemFenceOmp2Threads
 	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -15547,7 +15838,9 @@
 	                        // m_sharedMemSizeBytes
 	                        memBytes,
 	                        // m_globalMemSizeBytes
-	                        memBytes};
+	                        memBytes,
+	                        // m_cooperativeLaunch
+	                        true};
 	            }
 	        };
 
@@ -15606,6 +15899,30 @@
 	            }
 	        };
 
+	        //! The CPU OpenMP 2.0 thread accelerator execution cooperative task type trait specialization.
+	        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+	        struct CreateTaskCooperativeKernel<AccCpuOmp2Threads<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+	                TWorkDiv const& workDiv,
+	                TKernelFnObj const& kernelFnObj,
+	                TArgs&&... args)
+	            {
+	                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+	                if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error("OpenMP 2.0 thread accelerator supports only a single block operation "
+	                                             "with cooperative kernel!\n"
+	                                             "Consider useing a different CPU accelerator.");
+	                }
+
+	                return TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>(
+	                    workDiv,
+	                    kernelFnObj,
+	                    std::forward<TArgs>(args)...);
+	            }
+	        };
+
 	        //! The CPU OpenMP 2.0 thread execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct PlatformType<AccCpuOmp2Threads<TDim, TIdx>>
@@ -15642,7 +15959,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuSerial.hpp ==
 	// ==
-	/* Copyright 2025 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -15655,6 +15972,44 @@
 	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/grid/GridSyncNoOp.hpp ==
+		// ==
+		/* Copyright 2026 Mykhailo Varvarin
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
+
+		namespace alpaka
+		{
+		    //! The NoOp grid synchronization for accelerators that only support a single thread with cooperative kernels.
+		    class GridSyncNoOp : public interface::Implements<ConceptGridSync, GridSyncNoOp>
+		    {
+		    };
+
+		    namespace trait
+		    {
+		        template<>
+		        struct SyncGridThreads<GridSyncNoOp>
+		        {
+		            ALPAKA_NO_HOST_ACC_WARNING
+		            ALPAKA_FN_ACC static auto syncGridThreads(GridSyncNoOp const& /*gridSync*/) -> void
+		            {
+		                // Nothing to do.
+		            }
+		        };
+
+		    } // namespace trait
+
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/grid/GridSyncNoOp.hpp ==
+		// ============================================================================
+
 	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
@@ -15816,6 +16171,7 @@
 	        , public BlockSharedMemDynMember<>
 	        , public BlockSharedMemStMember<>
 	        , public BlockSyncNoOp
+	        , public GridSyncNoOp
 	        , public IntrinsicCpu
 	        , public MemFenceCpuSerial
 	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -15900,7 +16256,9 @@
 	                        // m_sharedMemSizeBytes
 	                        static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes()),
 	                        // m_globalMemSizeBytes
-	                        getMemBytes(dev)};
+	                        getMemBytes(dev),
+	                        // m_cooperativeLaunch
+	                        false};
 	            }
 	        };
 
@@ -15965,6 +16323,30 @@
 	            }
 	        };
 
+	        //! The CPU serial accelerator execution cooperative task type trait specialization.
+	        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+	        struct CreateTaskCooperativeKernel<AccCpuSerial<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+	                TWorkDiv const& workDiv,
+	                TKernelFnObj const& kernelFnObj,
+	                TArgs&&... args)
+	            {
+	                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+	                if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "Serial accelerator supports only a single block operation with cooperative kernel!\n"
+	                        "Consider useing a different CPU accelerator.");
+	                }
+
+	                return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
+	                    workDiv,
+	                    kernelFnObj,
+	                    std::forward<TArgs>(args)...);
+	            }
+	        };
+
 	        //! The CPU serial execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct PlatformType<AccCpuSerial<TDim, TIdx>>
@@ -16009,7 +16391,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGenericSycl.hpp ==
 		// ==
-		/* Copyright 2025 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
+		/* Copyright 2026 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -16739,7 +17121,7 @@
 				// ============================================================================
 				// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
 				// ==
-				/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
+				/* Copyright 2026 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -16892,7 +17274,7 @@
 				                                    cgh.depends_on(m_dependencies);
 
 				                                if constexpr(is_sycl_kernel<TaskType>) // Kernel
-				                                    captured_task(cgh); // Will call cgh.parallel_for internally
+				                                    captured_task(cgh, m_queue); // Will call cgh.parallel_for internally
 				                                else // Host
 				                                    cgh.host_task(std::move(captured_task));
 				                            });
@@ -17319,6 +17701,58 @@
 			#endif
 			// ==
 			// == ./include/alpaka/dev/DevGenericSycl.hpp ==
+			// ============================================================================
+
+			// ============================================================================
+			// == ./include/alpaka/grid/GridSyncGenericSycl.hpp ==
+			// ==
+			/* Copyright 2026 Mykhailo Varvarin
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			#    include <sycl/ext/oneapi/experimental/root_group.hpp>
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    //! The grid synchronization for SYCL.
+			    template<typename TDim>
+			    class GridSyncGenericSycl : public interface::Implements<ConceptGridSync, GridSyncGenericSycl<TDim>>
+			    {
+			    public:
+			        GridSyncGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item{work_item}
+			        {
+			        }
+
+			        sycl::nd_item<TDim::value> my_item;
+			    };
+
+			    namespace trait
+			    {
+			        template<typename TDim>
+			        struct SyncGridThreads<GridSyncGenericSycl<TDim>>
+			        {
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            ALPAKA_FN_ACC static auto syncGridThreads(GridSyncGenericSycl<TDim> const& gridSync) -> void
+			            {
+			                sycl::group_barrier(gridSync.my_item.ext_oneapi_get_root_group());
+			            }
+			        };
+
+			    } // namespace trait
+
+			} // namespace alpaka
+
+			#endif
+			// ==
+			// == ./include/alpaka/grid/GridSyncGenericSycl.hpp ==
 			// ============================================================================
 
 			// ============================================================================
@@ -20920,6 +21354,7 @@
 		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 
+		// #include <algorithm>    // amalgamate: file already included
 		// #include <cstddef>    // amalgamate: file already included
 		#ifdef __cpp_lib_format
 		// #    include <format>    // amalgamate: file already included
@@ -20933,7 +21368,14 @@
 
 		namespace alpaka
 		{
-		    template<concepts::Tag TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    template<
+		        concepts::Tag TTag,
+		        typename TAcc,
+		        typename TDim,
+		        typename TIdx,
+		        typename TKernelFnObj,
+		        bool TCooperative,
+		        typename... TArgs>
 		    class TaskKernelGenericSycl;
 
 		    //! The SYCL accelerator.
@@ -20949,6 +21391,7 @@
 		        , public BlockSharedMemDynGenericSycl
 		        , public BlockSharedMemStGenericSycl
 		        , public BlockSyncGenericSycl<TDim>
+		        , public GridSyncGenericSycl<TDim>
 		        , public IntrinsicGenericSycl
 		        , public MemFenceGenericSycl
 		#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -20978,6 +21421,7 @@
 		            , BlockSharedMemDynGenericSycl{dyn_shared_acc}
 		            , BlockSharedMemStGenericSycl{st_shared_acc}
 		            , BlockSyncGenericSycl<TDim>{work_item}
+		            , GridSyncGenericSycl<TDim>{work_item}
 		#    ifndef ALPAKA_DISABLE_VENDOR_RNG
 		            , rand::RandGenericSycl<TDim>{work_item}
 		#    endif
@@ -20986,6 +21430,33 @@
 		        }
 		    };
 		} // namespace alpaka
+
+		namespace alpaka::detail
+		{
+		    //! Whether the SYCL device can run cooperative kernels, i.e. kernels that synchronise all the work-items in the
+		    //! grid: this requires the work-groups in the root group to make concurrent forward progress.
+		    template<concepts::Tag TTag>
+		    auto syclCooperativeLaunch([[maybe_unused]] sycl::device const& device) -> bool
+		    {
+		        if constexpr(std::is_same_v<TTag, TagFpgaSyclIntel>)
+		        {
+		            // cooperative kernels are not supported by the FPGA back-end
+		            return false;
+		        }
+		        else
+		        {
+		#    ifdef SYCL_EXT_ONEAPI_FORWARD_PROGRESS
+		            namespace syclex = sycl::ext::oneapi::experimental;
+		            auto const caps = device.template get_info<
+		                syclex::info::device::work_group_progress_capabilities<syclex::execution_scope::root_group>>();
+		            return std::find(caps.begin(), caps.end(), syclex::forward_progress_guarantee::concurrent) != caps.end();
+		#    else
+		            // without the forward progress extension there is no way to check if the device supports it
+		            return false;
+		#    endif
+		        }
+		    }
+		} // namespace alpaka::detail
 
 		namespace alpaka::trait
 		{
@@ -21041,7 +21512,9 @@
 		                    // m_sharedMemSizeBytes
 		                    device.template get_info<sycl::info::device::local_mem_size>(),
 		                    // m_globalMemSizeBytes
-		                    getMemBytes(dev)};
+		                    getMemBytes(dev),
+		                    // m_cooperativeLaunch
+		                    alpaka::detail::syclCooperativeLaunch<TTag>(device)};
 		        }
 		    };
 
@@ -21100,10 +21573,34 @@
 		    {
 		        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
 		        {
-		            return TaskKernelGenericSycl<TTag, AccGenericSycl<TTag, TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>{
-		                workDiv,
-		                kernelFnObj,
-		                std::forward<TArgs>(args)...};
+		            return TaskKernelGenericSycl<
+		                TTag,
+		                AccGenericSycl<TTag, TDim, TIdx>,
+		                TDim,
+		                TIdx,
+		                TKernelFnObj,
+		                false,
+		                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
+		        }
+		    };
+
+		    //! The SYCL accelerator execution task type trait specialization.
+		    template<typename TTag, typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+		    struct CreateTaskCooperativeKernel<AccGenericSycl<TTag, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+		    {
+		        static auto createTaskCooperativeKernel(
+		            TWorkDiv const& workDiv,
+		            TKernelFnObj const& kernelFnObj,
+		            TArgs&&... args)
+		        {
+		            return TaskKernelGenericSycl<
+		                TTag,
+		                AccGenericSycl<TTag, TDim, TIdx>,
+		                TDim,
+		                TIdx,
+		                TKernelFnObj,
+		                true,
+		                TArgs...>{workDiv, kernelFnObj, std::forward<TArgs>(args)...};
 		        }
 		    };
 
@@ -21165,7 +21662,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuTbbBlocks.hpp ==
 	// ==
-	/* Copyright 2025 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber,
 	 *                Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
@@ -21179,6 +21676,129 @@
 	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/grid/GridSyncCpuTbbBlocks.hpp ==
+		// ==
+		/* Copyright 2026 Mykhailo Varvarin
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+			// ============================================================================
+			// == ./include/alpaka/core/BarrierTbb.h ==
+			// ==
+			/* Copyright 2026 Mykhailo Varvarin, Maria Michailidi, Andrea Bocci
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			#ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
+
+			// #    include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+
+			#    include <oneapi/tbb/task.h>
+
+			// #    include <mutex>    // amalgamate: file already included
+			// #    include <vector>    // amalgamate: file already included
+
+			namespace alpaka::core
+			{
+			    namespace tbb
+			    {
+			        // A reusable barrier for TBB tasks using suspend/resume
+			        template<typename TIdx>
+			        class BarrierThread final
+			        {
+			        public:
+			            explicit BarrierThread(TIdx const& threadCount) : m_threadCount(threadCount)
+			            {
+			                assertValueUnsigned(threadCount);
+			                m_suspended.reserve(static_cast<std::size_t>(threadCount));
+			            }
+
+			            // Called from inside a task to wait until all have arrived
+			            auto wait() -> void
+			            {
+			                oneapi::tbb::task::suspend(
+			                    [this](oneapi::tbb::task::suspend_point sp)
+			                    {
+			                        // The last task to arrive takes all the suspended tasks, and leaves the barrier empty and
+			                        // ready to be reused by the next wait().
+			                        std::vector<oneapi::tbb::task::suspend_point> arrived;
+			                        {
+			                            std::lock_guard<std::mutex> lock{m_mutex};
+			                            m_suspended.push_back(sp);
+			                            if(m_suspended.size() == static_cast<std::size_t>(m_threadCount))
+			                            {
+			                                arrived.reserve(m_suspended.capacity());
+			                                arrived.swap(m_suspended);
+			                            }
+			                        }
+
+			                        // Resume the tasks outside of the critical section.
+			                        for(auto point : arrived)
+			                        {
+			                            oneapi::tbb::task::resume(point);
+			                        }
+			                    });
+			            }
+
+			        private:
+			            TIdx const m_threadCount;
+			            std::mutex m_mutex;
+			            std::vector<oneapi::tbb::task::suspend_point> m_suspended;
+			        };
+			    } // namespace tbb
+			} // namespace alpaka::core
+
+			#endif
+			// ==
+			// == ./include/alpaka/core/BarrierTbb.h ==
+			// ============================================================================
+
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
+
+		#ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
+
+		namespace alpaka
+		{
+		    //! The thread id map barrier grid synchronization for TBB.
+		    template<typename TIdx>
+		    class GridSyncBarrierTbb : public interface::Implements<ConceptGridSync, GridSyncBarrierTbb<TIdx>>
+		    {
+		    public:
+		        using Barrier = core::tbb::BarrierThread<TIdx>;
+
+		        // Get reference to the barrier from the outside because we need it to be shared between blocks
+		        ALPAKA_FN_HOST explicit GridSyncBarrierTbb(Barrier& barrier)
+		        {
+		            m_barrier = &barrier;
+		        }
+
+		        Barrier* m_barrier;
+		    };
+
+		    namespace trait
+		    {
+		        template<typename TIdx>
+		        struct SyncGridThreads<GridSyncBarrierTbb<TIdx>>
+		        {
+		            ALPAKA_FN_HOST static auto syncGridThreads(GridSyncBarrierTbb<TIdx> const& gridSync) -> void
+		            {
+		                gridSync.m_barrier->wait();
+		            }
+		        };
+
+		    } // namespace trait
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/grid/GridSyncCpuTbbBlocks.hpp ==
+		// ============================================================================
+
 	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
@@ -21273,6 +21893,7 @@
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/BarrierTbb.h"    // amalgamate: file already inlined
 	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
@@ -21306,6 +21927,7 @@
 	        , public BlockSharedMemDynMember<>
 	        , public BlockSharedMemStMember<>
 	        , public BlockSyncNoOp
+	        , public GridSyncBarrierTbb<TIdx>
 	        , public IntrinsicCpu
 	        , public MemFenceCpu
 	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -21332,11 +21954,15 @@
 
 	    private:
 	        template<typename TWorkDiv>
-	        ALPAKA_FN_HOST AccCpuTbbBlocks(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)
+	        ALPAKA_FN_HOST AccCpuTbbBlocks(
+	            TWorkDiv const& workDiv,
+	            std::size_t const& blockSharedMemDynSizeBytes,
+	            core::tbb::BarrierThread<TIdx>& barrier)
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
+	            , GridSyncBarrierTbb<TIdx>(barrier)
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -21390,7 +22016,9 @@
 	                        // m_sharedMemSizeBytes
 	                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes()),
 	                        // m_globalMemSizeBytes
-	                        getMemBytes(dev)};
+	                        getMemBytes(dev),
+	                        // m_cooperativeLaunch
+	                        true};
 	            }
 	        };
 
@@ -21456,6 +22084,39 @@
 	            }
 	        };
 
+	        //! The CPU TBB block accelerator execution cooperative task type trait specialization.
+	        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+	        struct CreateTaskCooperativeKernel<AccCpuTbbBlocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+	                TWorkDiv const& workDiv,
+	                TKernelFnObj const& kernelFnObj,
+	                TArgs&&... args)
+	            {
+	                if(workDiv.m_blockThreadExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "The given work division is not valid for a single thread Acc: "
+	                        + getAccName<AccCpuTbbBlocks<TDim, TIdx>>() + ". Threads per block should be 1!");
+	                }
+	                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+	                auto const maxBlocks = tbb::this_task_arena::max_concurrency();
+	                if(gridBlockExtent.prod() > static_cast<TIdx>(maxBlocks))
+	                {
+	                    throw std::runtime_error(
+	                        "The number of requested blocks is larger than maximuma of the device for TBB "
+	                        "accelerator. Requested: "
+	                        + std::to_string(gridBlockExtent.prod()) + ", maximum allowed: " + std::to_string(maxBlocks)
+	                        + ". Use getMaxActiveBlocks().");
+	                }
+
+	                return TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+	                    workDiv,
+	                    kernelFnObj,
+	                    std::forward<TArgs>(args)...);
+	            }
+	        };
+
 	        //! The CPU TBB block execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct PlatformType<AccCpuTbbBlocks<TDim, TIdx>>
@@ -21492,7 +22153,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuThreads.hpp ==
 	// ==
-	/* Copyright 2025 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -21745,6 +22406,58 @@
 
 	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 		// ============================================================================
+		// == ./include/alpaka/grid/GridSyncBarrierCpuThread.hpp ==
+		// ==
+		/* Copyright 2026 Mykhailo Varvarin
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/BarrierThread.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
+
+		// #include <thread>    // amalgamate: file already included
+
+		#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+
+		namespace alpaka
+		{
+		    //! The thread id map barrier grid synchronization.
+		    template<typename TIdx>
+		    class GridSyncBarrierThread : public interface::Implements<ConceptGridSync, GridSyncBarrierThread<TIdx>>
+		    {
+		    public:
+		        using Barrier = core::threads::BarrierThread<TIdx>;
+
+		        ALPAKA_FN_HOST GridSyncBarrierThread(TIdx const& blockThreadCount) : m_barrier(blockThreadCount)
+		        {
+		        }
+
+		        Barrier mutable m_barrier;
+		    };
+
+		    namespace trait
+		    {
+		        template<typename TIdx>
+		        struct SyncGridThreads<GridSyncBarrierThread<TIdx>>
+		        {
+		            ALPAKA_FN_HOST static auto syncGridThreads(GridSyncBarrierThread<TIdx> const& gridSync) -> void
+		            {
+		                gridSync.m_barrier.wait();
+		            }
+		        };
+
+		    } // namespace trait
+		} // namespace alpaka
+
+		#endif
+		// ==
+		// == ./include/alpaka/grid/GridSyncBarrierCpuThread.hpp ==
+		// ============================================================================
+
+		// ============================================================================
 		// == ./include/alpaka/idx/bt/IdxBtRefThreadIdMap.hpp ==
 		// ==
 		/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
@@ -21881,6 +22594,7 @@
 	        , public BlockSharedMemDynMember<>
 	        , public BlockSharedMemStMemberMasterSync<>
 	        , public BlockSyncBarrierThread<TIdx>
+	        , public GridSyncBarrierThread<TIdx>
 	        , public IntrinsicCpu
 	        , public MemFenceCpu
 	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -21918,6 +22632,7 @@
 	                  [this]() { syncBlockThreads(*this); },
 	                  [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
 	            , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
+	            , GridSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -21988,7 +22703,9 @@
 	                        // m_sharedMemSizeBytes
 	                        memBytes,
 	                        // m_globalMemSizeBytes
-	                        memBytes};
+	                        memBytes,
+	                        // m_cooperativeLaunch
+	                        true};
 	            }
 	        };
 
@@ -22039,6 +22756,30 @@
 	                TKernelFnObj const& kernelFnObj,
 	                TArgs&&... args)
 	            {
+	                return TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>(
+	                    workDiv,
+	                    kernelFnObj,
+	                    std::forward<TArgs>(args)...);
+	            }
+	        };
+
+	        //! The CPU threads thread accelerator execution cooperative task type trait specialization.
+	        template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
+	        struct CreateTaskCooperativeKernel<AccCpuThreads<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+	                TWorkDiv const& workDiv,
+	                TKernelFnObj const& kernelFnObj,
+	                TArgs&&... args)
+	            {
+	                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
+	                if(gridBlockExtent.prod() != static_cast<TIdx>(1u))
+	                {
+	                    throw std::runtime_error(
+	                        "The std::thread accelerator supports only a single block operation with cooperative kernel!\n"
+	                        "Consider useing a different CPU accelerator.");
+	                }
+
 	                return TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>(
 	                    workDiv,
 	                    kernelFnObj,
@@ -22136,7 +22877,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGpuUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2025 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+		/* Copyright 2026 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -23266,6 +24007,79 @@
 			// ============================================================================
 
 		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/grid/GridSyncGpuCudaHip.hpp ==
+			// ==
+			/* Copyright 2026 Mykhailo Varvarin, Andrea Bocci
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Config.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Interface.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
+
+			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+
+			#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			// The cooperative groups headers from CUDA 12.0.0 use PTX register names with a single '%' in an inline asm statement
+			// with operands, which clang rejects ("invalid % escape in inline assembly string"). The asm is only used for the
+			// multi-warp scratch space in the reserved shared memory, which the grid synchronization does not need, so disable it.
+			#        if ALPAKA_COMP_CLANG_CUDA && defined(CUDART_VERSION) && (CUDART_VERSION == 12000)                            \
+			            && !defined(_CG_USER_PROVIDED_SHARED_MEMORY)
+			#            pragma clang diagnostic push
+			#            pragma clang diagnostic ignored "-Wreserved-macro-identifier"
+			#            define _CG_USER_PROVIDED_SHARED_MEMORY
+			#            pragma clang diagnostic pop
+			#        endif
+			#        include <cooperative_groups.h>
+			#    endif
+
+			#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+			#        include <hip/hip_cooperative_groups.h>
+			#    endif
+
+
+			namespace alpaka
+			{
+			    //! The GPU CUDA/HIP grid synchronization.
+			    class GridSyncCudaHipBuiltIn : public interface::Implements<ConceptGridSync, GridSyncCudaHipBuiltIn>
+			    {
+			    };
+
+			#    if !defined(ALPAKA_HOST_ONLY)
+
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !ALPAKA_LANG_CUDA
+			#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+			#        endif
+
+			#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !ALPAKA_LANG_HIP
+			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+			#        endif
+
+			    namespace trait
+			    {
+			        template<>
+			        struct SyncGridThreads<GridSyncCudaHipBuiltIn>
+			        {
+			            __device__ static auto syncGridThreads(GridSyncCudaHipBuiltIn const& /*gridSync*/) -> void
+			            {
+			                cooperative_groups::this_grid().sync();
+			            }
+			        };
+
+			    } // namespace trait
+
+			#    endif
+
+			} // namespace alpaka
+
+			#endif
+			// ==
+			// == ./include/alpaka/grid/GridSyncGpuCudaHip.hpp ==
+			// ============================================================================
+
 			// ============================================================================
 			// == ./include/alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp ==
 			// ==
@@ -25518,7 +26332,7 @@
 					// ============================================================================
 					// == ./include/alpaka/core/ApiCudaRt.hpp ==
 					// ==
-					/* Copyright 2025 Andrea Bocci, Maria Michailidi
+					/* Copyright 2026 Andrea Bocci, Maria Michailidi
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 
@@ -25599,6 +26413,7 @@
 					        static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::cudaDevAttrMaxThreadsPerBlock;
 					        static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::cudaDevAttrMultiProcessorCount;
 					        static constexpr DeviceAttr_t deviceAttributeWarpSize = ::cudaDevAttrWarpSize;
+					        static constexpr DeviceAttr_t deviceAttributeCooperativeLaunch = ::cudaDevAttrCooperativeLaunch;
 
 					        static constexpr Limit_t limitPrintfFifoSize = ::cudaLimitPrintfFifoSize;
 					        static constexpr Limit_t limitMallocHeapSize = ::cudaLimitMallocHeapSize;
@@ -25785,6 +26600,36 @@
 					            return ::cudaHostUnregister(ptr);
 					        }
 
+					        template<class T>
+					        static inline Error_t launchCooperativeKernel(
+					            T* func,
+					            dim3 gridDim,
+					            dim3 blockDim,
+					            void** args,
+					            size_t sharedMem,
+					            Stream_t stream)
+					        {
+					#    if CUDART_VERSION >= 12060
+					            return ::cudaLaunchCooperativeKernel(func, gridDim, blockDim, args, sharedMem, stream);
+					#    else
+					            // Use C API for CUDA before 12.6
+					#        if ALPAKA_COMP_GNUC
+					#            pragma GCC diagnostic push
+					#            pragma GCC diagnostic ignored "-Wconditionally-supported"
+					#        endif
+					            return ::cudaLaunchCooperativeKernel(
+					                reinterpret_cast<void*>(func),
+					                gridDim,
+					                blockDim,
+					                args,
+					                sharedMem,
+					                stream);
+					#        if ALPAKA_COMP_GNUC
+					#            pragma GCC diagnostic pop
+					#        endif
+					#    endif
+					        }
+
 					        static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
 					        {
 					#    if CUDART_VERSION >= 10000
@@ -25931,6 +26776,16 @@
 					        static inline Extent_t makeExtent(size_t w, size_t h, size_t d)
 					        {
 					            return ::make_cudaExtent(w, h, d);
+					        }
+
+					        template<class T>
+					        static inline Error_t occupancyMaxActiveBlocksPerMultiprocessor(
+					            int* numBlocks,
+					            T func,
+					            int blockSize,
+					            size_t dynamicSMemSize)
+					        {
+					            return ::cudaOccupancyMaxActiveBlocksPerMultiprocessor(numBlocks, func, blockSize, dynamicSMemSize);
 					        }
 					    };
 
@@ -27171,7 +28026,14 @@
 
 		namespace alpaka
 		{
-		    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    template<
+		        typename TApi,
+		        typename TAcc,
+		        typename TDim,
+		        typename TIdx,
+		        typename TKernelFnObj,
+		        bool TCooperative,
+		        typename... TArgs>
 		    class TaskKernelGpuUniformCudaHipRt;
 
 		    //! The GPU CUDA accelerator.
@@ -27190,6 +28052,7 @@
 		        , public BlockSharedMemDynUniformCudaHipBuiltIn
 		        , public BlockSharedMemStUniformCudaHipBuiltIn
 		        , public BlockSyncUniformCudaHipBuiltIn
+		        , public GridSyncCudaHipBuiltIn
 		        , public IntrinsicUniformCudaHipBuiltIn
 		        , public MemFenceUniformCudaHipBuiltIn
 		#    ifdef ALPAKA_DISABLE_VENDOR_RNG
@@ -27292,6 +28155,12 @@
 		                    TApi::deviceAttributeMaxSharedMemoryPerBlock,
 		                    dev.getNativeHandle()));
 
+		                int cooperativeLaunch = {};
+		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::deviceGetAttribute(
+		                    &cooperativeLaunch,
+		                    TApi::deviceAttributeCooperativeLaunch,
+		                    dev.getNativeHandle()));
+
 		                return {// m_multiProcessorCount
 		                        alpaka::core::clipCast<TIdx>(multiProcessorCount),
 		                        // m_gridBlockExtentMax
@@ -27315,7 +28184,9 @@
 		                        // m_sharedMemSizeBytes
 		                        static_cast<size_t>(sharedMemSizeBytes),
 		                        // m_globalMemSizeBytes
-		                        getMemBytes(dev)};
+		                        getMemBytes(dev),
+		                        // m_cooperativeLaunch
+		                        static_cast<bool>(cooperativeLaunch)};
 
 		#    else
 		                typename TApi::DeviceProp_t properties;
@@ -27344,7 +28215,9 @@
 		                        // m_sharedMemSizeBytes
 		                        static_cast<size_t>(properties.sharedMemPerBlock),
 		                        // m_globalMemSizeBytes
-		                        getMemBytes(dev)};
+		                        getMemBytes(dev),
+		                        // m_cooperativeLaunch
+		                        static_cast<bool>(properties.cooperativeLaunch)};
 		#    endif
 		            }
 		        };
@@ -27412,6 +28285,33 @@
 		                    TDim,
 		                    TIdx,
 		                    TKernelFnObj,
+		                    false,
+		                    TArgs...>(workDiv, kernelFnObj, std::forward<TArgs>(args)...);
+		            }
+		        };
+
+		        //! The GPU CUDA accelerator execution cooperative task type trait specialization.
+		        template<
+		            typename TApi,
+		            typename TDim,
+		            typename TIdx,
+		            typename TWorkDiv,
+		            typename TKernelFnObj,
+		            typename... TArgs>
+		        struct CreateTaskCooperativeKernel<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+		        {
+		            ALPAKA_FN_HOST static auto createTaskCooperativeKernel(
+		                TWorkDiv const& workDiv,
+		                TKernelFnObj const& kernelFnObj,
+		                TArgs&&... args)
+		            {
+		                return TaskKernelGpuUniformCudaHipRt<
+		                    TApi,
+		                    AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
+		                    TDim,
+		                    TIdx,
+		                    TKernelFnObj,
+		                    true,
 		                    TArgs...>(workDiv, kernelFnObj, std::forward<TArgs>(args)...);
 		            }
 		        };
@@ -27481,7 +28381,7 @@
 		// ============================================================================
 		// == ./include/alpaka/core/ApiHipRt.hpp ==
 		// ==
-		/* Copyright 2025 Andrea Bocci, Maria Michailidi
+		/* Copyright 2026 Andrea Bocci, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -27565,6 +28465,7 @@
 		        static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::hipDeviceAttributeMaxThreadsPerBlock;
 		        static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::hipDeviceAttributeMultiprocessorCount;
 		        static constexpr DeviceAttr_t deviceAttributeWarpSize = ::hipDeviceAttributeWarpSize;
+		        static constexpr DeviceAttr_t deviceAttributeCooperativeLaunch = ::hipDeviceAttributeCooperativeLaunch;
 
 		#    if HIP_VERSION >= 40'500'000
 		        static constexpr Limit_t limitPrintfFifoSize = ::hipLimitPrintfFifoSize;
@@ -27773,6 +28674,18 @@
 		            return ::hipHostUnregister(ptr);
 		        }
 
+		        template<class T>
+		        static inline Error_t launchCooperativeKernel(
+		            T* func,
+		            dim3 gridDim,
+		            dim3 blockDim,
+		            void** args,
+		            size_t sharedMem,
+		            Stream_t stream)
+		        {
+		            return ::hipLaunchCooperativeKernel(func, gridDim, blockDim, args, static_cast<uint>(sharedMem), stream);
+		        }
+
 		        static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
 		        {
 		            // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
@@ -27933,6 +28846,16 @@
 		        static inline Extent_t makeExtent(size_t w, size_t h, size_t d)
 		        {
 		            return ::make_hipExtent(w, h, d);
+		        }
+
+		        template<class T>
+		        static inline Error_t occupancyMaxActiveBlocksPerMultiprocessor(
+		            int* numBlocks,
+		            T func,
+		            int blockSize,
+		            size_t dynamicSMemSize)
+		        {
+		            return ::hipOccupancyMaxActiveBlocksPerMultiprocessor(numBlocks, func, blockSize, dynamicSMemSize);
 		        }
 		    };
 
@@ -30293,6 +31216,7 @@
 // #include "alpaka/core/Align.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/BarrierTbb.h"    // amalgamate: file already inlined
 // #include "alpaka/core/BarrierThread.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
 // #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
@@ -31964,6 +32888,13 @@
 // #include "alpaka/exec/UniformElements.hpp"    // amalgamate: file already inlined
 // extent
 // #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+// grid
+// #include "alpaka/grid/GridSyncBarrierCpuOmp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/grid/GridSyncBarrierCpuThread.hpp"    // amalgamate: file already inlined
+// #include "alpaka/grid/GridSyncCpuTbbBlocks.hpp"    // amalgamate: file already inlined
+// #include "alpaka/grid/GridSyncGpuCudaHip.hpp"    // amalgamate: file already inlined
+// #include "alpaka/grid/GridSyncNoOp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/grid/Traits.hpp"    // amalgamate: file already inlined
 // idx
 // #include "alpaka/idx/Accessors.hpp"    // amalgamate: file already inlined
 // #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
@@ -31980,7 +32911,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp ==
 	// ==
-	/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
+	/* Copyright 2026 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -32079,6 +33010,7 @@
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
+	// #include <string>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
 	#include <type_traits>
 	// #include <utility>    // amalgamate: file already included
@@ -32843,7 +33775,9 @@
 	    } // namespace detail
 
 	    //! The CPU OpenMP 2.0 block accelerator execution task.
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    //!
+	    //! \tparam TCooperative Whether the task executes a cooperative kernel, that can synchronise the whole grid.
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
 	    class TaskKernelCpuOmp2Blocks final : public WorkDivMembers<TDim, TIdx>
 	    {
 	    public:
@@ -32887,31 +33821,38 @@
 	            // The number of blocks in the grid.
 	            TIdx const numBlocksInGrid(gridBlockExtent.prod());
 
-	            // Get the OpenMP schedule information for the given kernel and parameter types
-	            auto const schedule = std::apply(
-	                [&](std::decay_t<TArgs> const&... args) {
-	                    return getOmpSchedule<AccCpuOmp2Blocks<TDim, TIdx>>(
-	                        m_kernelFnObj,
-	                        blockThreadExtent,
-	                        threadElemExtent,
-	                        args...);
-	                },
-	                m_args);
-
-	            if(::omp_in_parallel() != 0)
+	            if constexpr(TCooperative)
 	            {
-	#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-	                std::cout << __func__ << " already within a parallel region." << std::endl;
-	#    endif
-	                parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+	                cooperativeFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent);
 	            }
 	            else
 	            {
+	                // Get the OpenMP schedule information for the given kernel and parameter types
+	                auto const schedule = std::apply(
+	                    [&](std::decay_t<TArgs> const&... args) {
+	                        return getOmpSchedule<AccCpuOmp2Blocks<TDim, TIdx>>(
+	                            m_kernelFnObj,
+	                            blockThreadExtent,
+	                            threadElemExtent,
+	                            args...);
+	                    },
+	                    m_args);
+
+	                if(::omp_in_parallel() != 0)
+	                {
 	#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-	                std::cout << __func__ << " opening new parallel region." << std::endl;
+	                    std::cout << __func__ << " already within a parallel region." << std::endl;
+	#    endif
+	                    parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+	                }
+	                else
+	                {
+	#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+	                    std::cout << __func__ << " opening new parallel region." << std::endl;
 	#    endif
 	#    pragma omp parallel
-	                parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+	                    parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+	                }
 	            }
 	        }
 
@@ -32947,28 +33888,91 @@
 	            // Index type is auto since we have a difference for OpenMP 2.0 and later ones
 	            auto loopBody = [&](auto currentIndex)
 	            {
-	#    if _OPENMP < 200805
-	                auto const i_tidx = static_cast<TIdx>(currentIndex); // for issue #840
-	                auto const index = Vec<DimInt<1u>, TIdx>(i_tidx); // for issue #840
-	#    else
-	                auto const index = Vec<DimInt<1u>, TIdx>(currentIndex); // for issue #840
-	#    endif
-	                acc.m_gridBlockIdx = mapIdx<TDim::value>(index, gridBlockExtent);
-
-	                std::apply(
-	                    [&](auto&&... argsWithAcc) {
-	                        detail::checkKernelReturnType(
-	                            m_kernelFnObj,
-	                            std::forward<decltype(argsWithAcc)>(argsWithAcc)...);
-	                    },
-	                    std::tuple_cat(std::tie(acc), m_args));
-	                std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
-
-	                // After a block has been processed, the shared memory has to be deleted.
-	                freeSharedVars(acc);
+	                runBlock(acc, static_cast<TIdx>(currentIndex), gridBlockExtent); // for issue #840
 	            };
 
 	            detail::parallelFor(m_kernelFnObj, loopBody, numBlocksInGrid, schedule);
+	        }
+
+	        //! Executes a cooperative kernel, where each OpenMP thread executes exactly one block.
+	        //!
+	        //! The grid synchronisation of cooperative kernels is an OpenMP barrier. OpenMP does not allow a barrier
+	        //! inside a work-sharing construct like "omp for", and some implementations (e.g. MSVC) deadlock if it is.
+	        //! So, cooperative kernels do not use "omp for": the block index is the OpenMP thread number, and the team
+	        //! must have as many threads as there are blocks.
+	        ALPAKA_FN_HOST auto cooperativeFn(
+	            std::size_t const& blockSharedMemDynSizeBytes,
+	            TIdx const& numBlocksInGrid,
+	            Vec<TDim, TIdx> const& gridBlockExtent) const -> void
+	        {
+	            if(numBlocksInGrid == static_cast<TIdx>(0u))
+	            {
+	                return;
+	            }
+
+	            if(::omp_in_parallel() != 0)
+	            {
+	                // Every thread of the current team executes this task: use the current team as the grid.
+	                int const numThreads = ::omp_get_num_threads();
+	                if(static_cast<TIdx>(numThreads) != numBlocksInGrid)
+	                {
+	                    throw std::runtime_error(
+	                        "A cooperative kernel with " + std::to_string(numBlocksInGrid)
+	                        + " blocks cannot run in an OpenMP parallel region with " + std::to_string(numThreads)
+	                        + " threads: the number of blocks and threads must be the same.");
+	                }
+	                cooperativeBlockFn(blockSharedMemDynSizeBytes, gridBlockExtent);
+	            }
+	            else
+	            {
+	                // The OpenMP runtime may create fewer threads than requested. In that case no thread executes a
+	                // block, as the grid synchronisation would deadlock; the error is reported after the parallel region.
+	                int teamSize = 0;
+	#    pragma omp parallel num_threads(static_cast<int>(numBlocksInGrid))
+	                {
+	                    if(static_cast<TIdx>(::omp_get_num_threads()) == numBlocksInGrid)
+	                    {
+	                        cooperativeBlockFn(blockSharedMemDynSizeBytes, gridBlockExtent);
+	                    }
+	#    pragma omp master
+	                    teamSize = ::omp_get_num_threads();
+	                }
+	                if(static_cast<TIdx>(teamSize) != numBlocksInGrid)
+	                {
+	                    throw std::runtime_error(
+	                        "The OpenMP runtime started " + std::to_string(teamSize) + " threads instead of "
+	                        + std::to_string(numBlocksInGrid) + " for a cooperative kernel.");
+	                }
+	            }
+	        }
+
+	        //! Executes the block with the index of the current OpenMP thread.
+	        ALPAKA_FN_HOST auto cooperativeBlockFn(
+	            std::size_t const& blockSharedMemDynSizeBytes,
+	            Vec<TDim, TIdx> const& gridBlockExtent) const -> void
+	        {
+	            AccCpuOmp2Blocks<TDim, TIdx> acc(
+	                *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
+	                blockSharedMemDynSizeBytes);
+	            runBlock(acc, static_cast<TIdx>(::omp_get_thread_num()), gridBlockExtent);
+	        }
+
+	        //! Executes the block with the given linear index.
+	        ALPAKA_FN_HOST auto runBlock(
+	            AccCpuOmp2Blocks<TDim, TIdx>& acc,
+	            TIdx const& blockIdx,
+	            Vec<TDim, TIdx> const& gridBlockExtent) const -> void
+	        {
+	            acc.m_gridBlockIdx = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(blockIdx), gridBlockExtent);
+
+	            std::apply(
+	                [&](auto&&... argsWithAcc)
+	                { detail::checkKernelReturnType(m_kernelFnObj, std::forward<decltype(argsWithAcc)>(argsWithAcc)...); },
+	                std::tuple_cat(std::tie(acc), m_args));
+	            std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
+
+	            // After a block has been processed, the shared memory has to be deleted.
+	            freeSharedVars(acc);
 	        }
 
 	        TKernelFnObj m_kernelFnObj;
@@ -32978,36 +33982,36 @@
 	    namespace trait
 	    {
 	        //! The CPU OpenMP 2.0 grid block execution task accelerator type trait specialization.
-	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct AccType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	        struct AccType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 	        {
 	            using type = AccCpuOmp2Blocks<TDim, TIdx>;
 	        };
 
 	        //! The CPU OpenMP 2.0 grid block execution task device type trait specialization.
-	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct DevType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	        struct DevType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 	        {
 	            using type = DevCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 grid block execution task dimension getter trait specialization.
-	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct DimType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	        struct DimType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 	        {
 	            using type = TDim;
 	        };
 
 	        //! The CPU OpenMP 2.0 grid block execution task platform type trait specialization.
-	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PlatformType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	        struct PlatformType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 	        {
 	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 block execution task idx type trait specialization.
-	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct IdxType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	        struct IdxType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 	        {
 	            using type = TIdx;
 	        };
@@ -33043,6 +34047,22 @@
 	            }
 	        };
 
+	        //! The CPU CPU OMP2 blocks get max active blocks for cooperative kernel specialization.
+	        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+	        struct MaxActiveBlocks<AccCpuOmp2Blocks<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+	                TKernelFnObj const& /*kernelFnObj*/,
+	                TDev const& device,
+	                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+	                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+	                TArgs const&... /*args*/) -> int
+	            {
+	                return static_cast<int>(
+	                    trait::GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -33058,7 +34078,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuOmp2Threads.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera, Jan Stephan, Bernhard Manfred Gruber
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -33376,6 +34396,21 @@
 	            }
 	        };
 
+	        //! The CPU OMP2 threads get max active blocks for cooperative kernel specialization.
+	        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+	        struct MaxActiveBlocks<AccCpuOmp2Threads<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+	                TKernelFnObj const& /*kernelFnObj*/,
+	                TDev const& /*device*/,
+	                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+	                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+	                TArgs const&... /*args*/) -> int
+	            {
+	                return 1;
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -33387,7 +34422,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuSerial.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2026 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -33560,6 +34595,21 @@
 	                return kernelFunctionAttributes;
 	            }
 	        };
+
+	        //! The CPU serial get max active blocks for cooperative kernel specialization.
+	        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+	        struct MaxActiveBlocks<AccCpuSerial<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+	                TKernelFnObj const& /*kernelFnObj*/,
+	                TDev const& /*device*/,
+	                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+	                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+	                TArgs const&... /*args*/) -> int
+	            {
+	                return 1;
+	            }
+	        };
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -33571,7 +34621,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
 	// ==
-	/* Copyright 2024 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
+	/* Copyright 2026 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -33581,7 +34631,7 @@
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
 		// ==
-		/* Copyright 2024 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
+		/* Copyright 2026 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -33965,47 +35015,178 @@
 		#        pragma clang diagnostic ignored "-Wunused-parameter"
 		#    endif
 
+		#    include <sycl/ext/oneapi/experimental/root_group.hpp>
+		#    include <sycl/ext/oneapi/properties/properties.hpp>
 		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 		#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
-		        cgh.parallel_for(                                                                                             \
-		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-		                sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]                   \
+		        if constexpr(TCooperative)                                                                                    \
+		        {                                                                                                             \
+		            auto const kernel = [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](             \
+		                                    sycl::nd_item<TDim::value> work_item)                                             \
 		            {                                                                                                         \
 		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
 		                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
 		                std::apply(                                                                                           \
 		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 		                    k_args);                                                                                          \
-		            });
+		            };                                                                                                        \
+		            cgh.parallel_for<detail::SyclKernel<TKernelFnObj, TDim, TIdx, TArgs...>>(                                 \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                detail::SyclRootSyncKernel<sub_group_size, TDim::value, std::remove_const_t<decltype(kernel)>>{       \
+		                    kernel});                                                                                         \
+		        }                                                                                                             \
+		        else                                                                                                          \
+		        {                                                                                                             \
+		            cgh.parallel_for(                                                                                         \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                             \
+		                    sycl::nd_item<TDim::value> work_item) [[sycl::reqd_sub_group_size(sub_group_size)]]               \
+		                {                                                                                                     \
+		                    auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};               \
+		                    std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args); \
+		                    std::apply(                                                                                       \
+		                        [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },        \
+		                        k_args);                                                                                      \
+		                });                                                                                                   \
+		        }
 
 		#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
-		        cgh.parallel_for(                                                                                             \
-		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-		                sycl::nd_item<TDim::value> work_item)                                                                 \
+		        if constexpr(TCooperative)                                                                                    \
+		        {                                                                                                             \
+		            auto const kernel = [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](             \
+		                                    sycl::nd_item<TDim::value> work_item)                                             \
 		            {                                                                                                         \
 		                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
 		                std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args);     \
 		                std::apply(                                                                                           \
 		                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 		                    k_args);                                                                                          \
-		            });
+		            };                                                                                                        \
+		            cgh.parallel_for<detail::SyclKernel<TKernelFnObj, TDim, TIdx, TArgs...>>(                                 \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                detail::SyclRootSyncKernel<0, TDim::value, std::remove_const_t<decltype(kernel)>>{kernel});           \
+		        }                                                                                                             \
+		        else                                                                                                          \
+		        {                                                                                                             \
+		            cgh.parallel_for(                                                                                         \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                             \
+		                    sycl::nd_item<TDim::value> work_item)                                                             \
+		                {                                                                                                     \
+		                    auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};               \
+		                    std::apply([&](auto&&... args) { detail::checkKernelReturnType(k_func, acc, args...); }, k_args); \
+		                    std::apply(                                                                                       \
+		                        [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },        \
+		                        k_args);                                                                                      \
+		                });                                                                                                   \
+		        }
 
 		#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
 		        throw std::runtime_error(                                                                                     \
 		            "The SYCL targets do not support the sub-group size " + std::to_string(sub_group_size)                    \
 		            + " required by the kernel on " + getAccName<TAcc>());                                                    \
-		        cgh.parallel_for(                                                                                             \
-		            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-		            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-		                sycl::nd_item<TDim::value> work_item) {});
+		        if constexpr(TCooperative)                                                                                    \
+		        {                                                                                                             \
+		            cgh.parallel_for<detail::SyclKernel<TKernelFnObj, TDim, TIdx, TArgs...>>(                                 \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                             \
+		                    sycl::nd_item<TDim::value> work_item) {});                                                        \
+		        }                                                                                                             \
+		        else                                                                                                          \
+		        {                                                                                                             \
+		            cgh.parallel_for(                                                                                         \
+		                sycl::nd_range<TDim::value>{global_size, local_size},                                                 \
+		                [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                             \
+		                    sycl::nd_item<TDim::value> work_item) {});                                                        \
+		        }
 
 		namespace alpaka
 		{
+		    namespace detail
+		    {
+		        // A dummy class to pass as a template parameter when launching cooperative kernels
+		        template<typename TKernel, typename TDim, typename TIdx, typename... TArgs>
+		        class SyclKernel;
+
+		        //! Wrap a SYCL kernel to launch it with the use_root_sync property, which is required to synchronise the
+		        //! root group, i.e. all the work-items in the grid. If TSubGroupSize is not zero, require that sub-group size.
+		        template<std::size_t TSubGroupSize, int TDims, typename TKernel>
+		        struct SyclRootSyncKernel
+		        {
+		            TKernel kernel;
+
+		            auto operator()(sycl::nd_item<TDims> work_item) const -> void
+		            {
+		                kernel(work_item);
+		            }
+
+		            auto get(sycl::ext::oneapi::experimental::properties_tag) const
+		            {
+		                namespace syclex = sycl::ext::oneapi::experimental;
+		                if constexpr(TSubGroupSize == 0)
+		                    return syclex::properties{syclex::use_root_sync};
+		                else
+		                    return syclex::properties{syclex::use_root_sync, syclex::sub_group_size<TSubGroupSize>};
+		            }
+		        };
+
+		        // The size of the static shared memory, allocated as a local accessor -- value comes from the build system
+		        inline constexpr auto syclStaticSharedMemBytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
+
+		        //! Convert the number of threads in a block to the size of a SYCL work-group.
+		        template<typename TDim, typename TIdx>
+		        auto syclWorkGroupSize(Vec<TDim, TIdx> const& group_items)
+		        {
+		            if constexpr(TDim::value == 1)
+		                return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
+		            else if constexpr(TDim::value == 2)
+		                return sycl::range<2>{
+		                    static_cast<std::size_t>(group_items[0]),
+		                    static_cast<std::size_t>(group_items[1])};
+		            else
+		                return sycl::range<3>{
+		                    static_cast<std::size_t>(group_items[0]),
+		                    static_cast<std::size_t>(group_items[1]),
+		                    static_cast<std::size_t>(group_items[2])};
+		        }
+
+		        //! The maximum number of work-groups of the kernel TKernelName that can be active at the same time on the
+		        //! device of the given queue, i.e. the largest grid that can be used for a cooperative launch.
+		        //!
+		        //! \param localMemBytes The total size of the local memory accessors used by the kernel.
+		        template<typename TKernelName, int TDims>
+		        auto getMaxNumWorkGroupsSync(
+		            sycl::queue const& queue,
+		            [[maybe_unused]] sycl::range<TDims> const& workGroupSize,
+		            [[maybe_unused]] std::size_t localMemBytes) -> std::size_t
+		        {
+		            auto const bundle = sycl::get_kernel_bundle<sycl::bundle_state::executable>(queue.get_context());
+		            auto const kernel = bundle.template get_kernel<TKernelName>();
+		#    if ALPAKA_COMP_ICPX >= ALPAKA_VERSION_NUMBER(2025, 1, 0)
+		            // oneAPI 2025.1 replaced the max_num_work_group_sync query with max_num_work_groups, which depends also
+		            // on the work-group size and on the amount of local memory used by the kernel.
+		            return kernel.template ext_oneapi_get_info<
+		                sycl::ext::oneapi::experimental::info::kernel_queue_specific::max_num_work_groups>(
+		                queue,
+		                workGroupSize,
+		                localMemBytes);
+		#    else
+		            return kernel.template ext_oneapi_get_info<
+		                sycl::ext::oneapi::experimental::info::kernel_queue_specific::max_num_work_group_sync>(queue);
+		#    endif
+		        }
+		    } // namespace detail
+
 		    //! The SYCL accelerator execution task.
-		    template<concepts::Tag TTag, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    template<
+		        concepts::Tag TTag,
+		        typename TAcc,
+		        typename TDim,
+		        typename TIdx,
+		        typename TKernelFnObj,
+		        bool TCooperative,
+		        typename... TArgs>
 		    class TaskKernelGenericSycl final : public WorkDivMembers<TDim, TIdx>
 		    {
 		    public:
@@ -34019,7 +35200,7 @@
 		        {
 		        }
 
-		        auto operator()(sycl::handler& cgh) const -> void
+		        auto operator()(sycl::handler& cgh, sycl::queue const& queue) const -> void
 		        {
 		            auto const work_groups = WorkDivMembers<TDim, TIdx>::m_gridBlockExtent;
 		            auto const group_items = WorkDivMembers<TDim, TIdx>::m_blockThreadExtent;
@@ -34040,7 +35221,7 @@
 		            auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
 
 		            // allocate static shared memory -- value comes from the build system
-		            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
+		            constexpr auto st_shared_mem_bytes = detail::syclStaticSharedMemBytes;
 		            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
 
 		            // copy-by-value so we don't access 'this' on the device
@@ -34066,6 +35247,41 @@
 		            }
 
 		            bool supported = false;
+
+		            if constexpr(TCooperative)
+		            {
+		                // Check that the device supports cooperative kernels before launching one: on devices that do not,
+		                // launching a kernel with the use_root_sync property fails or gives undefined behaviour.
+		                if(!detail::syclCooperativeLaunch<TTag>(queue.get_device()))
+		                {
+		                    throw std::runtime_error(
+		                        "The device " + queue.get_device().get_info<sycl::info::device::name>() + " ("
+		                        + getAccName<TAcc>() + ") does not support cooperative kernels");
+		                }
+		            }
+
+		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+		            if constexpr(TCooperative)
+		            {
+		                std::size_t const maxWGs
+		                    = detail::getMaxNumWorkGroupsSync<detail::SyclKernel<TKernelFnObj, TDim, TIdx, TArgs...>>(
+		                        queue,
+		                        local_size,
+		                        dyn_shared_mem_bytes + st_shared_mem_bytes);
+		                if(static_cast<std::size_t>(work_groups.prod()) > maxWGs)
+		                {
+		                    throw std::runtime_error(
+		                        "The number of requested blocks is larger than maximuma of the device for the kernel "
+		                        + std::string(core::demangled<TKernelFnObj>) + "! Device: " + getAccName<TAcc>()
+		                        + ", requested: " + std::to_string(work_groups.prod())
+		                        + ", maximum allowed: " + std::to_string(maxWGs) + ". Use getMaxActiveBlocks().");
+		                }
+		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+		                std::cout << "maxBlocksPerGrid for the " << core::demangled<TKernelFnObj> << ": " << maxWGs
+		                          << std::endl;
+		#        endif
+		            }
+		#    endif
 
 		            if constexpr(sub_group_size == 0)
 		            {
@@ -34171,17 +35387,7 @@
 
 		        auto get_local_size(Vec<TDim, TIdx> const& group_items) const
 		        {
-		            if constexpr(TDim::value == 1)
-		                return sycl::range<1>{static_cast<std::size_t>(group_items[0])};
-		            else if constexpr(TDim::value == 2)
-		                return sycl::range<2>{
-		                    static_cast<std::size_t>(group_items[0]),
-		                    static_cast<std::size_t>(group_items[1])};
-		            else
-		                return sycl::range<3>{
-		                    static_cast<std::size_t>(group_items[0]),
-		                    static_cast<std::size_t>(group_items[1]),
-		                    static_cast<std::size_t>(group_items[2])};
+		            return detail::syclWorkGroupSize(group_items);
 		        }
 
 		    public:
@@ -34260,6 +35466,38 @@
 		            return kernelFunctionAttributes;
 		        }
 		    };
+
+		    //! The CUDA/HIP get max active blocks for cooperative kernel specialization.
+		    template<typename TAcc, typename TKernelFnObj, typename TTag, typename TDim, typename TIdx, typename... TArgs>
+		    struct MaxActiveBlocks<TAcc, DevGenericSycl<TTag>, TKernelFnObj, TDim, TIdx, TArgs...>
+		    {
+		        ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+		            TKernelFnObj const& kernelFnObj,
+		            DevGenericSycl<TTag> const& device,
+		            alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+		            alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+		            TArgs const&... args) -> int
+		        {
+		            // the kernel uses the dynamic and the static shared memory, see TaskKernelGenericSycl::operator()
+		            auto const dynSharedMemBytes = std::max(
+		                std::size_t{1},
+		                static_cast<std::size_t>(
+		                    getBlockSharedMemDynSizeBytes<TAcc>(kernelFnObj, blockThreadExtent, threadElemExtent, args...)));
+
+		            sycl::queue queue{
+		                std::move(device.getNativeHandle()
+		                              .second), // This is important. In SYCL a device can belong to multiple contexts.
+		                std::move(device.getNativeHandle().first),
+		                {sycl::property::queue::enable_profiling{}, sycl::property::queue::in_order{}}};
+
+		            std::size_t const maxWGs
+		                = detail::getMaxNumWorkGroupsSync<detail::SyclKernel<TKernelFnObj, TDim, TIdx, TArgs...>>(
+		                    queue,
+		                    detail::syclWorkGroupSize(blockThreadExtent),
+		                    dynSharedMemBytes + detail::syclStaticSharedMemBytes);
+		            return static_cast<int>(maxWGs);
+		        }
+		    };
 		} // namespace alpaka::trait
 
 		#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
@@ -34274,9 +35512,9 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
 	    using TaskKernelCpuSycl
-	        = TaskKernelGenericSycl<TagCpuSycl, AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+	        = TaskKernelGenericSycl<TagCpuSycl, AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>;
 
 	} // namespace alpaka
 
@@ -34288,7 +35526,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuTbbBlocks.hpp ==
 	// ==
-	/* Copyright 2022 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber
+	/* Copyright 2026 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -34375,6 +35613,10 @@
 	            tbb::this_task_arena::isolate(
 	                [&]
 	                {
+	                    // Create a shared barrier for grid sync, which will be passed by reference to each thread to
+	                    // achieve shared state
+	                    core::tbb::BarrierThread<TIdx> barrier(numBlocksInGrid);
+
 	                    tbb::parallel_for(
 	                        static_cast<TIdx>(0),
 	                        static_cast<TIdx>(numBlocksInGrid),
@@ -34382,7 +35624,8 @@
 	                        {
 	                            AccCpuTbbBlocks<TDim, TIdx> acc(
 	                                *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
-	                                blockSharedMemDynSizeBytes);
+	                                blockSharedMemDynSizeBytes,
+	                                barrier);
 
 	                            acc.m_gridBlockIdx
 	                                = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(i)), gridBlockExtent);
@@ -34473,6 +35716,22 @@
 	                return kernelFunctionAttributes;
 	            }
 	        };
+
+	        //! The CPU CPU OMP2 blocks get max active blocks for cooperative kernel specialization.
+	        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+	        struct MaxActiveBlocks<AccCpuTbbBlocks<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+	                TKernelFnObj const& /*kernelFnObj*/,
+	                TDev const& device,
+	                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+	                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+	                TArgs const&... /*args*/) -> int
+	            {
+	                return static_cast<int>(
+	                    trait::GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>::getAccDevProps(device).m_multiProcessorCount);
+	            }
+	        };
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -34484,7 +35743,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuThreads.hpp ==
 	// ==
-	/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2026 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -34720,6 +35979,21 @@
 	            }
 	        };
 
+	        //! The CPU threads get max active blocks for cooperative kernel specialization.
+	        template<typename TDev, typename TKernelFnObj, typename TDim, typename TIdx, typename... TArgs>
+	        struct MaxActiveBlocks<AccCpuThreads<TDim, TIdx>, TDev, TKernelFnObj, TDim, TIdx, TArgs...>
+	        {
+	            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+	                TKernelFnObj const& /*kernelFnObj*/,
+	                TDev const& /*device*/,
+	                alpaka::Vec<TDim, TIdx> const& /*blockThreadExtent*/,
+	                alpaka::Vec<TDim, TIdx> const& /*threadElemExtent*/,
+	                TArgs const&... /*args*/) -> int
+	            {
+	                return 1;
+	            }
+	        };
+
 	    } // namespace trait
 	} // namespace alpaka
 
@@ -34731,7 +36005,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2024 Jan Stephan, Aurora Perego
+	/* Copyright 2026 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -34744,9 +36018,15 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelFpgaSyclIntel
-	        = TaskKernelGenericSycl<TagFpgaSyclIntel, AccFpgaSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	    using TaskKernelFpgaSyclIntel = TaskKernelGenericSycl<
+	        TagFpgaSyclIntel,
+	        AccFpgaSyclIntel<TDim, TIdx>,
+	        TDim,
+	        TIdx,
+	        TKernelFnObj,
+	        TCooperative,
+	        TArgs...>;
 
 	} // namespace alpaka
 
@@ -34759,7 +36039,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuCudaRt.hpp ==
 	// ==
-	/* Copyright 2022 Andrea Bocci
+	/* Copyright 2026 Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -34768,8 +36048,8 @@
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2024 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
-		 * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu
+		/* Copyright 2026 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
+		 * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -34896,7 +36176,14 @@
 		    } // namespace uniform_cuda_hip
 
 		    //! The GPU CUDA/HIP accelerator execution task.
-		    template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+		    template<
+		        typename TApi,
+		        typename TAcc,
+		        typename TDim,
+		        typename TIdx,
+		        typename TKernelFnObj,
+		        bool TCooperative,
+		        typename... TArgs>
 		    class TaskKernelGpuUniformCudaHipRt final : public WorkDivMembers<TDim, TIdx>
 		    {
 		    public:
@@ -34921,36 +36208,72 @@
 		    namespace trait
 		    {
 		        //! The GPU CUDA/HIP execution task accelerator type trait specialization.
-		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct AccType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        template<
+		            typename TApi,
+		            typename TAcc,
+		            typename TDim,
+		            typename TIdx,
+		            typename TKernelFnObj,
+		            bool TCooperative,
+		            typename... TArgs>
+		        struct AccType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            using type = AccGpuUniformCudaHipRt<TApi, TDim, TIdx>;
 		        };
 
 		        //! The GPU CUDA/HIP execution task device type trait specialization.
-		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct DevType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        template<
+		            typename TApi,
+		            typename TAcc,
+		            typename TDim,
+		            typename TIdx,
+		            typename TKernelFnObj,
+		            bool TCooperative,
+		            typename... TArgs>
+		        struct DevType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            using type = DevUniformCudaHipRt<TApi>;
 		        };
 
 		        //! The GPU CUDA/HIP execution task dimension getter trait specialization.
-		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct DimType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        template<
+		            typename TApi,
+		            typename TAcc,
+		            typename TDim,
+		            typename TIdx,
+		            typename TKernelFnObj,
+		            bool TCooperative,
+		            typename... TArgs>
+		        struct DimType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            using type = TDim;
 		        };
 
 		        //! The CPU CUDA/HIP execution task platform type trait specialization.
-		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct PlatformType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        template<
+		            typename TApi,
+		            typename TAcc,
+		            typename TDim,
+		            typename TIdx,
+		            typename TKernelFnObj,
+		            bool TCooperative,
+		            typename... TArgs>
+		        struct PlatformType<
+		            TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            using type = PlatformUniformCudaHipRt<TApi>;
 		        };
 
 		        //! The GPU CUDA/HIP execution task idx type trait specialization.
-		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct IdxType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        template<
+		            typename TApi,
+		            typename TAcc,
+		            typename TDim,
+		            typename TIdx,
+		            typename TKernelFnObj,
+		            bool TCooperative,
+		            typename... TArgs>
+		        struct IdxType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            using type = TIdx;
 		        };
@@ -34963,14 +36286,16 @@
 		            typename TDim,
 		            typename TIdx,
 		            typename TKernelFnObj,
+		            bool TCooperative,
 		            typename... TArgs>
 		        struct Enqueue<
 		            uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>,
-		            TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		            TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>>
 		        {
 		            ALPAKA_FN_HOST static auto enqueue(
 		                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-		                TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void
+		                TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...> const&
+		                    task) -> void
 		            {
 		                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 		                // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
@@ -34983,6 +36308,18 @@
 		                // TApi::deviceGetLimit(&printfFifoSize, TApi::limitPrintfFifoSize);
 		                // std::cout << __func__ << " INFO: printfFifoSize: " << printfFifoSize << std::endl;
 		#        endif
+
+		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+		                // This checks if the device supports cooperative kernel launch
+		                if constexpr(TCooperative)
+		                {
+		                    if(!trait::GetAccDevProps<TAcc>::getAccDevProps(getDev(queue)).m_cooperativeLaunch)
+		                    {
+		                        throw std::runtime_error("This accelerator doesn't support cooperative groups functionality!");
+		                    }
+		                }
+		#        endif
+
 		                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
 		                auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
 		                auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);
@@ -35028,6 +36365,54 @@
 		                auto kernelName
 		                    = alpaka::detail::kernelName<TKernelFnObj, TAcc, remove_restrict_t<std::decay_t<TArgs>>...>;
 
+		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+		                if constexpr(TCooperative)
+		                {
+		                    // Get the maximum number of active blocks for the given kernel on the current device.
+		                    int const maxActiveBlocks = std::apply(
+		                        [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
+		                            return getMaxActiveBlocks<TAcc>(
+		                                getDev(queue),
+		                                task.m_kernelFnObj,
+		                                blockThreadExtent,
+		                                threadElemExtent,
+		                                args...);
+		                        },
+		                        task.m_args);
+
+		#            if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+		                    std::cout << "cooperative kernel launch\n";
+		                    std::cout << "maxBlocksPerGrid for the kernel " << core::demangled<TKernelFnObj> << ": "
+		                              << maxActiveBlocks << std::endl;
+		#            endif
+
+		                    if(maxActiveBlocks <= 0)
+		                    {
+		                        using namespace std::literals;
+		                        throw std::runtime_error(
+		                            "The kernel "s + std::string(core::demangled<TKernelFnObj>)
+		                            + " cannot be launched as a cooperative kernel with "s
+		                            + std::to_string(blockThreadExtent.prod()) + " threads per block on the device "s
+		                            + getAccName<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>()
+		                            + ", because not even a single block can be active.\n"s
+		                            + "Use alpaka::getMaxActiveBlocks(...) to check the block size at runtime."s);
+		                    }
+
+		                    int const requestedBlocks = static_cast<int>(gridBlockExtent.prod());
+		                    if(requestedBlocks < 0 || requestedBlocks > maxActiveBlocks)
+		                    {
+		                        using namespace std::literals;
+		                        throw std::runtime_error(
+		                            "The requested number of blocks is larger than the device limit for the kernel "s
+		                            + std::string(core::demangled<TKernelFnObj>) + ":\ndevice: "s
+		                            + getAccName<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>() + "\nrequested blocks: "s
+		                            + std::to_string(gridBlockExtent.prod()) + "\nmaximum allowed: "s
+		                            + std::to_string(maxActiveBlocks) + "\n"s
+		                            + "Use alpaka::getMaxActiveBlocks(...) to query the limit at runtime."s);
+		                    }
+		                }
+		#        endif
+
 		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                // Log the function attributes.
 		                typename TApi::FuncAttributes_t funcAttrs;
@@ -35052,11 +36437,26 @@
 		                std::apply(
 		                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
 		                    {
-		                        kernelName<<<
-		                            gridDim,
-		                            blockDim,
-		                            static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-		                            queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
+		                        // checks whether to launch cooperative or non-cooperative kernel
+		                        if constexpr(TCooperative)
+		                        {
+		                            void const* kernelArgs[] = {&threadElemExtent, &task.m_kernelFnObj, &args...};
+		                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchCooperativeKernel(
+		                                kernelName,
+		                                gridDim,
+		                                blockDim,
+		                                const_cast<void**>(kernelArgs),
+		                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+		                                queue.getNativeHandle()));
+		                        }
+		                        else
+		                        {
+		                            kernelName<<<
+		                                gridDim,
+		                                blockDim,
+		                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+		                                queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
+		                        }
 		                    },
 		                    task.m_args);
 
@@ -35140,6 +36540,40 @@
 		                    funcAttrs.maxThreadsPerBlock);
 		#        endif
 		                return kernelFunctionAttributes;
+		            }
+		        };
+
+		        //! The CUDA/HIP get max active blocks for cooperative kernel specialization.
+		        template<typename TAcc, typename TKernelFnObj, typename TApi, typename TDim, typename TIdx, typename... TArgs>
+		        struct MaxActiveBlocks<TAcc, DevUniformCudaHipRt<TApi>, TKernelFnObj, TDim, TIdx, TArgs...>
+		        {
+		            ALPAKA_FN_HOST static auto getMaxActiveBlocks(
+		                TKernelFnObj const& kernelFnObj,
+		                DevUniformCudaHipRt<TApi> const& device,
+		                alpaka::Vec<TDim, TIdx> const& blockThreadExtent,
+		                alpaka::Vec<TDim, TIdx> const& threadElemExtent,
+		                TArgs const&... args) -> int
+		            {
+		                auto const blockSharedMemDynSizeBytes
+		                    = getBlockSharedMemDynSizeBytes<TAcc>(kernelFnObj, blockThreadExtent, threadElemExtent, args...);
+
+		#        ifdef __CUDACC_DEBUG__
+		                // Empirically, when a CUDA kernel is compiled in device-debug mode, it is not safe to use more than
+		                // one block per multiprocessor.
+		                int numBlocksPerSm = 1;
+		#        else
+		                // Query the maximum number of blocks per multiprocessor that can be active at the same time.
+		                int numBlocksPerSm = 0;
+		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::occupancyMaxActiveBlocksPerMultiprocessor(
+		                    &numBlocksPerSm,
+		                    alpaka::detail::gpuKernel<TKernelFnObj, TAcc, remove_restrict_t<std::decay_t<TArgs>>...>,
+		                    static_cast<int>(blockThreadExtent.prod()),
+		                    static_cast<std::size_t>(blockSharedMemDynSizeBytes)));
+		#        endif
+
+		                auto multiProcessorCount = trait::GetAccDevProps<TAcc>::getAccDevProps(device).m_multiProcessorCount;
+
+		                return numBlocksPerSm * static_cast<int>(multiProcessorCount);
 		            }
 		        };
 
@@ -35244,9 +36678,9 @@
 
 	namespace alpaka
 	{
-	    template<typename TAcc, typename TDev, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
 	    using TaskKernelGpuCudaRt
-	        = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDev, TDim, TIdx, TKernelFnObj, TArgs...>;
+	        = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>;
 	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -35257,7 +36691,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuHipRt.hpp ==
 	// ==
-	/* Copyright 2022 Andrea Bocci
+	/* Copyright 2026 Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -35269,8 +36703,10 @@
 
 	namespace alpaka
 	{
-	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelGpuHipRt = TaskKernelGpuUniformCudaHipRt<ApiHipRt, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	    using TaskKernelGpuCudaHipRt
+	        = TaskKernelGpuUniformCudaHipRt<ApiHipRt, TAcc, TDim, TIdx, TKernelFnObj, TCooperative, TArgs...>;
+
 	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_HIP_ENABLED
@@ -35281,7 +36717,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuSyclAmd.hpp ==
 	// ==
-	/* Copyright 2025 Aurora Perego
+	/* Copyright 2026 Aurora Perego, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -35293,9 +36729,15 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelGpuSyclAmd
-	        = TaskKernelGenericSycl<TagGpuSyclAmd, AccGpuSyclAmd<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	    using TaskKernelGpuSyclAmd = TaskKernelGenericSycl<
+	        TagGpuSyclAmd,
+	        AccGpuSyclAmd<TDim, TIdx>,
+	        TDim,
+	        TIdx,
+	        TKernelFnObj,
+	        TCooperative,
+	        TArgs...>;
 
 	} // namespace alpaka
 
@@ -35307,7 +36749,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2024 Jan Stephan, Aurora Perego
+	/* Copyright 2026 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -35320,9 +36762,15 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelGpuSyclIntel
-	        = TaskKernelGenericSycl<TagGpuSyclIntel, AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	    using TaskKernelGpuSyclIntel = TaskKernelGenericSycl<
+	        TagGpuSyclIntel,
+	        AccGpuSyclIntel<TDim, TIdx>,
+	        TDim,
+	        TIdx,
+	        TKernelFnObj,
+	        TCooperative,
+	        TArgs...>;
 
 	} // namespace alpaka
 
@@ -35334,7 +36782,7 @@
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuSyclNvidia.hpp ==
 	// ==
-	/* Copyright 2025 Aurora Perego
+	/* Copyright 2026 Aurora Perego, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -35346,9 +36794,15 @@
 
 	namespace alpaka
 	{
-	    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	    using TaskKernelGpuSyclNvidia
-	        = TaskKernelGenericSycl<TagGpuSyclNvidia, AccGpuSyclNvidia<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+	    template<typename TDim, typename TIdx, typename TKernelFnObj, bool TCooperative, typename... TArgs>
+	    using TaskKernelGpuSyclNvidia = TaskKernelGenericSycl<
+	        TagGpuSyclNvidia,
+	        AccGpuSyclNvidia<TDim, TIdx>,
+	        TDim,
+	        TIdx,
+	        TKernelFnObj,
+	        TCooperative,
+	        TArgs...>;
 
 	} // namespace alpaka
 
@@ -39966,7 +41420,7 @@
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/uniformCudaHip/traits/BufUniformCudaHipRtTraits.hpp ==
 		// ==
-		/* Copyright 2025 Anton Reinhard, Maria Michailidi
+		/* Copyright 2026 Anton Reinhard, Maria Michailidi
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -40274,14 +41728,14 @@
 
 		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		            std::cout << __func__;
-		            if constexpr(Dim::value >= 1)
+		            if constexpr(TDim::value >= 1)
 		                std::cout << " ew: " << getWidth(extent);
-		            if constexpr(Dim::value >= 2)
+		            if constexpr(TDim::value >= 2)
 		                std::cout << " eh: " << getHeight(extent);
-		            if constexpr(Dim::value >= 3)
+		            if constexpr(TDim::value >= 3)
 		                std::cout << " ed: " << getDepth(extent);
 		            std::cout << " ptr: " << memPtr;
-		            if constexpr(Dim::value >= 2)
+		            if constexpr(TDim::value >= 2)
 		                std::cout << " rowpitch: " << pitch;
 		            std::cout << std::endl;
 		#    endif
