@@ -92,6 +92,7 @@ However some of the accelerator back-end implementations require different boost
 
 When an accelerator back-end using *CUDA* is enabled, version *12.0* (with nvcc as CUDA compiler) or version *12.0* (with clang as CUDA compiler) of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
+*NOTE*: When using clang as a native *CUDA* compiler with version *13.0* or newer of the *CUDA SDK*, CMake 3.31.8 or 4.0.3 and newer is required, because older versions of CMake cannot identify clang as a *CUDA* compiler.
 *NOTE*: Separable compilation is disabled by default and can be enabled via the CMake flag `CMAKE_CUDA_SEPARABLE_COMPILATION`.
 
 When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
