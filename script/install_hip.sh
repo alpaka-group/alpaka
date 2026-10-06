@@ -24,17 +24,34 @@ else
     retry_cmd apt-get -y --quiet install wget gnupg2
 
     if [ "$(version "${ALPAKA_CI_HIP_VERSION}")" -lt "$(version "7.3.0")" ]; then
-        # AMD container keys are outdated and must be updated
-        source /etc/os-release
-        wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
-        echo "deb https://repo.radeon.com/rocm/apt/${ALPAKA_CI_HIP_VERSION} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/rocm.list
-        retry_cmd apt-get -y --quiet update
-
-        ALPAKA_CI_ROCM_VERSION=$ALPAKA_CI_HIP_VERSION
+        # ALPAKA_CI_ROCM_REPO_VERSION is the name of the repository directory, ALPAKA_CI_ROCM_VERSION is the version
+        # suffix of the packages. Use the latest patch release of each ROCm version, which has its own X.Y.Z
+        # repository. For other versions use the X.Y repository, which contains the X.Y.0 packages: there are no
+        # X.Y.0 directories.
+        case "${ALPAKA_CI_HIP_VERSION}" in
+            6.0) ALPAKA_CI_ROCM_REPO_VERSION=6.0.3 ;;
+            6.1) ALPAKA_CI_ROCM_REPO_VERSION=6.1.5 ;;
+            6.2) ALPAKA_CI_ROCM_REPO_VERSION=6.2.4 ;;
+            6.3) ALPAKA_CI_ROCM_REPO_VERSION=6.3.4 ;;
+            6.4) ALPAKA_CI_ROCM_REPO_VERSION=6.4.4 ;;
+            # the 7.0.3 repository contains the 7.0.2 packages
+            7.0) ALPAKA_CI_ROCM_REPO_VERSION=7.0.2 ;;
+            7.1) ALPAKA_CI_ROCM_REPO_VERSION=7.1.1 ;;
+            7.2) ALPAKA_CI_ROCM_REPO_VERSION=7.2.4 ;;
+            *) ALPAKA_CI_ROCM_REPO_VERSION=${ALPAKA_CI_HIP_VERSION} ;;
+        esac
+        ALPAKA_CI_ROCM_VERSION=${ALPAKA_CI_ROCM_REPO_VERSION}
         # append .0 if no patch level is defined
         if ! echo $ALPAKA_CI_ROCM_VERSION | grep -Eq '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+'; then
             ALPAKA_CI_ROCM_VERSION="${ALPAKA_CI_ROCM_VERSION}.0"
         fi
+        echo_green "<INSTALL: ROCm ${ALPAKA_CI_ROCM_VERSION}>"
+
+        # AMD container keys are outdated and must be updated
+        source /etc/os-release
+        wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
+        echo "deb https://repo.radeon.com/rocm/apt/${ALPAKA_CI_ROCM_REPO_VERSION} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/rocm.list
+        retry_cmd apt-get -y --quiet update
 
         apt install --no-install-recommends -y rocm-llvm${ALPAKA_CI_ROCM_VERSION} hip-runtime-amd${ALPAKA_CI_ROCM_VERSION} rocm-dev${ALPAKA_CI_ROCM_VERSION} rocm-utils${ALPAKA_CI_ROCM_VERSION} rocrand-dev${ALPAKA_CI_ROCM_VERSION} rocminfo${ALPAKA_CI_ROCM_VERSION} rocm-cmake${ALPAKA_CI_ROCM_VERSION} rocm-device-libs${ALPAKA_CI_ROCM_VERSION} rocm-core${ALPAKA_CI_ROCM_VERSION} rocm-smi-lib${ALPAKA_CI_ROCM_VERSION}
         if [ $(version ${ALPAKA_CI_ROCM_VERSION}) -ge $(version "6.0.0") ]; then
