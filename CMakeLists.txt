@@ -36,7 +36,7 @@ project(
     alpaka
     VERSION ${alpaka_VERSION_MAJOR}.${alpaka_VERSION_MINOR}.${alpaka_VERSION_PATCH}
     DESCRIPTION "The alpaka library is a header-only C++20 abstraction library for accelerator development."
-    HOMEPAGE_URL "https://github.com/alpaka-group/alpaka3"
+    HOMEPAGE_URL "https://github.com/alpaka-group/alpaka"
     LANGUAGES NONE
 )
 

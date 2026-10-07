@@ -114,9 +114,9 @@ endfunction()
 ##   CMAKE_BINARY_DIR=build (defined by CMake configure)
 ##   PROJECT_NAME=vectorAdd (defined by CMake configure)
 ##
-##   SRC_FILE=alpaka3/example/src/vector_add.cpp
+##   SRC_FILE=alpaka/example/src/vector_add.cpp
 ##   api_name=cuda
-##   OUT_VAR=alpaka3/build/alpaka_build_files/cuda/vectorAdd/example/src/vector_add.cpp
+##   OUT_VAR=alpaka/build/alpaka_build_files/cuda/vectorAdd/example/src/vector_add.cpp
 function(copy_with_structure SRC_FILE api_name OUT_VAR)
     # get the absolut path to derive in the next command the relative path to CMAKE_CURRENT_LIST_DIR
     get_filename_component(SRC_FILE_ABSOLUTE "${SRC_FILE}" REALPATH)

@@ -1,6 +1,6 @@
 # Contributing
 
-Please review our more detailed [Coding Guidelines](https://alpaka3.readthedocs.io/en/latest/contribution/sphinx.html) as well.
+Please review our more detailed [Coding Guidelines](https://alpaka.readthedocs.io/en/latest/contribution/sphinx.html) as well.
 
 ## Pre-commit
 

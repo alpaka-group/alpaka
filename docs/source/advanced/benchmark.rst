@@ -9,7 +9,7 @@ If you like to run benchmarks you should set at least the following CMake variab
 
 .. code-block::
 
-  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-ftree-vectorize -march=native" --build ../alpaka3
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-ftree-vectorize -march=native" --build ../alpaka
   # with CUDA enabled
   # -DCMAKE_CUDA_FLAGS="-ftree-vectorize -march=native"
   # with HIP enabled

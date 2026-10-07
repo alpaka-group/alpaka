@@ -25,7 +25,7 @@ add_subdirectory(dataStorage)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/snippets/fetchContent/)
 
 # Configure the fetchContent example as a separate CMake project
-# This simulates how a user would actually use alpaka3 via FetchContent
+# This simulates how a user would actually use alpaka via FetchContent
 # We need to pass through the C++ compiler since the environment isnt shared with the process
 execute_process(
     COMMAND

@@ -5,8 +5,8 @@ type: software
 authors:
   - name: "alpaka contributors"
 license: "MPL-2.0"
-repository-code: "https://github.com/alpaka-group/alpaka3"
-url: "https://github.com/alpaka-group/alpaka3"
+repository-code: "https://github.com/alpaka-group/alpaka"
+url: "https://github.com/alpaka-group/alpaka"
 version: "3.0.0"
 abstract: "A header-only C++20 abstraction library for accelerator development with performance portability across CPUs and GPUs."
 preferred-citation:

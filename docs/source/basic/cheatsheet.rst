@@ -12,8 +12,8 @@ Cheatsheet
 General
 -------
 
-- Getting alpaka: https://github.com/alpaka-group/alpaka3
-- Issue tracker, questions, support: https://github.com/alpaka-group/alpaka3/issues
+- Getting alpaka: https://github.com/alpaka-group/alpaka
+- Issue tracker, questions, support: https://github.com/alpaka-group/alpaka/issues
 - All alpaka names are in namespace alpaka and header file `alpaka/alpaka.hpp`
 - This document assumes
 
