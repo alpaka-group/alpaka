@@ -463,9 +463,18 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             # This is mandatory because with C++20 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--expt-relaxed-constexpr>")
 
+            # workaround: ptxas from CUDA 12.0 recurses without bound on the line information for sm_90, until it
+            # crashes or runs out of memory
+            set(_alpaka_CUDA_LINEINFO "-lineinfo")
+            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 12.1 AND CMAKE_CUDA_ARCHITECTURES MATCHES "(^|;)(90|all)")
+                message(WARNING "nvcc 12.0 with sm_90 detected. Disabling the line information in RelWithDebInfo builds.")
+                set(_alpaka_CUDA_LINEINFO "")
+            endif()
+
             # CMake automatically sets '-g' in debug mode
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:SHELL:-G>" # -G overrides -lineinfo
-                                                             "$<$<AND:$<CONFIG:RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:SHELL:-g -lineinfo>")
+                                                             "$<$<AND:$<CONFIG:RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:SHELL:-g ${_alpaka_CUDA_LINEINFO}>")
+            unset(_alpaka_CUDA_LINEINFO)
 
             if(alpaka_FAST_MATH STREQUAL ON)
                 alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--use_fast_math>")
