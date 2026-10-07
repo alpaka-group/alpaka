@@ -99,7 +99,7 @@ TEST_CASE("manually calculate 2D Pitch", "[docs]")
     SECTION("validate with stepping byte by byte through linearized memory")
     {
         // a visualization of the 2D memory layout can be found in the documentation
-        // https://alpaka3.readthedocs.io/en/latest/advanced/datastorage.html#memory-layout-of-multidimensional-data-storage
+        // https://alpaka.readthedocs.io/en/latest/advanced/datastorage.html#memory-layout-of-multidimensional-data-storage
         std::byte* memPtr = mem2D.data();
         // the byte postion in the 2D memory
         size_t offset = 0;
@@ -192,7 +192,7 @@ TEST_CASE("manual calculate 3D Pitch", "[docs]")
     SECTION("validate with stepping byte by byte through linearized memory")
     {
         // a visualization of the 3D memory layout can be found in the documentation
-        // https://alpaka3.readthedocs.io/en/latest/advanced/datastorage.html#memory-layout-of-multidimensional-data-storage
+        // https://alpaka.readthedocs.io/en/latest/advanced/datastorage.html#memory-layout-of-multidimensional-data-storage
         std::byte* memPtr = mem3D.data();
         // the byte postion in the 3D memory
         size_t offset = 0;

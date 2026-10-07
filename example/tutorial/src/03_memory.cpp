@@ -89,7 +89,7 @@ auto main() -> int
      *   onHost::DeviceSpec{api::oneApi, deviceKind::intelGpu}
      *
      * A list of api's and device kinds can be found
-     * https://alpaka3.readthedocs.io/en/latest/basic/cheatsheet.html#available-apis
+     * https://alpaka.readthedocs.io/en/latest/basic/cheatsheet.html#available-apis
      */
     return onHost::executeForEachIfHasDevice(
         [=](auto const& devSpec) { return example(devSpec); },

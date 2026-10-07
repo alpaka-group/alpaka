@@ -11,7 +11,7 @@ repos:
   rev: v6.0.0
   hooks:
   - id: no-commit-to-branch
-    args: [-b, develop]
+    args: [-b, dev_v3.x]
   - id: check-merge-conflict
   - id: trailing-whitespace
     exclude_types: [markdown, rst]

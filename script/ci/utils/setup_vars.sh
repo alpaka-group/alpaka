@@ -118,7 +118,7 @@ if [[ -n ${GITLAB_CI+x} ]]; then
         export APCI_BRANCH_NAME
         unset _pr_number _repo_owner _repo
     else
-        export APCI_GIT_URL="https://github.com/alpaka-group/alpaka3.git"
+        export APCI_GIT_URL="https://github.com/alpaka-group/alpaka.git"
         export APCI_BRANCH_NAME="${CI_COMMIT_REF_NAME}"
     fi
 

@@ -171,7 +171,7 @@ namespace alpaka::onHost::internal
         /** Perform data copy.
          *
          * To understand the usage of pitches to shift pointers within the implementation see
-         * https://alpaka3.readthedocs.io/en/latest/advanced/datastorage.html#pitches
+         * https://alpaka.readthedocs.io/en/latest/advanced/datastorage.html#pitches
          */
         void operator()(
             syclGeneric::Queue<T_Device>& queue,
