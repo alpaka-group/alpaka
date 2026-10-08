@@ -1,4 +1,4 @@
-/* Copyright 2025 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+/* Copyright 2026 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
  *                Christian Kaever, Maria Michailidi, Simone Balducci
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -10,10 +10,28 @@
 #include "alpaka/mem/view/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 
+#include <concepts>
+#include <cstddef>
+#include <type_traits>
+
 namespace alpaka
 {
     //! The CPU device handle.
     class DevCpu;
+
+    namespace concepts
+    {
+
+        template<typename TAllocator>
+        concept Allocator = std::copyable<TAllocator>
+                            && requires(TAllocator alloc, void* ptr, std::size_t bytes, std::size_t align) {
+                                   {
+                                       alloc.allocate(bytes, align)
+                                   } -> std::same_as<void*>;
+                                   alloc.deallocate(ptr);
+                               };
+
+    } // namespace concepts
 
     //! The buffer traits.
     namespace trait
@@ -54,6 +72,26 @@ namespace alpaka
         template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
         struct BufAllocManaged;
 
+        //! The allocator-aware memory allocator trait.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx,
+            typename TDev,
+            concepts::Allocator TAllocator,
+            typename TSfinae = void>
+        struct BufAllocWithAllocator;
+
+        //! The allocator-aware stream-ordered memory allocator trait.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx,
+            typename TDev,
+            concepts::Allocator TAllocator,
+            typename TSfinae = void>
+        struct AsyncBufAllocWithAllocator;
+
         //! The trait to transform a mutable buffer into a constant one.
         template<typename TBuf>
         struct MakeConstBuf;
@@ -71,6 +109,7 @@ namespace alpaka
     //! Allocates memory on the given device.
     //!
     //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
     //! \tparam TExtent The extent type of the buffer.
     //! \tparam TDev The type of device the buffer is allocated on.
     //! \param dev The device to allocate the buffer on.
@@ -80,8 +119,29 @@ namespace alpaka
     ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent = TExtent())
     {
         using Idx = std::conditional_t<std::is_void_v<TIdx>, Idx<TExtent>, TIdx>;
-
         return trait::BufAlloc<TElem, Dim<TExtent>, Idx, TDev>::allocBuf(dev, extent);
+    }
+
+    //! Allocates memory on the given device using an external allocator.
+    //!
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TDev The type of device the buffer is allocated on.
+    //! \tparam TAllocator The type of the allocator wrapper.
+    //! \param dev The device to allocate the buffer on.
+    //! \param extent The extent of the buffer.
+    //! \param allocator The allocator wrapper to use.
+    //! \return The newly allocated buffer.
+    template<typename TElem, typename TIdx = void, typename TExtent = void, typename TDev = void, typename TAllocator>
+    requires concepts::Allocator<std::remove_cvref_t<TAllocator>>
+    ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent, TAllocator&& allocator)
+    {
+        using Idx = std::conditional_t<std::is_void_v<TIdx>, Idx<TExtent>, TIdx>;
+        return trait::BufAllocWithAllocator<TElem, Dim<TExtent>, Idx, TDev, std::remove_cvref_t<TAllocator>>::allocBuf(
+            dev,
+            extent,
+            std::forward<TAllocator>(allocator));
     }
 
     //! Allocates stream-ordered memory on the given device.
@@ -99,6 +159,26 @@ namespace alpaka
         using Idx = std::conditional_t<std::is_void_v<TIdx>, Idx<TExtent>, TIdx>;
 
         return trait::AsyncBufAlloc<TElem, Dim<TExtent>, Idx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
+    }
+
+    //! Allocates stream-ordered memory on the given device using an external allocator.
+    template<
+        typename TElem,
+        typename TIdx = void,
+        typename TExtent = void,
+        typename TQueue = void,
+        typename TAllocator>
+    requires concepts::Allocator<std::remove_cvref_t<TAllocator>>
+    ALPAKA_FN_HOST auto allocAsyncBuf(TQueue queue, TExtent const& extent, TAllocator&& allocator)
+    {
+        using Idx = std::conditional_t<std::is_void_v<TIdx>, Idx<TExtent>, TIdx>;
+        return trait::AsyncBufAllocWithAllocator<
+            TElem,
+            Dim<TExtent>,
+            Idx,
+            alpaka::Dev<TQueue>,
+            std::remove_cvref_t<TAllocator>>::
+            allocAsyncBuf(std::move(queue), extent, std::forward<TAllocator>(allocator));
     }
 
     //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
@@ -133,6 +213,31 @@ namespace alpaka
         else
         {
             return allocBuf<TElem, Idx>(getDev(queue), extent);
+        }
+
+        ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(getDev(queue), extent));
+    }
+
+    //! If supported, allocates stream-ordered memory using an external allocator; otherwise falls back to cached
+    //! allocBuf.
+    template<
+        typename TElem,
+        typename TIdx = void,
+        typename TExtent = void,
+        typename TQueue = void,
+        typename TAllocator>
+    requires concepts::Allocator<std::remove_cvref_t<TAllocator>>
+    ALPAKA_FN_HOST auto allocAsyncBufIfSupported(TQueue queue, TExtent const& extent, TAllocator&& allocator)
+    {
+        using Idx = std::conditional_t<std::is_void_v<TIdx>, Idx<TExtent>, TIdx>;
+
+        if constexpr(hasAsyncBufSupport<alpaka::Dev<TQueue>, Dim<TExtent>>)
+        {
+            return allocAsyncBuf<TElem, Idx>(std::move(queue), extent, std::forward<TAllocator>(allocator));
+        }
+        else
+        {
+            return allocBuf<TElem, Idx>(getDev(queue), extent, std::forward<TAllocator>(allocator));
         }
 
         ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(getDev(queue), extent));
