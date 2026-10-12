@@ -151,6 +151,31 @@ if(NOT TARGET alpaka)
     target_compile_features(alpaka INTERFACE cxx_std_${alpaka_CXX_STANDARD})
 
     add_library(alpaka::alpaka ALIAS alpaka)
+
+    # Check for Clang + libc++ combination and warn about SIMD performance
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        # Check if we're using libc++
+        set(_using_libcpp FALSE)
+        if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
+            set(_using_libcpp TRUE)
+        else()
+            # Detect if we're using libc++ by checking compiler defines
+            execute_process(
+                COMMAND ${CMAKE_CXX_COMPILER} -E -dM -x c++ -std=c++${alpaka_CXX_STANDARD} -include version /dev/null
+                OUTPUT_VARIABLE _compiler_defines
+                ERROR_QUIET
+            )
+            if(_compiler_defines MATCHES "_LIBCPP_VERSION")
+                set(_using_libcpp TRUE)
+            endif()
+        endif()
+
+        if(_using_libcpp)
+            message(WARNING "Alpaka SIMD: Clang with libc++ has limited std::experimental::simd support. "
+                           "For optimal SIMD performance, consider using libstdc++ instead: "
+                           "add -stdlib=libstdc++ to CMAKE_CXX_FLAGS")
+        endif()
+    endif()
 endif()
 
 set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
