@@ -112,14 +112,21 @@ These can be used interchangeably (some restrictions apply - see below) with the
   export RegisterPageFaultHandlerOnMigration=1
   ```
   Note that this is an undocumented debug setting of the Intel GPU runtime, and may change without notice.
-* On Intel GPUs, the warp operations (`alpaka::warp::activemask`, `all`, `any`, `ballot`, `shfl`, `shfl_up`,
-  `shfl_down` and `shfl_xor`) give wrong results when some threads have returned early from the kernel and the SYCL
-  code is compiled without inlining, for example with `-O0` (as in CMake's `Debug` builds), `-fno-inline` or
-  `-fno-inline-functions`: the threads that have returned are still considered active.
-  To avoid silently wrong results, alpaka fails the compilation with a `static_assert` if any of these operations is
-  used in such a build.
-  Enable optimisations (`-O1` or higher) and inlining, or define `ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK` to disable
-  the check if the kernels using the warp operations never return early.
+* The warp operations (`alpaka::warp::activemask`, `all`, `any`, `ballot`, `shfl`, `shfl_up`, `shfl_down` and
+  `shfl_xor`) are available only on some SYCL backends and with some oneAPI versions:
+  * Intel CPUs and GPUs: starting from oneAPI 2025.2. Up to oneAPI 2026.1 they give wrong results when some threads
+    have returned early from the kernel and the SYCL code is compiled without inlining, for example with `-O0` (as in
+    CMake's `Debug` builds), `-fno-inline` or `-fno-inline-functions`: the threads that have returned are still
+    considered active. In these builds the warp operations are not available, unless
+    `ALPAKA_SYCL_DISABLE_WARP_INLINE_CHECK` is defined, for example if the kernels using them never return early.
+  * NVIDIA GPUs: starting from oneAPI 2025.0, also in `Debug` builds.
+  * AMD GPUs: not available.
+  * Intel/Altera FPGAs: not available.
+
+  Using a warp operation where it is not available fails the compilation with a `static_assert` that explains why.
+  `alpaka::warp::getSize` is always available.
+* With oneAPI 2025.0 the NVIDIA GPU backend does not support `Debug` builds, because `ptxas` fails on the device debug
+  information: CMake stops with an error.
 * The latest Intel OpenCL CPU runtime does not work properly. Some tests (`atomicTest`, `blockSharedTest`, `blockSharedSharingTest` and `warpTest`) fail with a `PI_ERROR_OUT_OF_RESOURCES`. The only runtime version that seems to work is 2022.14.8.0.04 (can be downloaded [here](https://github.com/intel/llvm/releases/download/2022-WW33/oclcpuexp-2022.14.8.0.04_rel.tar.gz)) apart from a bug with `all_of_group` / `any_of_group` that requires the warp size being equal to the block size as a workaround.
 
 ### Choosing the sub-group size (warp size)

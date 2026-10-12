@@ -11,9 +11,9 @@ project = "alpaka"
 copyright = "Documentation under CC-BY 4.0."
 author = "The alpaka team."
 # The short X.Y version.
-version = "2.2.0"
+version = "2.3.0"
 # The full version, including alpha/beta/rc tags.
-release = "2.2.0-rc"
+release = "2.3.0-rc"
 
 # The master toctree document.
 master_doc = "index"
