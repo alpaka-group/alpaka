@@ -58,20 +58,20 @@ namespace alpaka::trait
     {
         static auto brev(IntrinsicGenericSycl const&, std::uint32_t value) -> std::uint32_t
         {
-	    value = ((value & 0xaaaaaaaa) >> 1) | ((value & 0x55555555) << 1);
-            value = ((value & 0xcccccccc) >> 2) | ((value & 0x33333333) << 2);
-            value = ((value & 0xf0f0f0f0) >> 4) | ((value & 0x0f0f0f0f) << 4);
-            value = ((value & 0xff00ff00) >> 8) | ((value & 0x00ff00ff) << 8);
+            value = ((value & 0xaaaa'aaaa) >> 1) | ((value & 0x5555'5555) << 1);
+            value = ((value & 0xcccc'cccc) >> 2) | ((value & 0x3333'3333) << 2);
+            value = ((value & 0xf0f0'f0f0) >> 4) | ((value & 0x0f0f'0f0f) << 4);
+            value = ((value & 0xff00'ff00) >> 8) | ((value & 0x00ff'00ff) << 8);
             return (value >> 16) | (value << 16);
         }
 
         static auto brev(IntrinsicGenericSycl const&, std::uint64_t value) -> std::uint64_t
         {
-            value = ((value & 0xAAAAAAAAAAAAAAAAULL) >> 1)  | ((value & 0x5555555555555555ULL) << 1);
-            value = ((value & 0xCCCCCCCCCCCCCCCCULL) >> 2)  | ((value & 0x3333333333333333ULL) << 2);
-            value = ((value & 0xF0F0F0F0F0F0F0F0ULL) >> 4)  | ((value & 0x0F0F0F0F0F0F0F0FULL) << 4);
-            value = ((value & 0xFF00FF00FF00FF00ULL) >> 8)  | ((value & 0x00FF00FF00FF00FFULL) << 8);
-            value = ((value & 0xFFFF0000FFFF0000ULL) >> 16) | ((value & 0x0000FFFF0000FFFFULL) << 16);
+            value = ((value & 0xAAAA'AAAA'AAAA'AAAAULL) >> 1) | ((value & 0x5555'5555'5555'5555ULL) << 1);
+            value = ((value & 0xCCCC'CCCC'CCCC'CCCCULL) >> 2) | ((value & 0x3333'3333'3333'3333ULL) << 2);
+            value = ((value & 0xF0F0'F0F0'F0F0'F0F0ULL) >> 4) | ((value & 0x0F0F'0F0F'0F0F'0F0FULL) << 4);
+            value = ((value & 0xFF00'FF00'FF00'FF00ULL) >> 8) | ((value & 0x00FF'00FF'00FF'00FFULL) << 8);
+            value = ((value & 0xFFFF'0000'FFFF'0000ULL) >> 16) | ((value & 0x0000'FFFF'0000'FFFFULL) << 16);
             return (value >> 32) | (value << 32);
         }
     };
@@ -81,12 +81,12 @@ namespace alpaka::trait
     {
         static auto clz(IntrinsicGenericSycl const&, std::uint32_t value) -> std::int32_t
         {
-            return sycl::clz(value);
+            return sycl::clz(static_cast<std::int32_t>(value));
         }
 
         static auto clz(IntrinsicGenericSycl const&, std::uint64_t value) -> std::int32_t
         {
-            return sycl::clz(value);
+            return sycl::clz(static_cast<std::int32_t>(value));
         }
     };
 

@@ -28,6 +28,11 @@ namespace alpaka
 
     namespace detail
     {
+        template<typename TAcc>
+        concept IsGpuSyclAccelerator = std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuSyclIntel>
+                                       || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuSyclAmd>
+                                       || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuSyclNvidia>
+                                       || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagFpgaSyclIntel>;
 
         /**
          * @brief Compute lane mask
@@ -37,16 +42,16 @@ namespace alpaka
          * @return compute lane mask:
          */
         template<concepts::Acc TAcc>
-        requires(
-            std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuCudaRt>
-            || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuHipRt>)
-        ALPAKA_FN_ACC inline constexpr auto getLaneMask(std::uint32_t const lane_idx) -> typename TAcc::mask_type
+        requires(IsGpuSyclAccelerator<TAcc> || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuCudaRt>
+                 || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuHipRt>)
+        ALPAKA_FN_ACC inline constexpr auto getLaneMask(std::uint32_t lane_idx) -> typename TAcc::mask_type
         {
-            return (1ULL << lane_idx);
+            return typename TAcc::mask_type{1} << lane_idx;
         }
 
         template<concepts::Acc TAcc>
-        requires std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>
+        requires(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>
+                 || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagCpuSycl>)
         ALPAKA_FN_ACC inline constexpr auto getLaneMask(std::uint32_t const lane_idx) -> typename TAcc::mask_type
         {
             return (1U << lane_idx);
@@ -180,7 +185,12 @@ namespace alpaka
                 mask_t const active_mask = 1 | getLaneMask<TAcc>(high_lane_idx);
                 if(isWorkLane<TAcc>(active_mask, lane_idx))
                 {
-                    std::uint32_t const tmp = warp::shfl(acc, active_mask, local_offset, high_lane_idx, w_extent);
+                    std::uint32_t const tmp = warp::shfl(
+                        acc,
+                        active_mask,
+                        local_offset,
+                        static_cast<std::int32_t>(high_lane_idx),
+                        w_extent);
 
                     if(lane_idx == 0)
                         local_offset = tmp; // lane 0 keeps full (inclusive for the last lane) sum
@@ -259,10 +269,9 @@ namespace alpaka
          */
 
         template<concepts::Acc TAcc, typename reduce_t, typename reducer_t, bool all = true>
-        requires(
-            std::is_arithmetic_v<reduce_t>
-            && (std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuCudaRt>
-                || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuHipRt>) )
+        requires(std::is_arithmetic_v<reduce_t>
+                 && (IsGpuSyclAccelerator<TAcc> || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuCudaRt>
+                     || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuHipRt>) )
         ALPAKA_FN_ACC ALPAKA_FN_INLINE auto warpReduce(TAcc const& acc, reduce_t const in, reducer_t const f)
             -> reduce_t
         {
@@ -282,7 +291,9 @@ namespace alpaka
         }
 
         template<concepts::Acc TAcc, typename reduce_t, typename reducer_t, bool all = true>
-        requires(std::is_arithmetic_v<reduce_t> && std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>)
+        requires(std::is_arithmetic_v<reduce_t>
+                 && (std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>
+                     || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagCpuSycl>) )
         ALPAKA_FN_ACC ALPAKA_FN_INLINE auto warpReduce(TAcc const&, reduce_t const in, reducer_t const) -> reduce_t
         {
             reduce_t result = in;
@@ -304,7 +315,9 @@ namespace alpaka
          */
 
         template<concepts::Acc TAcc, typename reduce_t, typename reducer_t, bool all = true>
-        requires std::is_arithmetic_v<reduce_t>
+        requires(std::is_arithmetic_v<reduce_t>
+                 && (IsGpuSyclAccelerator<TAcc> || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuCudaRt>
+                     || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagGpuHipRt>) )
         ALPAKA_FN_ACC ALPAKA_FN_INLINE auto warpSparseReduce(
             TAcc const& acc,
             typename TAcc::mask_type const mask,
@@ -360,6 +373,22 @@ namespace alpaka
             }
 
             return res;
+        }
+
+        template<concepts::Acc TAcc, typename reduce_t, typename reducer_t, bool all = true>
+        requires(std::is_arithmetic_v<reduce_t>
+                 && (std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCpu>
+                     || std::is_same_v<alpaka::AccToTag<TAcc>, alpaka::TagCpuSycl>) )
+        ALPAKA_FN_ACC ALPAKA_FN_INLINE auto warpSparseReduce(
+            TAcc const&,
+            typename TAcc::mask_type const,
+            std::uint32_t const,
+            reduce_t const in,
+            reducer_t const) -> reduce_t
+        {
+            reduce_t result = in;
+
+            return result;
         }
 
         /**

@@ -47,7 +47,7 @@ namespace alpaka
             TValue mask{1};
             TValue result{0};
 
-            const std::uint32_t bits = sizeof(value) * 8;
+            std::uint32_t const bits = sizeof(value) * 8;
             for(std::uint32_t bit = 0; bit < bits; bit++)
             {
                 if(value & mask)
@@ -71,7 +71,7 @@ namespace alpaka
 
             TValue mask{1};
 
-            const std::uint32_t bits = sizeof(value) * 8;
+            std::uint32_t const bits = sizeof(value) * 8;
             for(std::uint32_t bit = 0; bit < bits; bit++)
             {
                 if((value & mask) == 0)

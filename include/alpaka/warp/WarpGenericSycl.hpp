@@ -280,13 +280,13 @@ namespace alpaka::warp::trait
 
         template<typename T>
         static auto shfl(
-            warp::WarpGenericSycl<TDim> const& /*warp*/,
-            warp::WarpGenericSycl<TDim>::mask_type mask,
+            warp::WarpGenericSycl<TDim> const& warp,
+            warp::WarpGenericSycl<TDim>::mask_type /*mask*/,
             T value,
             std::int32_t srcLane,
             std::int32_t width)
         {
-            return shfl(value, srcLane, width);
+            return shfl(warp, value, srcLane, width);
         }
     };
 
@@ -317,7 +317,7 @@ namespace alpaka::warp::trait
         template<typename T>
         static auto shfl_up(
             warp::WarpGenericSycl<TDim> const& /*warp*/,
-            warp::WarpGenericSycl<TDim>::mask_type mask,
+            warp::WarpGenericSycl<TDim>::mask_type /*mask*/,
             T value,
             std::uint32_t offset, /* must be the same for all work-items in the group */
             std::int32_t width)
@@ -341,7 +341,7 @@ namespace alpaka::warp::trait
         template<typename T>
         static auto shfl_down(
             warp::WarpGenericSycl<TDim> const& /*warp*/,
-            warp::WarpGenericSycl<TDim>::mask_type mask,
+            warp::WarpGenericSycl<TDim>::mask_type /*mask*/,
             T value,
             std::uint32_t offset,
             std::int32_t width)
@@ -405,7 +405,7 @@ namespace alpaka::warp::trait
     struct MatchAny<warp::WarpGenericSycl<TDim>>
     {
         template<typename TValue>
-        static auto matchAny(warp::WarpGenericSycl<TDim> const& /*warp*/, TValue const& value) ->
+        static auto match_any(warp::WarpGenericSycl<TDim> const& /*warp*/, TValue const& value) ->
             typename warp::WarpGenericSycl<TDim>::mask_type
         {
             auto const subGroup = sycl::ext::oneapi::this_work_item::get_sub_group();
@@ -433,12 +433,12 @@ namespace alpaka::warp::trait
         }
 
         template<typename TValue>
-        static auto matchAny(
+        static auto match_any(
             warp::WarpGenericSycl<TDim> const& warp,
             typename warp::WarpGenericSycl<TDim>::mask_type mask,
             TValue const& value) -> typename warp::WarpGenericSycl<TDim>::mask_type
         {
-            return matchAny(warp, value) & mask;
+            return match_any(warp, value) & mask;
         }
     };
 
@@ -446,36 +446,36 @@ namespace alpaka::warp::trait
     struct MatchAll<warp::WarpGenericSycl<TDim>>
     {
         template<typename TValue>
-        static auto matchAll(warp::WarpGenericSycl<TDim> const& warp, TValue const& value, std::int32_t& predicate) ->
+        static auto match_all(warp::WarpGenericSycl<TDim> const& warp, TValue const& value, std::int32_t* predicate) ->
             typename warp::WarpGenericSycl<TDim>::mask_type
         {
             using MaskType = typename warp::WarpGenericSycl<TDim>::mask_type;
 
-            auto const matchingMask = MatchAny<warp::WarpGenericSycl<TDim>>::matchAny(warp, value);
+            auto const matchingMask = MatchAny<warp::WarpGenericSycl<TDim>>::match_any(warp, value);
 
             auto const activeMask = Ballot<warp::WarpGenericSycl<TDim>>::ballot(warp, 1);
 
             auto const allMatch = matchingMask == activeMask;
 
-            predicate = static_cast<std::int32_t>(allMatch);
+            *predicate = static_cast<std::int32_t>(allMatch);
 
             return allMatch ? activeMask : MaskType{0u};
         }
 
         template<typename TValue>
-        static auto matchAll(
+        static auto match_all(
             warp::WarpGenericSycl<TDim> const& warp,
             typename warp::WarpGenericSycl<TDim>::mask_type mask,
             TValue const& value,
-            std::int32_t& predicate) -> typename warp::WarpGenericSycl<TDim>::mask_type
+            std::int32_t* predicate) -> typename warp::WarpGenericSycl<TDim>::mask_type
         {
             using mask_type = typename warp::WarpGenericSycl<TDim>::mask_type;
 
-            auto const matchingMask = MatchAny<warp::WarpGenericSycl<TDim>>::matchAny(warp, value) & mask;
+            auto const matchingMask = MatchAny<warp::WarpGenericSycl<TDim>>::match_any(warp, value) & mask;
 
             auto const allMatch = mask != mask_type{0u} && matchingMask == mask;
 
-            predicate = static_cast<std::int32_t>(allMatch);
+            *predicate = static_cast<std::int32_t>(allMatch);
 
             return allMatch ? mask : mask_type{0u};
         }
@@ -485,8 +485,8 @@ namespace alpaka::warp::trait
     struct SyncWarpThreads<warp::WarpGenericSycl<TDim>>
     {
         static auto syncWarpThreads(
-            warp::WarpGenericSycl<TDim> const& warp,
-            warp::WarpGenericSycl<TDim>::mask_type mask) -> void
+            warp::WarpGenericSycl<TDim> const& /*warp*/,
+            warp::WarpGenericSycl<TDim>::mask_type /*mask*/) -> void
         {
             auto actual_group = get_opportunistic_group();
             sycl::group_barrier(actual_group);
