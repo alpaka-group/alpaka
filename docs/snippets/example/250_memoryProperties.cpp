@@ -102,12 +102,11 @@ TEST_CASE("memory allocations like", "[docs]")
     onHost::concepts::Device auto computeDevice = onHost::makeHostDevice();
     // BEGIN-TUTORIAL-allocLike
     concepts::Vector auto extents = Vec{2u, 3u};
-    // allocHost() takes no device argument, it always allocates on the host CPU device, so query that one
-    auto hostDevice = onHost::makeHostDevice();
+    // allocHost() takes no device argument, hostHasProperty() queries the host device without constructing one
     // short notation to allocate memory on the host without a host device as first argument
     concepts::IBuffer auto hostBuffer = onHost::allocHost<int>(
         extents,
-        onHost::hasProperty(hostDevice, memoryProperty::bestLatency, memoryProperty::defaultProperty));
+        onHost::hostHasProperty(memoryProperty::bestLatency, memoryProperty::defaultProperty));
     // inherits value type and extents but does NOT copy the data
     concepts::IBuffer auto devDoubleBuffer = onHost::allocLike(
         computeDevice,

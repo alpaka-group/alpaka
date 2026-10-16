@@ -94,6 +94,15 @@ static_assert(
     onHost::hasProperty(TestDeviceWithoutMemoryProperties{}, memoryProperty::defaultProperty)
     == memoryProperty::defaultProperty);
 
+// hostHasProperty() is usable in a constant expression, which proves it constructs no device: onHost::Device has
+// no constexpr destructor, so an expression involving one could never appear here.
+static_assert(onHost::hostHasProperty(memoryProperty::defaultProperty) == memoryProperty::defaultProperty);
+
+// memoryProperty::defaultProperty is implemented by every device, so the one element list is accepted.
+static_assert(
+    onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty)
+    == onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+
 struct IotaValidate
 {
     ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<int> auto success, concepts::IMdSpan auto in)
@@ -253,13 +262,26 @@ TEMPLATE_LIST_TEST_CASE("alloc with memory property", "", TestDeviceSpecs)
         onHost::hasProperty(queue, memoryProperty::bestBandwidth, memoryProperty::defaultProperty)
         == onHost::hasProperty(device, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
 
-    // allocHost() takes no device argument, it always allocates on the host CPU device. Query that device to
-    // learn which properties it implements, which depends on whether alpaka was built with hwloc.
-    auto hostDevice = onHost::makeHostDevice();
+    // allocHost() takes no device argument, it always allocates on the host CPU device. hostHasProperty() queries
+    // that device without constructing one, which properties it implements depends on the hwloc build option.
     [[maybe_unused]] auto hostBuffer = onHost::allocHost<int>(
         dataSize,
-        onHost::hasProperty(hostDevice, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+        onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
     CHECK(hostBuffer.getExtents() == alpaka::Vec{dataSize});
+
+    // It agrees with hasProperty() on an explicitly constructed host device.
+    auto hostDevice = onHost::makeHostDevice();
+    static_assert(
+        onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty)
+        == onHost::hasProperty(hostDevice, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+    static_assert(
+        onHost::hostHasProperty(memoryProperty::locality, memoryProperty::defaultProperty)
+        == onHost::hasProperty(hostDevice, memoryProperty::locality, memoryProperty::defaultProperty));
+
+    [[maybe_unused]] auto hostLikeBuffer = onHost::allocHostLike(
+        hostBuffer,
+        onHost::hostHasProperty(memoryProperty::locality, memoryProperty::defaultProperty));
+    CHECK(hostLikeBuffer.getExtents() == hostBuffer.getExtents());
 
     // Device allocations use hasProperty() so that the same source compiles for every backend, a property which the
     // device does not implement is rejected at compile time when it is passed directly.

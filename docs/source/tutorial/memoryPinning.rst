@@ -25,6 +25,8 @@ Only devices which implement a property accept it. Passing ``memoryProperty::bes
 
 If the device declares the property but the machine cannot deliver it, for example because hwloc has no data for the attribute on this hardware, a warning is printed once on ``std::cerr`` and the allocation keeps the default placement. The allocation itself always succeeds in this case. Users cannot work around this issue. Set ``ALPAKA_NO_WARNINGS`` to suppress the warning.
 
+``allocHost()`` and ``allocHostLike()`` have no device argument to pass, use ``alpaka::onHost::hostHasProperty()`` there instead. It behaves like ``hasProperty()`` but queries the host device.
+
 See :ref:`properties <properties>` for how a backend declares the properties it supports.
 
 Works with all kinds of allocations:
