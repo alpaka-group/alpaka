@@ -244,6 +244,13 @@ if(NOT _alpaka_TARGETS_EXTENDED)
         include(${_alpaka_CMAKE_DIR}/alpakaCompilePedantic.cmake)
     endif()
 
+    ## Fast Math
+    if(alpaka_FAST_MATH STREQUAL ON)
+        alpaka_set_compiler_options(HOST target alpaka_target_host "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang,IntelLLVM>:SHELL:-ffast-math>")
+    elseif(alpaka_FAST_MATH STREQUAL OFF)
+        alpaka_set_compiler_options(HOST target alpaka_target_host "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang,IntelLLVM>:SHELL:-fno-fast-math>")
+    endif()
+
     ## search for atomic ref
     # Check for C++20 std::atomic_ref first
     # we only check the CXX compiler, equal to OpenMP which is checked for the CXX compiler only too.
