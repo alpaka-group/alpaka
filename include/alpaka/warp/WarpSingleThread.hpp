@@ -81,6 +81,14 @@ namespace alpaka::warp
             {
                 return predicate ? 1u : 0u;
             }
+
+            static auto ballot(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type mask,
+                std::int32_t predicate) -> WarpSingleThread::mask_type
+            {
+                return (predicate ? 1u : 0u) & mask;
+            }
         };
 
         template<>
@@ -89,6 +97,17 @@ namespace alpaka::warp
             template<typename T>
             static auto shfl(
                 warp::WarpSingleThread const& /*warp*/,
+                T val,
+                std::int32_t /*srcLane*/,
+                std::int32_t /*width*/)
+            {
+                return val;
+            }
+
+            template<typename T>
+            static auto shfl(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type /*mask*/,
                 T val,
                 std::int32_t /*srcLane*/,
                 std::int32_t /*width*/)
@@ -109,6 +128,17 @@ namespace alpaka::warp
             {
                 return val;
             }
+
+            template<typename T>
+            static auto shfl_up(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type /*mask*/,
+                T val,
+                std::uint32_t /*srcLane*/,
+                std::int32_t /*width*/)
+            {
+                return val;
+            }
         };
 
         template<>
@@ -117,6 +147,17 @@ namespace alpaka::warp
             template<typename T>
             static auto shfl_down(
                 warp::WarpSingleThread const& /*warp*/,
+                T val,
+                std::uint32_t /*srcLane*/,
+                std::int32_t /*width*/)
+            {
+                return val;
+            }
+
+            template<typename T>
+            static auto shfl_down(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type /*mask*/,
                 T val,
                 std::uint32_t /*srcLane*/,
                 std::int32_t /*width*/)
@@ -138,5 +179,43 @@ namespace alpaka::warp
                 return val;
             }
         };
+
+        template<>
+        struct MatchAny<WarpSingleThread>
+        {
+            template<typename T>
+            static auto match_any(warp::WarpSingleThread const& /*warp*/, WarpSingleThread::mask_type mask, T /*val*/)
+                -> WarpSingleThread::mask_type
+            {
+                return mask;
+            }
+        };
+
+        template<>
+        struct MatchAll<WarpSingleThread>
+        {
+            template<typename T>
+            static auto match_all(
+                warp::WarpSingleThread const& /*warp*/,
+                WarpSingleThread::mask_type mask,
+                T /*val*/,
+                std::int32_t* predicat) -> WarpSingleThread::mask_type
+            {
+                *predicat = 1;
+                return mask;
+            }
+        };
+
+        template<>
+        struct SyncWarpThreads<WarpSingleThread>
+        {
+            static auto syncWarpThreads(
+                [[maybe_unused]] warp::WarpSingleThread const& warp,
+                [[maybe_unused]] WarpSingleThread::mask_type mask) -> void
+            {
+            }
+        };
+
+
     } // namespace trait
 } // namespace alpaka::warp

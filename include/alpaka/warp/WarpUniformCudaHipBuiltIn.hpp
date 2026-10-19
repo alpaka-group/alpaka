@@ -164,9 +164,23 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> WarpUniformCudaHipBuiltIn::mask_type
             {
+                // return ballot(warp, activemask(warp), predicate);
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __ballot_sync(activemask(warp), predicate);
+#        else
+                return __ballot(predicate);
+#        endif
+            }
+
+            static __device__ auto ballot(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                std::int32_t predicate) -> WarpUniformCudaHipBuiltIn::mask_type
+            {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+                return __ballot_sync(mask, predicate);
 #        else
                 return __ballot(predicate);
 #        endif
@@ -190,6 +204,22 @@ namespace alpaka::warp
                 return __shfl(val, srcLane, width);
 #        endif
             }
+
+            template<typename T>
+            static __device__ auto shfl(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val,
+                int srcLane,
+                std::int32_t width) -> T
+            {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+                return __shfl_sync(mask, val, srcLane, width);
+#        else
+                return __shfl(val, srcLane, width);
+#        endif
+            }
         };
 
         template<>
@@ -205,6 +235,22 @@ namespace alpaka::warp
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
             || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
                 return __shfl_up_sync(activemask(warp), val, offset, width);
+#        else
+                return __shfl_up(val, offset, width);
+#        endif
+            }
+
+            template<typename T>
+            static __device__ auto shfl_up(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val,
+                std::uint32_t offset,
+                std::int32_t width) -> T
+            {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+                return __shfl_up_sync(mask, val, offset, width);
 #        else
                 return __shfl_up(val, offset, width);
 #        endif
@@ -228,6 +274,22 @@ namespace alpaka::warp
                 return __shfl_down(val, offset, width);
 #        endif
             }
+
+            template<typename T>
+            static __device__ auto shfl_down(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val,
+                std::uint32_t offset,
+                std::int32_t width) -> T
+            {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+                return __shfl_down_sync(mask, val, offset, width);
+#        else
+                return __shfl_down(val, offset, width);
+#        endif
+            }
         };
 
         template<>
@@ -245,6 +307,84 @@ namespace alpaka::warp
                 return __shfl_xor_sync(activemask(warp), val, mask, width);
 #        else
                 return __shfl_xor(val, mask, width);
+#        endif
+            }
+        };
+
+        template<>
+        struct MatchAny<WarpUniformCudaHipBuiltIn>
+        {
+            template<typename T>
+            static __device__ auto match_any(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val) -> WarpUniformCudaHipBuiltIn::mask_type
+            {
+#        if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(7, 0, 0))
+                return __match_any_sync(mask, val);
+#        else
+                constexpr std::int32_t w_extent = GetSizeCompileTime<WarpUniformCudaHipBuiltIn>::getSizeCompileTime();
+                WarpUniformCudaHipBuiltIn::mask_type match = 0;
+                for(std::int32_t iter_lane_idx = 0; iter_lane_idx < w_extent; ++iter_lane_idx)
+                {
+                    T iter_val = __shfl_sync(mask, val, iter_lane_idx, w_extent);
+                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask
+                        = static_cast<WarpUniformCudaHipBuiltIn::mask_type>(1 << iter_lane_idx);
+                    if(iter_val == val)
+                        match |= iter_lane_mask;
+                }
+                return match & mask;
+#        endif
+            }
+        };
+
+        template<>
+        struct MatchAll<WarpUniformCudaHipBuiltIn>
+        {
+            template<typename T>
+            static __device__ auto match_all(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask,
+                T val,
+                std::int32_t* predicate) -> WarpUniformCudaHipBuiltIn::mask_type
+            {
+#        if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && ALPAKA_ARCH_PTX >= ALPAKA_VERSION_NUMBER(7, 0, 0))                \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(7, 0, 0))
+                return __match_all_sync(mask, val, predicate);
+#        else
+                constexpr std::int32_t w_extent = GetSizeCompileTime<WarpUniformCudaHipBuiltIn>::getSizeCompileTime();
+                std::int32_t p = 0;
+                for(std::int32_t iter_lane_idx = 0; iter_lane_idx < w_extent; ++iter_lane_idx)
+                {
+                    T iter_val = __shfl_sync(mask, val, iter_lane_idx, w_extent);
+                    WarpUniformCudaHipBuiltIn::mask_type const iter_lane_mask
+                        = static_cast<WarpUniformCudaHipBuiltIn::mask_type>(1 << iter_lane_idx);
+                    if(iter_val == val)
+                        p = 1;
+                }
+
+                WarpUniformCudaHipBuiltIn::mask_type updated_mask = __ballot_sync(mask, p);
+                bool const is_all = (updated_mask == mask);
+                if(is_all)
+                    *predicate = 0;
+                else
+                    *predicate = 1;
+                return is_all ? mask : static_cast<WarpUniformCudaHipBuiltIn::mask_type>(0);
+#        endif
+            }
+        };
+
+        template<>
+        struct SyncWarpThreads<WarpUniformCudaHipBuiltIn>
+        {
+            static __device__ auto syncWarpThreads(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                WarpUniformCudaHipBuiltIn::mask_type mask) -> void
+            {
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)                                                                      \
+            || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && ALPAKA_COMP_HIP >= ALPAKA_VERSION_NUMBER(6, 2, 0))
+                __syncwarp(mask);
 #        endif
             }
         };
