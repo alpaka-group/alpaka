@@ -126,7 +126,7 @@ Arguments
 ``alpaka_FAST_MATH``
   .. code-block:: markdown
 
-     Enable fast-math in kernels.
+     Set fast-math for kernels and host-side code.
 
 ``alpaka_FTZ``
   .. code-block:: markdown

@@ -34,15 +34,26 @@ namespace alpaka::math::internal
      * @return SIMD pack with result of the math function for each lane
      */
 #define ALPAKA_SIMD_MATH_UNARY_OP(className, funcName)                                                                \
+    namespace adlMathLookup                                                                                           \
+    { /* Some clang version e.g. 20 have issues with correct ADL lookups.                                             \
+       * Therefore the math function is required to be added to the namespace instead of to the function body.        \
+       * We add a namespace to avoid that we pull all math functions into a regular used alpaka namespace.            \
+       */                                                                                                             \
+        using std::funcName;                                                                                          \
+        template<typename T_Arg>                                                                                      \
+        constexpr auto lookUp##className(T_Arg const& arg) -> ALPAKA_TYPEOF(funcName(arg))                            \
+        {                                                                                                             \
+            return funcName(arg);                                                                                     \
+        }                                                                                                             \
+    }                                                                                                                 \
     template<typename T_MathImpl, alpaka::concepts::Simd T_Arg>                                                       \
     struct className::Op<T_MathImpl, T_Arg>                                                                           \
     {                                                                                                                 \
         constexpr auto operator()(T_MathImpl mathImpl, T_Arg const& arg) const -> T_Arg                               \
         {                                                                                                             \
-            using std::funcName;                                                                                      \
-            if constexpr(requires { funcName(arg.asNativeType()); })                                                  \
+            if constexpr(requires { adlMathLookup::lookUp##className(arg.asNativeType()); })                          \
             {                                                                                                         \
-                return T_Arg{funcName(arg.asNativeType())};                                                           \
+                return T_Arg{adlMathLookup::lookUp##className(arg.asNativeType())};                                   \
             }                                                                                                         \
             else                                                                                                      \
             {                                                                                                         \
