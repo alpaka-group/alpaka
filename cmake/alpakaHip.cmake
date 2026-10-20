@@ -62,6 +62,18 @@ if(CMAKE_HIP_COMPILER)
     target_link_libraries(alpaka_target_hip INTERFACE "$<$<LINK_LANGUAGE:CXX>:hip::host>")
     alpaka_set_compiler_options(HOST_DEVICE target alpaka_target_hip "$<$<COMPILE_LANGUAGE:CXX>:-D__HIP_PLATFORM_AMD__>")
 
+    if(alpaka_DEP_OMP)
+        # The CXX and HIP compilers must use compatible OpenMP runtimes.
+        if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            message(
+                FATAL_ERROR
+                "OpenMP with HIP requires a Clang CXX compiler to avoid incompatible OpenMP runtimes. "
+                "Select CMAKE_CXX_COMPILER from the HIP toolchain or set alpaka_DEP_OMP=OFF."
+            )
+        endif()
+        alpaka_set_compiler_options(HOST target alpaka_target_hip "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-Xarch_host -fopenmp>")
+    endif()
+
     alpaka_compiler_option(HIP_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
     if(alpaka_HIP_KEEP_FILES)
         alpaka_set_compiler_options(HOST_DEVICE target alpaka_target_hip "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-save-temps>")
