@@ -16,6 +16,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+#include <atomic>
 #include <vector>
 
 
@@ -197,6 +198,56 @@ TEMPLATE_LIST_TEST_CASE("OmpCollectiveQueue", "[queue][OmpCollectiveQueue]", Tes
         Vec{47u, 43u, 17u, 13u});
 
     std::apply([&](auto const&... extent) { (runTest(queue, exec, extent), ...); }, extents);
+}
+
+TEMPLATE_LIST_TEST_CASE("OmpCollectiveQueue public operations", "[queue][OmpCollectiveQueue]", TestBackends)
+{
+    auto device = test::getDeviceOrSkipTest(TestType::makeDict());
+    auto queue = device.makeQueue(queueKind::ompCollective);
+
+    SECTION("isEmpty")
+    {
+        // A fresh queue is empty; the collective dispatch must return the parent's bool.
+        CHECK(queue.isEmpty());
+    }
+    SECTION("native handle")
+    {
+        // Copies share one queue, so both handles must identify the same native queue.
+        auto alias = queue;
+        CHECK(queue.getNativeHandle() == alias.getNativeHandle());
+    }
+    SECTION("native function")
+    {
+        // Native submission must be wired through the collective backend too.
+        bool called = false;
+        auto const handle = queue.getNativeHandle();
+        queue.enqueueNativeFn([&](auto nativeHandle) { called = nativeHandle == handle; });
+        // Outside a parallel region, the collective queue is blocking.
+        CHECK(called);
+    }
+    SECTION("OpenMP parallel region")
+    {
+        std::atomic<uint32_t> calls{0u};
+        std::atomic<bool> empty{true};
+        std::atomic<bool> correctHandle{true};
+        auto const handle = queue.getNativeHandle();
+#    pragma omp parallel num_threads(numOmpThreads)
+        {
+            if(!queue.isEmpty())
+                empty = false;
+            queue.enqueueNativeFn(
+                [&](auto nativeHandle)
+                {
+                    ++calls;
+                    if(nativeHandle != handle)
+                        correctHandle = false;
+                });
+            onHost::wait(queue);
+        }
+        CHECK(empty.load());
+        CHECK(correctHandle.load());
+        CHECK(calls.load() == 1u);
+    }
 }
 #else
 TEST_CASE("OmpCollectiveQueue", "[queue][OmpCollectiveQueue]")
