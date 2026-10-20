@@ -10,6 +10,7 @@
 #include "alpaka/onHost/concepts.hpp"
 #include "alpaka/tag.hpp"
 #include "alpaka/trait.hpp"
+#include "alpaka/unused.hpp"
 
 /** Functionality which is usable on the host CPU controller thread. */
 namespace alpaka::onHost
@@ -351,5 +352,16 @@ namespace alpaka::onHost
     consteval auto allBackends(std::tuple<T_DevicesSpecs...> const& usedDeviceSpecs, auto const& listOfExecutors)
     {
         return std::tuple_cat(createBackendList(usedDeviceSpecs, listOfExecutors));
+    }
+
+    /** Generate the full set of backend dictionaries
+     *
+     * Fallback for empty list for device kinds or api's.
+     * @return empty tuple
+     */
+    consteval std::tuple<> allBackends(std::tuple<> const& deviceSpecOrApi, auto const& listOfExecutors)
+    {
+        alpaka::unused(deviceSpecOrApi, listOfExecutors);
+        return {};
     }
 } // namespace alpaka::onHost
