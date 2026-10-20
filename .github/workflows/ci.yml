@@ -2,12 +2,12 @@ name: CI Build and Test
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev_v3.x ]
   pull_request:
-    branches: [ dev ]
+    branches: [ dev_v3.x ]
 
 # Stop CI for the PR if the PR is updates.
-# Stop CI runs for dev branch if a new PR is merged into the dev branch.
+# Stop CI runs for dev_v3.x branch if a new PR is merged into the dev_v3.x branch.
 concurrency:
   group: >-
     ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('ref-{0}', github.ref) }}
