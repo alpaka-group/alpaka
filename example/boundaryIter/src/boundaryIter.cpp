@@ -167,9 +167,9 @@ auto main() -> int
      *   onHost::DeviceSpec{api::oneApi, deviceKind::intelGpu}
      *
      * A list of api's and device kinds can be found
-     * https://alpaka3.readthedocs.io/en/latest/basic/cheatsheet.html#available-apis
+     * https://alpaka.readthedocs.io/en/latest/basic/cheatsheet.html#available-apis
      * A list of executors can be found
-     * https://alpaka3.readthedocs.io/en/latest/basic/cheatsheet.html#executors
+     * https://alpaka.readthedocs.io/en/latest/basic/cheatsheet.html#executors
      */
     return onHost::executeForEach(
         [=](alpaka::concepts::BackendSpec auto const& backend)

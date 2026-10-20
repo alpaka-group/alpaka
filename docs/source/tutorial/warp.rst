@@ -33,7 +33,7 @@ The following example reduces one value per lane to one value per warp.
 Important rules:
 
 - All participating threads must call the same warp intrinsic in a compatible control-flow region.
-- Use the actual `warp size reported by the accelerator <https://alpaka3.readthedocs.io/en/latest/doxygen/structalpaka_1_1onAcc_1_1Acc.html>`_ instead of hard-coding ``32``, which is typical for NVIDIA devices.
+- Use the actual `warp size reported by the accelerator <https://alpaka.readthedocs.io/en/latest/doxygen/structalpaka_1_1onAcc_1_1Acc.html>`_ instead of hard-coding ``32``, which is typical for NVIDIA devices.
 - On host devices, the warp size can be ``1``. The code still compiles and runs, but the subgroup behavior is naturally trivial there.
 
 `Other warp <../doxygen/namespacealpaka_1_1onAcc_1_1warp.html>`_ functions:

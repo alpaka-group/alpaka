@@ -7,16 +7,16 @@ cmake_minimum_required(VERSION 3.25)
 
 project(fetchContent LANGUAGES CXX VERSION 1.0)
 
-# Use CMake's FetchContent to download and integrate alpaka3 directly from GitHub
+# Use CMake's FetchContent to download and integrate alpaka directly from GitHub
 include(FetchContent)
 
-# Declare where to fetch alpaka3 from
+# Declare where to fetch alpaka from
 # This will download the library at configure time
-FetchContent_Declare(alpaka3 GIT_REPOSITORY https://github.com/alpaka-group/alpaka3.git GIT_TAG dev)
+FetchContent_Declare(alpaka GIT_REPOSITORY https://github.com/alpaka-group/alpaka.git GIT_TAG dev_v3.x)
 
-# Make alpaka3 available for use in this project
+# Make alpaka available for use in this project
 # This downloads, configures, and makes the library targets available
-FetchContent_MakeAvailable(alpaka3)
+FetchContent_MakeAvailable(alpaka)
 
 # Define the device specification for your application
 # Format: "api:deviceKind" where:

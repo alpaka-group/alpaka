@@ -1169,7 +1169,7 @@ z
     </g>
    </g>
    <g id="text_3">
-    <!-- alpaka3 -->
+    <!-- alpaka -->
     <g style="fill: #f97316" transform="translate(1006.961875 56.7936) scale(0.2 -0.2)">
      <defs>
       <path id="DejaVuSans-Bold-6b" d="M 538 4863
@@ -1781,7 +1781,7 @@ z
     </g>
    </g>
    <g id="text_10">
-    <!-- GB/s  ·  alpaka3 -->
+    <!-- GB/s  ·  alpaka -->
     <g style="fill: #7c2d12" transform="translate(905.76 362.8224) scale(0.11 -0.11)">
      <defs>
       <path id="DejaVuSans-42" d="M 1259 2228
@@ -3636,7 +3636,7 @@ z
 " style="fill: #f97316; stroke: #ffffff; stroke-width: 0.8; stroke-linejoin: miter"/>
     </g>
     <g id="text_32">
-     <!-- alpaka3 -->
+     <!-- alpaka -->
      <g transform="translate(479.066094 160.812521) scale(0.11 -0.11)">
       <use xlink:href="#DejaVuSans-61"/>
       <use xlink:href="#DejaVuSans-6c" transform="translate(61.279297 0)"/>

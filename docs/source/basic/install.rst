@@ -3,11 +3,6 @@
 Installation
 ============
 
-.. note::
-
-  You will find in the documentation very often the name *alpaka* and for directories ``alpaka3``, you will maybe wonder why we are not consistently using ``alpaka3`` everywhere.
-  The reason for this is that the complete code base will be copied to https://github.com/alpaka-group/alpaka after the first release, therefore options are already named ``alpaka``.
-
 **Installing dependencies**
 
 *alpaka* requires a modern C++ compiler (g++, clang++, nvcc, icpx).
@@ -50,13 +45,13 @@ If you only install *alpaka* without enabling tests, examples or benchmarks CMak
 .. code-block:: bash
 
   # Clone alpaka from github.com
-  git clone --branch dev https://github.com/alpaka-group/alpaka3.git
+  git clone --branch dev_v3.x https://github.com/alpaka-group/alpaka.git
   mkdir build && cd build
   # assumed folder structure
-  # ├── alpaka3
+  # ├── alpaka
   # └── build
   # if not set, the default is CMAKE_INSTALL_PREFIX=/usr/local
-  cmake -DCMAKE_INSTALL_PREFIX=/install/alpaka3 ..
+  cmake -DCMAKE_INSTALL_PREFIX=/install/alpaka ..
   cmake --install .
 
 The next CMake code snippet shows you how to integrate the installed *alpaka* library in your application.
@@ -73,7 +68,7 @@ Examples and brief description can be found in the follow up section :ref:`tests
   # ...
 
 The next commands should be executed in the terminal and assume that you prepend the environment variable ``CMAKE_PREFIX_PATH``
-with the path `/install/alpaka3`, that CMake knows where *alpaka* can be found.
+with the path `/install/alpaka`, that CMake knows where *alpaka* can be found.
 
 .. code-block:: bash
 
@@ -88,14 +83,14 @@ With CMake it is possible to use *alpaka* without installation, you can simply p
 .. code-block:: bash
 
   # Clone alpaka from github.com
-  git clone --branch dev https://github.com/alpaka-group/alpaka3.git
+  git clone --branch dev_v3.x https://github.com/alpaka-group/alpaka.git
 
 The next CMake code is very similar to the usage of an installed alpaka version with the difference that you should use ``add_subdirectory()`` instead of CMake's ``find_package()``
 
 .. code-block:: cmake
 
   # `${CMAKE_BINARY_DIR}/alpaka` places the alpaka code in your build directory in the sub directory `alpaka`
-  add_subdirectory("<path_to_cloned_alpaka3>" "${CMAKE_BINARY_DIR}/alpaka")
+  add_subdirectory("<path_to_cloned_alpaka>" "${CMAKE_BINARY_DIR}/alpaka")
   # ...
   add_executable(myTarget src/my.cpp)
   target_link_libraries(myTarget PUBLIC alpaka::alpaka)
@@ -208,11 +203,11 @@ The recipes shown here assume you have installed spack packages for specific com
 
 .. code-block::
 
-  # In a directory beside the alpaka source directory (for example in "build-alpaka3")
-  # ├── alpaka3
-  # └── build-alpaka3
+  # In a directory beside the alpaka source directory (for example in "build-alpaka")
+  # ├── alpaka
+  # └── build-alpaka
   # ..
-  cmake ../alpaka3 -Dalpaka_EXAMPLES=ON
+  cmake ../alpaka -Dalpaka_EXAMPLES=ON
   cmake --build . --parallel -t vectorAdd
   ./example/vectorAdd/vectorAdd # execution
 
@@ -221,7 +216,7 @@ The recipes shown here assume you have installed spack packages for specific com
 .. code-block::
 
   # ..
-  cmake ../alpaka3 -Dalpaka_TESTS=ON
+  cmake ../alpaka -Dalpaka_TESTS=ON
   cmake --build . --parallel
   ctest
 
@@ -248,9 +243,9 @@ This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or 
   spack load cmake@3.29.1
 
   # -Dalpaka_DEP_OMP=ON is implicitly set, if the compiler not support OpenMP only serial code will be generated
-  # Assuming alpaka source is in ../alpaka3 with respect to the current directory
+  # Assuming alpaka source is in ../alpaka with respect to the current directory
   #
-  cmake ../alpaka3 -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON
+  cmake ../alpaka -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON
   cmake --build . --parallel
   ctest --output-on-failure
 
@@ -261,7 +256,7 @@ This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or 
   spack load cmake@3.29.1
   spack load intel-oneapi-tbb@2021.10.0
 
-  cmake ../alpaka3 -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_TBB=ON -Dalpaka_DEP_OMP=OFF
+  cmake ../alpaka -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_TBB=ON -Dalpaka_DEP_OMP=OFF
   cmake --build . --parallel
   ctest --output-on-failure
 
@@ -273,7 +268,7 @@ This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or 
   spack load cuda@12.4.0
 
   # use -DCMAKE_CUDA_ARCHITECTURES=80 to set the GPU architecture
-  cmake ../alpaka3 -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_DEP_CUDA=ON -Dalpaka_EXEC_CpuSerial=OFF
+  cmake ../alpaka -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_DEP_CUDA=ON -Dalpaka_EXEC_CpuSerial=OFF
   cmake --build . --parallel
   ctest --output-on-failure
 
@@ -287,7 +282,7 @@ This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or 
 
   # use -DCMAKE_HIP_ARCHITECTURES=gfx906 to set the GPU architecture
   # for older CMake version sometimes the architecture must be set with -DAMDGPU_TARGETS=gfx906
-  cmake ../alpaka3 -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_DEP_HIP=ON -Dalpaka_EXEC_CpuSerial=OFF
+  cmake ../alpaka -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_DEP_HIP=ON -Dalpaka_EXEC_CpuSerial=OFF
   cmake --build . --parallel
   ctest --output-on-failure
 
@@ -311,7 +306,7 @@ This allows the usage of the corresponding executor e.g. `gpuCuda`, `gpuHip` or 
   # Cpu ISA e.g. avx,avx2, avx512
   # Nvidia only the sm number is needed e.g. 80
   # Amd full qualifier is required e.g. gfx906
-  cmake ../alpaka3 -DCMAKE_CXX_COMPILER=icpx -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_ONEAPI=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_EXEC_CpuSerial=OFF
+  cmake ../alpaka -DCMAKE_CXX_COMPILER=icpx -Dalpaka_TESTS=ON -Dalpaka_BENCHMARKS=ON -Dalpaka_EXAMPLES=ON -Dalpaka_DEP_ONEAPI=ON -Dalpaka_DEP_OMP=OFF -Dalpaka_EXEC_CpuSerial=OFF
   cmake --build . --parallel
   ctest --output-on-failure
 

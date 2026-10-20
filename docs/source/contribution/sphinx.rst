@@ -15,7 +15,7 @@ Manuel Documentation
 
 We use `Sphinx Doc <https://www.sphinx-doc.org/en/master/index.html>`_  for manual-style documentation and host the rendered documentation at https://readthedocs.com.
 
-If you are reading the `HTML version <https://alpaka3.readthedocs.io>`_ and want to improve or correct existing pages, check the "*Edit on GitHub*" link on the right upper corner of each document.
+If you are reading the `HTML version <https://alpaka.readthedocs.io>`_ and want to improve or correct existing pages, check the "*Edit on GitHub*" link on the right upper corner of each document.
 
 Alternatively, go to `docs/source` in our source code and follow the directory structure of `reStructuredText`_ (``.rst``) files there.
 For intrusive changes, like structural changes to chapters, please open an issue to discuss them beforehand.

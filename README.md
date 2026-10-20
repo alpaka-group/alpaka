@@ -2,15 +2,15 @@
 =================================================================
 
 [![License](https://img.shields.io/badge/license-MPL--2.0-6c757d.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
-[![CI](https://github.com/alpaka-group/alpaka3/actions/workflows/ci.yml/badge.svg?branch=dev&event=push)](https://github.com/alpaka-group/alpaka3/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/github/alpaka-group/alpaka3/branch/dev/graph/badge.svg)](https://app.codecov.io/github/alpaka-group/alpaka3)
-[![Docs](https://img.shields.io/badge/docs-Read%20the%20Docs-0f766e.svg)](https://alpaka3.readthedocs.io)
-[![User API](https://img.shields.io/badge/User%20API-Doxygen-2563eb.svg)](https://alpaka3.readthedocs.io/en/latest/doxygen/namespaces.html)
-[![Dev API](https://img.shields.io/badge/Dev%20API-Doxygen-7c3aed.svg)](https://alpaka3.readthedocs.io/en/latest/doxygen_dev/namespaces.html)
+[![CI](https://github.com/alpaka-group/alpaka/actions/workflows/ci.yml/badge.svg?branch=dev_v3.x&event=push)](https://github.com/alpaka-group/alpaka/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/alpaka-group/alpaka/branch/dev/graph/badge.svg)](https://app.codecov.io/github/alpaka-group/alpaka)
+[![Docs](https://img.shields.io/badge/docs-Read%20the%20Docs-0f766e.svg)](https://alpaka.readthedocs.io)
+[![User API](https://img.shields.io/badge/User%20API-Doxygen-2563eb.svg)](https://alpaka.readthedocs.io/en/latest/doxygen/namespaces.html)
+[![Dev API](https://img.shields.io/badge/Dev%20API-Doxygen-7c3aed.svg)](https://alpaka.readthedocs.io/en/latest/doxygen_dev/namespaces.html)
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-ea580c.svg)](https://isocpp.org/std/the-standard)
-[![Platforms](https://img.shields.io/badge/platform-linux-4b5563.svg)](https://github.com/alpaka-group/alpaka3)
-[![Architectures](https://img.shields.io/badge/architectures-x86%20%7C%20ARM%20%7C%20RISC--V-0284c7.svg)](https://github.com/alpaka-group/alpaka3)
-[![Accelerators](https://img.shields.io/badge/accelerators-NVIDIA%20GPU%20%7C%20AMD%20GPU%20%7C%20Intel%20GPU-0891b2.svg)](https://github.com/alpaka-group/alpaka3)
+[![Platforms](https://img.shields.io/badge/platform-linux-4b5563.svg)](https://github.com/alpaka-group/alpaka)
+[![Architectures](https://img.shields.io/badge/architectures-x86%20%7C%20ARM%20%7C%20RISC--V-0284c7.svg)](https://github.com/alpaka-group/alpaka)
+[![Accelerators](https://img.shields.io/badge/accelerators-NVIDIA%20GPU%20%7C%20AMD%20GPU%20%7C%20Intel%20GPU-0891b2.svg)](https://github.com/alpaka-group/alpaka)
 
 ![alpaka](docs/logo/alpaka_401x135.png)
 
@@ -61,9 +61,9 @@ Test the example on [Godbolt](https://godbolt.org/z/naavGMnhY).
 Performance portability
 -----------------------
 
-The BabelStream benchmark demonstrates that alpaka3 provides competitive memory-bandwidth performance across both CPU and GPU architectures using the same portable programming model.
+The BabelStream benchmark demonstrates that alpaka provides competitive memory-bandwidth performance across both CPU and GPU architectures using the same portable programming model.
 
-The following measurements compare alpaka3 with mainline alpaka and NVIDIA's native reference implementations.
+The following measurements compare alpaka with mainline alpaka and NVIDIA's native reference implementations.
 All results use double precision, and higher bandwidth is better.
 
 ![BabelStream performance on the NVIDIA GH200 GPU using CUDA 13.3](docs/images/babelstream-gh200-gpu.svg)
@@ -78,7 +78,7 @@ Software License
 Documentation
 -------------
 
-The documentation is available at: https://alpaka3.readthedocs.io
+The documentation is available at: https://alpaka.readthedocs.io
 
 Citation
 --------
