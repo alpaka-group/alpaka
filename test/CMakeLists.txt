@@ -83,4 +83,11 @@ function(alpaka_add_test_target target_prefix folder)
 endfunction()
 
 alpaka_add_test_target(unit_test_ ${CMAKE_CURRENT_SOURCE_DIR}/unit/**)
-#alpaka_add_test_target(integ_test_ ${CMAKE_CURRENT_SOURCE_DIR}/integ/**)
+
+# Expectations come from configuration, independently of compiler feature macros.
+target_compile_definitions(
+    unit_test_core_openmp
+    PRIVATE
+        ALPAKA_TEST_EXPECT_OMP=$<BOOL:${alpaka_DEP_OMP}>
+        ALPAKA_TEST_EXPECT_CPU_OMP=$<AND:$<BOOL:${alpaka_DEP_OMP}>,$<BOOL:${alpaka_EXEC_CpuOmpBlocks}>,$<BOOL:${alpaka_HOST_Cpu}>>
+)
