@@ -221,10 +221,17 @@ if(NOT _alpaka_TARGETS_EXTENDED)
     include(${_alpaka_CMAKE_DIR}/alpakaHwloc.cmake)
 
     ## OpenMP
-    # There is no way to get the correct flags for the language CUDA or HIP
     if(alpaka_DEP_OMP)
         find_package(OpenMP REQUIRED COMPONENTS CXX)
-        target_link_libraries(alpaka_target_host INTERFACE OpenMP::OpenMP_CXX)
+        # OpenMP::OpenMP_CXX adds IntelLLVM's -fiopenmp to link commands without a language guard.
+        # Restrict the target to CXX links and share only the runtime libraries with other link drivers.
+        # This is relevant in scenarios where IntelLLVM/SYCL and CUDA are enabled together with OpenMP
+        target_link_libraries(
+            alpaka_target_host
+            INTERFACE "$<LINK_ONLY:$<$<LINK_LANGUAGE:CXX>:OpenMP::OpenMP_CXX>>" ${OpenMP_CXX_LIBRARIES}
+        )
+        target_include_directories(alpaka_target_host SYSTEM INTERFACE ${OpenMP_CXX_INCLUDE_DIRS})
+        alpaka_set_compiler_options(HOST target alpaka_target_host "$<$<COMPILE_LANGUAGE:CXX>:SHELL:${OpenMP_CXX_FLAGS}>")
         message(STATUS "OpenMP found: ${OpenMP_CXX_VERSION}")
     endif()
 
