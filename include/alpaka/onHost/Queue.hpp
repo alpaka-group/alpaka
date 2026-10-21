@@ -253,9 +253,13 @@ namespace alpaka::onHost
                 *event.get());
         }
 
-        /** Wait until all operations in this queue are finished.
+        /** Wait until the given event is complete.
          *
-         * The caller will be blocked until all previously queued operations have been completed.
+         * A blocking wait for an event dependency keeps the queue busy: `isEmpty()` and `wait(queue)` still
+         * report unfinished work until this wait returns. Other threads' blocking submissions and enqueues
+         * may execute before the wait returns; concurrent calls have no cross-thread ordering guarantee.
+         *
+         * @param event Event to wait for.
          */
         template<alpaka::concepts::EventPolicyList T_EventPolicies>
         void waitFor(Event<Device<T_Api, T_DeviceKind>, T_EventPolicies> const& event) const
@@ -264,6 +268,8 @@ namespace alpaka::onHost
         }
 
         /** Checks if the queue does not have any enqueued work to process.
+         *
+         * For a blocking queue this call may block while a synchronous task is running.
          *
          * @attention: If you enqueue work outside alpaka by using the native handle of the queue, this function is
          * maybe not seeing this tasks and can return true even if there are unfinished tasks.

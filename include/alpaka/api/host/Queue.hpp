@@ -24,10 +24,12 @@
 #include "alpaka/onHost/internal/interface.hpp"
 #include "alpaka/onHost/mem/SharedBuffer.hpp"
 
+#include <condition_variable>
 #include <cstdint>
 #include <cstring>
 #include <future>
 #include <mutex>
+#include <thread>
 
 namespace alpaka::onHost
 {
@@ -79,6 +81,19 @@ namespace alpaka::onHost
             }
 
             Handle<T_Device> m_device;
+
+            /** Mutex to ensure sequential execution of tasks and operation if the queue is blocking.
+             *
+             * For non-blocking queue @c m_sharedCallbackThread is taking care of the execution order.
+             * The mutex is recursive because a task may release resources owned by the queue,
+             * e.g. a deferred SharedBuffer deleter submits the free into this queue from within a
+             * task which already holds the lock.
+             *
+             * It is declared before @c m_sharedCallbackThread so that it stays alive while the callback
+             * thread drains pending tasks during destruction.
+             */
+            mutable std::recursive_mutex m_mutex;
+
             std::shared_ptr<core::CallbackThread> m_sharedCallbackThread;
             uint32_t m_idx = 0u;
             uint32_t m_numaIdx = 0u;
@@ -94,14 +109,53 @@ namespace alpaka::onHost
              */
             std::atomic<uint32_t> m_blockingTaskExecutionDepth{0u};
 
-            /** Mutex to ensure sequential execution of tasks and operation if the queue is blocking.
+            /** Number of blocking tasks which are currently executed on this queue. */
+            uint32_t m_blockingExecutingTaskDepth{0u};
+
+            /** Thread id of the task which currently executes on this queue.
              *
-             * For non-blocking queue @c m_workerThread is taking care of the execution order.
-             * The mutex is recursive because a task may release resources owned by the queue,
-             * e.g. a deferred SharedBuffer deleter submits the free into this queue from within a
-             * task which already holds the lock.
+             * It is used to detect a nested same-thread operation, which must not wait for the task it is
+             * executed from.
              */
-            std::recursive_mutex m_mutex;
+            std::thread::id m_blockingExecutingTaskThreadId{};
+
+            /** Signals that a pending blocking dependency wait has finished. */
+            std::condition_variable_any m_blockingTaskCondition;
+
+            /** Keep the blocking-task bookkeeping consistent on every exit path.
+             *
+             * A blocking task contributes to the execution depth, a blocking dependency wait only to the total
+             * depth. The condition is notified once the total depth reaches zero so a concurrent
+             * queue synchronization can observe that all blocking work has finished.
+             */
+            struct BlockingDepthGuard
+            {
+                Queue& queue;
+                bool executingTask;
+
+                BlockingDepthGuard(Queue& queueIn, bool executingTaskIn)
+                    : queue(queueIn)
+                    , executingTask(executingTaskIn)
+                {
+                    std::lock_guard<std::recursive_mutex> lk(queue.m_mutex);
+                    ++queue.m_blockingTaskExecutionDepth;
+                    if(executingTask && ++queue.m_blockingExecutingTaskDepth == 1u)
+                        queue.m_blockingExecutingTaskThreadId = std::this_thread::get_id();
+                }
+
+                ~BlockingDepthGuard()
+                {
+                    std::lock_guard<std::recursive_mutex> lk(queue.m_mutex);
+                    if(executingTask && --queue.m_blockingExecutingTaskDepth == 0u)
+                    {
+                        // Invalidate the thread ID because nothing is executed.
+                        queue.m_blockingExecutingTaskThreadId = std::thread::id{};
+                    }
+                    // notify all waiting threads that the queue is free
+                    if(--queue.m_blockingTaskExecutionDepth == 0u)
+                        queue.m_blockingTaskCondition.notify_all();
+                }
+            };
 
             /** Submit a task to the queue.
              *
@@ -117,19 +171,8 @@ namespace alpaka::onHost
                 if(m_isBlocking)
                 {
                     std::lock_guard<std::recursive_mutex> lk(m_mutex);
-                    ++m_blockingTaskExecutionDepth;
-
-                    /* Decrement on every exit path, also if fn() throws, so that the depth always reflects the
-                     * number of blocking tasks which are currently executed. */
-                    struct DepthGuard
-                    {
-                        std::atomic<uint32_t>& depth;
-
-                        ~DepthGuard()
-                        {
-                            --depth;
-                        }
-                    } depthGuard{m_blockingTaskExecutionDepth};
+                    /* Keep the depth and the executing thread consistent on every exit path, also if fn() throws. */
+                    BlockingDepthGuard depthGuard{*this, true};
 
                     fn();
                     // silent tsan warnings: The promise is fulfilled directly and only a future which is true is
@@ -316,12 +359,28 @@ namespace alpaka::onHost
             void operator()(cpu::Queue<T_Device>& queue) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::queue);
-                /* If empty -> Enqueue an empty task as marker and wait for the future
-                 * else there is no need to wait
-                 */
-                if(queue.isQueueEmpty() == false)
+                if(queue.m_isBlocking)
                 {
-                    queue.submit([]() {}).wait();
+                    /* Wait until all blocking work, including a pending dependency wait, has finished. A nested
+                     * same-thread call must not wait for the task it is executed from.
+                     */
+                    std::unique_lock<std::recursive_mutex> lk(queue.m_mutex);
+                    bool const nested = queue.m_blockingExecutingTaskDepth != 0u
+                                        && queue.m_blockingExecutingTaskThreadId == std::this_thread::get_id();
+                    if(!nested)
+                    {
+                        queue.m_blockingTaskCondition.wait(
+                            lk,
+                            [&queue] { return queue.m_blockingTaskExecutionDepth.load() == 0u; });
+                    }
+                }
+                else
+                {
+                    /* If not empty -> Enqueue an empty task as marker and wait for the future
+                     * else there is no need to wait
+                     */
+                    if(queue.isQueueEmpty() == false)
+                        queue.submit([]() {}).wait();
                 }
             }
         };
@@ -332,6 +391,14 @@ namespace alpaka::onHost
             void operator()(cpu::Queue<T_Device>& queue, T_Event& event) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::event + onHost::logger::queue);
+                /* A blocking queue must acquire this lock to ensure that all pending host tasks have finished.
+                 *
+                 * Acquire the queue lock before the event lock. A pending queue dependency may need the event
+                 * lock to complete, so holding it while waiting for the queue lock would create a deadlock.
+                 */
+                std::unique_lock<std::recursive_mutex> queueLock(queue.m_mutex, std::defer_lock);
+                if(queue.m_isBlocking)
+                    queueLock.lock();
                 // open a scope to avoid logging during we hold the lock for this class
                 {
                     // Setting the event state (e.g. the future) and enqueuing it has to be atomic.
@@ -347,10 +414,6 @@ namespace alpaka::onHost
                      */
                     if(queue.m_isBlocking)
                     {
-                        /* a blocking queue must acquire this lock to ensure that all pending host tasks
-                         * have finished
-                         */
-                        std::lock_guard<std::recursive_mutex> queueLock(queue.m_mutex);
                         // Nothing to do if it has been re-enqueued to a later position in the queue.
                         if(enqueueCount == event.m_enqueueCount)
                         {
@@ -393,36 +456,42 @@ namespace alpaka::onHost
             void operator()(cpu::Queue<T_Device>& queue, cpu::Event<T_Device>& event) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::event + onHost::logger::queue);
+                std::shared_future<void> oldFuture;
                 // open a scope to avoid logging during we hold the lock for this class
                 {
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::unique_lock<std::mutex> eventLock(event.m_mutex);
-
+                    // Checking the event state and copying its current future has to be atomic with re-enqueueing.
+                    std::lock_guard<std::mutex> eventLock(event.m_mutex);
                     if(!event.isReady())
+                        oldFuture = event.m_future;
+                }
+                /* Release the event lock before acquiring the queue lock or enqueuing the wait. The producer
+                 * needs the event lock to finish its recording and make the copied future ready.
+                 * Keep this recording even if the event is re-enqueued while the queue waits.
+                 */
+                if(oldFuture.valid())
+                {
+                    if(queue.m_isBlocking)
                     {
-                        /* In case the queue is blocking we can not use queue.submit() because we hold the lock
-                         * already. The blocking queue executes the lambda directly which will create a deadlock.
+                        /* A pending dependency counts as unfinished blocking work but the queue mutex is only
+                         * held while the bookkeeping is updated. Holding it across future.get() would prevent an
+                         * event producer that needs this queue from making progress. Publishing the pending depth
+                         * before unlocking lets other threads' blocking submissions and enqueues proceed while the
+                         * dependency is unresolved; wait(queue) and isEmpty() still report the queue as busy until
+                         * this wait returns.
                          */
-                        if(queue.m_isBlocking)
-                        {
-                            /* a blocking queue must acquire this lock to ensure that all pending host tasks
-                             * have finished
-                             */
-                            std::lock_guard<std::recursive_mutex> queueLock(queue.m_mutex);
-                            std::shared_future sFuture = event.m_future;
-                            eventLock.unlock();
-                            sFuture.get();
-                        }
-                        else
-                        {
-                            auto sharedEvent = event.getSharedPtr();
-                            auto oldFuture = event.m_future;
+                        std::unique_lock<std::recursive_mutex> queueLock(queue.m_mutex);
+                        typename cpu::Queue<T_Device>::BlockingDepthGuard depthGuard{queue, false};
+                        queueLock.unlock();
 
-                            // unlock here to avoid keeping the look during the maybe expensive enqueue of the task
-                            eventLock.unlock();
-                            // Enqueue a task that waits for the given future of the event.
-                            queue.submit([sharedEvent, oldFuture]() { oldFuture.get(); });
-                        }
+                        // Execute directly in the caller thread; no submitted task or ready future is needed.
+                        oldFuture.get();
+                    }
+                    else
+                    {
+                        // Keep the event alive until the deferred dependency wait has finished.
+                        auto sharedEvent = event.getSharedPtr();
+                        // Enqueue a task that waits for the given future of the event.
+                        queue.submit([sharedEvent, oldFuture]() { oldFuture.get(); });
                     }
                 }
             }
