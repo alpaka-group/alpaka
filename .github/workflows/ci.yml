@@ -22,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - env:
+          SKIP: no-commit-to-branch
+        run: |
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip
           pip install pre-commit==4.3.0
