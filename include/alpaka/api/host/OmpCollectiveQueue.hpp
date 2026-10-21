@@ -212,6 +212,13 @@ namespace alpaka::onHost
             }
 
             friend struct internal::GetNativeHandle;
+
+            [[nodiscard]] auto getNativeHandle() const noexcept
+            {
+                // Native functions execute on the parent queue and must receive its handle.
+                return internal::getNativeHandle(*m_parentQueue);
+            }
+
             friend struct internal::Enqueue;
             friend struct internal::IsQueueEmpty;
             friend struct internal::GetDevice;
@@ -384,11 +391,12 @@ namespace alpaka::onHost
         template<typename T_Device>
         struct IsQueueEmpty::Op<cpu::OmpCollectiveQueue<T_Device>>
         {
-            void operator()(cpu::OmpCollectiveQueue<T_Device>& queue) const
+            bool operator()(cpu::OmpCollectiveQueue<T_Device>& queue) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::queue);
                 return internal::omp::invokeSingleAndWait(
-                    [&] { internal::IsQueueEmpty::Op<cpu::Queue<T_Device>>{}(*queue.m_parentQueue); });
+                    queue,
+                    [&] { return internal::IsQueueEmpty::Op<cpu::Queue<T_Device>>{}(*queue.m_parentQueue); });
             }
         };
 
@@ -423,8 +431,9 @@ namespace alpaka::onHost
         {
             /** execute a task in the queue
              *
-             * @attention Do NOT enqueue a task which captures the queue internally to keep the queue alive as
-             * dependency. In this case the destructure of the queue is not called.
+             * @attention A task which captures the queue keeps it alive. With a shared capture the queue is
+             * destroyed after the task's captures are released on the thread executing the task. A blocking
+             * callback runs before the submission returns, so the caller still holds the queue.
              */
             void operator()(cpu::OmpCollectiveQueue<T_Device>& queue, T_Task const& task) const
             {
@@ -432,6 +441,23 @@ namespace alpaka::onHost
                 internal::omp::invokeSingleNowait(
                     queue,
                     [&] { internal::Enqueue::HostTask<cpu::Queue<T_Device>, T_Task>{}(*queue.m_parentQueue, task); });
+            }
+        };
+
+        /** NO OpenMP barrier used.
+         *
+         * One participating thread executes the native function on the blocking parent queue. Other threads may
+         * return before that function finishes, as for host tasks submitted from the same parallel region.
+         */
+        template<typename T_Device, typename T_Task>
+        struct internal::Enqueue::NativeFn<cpu::OmpCollectiveQueue<T_Device>, T_Task>
+        {
+            void operator()(cpu::OmpCollectiveQueue<T_Device>& queue, T_Task const& fn) const
+            {
+                ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+                internal::omp::invokeSingleNowait(
+                    queue,
+                    [&] { internal::Enqueue::NativeFn<cpu::Queue<T_Device>, T_Task>{}(*queue.m_parentQueue, fn); });
             }
         };
 
