@@ -456,30 +456,46 @@ namespace alpaka::onHost
             void operator()(cpu::Queue<T_Device>& queue, cpu::Event<T_Device>& event) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::event + onHost::logger::queue);
+                /* A blocking queue must acquire this lock to register the pending dependency before any other
+                 * thread can observe an idle queue. Acquire the queue lock before the event lock: a pending
+                 * queue dependency may need the event lock to complete, so holding it while waiting for the queue
+                 * lock would create a deadlock. Non-blocking queues never need this lock.
+                 */
+                std::unique_lock<std::recursive_mutex> queueLock(queue.m_mutex, std::defer_lock);
+                if(queue.m_isBlocking)
+                    queueLock.lock();
+
                 std::shared_future<void> oldFuture;
                 // open a scope to avoid logging during we hold the lock for this class
                 {
-                    // Checking the event state and copying its current future has to be atomic with re-enqueueing.
+                    /* Release the event lock before enqueuing the wait or blocking below. The producer needs the
+                     * event lock to finish its recording and make the copied future ready.
+                     * Keep current future from the event even to avoid waiting on possible re-enqueued event states.
+                     *
+                     * Checking the event state and copying its current future has to be atomic with re-enqueueing.
+                     */
                     std::lock_guard<std::mutex> eventLock(event.m_mutex);
                     if(!event.isReady())
                         oldFuture = event.m_future;
                 }
-                /* Release the event lock before acquiring the queue lock or enqueuing the wait. The producer
-                 * needs the event lock to finish its recording and make the copied future ready.
-                 * Keep this recording even if the event is re-enqueued while the queue waits.
-                 */
+
                 if(oldFuture.valid())
                 {
                     if(queue.m_isBlocking)
                     {
-                        /* A pending dependency counts as unfinished blocking work but the queue mutex is only
+                        /* For a blocking queue the copy-to-registration window is closed because the queue lock is
+                         * held across future copy and guard construction. The pending depth is published before the
+                         * queue lock is released, so the guarantee for isEmpty() and wait(queue) applies from the
+                         * moment the pending depth is registered. Concurrent calls that complete before registration
+                         * follow the documented concurrent-call contract and may see the queue as idle.
+                         *
+                         * A pending dependency counts as unfinished blocking work but the queue mutex is only
                          * held while the bookkeeping is updated. Holding it across future.get() would prevent an
                          * event producer that needs this queue from making progress. Publishing the pending depth
                          * before unlocking lets other threads' blocking submissions and enqueues proceed while the
                          * dependency is unresolved; wait(queue) and isEmpty() still report the queue as busy until
                          * this wait returns.
                          */
-                        std::unique_lock<std::recursive_mutex> queueLock(queue.m_mutex);
                         typename cpu::Queue<T_Device>::BlockingDepthGuard depthGuard{queue, false};
                         queueLock.unlock();
 

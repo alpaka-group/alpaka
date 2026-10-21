@@ -10,6 +10,7 @@
 #include <chrono>
 #include <cstdint>
 #include <future>
+#include <thread>
 
 using namespace alpaka;
 
@@ -19,6 +20,8 @@ namespace
     // CTest's separate timeout detects failure to finish after releasing it.
     // The started promises precede API entry; this delay only encourages the interleaving.
     constexpr auto blockingInterval = std::chrono::milliseconds{100};
+    // waitStarted is set before waitFor registers the dependency; poll briefly until that registration is visible.
+    constexpr auto waitRegistrationTimeout = std::chrono::milliseconds{1000};
 } // namespace
 
 TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
@@ -44,6 +47,11 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
             consumer.waitFor(event);
         });
     waitStarted.get_future().wait();
+    // waitStarted only precedes API entry. Wait until waitFor published its pending dependency.
+    auto const waitRegistrationDeadline = std::chrono::steady_clock::now() + waitRegistrationTimeout;
+    while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
+        std::this_thread::sleep_for(std::chrono::milliseconds{1});
+    REQUIRE_FALSE(consumer.isEmpty());
     auto const waitStatus = waiter.wait_for(blockingInterval);
 
     std::promise<void> recordStarted;
@@ -92,6 +100,11 @@ TEST_CASE("host blocking event wait keeps the queue nonempty", "[queue]")
             consumer.waitFor(event);
         });
     waitStarted.get_future().wait();
+    // waitStarted only precedes API entry. Wait until waitFor published its pending dependency.
+    auto const waitRegistrationDeadline = std::chrono::steady_clock::now() + waitRegistrationTimeout;
+    while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
+        std::this_thread::sleep_for(std::chrono::milliseconds{1});
+    REQUIRE_FALSE(consumer.isEmpty());
     auto const eventWaitStatus = eventWaiter.wait_for(blockingInterval);
     bool const emptyWhileWaiting = consumer.isEmpty();
 
