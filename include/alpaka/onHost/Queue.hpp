@@ -256,8 +256,10 @@ namespace alpaka::onHost
         /** Wait until the given event is complete.
          *
          * A blocking wait for an event dependency keeps the queue busy: `isEmpty()` and `wait(queue)` still
-         * report unfinished work until this wait returns. Other threads' blocking submissions and enqueues
-         * may execute before the wait returns; concurrent calls have no cross-thread ordering guarantee.
+         * report unfinished work until this wait returns. This guarantee applies from the moment the wait
+         * registers its dependency; a concurrent call that completes before that registration may still
+         * observe an idle queue. Other threads' blocking submissions and enqueues may execute before the
+         * wait returns; concurrent calls have no cross-thread ordering guarantee.
          *
          * @param event Event to wait for.
          */
