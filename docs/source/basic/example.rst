@@ -6,7 +6,7 @@ Code Example
 Play online with Compiler Explorer
 ++++++++++++++++++++++++++++++++++
 
-The following example can be executed online using `Godbolt Compiler Explorer <https://godbolt.org/z/K8q5q66Mn>`__. [#f1]_
+The following example can be executed online using `Godbolt Compiler Explorer <https://godbolt.org/z/fdd1YT4KT>`__. [#f1]_
 
 .. literalinclude:: ../../snippets/example/000_elementWiseMultiplication.cpp
    :language: cpp
