@@ -174,13 +174,14 @@ namespace alpaka::core
                             {
                                 eptr = std::current_exception();
                             }
+                            // Destroy the task and its captures before removing the queue entry. Otherwise an empty
+                            // queue could be observed while a capture destructor is still running.
+                            task.reset();
                             {
                                 std::unique_lock<std::mutex> lock{state->mutex};
-                                // Pop empty data from the queue, task and promise will be destroyed later in a
-                                // well-defined order.
+                                // Pop the empty queue entry only after the task destruction has completed.
                                 state->tasks.pop();
                             }
-                            // Task will be destroyed here, the queue status is already updated.
                         }
                         // In case the executed tasks is the last task in the queue the waiting threads will see the
                         // queue as empty.

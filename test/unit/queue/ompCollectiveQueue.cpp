@@ -17,6 +17,8 @@
 #include <catch2/generators/catch_generators.hpp>
 
 #include <atomic>
+#include <chrono>
+#include <future>
 #include <vector>
 
 
@@ -203,18 +205,63 @@ TEMPLATE_LIST_TEST_CASE("OmpCollectiveQueue", "[queue][OmpCollectiveQueue]", Tes
 TEMPLATE_LIST_TEST_CASE("OmpCollectiveQueue public operations", "[queue][OmpCollectiveQueue]", TestBackends)
 {
     auto device = test::getDeviceOrSkipTest(TestType::makeDict());
+    // Create a sibling queue first so the collective queue's parent does not receive the
+    // device's first native queue handle. A handle hardcoded to the first index would
+    // otherwise pass the comparison below by accident.
+    auto siblingQueue = device.makeQueue(queueKind::blocking);
     auto queue = device.makeQueue(queueKind::ompCollective);
 
     SECTION("isEmpty")
     {
         // A fresh queue is empty; the collective dispatch must return the parent's bool.
         CHECK(queue.isEmpty());
+
+        // Gate a task on the parent queue and check the state from inside that task. The
+        // parent's execution depth is one there, so the collective queue must not report
+        // empty. The blocking enqueue runs on a worker thread because isEmpty() from
+        // another thread would wait for the parent's mutex until the task finishes.
+        std::atomic<bool> notEmptyWhilePending{false};
+        std::promise<void> taskEntered;
+        std::promise<void> releaseTask;
+        auto releaseFuture = releaseTask.get_future().share();
+        auto task = std::async(
+            std::launch::async,
+            [&]
+            {
+                queue.enqueueHostFn(
+                    [&]
+                    {
+                        notEmptyWhilePending = !queue.isEmpty();
+                        taskEntered.set_value();
+                        releaseFuture.wait();
+                    });
+            });
+        // Release the gate even if the task did not start in time, so the blocking enqueue
+        // cannot keep the worker and the test alive.
+        bool const entered = taskEntered.get_future().wait_for(std::chrono::seconds{5}) == std::future_status::ready;
+        releaseTask.set_value();
+        task.get();
+        REQUIRE(entered);
+        CHECK(notEmptyWhilePending.load());
+        CHECK(queue.isEmpty());
     }
     SECTION("native handle")
     {
-        // Copies share one queue, so both handles must identify the same native queue.
-        auto alias = queue;
-        CHECK(queue.getNativeHandle() == alias.getNativeHandle());
+        // Native submission runs on the parent queue and receives the parent's native
+        // handle. Compare the public handle against that explicitly observed parent handle
+        // instead of against an alias, which cannot detect a wrong handle.
+        decltype(queue.getNativeHandle()) parentHandle{};
+        bool called = false;
+        queue.enqueueNativeFn(
+            [&](auto nativeHandle)
+            {
+                parentHandle = nativeHandle;
+                called = true;
+            });
+        REQUIRE(called);
+        CHECK(queue.getNativeHandle() == parentHandle);
+        // The handle must identify the parent, not an arbitrary queue of the device.
+        CHECK(queue.getNativeHandle() != siblingQueue.getNativeHandle());
     }
     SECTION("native function")
     {
