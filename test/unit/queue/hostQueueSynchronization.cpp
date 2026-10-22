@@ -51,8 +51,9 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
     auto const waitRegistrationDeadline = std::chrono::steady_clock::now() + waitRegistrationTimeout;
     while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
         std::this_thread::sleep_for(std::chrono::milliseconds{1});
-    REQUIRE_FALSE(consumer.isEmpty());
-    auto const waitStatus = waiter.wait_for(blockingInterval);
+
+    std::promise<void> recordFinished;
+    auto recordFinishedFuture = recordFinished.get_future();
 
     std::promise<void> recordStarted;
     auto recorder = std::async(
@@ -61,9 +62,12 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
         {
             recordStarted.set_value();
             consumer.enqueue(event);
+            recordFinished.set_value();
         });
     recordStarted.get_future().wait();
-    recorder.wait_for(blockingInterval);
+    // Ensure that the event is re-enqueued before the producer is unlocked.
+    auto const recordStatus = recordFinishedFuture.wait_for(blockingInterval);
+    auto const waitStatus = waiter.wait_for(blockingInterval);
 
     releaseProducer.set_value();
     // Releasing the gate must allow E1 -> consumer wait -> E2 to finish.
@@ -72,6 +76,11 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
     waiter.get();
     recorder.get();
     onHost::wait(producer);
+    /* This check must be at the end of the test to ensure that all locks are released.
+     * Otherwise, the destructor of the future returned by `std::async` may block if the next Catch test fails.
+     */
+    REQUIRE_FALSE(consumer.isEmpty());
+    CHECK(recordStatus == std::future_status::ready);
     CHECK(waitStatus == std::future_status::timeout);
     CHECK(event.isComplete());
 }
@@ -104,7 +113,6 @@ TEST_CASE("host blocking event wait keeps the queue nonempty", "[queue]")
     auto const waitRegistrationDeadline = std::chrono::steady_clock::now() + waitRegistrationTimeout;
     while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
         std::this_thread::sleep_for(std::chrono::milliseconds{1});
-    REQUIRE_FALSE(consumer.isEmpty());
     auto const eventWaitStatus = eventWaiter.wait_for(blockingInterval);
     bool const emptyWhileWaiting = consumer.isEmpty();
 
@@ -116,6 +124,10 @@ TEST_CASE("host blocking event wait keeps the queue nonempty", "[queue]")
     queueWaiter.get();
     onHost::wait(producer);
 
+    /* This check must be at the end of the test to ensure that all locks are released.
+     * Otherwise, the destructor of the future returned by `std::async` may block if the next Catch test fails.
+     */
+    REQUIRE_FALSE(consumer.isEmpty());
     CHECK(eventWaitStatus == std::future_status::timeout);
     CHECK_FALSE(emptyWhileWaiting);
     CHECK(queueWaitStatus == std::future_status::timeout);
