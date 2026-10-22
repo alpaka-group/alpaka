@@ -100,7 +100,7 @@ namespace alpaka
          * @note The generator needs to have the function interface `bool generator(uint32_t id)`.
          */
         template<typename F>
-        requires(std::is_invocable_v<F, std::integral_constant<uint32_t, 0u>>)
+        requires std::invocable<F, std::integral_constant<uint32_t, 0u>>
         ALPAKA_FN_HOST_ACC explicit SimdMask(F&& generator)
             : SimdMask(std::forward<F>(generator), std::make_integer_sequence<uint32_t, T_width>{})
         {

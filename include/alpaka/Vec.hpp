@@ -198,9 +198,8 @@ namespace alpaka
          * The generator must return the value for the corresponding index of the component which is passed to the
          * generator.
          */
-        template<
-            typename F,
-            std::enable_if_t<std::is_invocable_v<F, std::integral_constant<uint32_t, 0u>>, uint32_t> = 0u>
+        template<typename F>
+        requires std::invocable<F, std::integral_constant<uint32_t, 0u>>
         constexpr explicit Vec(F&& generator)
             : Vec(std::forward<F>(generator), std::make_integer_sequence<uint32_t, T_dim>{})
         {
