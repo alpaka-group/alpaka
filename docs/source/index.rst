@@ -10,7 +10,7 @@
 
 Its aim is to provide performance portability across accelerators by abstracting the underlying levels of parallelism.
 
-The library is platform-independent and supports the concurrent and cooperative use of multiple devices, including host CPUs (x86, ARM, RISC-V, and Power8+) and GPUs from different vendors (NVIDIA, AMD, and Intel).
+The library is platform-independent and supports the concurrent and cooperative use of multiple devices, including host CPUs (x86, ARM, and RISC-V) and GPUs from different vendors (NVIDIA, AMD, and Intel).
 A variety of accelerator backends—CUDA, HIP, SYCL, OpenMP, and serial execution—are available and can be selected based on the target device.
 Only a single implementation of a user kernel is required, expressed as a function object with a standardized interface.
 This eliminates the need to write specialized CUDA, HIP, SYCL, OpenMP, or threading code.
