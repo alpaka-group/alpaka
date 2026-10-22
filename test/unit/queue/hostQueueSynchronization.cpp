@@ -1,4 +1,4 @@
-/* Copyright 2026 alpaka contributors
+/* Copyright 2026 Tim Hanel
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -49,6 +49,7 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
     waitStarted.get_future().wait();
     // waitStarted only precedes API entry. Wait until waitFor published its pending dependency.
     auto const waitRegistrationDeadline = std::chrono::steady_clock::now() + waitRegistrationTimeout;
+    // wait until the consumer wait is registered
     while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
         std::this_thread::sleep_for(std::chrono::milliseconds{1});
 
@@ -67,21 +68,18 @@ TEST_CASE("host blocking event wait allows concurrent re-recording", "[queue]")
     recordStarted.get_future().wait();
     // Ensure that the event is re-enqueued before the producer is unlocked.
     auto const recordStatus = recordFinishedFuture.wait_for(blockingInterval);
+    CHECK(recordStatus == std::future_status::ready);
     auto const waitStatus = waiter.wait_for(blockingInterval);
+    CHECK(waitStatus == std::future_status::timeout);
 
+    // event is blocked until here because producer host function is waiting on producerGate/releaseProducer
     releaseProducer.set_value();
     // Releasing the gate must allow E1 -> consumer wait -> E2 to finish.
     // Regression: recorder holds the event lock while waiting for the consumer
     // lock; the consumer holds its lock while E1 needs the event lock to finish.
     waiter.get();
     recorder.get();
-    onHost::wait(producer);
-    /* This check must be at the end of the test to ensure that all locks are released.
-     * Otherwise, the destructor of the future returned by `std::async` may block if the next Catch test fails.
-     */
-    REQUIRE_FALSE(consumer.isEmpty());
-    CHECK(recordStatus == std::future_status::ready);
-    CHECK(waitStatus == std::future_status::timeout);
+    onHost::wait(event);
     CHECK(event.isComplete());
 }
 
@@ -114,7 +112,9 @@ TEST_CASE("host blocking event wait keeps the queue nonempty", "[queue]")
     while(consumer.isEmpty() && std::chrono::steady_clock::now() < waitRegistrationDeadline)
         std::this_thread::sleep_for(std::chrono::milliseconds{1});
     auto const eventWaitStatus = eventWaiter.wait_for(blockingInterval);
+    CHECK(eventWaitStatus == std::future_status::timeout);
     bool const emptyWhileWaiting = consumer.isEmpty();
+    CHECK_FALSE(emptyWhileWaiting);
 
     // Queue synchronization must stay blocked for the same dependency.
     auto queueWaiter = std::async(std::launch::async, [&] { onHost::wait(consumer); });
@@ -122,13 +122,8 @@ TEST_CASE("host blocking event wait keeps the queue nonempty", "[queue]")
     releaseProducer.set_value();
     eventWaiter.get();
     queueWaiter.get();
-    onHost::wait(producer);
 
-    /* This check must be at the end of the test to ensure that all locks are released.
-     * Otherwise, the destructor of the future returned by `std::async` may block if the next Catch test fails.
-     */
-    REQUIRE_FALSE(consumer.isEmpty());
-    CHECK(eventWaitStatus == std::future_status::timeout);
-    CHECK_FALSE(emptyWhileWaiting);
+    onHost::wait(event);
     CHECK(queueWaitStatus == std::future_status::timeout);
+    CHECK(event.isComplete());
 }
