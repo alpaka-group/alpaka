@@ -100,7 +100,7 @@ namespace alpaka
             }
 
             template<typename F>
-            requires(std::is_invocable_v<F, std::integral_constant<uint32_t, 0u>>)
+            requires std::invocable<F, std::integral_constant<uint32_t, 0u>>
             constexpr explicit EmuSimd(F&& generator)
                 : EmuSimd(std::forward<F>(generator), std::make_integer_sequence<uint32_t, T_width>{})
             {
