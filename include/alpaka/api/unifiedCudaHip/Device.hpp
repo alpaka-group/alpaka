@@ -44,7 +44,16 @@ namespace alpaka::onHost
                 ALPAKA_LOG_FUNCTION(onHost::logger::device);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::setDevice(getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::deviceSynchronize());
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::deviceReset());
+                /* You should not call ApiInterface::deviceReset() here.
+                 * The reason is that we observed issues with HIP. Nevertheless, destroying the device context can have
+                 * several side effects:
+                 *  - We do not know if other libraries e.g. blas, ... holding a device handle.
+                 *  - It looks like HIP is running internal destruction in `__cxa_finalize()` and therefore run in
+                 * double free.
+                 *  - If the destruction is deferred, and we allocate dthe same device afterward we could run into data
+                 * races. Note: alpaka 2.x is never calling this method, there is only a free function to forward the
+                 * functionality to the user.
+                 */
             }
 
             Device(Device const&) = delete;
