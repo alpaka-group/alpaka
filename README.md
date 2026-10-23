@@ -7,6 +7,9 @@
 [![User API](https://img.shields.io/badge/User%20API-Doxygen-2563eb.svg)](https://alpaka.readthedocs.io/en/latest/doxygen/namespaces.html)
 [![Dev API](https://img.shields.io/badge/Dev%20API-Doxygen-7c3aed.svg)](https://alpaka.readthedocs.io/en/latest/doxygen_dev/namespaces.html)
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-ea580c.svg)](https://isocpp.org/std/the-standard)
+[![Platforms](https://img.shields.io/badge/platform-linux-4b5563.svg)](https://github.com/alpaka-group/alpaka)
+[![Architectures](https://img.shields.io/badge/architectures-x86%20%7C%20ARM%20%7C%20RISC--V-0284c7.svg)](https://github.com/alpaka-group/alpaka)
+[![Accelerators](https://img.shields.io/badge/accelerators-NVIDIA%20GPU%20%7C%20AMD%20GPU%20%7C%20Intel%20GPU-0891b2.svg)](https://github.com/alpaka-group/alpaka)
 
 ![alpaka logo](docs/logo/alpaka_401x135.png)
 
