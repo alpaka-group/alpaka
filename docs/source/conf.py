@@ -30,9 +30,9 @@ project = "alpaka"
 copyright = "Documentation under CC-BY 4.0"
 author = "The alpaka team."
 # The short X.Y version.
-version = "3.0.0"
+version = "3.1.0"
 # The full version, including alpha/beta/rc tags.
-release = "3.0.0-dev"
+release = "3.1.0-dev"
 
 # The master toctree document.
 master_doc = "index"
