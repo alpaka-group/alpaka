@@ -75,11 +75,50 @@ add_executable(${_TARGET_NAME} ${_FILES_SOURCE})
 target_link_libraries(${_TARGET_NAME} PRIVATE Catch2::Catch2WithMain alpaka::alpaka)
 alpaka_finalize(${_TARGET_NAME})
 
+#---------------------------------------------------------------------------
+# Run clang-tidy while compiling the configured tests, examples, benchmarks and documentation snippets.
+
+# Recursively collect the compiled targets below `directory` that build sources from those directories, so disabled
+# subprojects and dependencies (e.g. Catch2) are not analyzed.
+function(alpaka_collect_clang_tidy_targets directory out_var)
+    set(_result)
+    get_property(_targets DIRECTORY "${directory}" PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(_target IN LISTS _targets)
+        get_target_property(_type ${_target} TYPE)
+        if(NOT _type MATCHES "^(EXECUTABLE|STATIC_LIBRARY|SHARED_LIBRARY|MODULE_LIBRARY|OBJECT_LIBRARY)$")
+            continue()
+        endif()
+        get_target_property(_target_sources ${_target} SOURCES)
+        get_target_property(_source_dir ${_target} SOURCE_DIR)
+        foreach(_source IN LISTS _target_sources)
+            # Skip generator expressions, they cannot be resolved at configure time.
+            if(_source MATCHES "\\$<")
+                continue()
+            endif()
+            cmake_path(ABSOLUTE_PATH _source BASE_DIRECTORY "${_source_dir}" NORMALIZE)
+            file(RELATIVE_PATH _relative_source "${_alpaka_ROOT_DIR}" "${_source}")
+            if(_relative_source MATCHES "^(test|example|benchmark|docs/snippets)/.*\\.cpp$")
+                list(APPEND _result ${_target})
+                break()
+            endif()
+        endforeach()
+    endforeach()
+    get_property(_subdirectories DIRECTORY "${directory}" PROPERTY SUBDIRECTORIES)
+    foreach(_subdirectory IN LISTS _subdirectories)
+        alpaka_collect_clang_tidy_targets("${_subdirectory}" _subdirectory_targets)
+        list(APPEND _result ${_subdirectory_targets})
+    endforeach()
+    set(${out_var} "${_result}" PARENT_SCOPE)
+endfunction()
+
+alpaka_collect_clang_tidy_targets("${_alpaka_ROOT_DIR}" _CLANG_TIDY_TARGETS)
+message(STATUS "clang-tidy runs during the build of: ${_CLANG_TIDY_TARGETS}")
+
 set_target_properties(
     ${_TARGET_NAME}
-    PROPERTIES
-        CXX_CLANG_TIDY "${CLANG_TIDY_EXECUTABLE};--config-file=${_alpaka_ROOT_DIR}/.clang-tidy"
-        FOLDER "clangTidy"
+    ${_CLANG_TIDY_TARGETS}
+    PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXECUTABLE};--config-file=${_alpaka_ROOT_DIR}/.clang-tidy"
 )
+set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "clangTidy")
 
 add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})

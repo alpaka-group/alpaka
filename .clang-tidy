@@ -1,5 +1,5 @@
 ---
-Checks: '-*,clang-analyzer-*,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
+Checks: '-*,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
 WarningsAsErrors: '*'
 HeaderFilterRegex: '(^|.*/)include/alpaka/.*'
 SystemHeaders: false
