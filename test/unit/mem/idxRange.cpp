@@ -22,17 +22,17 @@ TEST_CASE("IdxRange::begin() and end()", "[mem][IdxRange][iterator]")
     {
         constexpr int y = 4;
         constexpr int x = 3;
-        constexpr int y_begin = 2;
-        constexpr int x_begin = 1;
-        for(auto expected_vec = alpaka::Vec{y_begin, x_begin};
-            auto vec : alpaka::IdxRange(alpaka::Vec{y_begin, x_begin}, alpaka::Vec{y, x}))
+        constexpr int yBegin = 2;
+        constexpr int xBegin = 1;
+        for(auto expectedVec = alpaka::Vec{yBegin, xBegin};
+            auto vec : alpaka::IdxRange(alpaka::Vec{yBegin, xBegin}, alpaka::Vec{y, x}))
         {
-            REQUIRE(vec == expected_vec);
-            expected_vec.x()++;
-            if(expected_vec.x() == x)
+            REQUIRE(vec == expectedVec);
+            expectedVec.x()++;
+            if(expectedVec.x() == x)
             {
-                expected_vec.y()++;
-                expected_vec.x() = x_begin;
+                expectedVec.y()++;
+                expectedVec.x() = xBegin;
             }
         }
     }
@@ -41,20 +41,19 @@ TEST_CASE("IdxRange::begin() and end()", "[mem][IdxRange][iterator]")
     {
         constexpr int y = 15;
         constexpr int x = 12;
-        constexpr int y_begin = 2;
-        constexpr int x_begin = 0;
-        constexpr int y_stride = 4;
-        constexpr int x_stride = 3;
-        for(auto expected_vec = alpaka::Vec{y_begin, x_begin};
-            auto vec :
-            alpaka::IdxRange(alpaka::Vec{y_begin, x_begin}, alpaka::Vec{y, x}, alpaka::Vec{y_stride, x_stride}))
+        constexpr int yBegin = 2;
+        constexpr int xBegin = 0;
+        constexpr int yStride = 4;
+        constexpr int xStride = 3;
+        for(auto expectedVec = alpaka::Vec{yBegin, xBegin};
+            auto vec : alpaka::IdxRange(alpaka::Vec{yBegin, xBegin}, alpaka::Vec{y, x}, alpaka::Vec{yStride, xStride}))
         {
-            REQUIRE(vec == expected_vec);
-            expected_vec.x() += x_stride;
-            if(expected_vec.x() >= x)
+            REQUIRE(vec == expectedVec);
+            expectedVec.x() += xStride;
+            if(expectedVec.x() >= x)
             {
-                expected_vec.y() += y_stride;
-                expected_vec.x() = x_begin;
+                expectedVec.y() += yStride;
+                expectedVec.x() = xBegin;
             }
         }
     }

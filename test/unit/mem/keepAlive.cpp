@@ -37,12 +37,12 @@ TEMPLATE_LIST_TEST_CASE("keep alive", "", TestApis)
     concepts::Executor auto exec = test::getExecutor(deviceExec);
     onHost::Queue queue = device.makeQueue();
 
-    constexpr std::size_t N = 256;
-    auto originalBuffer = onHost::alloc<int>(device, N);
+    constexpr std::size_t n = 256;
+    auto originalBuffer = onHost::alloc<int>(device, n);
 
     {
         // enqueue everything in this scope
-        auto scopedBuffer = onHost::allocDeferred<int>(queue, N);
+        auto scopedBuffer = onHost::allocDeferred<int>(queue, n);
 
         auto framespec = getFrameSpec(device, exec, scopedBuffer.getExtents());
 
@@ -64,7 +64,7 @@ TEMPLATE_LIST_TEST_CASE("keep alive", "", TestApis)
     onHost::wait(queue);
 
     bool correct = true;
-    for(IdxType i = 0; i < N; ++i)
+    for(IdxType i = 0; i < n; ++i)
     {
         if(hostResult[i] != static_cast<ValType>(i))
             correct = false;

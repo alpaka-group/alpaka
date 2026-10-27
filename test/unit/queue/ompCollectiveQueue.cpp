@@ -157,8 +157,8 @@ void testCombinationNoParallel(auto queue, auto exec, concepts::Vector auto exte
         });
 }
 
-template<typename Queue, typename Exec, typename Extent>
-void runTest(Queue& queue, Exec exec, Extent const& bufferExtents)
+template<typename T_Queue, typename T_Exec, typename T_Extent>
+void runTest(T_Queue& queue, T_Exec exec, T_Extent const& bufferExtents)
 {
     DYNAMIC_SECTION(
         "OpenMP within parallel section: exec=" << onHost::demangledName(exec) << ", extent=" << bufferExtents)

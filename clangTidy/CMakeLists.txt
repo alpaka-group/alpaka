@@ -112,7 +112,7 @@ function(alpaka_collect_clang_tidy_targets directory out_var)
 endfunction()
 
 alpaka_collect_clang_tidy_targets("${_alpaka_ROOT_DIR}" _CLANG_TIDY_TARGETS)
-message(STATUS "clang-tidy runs during the build of: ${_CLANG_TIDY_TARGETS}")
+message(DEBUG "clang-tidy runs during the build of: ${_CLANG_TIDY_TARGETS}")
 
 set_target_properties(
     ${_TARGET_NAME}
@@ -120,5 +120,9 @@ set_target_properties(
     PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXECUTABLE};--config-file=${_alpaka_ROOT_DIR}/.clang-tidy"
 )
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "clangTidy")
+# The test depends on the collected targets, so it cannot pass before they are compiled (and thereby checked).
+if(_CLANG_TIDY_TARGETS)
+    add_dependencies(${_TARGET_NAME} ${_CLANG_TIDY_TARGETS})
+endif()
 
 add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})

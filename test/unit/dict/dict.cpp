@@ -14,43 +14,43 @@ using namespace alpaka;
 
 TEST_CASE("dict mutate entry", "")
 {
-    ALPAKA_TAG(a_);
-    ALPAKA_TAG(b_);
-    ALPAKA_TAG(c_);
+    ALPAKA_TAG(a);
+    ALPAKA_TAG(b);
+    ALPAKA_TAG(c);
 
-    static_assert(std::is_same<decltype(a_), decltype(a_)>::value);
-    static_assert(!std::is_same<decltype(a_), decltype(b_)>::value);
+    static_assert(std::is_same<decltype(a), decltype(a)>::value);
+    static_assert(!std::is_same<decltype(a), decltype(b)>::value);
 
     int aValue = 42;
     int bValue = 43;
-    Dict dictionary = Dict{makeTuple(DictEntry(a_, std::ref(aValue)), DictEntry(b_, bValue))};
+    Dict dictionary = Dict{makeTuple(DictEntry(a, std::ref(aValue)), DictEntry(b, bValue))};
 
-    static_assert(hasTag(dictionary, a_));
-    static_assert(hasTag(dictionary, b_));
-    static_assert(!hasTag(dictionary, c_));
+    static_assert(hasTag(dictionary, a));
+    static_assert(hasTag(dictionary, b));
+    static_assert(!hasTag(dictionary, c));
 
-    static_assert(getIdx(dictionary, a_) == 0);
-    CHECK(getTag(dictionary, a_) == 42);
-    CHECK(getTag(dictionary, b_) == 43);
+    static_assert(getIdx(dictionary, a) == 0);
+    CHECK(getTag(dictionary, a) == 42);
+    CHECK(getTag(dictionary, b) == 43);
 
     aValue++;
     bValue += 2;
 
-    CHECK(getTag(dictionary, a_) == 43);
-    CHECK(getTag(dictionary, b_) == 43);
-    CHECK(dictionary[a_] == 43);
-    CHECK(dictionary[b_] == 43);
+    CHECK(getTag(dictionary, a) == 43);
+    CHECK(getTag(dictionary, b) == 43);
+    CHECK(dictionary[a] == 43);
+    CHECK(dictionary[b] == 43);
 
-    DictEntry entry0{a_, std::ref(aValue)};
-    Dict dictionary2 = {entry0, DictEntry(b_, bValue)};
-    CHECK(getTag(dictionary2, a_) == 43);
+    DictEntry entry0{a, std::ref(aValue)};
+    Dict dictionary2 = {entry0, DictEntry(b, bValue)};
+    CHECK(getTag(dictionary2, a) == 43);
 
-    Dict dictionary4 = Dict{makeTuple(DictEntry(a_, std::ref(aValue)), DictEntry(b_, bValue))};
-    dictionary4[a_] = 1;
-    CHECK(dictionary4[a_] == 1);
+    Dict dictionary4 = Dict{makeTuple(DictEntry(a, std::ref(aValue)), DictEntry(b, bValue))};
+    dictionary4[a] = 1;
+    CHECK(dictionary4[a] == 1);
 
-    Dict dictionary5 = Dict{makeTuple(DictEntry(c_, 5))};
+    Dict dictionary5 = Dict{makeTuple(DictEntry(c, 5))};
     auto joinedDict = joinDict(dictionary4, dictionary5);
-    CHECK(joinedDict[a_] == 1);
-    CHECK(joinedDict[c_] == 5);
+    CHECK(joinedDict[a] == 1);
+    CHECK(joinedDict[c] == 5);
 }

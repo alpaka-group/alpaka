@@ -24,389 +24,390 @@ namespace custom
 {
     enum Custom
     {
-        Abs,
-        Acos,
-        Acosh,
-        Arg,
-        Asin,
-        Asinh,
-        Atan,
-        Atanh,
-        Atan2,
-        Cbrt,
-        Ceil,
-        Conj,
-        Copysign,
-        Cos,
-        Cosh,
-        Erf,
-        Exp,
-        Floor,
-        Fma,
-        Fmod,
-        Log,
-        Log2,
-        Log10,
-        Max,
-        Min,
-        Pow,
-        Remainder,
-        Round,
-        Lround,
-        Llround,
-        Rsqrt,
-        Sin,
-        Sinh,
-        Sincos,
-        Sqrt,
-        Tan,
-        Tanh,
-        Trunc,
+        absOp,
+        acosOp,
+        acoshOp,
+        argOp,
+        asinOp,
+        asinhOp,
+        atanOp,
+        atanhOp,
+        atan2Op,
+        cbrtOp,
+        ceilOp,
+        conjOp,
+        copysignOp,
+        cosOp,
+        coshOp,
+        erfOp,
+        expOp,
+        floorOp,
+        fmaOp,
+        fmodOp,
+        logOp,
+        log2Op,
+        log10Op,
+        maxOp,
+        minOp,
+        powOp,
+        remainderOp,
+        roundOp,
+        lroundOp,
+        llroundOp,
+        rsqrtOp,
+        sinOp,
+        sinhOp,
+        sincosOp,
+        sqrtOp,
+        tanOp,
+        tanhOp,
+        truncOp,
 
-        Arg1 = 1024,
-        Arg2 = 2048,
-        Arg3 = 4096,
+        arg1 = 1024,
+        arg2 = 2048,
+        arg3 = 4096,
     };
 
     ALPAKA_FN_HOST_ACC auto abs(Custom c);
 
     ALPAKA_FN_HOST_ACC auto abs(Custom c)
     {
-        return Custom::Abs | c;
+        return Custom::absOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto acos(Custom c);
 
     ALPAKA_FN_HOST_ACC auto acos(Custom c)
     {
-        return Custom::Acos | c;
+        return Custom::acosOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto acosh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto acosh(Custom c)
     {
-        return Custom::Acosh | c;
+        return Custom::acoshOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto arg(Custom c);
 
     ALPAKA_FN_HOST_ACC auto arg(Custom c)
     {
-        return Custom::Arg | c;
+        return Custom::argOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto asin(Custom c);
 
     ALPAKA_FN_HOST_ACC auto asin(Custom c)
     {
-        return Custom::Asin | c;
+        return Custom::asinOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto asinh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto asinh(Custom c)
     {
-        return Custom::Asinh | c;
+        return Custom::asinhOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto atan(Custom c);
 
     ALPAKA_FN_HOST_ACC auto atan(Custom c)
     {
-        return Custom::Atan | c;
+        return Custom::atanOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto atanh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto atanh(Custom c)
     {
-        return Custom::Atanh | c;
+        return Custom::atanhOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto atan2(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto atan2(Custom a, Custom b)
     {
-        return Custom::Atan2 | a | b;
+        return Custom::atan2Op | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto cbrt(Custom c);
 
     ALPAKA_FN_HOST_ACC auto cbrt(Custom c)
     {
-        return Custom::Cbrt | c;
+        return Custom::cbrtOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto ceil(Custom c);
 
     ALPAKA_FN_HOST_ACC auto ceil(Custom c)
     {
-        return Custom::Ceil | c;
+        return Custom::ceilOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto conj(Custom c);
 
     ALPAKA_FN_HOST_ACC auto conj(Custom c)
     {
-        return Custom::Conj | c;
+        return Custom::conjOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto copysign(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto copysign(Custom a, Custom b)
     {
-        return Custom::Copysign | a | b;
+        return Custom::copysignOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto cos(Custom c);
 
     ALPAKA_FN_HOST_ACC auto cos(Custom c)
     {
-        return Custom::Cos | c;
+        return Custom::cosOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto cosh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto cosh(Custom c)
     {
-        return Custom::Cosh | c;
+        return Custom::coshOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto erf(Custom c);
 
     ALPAKA_FN_HOST_ACC auto erf(Custom c)
     {
-        return Custom::Erf | c;
+        return Custom::erfOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto exp(Custom c);
 
     ALPAKA_FN_HOST_ACC auto exp(Custom c)
     {
-        return Custom::Exp | c;
+        return Custom::expOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto floor(Custom c);
 
     ALPAKA_FN_HOST_ACC auto floor(Custom c)
     {
-        return Custom::Floor | c;
+        return Custom::floorOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto fma(Custom a, Custom b, Custom c);
 
     ALPAKA_FN_HOST_ACC auto fma(Custom a, Custom b, Custom c)
     {
-        return Custom::Fma | a | b | c;
+        return Custom::fmaOp | a | b | c;
     }
 
     ALPAKA_FN_HOST_ACC auto fmod(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto fmod(Custom a, Custom b)
     {
-        return Custom::Fmod | a | b;
+        return Custom::fmodOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto log(Custom c);
 
     ALPAKA_FN_HOST_ACC auto log(Custom c)
     {
-        return Custom::Log | c;
+        return Custom::logOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto log2(Custom c);
 
     ALPAKA_FN_HOST_ACC auto log2(Custom c)
     {
-        return Custom::Log2 | c;
+        return Custom::log2Op | c;
     }
 
     ALPAKA_FN_HOST_ACC auto log10(Custom c);
 
     ALPAKA_FN_HOST_ACC auto log10(Custom c)
     {
-        return Custom::Log10 | c;
+        return Custom::log10Op | c;
     }
 
     ALPAKA_FN_HOST_ACC auto max(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto max(Custom a, Custom b)
     {
-        return Custom::Max | a | b;
+        return Custom::maxOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto min(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto min(Custom a, Custom b)
     {
-        return Custom::Min | a | b;
+        return Custom::minOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto pow(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto pow(Custom a, Custom b)
     {
-        return Custom::Pow | a | b;
+        return Custom::powOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto remainder(Custom a, Custom b);
 
     ALPAKA_FN_HOST_ACC auto remainder(Custom a, Custom b)
     {
-        return Custom::Remainder | a | b;
+        return Custom::remainderOp | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto round(Custom c);
 
     ALPAKA_FN_HOST_ACC auto round(Custom c)
     {
-        return Custom::Round | c;
+        return Custom::roundOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto lround(Custom c);
 
     ALPAKA_FN_HOST_ACC auto lround(Custom c)
     {
-        return Custom::Lround | c;
+        return Custom::lroundOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto llround(Custom c);
 
     ALPAKA_FN_HOST_ACC auto llround(Custom c)
     {
-        return Custom::Llround | c;
+        return Custom::llroundOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto rsqrt(Custom c);
 
     ALPAKA_FN_HOST_ACC auto rsqrt(Custom c)
     {
-        return Custom::Rsqrt | c;
+        return Custom::rsqrtOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto sin(Custom c);
 
     ALPAKA_FN_HOST_ACC auto sin(Custom c)
     {
-        return Custom::Sin | c;
+        return Custom::sinOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto sinh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto sinh(Custom c)
     {
-        return Custom::Sinh | c;
+        return Custom::sinhOp | c;
     }
 
     ALPAKA_FN_HOST_ACC void sincos(Custom c, Custom& a, Custom& b);
 
     ALPAKA_FN_HOST_ACC void sincos(Custom c, Custom& a, Custom& b)
     {
-        a = static_cast<Custom>(Custom::Sincos | c | Custom::Arg2);
-        b = static_cast<Custom>(Custom::Sincos | c | Custom::Arg3);
+        a = static_cast<Custom>(Custom::sincosOp | c | Custom::arg2);
+        b = static_cast<Custom>(Custom::sincosOp | c | Custom::arg3);
     }
 
     ALPAKA_FN_HOST_ACC auto sqrt(Custom c);
 
     ALPAKA_FN_HOST_ACC auto sqrt(Custom c)
     {
-        return Custom::Sqrt | c;
+        return Custom::sqrtOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto tan(Custom c);
 
     ALPAKA_FN_HOST_ACC auto tan(Custom c)
     {
-        return Custom::Tan | c;
+        return Custom::tanOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto tanh(Custom c);
 
     ALPAKA_FN_HOST_ACC auto tanh(Custom c)
     {
-        return Custom::Tanh | c;
+        return Custom::tanhOp | c;
     }
 
     ALPAKA_FN_HOST_ACC auto trunc(Custom c);
 
     ALPAKA_FN_HOST_ACC auto trunc(Custom c)
     {
-        return Custom::Trunc | c;
+        return Custom::truncOp | c;
     }
 } // namespace custom
 
 struct AdlKernel
 {
-    template<typename Acc>
-    ALPAKA_FN_ACC void operator()(Acc const&, alpaka::concepts::IMdSpan auto success) const noexcept
+    template<typename T_Acc>
+    ALPAKA_FN_ACC void operator()(T_Acc const&, alpaka::concepts::IMdSpan auto success) const noexcept
     {
         using custom::Custom;
 
-        ALPAKA_CHECK(success[0], alpaka::math::abs(Custom::Arg1) == (Custom::Abs | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::acos(Custom::Arg1) == (Custom::Acos | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::acosh(Custom::Arg1) == (Custom::Acosh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::arg(Custom::Arg1) == (Custom::Arg | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::asin(Custom::Arg1) == (Custom::Asin | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::asinh(Custom::Arg1) == (Custom::Asinh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::atan(Custom::Arg1) == (Custom::Atan | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::atanh(Custom::Arg1) == (Custom::Atanh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::cbrt(Custom::Arg1) == (Custom::Cbrt | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::ceil(Custom::Arg1) == (Custom::Ceil | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::conj(Custom::Arg1) == (Custom::Conj | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::cos(Custom::Arg1) == (Custom::Cos | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::cosh(Custom::Arg1) == (Custom::Cosh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::erf(Custom::Arg1) == (Custom::Erf | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::exp(Custom::Arg1) == (Custom::Exp | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::floor(Custom::Arg1) == (Custom::Floor | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::log(Custom::Arg1) == (Custom::Log | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::log2(Custom::Arg1) == (Custom::Log2 | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::log10(Custom::Arg1) == (Custom::Log10 | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::round(Custom::Arg1) == (Custom::Round | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::lround(Custom::Arg1) == (Custom::Lround | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::llround(Custom::Arg1) == (Custom::Llround | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::rsqrt(Custom::Arg1) == (Custom::Rsqrt | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::sin(Custom::Arg1) == (Custom::Sin | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::sinh(Custom::Arg1) == (Custom::Sinh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::sqrt(Custom::Arg1) == (Custom::Sqrt | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::tan(Custom::Arg1) == (Custom::Tan | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::tanh(Custom::Arg1) == (Custom::Tanh | Custom::Arg1));
-        ALPAKA_CHECK(success[0], alpaka::math::trunc(Custom::Arg1) == (Custom::Trunc | Custom::Arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::abs(Custom::arg1) == (Custom::absOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::acos(Custom::arg1) == (Custom::acosOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::acosh(Custom::arg1) == (Custom::acoshOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::arg(Custom::arg1) == (Custom::argOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::asin(Custom::arg1) == (Custom::asinOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::asinh(Custom::arg1) == (Custom::asinhOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::atan(Custom::arg1) == (Custom::atanOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::atanh(Custom::arg1) == (Custom::atanhOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::cbrt(Custom::arg1) == (Custom::cbrtOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::ceil(Custom::arg1) == (Custom::ceilOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::conj(Custom::arg1) == (Custom::conjOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::cos(Custom::arg1) == (Custom::cosOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::cosh(Custom::arg1) == (Custom::coshOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::erf(Custom::arg1) == (Custom::erfOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::exp(Custom::arg1) == (Custom::expOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::floor(Custom::arg1) == (Custom::floorOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::log(Custom::arg1) == (Custom::logOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::log2(Custom::arg1) == (Custom::log2Op | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::log10(Custom::arg1) == (Custom::log10Op | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::round(Custom::arg1) == (Custom::roundOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::lround(Custom::arg1) == (Custom::lroundOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::llround(Custom::arg1) == (Custom::llroundOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::rsqrt(Custom::arg1) == (Custom::rsqrtOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::sin(Custom::arg1) == (Custom::sinOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::sinh(Custom::arg1) == (Custom::sinhOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::sqrt(Custom::arg1) == (Custom::sqrtOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::tan(Custom::arg1) == (Custom::tanOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::tanh(Custom::arg1) == (Custom::tanhOp | Custom::arg1));
+        ALPAKA_CHECK(success[0], alpaka::math::trunc(Custom::arg1) == (Custom::truncOp | Custom::arg1));
 
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::atan2(Custom::Arg1, Custom::Arg2) == (Custom::Atan2 | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::atan2(Custom::arg1, Custom::arg2) == (Custom::atan2Op | Custom::arg1 | Custom::arg2));
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::copysign(Custom::Arg1, Custom::Arg2) == (Custom::Copysign | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::copysign(Custom::arg1, Custom::arg2) == (Custom::copysignOp | Custom::arg1 | Custom::arg2));
 
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::fmod(Custom::Arg1, Custom::Arg2) == (Custom::Fmod | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::fmod(Custom::arg1, Custom::arg2) == (Custom::fmodOp | Custom::arg1 | Custom::arg2));
 
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::max(Custom::Arg1, Custom::Arg2) == (Custom::Max | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::max(Custom::arg1, Custom::arg2) == (Custom::maxOp | Custom::arg1 | Custom::arg2));
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::min(Custom::Arg1, Custom::Arg2) == (Custom::Min | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::min(Custom::arg1, Custom::arg2) == (Custom::minOp | Custom::arg1 | Custom::arg2));
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::pow(Custom::Arg1, Custom::Arg2) == (Custom::Pow | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::pow(Custom::arg1, Custom::arg2) == (Custom::powOp | Custom::arg1 | Custom::arg2));
 
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::remainder(Custom::Arg1, Custom::Arg2) == (Custom::Remainder | Custom::Arg1 | Custom::Arg2));
+            alpaka::math::remainder(Custom::arg1, Custom::arg2)
+                == (Custom::remainderOp | Custom::arg1 | Custom::arg2));
 
         ALPAKA_CHECK(
             success[0],
-            alpaka::math::fma(Custom::Arg1, Custom::Arg2, Custom::Arg3)
-                == (Custom::Fma | Custom::Arg1 | Custom::Arg2 | Custom::Arg3));
+            alpaka::math::fma(Custom::arg1, Custom::arg2, Custom::arg3)
+                == (Custom::fmaOp | Custom::arg1 | Custom::arg2 | Custom::arg3));
 
         Custom a, b;
-        alpaka::math::sincos(Custom::Arg1, a, b);
-        ALPAKA_CHECK(success[0], a == (Custom::Sincos | Custom::Arg1 | Custom::Arg2));
-        ALPAKA_CHECK(success[0], b == (Custom::Sincos | Custom::Arg1 | Custom::Arg3));
+        alpaka::math::sincos(Custom::arg1, a, b);
+        ALPAKA_CHECK(success[0], a == (Custom::sincosOp | Custom::arg1 | Custom::arg2));
+        ALPAKA_CHECK(success[0], b == (Custom::sincosOp | Custom::arg1 | Custom::arg3));
     }
 };
 

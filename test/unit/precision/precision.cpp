@@ -60,8 +60,8 @@ void iotaTest(auto& queue, auto exec, auto kernel, auto const extents, auto fram
 
 enum Sign : bool
 {
-    SIGNED = true,
-    UNSIGNED = false
+    signedIdx = true,
+    unsignedIdx = false
 };
 
 template<Sign T_signedMemIdx, Sign T_signedKernelIdx>
@@ -190,10 +190,10 @@ TEMPLATE_LIST_TEST_CASE("kernel_precision_iotaNd", "", TestApis)
 {
     auto cfg = TestType::makeDict();
     // test signed-ness
-    callTests<SIGNED, SIGNED>(cfg);
-    callTests<UNSIGNED, SIGNED>(cfg);
-    callTests<SIGNED, UNSIGNED>(cfg);
-    callTests<UNSIGNED, UNSIGNED>(cfg);
+    callTests<signedIdx, signedIdx>(cfg);
+    callTests<unsignedIdx, signedIdx>(cfg);
+    callTests<signedIdx, unsignedIdx>(cfg);
+    callTests<unsignedIdx, unsignedIdx>(cfg);
 }
 
 template<typename T_LoopIdxType>

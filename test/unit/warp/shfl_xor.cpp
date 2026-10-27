@@ -26,8 +26,8 @@ namespace
 {
     struct ShflXorMultiThreadKernel
     {
-        template<typename TAcc>
-        ALPAKA_FN_ACC void operator()(TAcc const& acc, concepts::IMdSpan<bool> auto success) const
+        template<typename T_Acc>
+        ALPAKA_FN_ACC void operator()(T_Acc const& acc, concepts::IMdSpan<bool> auto success) const
         {
             auto const warpExtent = static_cast<std::int32_t>(onAcc::warp::getSize(acc));
             warpCheck(success, warpExtent >= 1);

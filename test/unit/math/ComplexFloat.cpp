@@ -37,16 +37,16 @@ TEST_CASE("mathArrayOrientedComplexFloat", "[array-oriented]")
 {
     // Ensure that our implementation matches the behaviour of std::complex with regard to array-oriented access.
     // See https://en.cppreference.com/w/cpp/numeric/complex - Array-oriented access - for more information.
-    auto const complex_alpaka = alpaka::math::Complex<float>{42.f, 42.f};
-    auto const complex_std = std::complex<float>{42.f, 42.f};
+    auto const complexAlpaka = alpaka::math::Complex<float>{42.f, 42.f};
+    auto const complexStd = std::complex<float>{42.f, 42.f};
 
-    auto const real_alpaka = reinterpret_cast<float const(&)[2]>(complex_alpaka)[0];
-    auto const real_std = reinterpret_cast<float const(&)[2]>(complex_std)[0];
-    REQUIRE(alpaka::math::floatEqualExactNoWarning(real_alpaka, real_std));
+    auto const realAlpaka = reinterpret_cast<float const(&)[2]>(complexAlpaka)[0];
+    auto const realStd = reinterpret_cast<float const(&)[2]>(complexStd)[0];
+    REQUIRE(alpaka::math::floatEqualExactNoWarning(realAlpaka, realStd));
 
-    auto const imag_alpaka = reinterpret_cast<float const(&)[2]>(complex_alpaka)[1];
-    auto const imag_std = reinterpret_cast<float const(&)[2]>(complex_std)[1];
-    REQUIRE(alpaka::math::floatEqualExactNoWarning(imag_alpaka, imag_std));
+    auto const imagAlpaka = reinterpret_cast<float const(&)[2]>(complexAlpaka)[1];
+    auto const imagStd = reinterpret_cast<float const(&)[2]>(complexStd)[1];
+    REQUIRE(alpaka::math::floatEqualExactNoWarning(imagAlpaka, imagStd));
 }
 
 TEST_CASE("mathPaddingComplexFloat", "[padding]")

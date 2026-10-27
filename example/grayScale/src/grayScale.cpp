@@ -79,7 +79,7 @@ auto validateResult(
     static_assert(std::is_same_v<uint32_t, Data>);
     // Validate results
     int falseResults = 0;
-    static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
+    static constexpr int maxPrintFalseResults = 20;
     for(size_t i(0u); i < extent; ++i)
     {
         Data const& computedGray(bufHostScalarRGB[i]); // Direct indexing for scalarRGB
@@ -94,7 +94,7 @@ auto validateResult(
 
         if(computedGray != correctResult)
         {
-            if(falseResults < MAX_PRINT_FALSE_RESULTS)
+            if(falseResults < maxPrintFalseResults)
                 std::cerr << "RGBA[" << i << "] == " << std::hex << computedGray << " != " << correctResult
                           << std::endl;
             std::cerr << std::resetiosflags(std::ios_base::fmtflags(0));
@@ -110,7 +110,7 @@ auto validateResult(
     }
     else
     {
-        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS
+        std::cout << "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults
                   << "\n"
                   << "Execution results incorrect!" << std::endl;
         std::cout << std::endl;

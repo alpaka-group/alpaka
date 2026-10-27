@@ -335,7 +335,7 @@ TEMPLATE_LIST_TEST_CASE("blocking queue event race condition", "[bq][event][race
     std::vector<std::vector<decltype(device.makeEvent())>> threadEvents(numThreads);
 
     // C++20 barrier: numThreads workers + 1 main thread = 5 total participants
-    std::barrier sync_point(numThreads + 1);
+    std::barrier syncPoint(numThreads + 1);
 
     // Create threads that will enqueue events concurrently
     for(int t = 0; t < numThreads; ++t)
@@ -345,7 +345,7 @@ TEMPLATE_LIST_TEST_CASE("blocking queue event race condition", "[bq][event][race
             [&, threadId = t]()
             {
                 // Worker thread waits at barrier for main thread to join
-                sync_point.arrive_and_wait();
+                syncPoint.arrive_and_wait();
 
                 // Each thread creates and enqueues events
                 for(int i = 0; i < eventsPerThread; ++i)
@@ -364,7 +364,7 @@ TEMPLATE_LIST_TEST_CASE("blocking queue event race condition", "[bq][event][race
     }
 
     // Main thread participates in barrier - releases all threads simultaneously
-    sync_point.arrive_and_wait();
+    syncPoint.arrive_and_wait();
 
     // Wait for all threads to complete
     for(auto& thread : threads)

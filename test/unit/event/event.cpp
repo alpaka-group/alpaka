@@ -788,40 +788,40 @@ TEMPLATE_LIST_TEST_CASE("evReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRelea
     onHost::Queue q1 = device.makeQueue();
     onHost::Queue q2 = device.makeQueue();
     onHost::Queue q3 = device.makeQueue();
-    auto k1_0 = TriggerKernel{device};
-    auto k1_1 = TriggerKernel{device};
+    auto k1First = TriggerKernel{device};
+    auto k1Second = TriggerKernel{device};
     auto k2 = TriggerKernel{device};
     auto k3 = TriggerKernel{device};
     auto e1 = device.makeEvent();
     auto e2 = device.makeEvent();
     auto e3 = device.makeEvent();
 
-    k1_0.submit(q1);
-    // q1 = [k1_0]
+    k1First.submit(q1);
+    // q1 = [k1First]
     q1.enqueue(e1);
-    // q1 = [k1_0, e1]
+    // q1 = [k1First, e1]
     k2.submit(q2);
     // q2 = [k2]
-    REQUIRE(k1_0.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
 
     q2.waitFor(e1);
     // q2 = [k2,->e1]
     q2.enqueue(e2);
     // q2 = [k2,->e1, e2]
-    k1_1.submit(q1);
+    k1Second.submit(q1);
     q1.enqueue(e1);
-    // q1 = [k1_0, e1, k1_1, e1_new]
+    // q1 = [k1First, e1, k1Second, e1_new]
     k3.submit(q3);
     q3.waitFor(e1);
     // q3 = [k3, ->e1]
     q3.enqueue(e3);
     // q3 = [k3, ->e1, e3]
 
-    // q1 = [k1_0,e1,k1_1,e1_new]
+    // q1 = [k1First,e1,k1Second,e1_new]
     // q2 = [k2,->e1,e2]
     // q3 = [k3,->e1_new,e3]
-    REQUIRE(k1_0.assumeNotComplete());
-    REQUIRE(k1_1.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
+    REQUIRE(k1Second.assumeNotComplete());
     REQUIRE(k2.assumeNotComplete());
     REQUIRE(k3.assumeNotComplete());
     REQUIRE(!e1.isComplete());
@@ -829,11 +829,11 @@ TEMPLATE_LIST_TEST_CASE("evReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRelea
     REQUIRE(!e3.isComplete());
 
     k3.trigger();
-    // q1 = [k1_0,e1,k1_1,e1_new]
+    // q1 = [k1First,e1,k1Second,e1_new]
     // q2 = [k2,->e1,e2]
     // q3 = [->e1_new,e3]
-    REQUIRE(k1_0.assumeNotComplete());
-    REQUIRE(k1_1.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
+    REQUIRE(k1Second.assumeNotComplete());
     REQUIRE(k2.assumeNotComplete());
     REQUIRE(k3.assumeComplete());
     REQUIRE(!e1.isComplete());
@@ -841,37 +841,37 @@ TEMPLATE_LIST_TEST_CASE("evReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRelea
     REQUIRE(!e3.isComplete());
 
     k2.trigger();
-    // q1 = [k1_0,e1,k1_1,e1_new]
+    // q1 = [k1First,e1,k1Second,e1_new]
     // q2 = [->e1,e2]
     // q3 = [->e1_new,e3]
-    REQUIRE(k1_0.assumeNotComplete());
-    REQUIRE(k1_1.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
+    REQUIRE(k1Second.assumeNotComplete());
     REQUIRE(k2.assumeComplete());
     REQUIRE(k3.assumeComplete());
     REQUIRE(!e1.isComplete());
     REQUIRE(!e2.isComplete());
     REQUIRE(!e3.isComplete());
 
-    // After the kernel k1_0 is released e3 is not allowed to be ready because q3 depends on the oldest e1_new
+    // After the kernel k1First is released e3 is not allowed to be ready because q3 depends on the oldest e1_new
     // state.
-    k1_0.trigger();
-    // q1 = [k1_1,e1_new]
+    k1First.trigger();
+    // q1 = [k1Second,e1_new]
     // q2 = []
     // q3 = [->e1_new,e3]
-    REQUIRE(k1_0.assumeComplete());
-    REQUIRE(k1_1.assumeNotComplete());
+    REQUIRE(k1First.assumeComplete());
+    REQUIRE(k1Second.assumeNotComplete());
     REQUIRE(k2.assumeComplete());
     REQUIRE(k3.assumeComplete());
     REQUIRE(!e1.isComplete());
     REQUIRE(e2.isComplete());
     REQUIRE(!e3.isComplete());
 
-    k1_1.trigger();
+    k1Second.trigger();
     // q1 = []
     // q2 = []
     // q3 = []
-    REQUIRE(k1_0.assumeComplete());
-    REQUIRE(k1_1.assumeComplete());
+    REQUIRE(k1First.assumeComplete());
+    REQUIRE(k1Second.assumeComplete());
     REQUIRE(k2.assumeComplete());
     REQUIRE(k3.assumeComplete());
     REQUIRE(e1.isComplete());
@@ -915,19 +915,19 @@ TEMPLATE_LIST_TEST_CASE("EventOutOfOrderLifetimeRelease", "", TestApis)
     onHost::Queue q1 = device.makeQueue();
     onHost::Queue q2 = device.makeQueue();
     onHost::Queue q3 = device.makeQueue();
-    auto k1_0 = TriggerKernel{device};
+    auto k1First = TriggerKernel{device};
     auto k2 = TriggerKernel{device};
     auto e1 = device.makeEvent();
     auto e2 = device.makeEvent();
     auto e3 = device.makeEvent();
 
-    k1_0.submit(q1);
-    // q1 = [k1_0]
+    k1First.submit(q1);
+    // q1 = [k1First]
     q1.enqueue(e1);
-    // q1 = [k1_0, e1]
+    // q1 = [k1First, e1]
     k2.submit(q2);
     // q2 = [k2]
-    REQUIRE(k1_0.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
 
     q3.waitFor(e1);
     // q3 = [->e1]
@@ -938,11 +938,11 @@ TEMPLATE_LIST_TEST_CASE("EventOutOfOrderLifetimeRelease", "", TestApis)
     // q2 = [k2, e1_new]
 
     q2.enqueue(e2);
-    // q1 = [k1_0,e1]
+    // q1 = [k1First,e1]
     // q2 = [k2,e1_new,e2]
     // q3 = [->e1,e3]
 
-    REQUIRE(k1_0.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
     REQUIRE(k2.assumeNotComplete());
     REQUIRE(!e1.isComplete());
     REQUIRE(!e2.isComplete());
@@ -952,22 +952,22 @@ TEMPLATE_LIST_TEST_CASE("EventOutOfOrderLifetimeRelease", "", TestApis)
     // We release first the kernel which is blocking the most recent enqueue of event e1.
     // q3 is not allowed to be freed because this queue depends on the oldest enqueue of e1.
     k2.trigger();
-    // q1 = [k1_0,e1]
+    // q1 = [k1First,e1]
     // q2 = []
     // q3 = [->e1,e3]
 
-    REQUIRE(k1_0.assumeNotComplete());
+    REQUIRE(k1First.assumeNotComplete());
     REQUIRE(k2.assumeComplete());
     REQUIRE(e1.isComplete());
     REQUIRE(e2.isComplete());
     REQUIRE(!e3.isComplete());
 
-    k1_0.trigger();
+    k1First.trigger();
     // q1 = []
     // q2 = []
     // q3 = []
 
-    REQUIRE(k1_0.assumeComplete());
+    REQUIRE(k1First.assumeComplete());
     REQUIRE(k2.assumeComplete());
     REQUIRE(e1.isComplete());
     REQUIRE(e2.isComplete());

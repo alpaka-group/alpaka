@@ -178,28 +178,28 @@ bool testRandomInitKernels(
     auto computeExec,
     uint32_t numElements)
 {
-    using T_Data = uint32_t;
+    using TData = uint32_t;
     // Buffer size
     uint32_t const size = numElements;
     constexpr uint32_t numBins = numberOfBins;
 
     // Allocate input and output host buffers in pinned memory accessible by the Platform devices
-    auto outBins_h = alpaka::onHost::alloc<T_Data>(host, numBins);
+    auto outBinsH = alpaka::onHost::alloc<TData>(host, numBins);
 
     // Fill the histogram buffer with zeros
     for(uint32_t i = 0; i < numBins; ++i)
     {
-        outBins_h[i] = 0;
+        outBinsH[i] = 0;
     }
 
     // Run the test on the given device
     alpaka::onHost::Queue queue = device.makeQueue();
 
     // Allocate output buffer on the device
-    auto outBins_d = alpaka::onHost::allocLike(device, outBins_h);
+    auto outBinsD = alpaka::onHost::allocLike(device, outBinsH);
 
     // Copy the initial data to the device
-    alpaka::onHost::memcpy(queue, outBins_d, outBins_h);
+    alpaka::onHost::memcpy(queue, outBinsD, outBinsH);
 
     // Frame size
 
@@ -208,16 +208,16 @@ bool testRandomInitKernels(
 
     // TEST - 1: Philox Generator generates integer random numbers
     std::cout << "- Testing RandomInitKernel with a grid of " << frameSpec << "\n";
-    queue.enqueue(frameSpec, RandomInitKernel{}, outBins_d.getMdSpan(), size);
+    queue.enqueue(frameSpec, RandomInitKernel{}, outBinsD.getMdSpan(), size);
 
     // Copy the results from the device to the host
-    alpaka::onHost::memcpy(queue, outBins_h, outBins_d);
+    alpaka::onHost::memcpy(queue, outBinsH, outBinsD);
 
     // Wait for all the operations to complete
     alpaka::onHost::wait(queue);
 
     // Validate RandomInitKernel Results
-    std::vector<T_Data> randomInitHist(std::data(outBins_h), std::data(outBins_h) + numBins);
+    std::vector<TData> randomInitHist(std::data(outBinsH), std::data(outBinsH) + numBins);
 
     // Define a lambda to perform validation and printing
     auto validateResult = [&](char const* kernelName, auto& histogram)
@@ -247,26 +247,26 @@ bool testRandomInitKernels(
     // Fill the histogram buffer with zeros
     for(uint32_t i = 0; i < numBins; ++i)
     {
-        outBins_h[i] = 0;
+        outBinsH[i] = 0;
     }
 
     // Copy the initial data to the device
-    alpaka::onHost::memcpy(queue, outBins_d, outBins_h);
+    alpaka::onHost::memcpy(queue, outBinsD, outBinsH);
 
     std::cout << "- Testing RandomInitKernelUniform with a grid of " << frameSpec << "\n";
-    queue.enqueue(frameSpec, RandomInitKernelUniform{}, outBins_d.getMdSpan(), size);
+    queue.enqueue(frameSpec, RandomInitKernelUniform{}, outBinsD.getMdSpan(), size);
 
     // Wait for all the operations to complete
     alpaka::onHost::wait(queue);
 
     // Copy the results from the device to the host
-    alpaka::onHost::memcpy(queue, outBins_h, outBins_d);
+    alpaka::onHost::memcpy(queue, outBinsH, outBinsD);
 
     // Wait for all the operations to complete
     alpaka::onHost::wait(queue);
 
     // Validate RandomInitKernelUniform Results
-    std::vector<T_Data> randomInitUniformHist(std::data(outBins_h), std::data(outBins_h) + numBins);
+    std::vector<TData> randomInitUniformHist(std::data(outBinsH), std::data(outBinsH) + numBins);
 
     // Validate and print results for RandomInitKernelUniform
     isValid &= validateResult("RandomInitKernelUniform", randomInitUniformHist);
@@ -275,26 +275,26 @@ bool testRandomInitKernels(
     // Fill the histogram buffer with zeros
     for(uint32_t i = 0; i < numBins; ++i)
     {
-        outBins_h[i] = 0;
+        outBinsH[i] = 0;
     }
 
     // Copy the initial data to the device
-    alpaka::onHost::memcpy(queue, outBins_d, outBins_h);
+    alpaka::onHost::memcpy(queue, outBinsD, outBinsH);
 
     std::cout << "- Testing RandomInitKernelVec with a grid of " << frameSpec << "\n";
-    queue.enqueue(frameSpec, RandomInitKernelVec{}, outBins_d.getMdSpan(), size);
+    queue.enqueue(frameSpec, RandomInitKernelVec{}, outBinsD.getMdSpan(), size);
 
     // Wait for all the operations to complete
     alpaka::onHost::wait(queue);
 
     // Copy the results from the device to the host
-    alpaka::onHost::memcpy(queue, outBins_h, outBins_d);
+    alpaka::onHost::memcpy(queue, outBinsH, outBinsD);
 
     // Wait for all the operations to complete
     alpaka::onHost::wait(queue);
 
     // Validate Results
-    std::vector randomInitVecHist(std::data(outBins_h), std::data(outBins_h) + numBins);
+    std::vector randomInitVecHist(std::data(outBinsH), std::data(outBinsH) + numBins);
 
     // Validate and print results
     isValid &= validateResult("RandomInitKernelVec", randomInitVecHist);

@@ -35,20 +35,20 @@ struct LastSetDataBlockIdx
 template<alpaka::concepts::Vector T_Extents, alpaka::concepts::Vector T_FrameSize>
 struct Case
 {
-    Case(T_Extents extents, T_FrameSize frameSize) : m_extents(extents), m_frameSize(frameSize)
+    Case(T_Extents extents, T_FrameSize frameSize) : extents(extents), frameSize(frameSize)
     {
     }
 
-    T_Extents m_extents;
-    T_FrameSize m_frameSize;
+    T_Extents extents;
+    T_FrameSize frameSize;
 };
 
 void validate(auto& queue, auto& device, auto exec, auto testCase)
 {
-    Vec extentMd = testCase.m_extents;
+    Vec extentMd = testCase.extents;
     INFO(
-        "exec=" << onHost::demangledName(exec) << " extents=" << testCase.m_extents
-                << " frame size=" << testCase.m_frameSize);
+        "exec=" << onHost::demangledName(exec) << " extents=" << testCase.extents
+                << " frame size=" << testCase.frameSize);
     auto dBuff = onHost::alloc<Vec<uint32_t, extentMd.dim()>>(device, extentMd);
 
     auto hBuff = onHost::allocHostLike(dBuff);
@@ -57,7 +57,7 @@ void validate(auto& queue, auto& device, auto exec, auto testCase)
     onHost::fill(queue, dBuff, extentMd);
 
     onHost::wait(queue);
-    auto frameSize = testCase.m_frameSize;
+    auto frameSize = testCase.frameSize;
     queue.enqueue(
         onHost::FrameSpec{divExZero(extentMd, frameSize), frameSize, exec},
         KernelBundle{LastSetDataBlockIdx{}, dBuff, extentMd});

@@ -31,7 +31,7 @@ int validateResult(
 
     // validate results
     int falseResults = 0;
-    static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
+    static constexpr int maxPrintFalseResults = 20;
 
     auto groundtruth = onHost::allocHost<T_Data>(numElements);
 
@@ -52,7 +52,7 @@ int validateResult(
 
         if(computedY != correctResult)
         {
-            if(falseResults < MAX_PRINT_FALSE_RESULTS)
+            if(falseResults < maxPrintFalseResults)
                 UNSCOPED_INFO("bufY[" << i << "] == " << computedY << " != " << correctResult);
             ++falseResults;
         }
@@ -64,7 +64,7 @@ int validateResult(
     }
 
     UNSCOPED_INFO(
-        "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS
+        "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults
                  << ". Execution results incorrect!");
     return EXIT_FAILURE;
 }

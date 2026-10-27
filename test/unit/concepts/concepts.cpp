@@ -17,27 +17,27 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
 using DictWithoutDeviceSpecOrExec = Dict<DictEntry<object::Api, api::Host>>;
 using DictWithoutExecutor = Dict<DictEntry<object::Api, api::Host>, DictEntry<object::DeviceKind, deviceKind::Cpu>>;
 
-template<typename TIdx>
+template<typename T_Idx>
 void testVector()
 {
-    STATIC_CHECK(concepts::Vector<Vec<TIdx, TIdx{0}>>); // only disallowed at runtime
-    STATIC_CHECK(concepts::Vector<Vec<Data, TIdx{1}>>);
-    STATIC_CHECK(concepts::Vector<Vec<Data, TIdx{2}>>);
-    STATIC_CHECK(concepts::Vector<Vec<Data, TIdx{3}>>);
-    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<TIdx, TIdx{0}>>); // only disallowed at runtime
-    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, TIdx{1}>>);
-    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, TIdx{2}>>);
-    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, TIdx{3}>>);
+    STATIC_CHECK(concepts::Vector<Vec<T_Idx, T_Idx{0}>>); // only disallowed at runtime
+    STATIC_CHECK(concepts::Vector<Vec<Data, T_Idx{1}>>);
+    STATIC_CHECK(concepts::Vector<Vec<Data, T_Idx{2}>>);
+    STATIC_CHECK(concepts::Vector<Vec<Data, T_Idx{3}>>);
+    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<T_Idx, T_Idx{0}>>); // only disallowed at runtime
+    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, T_Idx{1}>>);
+    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, T_Idx{2}>>);
+    STATIC_CHECK_FALSE(concepts::CVector<alpaka::Vec<Data, T_Idx{3}>>);
 
-    STATIC_CHECK(concepts::Vector<alpaka::Vec<Data, TIdx{1}>, Data>);
-    STATIC_CHECK_FALSE(concepts::Vector<alpaka::Vec<double, TIdx{1}>, float>);
+    STATIC_CHECK(concepts::Vector<alpaka::Vec<Data, T_Idx{1}>, Data>);
+    STATIC_CHECK_FALSE(concepts::Vector<alpaka::Vec<double, T_Idx{1}>, float>);
 
-    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, TIdx{1}, Data{0}>>);
-    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, TIdx{2}, Data{0}, Data{0}>>);
-    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, TIdx{3}, Data{0}, Data{0}, Data{0}>>);
-    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, TIdx{1}, Data{0}>>);
-    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, TIdx{2}, Data{0}, Data{0}>>);
-    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, TIdx{3}, Data{0}, Data{0}, Data{0}>>);
+    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, T_Idx{1}, Data{0}>>);
+    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, T_Idx{2}, Data{0}, Data{0}>>);
+    STATIC_CHECK(concepts::Vector<alpaka::CVec<Data, T_Idx{3}, Data{0}, Data{0}, Data{0}>>);
+    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, T_Idx{1}, Data{0}>>);
+    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, T_Idx{2}, Data{0}, Data{0}>>);
+    STATIC_CHECK(concepts::CVector<alpaka::CVec<Data, T_Idx{3}, Data{0}, Data{0}, Data{0}>>);
 
     STATIC_CHECK_FALSE(concepts::Vector<Data[]>);
     STATIC_CHECK_FALSE(concepts::CVector<Data[]>);

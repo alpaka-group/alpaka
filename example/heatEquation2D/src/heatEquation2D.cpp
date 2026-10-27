@@ -67,8 +67,8 @@ namespace alpaka::example::heatEquation
         using namespace alpaka;
         using namespace alpaka::onHost;
 
-        constexpr uint32_t Dimensions = 2u;
-        using IdxTypeVec = Vec<IdxType, Dimensions>;
+        constexpr uint32_t dimensions = 2u;
+        using IdxTypeVec = Vec<IdxType, dimensions>;
 
         std::cout << deviceSpec.getApi().getName() << std::endl;
 

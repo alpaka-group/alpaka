@@ -26,9 +26,9 @@ namespace
 {
     struct GetSizeKernel
     {
-        template<typename TAcc>
+        template<typename T_Acc>
         ALPAKA_FN_ACC void operator()(
-            TAcc const& acc,
+            T_Acc const& acc,
             concepts::IMdSpan<bool> auto success,
             uint32_t expectedWarpSize,
             uint32_t expectedWarpsPerBlock) const

@@ -25,13 +25,13 @@ int example(auto const devSpec)
 
     // allocate a buffer of floats in host memory
     uint32_t size = 42;
-    auto host_buffer = alpaka::onHost::allocHost<float>(size);
-    std::cout << "host memory buffer at " << std::data(host_buffer) << "\n\n";
+    auto hostBuffer = alpaka::onHost::allocHost<float>(size);
+    std::cout << "host memory buffer at " << std::data(hostBuffer) << "\n\n";
 
     // fill the host buffers with values
     for(uint32_t i = 0; i < size; ++i)
     {
-        host_buffer[i] = i;
+        hostBuffer[i] = i;
     }
 
     // use the first device
@@ -43,25 +43,25 @@ int example(auto const devSpec)
 
     {
         // allocate a buffer of floats in global device memory
-        auto device_buffer = alpaka::onHost::alloc<float>(device, size);
-        std::cout << "memory buffer on " << alpaka::onHost::getStaticName(alpaka::getApi(device_buffer)) << " at "
-                  << std::data(device_buffer) << "\n\n";
+        auto deviceBuffer = alpaka::onHost::alloc<float>(device, size);
+        std::cout << "memory buffer on " << alpaka::onHost::getStaticName(alpaka::getApi(deviceBuffer)) << " at "
+                  << std::data(deviceBuffer) << "\n\n";
 
         // once the device buffer goes out of scope, it will enqueue its free, so all other operations have finished
         // before the memory is freed
-        device_buffer.destructorWaitFor(queue);
+        deviceBuffer.destructorWaitFor(queue);
 
         // set the device memory to all zeros (byte-wise, not element-wise)
-        alpaka::onHost::memset(queue, device_buffer, 0x00);
+        alpaka::onHost::memset(queue, deviceBuffer, 0x00);
 
         // copy the contents of the device buffer to the host buffer
-        alpaka::onHost::memcpy(queue, host_buffer, device_buffer);
+        alpaka::onHost::memcpy(queue, hostBuffer, deviceBuffer);
     }
 
     // read the content of the host buffer
     for(uint32_t i = 0; i < size; ++i)
     {
-        std::cout << host_buffer[i] << ' ';
+        std::cout << hostBuffer[i] << ' ';
     }
     std::cout << '\n';
 

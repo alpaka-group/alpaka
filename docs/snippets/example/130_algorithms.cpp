@@ -240,8 +240,8 @@ TEMPLATE_LIST_TEST_CASE("tutorial onHost algorithms - reduce", "[docs]", docs::t
     onHost::memcpy(queue, inputBuffer, data);
 
     auto reduceBuffer = onHost::alloc<int>(device, Vec{1u});
-    int neutral_element = 0;
-    onHost::reduce(queue, exec, neutral_element, reduceBuffer, std::plus{}, inputBuffer);
+    int neutralElement = 0;
+    onHost::reduce(queue, exec, neutralElement, reduceBuffer, std::plus{}, inputBuffer);
     // END-TUTORIAL-reduce
 
     auto hostOutput = onHost::allocHost<int>(size_t{1});

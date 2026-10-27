@@ -22,7 +22,7 @@ void haccmk(
     size_t const n, // global size
     int const ilp, // inner loop count
     T const fsrrmax,
-    T const mp_rsm,
+    T const mpRsm,
     T const fcoeff,
     T const* __restrict xx,
     T const* __restrict yy,
@@ -32,7 +32,7 @@ void haccmk(
     T* __restrict vy2,
     T* __restrict vz2)
 {
-    float total_time = 0.f;
+    float totalTime = 0.f;
 
     for(int r = 0; r < repeat; r++)
     {
@@ -70,7 +70,7 @@ void haccmk(
 
                 m = mass[j] * (r2 < fsrrmax);
 
-                f = r2 + mp_rsm;
+                f = r2 + mpRsm;
                 f = m * (1.f / (f * sqrtf(f)) - (ma0 + r2 * (ma1 + r2 * (ma2 + r2 * (ma3 + r2 * (ma4 + r2 * ma5))))));
 
                 xi = xi + f * dxc;
@@ -90,9 +90,9 @@ void haccmk(
         auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
         // first round is a warmup round
         if(r != 0)
-            total_time += time;
+            totalTime += time;
     }
-    printf("Average kernel execution time %f (s)\n", (total_time * 1e-9f) / (repeat - 1));
+    printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / (repeat - 1));
 }
 
 int main(int argc, char* argv[])
@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
     if(int const ret = hacc::parseCmd(argc, argv, n2, n1, repeat))
         return ret;
 
-    float fsrrmax2, mp_rsm2, fcoeff, dx1, dy1, dz1, dx2, dy2, dz2;
+    float fsrrmax2, mpRsm2, fcoeff, dx1, dy1, dz1, dx2, dy2, dz2;
     int i;
 
     printf("Outer loop count is set %d\n", n1);
@@ -117,14 +117,14 @@ int main(int argc, char* argv[])
     float* vx2 = hacc::allocAligned<float>(n2);
     float* vy2 = hacc::allocAligned<float>(n2);
     float* vz2 = hacc::allocAligned<float>(n2);
-    float* vx2_hw = hacc::allocAligned<float>(n2);
-    float* vy2_hw = hacc::allocAligned<float>(n2);
-    float* vz2_hw = hacc::allocAligned<float>(n2);
+    float* vx2Hw = hacc::allocAligned<float>(n2);
+    float* vy2Hw = hacc::allocAligned<float>(n2);
+    float* vz2Hw = hacc::allocAligned<float>(n2);
 
     /* Initial data preparation */
     fcoeff = 0.23f;
     fsrrmax2 = 0.5f;
-    mp_rsm2 = 0.03f;
+    mpRsm2 = 0.03f;
     dx1 = 1.0f / static_cast<float>(n2);
     dy1 = 2.0f / static_cast<float>(n2);
     dz1 = 3.0f / static_cast<float>(n2);
@@ -146,22 +146,22 @@ int main(int argc, char* argv[])
         vx2[i] = 0.f;
         vy2[i] = 0.f;
         vz2[i] = 0.f;
-        vx2_hw[i] = 0.f;
-        vy2_hw[i] = 0.f;
-        vz2_hw[i] = 0.f;
+        vx2Hw[i] = 0.f;
+        vy2Hw[i] = 0.f;
+        vz2Hw[i] = 0.f;
     }
 
     for(i = 0; i < n1; ++i)
     {
-        hacc::haccmk_gold(n2, xx[i], yy[i], zz[i], fsrrmax2, mp_rsm2, xx, yy, zz, mass, &dx2, &dy2, &dz2);
+        hacc::haccmk_gold(n2, xx[i], yy[i], zz[i], fsrrmax2, mpRsm2, xx, yy, zz, mass, &dx2, &dy2, &dz2);
         vx2[i] = vx2[i] + dx2 * fcoeff;
         vy2[i] = vy2[i] + dy2 * fcoeff;
         vz2[i] = vz2[i] + dz2 * fcoeff;
     }
 
-    haccmk(repeat, n1, n2, fsrrmax2, mp_rsm2, fcoeff, xx, yy, zz, mass, vx2_hw, vy2_hw, vz2_hw);
+    haccmk(repeat, n1, n2, fsrrmax2, mpRsm2, fcoeff, xx, yy, zz, mass, vx2Hw, vy2Hw, vz2Hw);
 
-    int error = hacc::verify(n2, vx2, vy2, vz2, vx2_hw, vy2_hw, vz2_hw);
+    int error = hacc::verify(n2, vx2, vy2, vz2, vx2Hw, vy2Hw, vz2Hw);
 
     hacc::freeAligned(xx);
     hacc::freeAligned(yy);
@@ -170,9 +170,9 @@ int main(int argc, char* argv[])
     hacc::freeAligned(vx2);
     hacc::freeAligned(vy2);
     hacc::freeAligned(vz2);
-    hacc::freeAligned(vx2_hw);
-    hacc::freeAligned(vy2_hw);
-    hacc::freeAligned(vz2_hw);
+    hacc::freeAligned(vx2Hw);
+    hacc::freeAligned(vy2Hw);
+    hacc::freeAligned(vz2Hw);
 
     return error;
 }

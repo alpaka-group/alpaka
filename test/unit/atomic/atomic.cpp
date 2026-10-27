@@ -19,8 +19,8 @@ using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDevice
 
 using namespace alpaka::test::unit::atomic;
 
-template<typename T1, typename T2>
-constexpr auto equals(T1 a, T2 b) -> bool
+template<typename T_T1, typename T_T2>
+constexpr auto equals(T_T1 a, T_T2 b) -> bool
 {
     return a == b;
 }
@@ -35,10 +35,10 @@ constexpr auto equals(double a, double b) -> bool
     return alpaka::math::floatEqualExactNoWarning(a, b);
 }
 
-template<typename T_AtomicScope, typename TOp, typename TAcc, typename T>
-constexpr auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T operandOrig, T value) -> void
+template<typename T_AtomicScope, typename T_Op, typename T_Acc, typename T>
+constexpr auto testAtomicCall(T_Acc const& acc, bool* success, T& operand, T operandOrig, T value) -> void
 {
-    auto op = typename TOp::Op{};
+    auto op = typename T_Op::Op{};
 
     // check if the function `alpaka::atomicOp<*>` is callable
     {
@@ -47,7 +47,7 @@ constexpr auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T oper
         T reference = operand;
         op(&reference, value);
 
-        T const ret = alpaka::onAcc::atomicOp<typename TOp::Op>(acc, &operand, value, T_AtomicScope{});
+        T const ret = alpaka::onAcc::atomicOp<typename T_Op::Op>(acc, &operand, value, T_AtomicScope{});
         // check that always the old value is returned
         ALPAKA_CHECK(*success, equals(operandOrig, ret));
         // check that result in memory is correct
@@ -61,7 +61,7 @@ constexpr auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T oper
         T reference = operand;
         op(&reference, value);
 
-        T const ret = TOp::atomic(acc, &operand, value, T_AtomicScope{});
+        T const ret = T_Op::atomic(acc, &operand, value, T_AtomicScope{});
         // check that always the old value is returned
         ALPAKA_CHECK(*success, equals(operandOrig, ret));
         // check that result in memory is correct
@@ -69,8 +69,8 @@ constexpr auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T oper
     }
 }
 
-template<typename T_AtomicScope, typename TOp, typename TAcc, typename T>
-constexpr auto testAtomicCombinations(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
+template<typename T_AtomicScope, typename T_Op, typename T_Acc, typename T>
+constexpr auto testAtomicCombinations(T_Acc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
     // helper variables to avoid compiler conversion warnings/errors
     constexpr T one = static_cast<T>(1);
@@ -78,32 +78,32 @@ constexpr auto testAtomicCombinations(TAcc const& acc, bool* success, T& operand
     {
         // left operand is half of the right
         T const value = static_cast<T>(operandOrig / two);
-        testAtomicCall<T_AtomicScope, TOp>(acc, success, operand, operandOrig, value);
+        testAtomicCall<T_AtomicScope, T_Op>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is twice as large as the right
         T const value = static_cast<T>(operandOrig * two);
-        testAtomicCall<T_AtomicScope, TOp>(acc, success, operand, operandOrig, value);
+        testAtomicCall<T_AtomicScope, T_Op>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is larger by one
         T const value = static_cast<T>(operandOrig + one);
-        testAtomicCall<T_AtomicScope, TOp>(acc, success, operand, operandOrig, value);
+        testAtomicCall<T_AtomicScope, T_Op>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is smaller by one
         T const value = static_cast<T>(operandOrig - one);
-        testAtomicCall<T_AtomicScope, TOp>(acc, success, operand, operandOrig, value);
+        testAtomicCall<T_AtomicScope, T_Op>(acc, success, operand, operandOrig, value);
     }
     {
         // both operands are equal
         T const value = operandOrig;
-        testAtomicCall<T_AtomicScope, TOp>(acc, success, operand, operandOrig, value);
+        testAtomicCall<T_AtomicScope, T_Op>(acc, success, operand, operandOrig, value);
     }
 }
 
-template<typename T_AtomicScope, typename TAcc, typename T>
-constexpr auto testAtomicCas(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
+template<typename T_AtomicScope, typename T_Acc, typename T>
+constexpr auto testAtomicCas(T_Acc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
 
