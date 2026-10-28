@@ -30,7 +30,7 @@ auto main() -> int
     // Initialize values on host
     for(unsigned i = 0; i < n; i++)
     {
-        a[i] = i;
+        a[i] = static_cast<int>(i);
         b[i] = 1;
     }
 

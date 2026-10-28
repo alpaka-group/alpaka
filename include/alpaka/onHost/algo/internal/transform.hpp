@@ -76,7 +76,7 @@ namespace alpaka::onHost::internal
             auto&& func,
             auto&&... data)
         {
-            return Simd{op(CVec<uint32_t, T_idx>{}, acc, ALPAKA_FORWARD(func), ALPAKA_FORWARD(data)...)...};
+            return Simd{op(CVec<uint32_t, T_idx>{}, acc, func, data...)...};
         }
     };
 

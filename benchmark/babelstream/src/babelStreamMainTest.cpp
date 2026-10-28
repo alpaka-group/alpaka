@@ -148,7 +148,7 @@ void testKernels(auto const deviceSpec, auto const exec)
 {
     if(kernelsToBeExecuted == KernelsToRun::All)
     {
-        std::cout << "Kernels: Init, Copy, Mul, Add, Triad, Dot Kernels" << std::endl;
+        std::cout << "Kernels: Init, Copy, Mul, Add, Triad, Dot Kernels" << '\n';
     }
 
     auto devSelector = onHost::makeDeviceSelector(deviceSpec);
@@ -503,7 +503,7 @@ void testKernels(auto const deviceSpec, auto const exec)
     metaData.setItem(BMInfoDataType::KernelMaxTimes, joinElements(runtimeResults.getMaxExecTimeKernelArray(), ", "));
     metaData.setItem(BMInfoDataType::KernelAvgTimes, joinElements(runtimeResults.getAvgExecTimeKernelArray(), ", "));
     // Print the summary as a table, if a standard serialization is needed other functions of the class can be used
-    std::cout << metaData.serializeAsTable() << std::endl;
+    std::cout << metaData.serializeAsTable() << '\n';
 }
 
 using Backends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors))>;

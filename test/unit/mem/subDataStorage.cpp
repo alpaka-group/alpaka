@@ -190,7 +190,7 @@ TEST_CASE("3D alpaka::View::getSubView function tests", "[mem][view][SubDataStor
 
 TEST_CASE("alpaka::View::getSubView keeps pitches, pointer, and alignment contracts", "[mem][view][SubDataStorage]")
 {
-    alignas(32) std::array<int, 2 * 3 * 4> storage{};
+    alignas(32) std::array<int, std::size_t{2} * 3 * 4> storage{};
     for(std::size_t i = 0; i < storage.size(); ++i)
     {
         storage[i] = static_cast<int>(i);

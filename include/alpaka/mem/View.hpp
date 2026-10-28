@@ -76,9 +76,12 @@ namespace alpaka
     {
         return View{
             internal::getApi(ALPAKA_FORWARD(anyWithApi)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
+            /* Only move on the last use in order to avoid use-after-move errors.
+             * https://clang.llvm.org/extra/clang-tidy/checks/bugprone/use-after-move.html
+             */
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
             alpaka::getAlignment(ALPAKA_FORWARD(any))};
     }
 
@@ -89,10 +92,13 @@ namespace alpaka
     inline constexpr auto makeView(auto&& any)
     {
         return View{
-            internal::getApi(ALPAKA_FORWARD(any)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
+            /* Only move on the last use in order to avoid use-after-move errors.
+             * https://clang.llvm.org/extra/clang-tidy/checks/bugprone/use-after-move.html
+             */
+            alpaka::getApi(any),
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
             alpaka::getAlignment(ALPAKA_FORWARD(any))};
     }
 

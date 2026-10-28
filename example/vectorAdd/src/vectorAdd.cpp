@@ -24,7 +24,7 @@ auto validateResult(auto const& bufHostC, auto const& bufHostA, auto const& bufH
         if(val != correctResult)
         {
             if(falseResults < maxPrintFalseResults)
-                std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+                std::cerr << "C[" << i << "] == " << val << " != " << correctResult << '\n';
             ++falseResults;
         }
     }
@@ -33,8 +33,8 @@ auto validateResult(auto const& bufHostC, auto const& bufHostA, auto const& bufH
         return EXIT_SUCCESS;
 
     std::cout << "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults << "\n"
-              << "Execution results incorrect!" << std::endl;
-    std::cout << std::endl;
+              << "Execution results incorrect!" << '\n';
+    std::cout << '\n';
     return EXIT_FAILURE;
 }
 
@@ -87,9 +87,9 @@ auto example(auto const deviceSpec, auto const exec, size_t numElements, size_t 
     // Define the buffer element type
     using Data = uint32_t;
 
-    std::cout << "Number of elements: " << numElements << std::endl;
-    std::cout << "Element type: " << onHost::demangledName<Data>() << std::endl;
-    std::cout << "Number of runs: " << numberOfRuns << std::endl;
+    std::cout << "Number of elements: " << numElements << '\n';
+    std::cout << "Element type: " << onHost::demangledName<Data>() << '\n';
+    std::cout << "Number of runs: " << numberOfRuns << '\n';
 
     std::cout << "Using alpaka accelerator: " << onHost::demangledName(exec) << " for "
               << deviceSpec.getApi().getName() << " " << deviceSpec.getDeviceKind().getName() << std::endl;
@@ -175,18 +175,18 @@ auto example(auto const deviceSpec, auto const exec, size_t numElements, size_t 
     {
         double avgKernelRuntime = totalKernelRuntime / static_cast<double>(completedRuns);
         double avgCopyRuntime = totalCopyRuntime / static_cast<double>(completedRuns);
-        std::cout << "Average time for kernel execution: " << avgKernelRuntime << "s" << std::endl;
-        std::cout << "Average time for HtoD copy: " << avgCopyRuntime << "s" << std::endl;
+        std::cout << "Average time for kernel execution: " << avgKernelRuntime << "s" << '\n';
+        std::cout << "Average time for HtoD copy: " << avgCopyRuntime << "s" << '\n';
     }
 
-    std::cout << "Execution results correct!" << std::endl;
-    std::cout << std::endl;
+    std::cout << "Execution results correct!" << '\n';
+    std::cout << '\n';
     return EXIT_SUCCESS;
 }
 
 void help(char* argv[])
 {
-    std::cerr << argv[0] << " [-n  numElements] [-h]" << std::endl;
+    std::cerr << argv[0] << " [-n  numElements] [-h]" << '\n';
 }
 
 auto main(int argc, char* argv[]) -> int

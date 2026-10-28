@@ -33,13 +33,13 @@ namespace alpaka
         {
             for(char c : value)
             {
-                seed ^= static_cast<size_t>(c) + 0x9e37'79b9 + (seed << 6) + (seed >> 2);
+                seed ^= static_cast<size_t>(c) + 0x9e37'79b9 + (seed << 6u) + (seed >> 2u);
             }
         }
 
         static constexpr void hashCombine(size_t& seed, size_t value)
         {
-            seed ^= value + 0x9e37'79b9 + (seed << 6) + (seed >> 2);
+            seed ^= value + 0x9e37'79b9 + (seed << 6u) + (seed >> 2u);
         }
     };
 

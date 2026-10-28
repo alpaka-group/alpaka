@@ -21,6 +21,8 @@ namespace alpaka
      * @brief An enum representing the different types of boundary, with LOWER, MIDDLE, and UPPER being valid states,
      * and OOB being invalid (out-of-bounds).
      */
+    // public enum, the underlying type is part of the interface
+    // NOLINTNEXTLINE(performance-enum-size)
     enum class BoundaryType : uint32_t
     {
         lower,
