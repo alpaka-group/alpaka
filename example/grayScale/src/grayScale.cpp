@@ -57,9 +57,11 @@ struct Pixel
 
 void naiveToGray(auto&& buffer)
 {
+    auto const numPixels = onHost::getExtents(buffer).x();
+    auto* const pixels = reinterpret_cast<Pixel*>(onHost::data(buffer));
     std::for_each(
-        reinterpret_cast<Pixel*>(onHost::data(buffer)),
-        reinterpret_cast<Pixel*>(onHost::data(buffer) + onHost::getExtents(buffer).x()),
+        pixels,
+        pixels + numPixels,
         [](Pixel& pixel)
         {
             auto const gray = (pixel.r * 11 + pixel.g * 16 + pixel.b * 5) / 32;
@@ -90,30 +92,30 @@ auto validateResult(
              scalarB * bufHostB[i]) // Direct indexing for B
             / scalar32); // Normalize by scalar32
 
-        Data correctResult = grayValue | (grayValue << 8u) | (grayValue << 16u) | (bufHostA[i] << 24u);
+        Data correctResult
+            = grayValue | (grayValue << 8u) | (grayValue << 16u) | (static_cast<Data>(bufHostA[i]) << 24u);
 
         if(computedGray != correctResult)
         {
             if(falseResults < maxPrintFalseResults)
-                std::cerr << "RGBA[" << i << "] == " << std::hex << computedGray << " != " << correctResult
-                          << std::endl;
-            std::cerr << std::resetiosflags(std::ios_base::fmtflags(0));
+                std::cerr << "RGBA[" << i << "] == " << std::hex << computedGray << " != " << correctResult << '\n';
+            std::cerr << std::dec;
             ++falseResults;
         }
     }
 
     if(falseResults == 0)
     {
-        std::cout << "Execution results correct!" << std::endl;
-        std::cout << std::endl;
+        std::cout << "Execution results correct!" << '\n';
+        std::cout << '\n';
         return EXIT_SUCCESS;
     }
     else
     {
         std::cout << "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults
                   << "\n"
-                  << "Execution results incorrect!" << std::endl;
-        std::cout << std::endl;
+                  << "Execution results incorrect!" << '\n';
+        std::cout << '\n';
         return EXIT_FAILURE;
     }
 }
@@ -133,13 +135,13 @@ auto example(T_Cfg const& cfg, size_t numElements, size_t numberOfRuns, bool ena
     // Number of elements to process
     IdxVec const extent(numElements);
 
-    std::cout << std::endl;
-    std::cout << "- Example GrayScale" << std::endl;
-    std::cout << "    Number of elements [#]: " << numElements << std::endl;
-    std::cout << "    Element type [byte]: " << onHost::demangledName<Data>() << std::endl;
-    std::cout << "    Buffer size [Gbyte]: " << numElements * sizeof(Data) / 1.e9 << std::endl;
-    std::cout << "    Number of runs [#]: " << numberOfRuns << std::endl;
-    std::cout << std::endl;
+    std::cout << '\n';
+    std::cout << "- Example GrayScale" << '\n';
+    std::cout << "    Number of elements [#]: " << numElements << '\n';
+    std::cout << "    Element type [byte]: " << onHost::demangledName<Data>() << '\n';
+    std::cout << "    Buffer size [Gbyte]: " << static_cast<double>(numElements * sizeof(Data)) / 1.e9 << '\n';
+    std::cout << "    Number of runs [#]: " << numberOfRuns << '\n';
+    std::cout << '\n';
 
     // Select a device
     auto devSelector = onHost::makeDeviceSelector(deviceSpec);
@@ -181,16 +183,16 @@ auto example(T_Cfg const& cfg, size_t numElements, size_t numberOfRuns, bool ena
 
     if(exec == alpaka::exec::cpuSerial && enableStdForEach)
     {
-        std::cout << "Using native CPU std::for_each()" << std::endl;
+        std::cout << "Using native CPU std::for_each()" << '\n';
         onHost::wait(queue);
         auto const beginT = std::chrono::high_resolution_clock::now();
         naiveToGray(bufHostScalarRGB);
         auto const endT = std::chrono::high_resolution_clock::now();
         double kernelRuntime = std::chrono::duration<double>(endT - beginT).count();
 
-        std::cout << "    Time for kernel execution [s]: " << kernelRuntime << std::endl;
+        std::cout << "    Time for kernel execution [s]: " << kernelRuntime << '\n';
         std::cout << "    Processed [Gbyte/s]: "
-                  << (static_cast<double>(2ull * numElements * sizeof(Data)) / kernelRuntime) / 1.e9 << std::endl;
+                  << (static_cast<double>(2ull * numElements * sizeof(Data)) / kernelRuntime) / 1.e9 << '\n';
 
         int result = validateResult(bufHostScalarRGB, bufHostR, bufHostG, bufHostB, bufHostA, extent.x());
         if(result != EXIT_SUCCESS)
@@ -242,14 +244,14 @@ auto example(T_Cfg const& cfg, size_t numElements, size_t numberOfRuns, bool ena
     if(completedRuns > 0u)
     {
         double const avgKernelRuntime = totalKernelRuntime / static_cast<double>(completedRuns);
-        std::cout << "    Time for kernel execution [s]: " << avgKernelRuntime << std::endl;
+        std::cout << "    Time for kernel execution [s]: " << avgKernelRuntime << '\n';
         std::cout << "    Processed [Gbyte/s]: "
-                  << (static_cast<double>(2llu * numElements * sizeof(Data)) / avgKernelRuntime) / 1.e9 << std::endl;
+                  << (static_cast<double>(2llu * numElements * sizeof(Data)) / avgKernelRuntime) / 1.e9 << '\n';
 
         double const avgCopyRuntime = totalCopyRuntime / static_cast<double>(completedRuns);
-        std::cout << "    Time for HtoD copy [s]: " << avgCopyRuntime << std::endl;
+        std::cout << "    Time for HtoD copy [s]: " << avgCopyRuntime << '\n';
         std::cout << "    Copied [Gbyte/s]: "
-                  << (static_cast<double>(numElements * sizeof(Data)) / avgCopyRuntime) / 1.e9 << std::endl;
+                  << (static_cast<double>(numElements * sizeof(Data)) / avgCopyRuntime) / 1.e9 << '\n';
     }
 
     // in case of a validation error we would exit early
@@ -258,17 +260,17 @@ auto example(T_Cfg const& cfg, size_t numElements, size_t numberOfRuns, bool ena
 
 void help(char* argv[])
 {
-    std::cerr << argv[0] << " [OPTIONS]" << std::endl;
-    std::cerr << "  -n  numElements: Number of elements to process. Default: 1024*1024" << std::endl;
-    std::cerr << "  -r  numberOfRuns: Number of kernel executions for averaging. Default: 1" << std::endl;
-    std::cerr << "  -e: disable execution of the native std::for_each implementation" << std::endl;
-    std::cerr << "  -h: Print this help message" << std::endl;
+    std::cerr << argv[0] << " [OPTIONS]" << '\n';
+    std::cerr << "  -n  numElements: Number of elements to process. Default: 1024*1024" << '\n';
+    std::cerr << "  -r  numberOfRuns: Number of kernel executions for averaging. Default: 1" << '\n';
+    std::cerr << "  -e: disable execution of the native std::for_each implementation" << '\n';
+    std::cerr << "  -h: Print this help message" << '\n';
 }
 
 auto main(int argc, char* argv[]) -> int
 {
     // Default value if no command line argument used
-    size_t numElements = 1024 * 1024;
+    size_t numElements = size_t{1024} * 1024;
     size_t numberOfRuns = 1;
 
     int opt;

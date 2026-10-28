@@ -591,7 +591,7 @@ namespace alpaka
          * .toString(";","|")     -> |x;...;z|
          * .toString(",","[]")    -> [x,...,z]
          */
-        std::string toString(std::string const separator = ",", std::string const enclosings = "{}") const
+        std::string toString(std::string const& separator = ",", std::string const& enclosings = "{}") const
         {
             std::string localeEnclosingBegin;
             std::string localeEnclosingEnd;
@@ -685,9 +685,7 @@ namespace alpaka
             constexpr uint32_t mid = T_start + size / 2u;
 
             // recursively reduce both halves and combine
-            return reduceFunc(
-                reduceRange<T_start, mid>(ALPAKA_FORWARD(reduceFunc)),
-                reduceRange<mid, T_end>(ALPAKA_FORWARD(reduceFunc)));
+            return reduceFunc(reduceRange<T_start, mid>(reduceFunc), reduceRange<mid, T_end>(reduceFunc));
 #endif
         }
     };

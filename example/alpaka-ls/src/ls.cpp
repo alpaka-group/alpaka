@@ -40,7 +40,7 @@ int example(int argc, char* argv[], auto const usedApi)
 
     // try to load first in working directory, then in binary directory, then via LD_LIBRARY_PATH
     auto prefixList = std::vector<std::string>{"./", binaryPath + "/", ""};
-    for(auto libPrefix : prefixList)
+    for(auto const& libPrefix : prefixList)
     {
         auto libraryName = libPrefix + "libalpaka-ls_" + onHost::getName(usedApi);
 
@@ -97,7 +97,7 @@ int example(int argc, char* argv[], auto const usedApi)
 
 void help(char* argv[])
 {
-    std::cerr << argv[0] << " [-h]" << std::endl;
+    std::cerr << argv[0] << " [-h]" << '\n';
 }
 
 auto main(int argc, char* argv[]) -> int

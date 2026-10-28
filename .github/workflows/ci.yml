@@ -50,7 +50,7 @@ jobs:
           - { compiler: gcc, version: "15", cuda: "no", hip: "no", container: "gcc:15.1.0",
               env : {APCI_DEVICE_COMPILER: gcc@15, APCI_CMAKE : 3.28.3, APCI_RUN_CTEST: ON} }
           - { compiler: gcc, version: "15", cuda: "no", hip: "no", container: "gcc:15.1.0" , simd: "EMULATION", hwloc: "no",
-              env : {APCI_DEVICE_COMPILER: gcc@15, APCI_CMAKE : 3.25.1, APCI_RUN_CTEST: ON} }
+              env : {APCI_DEVICE_COMPILER: gcc@15, APCI_CMAKE : 3.25.3, APCI_RUN_CTEST: ON} }
           # clang host compiler
           - { compiler: clang, version: "17", cuda: "no", hip: "no", container: "ubuntu:24.04",
               env : {APCI_DEVICE_COMPILER : clang@17, APCI_CMAKE : 3.28.3, APCI_RUN_CTEST: ON} }
