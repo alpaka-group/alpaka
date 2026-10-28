@@ -16,6 +16,8 @@
 #endif
 
 
+// kernel signature kept identical to the original HACC benchmark
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
 template<typename T>
 void haccmk(
     int const repeat,
@@ -31,6 +33,7 @@ void haccmk(
     T* __restrict vx2,
     T* __restrict vy2,
     T* __restrict vz2)
+// NOLINTEND(bugprone-easily-swappable-parameters)
 {
     float totalTime = 0.f;
 
@@ -90,9 +93,9 @@ void haccmk(
         auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
         // first round is a warmup round
         if(r != 0)
-            totalTime += time;
+            totalTime += static_cast<float>(time);
     }
-    printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / (repeat - 1));
+    printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / static_cast<float>(repeat - 1));
 }
 
 int main(int argc, char* argv[])

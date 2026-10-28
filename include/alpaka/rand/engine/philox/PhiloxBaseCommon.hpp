@@ -37,9 +37,13 @@ namespace alpaka::rand::engine::internal
         template<typename T_DistributionResultScalar>
         using ResultContainer = Vec<T_DistributionResultScalar, T_Params::counterSize>;
 
+    private:
+        // only the CRTP engine may create the base
         constexpr explicit PhiloxBaseCommon(State&& state) : state(std::move(state))
         {
         }
+
+        friend T_Impl;
 
     protected:
         /** Advance the \a counter to the next state

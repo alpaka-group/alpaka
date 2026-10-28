@@ -84,7 +84,7 @@ namespace alpaka::rand::engine::internal
         constexpr void skip(uint64_t offset)
         {
             static_assert(T_Params::counterSize == 4, "Only counterSize is supported.");
-            this->state.position = static_cast<decltype(this->state.position)>(this->state.position + (offset & 3));
+            this->state.position = static_cast<decltype(this->state.position)>(this->state.position + (offset & 3u));
             offset += this->state.position < 4 ? 0 : 4;
             this->state.position -= this->state.position < 4 ? 0 : 4u;
             for(auto numShifts = this->state.position; numShifts > 0; --numShifts)
@@ -105,6 +105,8 @@ namespace alpaka::rand::engine::internal
          * @param subsequence Select a subsequence of size 2^64
          * @param offset Skip \a offset numbers from the start of the subsequence
          */
+        // same parameter order as curand_init(seed, subsequence, offset)
+        // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
         constexpr PhiloxSingle(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
             : Base(State{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0u})
         {

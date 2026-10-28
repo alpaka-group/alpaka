@@ -26,32 +26,47 @@ namespace alpaka::example::nBody
     // Appropriate chunk size to split your problem for your Acc
     constexpr auto chunkSize = CVec<IdxType, 256_idx>{};
 
-    void printExampleHeader(
-        bool const writePngs,
-        bool const benchmarkMode,
-        IdxType const numParticles,
-        IdxType const numTimeSteps,
-        BaseType const dt)
+    /** Parameters of a simulation run. */
+    struct SimulationParams
+    {
+        //! The number of particles to simulate.
+        IdxType numParticles;
+        //! The number of time steps to run for.
+        IdxType numTimeSteps;
+        //! The delta t to use as time steps.
+        BaseType dt;
+    };
+
+    /** Parameters used if they are not overwritten by command line arguments. */
+    static SimulationParams defaultSimulationParams()
+    {
+        return SimulationParams{
+            .numParticles = defaultNumParticles,
+            .numTimeSteps = defaultTimeSteps,
+            .dt = defaultDt};
+    }
+
+    void printExampleHeader(bool const writePngs, bool const benchmarkMode, SimulationParams const& params)
     {
         if(!benchmarkMode)
         {
-            std::cout << "================================" << std::endl;
-            std::cout << "Example n-Body simulation" << std::endl;
-            std::cout << "    Number of particles [#]: " << numParticles << std::endl;
-            std::cout << "    Time steps [#]: " << numTimeSteps << std::endl;
-            std::cout << "    dt: " << dt << std::endl;
+            std::cout << "================================" << '\n';
+            std::cout << "Example n-Body simulation" << '\n';
+            std::cout << "    Number of particles [#]: " << params.numParticles << '\n';
+            std::cout << "    Time steps [#]: " << params.numTimeSteps << '\n';
+            std::cout << "    dt: " << params.dt << '\n';
             if(writePngs)
-                std::cout << "    Writing pngs to disk" << std::endl;
+                std::cout << "    Writing pngs to disk" << '\n';
             else
-                std::cout << "    Not writing pngs to disk" << std::endl;
-            std::cout << "================================" << std::endl;
-            std::cout << std::endl;
+                std::cout << "    Not writing pngs to disk" << '\n';
+            std::cout << "================================" << '\n';
+            std::cout << '\n';
         }
         else
         {
             // print csv header
-            std::cout << "# N-Body simulation, " << timeStepsBenchmark << " timesteps per run" << std::endl;
-            std::cout << "accelerator,numParticles,timePerStep(s),GFLOPs" << std::endl;
+            std::cout << "# N-Body simulation, " << timeStepsBenchmark << " timesteps per run" << '\n';
+            std::cout << "accelerator,numParticles,timePerStep(s),GFLOPs" << '\n';
         }
     }
 
@@ -68,18 +83,14 @@ namespace alpaka::example::nBody
      * @param computeExec The device to execute on.
      * @param writePngs Whether to write pngs to disk or not.
      * @param benchmarkMode Whether to run in benchmark mode. See the help docs below.
-     * @param numParticles The number of particles to simulate.
-     * @param numTimeSteps The number of time steps to run for.
-     * @param dt The delta t to use as time steps.
+     * @param params The number of particles, time steps and delta t of the simulation.
      */
     int example(
         auto const deviceSpec,
         auto const computeExec,
         bool const writePngs,
         bool const benchmarkMode,
-        IdxType const numParticles,
-        IdxType const numTimeSteps,
-        BaseType const dt)
+        SimulationParams const& params)
     {
         using namespace alpaka;
         using namespace alpaka::onHost;
@@ -94,7 +105,7 @@ namespace alpaka::example::nBody
 
         // simulation defines
         // {Y, X}
-        IdxTypeVec const extents = Vec{numParticles};
+        IdxTypeVec const extents = Vec{params.numParticles};
 
         auto massesHost = onHost::allocHost<BaseType>(extents);
         auto xPositionsHost = onHost::allocHost<BaseType>(extents);
@@ -115,7 +126,7 @@ namespace alpaka::example::nBody
         };
 
         if(!benchmarkMode)
-            std::cout << "Initializing data on host" << std::endl;
+            std::cout << "Initializing data on host" << '\n';
         initMasses(massesHost);
         initPositions(xPositionsHost, yPositionsHost, zPositionsHost);
         initVelocities(
@@ -133,11 +144,11 @@ namespace alpaka::example::nBody
 #else
         if(writePngs)
             std::cout << "WritePngs is enabled, but the pngwriter library was not found. Not writing pngs to disk."
-                      << std::endl;
+                      << '\n';
 #endif
 
         if(!benchmarkMode)
-            std::cout << "Done initializing data on host" << std::endl;
+            std::cout << "Done initializing data on host" << '\n';
 
         auto massesDev = onHost::allocLike(devAcc, massesHost);
         auto xPositionsDev = onHost::allocLike(devAcc, xPositionsHost);
@@ -161,7 +172,7 @@ namespace alpaka::example::nBody
         onHost::memcpy(dumpQueue, zVelocitiesDev, zVelocitiesHost);
         onHost::wait(dumpQueue);
         if(!benchmarkMode)
-            std::cout << "Data copied to device" << std::endl;
+            std::cout << "Data copied to device" << '\n';
 
         auto particleData = ParticleData{
             massesDev.getView(),
@@ -180,17 +191,17 @@ namespace alpaka::example::nBody
 
         // Make an instance of the kernel object to use later
         UpdateVelocitiesKernel updateVelocitiesKernel;
-        UpdatePositions updatePositionsKernel{dt};
+        UpdatePositions updatePositionsKernel{params.dt};
 
         auto const startTime = std::chrono::high_resolution_clock::now();
 
         // Simulate
-        for(IdxType step = 1; step <= numTimeSteps; ++step)
+        for(IdxType step = 1; step <= params.numTimeSteps; ++step)
         {
             // Queue one step of the simulation
             // The kernel bundle contains the kernel first, then all its arguments *except* the accelerator, which is
             // implicitly passed by alpaka.
-            computeQueue.enqueue(frameSpec, KernelBundle{updateVelocitiesKernel, particleData, chunkSize, dt});
+            computeQueue.enqueue(frameSpec, KernelBundle{updateVelocitiesKernel, particleData, chunkSize, params.dt});
 
             // execute velocity updates using simd concurrency
             onHost::concurrent<BaseType>(
@@ -234,19 +245,21 @@ namespace alpaka::example::nBody
         auto const endTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = endTime - startTime;
 
-        auto timePerStep = elapsedTime.count() / numTimeSteps;
+        auto timePerStep = elapsedTime.count() / params.numTimeSteps;
         if(!benchmarkMode)
         {
-            std::cout << "The simulation took " << elapsedTime.count() << " seconds." << std::endl;
-            std::cout << "Time per time step: " << timePerStep * 1000 << " ms." << std::endl;
-            std::cout << "GFLOP needed per time step: " << flopsRequiredPerTimeStep(numParticles) << std::endl;
-            std::cout << "Average achieved GFLOPS: " << flopsRequiredPerTimeStep(numParticles) / timePerStep / 1e9
-                      << std::endl;
+            std::cout << "The simulation took " << elapsedTime.count() << " seconds." << '\n';
+            std::cout << "Time per time step: " << timePerStep * 1000 << " ms." << '\n';
+            std::cout << "GFLOP needed per time step: " << flopsRequiredPerTimeStep(params.numParticles) << '\n';
+            std::cout << "Average achieved GFLOPS: "
+                      << static_cast<double>(flopsRequiredPerTimeStep(params.numParticles)) / timePerStep / 1e9
+                      << '\n';
         }
         else
         {
-            std::cout << deviceSpec.getApi().getName() << "," << numParticles << "," << timePerStep << ","
-                      << flopsRequiredPerTimeStep(numParticles) / timePerStep / 1e9 << std::endl;
+            std::cout << deviceSpec.getApi().getName() << "," << params.numParticles << "," << timePerStep << ","
+                      << static_cast<double>(flopsRequiredPerTimeStep(params.numParticles)) / timePerStep / 1e9
+                      << std::endl;
         }
 
         return EXIT_SUCCESS;
@@ -256,26 +269,30 @@ namespace alpaka::example::nBody
     {
         for(auto numParticles : numParticlesBenchmark)
         {
-            example(deviceSpec, computeExec, false, true, numParticles, timeStepsBenchmark, dt);
+            SimulationParams params;
+            params.numParticles = numParticles;
+            params.numTimeSteps = timeStepsBenchmark;
+            params.dt = dt;
+            example(deviceSpec, computeExec, false, true, params);
         }
         return EXIT_SUCCESS;
     }
 
     void help(char* argv[])
     {
-        std::cerr << argv[0] << " [OPTIONS]" << std::endl;
-        std::cerr << "  -n numParticles: Number of particles. Default: " << defaultNumParticles << std::endl;
+        std::cerr << argv[0] << " [OPTIONS]" << '\n';
+        std::cerr << "  -n numParticles: Number of particles. Default: " << defaultNumParticles << '\n';
         std::cerr << "  -t numTimeSteps: Number of time steps that the simulation is run for. Default: "
-                  << defaultTimeSteps << std::endl;
-        std::cerr << "  -d dt: Delta t for the timesteps. Default: " << defaultDt << std::endl;
+                  << defaultTimeSteps << '\n';
+        std::cerr << "  -d dt: Delta t for the timesteps. Default: " << defaultDt << '\n';
         std::cerr
             << "  -p: Write pngs of the particles to disk. Has no effect when pngwriter is not installed. Default: off"
-            << std::endl;
+            << '\n';
         std::cerr << "  -b: Benchmark mode. In this mode, csv formatted results are printed to stdout and multiple "
                      "predefined problem sizes are run. Other options are ignored in this mode. Default: off"
-                  << std::endl;
-        std::cerr << "  -h: Print this help message" << std::endl;
-        std::cerr << std::endl;
+                  << '\n';
+        std::cerr << "  -h: Print this help message" << '\n';
+        std::cerr << '\n';
     }
 
 } // namespace alpaka::example::nBody
@@ -286,9 +303,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace alpaka::example::nBody;
 
     // Default value if no command line argument used
-    IdxType numParticles = defaultNumParticles;
-    IdxType numTimeSteps = defaultTimeSteps;
-    BaseType dt = defaultDt;
+    SimulationParams params = defaultSimulationParams();
     bool writePngs = false;
     bool benchmarkMode = false;
 
@@ -301,17 +316,17 @@ auto main(int argc, char* argv[]) -> int
         case 'n':
             try
             {
-                numParticles = static_cast<IdxType>(std::stoull(optarg, nullptr, 0));
+                params.numParticles = static_cast<IdxType>(std::stoull(optarg, nullptr, 0));
 
-                auto adjustedParticles = divCeil(numParticles, chunkSize.x()) * chunkSize.x();
-                if(adjustedParticles != numParticles)
+                auto adjustedParticles = divCeil(params.numParticles, chunkSize.x()) * chunkSize.x();
+                if(adjustedParticles != params.numParticles)
                 {
                     std::cout << "Adjusting number of particles to " << adjustedParticles
-                              << " to be a multiple of the chunk size (" << chunkSize.x() << ")" << std::endl;
-                    numParticles = adjustedParticles;
+                              << " to be a multiple of the chunk size (" << chunkSize.x() << ")" << '\n';
+                    params.numParticles = adjustedParticles;
                 }
 
-                if(numParticles < 1)
+                if(params.numParticles < 1)
                 {
                     throw std::invalid_argument("Number of particles must be at least 1");
                 }
@@ -330,7 +345,7 @@ auto main(int argc, char* argv[]) -> int
         case 't':
             try
             {
-                numTimeSteps = static_cast<IdxType>(std::stoull(optarg, nullptr, 0));
+                params.numTimeSteps = static_cast<IdxType>(std::stoull(optarg, nullptr, 0));
             }
             catch(std::invalid_argument const& e)
             {
@@ -346,7 +361,7 @@ auto main(int argc, char* argv[]) -> int
         case 'd':
             try
             {
-                dt = std::stod(optarg, nullptr);
+                params.dt = static_cast<BaseType>(std::stod(optarg, nullptr));
             }
             catch(std::invalid_argument const& e)
             {
@@ -374,7 +389,7 @@ auto main(int argc, char* argv[]) -> int
         }
     }
 
-    printExampleHeader(writePngs, benchmarkMode, numParticles, numTimeSteps, dt);
+    printExampleHeader(writePngs, benchmarkMode, params);
 
     if(benchmarkMode)
     {
@@ -387,7 +402,7 @@ auto main(int argc, char* argv[]) -> int
                 return alpaka::example::nBody::benchmark(
                     alpaka::onHost::DeviceSpec{backend},
                     alpaka::getExecutor(backend),
-                    dt);
+                    params.dt);
             },
             onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors));
     }
@@ -404,9 +419,7 @@ auto main(int argc, char* argv[]) -> int
                     alpaka::getExecutor(backend),
                     writePngs,
                     benchmarkMode,
-                    numParticles,
-                    numTimeSteps,
-                    dt);
+                    params);
             },
             onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors));
     }

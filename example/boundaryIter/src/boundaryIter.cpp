@@ -40,10 +40,10 @@ auto printBoundaryContainer(auto view, auto bdContainer)
         // show sub view's values
         for(auto const& el : subView)
             std::cout << el << " ";
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 
-    std::cout << "End of Boundaries\n\n" << std::endl;
+    std::cout << "End of Boundaries\n\n" << '\n';
 }
 
 int example(auto const devSpec, auto const computeExec)
@@ -71,7 +71,7 @@ int example(auto const devSpec, auto const computeExec)
     onHost::iota(blockingQueue, 1.f, buffer);
 
     std::cout << "Running on device: " << device.getName() << std::endl;
-    std::cout << dimensions << "D volume" << std::endl;
+    std::cout << dimensions << "D volume" << '\n';
     std::cout << "Volume Extents: " << view.getExtents() << std::endl;
 
     // show all values once
@@ -79,7 +79,7 @@ int example(auto const devSpec, auto const computeExec)
     {
         for(auto& el : view)
             std::cout << el << " ";
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 
     auto chunkSize = alpaka::fillCVec<IdxType, dimensions, 2>();
@@ -89,7 +89,7 @@ int example(auto const devSpec, auto const computeExec)
 
 
     {
-        std::cout << "Halo size 1 (default) for " << dimensions << "D" << std::endl;
+        std::cout << "Halo size 1 (default) for " << dimensions << "D" << '\n';
 
         constexpr auto bdContainer = makeBoundaryDirIterator<dimensions>();
 
@@ -103,7 +103,7 @@ int example(auto const devSpec, auto const computeExec)
     }
 
     {
-        std::cout << "Halo size 1 (default), constructed directly from the view" << std::endl;
+        std::cout << "Halo size 1 (default), constructed directly from the view" << '\n';
 
         constexpr auto bdContainer = makeBoundaryDirIterator(view);
 
@@ -114,7 +114,7 @@ int example(auto const devSpec, auto const computeExec)
     }
 
     {
-        std::cout << "Halo size 2" << std::endl;
+        std::cout << "Halo size 2" << '\n';
 
         auto const halo = alpaka::fillCVec<IdxType, dimensions, 2>();
 
@@ -129,7 +129,7 @@ int example(auto const devSpec, auto const computeExec)
     }
 
     {
-        std::cout << "Lower halo sizes = 1, upper halo sizes = 2" << std::endl;
+        std::cout << "Lower halo sizes = 1, upper halo sizes = 2" << '\n';
 
         auto const lowerHalo = alpaka::fillCVec<IdxType, dimensions, 1>();
         auto const upperHalo = alpaka::fillCVec<IdxType, dimensions, 2>();

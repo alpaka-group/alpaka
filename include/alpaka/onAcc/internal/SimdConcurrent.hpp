@@ -20,10 +20,13 @@
 namespace alpaka::onAcc::internal
 {
     /** concurrent foreach implementation */
-    template<typename T_Parent>
+    template<typename T_Derived>
     struct SimdConcurrent
     {
+    private:
+        // only the derived class T_Derived may create the base
         constexpr SimdConcurrent() = default;
+        friend T_Derived;
 
     protected:
         template<uint32_t T_maxConcurrencyInByte, alpaka::concepts::Alignment T_MemAlignment>
@@ -37,7 +40,7 @@ namespace alpaka::onAcc::internal
             auto numElements = typename ALPAKA_TYPEOF(extents)::UniVec{extents};
             using ValueType = alpaka::GetValueType_t<ALPAKA_TYPEOF(data0)>;
 
-            constexpr auto simdCfg = T_Parent::template calcSimdPackConfig<ValueType>(
+            constexpr auto simdCfg = T_Derived::template calcSimdPackConfig<ValueType>(
                 ALPAKA_TYPEOF(acc.getApi()){},
                 ALPAKA_TYPEOF(acc.getDeviceKind()){},
                 T_maxConcurrencyInByte);
@@ -59,10 +62,10 @@ namespace alpaka::onAcc::internal
                 // execute the algorithm with SIMD width one
                 for(auto idx : onAcc::makeIdxMap(
                         acc,
-                        asParent().getWorkGroup(),
+                        asDerived().getWorkGroup(),
                         IdxRange{numElements},
-                        asParent().getTraversePolicy(),
-                        asParent().getIdxLayoutPolicy()))
+                        asDerived().getTraversePolicy(),
+                        asDerived().getIdxLayoutPolicy()))
                 {
                     func(
                         acc,
@@ -73,9 +76,9 @@ namespace alpaka::onAcc::internal
         }
 
     private:
-        constexpr auto const& asParent() const
+        constexpr auto const& asDerived() const
         {
-            return static_cast<T_Parent const&>(*this);
+            return static_cast<T_Derived const&>(*this);
         }
 
         template<alpaka::concepts::Alignment T_MemAlignment, uint32_t T_width>
@@ -108,13 +111,11 @@ namespace alpaka::onAcc::internal
              *
              * The ternary operator is used to allow using the folding expression on iter.
              */
+            // NOLINTNEXTLINE(bugprone-branch-clone)
             auto ids = std::make_tuple(*(T_repeat + 1 != 0u ? iter++ : iter++)...);
             std::apply(
                 [&](auto const&... dataIdx) constexpr
-                {
-                    (executeDo<T_MemAlignment, T_width>(acc, dataIdx, ALPAKA_FORWARD(func), ALPAKA_FORWARD(data)...),
-                     ...);
-                },
+                { (executeDo<T_MemAlignment, T_width>(acc, dataIdx, func, data...), ...); },
                 ids);
         }
 
@@ -126,7 +127,7 @@ namespace alpaka::onAcc::internal
             alpaka::concepts::IDataSource auto&& data0,
             alpaka::concepts::IDataSource auto&&... dataN) const
         {
-            auto const workGroup = asParent().getWorkGroup();
+            auto const workGroup = asDerived().getWorkGroup();
 
             // we SIMDfy only over the fast moving dimension (columns of memory)
             auto const wSize = workGroup.getThreadCount(acc).back();
@@ -147,7 +148,8 @@ namespace alpaka::onAcc::internal
             using IdxType = ALPAKA_TYPEOF(numElements);
 
             if constexpr(
-                domainSize.dim() > 1u && std::is_same_v<ALPAKA_TYPEOF(asParent().getTraversePolicy()), traverse::Flat>)
+                domainSize.dim() > 1u
+                && std::is_same_v<ALPAKA_TYPEOF(asDerived().getTraversePolicy()), traverse::Flat>)
             {
                 /* For cases where we traverse with the flat policy, we cannot assume that we can blindly increase the
                  * iterator later N times. This could happen in cases where we have enough concurrency. We evaluate for
@@ -168,8 +170,8 @@ namespace alpaka::onAcc::internal
                         acc,
                         wOuter,
                         IdxRange{domSize},
-                        asParent().getTraversePolicy(),
-                        asParent().getIdxLayoutPolicy()))
+                        asDerived().getTraversePolicy(),
+                        asDerived().getIdxLayoutPolicy()))
                 {
                     // build a worker group with fast-moving dimension threads for the inner loop
                     auto wIdxInner = ALPAKA_TYPEOF(domainSize)::fill(0).rAssign(workGroup.getThreadIdx(acc).back());
@@ -181,8 +183,8 @@ namespace alpaka::onAcc::internal
                         acc,
                         wInner,
                         IdxRange{rowIdx, domainSize, stride},
-                        asParent().getTraversePolicy(),
-                        asParent().getIdxLayoutPolicy())[CVec<uint32_t, ALPAKA_TYPEOF(domainSize)::dim() - 1u>{}];
+                        asDerived().getTraversePolicy(),
+                        asDerived().getIdxLayoutPolicy())[CVec<uint32_t, ALPAKA_TYPEOF(domainSize)::dim() - 1u>{}];
 
                     for(auto iter = simdIdxContainer.begin(); iter != simdIdxContainer.end();)
                     {
@@ -190,9 +192,9 @@ namespace alpaka::onAcc::internal
                             acc,
                             iter,
                             std::make_integer_sequence<uint32_t, T_numSimdPerFnCall>{},
-                            ALPAKA_FORWARD(func),
-                            ALPAKA_FORWARD(data0),
-                            ALPAKA_FORWARD(dataN)...);
+                            func,
+                            data0,
+                            dataN...);
                     }
                 }
             }
@@ -202,8 +204,8 @@ namespace alpaka::onAcc::internal
                     acc,
                     workGroup,
                     IdxRange{IdxType::fill(0), domainSize, stride},
-                    asParent().getTraversePolicy(),
-                    asParent().getIdxLayoutPolicy());
+                    asDerived().getTraversePolicy(),
+                    asDerived().getIdxLayoutPolicy());
 
                 for(auto iter = simdIdxContainer.begin(); iter != simdIdxContainer.end();)
                 {
@@ -211,9 +213,9 @@ namespace alpaka::onAcc::internal
                         acc,
                         iter,
                         std::make_integer_sequence<uint32_t, T_numSimdPerFnCall>{},
-                        ALPAKA_FORWARD(func),
-                        ALPAKA_FORWARD(data0),
-                        ALPAKA_FORWARD(dataN)...);
+                        func,
+                        data0,
+                        dataN...);
                 }
             }
 
@@ -223,8 +225,8 @@ namespace alpaka::onAcc::internal
                     acc,
                     workGroup,
                     IdxRange{remainderDomainSize, numElements},
-                    asParent().getTraversePolicy(),
-                    asParent().getIdxLayoutPolicy()))
+                    asDerived().getTraversePolicy(),
+                    asDerived().getIdxLayoutPolicy()))
             {
                 func(
                     acc,

@@ -105,7 +105,7 @@ namespace alpaka
                 .end();
         }
 
-        std::string toString(std::string const separator = ",", std::string const enclosings = "{}") const
+        std::string toString(std::string const& separator = ",", std::string const& enclosings = "{}") const
         {
             std::string localeEnclosingBegin;
             std::string localeEnclosingEnd;

@@ -112,22 +112,22 @@ function(alpaka_collect_clang_tidy_targets directory out_var)
 endfunction()
 
 alpaka_collect_clang_tidy_targets("${_alpaka_ROOT_DIR}" _CLANG_TIDY_TARGETS)
-message(DEBUG "clang-tidy runs during the build of: ${_CLANG_TIDY_TARGETS}")
+list(JOIN _CLANG_TIDY_TARGETS "\n    " _CLANG_TIDY_TARGETS_MESSAGE)
+message(DEBUG "clang-tidy runs during the build of:\n    ${_CLANG_TIDY_TARGETS_MESSAGE}")
 
-set(_CLANG_TIDY_COMMAND "${CLANG_TIDY_EXECUTABLE};--config-file=${_alpaka_ROOT_DIR}/.clang-tidy")
-set_target_properties(${_TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${_CLANG_TIDY_COMMAND}" FOLDER "clangTidy")
+set_target_properties(
+    ${_TARGET_NAME}
+    ${_CLANG_TIDY_TARGETS}
+    PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXECUTABLE};--config-file=${_alpaka_ROOT_DIR}/.clang-tidy"
+)
+set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "clangTidy")
 # Unit tests intentionally copy, move and use fixed values, so bugprone and performance checks are skipped for them.
 # The library headers are still checked by clangTidyTest, examples, benchmarks and documentation snippets.
 foreach(_target IN LISTS _CLANG_TIDY_TARGETS)
     get_target_property(_source_dir ${_target} SOURCE_DIR)
     file(RELATIVE_PATH _relative_source_dir "${_alpaka_ROOT_DIR}" "${_source_dir}")
     if(_relative_source_dir MATCHES "^test(/|$)")
-        set_target_properties(
-            ${_target}
-            PROPERTIES CXX_CLANG_TIDY "${_CLANG_TIDY_COMMAND};--checks=-bugprone-*,-performance-*"
-        )
-    else()
-        set_target_properties(${_target} PROPERTIES CXX_CLANG_TIDY "${_CLANG_TIDY_COMMAND}")
+        set_property(TARGET ${_target} APPEND PROPERTY CXX_CLANG_TIDY "--checks=-bugprone-*,-performance-*")
     endif()
 endforeach()
 # The test depends on the collected targets, so it cannot pass before they are compiled (and thereby checked).

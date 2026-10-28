@@ -42,10 +42,10 @@ void forEachDeviceType(auto const deviceSpec)
             std::cout << "none\n";
         else
             std::cout << "\n";
-        std::cout << std::endl;
+        std::cout << '\n';
     }
     if(numDevices == 0)
-        std::cout << std::endl;
+        std::cout << '\n';
 }
 
 extern "C" int alpakaMain(int argc, char* argv[])
