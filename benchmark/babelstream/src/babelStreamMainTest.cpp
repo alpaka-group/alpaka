@@ -142,8 +142,8 @@ struct DotMultiplication
 
 //! \brief The Function for testing babelstream kernels for given Acc type and data type.
 //! \tparam TAcc the accelerator type
-//! \tparam DataType The data type to differentiate single or double data type based tests.
-template<typename DataType>
+//! \tparam T_DataType The data type to differentiate single or double data type based tests.
+template<typename T_DataType>
 void testKernels(auto const deviceSpec, auto const exec)
 {
     if(kernelsToBeExecuted == KernelsToRun::All)
@@ -162,7 +162,7 @@ void testKernels(auto const deviceSpec, auto const exec)
 
 #if ALPAKA_LANG_ONEAPI
     // support for double precision is not guaranteed for sycl devices such as Intel GPUs
-    if constexpr(std::is_same_v<DataType, double> && deviceSpec.getApi() == api::oneApi)
+    if constexpr(std::is_same_v<T_DataType, double> && deviceSpec.getApi() == api::oneApi)
     {
         if(devAcc.getNativeHandle().first.template get_info<sycl::info::device::double_fp_config>().size() == 0)
         {
@@ -187,11 +187,11 @@ void testKernels(auto const deviceSpec, auto const exec)
 
     // Convert data-type to string to display
     std::string dataTypeStr;
-    if(std::is_same<DataType, float>::value)
+    if(std::is_same<T_DataType, float>::value)
     {
         dataTypeStr = "single";
     }
-    else if(std::is_same<DataType, double>::value)
+    else if(std::is_same<T_DataType, double>::value)
     {
         dataTypeStr = "double";
     }
@@ -204,7 +204,7 @@ void testKernels(auto const deviceSpec, auto const exec)
     auto arraySize = static_cast<Idx>(arraySizeMain);
 
     // Acc buffers
-    concepts::IBuffer auto bufAccInputA = onHost::alloc<DataType>(devAcc, arraySize);
+    concepts::IBuffer auto bufAccInputA = onHost::alloc<T_DataType>(devAcc, arraySize);
     concepts::IBuffer auto bufAccInputB = onHost::allocLike(devAcc, bufAccInputA);
     concepts::IBuffer auto bufAccOutputC = onHost::allocLike(devAcc, bufAccInputA);
 
@@ -221,7 +221,7 @@ void testKernels(auto const deviceSpec, auto const exec)
      * a kernel can reflect the concurrency bytes used for the `SimdAlgo::concurrent()` back to the host, e.g. some
      * as we use for dynamic shared memory.
      */
-    uint32_t elementsPerFrameItem = getNumElemPerThread<DataType>(queue);
+    uint32_t elementsPerFrameItem = getNumElemPerThread<T_DataType>(queue);
 
     auto numFrames = divExZero(arraySize, static_cast<Idx>(blockThreadExtentMain) * elementsPerFrameItem);
     auto dataBlocking = onHost::FrameSpec{numFrames, static_cast<Idx>(blockThreadExtentMain), exec};
@@ -279,7 +279,7 @@ void testKernels(auto const deviceSpec, auto const exec)
     metaData.setItem(BMInfoDataType::WorkDivInit, dataBlocking);
 
     // Dot kernel result
-    DataType resultDot = static_cast<DataType>(0.0);
+    T_DataType resultDot = static_cast<T_DataType>(0.0);
 
     // Main for loop to run the kernel-sequence
     for(auto i = 0; i < numberOfRuns; i++)
@@ -327,7 +327,7 @@ void testKernels(auto const deviceSpec, auto const exec)
         if(kernelsToBeExecuted == KernelsToRun::All)
         {
             // Vector of sums of each block
-            auto bufAccSumPerBlock = onHost::allocDeferred<DataType>(queue, 1u);
+            auto bufAccSumPerBlock = onHost::allocDeferred<T_DataType>(queue, 1u);
             auto bufHostSumPerBlock = onHost::allocHostLike(bufAccSumPerBlock);
 
             // Test Dot kernel with specific blocksize which is larger than one
@@ -337,7 +337,7 @@ void testKernels(auto const deviceSpec, auto const exec)
                     onHost::transformReduce(
                         queue,
                         exec,
-                        DataType{0},
+                        T_DataType{0},
                         bufAccSumPerBlock,
                         std::plus{},
                         DotMultiplication{},
@@ -386,9 +386,9 @@ void testKernels(auto const deviceSpec, auto const exec)
     //
 
     // Generated expected values by doing the same chain of operations due to floating point error
-    DataType expectedA = static_cast<DataType>(initA);
-    DataType expectedB = static_cast<DataType>(initB);
-    DataType expectedC = static_cast<DataType>(initC);
+    T_DataType expectedA = static_cast<T_DataType>(initA);
+    T_DataType expectedB = static_cast<T_DataType>(initB);
+    T_DataType expectedC = static_cast<T_DataType>(initC);
 
     // To calculate expected results by applying at host the same operation sequence
     calculateBabelstreamExpectedResults(expectedA, expectedB, expectedC);
@@ -397,8 +397,8 @@ void testKernels(auto const deviceSpec, auto const exec)
     if(kernelsToBeExecuted == KernelsToRun::All)
     {
         // Find sum of the errors as sum of the differences from expected values
-        constexpr DataType initVal{static_cast<DataType>(0.0)};
-        DataType sumErrC{initVal}, sumErrB{initVal}, sumErrA{initVal};
+        constexpr T_DataType initVal{static_cast<T_DataType>(0.0)};
+        T_DataType sumErrC{initVal}, sumErrB{initVal}, sumErrA{initVal};
 
         // sum of the errors for each array
         for(Idx i = 0; i < arraySize; ++i)
@@ -410,25 +410,25 @@ void testKernels(auto const deviceSpec, auto const exec)
 
         // Normalize and compare sum of the errors
         // Use a different equality check if floating point errors exceed precision of FuzzyEqual function
-        REQUIRE(FuzzyEqual(sumErrC / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
-        REQUIRE(FuzzyEqual(sumErrB / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
-        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize), static_cast<DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrC / static_cast<T_DataType>(arraySize), static_cast<T_DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrB / static_cast<T_DataType>(arraySize), static_cast<T_DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<T_DataType>(arraySize), static_cast<T_DataType>(0.0)));
         onHost::wait(queue);
 
         // Verify Dot kernel
-        DataType const expectedSum = static_cast<DataType>(arraySize) * expectedA * expectedB;
+        T_DataType const expectedSum = static_cast<T_DataType>(arraySize) * expectedA * expectedB;
 
         // allow a summation error of 100 epsilon per 32 mega elements
         // The original bablesteam is always checking 8 digits only.
         Idx presicionBaseArraySize = 32 * 1024 * 1024;
-        DataType epsScaling = divExZero(arraySize, presicionBaseArraySize);
+        T_DataType epsScaling = divExZero(arraySize, presicionBaseArraySize);
         //  Dot product should be identical to arraySize*valA*valB
         //  Use a different equality check if floating point errors exceed the precision of FuzzyEqual function
         REQUIRE(
-            FuzzyEqual<DataType>(
+            FuzzyEqual<T_DataType>(
                 std::fabs(resultDot - expectedSum) / expectedSum,
-                static_cast<DataType>(0.0),
-                static_cast<DataType>(100.0) * epsScaling));
+                static_cast<T_DataType>(0.0),
+                static_cast<T_DataType>(100.0) * epsScaling));
 
         // Set workdivs of benchmark metadata to be displayed at the end
         metaData.setItem(BMInfoDataType::WorkDivInit, dataBlocking);
@@ -441,34 +441,34 @@ void testKernels(auto const deviceSpec, auto const exec)
     else if(kernelsToBeExecuted == KernelsToRun::Triad)
     {
         // Verify triad by summing the error
-        auto sumErrA = static_cast<DataType>(0.0);
+        auto sumErrA = static_cast<T_DataType>(0.0);
         // sum of the errors for each array
         for(Idx i = 0; i < arraySize; ++i)
         {
             sumErrA += std::fabs(std::data(bufHostOutputA)[static_cast<Idx>(i)] - expectedA);
         }
 
-        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize) / expectedA, static_cast<DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<T_DataType>(arraySize) / expectedA, static_cast<T_DataType>(0.0)));
         metaData.setItem(BMInfoDataType::WorkDivTriad, dataBlocking);
     }
     // Verify the NStream Kernel result if "--run-kernels=nstream".
     else if(kernelsToBeExecuted == KernelsToRun::NStream)
     {
-        auto sumErrA = static_cast<DataType>(0.0);
+        auto sumErrA = static_cast<T_DataType>(0.0);
         // sum of the errors for each array
         for(Idx i = 0; i < arraySize; ++i)
         {
             sumErrA += std::fabs(std::data(bufHostOutputA)[static_cast<Idx>(i)] - expectedA);
         }
-        REQUIRE(FuzzyEqual(sumErrA / static_cast<DataType>(arraySize) / expectedA, static_cast<DataType>(0.0)));
+        REQUIRE(FuzzyEqual(sumErrA / static_cast<T_DataType>(arraySize) / expectedA, static_cast<T_DataType>(0.0)));
 
         metaData.setItem(BMInfoDataType::WorkDivNStream, dataBlocking);
     }
 
     // Runtime results of the benchmark: Calculate throughput and bandwidth
     // Set throuput values depending on the kernels
-    runtimeResults.initializeByteReadWrite<DataType>(arraySize);
-    runtimeResults.calculateBandwidthsForKernels<DataType>();
+    runtimeResults.initializeByteReadWrite<T_DataType>(arraySize);
+    runtimeResults.calculateBandwidthsForKernels<T_DataType>();
 
     // Set metadata to display all benchmark related information.
     //

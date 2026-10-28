@@ -17,12 +17,12 @@ using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDevice
  * 2025.2 with AMD gpus.
  * Therefore, we are testing only empty attributes and 'inline' attribute to fucus on supported code only.
  */
-ALPAKA_DEVICE_GLOBAL_EXTERN(, (alpaka::Vec<uint32_t, 2u>), initialised_vector);
-ALPAKA_DEVICE_GLOBAL(, (alpaka::Vec<uint32_t, 2u>), initialised_vector, 42u, 43u);
+ALPAKA_DEVICE_GLOBAL_EXTERN(, (alpaka::Vec<uint32_t, 2u>), initialisedVector);
+ALPAKA_DEVICE_GLOBAL(, (alpaka::Vec<uint32_t, 2u>), initialisedVector, 42u, 43u);
 
-ALPAKA_DEVICE_GLOBAL(, uint32_t, initialised_scalar, 43u);
-ALPAKA_DEVICE_GLOBAL(, uint32_t[2], fixed_sized_array, {44u, 45u});
-ALPAKA_DEVICE_GLOBAL(, uint32_t[2][3], fixed_sized_array2D, {{9u, 5u}, {6u, 11u, 45u}});
+ALPAKA_DEVICE_GLOBAL(, uint32_t, initialisedScalar, 43u);
+ALPAKA_DEVICE_GLOBAL(, uint32_t[2], fixedSizedArray, {44u, 45u});
+ALPAKA_DEVICE_GLOBAL(, uint32_t[2][3], fixedSizedArray2D, {{9u, 5u}, {6u, 11u, 45u}});
 
 struct DeviceGlobalMemKernelVec
 {
@@ -31,7 +31,7 @@ struct DeviceGlobalMemKernelVec
     {
         for(auto globalTheradIdx : onAcc::makeIdxMap(acc, onAcc::worker::threadsInGrid, IdxRange{numThreads}))
         {
-            out[globalTheradIdx] = initialised_vector.get().y();
+            out[globalTheradIdx] = initialisedVector.get().y();
         }
     }
 };
@@ -43,7 +43,7 @@ struct DeviceGlobalMemKernelScalar
     {
         for(auto globalTheradIdx : onAcc::makeIdxMap(acc, onAcc::worker::threadsInGrid, IdxRange{numThreads}))
         {
-            out[globalTheradIdx] = initialised_scalar.get();
+            out[globalTheradIdx] = initialisedScalar.get();
         }
     }
 };
@@ -55,7 +55,7 @@ struct DeviceGlobalMemKernelCArray
     {
         for(auto globalTheradIdx : onAcc::makeIdxMap(acc, onAcc::worker::threadsInGrid, IdxRange{numThreads}))
         {
-            out[globalTheradIdx] = fixed_sized_array.get()[0];
+            out[globalTheradIdx] = fixedSizedArray.get()[0];
         }
     }
 };
@@ -67,7 +67,7 @@ struct DeviceGlobalMemKernelCArray2D
     {
         for(auto globalTheradIdx : onAcc::makeIdxMap(acc, onAcc::worker::threadsInGrid, IdxRange{numThreads}))
         {
-            out[globalTheradIdx] = fixed_sized_array2D.get()[Vec<size_t, 2>{1, 2}];
+            out[globalTheradIdx] = fixedSizedArray2D.get()[Vec<size_t, 2>{1, 2}];
         }
     }
 };

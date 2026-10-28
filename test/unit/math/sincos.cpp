@@ -21,19 +21,19 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
 struct SinCosTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename FP>
-    ALPAKA_FN_ACC auto operator()(TAcc const&, concepts::IMdSpan<bool> auto success, FP const arg) const -> void
+    template<typename T_Acc, typename T_Fp>
+    ALPAKA_FN_ACC auto operator()(T_Acc const&, concepts::IMdSpan<bool> auto success, T_Fp const arg) const -> void
     {
         // if arg is hardcoded then compiler can optimize it out
         // (PTX kernel (float) was just empty)
-        FP check_sin = alpaka::math::sin(arg);
-        FP check_cos = alpaka::math::cos(arg);
-        auto result_sin = FP{0};
-        auto result_cos = FP{0};
-        math::sincos(arg, result_sin, result_cos);
+        T_Fp checkSin = alpaka::math::sin(arg);
+        T_Fp checkCos = alpaka::math::cos(arg);
+        auto resultSin = T_Fp{0};
+        auto resultCos = T_Fp{0};
+        math::sincos(arg, resultSin, resultCos);
         ALPAKA_CHECK(
             success[0],
-            mathtest::almost_equal(result_sin, check_sin, 1) && mathtest::almost_equal(result_cos, check_cos, 1));
+            mathtest::almost_equal(resultSin, checkSin, 1) && mathtest::almost_equal(resultCos, checkCos, 1));
     }
 };
 

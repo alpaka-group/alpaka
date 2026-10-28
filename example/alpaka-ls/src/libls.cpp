@@ -11,7 +11,7 @@
 using namespace alpaka;
 
 // Declare the function type we expect
-using alpaka_main_t = int(int argc, char* argv[]);
+using AlpakaMainT = int(int argc, char* argv[]);
 
 void forEachDeviceType(auto const deviceSpec)
 {
@@ -48,7 +48,7 @@ void forEachDeviceType(auto const deviceSpec)
         std::cout << std::endl;
 }
 
-extern "C" int alpaka_main(int argc, char* argv[])
+extern "C" int alpakaMain(int argc, char* argv[])
 {
     alpaka::unused(argc, argv);
     concepts::Api auto usedApi = api::ALPAKA_USE_API{};

@@ -19,7 +19,7 @@
 using namespace alpaka;
 
 // Declare the function type we expect
-using alpaka_main_t = int(int argc, char* argv[]);
+using AlpakaMainT = int(int argc, char* argv[]);
 
 std::string toLower(std::string str)
 {
@@ -70,8 +70,8 @@ int example(int argc, char* argv[], auto const usedApi)
             FreeLibrary(handle);
         }
 #else
-        auto func = reinterpret_cast<alpaka_main_t*>(
-            dlsym(handle, "alpaka_main") // <-- if compiled without extern "C", use mangled
+        auto func = reinterpret_cast<AlpakaMainT*>(
+            dlsym(handle, "alpakaMain") // <-- if compiled without extern "C", use mangled
         );
         if(!func)
         {
@@ -82,7 +82,7 @@ int example(int argc, char* argv[], auto const usedApi)
 
         if(func)
         {
-            // Forward argc/argv from main to alpaka_main
+            // Forward argc/argv from main to alpakaMain
             [[maybe_unused]] int ret = func(argc, argv);
 #if ALPAKA_OS_WINDOWS
             FreeLibrary(handle);

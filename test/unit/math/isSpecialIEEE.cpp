@@ -13,31 +13,31 @@
 template<typename T>
 static void verifyIsSpecial()
 {
-    namespace generic_math = alpaka::internal::generic::math;
+    namespace genericMath = alpaka::internal::generic::math;
 
     auto const quietNaN = std::numeric_limits<T>::quiet_NaN();
     auto const posInf = std::numeric_limits<T>::infinity();
     auto const negInf = -posInf;
     auto const finiteVal = static_cast<T>(42.5);
 
-    CHECK(generic_math::isnan(quietNaN));
-    CHECK_FALSE(generic_math::isnan(finiteVal));
+    CHECK(genericMath::isnan(quietNaN));
+    CHECK_FALSE(genericMath::isnan(finiteVal));
 
     if constexpr(std::numeric_limits<T>::has_signaling_NaN)
     {
         auto const signalingNaN = std::numeric_limits<T>::signaling_NaN();
-        CHECK(generic_math::isnan(signalingNaN));
+        CHECK(genericMath::isnan(signalingNaN));
     }
 
-    CHECK(generic_math::isinf(posInf));
-    CHECK(generic_math::isinf(negInf));
-    CHECK_FALSE(generic_math::isinf(finiteVal));
+    CHECK(genericMath::isinf(posInf));
+    CHECK(genericMath::isinf(negInf));
+    CHECK_FALSE(genericMath::isinf(finiteVal));
 
-    CHECK(generic_math::isfinite(finiteVal));
-    CHECK(generic_math::isfinite(static_cast<T>(0)));
-    CHECK_FALSE(generic_math::isfinite(posInf));
-    CHECK_FALSE(generic_math::isfinite(negInf));
-    CHECK_FALSE(generic_math::isfinite(quietNaN));
+    CHECK(genericMath::isfinite(finiteVal));
+    CHECK(genericMath::isfinite(static_cast<T>(0)));
+    CHECK_FALSE(genericMath::isfinite(posInf));
+    CHECK_FALSE(genericMath::isfinite(negInf));
+    CHECK_FALSE(genericMath::isfinite(quietNaN));
 }
 
 using TestValueTypes = std::tuple<float, double>;

@@ -64,14 +64,14 @@ void testCombination(
         });
 }
 
-template<typename Queue, typename Exec, typename Extent, typename Policy>
-void runTest(Queue& queue, Exec exec, Extent const& extentsAndFrameSize, Policy const& policy)
+template<typename T_Queue, typename T_Exec, typename T_Extent, typename T_Policy>
+void runTest(T_Queue& queue, T_Exec exec, T_Extent const& extentsAndFrameSize, T_Policy const& policy)
 {
     auto bufferExtents = extentsAndFrameSize.first;
     auto frameExtents = extentsAndFrameSize.second;
     DYNAMIC_SECTION(
         "exec=" << onHost::demangledName(exec) << ", extent=" << bufferExtents << ", frameExtents=" << frameExtents
-                << ", policy=" << onHost::demangledName<Policy>())
+                << ", policy=" << onHost::demangledName<T_Policy>())
     {
         testCombination(queue, exec, bufferExtents, frameExtents, policy);
     }

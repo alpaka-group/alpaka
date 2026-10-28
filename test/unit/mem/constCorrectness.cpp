@@ -35,7 +35,7 @@ TEST_CASE("mdspan inner const copy constructor", "[mem][mdspan][correctness][cop
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 3>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
@@ -47,17 +47,17 @@ TEST_CASE("mdspan inner const copy constructor", "[mem][mdspan][correctness][cop
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<MutMdSpan>);
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<ConstMdSpan>);
 
-    MutMdSpan mut_mdspan(ptr, extents, pitches);
-    ConstMdSpan const_mdspan(const_ptr, extents, pitches);
+    MutMdSpan mutMdspan(ptr, extents, pitches);
+    ConstMdSpan constMdspan(constPtr, extents, pitches);
 
     STATIC_REQUIRE(std::constructible_from<MutMdSpan, MutMdSpan&>);
-    [[maybe_unused]] MutMdSpan mut_mdspan_copy(mut_mdspan);
+    [[maybe_unused]] MutMdSpan mutMdspanCopy(mutMdspan);
 
     STATIC_REQUIRE(std::constructible_from<ConstMdSpan, ConstMdSpan&>);
-    [[maybe_unused]] ConstMdSpan const_mdspan_copy(const_mdspan);
+    [[maybe_unused]] ConstMdSpan constMdspanCopy(constMdspan);
 
     STATIC_REQUIRE(std::constructible_from<ConstMdSpan, MutMdSpan&>);
-    [[maybe_unused]] ConstMdSpan mut_to_const_mdspan(mut_mdspan);
+    [[maybe_unused]] ConstMdSpan mutToConstMdspan(mutMdspan);
 
     STATIC_REQUIRE_FALSE(std::constructible_from<MutMdSpan, ConstMdSpan&>);
     // should not compile
@@ -68,25 +68,25 @@ TEST_CASE("mdspan inner const assignment operator", "[mem][mdspan][correctness][
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 2>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutMdSpan = MdSpan<int, decltype(extents), decltype(pitches)>;
     using ConstMdSpan = MdSpan<int const, decltype(extents), decltype(pitches)>;
 
-    MutMdSpan mut_mdspan(ptr, extents, pitches);
-    ConstMdSpan const_mdspan(const_ptr, extents, pitches);
+    MutMdSpan mutMdspan(ptr, extents, pitches);
+    ConstMdSpan constMdspan(constPtr, extents, pitches);
 
     STATIC_REQUIRE(concepts::AssignableFrom<MutMdSpan&, MutMdSpan>);
-    [[maybe_unused]] MutMdSpan mut_mdspan2 = mut_mdspan;
-    mut_mdspan2 = mut_mdspan;
+    [[maybe_unused]] MutMdSpan mutMdspan2 = mutMdspan;
+    mutMdspan2 = mutMdspan;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstMdSpan&, ConstMdSpan>);
-    [[maybe_unused]] ConstMdSpan const_mdspan2 = const_mdspan;
-    const_mdspan2 = const_mdspan;
+    [[maybe_unused]] ConstMdSpan constMdspan2 = constMdspan;
+    constMdspan2 = constMdspan;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstMdSpan&, MutMdSpan>);
-    [[maybe_unused]] ConstMdSpan const_mdspan3 = mut_mdspan;
-    const_mdspan3 = mut_mdspan;
+    [[maybe_unused]] ConstMdSpan constMdspan3 = mutMdspan;
+    constMdspan3 = mutMdspan;
     STATIC_REQUIRE_FALSE(concepts::AssignableFrom<MutMdSpan&, ConstMdSpan>);
     // Not allowed cases, remove inner const via copy construction or assignment
     // MutMdSpan mut_mdspan3 = const_mdspan;
@@ -97,87 +97,87 @@ TEST_CASE("mdspan inner const move operator", "[mem][mdspan][correctness][moveCo
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 2>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutMdSpan = MdSpan<int, decltype(extents), decltype(pitches)>;
     using ConstMdSpan = MdSpan<int const, decltype(extents), decltype(pitches)>;
 
-    MutMdSpan copy_mut_mdspan(ptr, extents, pitches);
-    ConstMdSpan copy_const_mdspan(const_ptr, extents, pitches);
+    MutMdSpan copyMutMdspan(ptr, extents, pitches);
+    ConstMdSpan copyConstMdspan(constPtr, extents, pitches);
 
-    [[maybe_unused]] MutMdSpan copy_mut_mdspan2(std::move(copy_mut_mdspan));
-    [[maybe_unused]] ConstMdSpan copy_const_mdspan2(std::move(copy_const_mdspan));
-    [[maybe_unused]] ConstMdSpan copy_const_mdspan3(std::move(copy_mut_mdspan2));
+    [[maybe_unused]] MutMdSpan copyMutMdspan2(std::move(copyMutMdspan));
+    [[maybe_unused]] ConstMdSpan copyConstMdspan2(std::move(copyConstMdspan));
+    [[maybe_unused]] ConstMdSpan copyConstMdspan3(std::move(copyMutMdspan2));
     // should not compile
     // MutMdSpan copy_mut_mdspan3(std::move(copy_const_mdspan3));
 
     // at the moment it is more performant efficient, that a mdspan is still valid after a move
-    CHECK(copy_mut_mdspan);
-    CHECK(copy_const_mdspan);
-    CHECK(copy_mut_mdspan2);
-    CHECK(copy_const_mdspan2);
-    CHECK(copy_const_mdspan3);
+    CHECK(copyMutMdspan);
+    CHECK(copyConstMdspan);
+    CHECK(copyMutMdspan2);
+    CHECK(copyConstMdspan2);
+    CHECK(copyConstMdspan3);
 
-    MutMdSpan assign_mut_mdspan(ptr, extents, pitches);
-    ConstMdSpan assign_const_mdspan(const_ptr, extents, pitches);
+    MutMdSpan assignMutMdspan(ptr, extents, pitches);
+    ConstMdSpan assignConstMdspan(constPtr, extents, pitches);
 
-    MutMdSpan assign_mut_mdspan2 = std::move(assign_mut_mdspan);
-    [[maybe_unused]] ConstMdSpan assign_const_mdspan2 = std::move(assign_const_mdspan);
-    [[maybe_unused]] ConstMdSpan assign_const_mdspan3 = std::move(assign_mut_mdspan2);
+    MutMdSpan assignMutMdspan2 = std::move(assignMutMdspan);
+    [[maybe_unused]] ConstMdSpan assignConstMdspan2 = std::move(assignConstMdspan);
+    [[maybe_unused]] ConstMdSpan assignConstMdspan3 = std::move(assignMutMdspan2);
     // should not compile
     // MutMdSpan assign_mut_mdspan3 = std::move(assign_const_mdspan3);
 
     // at the moment it is more performant efficient, that a mdspan is still valid after a move
-    CHECK(assign_mut_mdspan);
-    CHECK(assign_const_mdspan);
-    CHECK(assign_mut_mdspan2);
-    CHECK(assign_const_mdspan2);
-    CHECK(assign_const_mdspan3);
+    CHECK(assignMutMdspan);
+    CHECK(assignConstMdspan);
+    CHECK(assignMutMdspan2);
+    CHECK(assignConstMdspan2);
+    CHECK(assignConstMdspan3);
 }
 
-template<typename TExpectedValueType, typename TExpectedReferenceType, typename TMdSpan>
-requires internal::concepts::CopyConstructableDataSource<TMdSpan> && concepts::IMdSpan<TMdSpan>
-void funcCopyByValue(TMdSpan mdspan)
+template<typename T_ExpectedValueType, typename T_ExpectedReferenceType, typename T_MdSpan>
+requires internal::concepts::CopyConstructableDataSource<T_MdSpan> && concepts::IMdSpan<T_MdSpan>
+void funcCopyByValue(T_MdSpan mdspan)
 {
-    STATIC_REQUIRE(std::same_as<typename decltype(mdspan)::value_type, TExpectedValueType>);
+    STATIC_REQUIRE(std::same_as<typename decltype(mdspan)::value_type, T_ExpectedValueType>);
     auto& val = mdspan[0];
-    STATIC_CHECK(std::same_as<decltype(val), TExpectedReferenceType&>);
+    STATIC_CHECK(std::same_as<decltype(val), T_ExpectedReferenceType&>);
 }
 
-template<typename TExpectedValueType, typename TExpectedReferenceType, typename TMdSpan>
-requires internal::concepts::CopyConstructableDataSource<TMdSpan> && concepts::IMdSpan<TMdSpan>
-void funcReference(TMdSpan& mdspan)
+template<typename T_ExpectedValueType, typename T_ExpectedReferenceType, typename T_MdSpan>
+requires internal::concepts::CopyConstructableDataSource<T_MdSpan> && concepts::IMdSpan<T_MdSpan>
+void funcReference(T_MdSpan& mdspan)
 {
-    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, TExpectedValueType>);
+    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, T_ExpectedValueType>);
     auto& val = mdspan[0];
-    STATIC_CHECK(std::same_as<decltype(val), TExpectedReferenceType&>);
+    STATIC_CHECK(std::same_as<decltype(val), T_ExpectedReferenceType&>);
 }
 
-template<typename TExpectedValueType, typename TExpectedReferenceType, typename TMdSpan>
-requires internal::concepts::CopyConstructableDataSource<TMdSpan> && concepts::IMdSpan<TMdSpan>
-void funcConstReference(TMdSpan const& mdspan)
+template<typename T_ExpectedValueType, typename T_ExpectedReferenceType, typename T_MdSpan>
+requires internal::concepts::CopyConstructableDataSource<T_MdSpan> && concepts::IMdSpan<T_MdSpan>
+void funcConstReference(T_MdSpan const& mdspan)
 {
-    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, TExpectedValueType>);
+    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, T_ExpectedValueType>);
     auto& val = mdspan[0];
-    STATIC_CHECK(std::same_as<decltype(val), TExpectedReferenceType&>);
+    STATIC_CHECK(std::same_as<decltype(val), T_ExpectedReferenceType&>);
 }
 
-template<typename TExpectedValueType, typename TExpectedReferenceType, typename TMdSpan>
-requires internal::concepts::CopyConstructableDataSource<TMdSpan> && concepts::IMdSpan<TMdSpan>
-void funcUniversalRef(TMdSpan&& mdspan)
+template<typename T_ExpectedValueType, typename T_ExpectedReferenceType, typename T_MdSpan>
+requires internal::concepts::CopyConstructableDataSource<T_MdSpan> && concepts::IMdSpan<T_MdSpan>
+void funcUniversalRef(T_MdSpan&& mdspan)
 {
-    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, TExpectedValueType>);
+    STATIC_REQUIRE(std::same_as<typename std::remove_reference_t<decltype(mdspan)>::value_type, T_ExpectedValueType>);
     auto& val = mdspan[0];
-    STATIC_CHECK(std::same_as<decltype(val), TExpectedReferenceType&>);
+    STATIC_CHECK(std::same_as<decltype(val), T_ExpectedReferenceType&>);
 }
 
 TEST_CASE("function calls with mdspan object", "[mem][mdspan][correctness]")
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 1>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
@@ -188,49 +188,49 @@ TEST_CASE("function calls with mdspan object", "[mem][mdspan][correctness]")
     funcUniversalRef<int, int&>(mdspan);
     funcUniversalRef<int, int&>(MdSpan{ptr, extents, pitches});
 
-    MdSpan const const_mdspan{ptr, extents, pitches};
-    funcCopyByValue<int, int&>(const_mdspan);
-    funcReference<int, int const&>(const_mdspan);
-    funcConstReference<int, int const&>(const_mdspan);
+    MdSpan const constMdspan{ptr, extents, pitches};
+    funcCopyByValue<int, int&>(constMdspan);
+    funcReference<int, int const&>(constMdspan);
+    funcConstReference<int, int const&>(constMdspan);
 
-    MdSpan mdspan_inner_const{const_ptr, extents, pitches};
-    funcCopyByValue<int const, int const&>(mdspan_inner_const);
-    funcReference<int const, int const&>(mdspan_inner_const);
-    funcConstReference<int const, int const&>(mdspan_inner_const);
-    funcUniversalRef<int const, int const&>(mdspan_inner_const);
-    funcUniversalRef<int const, int const&>(MdSpan{const_ptr, extents, pitches});
+    MdSpan mdspanInnerConst{constPtr, extents, pitches};
+    funcCopyByValue<int const, int const&>(mdspanInnerConst);
+    funcReference<int const, int const&>(mdspanInnerConst);
+    funcConstReference<int const, int const&>(mdspanInnerConst);
+    funcUniversalRef<int const, int const&>(mdspanInnerConst);
+    funcUniversalRef<int const, int const&>(MdSpan{constPtr, extents, pitches});
 
-    MdSpan const const_mdspan_inner_const{const_ptr, extents, pitches};
-    funcCopyByValue<int const, int const&>(const_mdspan_inner_const);
-    funcReference<int const, int const&>(const_mdspan_inner_const);
-    funcConstReference<int const, int const&>(const_mdspan_inner_const);
-    funcUniversalRef<int const, int const&>(const_mdspan_inner_const);
+    MdSpan const constMdspanInnerConst{constPtr, extents, pitches};
+    funcCopyByValue<int const, int const&>(constMdspanInnerConst);
+    funcReference<int const, int const&>(constMdspanInnerConst);
+    funcConstReference<int const, int const&>(constMdspanInnerConst);
+    funcUniversalRef<int const, int const&>(constMdspanInnerConst);
 }
 
 TEST_CASE("MdSpanArray inner const copy constructor", "[mem][mdspanarray][correctness][copyConstruct]")
 {
-    int static_data[2][2] = {{0, 0}, {0, 0}};
-    int const const_static_data[2][2] = {{0, 0}, {0, 0}};
-    using MutMdSpanArray = MdSpanArray<decltype(static_data), size_t, alpaka::Alignment<16>>;
-    using ConstMdSpanArray = MdSpanArray<decltype(const_static_data), size_t, alpaka::Alignment<16>>;
+    int staticData[2][2] = {{0, 0}, {0, 0}};
+    int const constStaticData[2][2] = {{0, 0}, {0, 0}};
+    using MutMdSpanArray = MdSpanArray<decltype(staticData), size_t, alpaka::Alignment<16>>;
+    using ConstMdSpanArray = MdSpanArray<decltype(constStaticData), size_t, alpaka::Alignment<16>>;
 
     STATIC_REQUIRE(internal::CopyConstructableDataSource<MutMdSpanArray>::value);
 
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<MutMdSpanArray>);
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<ConstMdSpanArray>);
 
-    MutMdSpanArray mut_md_span_array(static_data);
-    ConstMdSpanArray const_md_span_array(const_static_data);
+    MutMdSpanArray mutMdSpanArray(staticData);
+    ConstMdSpanArray constMdSpanArray(constStaticData);
 
     STATIC_REQUIRE(std::constructible_from<MutMdSpanArray, MutMdSpanArray&>);
-    [[maybe_unused]] MutMdSpanArray mut_md_span_array_copy(mut_md_span_array);
+    [[maybe_unused]] MutMdSpanArray mutMdSpanArrayCopy(mutMdSpanArray);
 
     STATIC_REQUIRE(std::constructible_from<ConstMdSpanArray, ConstMdSpanArray&>);
-    [[maybe_unused]] ConstMdSpanArray const_md_span_array_copy(const_md_span_array);
+    [[maybe_unused]] ConstMdSpanArray constMdSpanArrayCopy(constMdSpanArray);
 
 
     STATIC_REQUIRE(std::constructible_from<ConstMdSpanArray, MutMdSpanArray&>);
-    [[maybe_unused]] ConstMdSpanArray mut_to_const_md_span_array(mut_md_span_array);
+    [[maybe_unused]] ConstMdSpanArray mutToConstMdSpanArray(mutMdSpanArray);
 
     STATIC_REQUIRE_FALSE(std::constructible_from<MutMdSpanArray, ConstMdSpanArray&>);
     // should not compile
@@ -239,23 +239,23 @@ TEST_CASE("MdSpanArray inner const copy constructor", "[mem][mdspanarray][correc
 
 TEST_CASE("MdSpanArray inner const assignment operator", "[mem][mdspanarray][correctness][copyConstruct]")
 {
-    int static_data[2][2] = {{0, 0}, {0, 0}};
-    int const const_static_data[2][2] = {{0, 0}, {0, 0}};
-    using MutMdSpanArray = MdSpanArray<decltype(static_data), size_t, alpaka::Alignment<16>>;
-    using ConstMdSpanArray = MdSpanArray<decltype(const_static_data), size_t, alpaka::Alignment<16>>;
+    int staticData[2][2] = {{0, 0}, {0, 0}};
+    int const constStaticData[2][2] = {{0, 0}, {0, 0}};
+    using MutMdSpanArray = MdSpanArray<decltype(staticData), size_t, alpaka::Alignment<16>>;
+    using ConstMdSpanArray = MdSpanArray<decltype(constStaticData), size_t, alpaka::Alignment<16>>;
 
-    MutMdSpanArray mut_md_span_array(static_data);
-    ConstMdSpanArray const_md_span_array(const_static_data);
+    MutMdSpanArray mutMdSpanArray(staticData);
+    ConstMdSpanArray constMdSpanArray(constStaticData);
 
     STATIC_REQUIRE(concepts::AssignableFrom<MutMdSpanArray&, MutMdSpanArray>);
-    [[maybe_unused]] MutMdSpanArray mut_md_span_arra2 = mut_md_span_array;
-    mut_md_span_arra2 = mut_md_span_array;
+    [[maybe_unused]] MutMdSpanArray mutMdSpanArra2 = mutMdSpanArray;
+    mutMdSpanArra2 = mutMdSpanArray;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstMdSpanArray&, ConstMdSpanArray>);
-    [[maybe_unused]] ConstMdSpanArray const_md_span_array2 = const_md_span_array;
-    const_md_span_array2 = const_md_span_array;
+    [[maybe_unused]] ConstMdSpanArray constMdSpanArray2 = constMdSpanArray;
+    constMdSpanArray2 = constMdSpanArray;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstMdSpanArray&, MutMdSpanArray>);
-    [[maybe_unused]] ConstMdSpanArray const_md_span_array3 = mut_md_span_array;
-    const_md_span_array3 = mut_md_span_array;
+    [[maybe_unused]] ConstMdSpanArray constMdSpanArray3 = mutMdSpanArray;
+    constMdSpanArray3 = mutMdSpanArray;
     STATIC_REQUIRE_FALSE(concepts::AssignableFrom<MutMdSpanArray&, ConstMdSpanArray>);
     // Not allowed cases, remove inner const via copy construction or assignment
     // MutMdSpanArray mut_view3 = const_md_span_array;
@@ -266,48 +266,48 @@ TEST_CASE(
     "MdSpanArray inner const move constructor and move assignment operator",
     "[mem][mdspanarray][correctness][moveConstruct]")
 {
-    int static_data[2][2] = {{0, 0}, {0, 0}};
-    int const const_static_data[2][2] = {{0, 0}, {0, 0}};
-    using MutMdSpanArray = MdSpanArray<decltype(static_data), size_t, alpaka::Alignment<16>>;
-    using ConstMdSpanArray = MdSpanArray<decltype(const_static_data), size_t, alpaka::Alignment<16>>;
+    int staticData[2][2] = {{0, 0}, {0, 0}};
+    int const constStaticData[2][2] = {{0, 0}, {0, 0}};
+    using MutMdSpanArray = MdSpanArray<decltype(staticData), size_t, alpaka::Alignment<16>>;
+    using ConstMdSpanArray = MdSpanArray<decltype(constStaticData), size_t, alpaka::Alignment<16>>;
 
-    MutMdSpanArray constr_mut_md(static_data);
-    ConstMdSpanArray constr_const_md(const_static_data);
+    MutMdSpanArray constrMutMd(staticData);
+    ConstMdSpanArray constrConstMd(constStaticData);
 
-    MutMdSpanArray constr_mut_md2(std::move(constr_mut_md));
-    [[maybe_unused]] ConstMdSpanArray constr_const_md2(std::move(constr_const_md));
-    [[maybe_unused]] ConstMdSpanArray constr_const_md3(std::move(constr_mut_md2));
+    MutMdSpanArray constrMutMd2(std::move(constrMutMd));
+    [[maybe_unused]] ConstMdSpanArray constrConstMd2(std::move(constrConstMd));
+    [[maybe_unused]] ConstMdSpanArray constrConstMd3(std::move(constrMutMd2));
     // should not compile
     // MutMdSpanArray constr_mut_md3(std::move(constr_const_md3));
 
     // at the moment it is more performant efficient, that a mdspan is still valid after a move
-    CHECK(constr_mut_md);
-    CHECK(constr_const_md);
-    CHECK(constr_mut_md2);
-    CHECK(constr_const_md2);
+    CHECK(constrMutMd);
+    CHECK(constrConstMd);
+    CHECK(constrMutMd2);
+    CHECK(constrConstMd2);
 
-    MutMdSpanArray assign_mut_md(static_data);
-    ConstMdSpanArray assign_const_md(const_static_data);
+    MutMdSpanArray assignMutMd(staticData);
+    ConstMdSpanArray assignConstMd(constStaticData);
 
-    MutMdSpanArray assign_mut_md2 = std::move(assign_mut_md);
-    [[maybe_unused]] ConstMdSpanArray assign_const_md2 = std::move(assign_const_md);
-    [[maybe_unused]] ConstMdSpanArray assign_const_md3 = std::move(assign_mut_md2);
+    MutMdSpanArray assignMutMd2 = std::move(assignMutMd);
+    [[maybe_unused]] ConstMdSpanArray assignConstMd2 = std::move(assignConstMd);
+    [[maybe_unused]] ConstMdSpanArray assignConstMd3 = std::move(assignMutMd2);
     // should not compile
     // MutMdSpanArray assign_mut_md3 = std::move(assign_const_md3);
 
     // at the moment it is more performant efficient, that a mdspan is still valid after a move
-    CHECK(assign_mut_md);
-    CHECK(assign_const_md);
-    CHECK(assign_mut_md2);
-    CHECK(assign_const_md2);
-    CHECK(assign_const_md3);
+    CHECK(assignMutMd);
+    CHECK(assignConstMd);
+    CHECK(assignMutMd2);
+    CHECK(assignConstMd2);
+    CHECK(assignConstMd3);
 }
 
 TEST_CASE("View inner const copy constructor", "[mem][view][correctness][copyConstruct]")
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 3>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
@@ -319,17 +319,17 @@ TEST_CASE("View inner const copy constructor", "[mem][view][correctness][copyCon
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<MutView>);
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<ConstView>);
 
-    MutView mut_view(api::host, ptr, extents, pitches);
-    ConstView const_view(api::host, const_ptr, extents, pitches);
+    MutView mutView(api::host, ptr, extents, pitches);
+    ConstView constView(api::host, constPtr, extents, pitches);
 
     STATIC_REQUIRE(std::constructible_from<MutView, MutView&>);
-    [[maybe_unused]] MutView mut_view_copy(mut_view);
+    [[maybe_unused]] MutView mutViewCopy(mutView);
 
     STATIC_REQUIRE(std::constructible_from<ConstView, ConstView&>);
-    [[maybe_unused]] ConstView const_view_copy(const_view);
+    [[maybe_unused]] ConstView constViewCopy(constView);
 
     STATIC_REQUIRE(std::constructible_from<ConstView, MutView&>);
-    [[maybe_unused]] ConstView mut_to_const_view(mut_view);
+    [[maybe_unused]] ConstView mutToConstView(mutView);
 
     STATIC_REQUIRE_FALSE(std::constructible_from<MutView, ConstView&>);
     // should not compile
@@ -340,25 +340,25 @@ TEST_CASE("View inner const assignment operator", "[mem][view][correctness][copy
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 2>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutView = View<alpaka::api::Host, int, decltype(extents)>;
     using ConstView = View<alpaka::api::Host, int const, decltype(extents)>;
 
-    MutView mut_view(api::host, ptr, extents, pitches);
-    ConstView const_view(api::host, const_ptr, extents, pitches);
+    MutView mutView(api::host, ptr, extents, pitches);
+    ConstView constView(api::host, constPtr, extents, pitches);
 
     STATIC_REQUIRE(concepts::AssignableFrom<MutView&, MutView>);
-    [[maybe_unused]] MutView mut_view2 = mut_view;
-    mut_view2 = mut_view;
+    [[maybe_unused]] MutView mutView2 = mutView;
+    mutView2 = mutView;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstView&, ConstView>);
-    [[maybe_unused]] ConstView const_view2 = const_view;
-    const_view2 = const_view;
+    [[maybe_unused]] ConstView constView2 = constView;
+    constView2 = constView;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstView&, MutView>);
-    [[maybe_unused]] ConstView const_view3 = mut_view;
-    const_view3 = mut_view;
+    [[maybe_unused]] ConstView constView3 = mutView;
+    constView3 = mutView;
     STATIC_REQUIRE_FALSE(concepts::AssignableFrom<MutView&, ConstView>);
     // Not allowed cases, remove inner const via copy construction or assignment
     // MutView mut_view3 = const_view;
@@ -369,51 +369,51 @@ TEST_CASE("View inner const move constructor and move assignment operator", "[me
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 3>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutView = View<alpaka::api::Host, int, decltype(extents)>;
     using ConstView = View<alpaka::api::Host, int const, decltype(extents)>;
 
-    MutView construct_mut_view(api::host, ptr, extents, pitches);
-    ConstView construct_const_view(api::host, const_ptr, extents, pitches);
+    MutView constructMutView(api::host, ptr, extents, pitches);
+    ConstView constructConstView(api::host, constPtr, extents, pitches);
 
-    MutView construct_mut_view2(std::move(construct_mut_view));
-    [[maybe_unused]] ConstView construct_const_view2(std::move(construct_const_view));
-    [[maybe_unused]] ConstView construct_const_view3(std::move(construct_mut_view2));
+    MutView constructMutView2(std::move(constructMutView));
+    [[maybe_unused]] ConstView constructConstView2(std::move(constructConstView));
+    [[maybe_unused]] ConstView constructConstView3(std::move(constructMutView2));
     // should not compile
     // MutView construct_mut_view3(std::move(construct_const_view3));
 
     // at the moment it is more performant efficient, that a view is still valid after a move
-    CHECK(construct_mut_view);
-    CHECK(construct_const_view);
-    CHECK(construct_mut_view2);
-    CHECK(construct_const_view2);
-    CHECK(construct_const_view3);
+    CHECK(constructMutView);
+    CHECK(constructConstView);
+    CHECK(constructMutView2);
+    CHECK(constructConstView2);
+    CHECK(constructConstView3);
 
-    MutView assign_mut_view(api::host, ptr, extents, pitches);
-    ConstView assign_const_view(api::host, const_ptr, extents, pitches);
+    MutView assignMutView(api::host, ptr, extents, pitches);
+    ConstView assignConstView(api::host, constPtr, extents, pitches);
 
-    MutView assign_mut_view2 = std::move(assign_mut_view);
-    [[maybe_unused]] ConstView assign_const_view2 = std::move(assign_const_view);
-    [[maybe_unused]] ConstView assign_const_view3 = std::move(assign_mut_view2);
+    MutView assignMutView2 = std::move(assignMutView);
+    [[maybe_unused]] ConstView assignConstView2 = std::move(assignConstView);
+    [[maybe_unused]] ConstView assignConstView3 = std::move(assignMutView2);
     // should not compile
     // MutView assign_mut_view3 = std::move(assign_const_view3);
 
     // at the moment it is more performant efficient, that a view is still valid after a move
-    CHECK(assign_mut_view);
-    CHECK(assign_const_view);
-    CHECK(assign_mut_view2);
-    CHECK(assign_const_view2);
-    CHECK(assign_const_view3);
+    CHECK(assignMutView);
+    CHECK(assignConstView);
+    CHECK(assignMutView2);
+    CHECK(assignConstView2);
+    CHECK(assignConstView3);
 }
 
 TEST_CASE("sharedBuffer inner const copy constructor", "[mem][sharedBuffer][correctness][copyConstruct]")
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 3>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
@@ -425,17 +425,17 @@ TEST_CASE("sharedBuffer inner const copy constructor", "[mem][sharedBuffer][corr
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<MutSharedBuffer>);
     STATIC_REQUIRE(internal::concepts::CopyConstructableDataSource<ConstSharedBuffer>);
 
-    MutSharedBuffer mut_shared_buffer(api::host, ptr, extents, pitches, [] {});
-    ConstSharedBuffer const_shared_buffer(api::host, const_ptr, extents, pitches, [] {});
+    MutSharedBuffer mutSharedBuffer(api::host, ptr, extents, pitches, [] {});
+    ConstSharedBuffer constSharedBuffer(api::host, constPtr, extents, pitches, [] {});
 
     STATIC_REQUIRE(std::constructible_from<MutSharedBuffer, MutSharedBuffer&>);
-    [[maybe_unused]] MutSharedBuffer mut_shared_buffer_copy(mut_shared_buffer);
+    [[maybe_unused]] MutSharedBuffer mutSharedBufferCopy(mutSharedBuffer);
 
     STATIC_REQUIRE(std::constructible_from<ConstSharedBuffer, ConstSharedBuffer&>);
-    [[maybe_unused]] ConstSharedBuffer const_shared_buffer_copy(const_shared_buffer);
+    [[maybe_unused]] ConstSharedBuffer constSharedBufferCopy(constSharedBuffer);
 
     STATIC_REQUIRE(std::constructible_from<ConstSharedBuffer, MutSharedBuffer&>);
-    [[maybe_unused]] ConstSharedBuffer mut_to_const_shared_buffer(mut_shared_buffer);
+    [[maybe_unused]] ConstSharedBuffer mutToConstSharedBuffer(mutSharedBuffer);
 
     STATIC_REQUIRE_FALSE(std::constructible_from<MutSharedBuffer, ConstSharedBuffer&>);
     // should not compile
@@ -446,25 +446,25 @@ TEST_CASE("sharedBuffer inner const assignment operator", "[mem][sharedBuffer][c
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 2>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutSharedBuffer = onHost::SharedBuffer<alpaka::api::Host, int, decltype(extents)>;
     using ConstSharedBuffer = onHost::SharedBuffer<alpaka::api::Host, int const, decltype(extents)>;
 
-    MutSharedBuffer mut_shared_buffer(api::host, ptr, extents, pitches, [] {});
-    ConstSharedBuffer const_shared_buffer(api::host, const_ptr, extents, pitches, [] {});
+    MutSharedBuffer mutSharedBuffer(api::host, ptr, extents, pitches, [] {});
+    ConstSharedBuffer constSharedBuffer(api::host, constPtr, extents, pitches, [] {});
 
     STATIC_REQUIRE(concepts::AssignableFrom<MutSharedBuffer&, MutSharedBuffer>);
-    [[maybe_unused]] MutSharedBuffer mut_shared_buffer2 = mut_shared_buffer;
-    mut_shared_buffer2 = mut_shared_buffer;
+    [[maybe_unused]] MutSharedBuffer mutSharedBuffer2 = mutSharedBuffer;
+    mutSharedBuffer2 = mutSharedBuffer;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstSharedBuffer&, ConstSharedBuffer>);
-    [[maybe_unused]] ConstSharedBuffer const_shared_buffer2 = const_shared_buffer;
-    const_shared_buffer2 = const_shared_buffer;
+    [[maybe_unused]] ConstSharedBuffer constSharedBuffer2 = constSharedBuffer;
+    constSharedBuffer2 = constSharedBuffer;
     STATIC_REQUIRE(concepts::AssignableFrom<ConstSharedBuffer&, MutSharedBuffer>);
-    [[maybe_unused]] ConstSharedBuffer const_shared_buffer3 = mut_shared_buffer;
-    const_shared_buffer3 = mut_shared_buffer;
+    [[maybe_unused]] ConstSharedBuffer constSharedBuffer3 = mutSharedBuffer;
+    constSharedBuffer3 = mutSharedBuffer;
     STATIC_REQUIRE_FALSE(concepts::AssignableFrom<MutSharedBuffer&, ConstSharedBuffer>);
     // Not allowed cases, remove inner const via copy construction or assignment
     // MutSharedBuffer mut_shared_buffer3 = const_shared_buffer;
@@ -475,44 +475,44 @@ TEST_CASE("sharedBuffer inner const move operator", "[mem][sharedBuffer][correct
 {
     constexpr size_t size = 10;
     int* ptr = nullptr;
-    int const* const_ptr = nullptr;
+    int const* constPtr = nullptr;
     concepts::Vector auto extents = Vec<uint32_t, 3>{}.fill(size);
     concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     using MutSharedBuffer = onHost::SharedBuffer<alpaka::api::Host, int, decltype(extents)>;
     using ConstSharedBuffer = onHost::SharedBuffer<alpaka::api::Host, int const, decltype(extents)>;
 
-    MutSharedBuffer copy_mut_shared_buffer(api::host, ptr, extents, pitches, [] {});
-    ConstSharedBuffer copy_const_shared_buffer(api::host, const_ptr, extents, pitches, [] {});
+    MutSharedBuffer copyMutSharedBuffer(api::host, ptr, extents, pitches, [] {});
+    ConstSharedBuffer copyConstSharedBuffer(api::host, constPtr, extents, pitches, [] {});
 
-    MutSharedBuffer copy_mut_shared_buffer2(std::move(copy_mut_shared_buffer));
-    ConstSharedBuffer copy_const_shared_buffer2(std::move(copy_const_shared_buffer));
-    [[maybe_unused]] ConstSharedBuffer copy_const_shared_buffer3(std::move(copy_mut_shared_buffer2));
+    MutSharedBuffer copyMutSharedBuffer2(std::move(copyMutSharedBuffer));
+    ConstSharedBuffer copyConstSharedBuffer2(std::move(copyConstSharedBuffer));
+    [[maybe_unused]] ConstSharedBuffer copyConstSharedBuffer3(std::move(copyMutSharedBuffer2));
     // should not compile
     // MutSharedBuffer copy_mut_shared_buffer3(std::move(copy_const_shared_buffer3));
 
     // check lifetime
-    CHECK_FALSE(copy_mut_shared_buffer);
-    CHECK_FALSE(copy_const_shared_buffer);
-    CHECK_FALSE(copy_mut_shared_buffer2);
-    CHECK(copy_const_shared_buffer2);
-    CHECK(copy_const_shared_buffer3);
+    CHECK_FALSE(copyMutSharedBuffer);
+    CHECK_FALSE(copyConstSharedBuffer);
+    CHECK_FALSE(copyMutSharedBuffer2);
+    CHECK(copyConstSharedBuffer2);
+    CHECK(copyConstSharedBuffer3);
 
-    MutSharedBuffer assign_mut_shared_buffer(api::host, ptr, extents, pitches, [] {});
-    ConstSharedBuffer assign_const_shared_buffer(api::host, const_ptr, extents, pitches, [] {});
+    MutSharedBuffer assignMutSharedBuffer(api::host, ptr, extents, pitches, [] {});
+    ConstSharedBuffer assignConstSharedBuffer(api::host, constPtr, extents, pitches, [] {});
 
-    MutSharedBuffer assign_mut_shared_buffer2 = std::move(assign_mut_shared_buffer);
-    ConstSharedBuffer assign_const_shared_buffer2 = std::move(assign_const_shared_buffer);
-    [[maybe_unused]] ConstSharedBuffer assign_const_shared_buffer3 = std::move(assign_mut_shared_buffer2);
+    MutSharedBuffer assignMutSharedBuffer2 = std::move(assignMutSharedBuffer);
+    ConstSharedBuffer assignConstSharedBuffer2 = std::move(assignConstSharedBuffer);
+    [[maybe_unused]] ConstSharedBuffer assignConstSharedBuffer3 = std::move(assignMutSharedBuffer2);
     // should not compile
     // MutSharedBuffer assign_mut_shared_buffer3 = std::move(assign_const_shared_buffer3);
 
     // check lifetime
-    CHECK_FALSE(assign_mut_shared_buffer);
-    CHECK_FALSE(assign_mut_shared_buffer2);
-    CHECK_FALSE(assign_const_shared_buffer);
-    CHECK(assign_const_shared_buffer2);
-    CHECK(assign_const_shared_buffer3);
+    CHECK_FALSE(assignMutSharedBuffer);
+    CHECK_FALSE(assignMutSharedBuffer2);
+    CHECK_FALSE(assignConstSharedBuffer);
+    CHECK(assignConstSharedBuffer2);
+    CHECK(assignConstSharedBuffer3);
 }
 
 TEST_CASE("buffer const correctness MD", "[mem][sharedBuffer][correctness]")

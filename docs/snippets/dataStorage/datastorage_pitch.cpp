@@ -18,7 +18,7 @@
 
 // BEGIN-DATASTORAGE-pitch-manual-calculation
 template<typename T>
-T get_element(std::byte* dataPtr, alpaka::concepts::Vector auto idx, alpaka::concepts::Vector auto pitches)
+T getElement(std::byte* dataPtr, alpaka::concepts::Vector auto idx, alpaka::concepts::Vector auto pitches)
 {
     // (idx * pitches).sum() is a dot product
     return *(reinterpret_cast<T*>(dataPtr + (idx * pitches).sum()));
@@ -104,15 +104,15 @@ TEST_CASE("manually calculate 2D Pitch", "[docs]")
         // the byte postion in the 2D memory
         size_t offset = 0;
         // should be equal with the value, which was set over the MdSpan
-        int32_t expected_value = 1;
+        int32_t expectedValue = 1;
         for(size_t row = 0u; row < rows; ++row)
         {
             // step 4 bytes each time because of the user values
             for(size_t col = 0u; col < columns; ++col)
             {
                 int32_t value = *(reinterpret_cast<int32_t*>(memPtr + offset));
-                REQUIRE_MESSAGE(value == expected_value, "coord: [" << row << ", " << col << "]\noffset: " << offset);
-                expected_value += 1;
+                REQUIRE_MESSAGE(value == expectedValue, "coord: [" << row << ", " << col << "]\noffset: " << offset);
+                expectedValue += 1;
                 offset += sizeof(int32_t);
             }
             // step 2 times one byte because of the row padding
@@ -126,18 +126,18 @@ TEST_CASE("manually calculate 2D Pitch", "[docs]")
         REQUIRE(offset == memSizeByte2D);
     }
 
-    SECTION("validate the memory with the get_element() function")
+    SECTION("validate the memory with the getElement() function")
     {
         std::byte* memPtr = mem2D.data();
-        int32_t expected_value = 1;
+        int32_t expectedValue = 1;
         for(size_t row = 0; row < rows; ++row)
         {
             for(size_t col = 0; col < columns; ++col)
             {
                 REQUIRE_MESSAGE(
-                    get_element<int32_t>(memPtr, alpaka::Vec{row, col}, pitches2D) == expected_value,
+                    getElement<int32_t>(memPtr, alpaka::Vec{row, col}, pitches2D) == expectedValue,
                     "coord: [" << row << ", " << col << "]");
-                expected_value += 1;
+                expectedValue += 1;
             }
         }
     }
@@ -197,7 +197,7 @@ TEST_CASE("manual calculate 3D Pitch", "[docs]")
         // the byte postion in the 3D memory
         size_t offset = 0;
         // should be equal with the value, which was set over the MdSpan
-        int32_t expected_value = 1;
+        int32_t expectedValue = 1;
         for(size_t matrix = 0u; matrix < matrices; ++matrix)
         {
             for(size_t row = 0u; row < rows; ++row)
@@ -207,9 +207,9 @@ TEST_CASE("manual calculate 3D Pitch", "[docs]")
                 {
                     int32_t value = *(reinterpret_cast<int32_t*>(memPtr + offset));
                     REQUIRE_MESSAGE(
-                        value == expected_value,
+                        value == expectedValue,
                         "coord: [" << matrix << ", " << row << ", " << col << "]\noffset: " << offset);
-                    expected_value += 1;
+                    expectedValue += 1;
                     offset += sizeof(int32_t);
                 }
                 // step 2 times one byte because of the row padding
@@ -235,10 +235,10 @@ TEST_CASE("manual calculate 3D Pitch", "[docs]")
         REQUIRE(offset == memSizeByte3D);
     }
 
-    SECTION("validate the memory with the get_element() function")
+    SECTION("validate the memory with the getElement() function")
     {
         std::byte* memPtr = mem3D.data();
-        int32_t expected_value = 1;
+        int32_t expectedValue = 1;
         for(size_t matrix = 0u; matrix < matrices; ++matrix)
         {
             for(size_t row = 0u; row < rows; ++row)
@@ -246,9 +246,9 @@ TEST_CASE("manual calculate 3D Pitch", "[docs]")
                 for(size_t col = 0u; col < columns; ++col)
                 {
                     REQUIRE_MESSAGE(
-                        get_element<int32_t>(memPtr, alpaka::Vec{matrix, row, col}, pitches3D) == expected_value,
+                        getElement<int32_t>(memPtr, alpaka::Vec{matrix, row, col}, pitches3D) == expectedValue,
                         "coord: [" << matrix << ", " << row << ", " << col << "]");
-                    expected_value += 1;
+                    expectedValue += 1;
                 }
             }
         }

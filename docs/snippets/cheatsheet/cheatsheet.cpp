@@ -19,7 +19,7 @@ struct MyKernel
 
 struct Kernel
 {
-    Kernel(int element) : m_element(element)
+    Kernel(int initElement) : element(initElement)
     {
     }
 
@@ -41,7 +41,7 @@ struct Kernel
         unused(scalar);
     }
 
-    int m_element;
+    int element;
 };
 
 struct FooDynMemKernel

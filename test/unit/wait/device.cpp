@@ -17,8 +17,8 @@ using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDevice
 // Simple write kernel used to create actual device work for testing wait(device).
 struct WaitTestWriteKernel
 {
-    template<typename TAcc, typename TBuf>
-    ALPAKA_FN_ACC void operator()(TAcc const&, TBuf out) const
+    template<typename T_Acc, typename T_Buf>
+    ALPAKA_FN_ACC void operator()(T_Acc const&, T_Buf out) const
     {
         out[0] = testValue;
     }

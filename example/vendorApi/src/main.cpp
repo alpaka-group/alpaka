@@ -35,7 +35,7 @@ using namespace alpaka;
 auto validateResult(auto const& input0, auto const& input1, auto const& output) -> int
 {
     using Data = uint32_t;
-    static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
+    static constexpr int maxPrintFalseResults = 20;
     int falseResults = 0;
     for(std::size_t i(0u); i < output.getExtents(); ++i)
     {
@@ -43,7 +43,7 @@ auto validateResult(auto const& input0, auto const& input1, auto const& output) 
         Data const correctResult(input0[i] + input1[i]);
         if(val != correctResult)
         {
-            if(falseResults < MAX_PRINT_FALSE_RESULTS)
+            if(falseResults < maxPrintFalseResults)
                 std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             ++falseResults;
         }
@@ -52,7 +52,7 @@ auto validateResult(auto const& input0, auto const& input1, auto const& output) 
     if(falseResults == 0)
         return EXIT_SUCCESS;
 
-    std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS << "\n"
+    std::cout << "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults << "\n"
               << "Execution results incorrect!" << std::endl;
     std::cout << std::endl;
     return EXIT_FAILURE;
@@ -86,29 +86,29 @@ auto example(auto const deviceSpec, auto const exec, size_t numElements) -> int
     onHost::Queue queue = devAcc.makeQueue();
 
     // Allocate 3 host memory buffers
-    auto iotaBuffer_h = onHost::allocHost<Data>(extent);
-    auto output_h = onHost::allocHostLike(iotaBuffer_h);
+    auto iotaBufferH = onHost::allocHost<Data>(extent);
+    auto outputH = onHost::allocHostLike(iotaBufferH);
 
-    for(auto i(0u); i < iotaBuffer_h.getExtents().x(); ++i)
-        iotaBuffer_h[i] = i;
+    for(auto i(0u); i < iotaBufferH.getExtents().x(); ++i)
+        iotaBufferH[i] = i;
 
     // Allocate 3 buffers on the accelerator
-    auto input0_d = onHost::allocLike(devAcc, iotaBuffer_h);
-    auto input1_d = onHost::allocLike(devAcc, iotaBuffer_h);
-    auto output_d = onHost::allocLike(devAcc, iotaBuffer_h);
+    auto input0D = onHost::allocLike(devAcc, iotaBufferH);
+    auto input1D = onHost::allocLike(devAcc, iotaBufferH);
+    auto outputD = onHost::allocLike(devAcc, iotaBufferH);
 
     // copy input data to device and clear device output buffer
-    onHost::memcpy(queue, input0_d, iotaBuffer_h);
-    onHost::memcpy(queue, input1_d, iotaBuffer_h);
-    onHost::fill(queue, output_d, Data{0});
+    onHost::memcpy(queue, input0D, iotaBufferH);
+    onHost::memcpy(queue, input1D, iotaBufferH);
+    onHost::fill(queue, outputD, Data{0});
 
-    vendorExample::Transform::call(queue, output_d, std::plus{}, input0_d, input1_d);
+    vendorExample::Transform::call(queue, outputD, std::plus{}, input0D, input1D);
 
     // copy results back to host
-    onHost::memcpy(queue, output_h, output_d);
+    onHost::memcpy(queue, outputH, outputD);
     onHost::wait(queue);
 
-    if(int const result = validateResult(iotaBuffer_h, iotaBuffer_h, output_h); result != EXIT_SUCCESS)
+    if(int const result = validateResult(iotaBufferH, iotaBufferH, outputH); result != EXIT_SUCCESS)
         return result;
 
     std::cout << "Execution results correct!" << std::endl;

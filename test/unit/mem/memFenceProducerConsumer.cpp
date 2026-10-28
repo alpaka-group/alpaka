@@ -35,12 +35,12 @@ using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDevice
 // correctness pattern and will fail if a backend ever weakens ordering.
 struct ProducerConsumerKernel
 {
-    template<class Acc, class TVal, class TFlag, class TMis>
+    template<class T_Acc, class T_Val, class T_Flag, class T_Mis>
     ALPAKA_FN_ACC void operator()(
-        Acc const& acc,
-        TVal payload,
-        TFlag readyFlags,
-        TMis mismatches,
+        T_Acc const& acc,
+        T_Val payload,
+        T_Flag readyFlags,
+        T_Mis mismatches,
         uint32_t const iterations) const
     {
         using namespace alpaka::onAcc;
@@ -136,8 +136,8 @@ TEMPLATE_LIST_TEST_CASE("memFence producer-consumer publication", "[memFence][pr
 
 struct DeviceFenceTestKernelWriter
 {
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, int volatile* vars) const -> void
+    template<typename T_Acc>
+    ALPAKA_FN_ACC auto operator()(T_Acc const& acc, int volatile* vars) const -> void
     {
         auto const [idx] = acc.getIdxWithin(alpaka::onAcc::origin::grid, alpaka::onAcc::unit::threads);
 
@@ -153,8 +153,8 @@ struct DeviceFenceTestKernelWriter
 
 struct DeviceFenceTestKernelReader
 {
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, auto successFlag, int volatile* vars) const -> void
+    template<typename T_Acc>
+    ALPAKA_FN_ACC auto operator()(T_Acc const& acc, auto successFlag, int volatile* vars) const -> void
     {
         auto const [idx] = acc.getIdxWithin(alpaka::onAcc::origin::grid, alpaka::onAcc::unit::threads);
 
@@ -177,8 +177,8 @@ struct DeviceFenceTestKernelReader
 
 struct DeviceFenceTestKernel
 {
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, auto successFlag, int volatile* vars) const -> void
+    template<typename T_Acc>
+    ALPAKA_FN_ACC auto operator()(T_Acc const& acc, auto successFlag, int volatile* vars) const -> void
     {
         auto const [idx] = acc.getIdxWithin(alpaka::onAcc::origin::grid, alpaka::onAcc::unit::threads);
 
@@ -272,10 +272,10 @@ TEMPLATE_LIST_TEST_CASE("memFence block shared-memory ordering", "[memFence][blo
     auto flag = onHost::allocUnified<uint32_t>(device, Vec{1u});
 
     int const numElements = 2;
-    auto vars_host = onHost::allocMapped<int>(device, numElements);
-    auto vars_dev = onHost::alloc<int>(device, numElements);
-    vars_host[0] = 1;
-    vars_host[1] = 2;
+    auto varsHost = onHost::allocMapped<int>(device, numElements);
+    auto varsDev = onHost::alloc<int>(device, numElements);
+    varsHost[0] = 1;
+    varsHost[1] = 2;
 
     {
         flag[0u] = 1u;
@@ -286,12 +286,12 @@ TEMPLATE_LIST_TEST_CASE("memFence block shared-memory ordering", "[memFence][blo
 
     {
         // Run a single kernel, testing a memory fence in global memory across threads in different blocks
-        onHost::memcpy(queue, vars_dev, vars_host);
+        onHost::memcpy(queue, varsDev, varsHost);
         onHost::wait(queue);
         flag[0u] = 1u;
         // Device-scope variant, use thread specification to guarantee that we have two thread blocks
         // A frame specification is allowed silently to change the number of real thread blocks and the block size
-        queue.enqueue(onHost::ThreadSpec{2, 1, exec}, KernelBundle{DeviceFenceTestKernel{}, flag, vars_dev.data()});
+        queue.enqueue(onHost::ThreadSpec{2, 1, exec}, KernelBundle{DeviceFenceTestKernel{}, flag, varsDev.data()});
         onHost::wait(queue);
         CHECK(flag[0u] == 1u);
     }
@@ -299,15 +299,15 @@ TEMPLATE_LIST_TEST_CASE("memFence block shared-memory ordering", "[memFence][blo
     {
         // Run two kernels in parallel, in two different queues on the same device, testing a memory fence
         // in global memory across threads in different grids
-        onHost::memcpy(queue, vars_dev, vars_host);
+        onHost::memcpy(queue, varsDev, varsHost);
         onHost::wait(queue);
         auto queue1 = device.makeQueue();
 
         flag[0u] = 1u;
-        queue.enqueue(onHost::ThreadSpec{1, 1, exec}, KernelBundle{DeviceFenceTestKernelWriter{}, vars_dev.data()});
+        queue.enqueue(onHost::ThreadSpec{1, 1, exec}, KernelBundle{DeviceFenceTestKernelWriter{}, varsDev.data()});
         queue1.enqueue(
             onHost::ThreadSpec{1, 1, exec},
-            KernelBundle{DeviceFenceTestKernelReader{}, flag, vars_dev.data()});
+            KernelBundle{DeviceFenceTestKernelReader{}, flag, varsDev.data()});
         onHost::wait(queue);
         onHost::wait(queue1);
         CHECK(flag[0u] == 1u);

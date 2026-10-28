@@ -16,8 +16,8 @@ using TestApis = std::decay_t<decltype(onHost::allBackends(onHost::enabledDevice
 
 struct AtomicIncrementKernel
 {
-    template<typename TAcc, typename TCounter>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, TCounter counter, auto repetitions) const
+    template<typename T_Acc, typename T_Counter>
+    ALPAKA_FN_ACC void operator()(T_Acc const& acc, T_Counter counter, auto repetitions) const
     {
         /** To make the behavior consistent across all backends, we iterate over the full frame extent and use a for
          * loop and set range to totalFrameSpecExtent. If a single `alpaka::onAcc::atomicAdd(acc, &(counter[Vec{0u}]),

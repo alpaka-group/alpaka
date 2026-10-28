@@ -137,9 +137,9 @@ void testCase(HelperPack<T_Engine, T_FP, T_Interval>, uint64_t seed, T_FP minF, 
     auto queue = device.makeQueue(queueKind::blocking);
 
     // ---- allocate output buffer (1D of N values) ----------------------------
-    constexpr uint32_t N = 512;
+    constexpr uint32_t n = 512;
 
-    auto hostInput = onHost::allocHost<T_FP>(Vec{N});
+    auto hostInput = onHost::allocHost<T_FP>(Vec{n});
     for(auto& idx : hostInput)
     {
         idx = std::numeric_limits<T_FP>::quiet_NaN(); // make all nan
@@ -151,24 +151,24 @@ void testCase(HelperPack<T_Engine, T_FP, T_Interval>, uint64_t seed, T_FP minF, 
 
     // ---- launch kernel -------------------------------------------------------
     queue.enqueue(
-        onHost::getFrameSpec(device, exec, Vec{N}),
+        onHost::getFrameSpec(device, exec, Vec{n}),
         KernelBundle{UniformRealKernel<T_Engine, T_FP, T_Interval>{}, devRes.getMdSpan(), seed, minF, maxF});
 
     onHost::memcpy(queue, hostRes, devRes);
     onHost::wait(queue);
 
     // ---- verify correctness --------------------------------------------------
-    for(std::size_t i = 0; i < N; ++i)
+    for(std::size_t i = 0; i < n; ++i)
     {
         T_FP x = hostRes[i];
         intervalChecks<T_Interval>(x, minF, maxF);
-        using T_EngineResult = decltype(T_Engine(0)());
+        using EngineResult = decltype(T_Engine(0)());
         // special edge case checks for dummyEngine (assert exact value matching for closed interval bounds)
         if constexpr(rand::concepts::UniformStdEngine<T_Engine>)
         {
             // constexpr if statements are not merged here since the compiler will then try to evaluate
             // DummyUniformEngine<_Tp> for non-UniformStdEngines which results in an error
-            if constexpr(std::is_same_v<T_Engine, DummyUniformEngine<T_EngineResult>>)
+            if constexpr(std::is_same_v<T_Engine, DummyUniformEngine<EngineResult>>)
             {
                 assertExactMatch<T_Interval>(x, minF, maxF);
             }
@@ -176,10 +176,12 @@ void testCase(HelperPack<T_Engine, T_FP, T_Interval>, uint64_t seed, T_FP minF, 
     }
 }
 
-template<typename Tuple, typename F>
-constexpr void forEach(Tuple&& tuple, F&& f)
+template<typename T_Tuple, typename F>
+constexpr void forEach(T_Tuple&& tuple, F&& f)
 {
-    std::apply([&]<typename... T0>(T0&&... elems) { (f(std::forward<T0>(elems)), ...); }, std::forward<Tuple>(tuple));
+    std::apply(
+        [&]<typename... T_Elem>(T_Elem&&... elems) { (f(std::forward<T_Elem>(elems)), ...); },
+        std::forward<T_Tuple>(tuple));
 }
 
 template<typename T>
@@ -193,34 +195,35 @@ void testMainDispatch()
     using FPTypes = Tuple<float>;
     // using IntervalList = Tuple<rand::interval::CO, rand::interval::CC, rand::interval::OC, rand::interval::OO>;
     using IntervalList = Tuple<rand::interval::CO>;
-    using allTestCombinations = meta::CartesianProduct<std::tuple, T_Engines, FPTypes, IntervalList>;
+    using AllTestCombinations = meta::CartesianProduct<std::tuple, T_Engines, FPTypes, IntervalList>;
 
 
     forEach(
-        allTestCombinations{},
+        AllTestCombinations{},
         [&](auto combination)
         {
-            auto pack = std::apply([&]<typename... T0>(T0&&... elems) { return HelperPack{elems...}; }, combination);
+            auto pack
+                = std::apply([&]<typename... T_Elem>(T_Elem&&... elems) { return HelperPack{elems...}; }, combination);
             std::random_device rand;
-            using T_FP = typename decltype(pack)::value_type;
-            testCase<T_Api>(pack, rand(), T_FP{0}, T_FP{1}); // standard case
-            testCase<T_Api>(pack, rand(), T_FP{4}, T_FP{7}); // both positive
-            testCase<T_Api>(pack, rand(), T_FP{-800}, T_FP{-150}); // both negative
-            testCase<T_Api>(pack, rand(), T_FP{-5235.01240}, T_FP{12938}); // opposing signs
+            using Fp = typename decltype(pack)::value_type;
+            testCase<T_Api>(pack, rand(), Fp{0}, Fp{1}); // standard case
+            testCase<T_Api>(pack, rand(), Fp{4}, Fp{7}); // both positive
+            testCase<T_Api>(pack, rand(), Fp{-800}, Fp{-150}); // both negative
+            testCase<T_Api>(pack, rand(), Fp{-5235.01240}, Fp{12938}); // opposing signs
         });
 }
 
 TEMPLATE_LIST_TEST_CASE("simple DummyEngine for edge case testing", "", TestBackends)
 {
-    using T_Engines = Tuple<DummyUniformEngine<uint32_t>, DummyUniformEngine<uint64_t>>;
+    using Engines = Tuple<DummyUniformEngine<uint32_t>, DummyUniformEngine<uint64_t>>;
 
-    testMainDispatch<TestType, T_Engines>();
+    testMainDispatch<TestType, Engines>();
 }
 
 TEMPLATE_LIST_TEST_CASE("UniformReal device on PhiloxEngine", "", TestBackends)
 {
-    using T_Engines = Tuple<rand::engine::Philox4x32x10, rand::engine::Philox4x32x10Vector>;
-    testMainDispatch<TestType, T_Engines>();
+    using Engines = Tuple<rand::engine::Philox4x32x10, rand::engine::Philox4x32x10Vector>;
+    testMainDispatch<TestType, Engines>();
 }
 
 TEMPLATE_LIST_TEST_CASE("UniformReal on std engines", "", TestBackends)
@@ -228,12 +231,12 @@ TEMPLATE_LIST_TEST_CASE("UniformReal on std engines", "", TestBackends)
     using namespace alpaka;
     auto cfg = TestType::makeDict();
     auto exec = alpaka::getExecutor(cfg);
-    using T_ExecType = ALPAKA_TYPEOF(exec);
-    using T_SupportedHostExecutors = Tuple<exec::CpuSerial, exec::CpuOmpBlocks, exec::CpuTbbBlocks>;
-    using T_Engines = Tuple<std::mt19937, std::mt19937_64>;
-    if constexpr(meta::Contains<T_SupportedHostExecutors, T_ExecType>::value)
+    using TExecType = ALPAKA_TYPEOF(exec);
+    using TSupportedHostExecutors = Tuple<exec::CpuSerial, exec::CpuOmpBlocks, exec::CpuTbbBlocks>;
+    using Engines = Tuple<std::mt19937, std::mt19937_64>;
+    if constexpr(meta::Contains<TSupportedHostExecutors, TExecType>::value)
     {
-        testMainDispatch<TestType, T_Engines>();
+        testMainDispatch<TestType, Engines>();
     }
     else
     {

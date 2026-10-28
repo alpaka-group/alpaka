@@ -56,7 +56,7 @@ namespace haccmkAlpaka
             alpaka::concepts::IMdSpan auto vy2,
             alpaka::concepts::IMdSpan auto vz2,
             float fsrrmax2,
-            float mp_rsm2,
+            float mpRsm2,
             float fcoeff) const
         {
             using namespace alpaka;
@@ -80,23 +80,23 @@ namespace haccmkAlpaka
                     move,
                     std::plus{},
                     [&](auto const&,
-                        concepts::Simd auto const& simd_xx1,
-                        concepts::Simd auto const& simd_yy1,
-                        concepts::Simd auto const& simd_zz1,
-                        concepts::Simd auto const& simd_mass1) constexpr
+                        concepts::Simd auto const& simdXx1,
+                        concepts::Simd auto const& simdYy1,
+                        concepts::Simd auto const& simdZz1,
+                        concepts::Simd auto const& simdMass1) constexpr
                     {
-                        concepts::Simd auto dxc = simd_xx1 - xxi;
-                        concepts::Simd auto dyc = simd_yy1 - yyi;
-                        concepts::Simd auto dzc = simd_zz1 - zzi;
+                        concepts::Simd auto dxc = simdXx1 - xxi;
+                        concepts::Simd auto dyc = simdYy1 - yyi;
+                        concepts::Simd auto dzc = simdZz1 - zzi;
 
                         concepts::Simd auto r2 = dxc * dxc + dyc * dyc + dzc * dzc;
 
-                        using SimdType = ALPAKA_TYPEOF(simd_mass1);
+                        using SimdType = ALPAKA_TYPEOF(simdMass1);
                         concepts::Simd auto m = SimdType::fill(0.f);
 
-                        where(r2 < fsrrmax2, m) = simd_mass1;
+                        where(r2 < fsrrmax2, m) = simdMass1;
 
-                        alpaka::concepts::Simd auto tmp = r2 + mp_rsm2;
+                        alpaka::concepts::Simd auto tmp = r2 + mpRsm2;
                         concepts::Simd auto bar = alpaka::math::sqrt(tmp);
 
                         concepts::Simd auto p = float{1.0} / (tmp * bar);
@@ -139,7 +139,7 @@ namespace haccmkAlpaka
         auto& vy2,
         auto& vz2,
         float const fsrmax,
-        float const mp_rsm,
+        float const mpRsm,
         float const fcoeff)
     {
         using namespace alpaka;
@@ -147,18 +147,18 @@ namespace haccmkAlpaka
         // a blocking queue is used to reduce the starting overhead for CPU devices
         onHost::Queue queue = devAcc.makeQueue(queueKind::blocking);
 
-        auto d_xx = onHost::alloc<float>(devAcc, n2);
-        auto d_yy = onHost::alloc<float>(devAcc, n2);
-        auto d_zz = onHost::alloc<float>(devAcc, n2);
-        auto d_mass = onHost::alloc<float>(devAcc, n2);
-        auto d_vx2 = onHost::alloc<float>(devAcc, n1);
-        auto d_vy2 = onHost::alloc<float>(devAcc, n1);
-        auto d_vz2 = onHost::alloc<float>(devAcc, n1);
+        auto dXx = onHost::alloc<float>(devAcc, n2);
+        auto dYy = onHost::alloc<float>(devAcc, n2);
+        auto dZz = onHost::alloc<float>(devAcc, n2);
+        auto dMass = onHost::alloc<float>(devAcc, n2);
+        auto dVx2 = onHost::alloc<float>(devAcc, n1);
+        auto dVy2 = onHost::alloc<float>(devAcc, n1);
+        auto dVz2 = onHost::alloc<float>(devAcc, n1);
 
-        onHost::memcpy(queue, d_xx, xx);
-        onHost::memcpy(queue, d_yy, yy);
-        onHost::memcpy(queue, d_zz, zz);
-        onHost::memcpy(queue, d_mass, mass);
+        onHost::memcpy(queue, dXx, xx);
+        onHost::memcpy(queue, dYy, yy);
+        onHost::memcpy(queue, dZz, zz);
+        onHost::memcpy(queue, dMass, mass);
 
         auto devProps = devAcc.getDeviceProperties();
         // 8 is used for GPUs to provide at least frames to each multiprocessor
@@ -174,32 +174,20 @@ namespace haccmkAlpaka
 
         std::cout << "FrameSpec " << frameSpec << std::endl;
 
-        float total_time = 0.f;
+        float totalTime = 0.f;
 
         for(int i = 0; i < repeat; i++)
         {
             // reset output
-            onHost::memcpy(queue, d_vx2, vx2, n1);
-            onHost::memcpy(queue, d_vy2, vy2, n1);
-            onHost::memcpy(queue, d_vz2, vz2, n1);
+            onHost::memcpy(queue, dVx2, vx2, n1);
+            onHost::memcpy(queue, dVy2, vy2, n1);
+            onHost::memcpy(queue, dVz2, vz2, n1);
 
             onHost::wait(devAcc);
             auto start = std::chrono::steady_clock::now();
 
-            auto const haccKernel = KernelBundle{
-                Step10Kernel{},
-                n1,
-                n2,
-                d_xx,
-                d_yy,
-                d_zz,
-                d_mass,
-                d_vx2,
-                d_vy2,
-                d_vz2,
-                fsrmax,
-                mp_rsm,
-                fcoeff};
+            auto const haccKernel
+                = KernelBundle{Step10Kernel{}, n1, n2, dXx, dYy, dZz, dMass, dVx2, dVy2, dVz2, fsrmax, mpRsm, fcoeff};
 
             queue.enqueue(frameSpec, haccKernel);
             onHost::wait(devAcc);
@@ -207,13 +195,13 @@ namespace haccmkAlpaka
             auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
             // first round is a warmup round
             if(i != 0)
-                total_time += time;
+                totalTime += time;
         }
 
-        printf("Average kernel execution time %f (s)\n", (total_time * 1e-9f) / (repeat - 1));
-        onHost::memcpy(queue, vx2, d_vx2, n1);
-        onHost::memcpy(queue, vy2, d_vy2, n1);
-        onHost::memcpy(queue, vz2, d_vz2, n1);
+        printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / (repeat - 1));
+        onHost::memcpy(queue, vx2, dVx2, n1);
+        onHost::memcpy(queue, vy2, dVy2, n1);
+        onHost::memcpy(queue, vz2, dVz2, n1);
         onHost::wait(devAcc);
     }
 
@@ -243,18 +231,18 @@ namespace haccmkAlpaka
         auto vx2 = onHost::allocHost<float>(extent);
         auto vy2 = onHost::allocHost<float>(extent);
         auto vz2 = onHost::allocHost<float>(extent);
-        auto vx2_hw = onHost::allocHost<float>(extent);
-        auto vy2_hw = onHost::allocHost<float>(extent);
-        auto vz2_hw = onHost::allocHost<float>(extent);
+        auto vx2Hw = onHost::allocHost<float>(extent);
+        auto vy2Hw = onHost::allocHost<float>(extent);
+        auto vz2Hw = onHost::allocHost<float>(extent);
 
-        float fsrrmax2, mp_rsm2, fcoeff, dx1, dy1, dz1, dx2, dy2, dz2;
+        float fsrrmax2, mpRsm2, fcoeff, dx1, dy1, dz1, dx2, dy2, dz2;
         int i = 0;
 
 
         /* Initial data preparation */
         fcoeff = 0.23f;
         fsrrmax2 = 0.5f;
-        mp_rsm2 = 0.03f;
+        mpRsm2 = 0.03f;
         dx1 = 1.0f / static_cast<float>(n2);
         dy1 = 2.0f / static_cast<float>(n2);
         dz1 = 3.0f / static_cast<float>(n2);
@@ -276,22 +264,22 @@ namespace haccmkAlpaka
             vx2[i] = 0.f;
             vy2[i] = 0.f;
             vz2[i] = 0.f;
-            vx2_hw[i] = 0.f;
-            vy2_hw[i] = 0.f;
-            vz2_hw[i] = 0.f;
+            vx2Hw[i] = 0.f;
+            vy2Hw[i] = 0.f;
+            vz2Hw[i] = 0.f;
         }
 
         for(i = 0; i < n1; ++i)
         {
-            hacc::haccmk_gold(n2, xx[i], yy[i], zz[i], fsrrmax2, mp_rsm2, xx, yy, zz, mass, &dx2, &dy2, &dz2);
+            hacc::haccmk_gold(n2, xx[i], yy[i], zz[i], fsrrmax2, mpRsm2, xx, yy, zz, mass, &dx2, &dy2, &dz2);
             vx2[i] = vx2[i] + dx2 * fcoeff;
             vy2[i] = vy2[i] + dy2 * fcoeff;
             vz2[i] = vz2[i] + dz2 * fcoeff;
         }
 
-        haccmk(devAcc, exec, repeat, n1, n2, xx, yy, zz, mass, vx2_hw, vy2_hw, vz2_hw, fsrrmax2, mp_rsm2, fcoeff);
+        haccmk(devAcc, exec, repeat, n1, n2, xx, yy, zz, mass, vx2Hw, vy2Hw, vz2Hw, fsrrmax2, mpRsm2, fcoeff);
 
-        return hacc::verify(n2, vx2, vy2, vz2, vx2_hw, vy2_hw, vz2_hw);
+        return hacc::verify(n2, vx2, vy2, vz2, vx2Hw, vy2Hw, vz2Hw);
     }
 } // namespace haccmkAlpaka
 

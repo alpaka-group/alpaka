@@ -15,8 +15,8 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
 
 struct TestKernel
 {
-    template<typename TAcc>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, concepts::IMdSpan auto output, concepts::IMdSpan auto const input)
+    template<typename T_Acc>
+    ALPAKA_FN_ACC void operator()(T_Acc const& acc, concepts::IMdSpan auto output, concepts::IMdSpan auto const input)
         const
     {
         for(auto [index] : onAcc::makeIdxMap(acc, alpaka::onAcc::worker::threadsInGrid, IdxRange{input.getExtents()}))

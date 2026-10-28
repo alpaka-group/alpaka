@@ -214,7 +214,7 @@ struct IndexTypeKernel
 };
 
 template<typename T_Idx>
-void test_index_type(auto& queue, auto const& exec, auto name)
+void testIndexType(auto& queue, auto const& exec, auto name)
 {
     auto dBuff = onHost::alloc<bool>(queue.getDevice(), Vec{2u});
     auto hBuff = onHost::allocHostLike(dBuff);
@@ -237,8 +237,8 @@ TEMPLATE_LIST_TEST_CASE("test shared memory index type", "[sharedMem]", TestApis
     concepts::Executor auto exec = test::getExecutor(deviceExec);
     alpaka::onHost::Queue queue = device.makeQueue();
 
-    test_index_type<uint32_t>(queue, exec, "uint32_t");
-    test_index_type<int64_t>(queue, exec, "int64_t");
-    test_index_type<int>(queue, exec, "int");
-    test_index_type<size_t>(queue, exec, "size_t");
+    testIndexType<uint32_t>(queue, exec, "uint32_t");
+    testIndexType<int64_t>(queue, exec, "int64_t");
+    testIndexType<int>(queue, exec, "int");
+    testIndexType<size_t>(queue, exec, "size_t");
 }

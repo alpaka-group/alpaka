@@ -20,47 +20,47 @@ using namespace alpaka;
 //! This conversion is surprisingly tricky to do in a way that no compiler complains.
 //! In principle it could be accomplished by a constexpr function, but in practice that turned out not possible.
 //! The general implementation does direct initialization, works for pairs of types supporting it.
-template<typename TInput, typename TOutput, typename TSfinae = void>
+template<typename T_Input, typename T_Output, typename T_Sfinae = void>
 struct Convert
 {
-    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    ALPAKA_FN_ACC auto operator()(T_Input const arg) const
     {
-        return TOutput{arg};
+        return T_Output{arg};
     }
 };
 
 //! Specialization for real -> real conversion
-template<typename TInput, typename TOutput>
-struct Convert<TInput, TOutput, std::enable_if_t<std::is_floating_point_v<TOutput>>>
+template<typename T_Input, typename T_Output>
+struct Convert<T_Input, T_Output, std::enable_if_t<std::is_floating_point_v<T_Output>>>
 {
-    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    ALPAKA_FN_ACC auto operator()(T_Input const arg) const
     {
-        return static_cast<TOutput>(arg);
+        return static_cast<T_Output>(arg);
     }
 };
 
 //! Specialization for real -> complex conversion
-template<typename TInput, typename TOutputValueType>
-struct Convert<TInput, alpaka::math::Complex<TOutputValueType>, std::enable_if_t<std::is_floating_point_v<TInput>>>
+template<typename T_Input, typename T_OutputValueType>
+struct Convert<T_Input, alpaka::math::Complex<T_OutputValueType>, std::enable_if_t<std::is_floating_point_v<T_Input>>>
 {
-    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    ALPAKA_FN_ACC auto operator()(T_Input const arg) const
     {
-        return alpaka::math::Complex<TOutputValueType>{static_cast<TOutputValueType>(arg)};
+        return alpaka::math::Complex<T_OutputValueType>{static_cast<T_OutputValueType>(arg)};
     }
 };
 
-template<typename TExpected>
+template<typename T_Expected>
 struct PowMixedTypesTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TArg1, typename TArg2>
+    template<typename T_Acc, typename T_Arg1, typename T_Arg2>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const&,
+        T_Acc const&,
         concepts::IMdSpan<bool> auto success,
-        TArg1 const arg1,
-        TArg2 const arg2) const -> void
+        T_Arg1 const arg1,
+        T_Arg2 const arg2) const -> void
     {
-        auto expected = alpaka::math::pow(Convert<TArg1, TExpected>{}(arg1), Convert<TArg2, TExpected>{}(arg2));
+        auto expected = alpaka::math::pow(Convert<T_Arg1, T_Expected>{}(arg1), Convert<T_Arg2, T_Expected>{}(arg2));
         auto actual = alpaka::math::pow(arg1, arg2);
         ALPAKA_CHECK(success[0], mathtest::almost_equal(expected, actual, 1));
     }

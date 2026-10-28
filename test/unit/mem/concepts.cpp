@@ -91,7 +91,7 @@ void iMdSpanCallByUniversalReference(concepts::IMdSpan auto&&)
 TEMPLATE_TEST_CASE_SIG(
     "IDataSource, IMdSpan, IView and IBuffer concept test",
     "[mem][concepts]",
-    ((typename TElem, uint32_t Dim), TElem, Dim),
+    ((typename T_Elem, uint32_t T_dim), T_Elem, T_dim),
     (int, 1),
     (int, 2),
     (int, 3),
@@ -100,13 +100,13 @@ TEMPLATE_TEST_CASE_SIG(
     (int const, 3))
 {
     constexpr size_t size = 10;
-    TElem* ptr = nullptr;
-    concepts::Vector auto const extents = Vec<uint32_t, Dim>{}.fill(size);
+    T_Elem* ptr = nullptr;
+    concepts::Vector auto const extents = Vec<uint32_t, T_dim>{}.fill(size);
     concepts::Vector auto const pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     SECTION("test alpaka::LinearizedIdxGenerator object")
     {
-        using GenType = alpaka::LinearizedIdxGenerator<uint32_t, Dim>;
+        using GenType = alpaka::LinearizedIdxGenerator<uint32_t, T_dim>;
         [[maybe_unused]] GenType gen(extents);
         STATIC_REQUIRE(std::same_as<typename GenType::value_type, uint32_t>);
 
@@ -122,7 +122,7 @@ TEMPLATE_TEST_CASE_SIG(
     {
         MdSpan mdSpan(ptr, extents, pitches);
         using MdSpanType = decltype(mdSpan);
-        STATIC_REQUIRE(std::same_as<typename MdSpanType::value_type, TElem>);
+        STATIC_REQUIRE(std::same_as<typename MdSpanType::value_type, T_Elem>);
 
         STATIC_REQUIRE(alpaka::concepts::IDataSource<MdSpanType>);
         STATIC_REQUIRE(alpaka::concepts::IMdSpan<MdSpanType>);
@@ -145,11 +145,11 @@ TEMPLATE_TEST_CASE_SIG(
 
     SECTION("test alpaka::MdSpanArrayType object")
     {
-        auto zero = static_cast<TElem>(0);
-        TElem static_data[2][2] = {{zero, zero}, {zero, zero}};
-        using MdSpanArrayType = MdSpanArray<decltype(static_data), size_t, alpaka::Alignment<16>>;
-        MdSpanArrayType mdSpanArray(static_data);
-        STATIC_REQUIRE(std::same_as<typename MdSpanArrayType::value_type, TElem>);
+        auto zero = static_cast<T_Elem>(0);
+        T_Elem staticData[2][2] = {{zero, zero}, {zero, zero}};
+        using MdSpanArrayType = MdSpanArray<decltype(staticData), size_t, alpaka::Alignment<16>>;
+        MdSpanArrayType mdSpanArray(staticData);
+        STATIC_REQUIRE(std::same_as<typename MdSpanArrayType::value_type, T_Elem>);
 
         STATIC_REQUIRE(alpaka::concepts::IDataSource<MdSpanArrayType>);
         STATIC_REQUIRE(alpaka::concepts::IMdSpan<MdSpanArrayType>);
@@ -162,19 +162,19 @@ TEMPLATE_TEST_CASE_SIG(
         iMdSpanCallByReference(mdSpanArray);
         iMdSpanCallByUniversalReference(mdSpanArray);
 
-        MdSpanArrayType const constMdSpanArray(static_data);
+        MdSpanArrayType const constMdSpanArray(staticData);
         iMdSpanCallByValue(constMdSpanArray);
         iMdSpanCallByReference(constMdSpanArray);
         iMdSpanCallByUniversalReference(constMdSpanArray);
 
-        iMdSpanCallByUniversalReference(MdSpanArrayType{static_data});
+        iMdSpanCallByUniversalReference(MdSpanArrayType{staticData});
     }
 
     SECTION("test alpaka::View object")
     {
         View view(api::host, ptr, extents, pitches);
         using ViewType = decltype(view);
-        STATIC_REQUIRE(std::same_as<typename ViewType::value_type, TElem>);
+        STATIC_REQUIRE(std::same_as<typename ViewType::value_type, T_Elem>);
 
         STATIC_REQUIRE(alpaka::concepts::IDataSource<ViewType>);
         STATIC_REQUIRE(alpaka::concepts::IMdSpan<ViewType>);
@@ -184,10 +184,10 @@ TEMPLATE_TEST_CASE_SIG(
 
     SECTION("test alpaka::SharedBuffer object")
     {
-        auto nullptr_deleter = [] {};
-        onHost::SharedBuffer buffer(api::host, ptr, extents, pitches, nullptr_deleter);
+        auto nullptrDeleter = [] {};
+        onHost::SharedBuffer buffer(api::host, ptr, extents, pitches, nullptrDeleter);
         using BufferType = decltype(buffer);
-        STATIC_REQUIRE(std::same_as<typename BufferType::value_type, TElem>);
+        STATIC_REQUIRE(std::same_as<typename BufferType::value_type, T_Elem>);
 
         STATIC_REQUIRE(alpaka::concepts::IDataSource<BufferType>);
         STATIC_REQUIRE(alpaka::concepts::IMdSpan<BufferType>);
@@ -205,14 +205,14 @@ TEST_CASE("test alpaka::concepts::IMdSpan optional element type", "[mem][concept
 {
     constexpr size_t size = 10;
     float* ptr = nullptr;
-    float const* const_ptr = nullptr;
+    float const* constPtr = nullptr;
     constexpr concepts::Vector auto extents = Vec(size);
     constexpr concepts::Vector auto pitches = alpaka::calculatePitchesFromExtents<int>(extents);
 
     MdSpan mdSpan(ptr, extents, pitches);
     using MdSpanType = decltype(mdSpan);
-    MdSpan inner_const_mdSpan(const_ptr, extents, pitches);
-    using InnerConstMdSpanType = decltype(inner_const_mdSpan);
+    MdSpan innerConstMdSpan(constPtr, extents, pitches);
+    using InnerConstMdSpanType = decltype(innerConstMdSpan);
 
     STATIC_REQUIRE(alpaka::concepts::IMdSpan<MdSpanType>);
     STATIC_REQUIRE(alpaka::concepts::IMdSpan<InnerConstMdSpanType>);
@@ -252,8 +252,8 @@ TEST_CASE(
     STATIC_REQUIRE(alpaka::concepts::IMdSpan<MdSpanNonCopyStruct>);
 }
 
-template<typename TMdSpan, typename TIdx>
-concept CanCallAccessOperator = requires(TMdSpan mdspan, TIdx idx) { mdspan[idx]; };
+template<typename T_MdSpan, typename T_Idx>
+concept CanCallAccessOperator = requires(T_MdSpan mdspan, T_Idx idx) { mdspan[idx]; };
 
 TEST_CASE("test alpaka::MdSpan argument concept access operator - correct dimension", "[mem][concepts][mdspan]")
 {
@@ -263,32 +263,32 @@ TEST_CASE("test alpaka::MdSpan argument concept access operator - correct dimens
     using Vec2D = alpaka::Vec<int, 2>;
     using Vec3D = alpaka::Vec<int, 3>;
 
-    Vec1D extents_1d{1};
-    Vec2D extents_2d{1, 1};
-    Vec3D extents_3d{1, 1, 1};
+    Vec1D extents1d{1};
+    Vec2D extents2d{1, 1};
+    Vec3D extents3d{1, 1, 1};
 
-    Vec1D pitch_1d = alpaka::calculatePitchesFromExtents<int>(extents_1d);
-    Vec2D pitch_2d = alpaka::calculatePitchesFromExtents<int>(extents_2d);
-    Vec3D pitch_3d = alpaka::calculatePitchesFromExtents<int>(extents_3d);
+    Vec1D pitch1d = alpaka::calculatePitchesFromExtents<int>(extents1d);
+    Vec2D pitch2d = alpaka::calculatePitchesFromExtents<int>(extents2d);
+    Vec3D pitch3d = alpaka::calculatePitchesFromExtents<int>(extents3d);
 
     using MdSpan1D = alpaka::MdSpan<int, Vec1D, Vec1D>;
     using MdSpan2D = alpaka::MdSpan<int, Vec2D, Vec2D>;
     using MdSpan3D = alpaka::MdSpan<int, Vec3D, Vec3D>;
 
 
-    MdSpan1D mdspan_1d{&data, extents_1d, pitch_1d};
-    MdSpan2D mdspan_2d{&data, extents_2d, pitch_2d};
-    MdSpan3D mdspan_3d{&data, extents_3d, pitch_3d};
+    MdSpan1D mdspan1d{&data, extents1d, pitch1d};
+    MdSpan2D mdspan2d{&data, extents2d, pitch2d};
+    MdSpan3D mdspan3d{&data, extents3d, pitch3d};
 
-    Vec1D idx_1D{0};
-    Vec2D idx_2D{0, 0};
-    Vec3D idx_3D{0, 0, 0};
+    Vec1D idx1D{0};
+    Vec2D idx2D{0, 0};
+    Vec3D idx3D{0, 0, 0};
 
     STATIC_REQUIRE(std::is_same_v<Vec1D::value_type, int>);
 
     SECTION("1D mdspan")
     {
-        REQUIRE(mdspan_1d[idx_1D] == 4);
+        REQUIRE(mdspan1d[idx1D] == 4);
         STATIC_REQUIRE(CanCallAccessOperator<MdSpan1D, Vec1D>);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan1D, Vec2D>);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan1D, Vec3D>);
@@ -296,7 +296,7 @@ TEST_CASE("test alpaka::MdSpan argument concept access operator - correct dimens
 
     SECTION("2D mdspan")
     {
-        REQUIRE(mdspan_2d[idx_2D] == 4);
+        REQUIRE(mdspan2d[idx2D] == 4);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan2D, Vec1D>);
         STATIC_REQUIRE(CanCallAccessOperator<MdSpan2D, Vec2D>);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan2D, Vec3D>);
@@ -304,7 +304,7 @@ TEST_CASE("test alpaka::MdSpan argument concept access operator - correct dimens
 
     SECTION("3D mdspan")
     {
-        REQUIRE(mdspan_3d[idx_3D] == 4);
+        REQUIRE(mdspan3d[idx3D] == 4);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan3D, Vec1D>);
         STATIC_REQUIRE_FALSE(CanCallAccessOperator<MdSpan3D, Vec2D>);
         STATIC_REQUIRE(CanCallAccessOperator<MdSpan3D, Vec3D>);

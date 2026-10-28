@@ -25,13 +25,13 @@ int example(auto const devSpec)
 
     // use a std::vector as host buffer
     uint32_t size = 42;
-    std::vector<float> host_data(size);
-    std::cout << "host vector at " << std::data(host_data) << "\n\n";
+    std::vector<float> hostData(size);
+    std::cout << "host vector at " << std::data(hostData) << "\n\n";
 
     // fill the host buffers with values
     for(uint32_t i = 0; i < size; ++i)
     {
-        host_data[i] = i;
+        hostData[i] = i;
     }
 
     // use the first device
@@ -42,22 +42,22 @@ int example(auto const devSpec)
     alpaka::onHost::Queue queue = device.makeQueue();
     {
         // allocate a buffer of floats in global device memory
-        auto device_buffer = alpaka::onHost::alloc<float>(device, size);
-        std::cout << "memory buffer on " << alpaka::onHost::getStaticName(alpaka::getApi(device_buffer)) << " at "
-                  << std::data(device_buffer) << "\n\n";
+        auto deviceBuffer = alpaka::onHost::alloc<float>(device, size);
+        std::cout << "memory buffer on " << alpaka::onHost::getStaticName(alpaka::getApi(deviceBuffer)) << " at "
+                  << std::data(deviceBuffer) << "\n\n";
 
         // once the device buffer goes out of scope, it will enqueue its free, so all other operations have finished
         // before the memory is freed
-        device_buffer.destructorWaitFor(queue);
+        deviceBuffer.destructorWaitFor(queue);
 
         // set the device memory to all zeros (byte-wise, not element-wise)
-        alpaka::onHost::memset(queue, device_buffer, 0x00);
+        alpaka::onHost::memset(queue, deviceBuffer, 0x00);
 
         // create a view to the device data
-        auto view = alpaka::View(device_buffer);
+        auto view = alpaka::View(deviceBuffer);
 
         // copy the contents of the device buffer to the host buffer
-        alpaka::onHost::memcpy(queue, host_data, view);
+        alpaka::onHost::memcpy(queue, hostData, view);
     }
 
     // wait for all operations to complete
@@ -66,7 +66,7 @@ int example(auto const devSpec)
     // read the content of the host buffer
     for(uint32_t i = 0; i < size; ++i)
     {
-        std::cout << host_data[i] << ' ';
+        std::cout << hostData[i] << ' ';
     }
     std::cout << '\n';
 
