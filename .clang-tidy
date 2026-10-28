@@ -1,5 +1,21 @@
 ---
-Checks: '-*,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
+
+# -clang-analyzer-cplusplus.InnerPointer is disabled because the check
+# assumes every std:: function that does not take a buffer by const reference may reallocate it.
+# Forward is a function that gets flagged by this check even though it does not reallocate the underlying value.
+# Certain interfaces require forward() in order to avoid assumptions on the cv-modifiers of their input parameter.
+#
+# -clang-analyzer-optin.core.EnumCastOutOfRange is disabled because Catch2's CHECK_FALSE and REQUIRE_FALSE
+# combine enum flags into a value that is not an enumerator, which gets flagged by this check.
+#
+# -bugprone-macro-parentheses is disabled because the check requires every macro argument to be parenthesized.
+# alpaka macros take tokens instead of expressions, e.g. an operator: `lhs op rhs` with `op` = `+` expands to `A + B`,
+# but the parenthesized `lhs (op) rhs` expands to `A (+) B`, which does not compile.
+#
+# -bugprone-exception-escape is disabled because it flags every main() of the examples, benchmarks and documentation
+# snippets: alpaka throws e.g. if no device is found, and catching that in every main() would only add boilerplate code.
+
+Checks: '-*,clang-analyzer-*,bugprone-*,performance-*,-clang-analyzer-cplusplus.InnerPointer,-clang-analyzer-optin.core.EnumCastOutOfRange,-bugprone-macro-parentheses,-bugprone-exception-escape,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
 WarningsAsErrors: '*'
 HeaderFilterRegex: '(^|.*/)include/alpaka/.*'
 SystemHeaders: false
@@ -39,4 +55,7 @@ CheckOptions:
   readability-identifier-naming.ValueTemplateParameterIgnoredRegexp: ^[A-Z]s?$
   readability-identifier-naming.TemplateTemplateParameterPrefix: T_
   readability-identifier-naming.TemplateTemplateParameterCase: CamelCase
+  # report only three or more adjacent swappable parameters, e.g. f(int x, int y, int z);
+  # pairs are often natural and are not reported, e.g. complex(re, im) or pow(base, exp)
+  bugprone-easily-swappable-parameters.MinimumLength: 3
 ...
