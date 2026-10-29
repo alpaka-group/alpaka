@@ -14,6 +14,9 @@ namespace alpaka
     namespace api
     {
         template<typename T_ApiInterface>
+        // a private constructor of the base class would require OneApi to define its own constructor, but all API
+        // tags, e.g. Cuda, Hip and Host, are aggregates without one
+        // NOLINTNEXTLINE(bugprone-crtp-constructor-accessibility)
         struct GenericSycl : detail::ApiBase
         {
             using element_type = T_ApiInterface;

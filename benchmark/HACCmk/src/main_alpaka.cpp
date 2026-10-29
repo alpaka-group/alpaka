@@ -26,11 +26,19 @@ namespace haccmkAlpaka
         }
     };
 
+    /** Invokes f once per component (x, y, z) of the DeltaMove arguments.
+     *
+     * f and args are forwarded on every call to preserve their value category.
+     * Precondition: invoking f as an rvalue must not consume it, because f is invoked three times.
+     * Forwarding args is safe because each call only consumes a distinct member.
+     */
     constexpr void alpakaSimdizedInvoke(auto&& f, alpaka::concepts::SpecializationOf<DeltaMove> auto&&... args)
     {
+        // NOLINTBEGIN(bugprone-use-after-move)
         alpakaSimdizedInvoke(ALPAKA_FORWARD(f), ALPAKA_FORWARD(args).x...);
         alpakaSimdizedInvoke(ALPAKA_FORWARD(f), ALPAKA_FORWARD(args).y...);
         alpakaSimdizedInvoke(ALPAKA_FORWARD(f), ALPAKA_FORWARD(args).z...);
+        // NOLINTEND(bugprone-use-after-move)
     }
 
     template<uint32_t T_width, typename T>
@@ -44,6 +52,8 @@ namespace haccmkAlpaka
 
     struct Step10Kernel
     {
+        // kernel signature kept identical to the original HACC benchmark
+        // NOLINTBEGIN(bugprone-easily-swappable-parameters)
         ALPAKA_FN_ACC auto operator()(
             auto const& acc,
             int n1,
@@ -58,6 +68,7 @@ namespace haccmkAlpaka
             float fsrrmax2,
             float mpRsm2,
             float fcoeff) const
+        // NOLINTEND(bugprone-easily-swappable-parameters)
         {
             using namespace alpaka;
 
@@ -195,10 +206,10 @@ namespace haccmkAlpaka
             auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
             // first round is a warmup round
             if(i != 0)
-                totalTime += time;
+                totalTime += static_cast<float>(time);
         }
 
-        printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / (repeat - 1));
+        printf("Average kernel execution time %f (s)\n", (totalTime * 1e-9f) / static_cast<float>(repeat - 1));
         onHost::memcpy(queue, vx2, dVx2, n1);
         onHost::memcpy(queue, vy2, dVy2, n1);
         onHost::memcpy(queue, vz2, dVz2, n1);
@@ -214,9 +225,9 @@ namespace haccmkAlpaka
         // Define problem size
         IdxVec const extent(n2);
 
-        std::cout << "Outer loop count is set " << n1 << std::endl;
-        std::cout << "Inner loop count is set " << n2 << std::endl;
-        std::cout << "Element type float" << std::endl;
+        std::cout << "Outer loop count is set " << n1 << '\n';
+        std::cout << "Inner loop count is set " << n2 << '\n';
+        std::cout << "Element type float" << '\n';
         std::cout << "Using alpaka accelerator " << onHost::demangledName(exec) << " for "
                   << deviceSpec.getApi().getName() << " " << deviceSpec.getDeviceKind().getName() << std::endl;
 

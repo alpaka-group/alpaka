@@ -34,11 +34,11 @@ constexpr size_t rowWidthBytes = columns * sizeof(int32_t) + pitchRow;
 constexpr size_t matrixWidthBytes = rows * rowWidthBytes + 22;
 
 constexpr size_t memSizeByte2D = rowWidthBytes * rows;
-alpaka::Vec pitches2D = alpaka::Vec{rowWidthBytes, sizeof(int32_t)};
+constexpr alpaka::Vec pitches2D = alpaka::Vec{rowWidthBytes, sizeof(int32_t)};
 std::array<std::byte, memSizeByte2D> mem2D;
 
 constexpr size_t memSizeByte3D = matrixWidthBytes * matrices;
-alpaka::Vec pitches3D = alpaka::Vec{matrixWidthBytes, rowWidthBytes, sizeof(int32_t)};
+constexpr alpaka::Vec pitches3D = alpaka::Vec{matrixWidthBytes, rowWidthBytes, sizeof(int32_t)};
 std::array<std::byte, memSizeByte3D> mem3D;
 
 // this is a mock function which is required for the source code, which is displayed in the Sphinx doc

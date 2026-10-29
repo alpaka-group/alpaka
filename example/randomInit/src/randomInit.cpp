@@ -32,7 +32,7 @@ bool validateHistogram(auto const& histogram, int32_t const expectedValue)
     uint32_t maxValue = *minmax.second;
 
     // Calculate the allowed difference
-    uint32_t allowedDifference = static_cast<uint32_t>(expectedValue * tolerance);
+    uint32_t allowedDifference = static_cast<uint32_t>(static_cast<float>(expectedValue) * tolerance);
 
     // Check if the difference between max and min is within the tolerance
     bool isValid = (maxValue - minValue) <= allowedDifference;
@@ -88,7 +88,7 @@ struct RandomInitKernelUniform
                 // Calculate the bin index for the histogram
                 // Since the values are in [0,1), we multiply by the number of bins to get the bin index
                 // The bin index is in the range [0, numberOfBins)
-                uint32_t binIndex = val * numberOfBins;
+                auto const binIndex = static_cast<uint32_t>(val * numberOfBins);
                 // Atomically increment the bin count in the histogram
                 alpaka::onAcc::atomicAdd(acc, &outBins[binIndex], uint32_t{1});
             }
@@ -173,7 +173,7 @@ struct RandomInitKernelVec
 };
 
 bool testRandomInitKernels(
-    alpaka::onHost::concepts::Device auto host,
+    alpaka::onHost::concepts::Device auto const& host,
     alpaka::onHost::concepts::Device auto device,
     auto computeExec,
     uint32_t numElements)
@@ -333,24 +333,24 @@ int exampleUniformDist(auto const cfg, size_t numElements)
 
     if(resultIsCorrect)
     {
-        std::cout << "Execution results correct with a certain confidence!" << std::endl;
+        std::cout << "Execution results correct with a certain confidence!" << '\n';
         return EXIT_SUCCESS;
     }
     else
     {
         std::cout
             << "Execution results incorrect: Random numbers do not follow the expected distribution characteristics."
-            << std::endl;
+            << '\n';
         return EXIT_FAILURE;
     }
 }
 
 void help(char* argv[])
 {
-    std::cerr << argv[0] << " [OPTIONS]" << std::endl;
-    std::cerr << "  -n  numElements: Number of elements to process. Default:" << numberOfElements << std::endl;
-    std::cerr << "  -e: disable execution of the native std::for_each implementation" << std::endl;
-    std::cerr << "  -h: Print this help message" << std::endl;
+    std::cerr << argv[0] << " [OPTIONS]" << '\n';
+    std::cerr << "  -n  numElements: Number of elements to process. Default:" << numberOfElements << '\n';
+    std::cerr << "  -e: disable execution of the native std::for_each implementation" << '\n';
+    std::cerr << "  -h: Print this help message" << '\n';
 }
 
 auto main(int argc, char* argv[]) -> int

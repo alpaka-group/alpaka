@@ -415,6 +415,7 @@ auto main() -> int
         // Enqueue the memory fence kernel to ensure it compiles and links
         queue.enqueue(frameSpec, KernelBundle{MemoryFenceKernel{}});
     }
+    // NOLINTNEXTLINE(bugprone-empty-catch)
     catch(...)
 
     {

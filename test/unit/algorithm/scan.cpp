@@ -17,7 +17,7 @@ using TestBackends = std::decay_t<decltype(onHost::allBackends(onHost::enabledDe
 
 template<typename T_Data>
 int validateResult(
-    auto queue,
+    auto const& queue,
     concepts::IDataSource<T_Data> auto const& inputData,
     concepts::IDataSource<T_Data> auto const& bufY,
     std::size_t numElements,

@@ -33,17 +33,18 @@ namespace alpaka::example::heatEquation
         bool const autoCheck,
         double const tMax)
     {
-        std::cout << "================================" << std::endl;
-        std::cout << "Example Heat Equation Stencil" << std::endl;
+        std::cout << "================================" << '\n';
+        std::cout << "Example Heat Equation Stencil" << '\n';
         std::cout << "    Number of elements [#]: " << sideLength << " x " << sideLength << " = "
-                  << sideLength * sideLength << std::endl;
-        std::cout << "    Time steps [#]: " << numTimeSteps << std::endl;
-        std::cout << "    tMax: " << tMax << std::endl;
-        std::cout << "    Element type: " << onHost::demangledName<Data>() << std::endl;
-        std::cout << "    Buffer size [kbyte]: " << sideLength * sideLength * sizeof(Data) / 1.e3 << std::endl;
-        std::cout << "    Result checking is " << (autoCheck ? "enabled" : "disabled") << std::endl;
-        std::cout << "================================" << std::endl;
-        std::cout << std::endl;
+                  << sideLength * sideLength << '\n';
+        std::cout << "    Time steps [#]: " << numTimeSteps << '\n';
+        std::cout << "    tMax: " << tMax << '\n';
+        std::cout << "    Element type: " << onHost::demangledName<Data>() << '\n';
+        std::cout << "    Buffer size [kbyte]: "
+                  << static_cast<double>(static_cast<size_t>(sideLength) * sideLength * sizeof(Data)) / 1.e3 << '\n';
+        std::cout << "    Result checking is " << (autoCheck ? "enabled" : "disabled") << '\n';
+        std::cout << "================================" << '\n';
+        std::cout << '\n';
     }
 
     //! Each kernel computes the next step for one point.
@@ -199,8 +200,8 @@ namespace alpaka::example::heatEquation
         auto const endTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = endTime - startTime;
 
-        std::cout << "Simulation took " << elapsedTime.count() << " seconds." << std::endl;
-        std::cout << "Time per time step: " << elapsedTime.count() / numTimeSteps * 1000 << " ms." << std::endl;
+        std::cout << "Simulation took " << elapsedTime.count() << " seconds." << '\n';
+        std::cout << "Time per time step: " << elapsedTime.count() / numTimeSteps * 1000 << " ms." << '\n';
 
 
         // Copy device -> host
@@ -215,29 +216,28 @@ namespace alpaka::example::heatEquation
 
         if(resultIsCorrect)
         {
-            std::cout << "Execution results correct!" << std::endl;
+            std::cout << "Execution results correct!" << '\n';
             return EXIT_SUCCESS;
         }
         else
         {
             std::cout << "Execution results incorrect: Max error = " << maxError
-                      << " (the grid resolution may be too low)" << std::endl;
+                      << " (the grid resolution may be too low)" << '\n';
             return EXIT_FAILURE;
         }
     }
 
     void help(char* argv[])
     {
-        std::cerr << argv[0] << " [OPTIONS]" << std::endl;
-        std::cerr << "  -n sideLength: Number of elements per side of the 2D plane. Default: 2^6 = 64" << std::endl;
-        std::cerr << "  -t numTimeSteps: Number of time steps that the simulation is run for. Default: 4000"
-                  << std::endl;
+        std::cerr << argv[0] << " [OPTIONS]" << '\n';
+        std::cerr << "  -n sideLength: Number of elements per side of the 2D plane. Default: 2^6 = 64" << '\n';
+        std::cerr << "  -t numTimeSteps: Number of time steps that the simulation is run for. Default: 4000" << '\n';
         std::cerr << "  -d tMax: Delta t for the timesteps, has to be smaller for larger sideLengths to pass the "
                      "stability condition. Default: 0.1"
-                  << std::endl;
-        std::cerr << "  -c: disable checking for correct results" << std::endl;
-        std::cerr << "  -h: Print this help message" << std::endl;
-        std::cerr << std::endl;
+                  << '\n';
+        std::cerr << "  -c: disable checking for correct results" << '\n';
+        std::cerr << "  -h: Print this help message" << '\n';
+        std::cerr << '\n';
     }
 
 } // namespace alpaka::example::heatEquation
@@ -248,7 +248,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace alpaka::example::heatEquation;
 
     // Default value if no command line argument used
-    IdxType sideLength = 1 << 6;
+    IdxType sideLength = 1u << 6u;
     IdxType numTimeSteps = 4000;
 
     int opt;

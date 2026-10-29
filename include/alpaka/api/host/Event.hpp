@@ -49,8 +49,7 @@ namespace alpaka::onHost
                 catch(...)
                 {
                     std::cerr << "Waiting for the host event failed during destruction, e.g. a callback task "
-                                 "threw."
-                              << std::endl;
+                                 "threw.\n";
                 }
             }
 
