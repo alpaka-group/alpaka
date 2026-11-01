@@ -275,9 +275,8 @@ if(NOT _alpaka_TARGETS_EXTENDED)
     else()
         message(STATUS "std::atomic_ref<T> NOT found")
         target_compile_definitions(alpaka_target_host INTERFACE ALPAKA_DISABLE_STD_ATOMIC_REF)
-    endif()
-
-    if(NOT alpaka_HAS_STD_ATOMIC_REF)
+        # fallback to boost if available
+        find_package(Boost 1.74.0 QUIET COMPONENTS atomic)
         if(Boost_ATOMIC_FOUND)
             message(STATUS "boost::atomic_ref<T> found")
             target_link_libraries(alpaka_target_host INTERFACE Boost::atomic)
