@@ -3,12 +3,12 @@ default_install_hook_types: [pre-commit, pre-push]
 exclude: "thirdParty"
 repos:
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v20.1.8
+  rev: 182152eb8c5ce1cf5299b956b04392c86bd8a126  # frozen: v20.1.8
   hooks:
   - id: clang-format
     files: \.(cpp|hpp)
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
+  rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
   hooks:
   - id: no-commit-to-branch
     args: [-b, dev_v3.x]
@@ -22,7 +22,7 @@ repos:
   - id: check-executables-have-shebangs
   - id: check-shebang-scripts-are-executable
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.5.5
+  rev: a30f0d816e5062a67d87c8de753cfe499672b959  # frozen: v1.5.5
   hooks:
     - id: forbid-tabs
       types_or: [file]
@@ -40,11 +40,11 @@ repos:
     - id: gersemi
       args: [-i]
 - repo: https://github.com/scop/pre-commit-shfmt
-  rev: v3.13.1-1
+  rev: 05c1426671b9237fb5e1444dd63aa5731bec0dfb  # frozen: v3.13.1-1
   hooks:
     - id: shfmt
 - repo: https://github.com/shellcheck-py/shellcheck-py
-  rev: v0.11.0.1
+  rev: 745eface02aef23e168a8afb6b5737818efbea95  # frozen: v0.11.0.1
   hooks:
     - id: shellcheck
       # required that shellcheck can follow sourced scripts
@@ -64,7 +64,7 @@ repos:
       language: system
       files: \.hpp$
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.21
+  rev: 01a675ea018f2fb714478a5ffb83fcea8374bb06  # frozen: v0.15.21
   hooks:
     - id: ruff
       types_or: [ python, pyi, jupyter ]
@@ -101,7 +101,7 @@ repos:
               ^script/job_generator/tests/
           )
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v2.3.0'
+    rev: 41e691678310dfd3833f7ab4e180ddb014310356  # frozen: v2.3.0
     hooks:
     - id: mypy
       exclude: |
