@@ -18,13 +18,14 @@
 
 #include <array> // std::array
 #include <cstddef> // std::size_t
+#include <cstdint> // std::uint8_t
 #include <tuple> // std::tuple
 #include <type_traits> // is_same_v
 #include <typeinfo>
 
 namespace alpaka::onHost::internal
 {
-    enum ScanType
+    enum ScanType : std::uint8_t
     {
         exclusiveScan,
         inclusiveScan
@@ -35,6 +36,8 @@ namespace alpaka::onHost::internal
     template<alpaka::concepts::DeviceKind T_DeviceKind, typename T_Idx, typename T_Data>
     consteval T_Idx maximumMiniBlockSize()
     {
+        // Each device kind is kept as its own branch to improve maintainability and simplify adjustments
+        // NOLINTBEGIN(bugprone-branch-clone)
         if constexpr(T_DeviceKind{} == deviceKind::nvidiaGpu)
             return static_cast<T_Idx>(8);
         else if constexpr(T_DeviceKind{} == deviceKind::amdGpu)
@@ -43,6 +46,7 @@ namespace alpaka::onHost::internal
             return static_cast<T_Idx>(8);
         else
             return static_cast<T_Idx>(32768) / sizeof(T_Data);
+        // NOLINTEND(bugprone-branch-clone)
     }
 
     /* This function introduces padding to the shared memory accesses to reduce bank conflicts between threads. The
@@ -62,7 +66,7 @@ namespace alpaka::onHost::internal
     ALPAKA_FN_ACC T_Data scanMiniBlock(T_Data* block, alpaka::concepts::CVector<T_Idx> auto const& extent)
     {
         // -- UP-SWEEP / REDUCE --
-        for(T_Idx d = extent.x() / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1, offset <<= 1)
+        for(T_Idx d = extent.x() / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1u, offset <<= 1u)
         {
             for(auto frameElem = T_Idx{0}; frameElem < T_Idx{2} * d; frameElem += T_Idx{2})
             {
@@ -79,7 +83,7 @@ namespace alpaka::onHost::internal
         block[extent.x() - T_Idx{1}] = T_Data{0};
 
         // -- DOWN-SWEEP --
-        for(T_Idx d = 1, offset = extent.x() / T_Idx{2}; d < extent.x(); d <<= 1, offset >>= 1)
+        for(T_Idx d = 1, offset = extent.x() / T_Idx{2}; d < extent.x(); d <<= 1u, offset >>= 1u)
         {
             for(auto frameElem = T_Idx{0}; frameElem < T_Idx{2} * d; frameElem += T_Idx{2})
             {
@@ -207,7 +211,7 @@ namespace alpaka::onHost::internal
                 }
 
                 // -- UP-SWEEP / REDUCE --
-                for(T_Idx d = miniBlocksPerChunk / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1, offset <<= 1)
+                for(T_Idx d = miniBlocksPerChunk / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1u, offset <<= 1u)
                 {
                     onAcc::syncBlockThreads(acc);
                     for(auto frameElem : onAcc::makeIdxMap(
@@ -239,7 +243,8 @@ namespace alpaka::onHost::internal
                 }
 
                 // -- DOWN-SWEEP --
-                for(T_Idx d = 1, offset = miniBlocksPerChunk / T_Idx{2}; d < miniBlocksPerChunk; d <<= 1, offset >>= 1)
+                for(T_Idx d = 1, offset = miniBlocksPerChunk / T_Idx{2}; d < miniBlocksPerChunk;
+                    d <<= 1u, offset >>= 1u)
                 {
                     onAcc::syncBlockThreads(acc);
                     for(auto frameElem : onAcc::makeIdxMap(
@@ -436,7 +441,7 @@ namespace alpaka::onHost::internal
             // enqueue the kernel execution tasks
             queue.enqueue(
                 frameSpec,
-                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, ALPAKA_FORWARD(outputVec), increments});
+                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, outputVec, increments});
 
             // always recurse into exclusive scan
             scan<exclusiveScan>(queue, devAcc, exec, bufferNext, increments, increments);

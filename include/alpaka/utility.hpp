@@ -87,7 +87,8 @@ namespace alpaka
     template<std::integral T>
     inline constexpr T roundDownToPowerOfTwo(T value)
     {
-        return T{1} << firstSetBit(value);
+        using UnsignedValueType = std::make_unsigned_t<T>;
+        return static_cast<T>(std::bit_floor(static_cast<UnsignedValueType>(value)));
     }
 
     /** checks if T is a instance of U

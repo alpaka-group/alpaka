@@ -553,10 +553,12 @@ namespace alpaka::onHost
             using IndexType = alpaka::GetValueType_t<ExtentVecType>;
             auto props = internal::GetDeviceProperties::Op<ALPAKA_TYPEOF(internalDevice)>{}(internalDevice);
             IndexType warpSize = static_cast<IndexType>(props.warpSize);
+            IndexType fastDimensionInput = std::min(warpSize, extentMd.x());
+            ALPAKA_ASSERT(fastDimensionInput > IndexType{0});
             // try to create a specification with a frame size of 512 elements
             IndexType numFrameElements = 512;
             // avoid non-power of two values
-            IndexType fastDimensionValue = roundDownToPowerOfTwo(std::min(warpSize, extentMd.x()));
+            IndexType fastDimensionValue = roundDownToPowerOfTwo(fastDimensionInput);
             ExtentVecType frameExtents = ExtentVecType::fill(1).rAssign(fastDimensionValue);
             numFrameElements /= frameExtents.x();
             // distribute remainder frame elements

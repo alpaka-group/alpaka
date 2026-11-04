@@ -8,6 +8,7 @@
 #include "alpaka/core/config.hpp"
 
 #include <cassert>
+#include <concepts>
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -15,6 +16,7 @@
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <type_traits>
 
 namespace alpaka::core
 {
@@ -47,6 +49,7 @@ namespace alpaka::core
             T_Function func;
 
             template<typename T_FunctionFwd>
+            requires(!std::same_as<std::remove_cvref_t<T_FunctionFwd>, FunctionHolder>)
             explicit FunctionHolder(T_FunctionFwd&& funcFwd) : func{std::forward<T_FunctionFwd>(funcFwd)}
             {
             }

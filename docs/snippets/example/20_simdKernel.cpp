@@ -47,7 +47,7 @@ TEST_CASE("MD vector simd add kernel", "[docs]")
 
     if(numComputeDevs == 0)
     {
-        std::cout << "No device for " << onHost::getName(computeDevSpec) << " found." << std::endl;
+        std::cout << "No device for " << onHost::getName(computeDevSpec) << " found." << '\n';
     }
 
     onHost::Device computeDev = computeDevSelector.makeDevice(0);
@@ -84,7 +84,7 @@ TEST_CASE("MD vector simd add kernel", "[docs]")
         = divExZero(computeBufferOut.getExtents(), frameExtents * frameExtents.fill(1).rAssign(elementsPerFrameItem));
     // The frame specification is not required to be a multiple of the extent, it can be smaller.
     auto frameSpec = onHost::FrameSpec{numFrames, frameExtents, exec::cpuSerial};
-    std::cout << frameSpec << std::endl;
+    std::cout << frameSpec << '\n';
     onHost::wait(computeQueue);
     auto const beginT = std::chrono::high_resolution_clock::now();
     // we enforce serial execution because this executor is always available deviceKind::cpu and api::host
@@ -94,7 +94,7 @@ TEST_CASE("MD vector simd add kernel", "[docs]")
     onHost::wait(computeQueue);
     auto const endT = std::chrono::high_resolution_clock::now();
     std::cout << "Time for simd kernel: " << std::chrono::duration<double>(endT - beginT).count() << 's'
-              << " data size: " << computeBufferOut.getExtents() << std::endl;
+              << " data size: " << computeBufferOut.getExtents() << '\n';
 
     // we overwrite the iota data because we are to lazy to allocate additional memory^^
     onHost::memcpy(computeQueue, hostBufferIota, computeBufferOut);

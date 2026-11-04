@@ -76,9 +76,10 @@ namespace alpaka
     {
         return View{
             internal::getApi(ALPAKA_FORWARD(anyWithApi)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
+            // only forward any on the last use to avoid move-after-use
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
             alpaka::getAlignment(ALPAKA_FORWARD(any))};
     }
 
@@ -89,10 +90,11 @@ namespace alpaka
     inline constexpr auto makeView(auto&& any)
     {
         return View{
-            internal::getApi(ALPAKA_FORWARD(any)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
+            // only forward any on the last use to avoid move-after-use
+            alpaka::getApi(any),
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
             alpaka::getAlignment(ALPAKA_FORWARD(any))};
     }
 

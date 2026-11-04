@@ -185,7 +185,7 @@ namespace alpaka::onHost::internal
                 return ss.str();
             });
 
-        onHost::fill(queue, ALPAKA_FORWARD(out), neutralElement, out.getExtents().fill(1));
+        onHost::fill(queue, out, neutralElement, out.getExtents().fill(1));
         queue.enqueue(
             frameSpec,
             KernelBundle{
