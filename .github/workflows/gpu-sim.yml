@@ -1,0 +1,109 @@
+name: GPU tests (simulated)
+
+# Optional, non-required check. The CI runners have no GPU, so this runs a subset
+# of the unit tests with the CUDA backend on a simulated NVIDIA H100
+# (https://github.com/pantheongpu/pantheonsim). A simulator cannot reproduce
+# hardware-specific behaviour or timing, so it complements real-GPU testing and
+# does not replace it.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ dev_v3.x ]
+  pull_request:
+    branches: [ dev_v3.x ]
+
+permissions:
+  contents: read
+
+# Stop the run for a PR if the PR is updated.
+# Stop the run for dev_v3.x if a new PR is merged into dev_v3.x.
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('ref-{0}', github.ref) }}
+  cancel-in-progress: true
+
+env:
+  # Unit test targets to build and run. Each target is a Catch2 executable.
+  TEST_TARGETS: >-
+    unit_test_queue_queue
+    unit_test_queue_kernelMD
+    unit_test_queue_isEmpty
+    unit_test_queue_blockingQueue
+    unit_test_event_event
+    unit_test_mem_alloc
+    unit_test_mem_allocDeferred
+    unit_test_mem_memcpy
+    unit_test_mem_memset
+    unit_test_mem_fill
+    unit_test_mem_view
+    unit_test_mem_lifetime
+    unit_test_mem_memFenceBasic
+    unit_test_mem_memFenceProducerConsumer
+    unit_test_atomic_atomic
+    unit_test_atomic_atomicAdd
+    unit_test_block_block
+    unit_test_sharedMem_sharedMem
+    unit_test_deviceGlobalMem_deviceGlobalMem
+    unit_test_device_deviceProperties
+    unit_test_cvecKernelCall_cvecKernelCall
+    unit_test_kernel_makeIdxMap
+    unit_test_intrinsic_clz
+    unit_test_intrinsic_ffs
+    unit_test_intrinsic_popc
+    unit_test_warp_activemask
+    unit_test_warp_all
+    unit_test_warp_any
+    unit_test_warp_ballot
+    unit_test_warp_getSize
+    unit_test_warp_iota
+    unit_test_warp_shfl
+    unit_test_warp_shfl_down
+    unit_test_warp_shfl_up
+    unit_test_warp_shfl_xor
+    unit_test_algorithm_concurrent
+    unit_test_algorithm_iota
+    unit_test_algorithm_reduce
+    unit_test_algorithm_scan
+    unit_test_algorithm_transform
+    unit_test_algorithm_transformReduce
+    unit_test_rand_uniformReal
+    unit_test_platform_platform
+
+jobs:
+  gpu-tests:
+    name: CUDA unit tests on a simulated H100
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up the simulated GPU and CUDA toolkit
+        uses: pantheongpu/setup-pantheonsim@dda0c8df8d72627c295edbae525354ba2bcb1687 # v0.1.4
+        with:
+          gpu: nvidia/h100
+          cuda-toolkit: "13.0"
+
+      - name: Configure
+        run: |
+          # 80-virtual embeds PTX only: the simulator JIT-compiles PTX and does not run SASS.
+          # The shared CUDA runtime is required by the simulator.
+          cmake -B build -DCMAKE_BUILD_TYPE=Release \
+            -Dalpaka_TESTS=ON -Dalpaka_DEP_CUDA=ON \
+            -Dalpaka_DEP_OMP=OFF -Dalpaka_EXEC_CpuSerial=OFF \
+            -DCMAKE_CUDA_ARCHITECTURES=80-virtual \
+            -DCMAKE_CUDA_RUNTIME_LIBRARY=Shared
+
+      # Catch2 test discovery runs the test executables during the build.
+      - name: Build
+        run: vgpu run --preload cmake --build build --target ${TEST_TARGETS} -j2
+
+      - name: Test
+        # Tests of targets that were not built are registered as *_NOT_BUILT and are skipped here.
+        # Excluded: tests that depend on the stream state while a host function
+        # (cuLaunchHostFunc) is running; the simulator does not model that yet.
+        run: |
+          vgpu run ctest --test-dir build --output-on-failure --timeout 300 \
+            -E '_NOT_BUILT|queue isEmpty|wait for event enqueued concurrently on a queue with a long-running host task|elapsed-time query waits for both events'
