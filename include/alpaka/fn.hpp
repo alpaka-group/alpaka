@@ -151,6 +151,9 @@ namespace alpaka::fn
         typename T_FnClass,
         Fallback T_fallbackPolicy = Fallback::toGeneric,
         Registration T_registrationPolicy = Registration::none>
+    // symbols derived without an own constructor, e.g. by ALPAKA_FN_SYMBOL, are aggregates;
+    // a private constructor would break their initialization
+    // NOLINTNEXTLINE(bugprone-crtp-constructor-accessibility)
     struct Fn
     {
         /** Get the function specification.

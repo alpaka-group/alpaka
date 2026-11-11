@@ -23,7 +23,8 @@ function(alpaka_install_catch2)
             set(CATCH_CONFIG_NO_POSIX_SIGNALS ON)
             # get Catch2 v3 and build it from source with the same C++ standard as the tests
             include(FetchContent)
-            FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG v3.15.0)
+            # SYSTEM: code from Catch2 headers and macros, e.g. TEST_CASE, produces no compiler warnings or clang-tidy findings
+            FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG v3.15.0 SYSTEM)
             FetchContent_MakeAvailable(Catch2)
             target_compile_features(Catch2 PUBLIC cxx_std_20)
             include(Catch)

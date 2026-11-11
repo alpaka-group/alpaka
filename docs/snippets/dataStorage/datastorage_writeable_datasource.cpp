@@ -2,6 +2,7 @@
 
 // ===== Begin: main first part =====
 // This code section needs to be global, that I can hide the code in the documentation
+// NOLINTBEGIN(bugprone-throwing-static-initialization)
 auto devSpec = alpaka::onHost::DeviceSpec{alpaka::api::host, alpaka::deviceKind::cpu};
 auto devSelector = alpaka::onHost::makeDeviceSelector(devSpec);
 auto numComputeDevs = devSelector.getDeviceCount();
@@ -17,6 +18,7 @@ alpaka::onHost::SharedBuffer out = alpaka::onHost::alloc<int>(dev, extents);
 alpaka::onHost::concepts::FrameSpec auto frameSpec
     = alpaka::onHost::getFrameSpec(dev, alpaka::exec::anyExecutor, extents);
 
+// NOLINTEND(bugprone-throwing-static-initialization)
 // ===== End: main first part =====
 
 

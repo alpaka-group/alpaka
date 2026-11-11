@@ -240,13 +240,15 @@ namespace alpaka::example::nBody
             std::cout << "The simulation took " << elapsedTime.count() << " seconds." << std::endl;
             std::cout << "Time per time step: " << timePerStep * 1000 << " ms." << std::endl;
             std::cout << "GFLOP needed per time step: " << flopsRequiredPerTimeStep(numParticles) << std::endl;
-            std::cout << "Average achieved GFLOPS: " << flopsRequiredPerTimeStep(numParticles) / timePerStep / 1e9
+            std::cout << "Average achieved GFLOPS: "
+                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9
                       << std::endl;
         }
         else
         {
             std::cout << deviceSpec.getApi().getName() << "," << numParticles << "," << timePerStep << ","
-                      << flopsRequiredPerTimeStep(numParticles) / timePerStep / 1e9 << std::endl;
+                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9
+                      << std::endl;
         }
 
         return EXIT_SUCCESS;
@@ -346,7 +348,7 @@ auto main(int argc, char* argv[]) -> int
         case 'd':
             try
             {
-                dt = std::stod(optarg, nullptr);
+                dt = static_cast<BaseType>(std::stod(optarg, nullptr));
             }
             catch(std::invalid_argument const& e)
             {

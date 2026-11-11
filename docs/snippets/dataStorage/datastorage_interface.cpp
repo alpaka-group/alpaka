@@ -1,5 +1,7 @@
 #include <alpaka/alpaka.hpp>
 
+// the global objects are what this documentation example shows
+// NOLINTBEGIN(bugprone-throwing-static-initialization)
 int ptr = 0;
 
 alpaka::LinearizedIdxGenerator otherLinearizedIdxGenerator{alpaka::Vec{0}};
@@ -44,3 +46,4 @@ int main()
 }
 
 // END-DATASTORAGE-interface
+// NOLINTEND(bugprone-throwing-static-initialization)

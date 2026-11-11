@@ -32,7 +32,7 @@ bool validateHistogram(auto const& histogram, int32_t const expectedValue)
     uint32_t maxValue = *minmax.second;
 
     // Calculate the allowed difference
-    uint32_t allowedDifference = static_cast<uint32_t>(expectedValue * tolerance);
+    uint32_t allowedDifference = static_cast<uint32_t>(static_cast<float>(expectedValue) * tolerance);
 
     // Check if the difference between max and min is within the tolerance
     bool isValid = (maxValue - minValue) <= allowedDifference;
@@ -88,7 +88,7 @@ struct RandomInitKernelUniform
                 // Calculate the bin index for the histogram
                 // Since the values are in [0,1), we multiply by the number of bins to get the bin index
                 // The bin index is in the range [0, numberOfBins)
-                uint32_t binIndex = val * numberOfBins;
+                auto const binIndex = static_cast<uint32_t>(val * numberOfBins);
                 // Atomically increment the bin count in the histogram
                 alpaka::onAcc::atomicAdd(acc, &outBins[binIndex], uint32_t{1});
             }
