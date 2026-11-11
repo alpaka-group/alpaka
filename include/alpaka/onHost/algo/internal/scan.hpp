@@ -62,7 +62,7 @@ namespace alpaka::onHost::internal
     ALPAKA_FN_ACC T_Data scanMiniBlock(T_Data* block, alpaka::concepts::CVector<T_Idx> auto const& extent)
     {
         // -- UP-SWEEP / REDUCE --
-        for(T_Idx d = extent.x() / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1, offset <<= 1)
+        for(T_Idx d = extent.x() / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1u, offset <<= 1u)
         {
             for(auto frameElem = T_Idx{0}; frameElem < T_Idx{2} * d; frameElem += T_Idx{2})
             {
@@ -79,7 +79,7 @@ namespace alpaka::onHost::internal
         block[extent.x() - T_Idx{1}] = T_Data{0};
 
         // -- DOWN-SWEEP --
-        for(T_Idx d = 1, offset = extent.x() / T_Idx{2}; d < extent.x(); d <<= 1, offset >>= 1)
+        for(T_Idx d = 1, offset = extent.x() / T_Idx{2}; d < extent.x(); d <<= 1u, offset >>= 1u)
         {
             for(auto frameElem = T_Idx{0}; frameElem < T_Idx{2} * d; frameElem += T_Idx{2})
             {
@@ -207,7 +207,7 @@ namespace alpaka::onHost::internal
                 }
 
                 // -- UP-SWEEP / REDUCE --
-                for(T_Idx d = miniBlocksPerChunk / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1, offset <<= 1)
+                for(T_Idx d = miniBlocksPerChunk / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1u, offset <<= 1u)
                 {
                     onAcc::syncBlockThreads(acc);
                     for(auto frameElem : onAcc::makeIdxMap(
@@ -239,7 +239,8 @@ namespace alpaka::onHost::internal
                 }
 
                 // -- DOWN-SWEEP --
-                for(T_Idx d = 1, offset = miniBlocksPerChunk / T_Idx{2}; d < miniBlocksPerChunk; d <<= 1, offset >>= 1)
+                for(T_Idx d = 1, offset = miniBlocksPerChunk / T_Idx{2}; d < miniBlocksPerChunk;
+                    d <<= 1u, offset >>= 1u)
                 {
                     onAcc::syncBlockThreads(acc);
                     for(auto frameElem : onAcc::makeIdxMap(
