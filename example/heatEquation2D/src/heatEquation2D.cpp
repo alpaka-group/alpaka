@@ -248,7 +248,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace alpaka::example::heatEquation;
 
     // Default value if no command line argument used
-    IdxType sideLength = 1 << 6;
+    IdxType sideLength = 1u << 6u;
     IdxType numTimeSteps = 4000;
 
     int opt;
