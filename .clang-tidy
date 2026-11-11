@@ -10,7 +10,9 @@
 # -The bugprone-easily-swappable-parameters check is disabled because it imposes specific coding-style constraints and
 # unnecessarily restricts interface design. Additionally, alpaka mirrors benchmark implementations such as BabelStream and HACCmk,
 # requiring consistent interfaces with their reference implementations.
-Checks: '-*,bugprone-*,-bugprone-macro-parentheses,-bugprone-easily-swappable-parameters,-bugprone-exception-escape,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
+#
+# -performance-avoid-endl is disabled until the remaining std::endl uses are replaced.
+Checks: '-*,bugprone-*,performance-*,-bugprone-macro-parentheses,-bugprone-easily-swappable-parameters,-bugprone-exception-escape,-performance-avoid-endl,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
 WarningsAsErrors: '*'
 HeaderFilterRegex: '(^|.*/)include/alpaka/.*'
 SystemHeaders: false

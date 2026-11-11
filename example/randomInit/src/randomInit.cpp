@@ -173,7 +173,7 @@ struct RandomInitKernelVec
 };
 
 bool testRandomInitKernels(
-    alpaka::onHost::concepts::Device auto host,
+    alpaka::onHost::concepts::Device auto const& host,
     alpaka::onHost::concepts::Device auto device,
     auto computeExec,
     uint32_t numElements)

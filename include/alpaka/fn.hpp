@@ -72,6 +72,8 @@ namespace alpaka::fn
      * `alpaka::fn::Fn` or ALPAKA_FN_SYMBOL to specify the fallback behavior if no vendor function overload is defined
      * for the given device specification.
      */
+    // public enum, the underlying type is part of the interface
+    // NOLINTNEXTLINE(performance-enum-size)
     enum class Fallback : int
     {
         /** The generic implementation is called if no other overload fits.
@@ -93,6 +95,8 @@ namespace alpaka::fn
 
     /** @brief Policy to control if a function symbol must be registered.
      */
+    // public enum, the underlying type is part of the interface
+    // NOLINTNEXTLINE(performance-enum-size)
     enum class Registration : int
     {
         /** The isRegistered() function will always return true. This can be used to skip the registration of the

@@ -62,6 +62,8 @@ TEST_CASE("memory allocations", "[docs]")
     }
 }
 
+// mimics a kernel call, which takes its arguments by value
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
 void callKernel([[maybe_unused]] auto dummyMemory)
 {
 }

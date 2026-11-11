@@ -334,7 +334,7 @@ namespace alpaka
          * .toString(";","|")     -> |x;...;z|
          * .toString(",","[]")    -> [x,...,z]
          */
-        std::string toString(std::string const separator = ",", std::string const enclosings = "{}") const
+        std::string toString(std::string const& separator = ",", std::string const& enclosings = "{}") const
         {
             std::string localeEnclosingBegin;
             std::string localeEnclosingEnd;
