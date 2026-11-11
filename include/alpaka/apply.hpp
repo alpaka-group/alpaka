@@ -19,6 +19,9 @@ namespace alpaka
             std::index_sequence<T_idx...>)
         {
             using std::get;
+            // like std::apply: each get<T_idx> only moves its own element out of the forwarded tuple
+            // false-positive since no forwarded element is touched twice
+            // NOLINTNEXTLINE(bugprone-use-after-move)
             return std::forward<T_Func>(func)(get<T_idx>(std::forward<T_TupleLike>(tuple))...);
         }
     } // namespace detail

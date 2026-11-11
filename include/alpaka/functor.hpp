@@ -6,6 +6,7 @@
 
 #include "alpaka/core/common.hpp"
 
+#include <concepts>
 #include <type_traits>
 #include <utility>
 
@@ -21,7 +22,8 @@ namespace alpaka
     {
         using Functor = T_Func;
 
-        constexpr StencilFunc(auto&& func) : T_Func{ALPAKA_FORWARD(func)}
+        constexpr StencilFunc(auto&& func) requires(!std::same_as<std::remove_cvref_t<decltype(func)>, StencilFunc>)
+            : T_Func{ALPAKA_FORWARD(func)}
         {
         }
     };
@@ -39,7 +41,8 @@ namespace alpaka
     {
         using Functor = T_Func;
 
-        constexpr ScalarFunc(auto&& func) : T_Func{ALPAKA_FORWARD(func)}
+        constexpr ScalarFunc(auto&& func) requires(!std::same_as<std::remove_cvref_t<decltype(func)>, ScalarFunc>)
+            : T_Func{ALPAKA_FORWARD(func)}
         {
         }
     };

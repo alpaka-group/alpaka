@@ -76,10 +76,15 @@ namespace alpaka
     {
         return View{
             internal::getApi(ALPAKA_FORWARD(anyWithApi)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
-            alpaka::getAlignment(ALPAKA_FORWARD(any))};
+            /* Do not forward any here, as it may be reused afterward.
+             * If an argument is a rvalue, forwarding it to a consuming function
+             * could leave it in a moved-from state.
+             * https://clang.llvm.org/extra/clang-tidy/checks/bugprone/use-after-move.html
+             */
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
+            alpaka::getAlignment(any)};
     }
 
     /** @brief Create a view whose innermost dimension is contiguous.
@@ -88,11 +93,27 @@ namespace alpaka
      */
     inline constexpr auto makeView(auto&& any)
     {
+        /* Prefer the API of @p any itself and use the handled object only as fallback.
+         * alpaka::getApi() would select its HasGet overload for every type with get(), even if the type provides
+         * getApi() itself.
+         */
+        auto const api = [&]
+        {
+            if constexpr(requires { internal::getApi(any); })
+                return internal::getApi(any);
+            else
+                return alpaka::getApi(any);
+        }();
         return View{
-            internal::getApi(ALPAKA_FORWARD(any)),
-            onHost::data(ALPAKA_FORWARD(any)),
-            onHost::getExtents(ALPAKA_FORWARD(any)),
-            onHost::getPitches(ALPAKA_FORWARD(any)),
+            api,
+            /* Do not forward any here, as it may be reused afterward.
+             * If an argument is a rvalue, forwarding it to a consuming function
+             * could leave it in a moved-from state.
+             * https://clang.llvm.org/extra/clang-tidy/checks/bugprone/use-after-move.html
+             */
+            onHost::data(any),
+            onHost::getExtents(any),
+            onHost::getPitches(any),
             alpaka::getAlignment(ALPAKA_FORWARD(any))};
     }
 
