@@ -18,13 +18,14 @@
 
 #include <array> // std::array
 #include <cstddef> // std::size_t
+#include <cstdint> // std::uint8_t
 #include <tuple> // std::tuple
 #include <type_traits> // is_same_v
 #include <typeinfo>
 
 namespace alpaka::onHost::internal
 {
-    enum ScanType
+    enum ScanType : std::uint8_t
     {
         exclusiveScan,
         inclusiveScan

@@ -21,11 +21,19 @@ namespace alpaka
     struct StencilFunc : T_Func
     {
         using Functor = T_Func;
+        using T_Func::T_Func;
 
-        constexpr StencilFunc(auto&& func) requires(!std::same_as<std::remove_cvref_t<decltype(func)>, StencilFunc>)
-            : T_Func{ALPAKA_FORWARD(func)}
+        /* StencilFunc is a stateless wrapper type
+         * NOLINT reason: Constraining the wrapper's forwarding constructor to exclude its own type does not merely
+         * prevent accidental constructor shadowing. It can also change the constructor-selection behavior of the
+         * wrapped type.
+         */
+        // NOLINTBEGIN(bugprone-forwarding-reference-overload)
+        constexpr StencilFunc(auto&& func) : T_Func{ALPAKA_FORWARD(func)}
         {
         }
+
+        // NOLINTEND(bugprone-forwarding-reference-overload)
     };
 
     template<typename T_Func>
@@ -40,11 +48,19 @@ namespace alpaka
     struct ScalarFunc : T_Func
     {
         using Functor = T_Func;
+        using T_Func::T_Func;
 
-        constexpr ScalarFunc(auto&& func) requires(!std::same_as<std::remove_cvref_t<decltype(func)>, ScalarFunc>)
-            : T_Func{ALPAKA_FORWARD(func)}
+        /* ScalarFunc is a stateless wrapper type
+         * NOLINT reason: Constraining the wrapper's forwarding constructor to exclude its own type does not merely
+         * prevent accidental constructor shadowing. It can also change the constructor-selection behavior of the
+         * wrapped type.
+         */
+        // NOLINTBEGIN(bugprone-forwarding-reference-overload)
+        constexpr ScalarFunc(auto&& func) : T_Func{ALPAKA_FORWARD(func)}
         {
         }
+
+        // NOLINTEND(bugprone-forwarding-reference-overload)
     };
 
     template<typename T_Func>

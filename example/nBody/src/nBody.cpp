@@ -241,14 +241,12 @@ namespace alpaka::example::nBody
             std::cout << "Time per time step: " << timePerStep * 1000 << " ms." << std::endl;
             std::cout << "GFLOP needed per time step: " << flopsRequiredPerTimeStep(numParticles) << std::endl;
             std::cout << "Average achieved GFLOPS: "
-                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9
-                      << std::endl;
+                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9 << std::endl;
         }
         else
         {
             std::cout << deviceSpec.getApi().getName() << "," << numParticles << "," << timePerStep << ","
-                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9
-                      << std::endl;
+                      << static_cast<double>(flopsRequiredPerTimeStep(numParticles)) / timePerStep / 1e9 << std::endl;
         }
 
         return EXIT_SUCCESS;

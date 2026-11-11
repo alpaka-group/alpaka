@@ -32,7 +32,6 @@ void haccmk(
     T* __restrict vx2,
     T* __restrict vy2,
     T* __restrict vz2)
-// NOLINTEND(bugprone-easily-swappable-parameters)
 {
     float totalTime = 0.f;
 

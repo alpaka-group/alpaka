@@ -32,7 +32,7 @@ struct IotaKernelND
 };
 
 void testCombination(
-    auto queue,
+    auto const& queue,
     auto exec,
     concepts::Vector auto extents,
     concepts::Vector auto frameSize,
