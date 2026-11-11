@@ -45,6 +45,9 @@ TEST_CASE("mathArrayOrientedComplexFloat", "[array-oriented]")
     REQUIRE(alpaka::math::floatEqualExactNoWarning(realAlpaka, realStd));
 
     auto const imagAlpaka = reinterpret_cast<float const(&)[2]>(complexAlpaka)[1];
+    // Array-oriented access to std::complex is guaranteed by the standard, but the analyzer does not model
+    // libstdc++'s internal complex storage and reports the imaginary part as uninitialized.
+    // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.Assign)
     auto const imagStd = reinterpret_cast<float const(&)[2]>(complexStd)[1];
     REQUIRE(alpaka::math::floatEqualExactNoWarning(imagAlpaka, imagStd));
 }

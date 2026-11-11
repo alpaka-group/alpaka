@@ -57,9 +57,11 @@ struct Pixel
 
 void naiveToGray(auto&& buffer)
 {
+    auto const numPixels = onHost::getExtents(buffer).x();
+    auto* const pixels = reinterpret_cast<Pixel*>(onHost::data(buffer));
     std::for_each(
-        reinterpret_cast<Pixel*>(onHost::data(buffer)),
-        reinterpret_cast<Pixel*>(onHost::data(buffer) + onHost::getExtents(buffer).x()),
+        pixels,
+        pixels + numPixels,
         [](Pixel& pixel)
         {
             auto const gray = (pixel.r * 11 + pixel.g * 16 + pixel.b * 5) / 32;
@@ -90,14 +92,15 @@ auto validateResult(
              scalarB * bufHostB[i]) // Direct indexing for B
             / scalar32); // Normalize by scalar32
 
-        Data correctResult = grayValue | (grayValue << 8u) | (grayValue << 16u) | (bufHostA[i] << 24u);
+        Data correctResult
+            = grayValue | (grayValue << 8u) | (grayValue << 16u) | (static_cast<Data>(bufHostA[i]) << 24u);
 
         if(computedGray != correctResult)
         {
             if(falseResults < maxPrintFalseResults)
                 std::cerr << "RGBA[" << i << "] == " << std::hex << computedGray << " != " << correctResult
                           << std::endl;
-            std::cerr << std::resetiosflags(std::ios_base::fmtflags(0));
+            std::cerr << std::dec;
             ++falseResults;
         }
     }

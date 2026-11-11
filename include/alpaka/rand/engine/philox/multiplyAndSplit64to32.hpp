@@ -13,7 +13,7 @@ namespace alpaka::rand::engine::internal
     /// Get high 32 bits of a 64-bit number
     constexpr auto high32Bits(std::uint64_t const x) -> std::uint32_t
     {
-        return static_cast<std::uint32_t>(x >> 32);
+        return static_cast<std::uint32_t>(x >> 32u);
     }
 
     /// Get low 32 bits of a 64-bit number

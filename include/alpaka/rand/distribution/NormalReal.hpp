@@ -54,7 +54,7 @@ namespace alpaka::rand::distribution
             }
 
         private:
-            T_Fp m_secondRngNumber;
+            T_Fp m_secondRngNumber{};
             bool m_hasSecondRngNumber = false;
         };
     } // namespace internal

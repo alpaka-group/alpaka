@@ -84,7 +84,7 @@ namespace alpaka::rand::engine::internal
         constexpr void skip(uint64_t offset)
         {
             static_assert(T_Params::counterSize == 4, "Only counterSize is supported.");
-            this->state.position = static_cast<decltype(this->state.position)>(this->state.position + (offset & 3));
+            this->state.position = static_cast<decltype(this->state.position)>(this->state.position + (offset & 3u));
             offset += this->state.position < 4 ? 0 : 4;
             this->state.position -= this->state.position < 4 ? 0 : 4u;
             for(auto numShifts = this->state.position; numShifts > 0; --numShifts)

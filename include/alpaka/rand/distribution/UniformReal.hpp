@@ -146,7 +146,7 @@ namespace alpaka::rand::distribution::internal
     {
         constexpr auto operator()(T_Engine& engine)
         {
-            return static_cast<uint64_t>(engine()) << 32 | static_cast<uint64_t>(engine());
+            return static_cast<uint64_t>(engine()) << 32u | static_cast<uint64_t>(engine());
         }
     };
 
@@ -213,7 +213,7 @@ namespace alpaka::rand::distribution::internal
         constexpr uint64_t operator()() const
         {
             auto res = ph();
-            return (static_cast<uint64_t>(res[0]) << 32) | static_cast<uint64_t>(res[1]);
+            return (static_cast<uint64_t>(res[0]) << 32u) | static_cast<uint64_t>(res[1]);
         }
     };
 

@@ -66,6 +66,10 @@ namespace custom
         arg1 = 1024,
         arg2 = 2048,
         arg3 = 4096,
+
+        // expected results of a custom sincos(arg1, a, b) definition using bitwise or
+        expectedCustomSincosArg1Arg2 = sincosOp | arg1 | arg2,
+        expectedCustomSincosArg1Arg3 = sincosOp | arg1 | arg3,
     };
 
     ALPAKA_FN_HOST_ACC auto abs(Custom c);
@@ -406,8 +410,9 @@ struct AdlKernel
 
         Custom a, b;
         alpaka::math::sincos(Custom::arg1, a, b);
-        ALPAKA_CHECK(success[0], a == (Custom::sincosOp | Custom::arg1 | Custom::arg2));
-        ALPAKA_CHECK(success[0], b == (Custom::sincosOp | Custom::arg1 | Custom::arg3));
+
+        ALPAKA_CHECK(success[0], a == Custom::expectedCustomSincosArg1Arg2);
+        ALPAKA_CHECK(success[0], b == Custom::expectedCustomSincosArg1Arg3);
     }
 };
 
