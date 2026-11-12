@@ -18,13 +18,14 @@
 
 #include <array> // std::array
 #include <cstddef> // std::size_t
+#include <cstdint> // std::uint8_t
 #include <tuple> // std::tuple
 #include <type_traits> // is_same_v
 #include <typeinfo>
 
 namespace alpaka::onHost::internal
 {
-    enum ScanType
+    enum ScanType : std::uint8_t
     {
         exclusiveScan,
         inclusiveScan
@@ -35,6 +36,8 @@ namespace alpaka::onHost::internal
     template<alpaka::concepts::DeviceKind T_DeviceKind, typename T_Idx, typename T_Data>
     consteval T_Idx maximumMiniBlockSize()
     {
+        // Each device kind is kept as its own branch to improve maintainability and simplify adjustments
+        // NOLINTBEGIN(bugprone-branch-clone)
         if constexpr(T_DeviceKind{} == deviceKind::nvidiaGpu)
             return static_cast<T_Idx>(8);
         else if constexpr(T_DeviceKind{} == deviceKind::amdGpu)
@@ -43,6 +46,7 @@ namespace alpaka::onHost::internal
             return static_cast<T_Idx>(8);
         else
             return static_cast<T_Idx>(32768) / sizeof(T_Data);
+        // NOLINTEND(bugprone-branch-clone)
     }
 
     /* This function introduces padding to the shared memory accesses to reduce bank conflicts between threads. The
@@ -436,7 +440,7 @@ namespace alpaka::onHost::internal
             // enqueue the kernel execution tasks
             queue.enqueue(
                 frameSpec,
-                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, ALPAKA_FORWARD(outputVec), increments});
+                KernelBundle{scanBlocks, numChunks, chunkExtent, inputVec, outputVec, increments});
 
             // always recurse into exclusive scan
             scan<exclusiveScan>(queue, devAcc, exec, bufferNext, increments, increments);

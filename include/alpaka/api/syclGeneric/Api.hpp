@@ -14,6 +14,10 @@ namespace alpaka
     namespace api
     {
         template<typename T_ApiInterface>
+        // NOLINT because API tags such as OneApi, Cuda, Hip, and Host are aggregates.
+        // Making this CRTP constructor private would prevent their aggregate
+        // initialization, requiring explicit constructors and an unnecessary API change.
+        // NOLINTNEXTLINE(bugprone-crtp-constructor-accessibility)
         struct GenericSycl : detail::ApiBase
         {
             using element_type = T_ApiInterface;

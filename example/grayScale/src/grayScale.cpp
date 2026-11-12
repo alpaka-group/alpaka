@@ -137,7 +137,7 @@ auto example(T_Cfg const& cfg, size_t numElements, size_t numberOfRuns, bool ena
     std::cout << "- Example GrayScale" << std::endl;
     std::cout << "    Number of elements [#]: " << numElements << std::endl;
     std::cout << "    Element type [byte]: " << onHost::demangledName<Data>() << std::endl;
-    std::cout << "    Buffer size [Gbyte]: " << numElements * sizeof(Data) / 1.e9 << std::endl;
+    std::cout << "    Buffer size [Gbyte]: " << static_cast<double>(numElements * sizeof(Data)) / 1.e9 << std::endl;
     std::cout << "    Number of runs [#]: " << numberOfRuns << std::endl;
     std::cout << std::endl;
 
@@ -268,7 +268,7 @@ void help(char* argv[])
 auto main(int argc, char* argv[]) -> int
 {
     // Default value if no command line argument used
-    size_t numElements = 1024 * 1024;
+    size_t numElements = 1024llu * 1024llu;
     size_t numberOfRuns = 1;
 
     int opt;

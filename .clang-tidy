@@ -1,5 +1,18 @@
 ---
-Checks: '-*,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
+
+# -bugprone-macro-parentheses is disabled because the check requires every macro argument to be parenthesized.
+# alpaka macros take tokens instead of expressions, e.g. an operator: `lhs op rhs` with `op` = `+` expands to `A + B`,
+# but the parenthesized `lhs (op) rhs` expands to `A (+) B`, which does not compile.
+#
+# -bugprone-exception-escape is disabled because it flags every main() of the examples, benchmarks and documentation
+# snippets: alpaka throws e.g. if no device is found, and catching that in every main() would only add boilerplate code.
+#
+# -The bugprone-easily-swappable-parameters check is disabled because it imposes specific coding-style constraints and
+# unnecessarily restricts interface design. Additionally, alpaka mirrors benchmark implementations such as BabelStream and HACCmk,
+# requiring consistent interfaces with their reference implementations.
+#
+# -performance-avoid-endl is disabled until the remaining std::endl uses are replaced.
+Checks: '-*,bugprone-*,performance-*,-bugprone-macro-parentheses,-bugprone-easily-swappable-parameters,-bugprone-exception-escape,-performance-avoid-endl,readability-identifier-naming,readability-inconsistent-declaration-parameter-name'
 WarningsAsErrors: '*'
 HeaderFilterRegex: '(^|.*/)include/alpaka/.*'
 SystemHeaders: false

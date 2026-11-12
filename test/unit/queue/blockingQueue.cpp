@@ -338,6 +338,7 @@ TEMPLATE_LIST_TEST_CASE("blocking queue event race condition", "[bq][event][race
     std::barrier syncPoint(numThreads + 1);
 
     // Create threads that will enqueue events concurrently
+    threads.reserve(numThreads);
     for(int t = 0; t < numThreads; ++t)
     {
         // emplace thread with lambda that creates and enqueues events. Captures threadId by value
