@@ -20,6 +20,7 @@
 
 #define ALPAKA_PP_REMOVE_BRACKETS(x) ALPAKA_PP_REMOVE_BRACKETS_DO(x)
 
+// clang-format off
 /* version number encoding
  * 4 digits for major version (max 9999)
  * 3 digits for minor version (max 999)
@@ -27,7 +28,7 @@
  * example: version 1.2.3 -> 0001 002 00003
  */
 #define ALPAKA_VERSION_NUMBER(major, minor, patch)                                                                    \
-    ((((major) % 10000llu) * 100'000'000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
+    ((((major) % 10000llu) * 100000000llu) + (((minor) % 1000llu) * 100000llu) + ((patch) % 100000llu))
 
 #define ALPAKA_VERSION_NUMBER_NOT_AVAILABLE ALPAKA_VERSION_NUMBER(0llu, 0llu, 0llu)
 #define ALPAKA_VERSION_NUMBER_UNKNOWN ALPAKA_VERSION_NUMBER(9999llu, 999llu, 99999llu)
@@ -44,3 +45,4 @@
 
 #define ALPAKA_VRRPP_TO_VERSION(V)                                                                                    \
     ALPAKA_VERSION_NUMBER(((V) / 10000llu) % 10000llu, ((V) / 100llu) % 100llu, (V) % 100llu)
+// clang-format on
