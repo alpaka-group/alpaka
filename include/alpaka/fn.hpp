@@ -297,13 +297,13 @@ namespace alpaka::fn
  *
  * @param fnName Name of the function symbol. This can be used to call the function overloads with the static
  * call() function without having to create an instance or with the operator().
- * @param optional_fallback The fallback policy if no vendor function overload is defined for the given device
+ * @param ... The optional fallback policy if no vendor function overload is defined for the given device
  * specification. If set to Fallback::toAlpaka the generic alpaka implementation is called if no other overload is
  * fitting. If set to Fallback::toGeneric the overload with the function symbol as first argument is called if no other
  * function device specification is callable. If set to Fallback::none no fallback is performed and a static assert is
  * triggered if no vendor function overload is defined for the given device specification. Default:
  * Fallback::toGeneric.
- * @param optional_registartion If set to Registration::enforced the isRegistered() can be called, and it is
+ * @param ... Optional, if set to Registration::enforced the isRegistered() can be called, and it is
  * required to define alpakaFnRegister() for on T_FnClass. If set to Registration::none the isRegistered()
  * function is not available and no registration of the vendor function overloads is required. If set to
  * Registration::alwaysTrue isRegistered() will always return true. This can be used to skip the registration of

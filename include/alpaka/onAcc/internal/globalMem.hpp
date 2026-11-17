@@ -11,7 +11,8 @@
 #include "alpaka/mem/MdSpan.hpp"
 #include "alpaka/mem/MdSpanArray.hpp"
 
-/** @file global device memory implementation for all APIs
+/** @file
+ * @brief global device memory implementation for all APIs
  *
  * We need many preprocessor macros to handle the device global feature.
  * The reason is that we would like to have the possibility to create a variable where the same name can be used on all

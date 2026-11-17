@@ -124,7 +124,7 @@ namespace alpaka::onAcc::cpu::detail
         //!
         //! \tparam T type should fit into the chunk
         //! \param byteOffset Current byte offset.
-        //! \param byteOffset Number of bytes to allocate, should be at least sizeof(T).
+        //! \param numBytes Number of bytes to allocate, should be at least sizeof(T).
         //! \result Byte offset to the end of the data chunk, relative to m_mem..
         template<typename T>
         auto varChunkEnd(uint32_t byteOffset, uint32_t numBytes) const -> std::uint32_t

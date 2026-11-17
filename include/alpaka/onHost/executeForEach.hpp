@@ -52,7 +52,7 @@ namespace alpaka::onHost
      *
      * @param callable Callable that can be invoked with device specification and returns an execution status.
      *        A return value of zero (`EXIT_SUCCESS`) indicates success; any non-zero value indicates a failure.
-     * @param tuple Tuple like list of device specifications used to invoke the callable.
+     * @param tupleOfDeviceSpecs Tuple like list of device specifications used to invoke the callable.
      *         otherwise, at least one failure occurred.
      * @return The disjunction of all returned error codes. If false, the result is `EXIT_SUCCESS`;
      *          otherwise, at least a failure occurred.

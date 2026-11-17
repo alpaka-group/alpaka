@@ -109,12 +109,12 @@ namespace alpaka::onAcc
          * @attention The number of elements to process is derived from the first MdSpan object.
          *            All other MdSpan objects must have at least the same number of elements.
          *
-         * @param T_maxConcurrencyInByte
+         * @tparam T_maxConcurrencyInByte
          *    Maximum number of bytes to be used for concurrency.
          *    Concurrency bytes describe a virtual simd pack size which is not exceeded.
          *    Internally a best fitting SIMD width is calculated and instruction parallelism is exposed based on
          *    T_maxConcurrencyInByte.
-         * @param T_MemAlignment alignment of the memory, if no alignments is given the alignment will be derived from
+         * @tparam T_MemAlignment alignment of the memory, if no alignments is given the alignment will be derived from
          * the MdSpan data descriptions
          * @param func the functor to be executed
          * @param data0 the first data to be processed

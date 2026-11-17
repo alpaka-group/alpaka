@@ -96,7 +96,7 @@ namespace alpaka::api::util
     /** provides a memory description to create multidimensional linewise aligned memory within a one dimensional
      * byte area
      *
-     * @param alignment data alignment in bytes
+     * @param alignmentInByte data alignment in bytes
      * @return tuple with the linearized data blob size in bytes and multi-dimensional pitches,
      * std::tuple(numBytes,pitchMD)
      */
