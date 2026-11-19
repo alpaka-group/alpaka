@@ -98,11 +98,6 @@ static_assert(
 // no constexpr destructor, so an expression involving one could never appear here.
 static_assert(onHost::hostHasProperty(memoryProperty::defaultProperty) == memoryProperty::defaultProperty);
 
-// memoryProperty::defaultProperty is implemented by every device, so the one element list is accepted.
-static_assert(
-    onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty)
-    == onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
-
 struct IotaValidate
 {
     ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<int> auto success, concepts::IMdSpan auto in)

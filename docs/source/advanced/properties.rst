@@ -70,7 +70,9 @@ Host Allocations
 
 It follows the same rules as ``hasProperty``, and it constructs no device.
 
-The host device spans every CPU domain of the machine, meaning that memory also span on all the memory of a CPU. If a specific kind of memory is requested, IE highest bandwidth (HBM for example), memory will be allocated on all HBM of the CPU.
+The host device spans every CPU domain of the machine, so its allocations can use the memory of all CPU domains.
+When a placement preference is requested, for example ``bestBandwidth`` to select HBM, the allocation is bound to
+all memory nodes which hwloc reports as best for that property.
 
 Which Devices Implement What
 ----------------------------
@@ -94,12 +96,17 @@ Runtime Availability
 
 Whether a device *implements* a property is a compile time question, whether the machine the program runs on can actually *deliver* it is not. A CPU device in an hwloc build implements ``bestBandwidth`` even on a machine whose firmware exposes no memory attribute data, because that is only discoverable once the program runs.
 
-When the property cannot be carried out at runtime, alpaka prints a warning on ``std::cerr`` and the allocation keeps the default placement. This happens when:
+When the property cannot be carried out at runtime, alpaka reports it and falls back to the default placement:
 
-- hwloc provides no data for the requested attribute on this machine, for example a platform without ACPI HMAT
-- the OS or container refuses the memory binding (missing privileges, restricted cpuset)
+- hwloc provides no data for the requested attribute on this machine, for example a platform without ACPI HMAT.
+  alpaka prints a warning on ``std::cerr`` and falls back to the default placement.
+- the OS or container refuses the memory binding (missing privileges, restricted cpuset). With
+  ``alpaka_HOST_MemPinningCanFail`` enabled alpaka prints a warning and keeps the default placement, otherwise
+  the allocation throws.
+- the bind itself fails, for example because the selected nodes cannot satisfy the request. The allocation
+  throws, it does not fall back silently.
 
-The allocation always succeeds, it just may not be placed as asked. Each distinct warning is printed only once per process. Set the environment variable ``ALPAKA_NO_WARNINGS`` to silence them.
+Each distinct warning is printed only once per process. Set the environment variable ``ALPAKA_NO_WARNINGS`` to silence the warnings; it does not turn a failing bind into a successful allocation.
 
 ``memoryProperty::locality`` is the most widely available preference, because hwloc derives it from the topology itself rather than from firmware tables.
 

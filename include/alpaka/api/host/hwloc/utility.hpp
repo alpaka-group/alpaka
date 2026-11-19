@@ -513,11 +513,13 @@ namespace alpaka::onHost::internal::hwloc
     }
 #endif
 
-    /** Set the default NUMA memory node for a CPU-domain memory range.
+    /** Pin a CPU-domain memory range to the NUMA memory nodes selected by the placement preference.
      *
      * @attention This method should be called before the memory is touched, else it may have no effect.
-     *            If a cpuDomainIdx contains more than one numa domain, the first numa domain will be used unless a
-     *            more specific placement policy is requested via `property`.
+     *            memoryProperty::Default binds to every memory node of the CPU domain, so the allocation stays
+     *            inside the domain while the OS picks a node within it on first touch. For 'allDomains' the
+     *            placement is left to the OS. A placement preference binds to the nodes which hwloc reports as best
+     *            for that property inside the domain.
      *
      * @param ptr pointer address to pin, nullptr is valid input.
      * @param bytes the number of bytes to pin starting from the ptr address.
@@ -554,6 +556,10 @@ namespace alpaka::onHost::internal::hwloc
             {
                 std::vector<hwloc_obj_t> const domainNodes = getMemoryNodes(domain);
 
+                // BestBandwidth and BestLatency are initiator-relative, so the query is done with the domain's
+                // own cpuset. HWLOC_MEMATTR_ID_LOCALITY is not initiator-relative (see hwloc memattrs.h); its
+                // value is the number of PUs in the node's locality. It is still evaluated per domain so the
+                // result cannot leave the device's domain.
                 hwloc_location location{};
                 location.type = HWLOC_LOCATION_TYPE_CPUSET;
                 location.location.cpuset = domain->cpuset;
@@ -570,6 +576,8 @@ namespace alpaka::onHost::internal::hwloc
 
                     int err = hwloc_memattr_get_value(topology, attr, node, &location, 0, &value);
 
+                    // hwloc reports a missing value with a non-zero return code. A zero value is skipped as
+                    // well because it is not a usable bandwidth or latency measurement.
                     if(err != 0 || value == 0)
                         continue;
 

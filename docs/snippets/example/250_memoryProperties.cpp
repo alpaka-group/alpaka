@@ -16,7 +16,7 @@
 
 using namespace alpaka;
 
-TEST_CASE("memory allocations", "[docs]")
+TEST_CASE("memory allocations with properties", "[docs]")
 {
     onHost::concepts::Device auto device = onHost::makeHostDevice();
     {
@@ -55,7 +55,7 @@ void callKernel([[maybe_unused]] auto dummyMemory)
 {
 }
 
-TEST_CASE("memory allocations deferred", "[docs]")
+TEST_CASE("memory allocations deferred with properties", "[docs]")
 {
     onHost::concepts::Device auto device = onHost::makeHostDevice();
     onHost::Queue queue = device.makeQueue();
@@ -76,7 +76,7 @@ TEST_CASE("memory allocations deferred", "[docs]")
     // END-TUTORIAL-allocBufferDeferred
 }
 
-TEST_CASE("memory allocations portable", "[docs]")
+TEST_CASE("memory allocations portable with properties", "[docs]")
 {
     onHost::concepts::Device auto device = onHost::makeHostDevice();
     // BEGIN-TUTORIAL-allocPortable
@@ -97,7 +97,7 @@ TEST_CASE("memory allocations portable", "[docs]")
     unused(buffer);
 }
 
-TEST_CASE("memory allocations like", "[docs]")
+TEST_CASE("memory allocations like with properties", "[docs]")
 {
     onHost::concepts::Device auto computeDevice = onHost::makeHostDevice();
     // BEGIN-TUTORIAL-allocLike

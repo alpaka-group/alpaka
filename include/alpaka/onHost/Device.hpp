@@ -538,7 +538,7 @@ namespace alpaka::onHost
         auto const& view,
         MemoryPolicyList<T_Policies...> const& policies)
     {
-        return alloc<alpaka::trait::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view), policies);
+        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view), policies);
     }
 
     ///@}

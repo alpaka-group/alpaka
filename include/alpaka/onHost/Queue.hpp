@@ -595,10 +595,7 @@ namespace alpaka::onHost
         auto const& view,
         MemoryPolicyList<T_Policies...> const& policies)
     {
-        return allocDeferred<alpaka::trait::GetValueType_t<ALPAKA_TYPEOF(view)>>(
-            queue,
-            internal::getExtents(view),
-            policies);
+        return allocDeferred<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(queue, internal::getExtents(view), policies);
     }
 
     /** @} */
