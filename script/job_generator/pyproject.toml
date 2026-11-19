@@ -11,12 +11,12 @@ authors = [
     {name = "Simeon Ehrig", email = "s.ehrig@hzdr.de"},
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 description = "Job generator application for the alpaka CI."
 version = "1.0"
 
 dependencies = [
-    "bashi-ci == 1.1.4",
+    "bashi-ci == 1.2.0",
     "pyaml",
     "types-PyYAML",
     "typeguard",
