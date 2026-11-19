@@ -31,7 +31,7 @@ int example(auto const devSpec)
     // fill the host buffers with values
     for(uint32_t i = 0; i < size; ++i)
     {
-        hostBuffer[i] = i;
+        hostBuffer[i] = static_cast<float>(i);
     }
 
     // use the first device

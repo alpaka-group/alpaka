@@ -124,7 +124,7 @@ void testCombinationOmpParallel(auto queue, auto exec, concepts::Vector auto ext
 }
 
 // test the queue ompCollective outside a parallel section
-void testCombinationNoParallel(auto queue, auto exec, concepts::Vector auto extents)
+void testCombinationNoParallel(auto const& queue, auto exec, concepts::Vector auto extents)
 {
     auto dBuff = onHost::alloc<ALPAKA_TYPEOF(extents)>(queue.getDevice(), extents);
     auto dBuffCounter = onHost::alloc<uint32_t>(queue.getDevice(), extents);

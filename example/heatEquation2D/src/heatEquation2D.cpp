@@ -40,7 +40,9 @@ namespace alpaka::example::heatEquation
         std::cout << "    Time steps [#]: " << numTimeSteps << std::endl;
         std::cout << "    tMax: " << tMax << std::endl;
         std::cout << "    Element type: " << onHost::demangledName<Data>() << std::endl;
-        std::cout << "    Buffer size [kbyte]: " << sideLength * sideLength * sizeof(Data) / 1.e3 << std::endl;
+        std::cout << "    Buffer size [kbyte]: "
+                  << static_cast<double>(static_cast<size_t>(sideLength * sideLength) * sizeof(Data)) / 1.e3
+                  << std::endl;
         std::cout << "    Result checking is " << (autoCheck ? "enabled" : "disabled") << std::endl;
         std::cout << "================================" << std::endl;
         std::cout << std::endl;

@@ -173,7 +173,9 @@ namespace alpaka::onHost
         return trait::IsExecutorSupportedBy::Op<ALPAKA_TYPEOF(executor), ALPAKA_TYPEOF(deviceHandle)>::value;
     }
 
-    constexpr auto supportedExecutors(internal::concepts::DeviceHandle auto deviceHandle, auto const listOfExecutors)
+    constexpr auto supportedExecutors(
+        internal::concepts::DeviceHandle auto const& deviceHandle,
+        auto const listOfExecutors)
     {
         return meta::filter(
             // we can not use isExecutorSupportedBy() because gcc14 is stricter in the detection which functions can
@@ -187,7 +189,7 @@ namespace alpaka::onHost
      *
      * Picks the first executor (with the most parallelism) supported by the device out of all known executors.
      */
-    constexpr auto defaultExecutor(internal::concepts::DeviceHandle auto deviceHandle)
+    constexpr auto defaultExecutor(internal::concepts::DeviceHandle auto const& deviceHandle)
     {
         return std::get<0>(supportedExecutors(deviceHandle, exec::allExecutors));
     }
