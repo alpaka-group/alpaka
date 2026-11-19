@@ -14,6 +14,7 @@
 #include "alpaka/onAcc/Acc.hpp"
 #include "alpaka/onAcc/SimdAlgo.hpp"
 #include "alpaka/onAcc/atomic.hpp"
+#include "alpaka/onAcc/warp.hpp"
 #include "alpaka/onHost/interface.hpp"
 #include "alpaka/onHost/logger/logger.hpp"
 #include "alpaka/trait.hpp"
@@ -23,6 +24,25 @@ namespace alpaka::onHost::internal
     struct SimdTransformReduceKernel
     {
         uint32_t dynSharedMemBytes = 0u;
+
+        // Atomic update of the global result, wrapped reduce functors e.g. ScalarFunc or StencilFunc are unwrapped.
+        static ALPAKA_FN_ACC void atomicUpdate(
+            auto const& acc,
+            auto const& reduceFunc,
+            auto* result,
+            auto const& value)
+        {
+            using alpaka::onAcc::atomic::alpakaAtomicInvoke;
+            if constexpr(
+                alpaka::concepts::SpecializationOf<ALPAKA_TYPEOF(reduceFunc), ScalarFunc>
+                || alpaka::concepts::SpecializationOf<ALPAKA_TYPEOF(reduceFunc), StencilFunc>)
+            {
+                using ReduceFunctor = typename ALPAKA_TYPEOF(reduceFunc)::Functor;
+                alpakaAtomicInvoke(static_cast<ReduceFunctor const&>(reduceFunc), acc, result, value);
+            }
+            else
+                alpakaAtomicInvoke(reduceFunc, acc, result, value);
+        }
 
         template<typename T_DataType>
         ALPAKA_FN_ACC void operator()(
@@ -41,29 +61,20 @@ namespace alpaka::onHost::internal
                 "The neutral element type must match the data output type.");
 
 
-            // Shared memory for block-wide reduction
-            T_DataType* dynS = onAcc::getDynSharedMem<T_DataType>(acc);
-            auto pitchMd = alpaka::calculatePitchesFromExtents<T_DataType>(chunkExtents);
-            auto tbSum = MdSpan{dynS, chunkExtents, pitchMd};
-
-            auto traverseInFrame = alpaka::onAcc::makeIdxMap(
-                acc,
-                alpaka::onAcc::worker::threadsInBlock,
-                alpaka::IdxRange{chunkExtents});
-
-            // Initialize shared memory by setting all elements to the neutral element or identity value
-            // for the reduction operation.
-            for(auto elemIdxInFrame : traverseInFrame)
-            {
-                tbSum[elemIdxInFrame] = neutralElement;
-            }
-
+            /* Each thread reduces its elements in a register. The threads of a warp are reduced with warp shuffles,
+             * only the warp results are exchanged via shared memory.
+             */
             auto const chunkDataExtent = numChunks * chunkExtents;
             auto traverseOverFrames = alpaka::onAcc::makeIdxMap(
                 acc,
                 alpaka::onAcc::worker::blocksInGrid,
                 alpaka::IdxRange{chunkDataExtent.fill(0), chunkDataExtent, chunkExtents});
+            auto traverseInFrame = alpaka::onAcc::makeIdxMap(
+                acc,
+                alpaka::onAcc::worker::threadsInBlock,
+                alpaka::IdxRange{chunkExtents});
 
+            T_DataType threadResult = neutralElement;
             for(auto chunkIdx : traverseOverFrames)
             {
                 for(alpaka::concepts::Vector auto elemIdxInChunk : traverseInFrame)
@@ -72,59 +83,32 @@ namespace alpaka::onHost::internal
                         alpaka::onAcc::WorkerGroup{chunkIdx + elemIdxInChunk, chunkDataExtent}};
 
                     // reduce functor with simd package support
-                    auto reducedValue
-                        = allThreads
-                              .transformReduce(acc, extentMd, neutralElement, reduceFunc, transformFunc, inputs...);
-                    auto& tbSumRef = tbSum[elemIdxInChunk];
-                    tbSumRef = reduceFunc(tbSumRef, reducedValue);
+                    threadResult = reduceFunc(
+                        threadResult,
+                        allThreads
+                            .transformReduce(acc, extentMd, neutralElement, reduceFunc, transformFunc, inputs...));
                 }
             }
 
-            auto const laneIdInBlock = linearize(acc[alpaka::layer::thread].count(), acc[alpaka::layer::thread].idx());
-            auto const blockSize = acc[alpaka::layer::thread].count().product();
-            // Synchronize threads before aggregation
+            // The block size is a power of two, as required by warp::reduce for blocks smaller than a warp.
+            T_DataType const warpResult = onAcc::warp::reduce(acc, threadResult, reduceFunc);
+
+            T_DataType* warpResults = onAcc::getDynSharedMem<T_DataType>(acc);
+            if(onAcc::warp::getLaneIdx(acc) == 0u)
+                warpResults[onAcc::warp::getWarpIdx(acc)] = warpResult;
             alpaka::onAcc::syncBlockThreads(acc);
 
-            // Aggregate shared memory slots
-            for(auto [linearSharedElemIdx] : alpaka::onAcc::makeIdxMap(
-                    acc,
-                    alpaka::onAcc::worker::linearThreadsInBlock,
-                    alpaka::IdxRange{blockSize, chunkExtents.product()}))
+            // The first warp reduces the warp results and updates the global result.
+            if(onAcc::warp::getWarpIdx(acc) == 0u)
             {
-                dynS[laneIdInBlock] = reduceFunc(dynS[laneIdInBlock], dynS[linearSharedElemIdx]);
-            }
+                T_DataType blockResult = neutralElement;
+                for(auto [i] :
+                    onAcc::makeIdxMap(acc, onAcc::worker::linearThreadsInWarp, onAcc::range::linearWarpsInBlock))
+                    blockResult = reduceFunc(blockResult, warpResults[i]);
+                blockResult = onAcc::warp::reduce(acc, blockResult, reduceFunc);
 
-            alpaka::onAcc::syncBlockThreads(acc);
-
-            // Perform a parallel reduction within the block
-            // This is a tree reduction algorithm
-            for(auto offset = blockSize / 2; offset > 0; offset /= 2)
-            {
-                alpaka::onAcc::syncBlockThreads(acc);
-                if(laneIdInBlock < offset)
-                {
-                    dynS[laneIdInBlock] = reduceFunc(dynS[laneIdInBlock], dynS[laneIdInBlock + offset]);
-                }
-            }
-
-            // Atomic update of the global result
-            if(laneIdInBlock == 0)
-            {
-                using alpaka::onAcc::atomic::alpakaAtomicInvoke;
-                if constexpr(
-                    alpaka::concepts::SpecializationOf<ALPAKA_TYPEOF(reduceFunc), ScalarFunc>
-                    || alpaka::concepts::SpecializationOf<ALPAKA_TYPEOF(reduceFunc), StencilFunc>)
-                {
-                    // Handle wrapped reduce functors e.g. ScalarFunc or StencilFunc
-                    using ReduceFunctor = typename ALPAKA_TYPEOF(reduceFunc)::Functor;
-                    alpakaAtomicInvoke(
-                        static_cast<ReduceFunctor const&>(reduceFunc),
-                        acc,
-                        output.data(),
-                        dynS[laneIdInBlock]);
-                }
-                else
-                    alpakaAtomicInvoke(reduceFunc, acc, output.data(), dynS[laneIdInBlock]);
+                if(onAcc::warp::getLaneIdx(acc) == 0u)
+                    atomicUpdate(acc, reduceFunc, output.data(), blockResult);
             }
         }
     };
@@ -171,8 +155,10 @@ namespace alpaka::onHost::internal
         auto numChunks = frameSpec.getNumFrames();
         auto chunkExtents = frameSpec.getFrameExtents();
 
+        // shared memory holds one result per warp
+        auto const warpSize = static_cast<IndexType>(queue.getDevice().getDeviceProperties().warpSize);
         auto kernelFn = SimdTransformReduceKernel{
-            static_cast<uint32_t>(frameSpec.getFrameExtents().product() * sizeof(T_DataType))};
+            static_cast<uint32_t>(divCeil(chunkExtents.product(), warpSize) * sizeof(T_DataType))};
 
         ALPAKA_LOG_INFO(
             onHost::logger::memory,
