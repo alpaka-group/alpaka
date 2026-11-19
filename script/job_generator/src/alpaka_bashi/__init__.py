@@ -27,6 +27,7 @@ from alpaka_bashi.verify import verify
 from alpaka_bashi.versions import (
     get_alpaka_version_relation,
     get_software_versions_for_alpaka,
+    get_spack_alias,
     get_used_backends,
 )
 from alpaka_bashi.writers import write_multiple_file_job_configuration, write_single_file_job_configuration
@@ -52,6 +53,7 @@ __all__ = [
     "verify",
     "get_version_aliases",
     "get_alpaka_version_relation",
+    "get_spack_alias",
     "get_used_backends",
     "get_software_versions_for_alpaka",
     "write_multiple_file_job_configuration",

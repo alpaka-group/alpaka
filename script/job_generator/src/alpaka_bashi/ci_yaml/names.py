@@ -30,6 +30,7 @@ from alpaka_bashi.globals import (
     JOB_EXECUTION_COMPILE_ONLY_VER,
     JOB_EXECUTION_TYPE,
 )
+from alpaka_bashi.versions import get_spack_alias
 
 
 @typechecked
@@ -109,3 +110,24 @@ def get_job_name(comb: bashi.Combination) -> str:
         job_name += "_compile_only"
 
     return job_name + get_job_suffix(comb)
+
+
+@typechecked
+def get_spack_build_job_name(
+    ubuntu_version: bashi.ValueVersion, software_name: bashi.ValueName, software_version: bashi.ValueVersion
+) -> str:
+    """
+    Return the name of a spack package build job.
+
+    Args:
+        ubuntu_version (bashi.ValueVersion): Ubuntu version of the base image.
+        software_name (bashi.ValueName): Name of the software.
+        software_version (bashi.ValueVersion): Software version
+
+    Returns:
+        str: Job name
+    """
+    return (
+        f"spack_build_{bashi.ubuntu_version_to_string(ubuntu_version)}_"
+        f"{get_spack_alias()[software_name].package_name}{software_version}"
+    )
