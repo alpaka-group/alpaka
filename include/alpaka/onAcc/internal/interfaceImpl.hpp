@@ -12,19 +12,26 @@
 #include "alpaka/onAcc/internal/interface.hpp"
 #include "alpaka/onAcc/internal/warp.hpp"
 
+#include <utility>
+
 namespace alpaka::onAcc
 {
     namespace internalCompute
     {
+        /** Index type of the threads in a block, used for all warp indices and extents. */
+        template<typename T_Acc>
+        using BlockIdxType
+            = alpaka::GetValueType_t<ALPAKA_TYPEOF(std::declval<T_Acc const&>()[layer::thread].count())>;
+
         template<concepts::Acc T_Acc>
         struct GetIdxWithin::Op<T_Acc, ALPAKA_TYPEOF(origin::warp), ALPAKA_TYPEOF(unit::threads)>
         {
-            constexpr alpaka::concepts::Vector<uint32_t, 1u> auto operator()(
+            constexpr alpaka::concepts::Vector<BlockIdxType<T_Acc>, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::warp),
                 ALPAKA_TYPEOF(unit::threads)) const
             {
-                return Vec{warp::internal::getLaneIdx(acc)};
+                return Vec{static_cast<BlockIdxType<T_Acc>>(warp::internal::getLaneIdx(acc))};
             }
         };
 
@@ -43,12 +50,12 @@ namespace alpaka::onAcc
         template<concepts::Acc T_Acc>
         struct GetIdxWithin::Op<T_Acc, ALPAKA_TYPEOF(origin::block), ALPAKA_TYPEOF(unit::warps)>
         {
-            constexpr alpaka::concepts::Vector<uint32_t, 1u> auto operator()(
+            constexpr alpaka::concepts::Vector<BlockIdxType<T_Acc>, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::block),
                 ALPAKA_TYPEOF(unit::warps)) const
             {
-                return Vec{warp::internal::getWarpIdx(acc)};
+                return Vec{static_cast<BlockIdxType<T_Acc>>(warp::internal::getWarpIdx(acc))};
             }
         };
 
@@ -67,7 +74,7 @@ namespace alpaka::onAcc
         template<concepts::Acc T_Acc>
         struct GetIdxWithin::Op<T_Acc, ALPAKA_TYPEOF(origin::grid), ALPAKA_TYPEOF(unit::warps)>
         {
-            constexpr alpaka::concepts::Vector<uint32_t, 1u> auto operator()(
+            constexpr alpaka::concepts::Vector<alpaka::NotRequired, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::grid),
                 ALPAKA_TYPEOF(unit::warps)) const
@@ -78,7 +85,9 @@ namespace alpaka::onAcc
 
                 std::integral auto linearNumWarpsInBlock
                     = acc.getExtentsOf(onAcc::origin::block, onAcc::unit::warps).product();
-                return linearBlockIdx * linearNumWarpsInBlock + Vec{warp::internal::getWarpIdx(acc)};
+                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(linearBlockIdx)>;
+                return linearBlockIdx * static_cast<IndexType>(linearNumWarpsInBlock)
+                       + Vec{static_cast<IndexType>(warp::internal::getWarpIdx(acc))};
             }
         };
 
@@ -118,13 +127,12 @@ namespace alpaka::onAcc
         template<concepts::Acc T_Acc>
         struct GetExtentsOf::Op<T_Acc, ALPAKA_TYPEOF(origin::warp), ALPAKA_TYPEOF(unit::threads)>
         {
-            constexpr alpaka::concepts::Vector<alpaka::NotRequired, 1u> auto operator()(
+            constexpr alpaka::concepts::Vector<BlockIdxType<T_Acc>, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::warp),
                 ALPAKA_TYPEOF(unit::threads)) const
             {
-                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(acc[layer::thread].count())>;
-                return alpaka::Vec<IndexType, 1u>{static_cast<IndexType>(warp::internal::getNumActiveLanes(acc))};
+                return Vec{static_cast<BlockIdxType<T_Acc>>(warp::internal::getNumActiveLanes(acc))};
             }
         };
 
@@ -143,13 +151,12 @@ namespace alpaka::onAcc
         template<concepts::Acc T_Acc>
         struct GetExtentsOf::Op<T_Acc, ALPAKA_TYPEOF(origin::block), ALPAKA_TYPEOF(unit::warps)>
         {
-            constexpr alpaka::concepts::Vector<alpaka::NotRequired, 1u> auto operator()(
+            constexpr alpaka::concepts::Vector<BlockIdxType<T_Acc>, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::block),
                 ALPAKA_TYPEOF(unit::warps)) const
             {
-                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(acc[layer::thread].count())>;
-                return alpaka::Vec<IndexType, 1u>{static_cast<IndexType>(warp::internal::getNumWarps(acc))};
+                return Vec{static_cast<BlockIdxType<T_Acc>>(warp::internal::getNumWarps(acc))};
             }
         };
 
