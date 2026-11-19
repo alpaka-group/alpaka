@@ -113,10 +113,10 @@ namespace alpaka::onHost
                 internal::hwloc::setThreadAffinity(m_cpuGroupIdx);
             }
 
-            template<typename T>
-            void pinPointer(T* const ptr, size_t bytes)
+            template<typename T, alpaka::concepts::MemoryProperty T_Property>
+            void pinPointer(T* const ptr, size_t bytes, T_Property property)
             {
-                internal::hwloc::pinPointer(ptr, bytes, m_cpuGroupIdx);
+                internal::hwloc::pinPointer(ptr, bytes, property, m_cpuGroupIdx);
             }
 
             bool isNumaAware() const
@@ -221,14 +221,34 @@ namespace alpaka::onHost
         {
         };
 #endif
+
+        /** The CPU backend places host memory on NUMA nodes, therefore it implements all placement preferences.
+         *
+         * hwloc carries the placement out, so a build without hwloc implements none of them and requesting one is
+         * a compile time error. Use onHost::hasProperty() to keep a single source compiling either way.
+         */
+#if ALPAKA_HAS_HWLOC
+        template<alpaka::concepts::MemoryProperty T_Property, typename T_Platform>
+        requires(
+            std::same_as<T_Property, memoryProperty::BestLatency>
+            || std::same_as<T_Property, memoryProperty::BestBandwidth>
+            || std::same_as<T_Property, memoryProperty::Locality>)
+        struct IsMemoryPropertySupportedBy::Op<T_Property, cpu::Device<T_Platform>> : std::true_type
+        {
+        };
+#endif
     } // namespace trait
 
     namespace internal
     {
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents, T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
                 constexpr uint32_t alignment = api::util::simdOptimizedAlignment<T_Type>(
@@ -239,7 +259,7 @@ namespace alpaka::onHost
                 auto deviceDependency = onHost::Device{device.getSharedPtr()};
 
                 T_Type* ptr = reinterpret_cast<T_Type*>(alpaka::core::alignedAlloc(alignment, memSizeInByte));
-                device.pinPointer(ptr, memSizeInByte);
+                device.pinPointer(ptr, memSizeInByte, property);
                 // deviceDependency is captured to keep the device alive until the memory is deleted
                 auto deleter = [ptr, deviceDependency]() { alpaka::core::alignedFree(alignment, ptr); };
 
@@ -263,23 +283,31 @@ namespace alpaka::onHost
             }
         };
 
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct AllocUnified::Op<T_Type, cpu::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocUnified::Op<T_Type, cpu::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents, T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
-                return Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents>{}(device, extents);
+                return Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents, T_Property>{}(device, extents, property);
             }
         };
 
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct AllocMapped::Op<T_Type, cpu::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocMapped::Op<T_Type, cpu::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(cpu::Device<T_Platform>& device, T_Extents const& extents, T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
-                return Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents>{}(device, extents);
+                return Alloc::Op<T_Type, cpu::Device<T_Platform>, T_Extents, T_Property>{}(device, extents, property);
             }
         };
 

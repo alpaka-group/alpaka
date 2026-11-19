@@ -1,0 +1,135 @@
+.. _properties:
+
+Properties
+==========
+
+Memory Properties
+-----------------
+
+The properties in this subsection are available in the namespace ``alpaka::memoryProperty``. They can be applied to all allocation calls: ``alloc``, ``allocHost``, ``allocMapped``, ``allocUnified``, ``allocLike``, ``allocHostLike``, ``allocDeferred`` and ``allocLikeDeferred``.
+
+- ``memoryProperty::bestLatency`` This property selects memory nodes with the lowest access latency for memory pinning
+- ``memoryProperty::bestBandwidth`` This property selects memory nodes with the highest memory bandwidth for memory pinning
+- ``memoryProperty::locality`` This property selects the closest memory nodes for memory pinning
+- ``memoryProperty::defaultProperty`` Uses the default alpaka behavior. On a ``numaCpu`` device this strictly binds to the first memory node of the CPU domain
+
+Only one property of this category may be given per allocation call. If none is given, ``memoryProperty::defaultProperty`` is used.
+
+Device Support
+--------------
+
+Not every device implements every memory property. A device declares the properties it can honour, and an allocation which requests a property the device does not implement is rejected at compile time.
+
+- ``onHost::hasProperty(deviceOrQueue, properties...)`` returns the first property of the list which the device implements
+- ``onHost::hostHasProperty(properties...)`` the same for the host device, for the allocations which take no device argument
+- ``onHost::isMemoryPropertySupportedBy(property, deviceOrQueue)`` returns whether the device can honour the property
+- ``onHost::supportedMemoryProperties(deviceOrQueue)`` returns a tuple with all properties the device can honour
+
+``hasProperty`` is variadic and scans its arguments from left to right, returning the first property the device implements. A property that belongs to a different kind of device is skipped rather than rejected, which is what keeps a single source portable across backends:
+
+.. code-block:: cpp
+
+   // compile time error, a GPU does not implement a NUMA placement preference
+   auto bufferA = onHost::alloc<int>(gpuDevice, extents, memoryProperty::bestBandwidth);
+
+   // returns memoryProperty::locality on a CPU device, someGpuProperty is skipped
+   auto property = onHost::hasProperty(
+       cpuDevice,
+       someGpuProperty,
+       memoryProperty::locality,
+       memoryProperty::defaultProperty);
+   auto bufferB = onHost::alloc<int>(cpuDevice, extents, property);
+
+The whole selection happens at compile time, the returned type is the selected property tag.
+
+The call is a compile time error exactly when the device implements **none** of the listed properties, so that a request is not quietly turned into something else. A list the device can satisfy needs no terminator:
+
+.. code-block:: cpp
+
+   // ok on a CPU device in an hwloc build, no terminator needed because bestBandwidth is implemented there
+   auto p1 = onHost::hasProperty(cpuDevice, memoryProperty::bestBandwidth);
+   // compile time error, a GPU implements none of these
+   auto p2 = onHost::hasProperty(gpuDevice, memoryProperty::bestBandwidth, memoryProperty::locality);
+   // ok, accepting the backend default placement is written down explicitly
+   auto p3 = onHost::hasProperty(gpuDevice, memoryProperty::bestBandwidth, memoryProperty::defaultProperty);
+
+``memoryProperty::defaultProperty`` is implemented by every device, so ending the list with it is how a call states that the backend default placement is acceptable. That is what makes one source portable across devices and build configurations, and it is the only way to keep a list satisfiable everywhere.
+
+Host Allocations
+----------------
+
+``allocHost()`` and ``allocHostLike()`` take no device argument, they always allocate on the host controller device
+(``api::Host`` and ``deviceKind::cpu``). There is therefore nothing to hand to ``hasProperty``, and
+``onHost::hostHasProperty(properties...)`` queries that device instead:
+
+.. code-block:: cpp
+
+   auto buffer = onHost::allocHost<int>(
+       extents,
+       onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+
+It follows the same rules as ``hasProperty``, and it constructs no device.
+
+The host device spans every CPU domain of the machine, so its allocations can use the memory of all CPU domains.
+When a placement preference is requested, for example ``bestBandwidth`` to select HBM, the allocation is bound to
+all memory nodes which hwloc reports as best for that property.
+
+Which Devices Implement What
+----------------------------
+
+Currently only CPU devices (``deviceKind::cpu`` and ``deviceKind::numaCpu``) implement ``bestLatency``, ``bestBandwidth`` and ``locality``, and only when alpaka is **built with hwloc**. hwloc is what carries the placement out, so in a build without it a CPU device implements nothing but ``memoryProperty::defaultProperty`` and requesting a placement preference is a compile time error, exactly as it is on a GPU.
+
+This means a source which passes a placement preference *directly* is specific to an hwloc-enabled CPU only build. Routing it through ``hasProperty`` keeps it compiling either way:
+
+.. code-block:: cpp
+
+   // needs a build with hwloc, compile time error without it
+   auto bufferA = onHost::alloc<int>(cpuDevice, extents, memoryProperty::bestBandwidth);
+   // compiles with and without hwloc
+   auto bufferB = onHost::alloc<int>(
+       cpuDevice, extents, onHost::hasProperty(cpuDevice, memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+
+All other devices implement only ``memoryProperty::defaultProperty``.
+
+Runtime Availability
+--------------------
+
+Whether a device *implements* a property is a compile time question, whether the machine the program runs on can actually *deliver* it is not. A CPU device in an hwloc build implements ``bestBandwidth`` even on a machine whose firmware exposes no memory attribute data, because that is only discoverable once the program runs.
+
+When the property cannot be carried out at runtime, alpaka reports it:
+
+- hwloc provides no data for the requested attribute on this machine, for example a platform without ACPI HMAT.
+  alpaka prints a warning on ``std::cerr`` and falls back to binding all memory nodes of the CPU domain.
+- the OS or container refuses the memory binding (missing privileges, restricted cpuset). With
+  ``alpaka_HOST_MemPinningCanFail`` enabled alpaka prints a warning and leaves the placement to the OS,
+  otherwise the allocation throws.
+- the bind itself fails, for example because the selected nodes cannot satisfy the request. The allocation
+  throws, it does not fall back silently.
+
+Each distinct warning is printed only once per process. Set the environment variable ``ALPAKA_NO_WARNINGS`` to silence the warnings; it does not turn a failing bind into a successful allocation.
+
+``memoryProperty::locality`` is the most widely available preference, because hwloc derives it from the topology itself rather than from firmware tables.
+
+A backend declares its support by specializing ``alpaka::onHost::trait::IsMemoryPropertySupportedBy::Op``:
+
+.. code-block:: cpp
+
+   template<typename T_Platform>
+   struct alpaka::onHost::trait::IsMemoryPropertySupportedBy::Op<
+       alpaka::memoryProperty::BestBandwidth,
+       MyDevice<T_Platform>> : std::true_type
+   {
+   };
+
+Memory Policy List
+------------------
+
+Allocation properties are collected in an ``alpaka::onHost::MemoryPolicyList``. Properties can either be passed directly to the allocation call or bundled explicitly into a policy list, both forms are equivalent:
+
+.. code-block:: cpp
+
+   auto bufferA = onHost::alloc<int>(device, extents, memoryProperty::bestBandwidth);
+   // is equivalent to
+   auto bufferB = onHost::alloc<int>(device, extents, onHost::MemoryPolicyList{memoryProperty::bestBandwidth});
+
+See :ref:`memory-pinning`

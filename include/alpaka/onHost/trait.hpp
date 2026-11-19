@@ -12,6 +12,7 @@
 #include "alpaka/onHost/concepts.hpp"
 #include "alpaka/tag.hpp"
 
+#include <concepts>
 #include <type_traits>
 
 namespace alpaka::onHost
@@ -46,6 +47,33 @@ namespace alpaka::onHost
             struct Op : std::false_type
             {
             };
+        };
+
+        /** Declares whether a device is able to honor a memory allocation property.
+         *
+         * A backend must specialize this trait with std::true_type for every alpaka::memoryProperty it can
+         * implement. Properties which are not declared are rejected at compile time by the allocation functions,
+         * so that a request is never silently dropped.
+         *
+         * memoryProperty::Default is accepted by every device without being declared,
+         * see isMemoryPropertySupportedBy_v. Declaring it here is allowed but has no effect.
+         *
+         * @tparam T_Property Memory property tag to query.
+         * @tparam T_Device Native device type or a device handle.
+         */
+        struct IsMemoryPropertySupportedBy
+        {
+            template<alpaka::concepts::MemoryProperty T_Property, typename T_Device>
+            struct Op : std::false_type
+            {
+            };
+        };
+
+        /** Resolve a device handle to the native device type. */
+        template<alpaka::concepts::MemoryProperty T_Property, internal::concepts::DeviceHandle T_DeviceHandle>
+        struct IsMemoryPropertySupportedBy::Op<T_Property, T_DeviceHandle>
+            : IsMemoryPropertySupportedBy::Op<T_Property, typename T_DeviceHandle::element_type>
+        {
         };
 
         template<typename T_Kernel, concepts::ThreadSpec T_Spec>
@@ -190,6 +218,215 @@ namespace alpaka::onHost
     constexpr auto defaultExecutor(internal::concepts::DeviceHandle auto deviceHandle)
     {
         return std::get<0>(supportedExecutors(deviceHandle, exec::allExecutors));
+    }
+
+    namespace detail
+    {
+        /** Device type an allocation target refers to.
+         *
+         * Allocation entry points accept either a device or a queue, both name the same device.
+         */
+        template<typename T_Target>
+        struct AllocationDevice
+        {
+            using type = T_Target;
+        };
+
+        template<typename T_Target>
+        requires requires(T_Target const& target) { target.getDevice(); }
+        struct AllocationDevice<T_Target>
+        {
+            using type = ALPAKA_TYPEOF(std::declval<T_Target const&>().getDevice());
+        };
+
+        template<typename T_Target>
+        using AllocationDevice_t = typename AllocationDevice<std::remove_cvref_t<T_Target>>::type;
+    } // namespace detail
+
+    /** Whether a device is able to honor a memory allocation property.
+     *
+     * memoryProperty::Default requests no placement at all and is therefore always accepted, every other property
+     * has to be declared by the backend through trait::IsMemoryPropertySupportedBy.
+     *
+     * @tparam T_Property Memory property tag, e.g. ALPAKA_TYPEOF(memoryProperty::bestBandwidth).
+     * @tparam T_Target Device handle, native device type or queue, e.g. ALPAKA_TYPEOF(device).
+     */
+    template<alpaka::concepts::MemoryProperty T_Property, typename T_Target>
+    constexpr bool isMemoryPropertySupportedBy_v
+        = std::same_as<std::remove_cvref_t<T_Property>, memoryProperty::Default>
+          || trait::IsMemoryPropertySupportedBy::
+              Op<std::remove_cvref_t<T_Property>, detail::AllocationDevice_t<T_Target>>::value;
+
+    /** @copydoc isMemoryPropertySupportedBy_v
+     *
+     * @param property Memory property to query.
+     * @param deviceOrQueue Device or queue the property would be applied to.
+     */
+    constexpr bool isMemoryPropertySupportedBy(
+        alpaka::concepts::MemoryProperty auto property,
+        auto const& deviceOrQueue)
+    {
+        alpaka::unused(property, deviceOrQueue);
+        return isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(property), ALPAKA_TYPEOF(deviceOrQueue)>;
+    }
+
+    /** All memory properties the given device is able to honor.
+     *
+     * @param deviceOrQueue Device or queue handle.
+     * @return Tuple of memory property tags, always contains memoryProperty::defaultProperty.
+     */
+    constexpr auto supportedMemoryProperties(auto const& deviceOrQueue)
+    {
+        alpaka::unused(deviceOrQueue);
+        return meta::filter(
+            // the variable template is used instead of isMemoryPropertySupportedBy() because gcc14 is stricter in
+            // the detection which functions can be evaluated at compile time
+            [](auto property) constexpr
+            { return isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(property), ALPAKA_TYPEOF(deviceOrQueue)>; },
+            memoryProperty::allProperties);
+    }
+
+    namespace detail
+    {
+        /** Left to right scan for the first property implemented by T_Device.
+         *
+         * The device is named by its type rather than passed as a value, so that an entry point which has no
+         * device object at hand can use the same scan, see onHost::hostHasProperty().
+         *
+         * @tparam T_Device Device type to query, as resolved by AllocationDevice_t.
+         */
+        template<typename T_Device>
+        constexpr alpaka::concepts::MemoryProperty auto firstSupportedPropertyFor()
+        {
+            // Unreachable, the callers reject an exhausted list at compile time. Present so that the recursion
+            // terminates and the return type stays deducible while the diagnostic is reported.
+            return memoryProperty::defaultProperty;
+        }
+
+        template<
+            typename T_Device,
+            alpaka::concepts::MemoryProperty T_FirstProperty,
+            alpaka::concepts::MemoryProperty... T_Properties>
+        constexpr alpaka::concepts::MemoryProperty auto firstSupportedPropertyFor(
+            T_FirstProperty firstProperty,
+            T_Properties... properties)
+        {
+            if constexpr(isMemoryPropertySupportedBy_v<T_FirstProperty, T_Device>)
+            {
+                alpaka::unused(properties...);
+                return firstProperty;
+            }
+            else
+            {
+                alpaka::unused(firstProperty);
+                return firstSupportedPropertyFor<T_Device>(properties...);
+            }
+        }
+    } // namespace detail
+
+    /** Pick the first memory property out of a preference list which the device implements.
+     *
+     * @details
+     * The allocation functions reject a memory property which the device does not implement at compile time. This
+     * helper is the way to express "use the best placement this device offers" instead: the properties are scanned
+     * from left to right and the first one the device implements is returned. A property belonging to a different
+     * kind of device is simply skipped, so one source stays portable across backends.
+     *
+     * The whole selection happens at compile time, the returned type is the selected property tag.
+     *
+     * @code{.cpp}
+     * // compile time error, a GPU does not implement a NUMA placement preference
+     * auto a = onHost::alloc<int>(gpuDevice, extents, memoryProperty::bestBandwidth);
+     *
+     * // returns memoryProperty::locality on a CPU device, because someGpuProperty is skipped
+     * auto property = onHost::hasProperty(
+     *     cpuDevice,
+     *     someGpuProperty,
+     *     memoryProperty::locality,
+     *     memoryProperty::defaultProperty);
+     * auto b = onHost::alloc<int>(cpuDevice, extents, property);
+     * @endcode
+     *
+     * @attention The fallback is never implicit. If the device implements none of the listed properties the call is
+     * a compile time error, so that a request is not quietly turned into something else. Accepting the backend's
+     * default placement has to be written down by ending the list with memoryProperty::defaultProperty, which every
+     * device implements.
+     *
+     * @attention A property which the device implements can still be unavailable on the machine the program runs
+     * on, for example when hwloc cannot resolve it. That case is reported as a runtime warning on std::cerr and the
+     * allocation falls back to the default placement.
+     *
+     * @param deviceOrQueue Device or queue the allocation will be performed on.
+     * @param properties Memory properties in decreasing order of preference, at least one of which the device must
+     * implement.
+     * @return The first property of the list which the device implements.
+     */
+    template<typename T_Target, alpaka::concepts::MemoryProperty... T_Properties>
+    constexpr alpaka::concepts::MemoryProperty auto hasProperty(
+        T_Target const& deviceOrQueue,
+        T_Properties... properties)
+    {
+        static_assert(
+            (isMemoryPropertySupportedBy_v<T_Properties, T_Target> || ...),
+            "This device implements none of the requested alpaka::memoryProperty tags. End the list with "
+            "alpaka::memoryProperty::defaultProperty to state explicitly that the backend default placement is "
+            "acceptable, or query onHost::supportedMemoryProperties(device) for the properties this device "
+            "implements.");
+
+        alpaka::unused(deviceOrQueue);
+        return detail::firstSupportedPropertyFor<detail::AllocationDevice_t<T_Target>>(properties...);
+    }
+
+    /** Create a handle to the host controller device.
+     *
+     * Defined in onHost/DeviceSelector.hpp, which cannot be included here because it depends on this header.
+     * Only a declaration is needed: hostHasProperty() is a template, so the deduced return type has to be
+     * available at its point of instantiation, not here. The default template argument is supplied by the
+     * definition.
+     */
+    template<typename T_DeferEvaluation>
+    inline auto makeHostDevice();
+
+    /** Pick the first memory property out of a preference list which the host device implements.
+     *
+     * @details
+     * The companion of onHost::hasProperty() for allocHost() and allocHostLike(). Those take no device argument,
+     * they always allocate on the host controller device (`api::Host` and `deviceKind::cpu`), so there is nothing
+     * to hand to hasProperty(). This overload queries that device by type, no device object is constructed.
+     *
+     * The properties are scanned from left to right and the first one the host device implements is returned. That
+     * keeps a call portable across build configurations, which matters on the host because the placement
+     * preferences are only implemented in a build with hwloc.
+     *
+     * @code{.cpp}
+     * // uses bestBandwidth where the build can carry it out, memoryProperty::defaultProperty otherwise
+     * auto buffer = onHost::allocHost<int>(
+     *     extents,
+     *     onHost::hostHasProperty(memoryProperty::bestBandwidth, memoryProperty::defaultProperty));
+     * @endcode
+     *
+     * @attention The fallback is never implicit, exactly as for onHost::hasProperty(). The call is a compile time
+     * error only when the host device implements none of the listed properties, so a single supported property is
+     * enough and the trailing memoryProperty::defaultProperty is needed only to survive a configuration in which
+     * none of the preferences exists.
+     *
+     * @tparam T_DeferEvaluation Implementation detail, see the comment in the body. Leave at its default.
+     * @param properties Memory properties in decreasing order of preference, at least one of which the host
+     * device must implement.
+     * @return The first property of the list which the host device implements.
+     */
+    template<typename T_DeferEvaluation = void, alpaka::concepts::MemoryProperty... T_Properties>
+    constexpr alpaka::concepts::MemoryProperty auto hostHasProperty(T_Properties... properties)
+    {
+        using HostDevice = ALPAKA_TYPEOF(makeHostDevice<T_DeferEvaluation>());
+
+        static_assert(
+            (isMemoryPropertySupportedBy_v<T_Properties, HostDevice> || ...),
+            "The host device implements none of the requested alpaka::memoryProperty tags. End the list with "
+            "alpaka::memoryProperty::defaultProperty to state explicitly that the backend default placement is "
+            "acceptable. On the host the placement preferences are only implemented in a build with hwloc.");
+
+        return detail::firstSupportedPropertyFor<detail::AllocationDevice_t<HostDevice>>(properties...);
     }
 
     constexpr auto supportedDevices(auto const api)
