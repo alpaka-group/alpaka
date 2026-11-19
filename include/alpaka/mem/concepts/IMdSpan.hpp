@@ -41,7 +41,7 @@ namespace alpaka::concepts
          * - An alignment object that describes how the elements are aligned in memory, see:
          * alpaka::concepts::Alignment
          *
-         * @section membertypes Member types
+         * @section Member types
          * - <b>T::reference</b>: The element reference type is either const or non-const, depending on
          *`T::value_type`.
          * - <b>T::const_reference</b>: The constant reference type for an element. Always const.

@@ -2,7 +2,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-/** @file This file provides a basic implementation of a SIMD vector.
+/** @file
+ * @brief This file provides a basic implementation of a SIMD vector.
  *
  * The implementation is based on the class Vec:
  *   - the storge policy should become the native SIMD implementation e.g. std::simd
@@ -478,9 +479,6 @@ namespace alpaka
     ALPAKA_VECTOR_BINARY_OP(typename, !=)
 
 #undef ALPAKA_VECTOR_BINARY_OP
-
-    /** @} */
-
 
     namespace trait
     {

@@ -574,7 +574,7 @@ namespace alpaka::onHost
 
         // copy to device global memory
         template<typename T_Device, typename T_Source, typename T_Storage, typename T>
-        struct internal::MemcpyDeviceGlobal::
+        struct MemcpyDeviceGlobal::
             Op<cpu::Queue<T_Device>, onAcc::internal::GlobalDeviceMemoryWrapper<T_Storage, T>, T_Source>
         {
             void operator()(
@@ -595,7 +595,7 @@ namespace alpaka::onHost
 
         // copy from device global memory
         template<typename T_Device, typename T_Dest, typename T_Storage, typename T>
-        struct internal::MemcpyDeviceGlobal::
+        struct MemcpyDeviceGlobal::
             Op<cpu::Queue<T_Device>, T_Dest, onAcc::internal::GlobalDeviceMemoryWrapper<T_Storage, T>>
         {
             void operator()(

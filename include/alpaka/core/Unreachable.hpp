@@ -9,7 +9,7 @@
 //! Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue
 //! a false warning about a missing return statement unless it is told that the following code section is unreachable.
 //!
-//! \param x A dummy value for the expected return type of the calling function.
+//! @param ... A dummy value for the expected return type of the calling function.
 #if (ALPAKA_COMP_NVCC && ALPAKA_ARCH_PTX)
 #    if ALPAKA_LANG_CUDA >= ALPAKA_VERSION_NUMBER(11, 3, 0)
 #        define ALPAKA_UNREACHABLE(...) __builtin_unreachable()

@@ -4,7 +4,8 @@
 
 #pragma once
 
-/** @file This file contains specializations of interfaces for the accelerator scope.
+/** @file
+ * @brief This file contains specializations of interfaces for the accelerator scope.
  * The specializations must be separated from the definitions to avoid cyclic include dependencies.
  */
 

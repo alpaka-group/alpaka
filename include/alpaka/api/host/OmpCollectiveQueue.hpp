@@ -2,7 +2,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-/** @file This contains a special queue implementation for one of our users. All requirements to use this queue are in
+/** @file
+ * @brief This contains a special queue implementation for one of our users. All requirements to use this queue are in
  * this single file, this provides the possibility that the file is copied into the user project and adjusted if
  * needed.
  *
@@ -98,7 +99,8 @@ namespace alpaka::onHost
          * If this function is called outside of an OpenMP parallel section the functor is invoked by the caller only.
          * This operation is synchronizing all threads within a parallel OpenMP region.
          *
-         * @return A copy of the return value from the invocation. The return value must be assignable.
+         * If the functor returns a value, each participating thread receives a copy of that value.
+         * The return value must be assignable.
          */
         inline auto invokeSingle(auto&& fn) requires(!std::same_as<std::invoke_result_t<ALPAKA_TYPEOF(fn)>, void>)
         {

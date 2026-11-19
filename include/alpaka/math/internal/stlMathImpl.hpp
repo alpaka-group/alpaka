@@ -5,7 +5,8 @@
 
 #pragma once
 
-/** @file This file contains specializations of methods where we do not want to fall back to `std::*` functions.
+/** @file
+ * @brief This file contains specializations of methods where we do not want to fall back to `std::*` functions.
  */
 
 #include "alpaka/core/Unreachable.hpp"

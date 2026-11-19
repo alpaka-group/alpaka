@@ -2,7 +2,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-/** @file This file provides functionality to transform a type into a SIMD-optimized data structure.
+/** @file
+ * @brief This file provides functionality to transform a type into a SIMD-optimized data structure.
  *
  * The implementation is motivated by https://ieeexplore.ieee.org/document/11207437
  */

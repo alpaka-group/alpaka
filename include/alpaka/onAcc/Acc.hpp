@@ -166,7 +166,7 @@ namespace alpaka::onAcc
      * @tparam T type which should be created, the constructor is not called
      * @tparam T_uniqueId id which is unique inside a kernel.
      *                  Reusing the id will return the same memory declared before with the same id.
-     * @param extent M-dimensional extent in elements for each dimension, 1 - M dimensions are supported
+     * @param extents M-dimensional extent in elements for each dimension, 1 - M dimensions are supported
      * @return MdSpan non owning view to the corresponding data, you should NOT store a reference to the handle
      */
     template<typename T, size_t T_uniqueId>

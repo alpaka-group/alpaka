@@ -2,7 +2,8 @@
  * SPDX-License-Identifier: ISC
  */
 
-/** @file This example demonstrates how to use alpaka's function interface.
+/** @file
+ * @brief This example demonstrates how to use alpaka's function interface.
  *
  * The function interface is a mechanism to register and dispatch a function interface from alpaka to third party
  * libraries for specific APIs and device kinds.

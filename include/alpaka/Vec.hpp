@@ -543,7 +543,7 @@ namespace alpaka
          *
          * Compares dims of two DataSpaces.
          *
-         * @param other Vec to compare to
+         * @param rhs Vec to compare to
          * @return true if all components in both vectors are equal, else false
          */
         template<typename T_OtherStorage>
@@ -560,7 +560,7 @@ namespace alpaka
          *
          * Compares dims of two DataSpaces.
          *
-         * @param other Vec to compare to
+         * @param rhs Vec to compare to
          * @return true if one component in both vectors are not equal, else false
          */
         template<typename T_OtherStorage>
@@ -865,9 +865,10 @@ namespace alpaka
 
     template<std::integral T_IntegralType, typename T_Storage, typename T_OtherStorage>
     ALPAKA_FN_HOST_ACC T_IntegralType linearize(
-        Vec<T_IntegralType, 1u, T_Storage> const&,
+        Vec<T_IntegralType, 1u, T_Storage> const& dim,
         Vec<T_IntegralType, 1u, T_OtherStorage> const& idx)
     {
+        alpaka::unused(dim);
         return idx.x();
     }
 
@@ -876,7 +877,7 @@ namespace alpaka
     /** Maps a linear index to an N-dimensional index
      *
      * @tparam T_IntegralType vector data type (must be an integral type)
-     * @param dim N-dimensional index space
+     * @param extents N-dimensional index space
      * @param linearIdx Linear index within dim.
      *        @attention If linearIdx is an index outside of dim the result will be outside of the index domain
      * too.
