@@ -17,6 +17,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <cstdint>
+#include <functional>
 
 using namespace alpaka;
 using alpaka::test::warp::warpCheck;
@@ -84,7 +85,61 @@ namespace
             warpCheck(success, 5u * expectedWarpsPerBlock == numWarpsInGrid.x());
         }
     };
+
+    /* Index and number of the same origin/unit pair must have the same type, independent of the index type of the
+     * thread specification.
+     */
+    struct WarpIdxTypeKernel
+    {
+        ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<bool> auto success) const
+        {
+            auto const laneIdx = acc.getIdxWithin(onAcc::origin::warp, onAcc::unit::threads);
+            auto const numLanes = acc.getExtentsOf(onAcc::origin::warp, onAcc::unit::threads);
+            warpCheck(success, (laneIdx < numLanes).reduce(std::logical_and{}));
+
+            auto const warpIdxInBlock = acc.getIdxWithin(onAcc::origin::block, onAcc::unit::warps);
+            auto const numWarpsInBlock = acc.getExtentsOf(onAcc::origin::block, onAcc::unit::warps);
+            warpCheck(success, (warpIdxInBlock < numWarpsInBlock).reduce(std::logical_and{}));
+
+            auto const warpIdxInGrid = acc.getIdxWithin(onAcc::origin::grid, onAcc::unit::warps);
+            auto const numWarpsInGrid = acc.getExtentsOf(onAcc::origin::grid, onAcc::unit::warps);
+            warpCheck(success, (warpIdxInGrid < numWarpsInGrid).reduce(std::logical_and{}));
+        }
+    };
+
+    template<typename T_Idx>
+    void testWarpIdxType(auto const& deviceExec)
+    {
+        onHost::Device device = test::getDevice(deviceExec);
+        concepts::Executor auto exec = test::getExecutor(deviceExec);
+        auto const warpExtent = static_cast<T_Idx>(device.getDeviceProperties().warpSize);
+        auto const warpsPerBlock = alpaka::isSeqExecutor(exec) ? T_Idx{1} : T_Idx{2};
+        auto queue = device.makeQueue(queueKind::blocking);
+
+        auto successHost = onHost::allocHost<bool>(1u);
+        auto successDev = onHost::allocLike(device, successHost);
+        onHost::memset(queue, successDev, static_cast<std::uint8_t>(true));
+        queue.enqueue(
+            onHost::ThreadSpec{Vec{T_Idx{5}}, Vec{warpsPerBlock * warpExtent}, exec},
+            KernelBundle{WarpIdxTypeKernel{}, successDev});
+        onHost::memcpy(queue, successHost, successDev);
+        onHost::wait(queue);
+        CHECK(successHost[0]);
+    }
 } // namespace
+
+TEMPLATE_LIST_TEST_CASE("warp index and extent types match", "[warp][getSize]", WarpTestBackends)
+{
+    auto deviceExec = test::getDeviceExecutorOrSkipTest(TestType::makeDict());
+    SECTION("uint32_t indices")
+    {
+        testWarpIdxType<std::uint32_t>(deviceExec);
+    }
+    SECTION("int indices")
+    {
+        testWarpIdxType<int>(deviceExec);
+    }
+}
 
 TEMPLATE_LIST_TEST_CASE("warp size trait matches runtime size", "[warp][getSize]", WarpTestBackends)
 {
