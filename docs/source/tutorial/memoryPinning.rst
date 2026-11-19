@@ -11,7 +11,7 @@ Memory Allocation Property
 - ``alpaka::memoryProperty::bestLatency`` Selects memory nodes with the best access latency. Only CPU devices with HWLOC.
 - ``alpaka::memoryProperty::bestBandwidth`` Selects memory nodes with the highest memory bandwidth. Only CPU devices with HWLOC.
 - ``alpaka::memoryProperty::locality`` Selects the closest memory nodes. Only CPU devices with HWLOC.
-- ``alpaka::memoryProperty::defaultProperty`` Equivalent to no property; uses the default alpaka3 behavior. Supported by all devices
+- ``alpaka::memoryProperty::defaultProperty`` Equivalent to no property; uses the default alpaka behavior. Supported by all devices
 
 These properties bind the memory to the selected nodes. If the memory nodes are full, the allocation fails. They use the MPOL_BIND policy.
 
