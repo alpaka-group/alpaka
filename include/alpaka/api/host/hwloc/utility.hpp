@@ -445,7 +445,7 @@ namespace alpaka::onHost::internal::hwloc
             {
                 alpaka::core::warn(
                     std::string{"memory pinning is not permitted on this system ("} + std::strerror(errno)
-                    + "), the allocation keeps the default placement");
+                    + "), the allocation leaves the placement to the OS");
                 return;
             }
 #    endif
@@ -473,14 +473,30 @@ namespace alpaka::onHost::internal::hwloc
             static_assert(sizeof(T_Property) == 0, "Unknown MemoryProperty");
     }
 
-    /** Add the nodes alpaka binds to when no placement preference applies, i.e. memoryProperty::Default.
+    /** Add every memory node of the CPU domain.
      *
      * @details
-     * All memory nodes of the CPU domain are added, so the allocation cannot leave the domain while the OS stays
-     * free to choose a node within it on first touch. Keeping the allocation inside its own domain is what makes a
-     * deviceKind::numaCpu device local.
+     * Used as the runtime fallback when an explicitly requested placement preference cannot be resolved by hwloc.
+     * The allocation stays inside the CPU domain while the OS picks a node within it on first touch.
      *
      * 'allDomains' has no domain to stay inside, so nothing is added and the placement is left to the OS.
+     *
+     * @param nodes Nodeset to add to.
+     * @param cpuDomainIdx Index of the cpu group, or 'allDomains'.
+     */
+    inline void addDomainNodes(hwloc_bitmap_t nodes, uint32_t cpuDomainIdx)
+    {
+        if(cpuDomainIdx == allDomains)
+            return;
+
+        for(hwloc_obj_t node : getMemoryNodes(getCpuDomainObj(cpuDomainIdx)))
+            hwloc_bitmap_or(nodes, nodes, node->nodeset);
+    }
+
+    /** Add the node alpaka binds to when no placement preference applies, i.e. memoryProperty::Default.
+     *
+     * If cpuDomainIdx is 'allDomains' nothing is added and the placement is left to the OS else the first memory node
+     * of the CPU domain is used.
      *
      * @param nodes Nodeset to add to.
      * @param cpuDomainIdx Index of the cpu group, or 'allDomains'.
@@ -490,8 +506,9 @@ namespace alpaka::onHost::internal::hwloc
         if(cpuDomainIdx == allDomains)
             return;
 
-        for(hwloc_obj_t node : getMemoryNodes(getCpuDomainObj(cpuDomainIdx)))
-            hwloc_bitmap_or(nodes, nodes, node->nodeset);
+        std::vector<hwloc_obj_t> const domainNodes = getMemoryNodes(getCpuDomainObj(cpuDomainIdx));
+        if(!domainNodes.empty())
+            hwloc_bitmap_or(nodes, nodes, domainNodes.front()->nodeset);
     }
 
     /** Whether 'value' is preferable to the current 'baseValue' for the requested memory property.
@@ -516,10 +533,11 @@ namespace alpaka::onHost::internal::hwloc
     /** Pin a CPU-domain memory range to the NUMA memory nodes selected by the placement preference.
      *
      * @attention This method should be called before the memory is touched, else it may have no effect.
-     *            memoryProperty::Default binds to every memory node of the CPU domain, so the allocation stays
-     *            inside the domain while the OS picks a node within it on first touch. For 'allDomains' the
-     *            placement is left to the OS. A placement preference binds to the nodes which hwloc reports as best
-     *            for that property inside the domain.
+     *            memoryProperty::Default binds to the first memory node of the CPU domain, which is the behaviour
+     *            before the memory property support was added. For 'allDomains' the placement is left to the OS.
+     *            A placement preference binds to the nodes which hwloc reports as best for that property inside
+     *            the domain. If hwloc has no data for a preference, all memory nodes of the domain are used as the
+     *            runtime fallback.
      *
      * @param ptr pointer address to pin, nullptr is valid input.
      * @param bytes the number of bytes to pin starting from the ptr address.
@@ -605,11 +623,10 @@ namespace alpaka::onHost::internal::hwloc
                 alpaka::core::warn(
                     "memory property '" + T_Property::getName()
                     + "' is supported by the device but hwloc provides no data for it on this machine, "
-                      "the allocation falls back to the default placement");
+                      "the allocation falls back to binding all memory nodes of the CPU domain");
 
-                // Fall back to what memoryProperty::Default does for this device. For a NUMA aware CPU device
-                // that keeps the allocation inside its own domain rather than leaving it unbound.
-                addDefaultPlacement(pinningNodes, cpuDomainIdx);
+                // Keep the allocation inside its own domain rather than leaving it unbound.
+                addDomainNodes(pinningNodes, cpuDomainIdx);
 
                 // 'allDomains' has no domain to stay inside, leave the placement to the OS.
                 if(hwloc_bitmap_iszero(pinningNodes))

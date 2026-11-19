@@ -11,7 +11,7 @@ The properties in this subsection are available in the namespace ``alpaka::memor
 - ``memoryProperty::bestLatency`` This property selects memory nodes with the lowest access latency for memory pinning
 - ``memoryProperty::bestBandwidth`` This property selects memory nodes with the highest memory bandwidth for memory pinning
 - ``memoryProperty::locality`` This property selects the closest memory nodes for memory pinning
-- ``memoryProperty::defaultProperty`` Equivalent to no property; uses the default alpaka behavior
+- ``memoryProperty::defaultProperty`` Uses the default alpaka behavior. On a ``numaCpu`` device this strictly binds to the first memory node of the CPU domain
 
 Only one property of this category may be given per allocation call. If none is given, ``memoryProperty::defaultProperty`` is used.
 
@@ -96,13 +96,13 @@ Runtime Availability
 
 Whether a device *implements* a property is a compile time question, whether the machine the program runs on can actually *deliver* it is not. A CPU device in an hwloc build implements ``bestBandwidth`` even on a machine whose firmware exposes no memory attribute data, because that is only discoverable once the program runs.
 
-When the property cannot be carried out at runtime, alpaka reports it and falls back to the default placement:
+When the property cannot be carried out at runtime, alpaka reports it:
 
 - hwloc provides no data for the requested attribute on this machine, for example a platform without ACPI HMAT.
-  alpaka prints a warning on ``std::cerr`` and falls back to the default placement.
+  alpaka prints a warning on ``std::cerr`` and falls back to binding all memory nodes of the CPU domain.
 - the OS or container refuses the memory binding (missing privileges, restricted cpuset). With
-  ``alpaka_HOST_MemPinningCanFail`` enabled alpaka prints a warning and keeps the default placement, otherwise
-  the allocation throws.
+  ``alpaka_HOST_MemPinningCanFail`` enabled alpaka prints a warning and leaves the placement to the OS,
+  otherwise the allocation throws.
 - the bind itself fails, for example because the selected nodes cannot satisfy the request. The allocation
   throws, it does not fall back silently.
 
