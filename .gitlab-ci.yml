@@ -23,10 +23,11 @@ generate:
   # update alpine version to use newer python version
   image: registry.hzdr.de/crp/alpaka-spack-buildcache/alpaka-job-generator-ubuntu24.04:${APCI_BASE_IMAGE_VERSION}
   script:
+    - . /opt/spack/share/spack/setup-env.sh
     - python3 -m venv /tmp/env
     - source /tmp/env/bin/activate
     # TODO: Remove me before merge
-    - git clone https://github.com/SimeonEhrig/bashi.git -b spack /bashi
+    - git clone --depth=1 https://github.com/SimeonEhrig/bashi.git -b spack /bashi
     - pip3 install /bashi
     - pip3 install script/job_generator
     - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
@@ -67,7 +68,7 @@ run-compile-only-test:
   trigger:
     include:
       - artifact: compile_only.yml
-        job: run-spack-build-jobs
+        job: generator
     strategy: depend
 
 run-runtime-cpu-test:
@@ -75,7 +76,7 @@ run-runtime-cpu-test:
   trigger:
     include:
       - artifact: runtime_cpu.yml
-        job: run-spack-build-jobs
+        job: generator
     strategy: depend
 
 run-runtime-gpu-test:
@@ -83,7 +84,7 @@ run-runtime-gpu-test:
   trigger:
     include:
       - artifact: runtime_gpu.yml
-        job: run-spack-build-jobs
+        job: generator
     strategy: depend
 
 run-special-test:
@@ -91,5 +92,5 @@ run-special-test:
   trigger:
     include:
       - artifact: special.yml
-        job: run-spack-build-jobs
+        job: generator
     strategy: depend
