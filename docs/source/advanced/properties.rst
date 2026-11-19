@@ -11,7 +11,7 @@ The properties in this subsection are available in the namespace ``alpaka::memor
 - ``memoryProperty::bestLatency`` This property selects memory nodes with the lowest access latency for memory pinning
 - ``memoryProperty::bestBandwidth`` This property selects memory nodes with the highest memory bandwidth for memory pinning
 - ``memoryProperty::locality`` This property selects the closest memory nodes for memory pinning
-- ``memoryProperty::defaultProperty`` Equivalent to no property; uses the default alpaka3 behavior
+- ``memoryProperty::defaultProperty`` Equivalent to no property; uses the default alpaka behavior
 
 Only one property of this category may be given per allocation call. If none is given, ``memoryProperty::defaultProperty`` is used.
 
