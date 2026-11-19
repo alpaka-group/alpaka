@@ -147,11 +147,11 @@ namespace alpaka
                 }
 
             public:
-                Platform() : contextManager{makeSharedSingleton<detail::Context>()}
+                Platform() : contextManager{makeSharedSingleton<alpaka::detail::Context>()}
                 {
                     try
                     {
-                        syclPlatform = sycl::platform{detail::SYCLDeviceSelector<T_DeviceKind>{}};
+                        syclPlatform = sycl::platform{alpaka::detail::SYCLDeviceSelector<T_DeviceKind>{}};
                         syclDevices = syclPlatform->get_devices();
                         devices.resize(syclDevices.size());
                         syclContext = contextManager->getContext(syclPlatform.value());

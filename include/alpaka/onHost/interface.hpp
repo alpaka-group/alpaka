@@ -282,7 +282,7 @@ namespace alpaka::onHost
     inline auto allocHostLike(auto const& view, MemoryPolicyList<T_Policies...> const& policies)
     {
         auto device = makeHostDevice<ALPAKA_TYPEOF(view)>();
-        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view));
+        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view), policies);
     }
 
     /** @} */
