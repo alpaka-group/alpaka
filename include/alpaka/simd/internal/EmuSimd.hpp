@@ -207,7 +207,7 @@ namespace alpaka
     template<typenameOrConcept T_Type, uint32_t T_width>                                                              \
     constexpr auto operator op(const EmuSimd<T_Type, T_width>& lhs, const EmuSimd<T_Type, T_width>& rhs)              \
     {                                                                                                                 \
-        EmuSimd<T_Type, T_width> ret{};                                                                               \
+        EmuSimd<T_Type, T_width> ret;                                                                                 \
         for(uint32_t i = 0u; i < T_width; i++)                                                                        \
             ret[i] = lhs[i] op rhs[i];                                                                                \
         return ret;                                                                                                   \
@@ -215,7 +215,7 @@ namespace alpaka
     template<typenameOrConcept T_Type, uint32_t T_width>                                                              \
     constexpr auto operator op(const EmuSimd<T_Type, T_width>& lhs, T_Type rhs)                                       \
     {                                                                                                                 \
-        EmuSimd<T_Type, T_width> ret{};                                                                               \
+        EmuSimd<T_Type, T_width> ret;                                                                                 \
         for(uint32_t i = 0u; i < T_width; i++)                                                                        \
             ret[i] = lhs[i] op rhs;                                                                                   \
         return ret;                                                                                                   \
@@ -223,7 +223,7 @@ namespace alpaka
     template<typenameOrConcept T_Type, uint32_t T_width>                                                              \
     constexpr auto operator op(T_Type lhs, const EmuSimd<T_Type, T_width>& rhs)                                       \
     {                                                                                                                 \
-        EmuSimd<T_Type, T_width> ret{};                                                                               \
+        EmuSimd<T_Type, T_width> ret;                                                                                 \
         for(uint32_t i = 0u; i < T_width; i++)                                                                        \
             ret[i] = lhs op rhs[i];                                                                                   \
         return ret;                                                                                                   \
