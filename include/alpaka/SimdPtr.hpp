@@ -220,7 +220,7 @@ namespace alpaka
                     Simd<std::decay_t<DataTypeType>, T_simdWidth> const,
                     Simd<std::decay_t<DataTypeType>, T_simdWidth>>;
 
-                alpaka::concepts::Simd auto dest = DstType{};
+                std::remove_const_t<DstType> dest;
                 dest.copyFrom(&d, alignment);
                 return dest;
             }
