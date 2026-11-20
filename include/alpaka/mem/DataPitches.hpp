@@ -19,7 +19,7 @@ namespace alpaka
     {
         constexpr auto dim = T_Vec::dim();
         using Type = typename T_Vec::value_type;
-        auto pitchBytes = typename T_Vec::UniVec{};
+        typename T_Vec::UniVec pitchBytes;
         if constexpr(dim > 0)
             pitchBytes.back() = static_cast<Type>(sizeof(T_Elem));
         if constexpr(dim > 1)
@@ -35,7 +35,7 @@ namespace alpaka
     {
         constexpr auto dim = T_Vec::dim();
         using Type = typename T_Vec::value_type;
-        auto pitchBytes = typename T_Vec::UniVec{};
+        typename T_Vec::UniVec pitchBytes;
         pitchBytes.back() = static_cast<Type>(sizeof(T_Elem));
         if constexpr(dim > 1)
             pitchBytes[dim - 2u] = rowPitchBytes;

@@ -697,7 +697,7 @@ namespace alpaka::math
             constexpr auto operator()(T_MathImpl, Complex<T> const& arg) const
             {
                 // exp(z) = exp(x + iy) = exp(x) * (cos(y) + i * sin(y))
-                auto re = T{}, im = T{};
+                T re, im;
                 math::sincos(arg.imag(), im, re);
                 return math::exp(arg.real()) * Complex<T>{re, im};
             }

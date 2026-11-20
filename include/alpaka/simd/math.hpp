@@ -58,7 +58,7 @@ namespace alpaka::math::internal
             }                                                                                                         \
             else                                                                                                      \
             {                                                                                                         \
-                T_Arg ret{};                                                                                          \
+                T_Arg ret;                                                                                            \
                 for(uint32_t i = 0u; i < T_Arg::width(); i++)                                                         \
                     ret[i] = className::Op<T_MathImpl, ALPAKA_TYPEOF(arg[i])>{}(mathImpl, arg[i]);                    \
                 return ret;                                                                                           \
