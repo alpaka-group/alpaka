@@ -199,11 +199,12 @@ namespace alpaka::onHost
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::setDevice(device.getNativeHandle()));
 
                 T_Type* ptr = nullptr;
-                auto pitches = typename T_Extents::UniVec{sizeof(T_Type)};
 
                 using Idx = typename T_Extents::value_type;
 
                 constexpr auto dim = T_Extents::dim();
+                // the pitches are fully overwritten by all branches except the 1D one
+                auto pitches = T_Extents::UniVec::fill(static_cast<Idx>(sizeof(T_Type)));
                 if constexpr(dim == 1u)
                 {
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
