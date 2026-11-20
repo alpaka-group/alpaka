@@ -101,8 +101,19 @@ namespace alpaka
         using BaseType = std::array<T_Type, T_dim>;
         using BaseType::operator[];
 
+        /** Default constructor
+         *
+         * @attention The components are not initialized.
+         */
+        constexpr ArrayStorage() = default;
+
         // constructor is required because exposing the array constructors does not work
+        //
+        // exactly one value per component is required: an empty pack must not be accepted, because no default
+        // constructor is implicitly declared if a user-declared constructor exists, therefore this template would
+        // become the default constructor and value initialize the base type
         template<typename... T_Args>
+        requires(sizeof...(T_Args) == T_dim && sizeof...(T_Args) > 0u)
         constexpr ArrayStorage(T_Args&&... args) : BaseType{std::forward<T_Args>(args)...}
         {
         }
@@ -191,6 +202,12 @@ namespace alpaka
         /*Vecs without elements are not allowed*/
         static_assert(T_dim > 0u);
 
+        /** Default constructor
+         *
+         * @attention With the default storage the components are not initialized by default initialization, e.g.
+         * `Vec<int, 3u> vec;` is leaving the components with an indeterminate value. Value initialization is zero
+         * initializing i.e. `Vec<int, 3u> vec{};` sets all values to zero.
+         */
         constexpr Vec() = default;
 
         /** Initialize via a generator expression
@@ -217,7 +234,8 @@ namespace alpaka
          *
          * @attention This constructor allows implicit casts.
          *
-         * @param args value of each dimension, x,y,z,...
+         * @param args value of each dimension, x,y,z,... Exactly one value per component is required. Use value
+         * initialization, e.g. `Vec<int, 3u> vec{};`, or `Vec<int, 3u>::fill(value)` for initialized components.
          *
          * A constexpr vector should be initialized with {} instead of () because at least
          * CUDA 11.6 has problems in cases where a compile time evaluation is required.
@@ -230,7 +248,7 @@ namespace alpaka
          * @endcode
          */
         template<typename... T_Args>
-        requires(std::is_convertible_v<T_Args, T_Type> && ...)
+        requires(sizeof...(T_Args) == T_dim && (std::is_convertible_v<T_Args, T_Type> && ...))
         constexpr Vec(T_Args const&... args) : Storage(static_cast<T_Type>(args)...)
         {
         }
