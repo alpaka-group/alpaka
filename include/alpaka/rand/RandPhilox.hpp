@@ -174,26 +174,38 @@ namespace alpaka::rand
             if constexpr(meta::IsArrayOrVector<TResult>::value)
             {
                 auto result = engine();
-                T scale = static_cast<T>(1) / static_cast<T>(engine.max()) * _range;
                 TResult ret{
-                    static_cast<T>(result[0]) * scale + _min,
-                    static_cast<T>(result[1]) * scale + _min,
-                    static_cast<T>(result[2]) * scale + _min,
-                    static_cast<T>(result[3]) * scale + _min};
+                    toUnitInterval(result[0]) * _range + _min,
+                    toUnitInterval(result[1]) * _range + _min,
+                    toUnitInterval(result[2]) * _range + _min,
+                    toUnitInterval(result[3]) * _range + _min};
                 return ret;
             }
             else
             {
                 // Since it's possible to get a host-only engine here, the call has to go through proxy
-                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / static_cast<T>(engine.max())
-                           * _range
-                       + _min;
+                return toUnitInterval(EngineCallHostAccProxy<TEngine>{}(engine)) * _range + _min;
             }
 
             ALPAKA_UNREACHABLE(TResult{});
         }
 
     private:
+        //! Maps a 32-bit engine number to [0, 1) with an exact conversion.
+        static ALPAKA_FN_HOST_ACC auto toUnitInterval(std::uint32_t const value) -> T
+        {
+            constexpr int digits = std::numeric_limits<T>::digits;
+            if constexpr(digits < 32)
+            {
+                return static_cast<T>(value >> (32 - digits))
+                       * (static_cast<T>(1) / static_cast<T>(std::uint64_t{1} << digits));
+            }
+            else
+            {
+                return static_cast<T>(value) * (static_cast<T>(1) / static_cast<T>(std::uint64_t{1} << 32));
+            }
+        }
+
         T const _min;
         T const _max;
         T const _range;
