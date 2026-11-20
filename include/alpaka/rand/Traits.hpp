@@ -80,6 +80,13 @@ namespace alpaka::rand
             //! The random number default generator engine get trait.
             template<typename TRand, typename TSfinae = void>
             struct CreateDefault;
+
+            //! \return The exclusive or of the low and high 32 bits, for engines that take 32-bit seeds.
+            //!         A value below 2^32 does not change.
+            ALPAKA_FN_HOST_ACC constexpr auto foldTo32Bits(std::uint64_t const value) -> std::uint32_t
+            {
+                return static_cast<std::uint32_t>(value) ^ static_cast<std::uint32_t>(value >> 32);
+            }
         } // namespace trait
 
         //! \return A default random number generator engine. Its type is guaranteed to be trivially copyable.
@@ -89,9 +96,9 @@ namespace alpaka::rand
         template<typename TRand>
         ALPAKA_FN_HOST_ACC auto createDefault(
             TRand const& rand,
-            std::uint32_t const& seed = 0,
-            std::uint32_t const& subsequence = 0,
-            std::uint32_t const& offset = 0)
+            std::uint64_t const& seed = 0,
+            std::uint64_t const& subsequence = 0,
+            std::uint64_t const& offset = 0)
         {
             using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);

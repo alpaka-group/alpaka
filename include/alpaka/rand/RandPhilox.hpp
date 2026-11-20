@@ -97,9 +97,9 @@ namespace alpaka::rand
          * @param offset Number of numbers to skip form the start of the subsequence.
          */
         ALPAKA_FN_HOST_ACC Philox4x32x10Vector(
-            std::uint32_t const seed = 0,
-            std::uint32_t const subsequence = 0,
-            std::uint32_t const offset = 0)
+            std::uint64_t const seed = 0,
+            std::uint64_t const subsequence = 0,
+            std::uint64_t const offset = 0)
             : engineVariant(seed, subsequence, offset)
         {
         }

@@ -242,11 +242,11 @@ namespace alpaka::rand
         {
             ALPAKA_FN_HOST static auto createDefault(
                 TinyMersenneTwister const& /* rand */,
-                std::uint32_t const& seed = 0,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> cpu::TinyMersenneTwister
+                std::uint64_t const& seed = 0,
+                std::uint64_t const& subsequence = 0,
+                std::uint64_t const& offset = 0) -> cpu::TinyMersenneTwister
             {
-                return {seed, subsequence, offset};
+                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
             }
         };
 
@@ -255,11 +255,11 @@ namespace alpaka::rand
         {
             ALPAKA_FN_HOST static auto createDefault(
                 MersenneTwister const& /* rand */,
-                std::uint32_t const& seed = 0,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> cpu::MersenneTwister
+                std::uint64_t const& seed = 0,
+                std::uint64_t const& subsequence = 0,
+                std::uint64_t const& offset = 0) -> cpu::MersenneTwister
             {
-                return {seed, subsequence, offset};
+                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
             }
         };
 
@@ -268,11 +268,11 @@ namespace alpaka::rand
         {
             ALPAKA_FN_HOST static auto createDefault(
                 RandomDevice const& /* rand */,
-                std::uint32_t const& seed = 0,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> cpu::RandomDevice
+                std::uint64_t const& seed = 0,
+                std::uint64_t const& subsequence = 0,
+                std::uint64_t const& offset = 0) -> cpu::RandomDevice
             {
-                return {seed, subsequence, offset};
+                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
             }
         };
     } // namespace engine::trait

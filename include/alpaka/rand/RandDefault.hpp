@@ -205,9 +205,9 @@ namespace alpaka::rand
             template<typename TAcc>
             ALPAKA_FN_HOST_ACC static auto createDefault(
                 TAcc const& /* acc */,
-                std::uint32_t const& seed,
-                std::uint32_t const& subsequence,
-                std::uint32_t const& offset) -> Philox4x32x10
+                std::uint64_t const& seed,
+                std::uint64_t const& subsequence,
+                std::uint64_t const& offset) -> Philox4x32x10
             {
                 return {seed, subsequence, offset};
             }
