@@ -142,7 +142,6 @@ namespace alpaka
             /** assign operator
              */
 #define ALPAKA_VECTOR_ASSIGN_OP(op)                                                                                   \
-    template<typename T_OtherStorage>                                                                                 \
     constexpr EmuSimdMask& operator op(EmuSimdMask const& rhs)                                                        \
     {                                                                                                                 \
         for(uint32_t i = 0u; i < T_width; i++)                                                                        \
