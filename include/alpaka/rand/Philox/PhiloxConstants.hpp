@@ -55,16 +55,16 @@ namespace alpaka::rand::engine
             return high32Bits(WEYL_64_1());
         }
 
-        /// First Philox S-box multiplier
+        /// First Philox S-box multiplier, applied to counter word 0 (Random123 PHILOX_M4x32_0)
         static constexpr std::uint32_t MULTIPLITER_4x32_0()
         {
-            return 0xCD9E'8D57;
+            return 0xD251'1F53;
         }
 
-        /// Second Philox S-box multiplier
+        /// Second Philox S-box multiplier, applied to counter word 2 (Random123 PHILOX_M4x32_1)
         static constexpr std::uint32_t MULTIPLITER_4x32_1()
         {
-            return 0xD251'1F53;
+            return 0xCD9E'8D57;
         }
     };
 } // namespace alpaka::rand::engine
