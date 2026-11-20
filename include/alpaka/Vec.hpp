@@ -312,7 +312,7 @@ namespace alpaka
 
         constexpr Vec revert() const
         {
-            Vec invertedVec{};
+            Vec invertedVec;
             for(uint32_t i = 0u; i < T_dim; i++)
                 invertedVec[T_dim - 1 - i] = (*this)[i];
 
@@ -430,7 +430,7 @@ namespace alpaka
         constexpr Vec<T_Type, T_numElements> rshrink() const
         {
             static_assert(T_numElements <= T_dim);
-            Vec<T_Type, T_numElements> result{};
+            Vec<T_Type, T_numElements> result;
             for(uint32_t i = 0u; i < T_numElements; i++)
                 result[T_numElements - 1u - i] = (*this)[T_dim - 1u - i];
 
@@ -444,7 +444,7 @@ namespace alpaka
         constexpr Vec<T_Type, T_dim - 1u> eraseBack() const requires(T_dim > 1u)
         {
             constexpr auto reducedDim = T_dim - 1u;
-            Vec<T_Type, reducedDim> result{};
+            Vec<T_Type, reducedDim> result;
             for(uint32_t i = 0u; i < reducedDim; i++)
                 result[i] = (*this)[i];
 
@@ -522,7 +522,7 @@ namespace alpaka
         template<std::integral auto T_dimToRemove>
         constexpr Vec<value_type, T_dim - 1u> remove() const requires(T_dim >= 2u)
         {
-            Vec<value_type, T_dim - 1u> result{};
+            Vec<value_type, T_dim - 1u> result;
             for(int i = 0u; i < static_cast<int>(T_dim - 1u); ++i)
             {
                 // skip component which must be deleted
@@ -590,7 +590,7 @@ namespace alpaka
         template<typename T_OtherStorage>
         constexpr auto min(Vec<T_Type, T_dim, T_OtherStorage> const& rhs) const
         {
-            typename Vec::UniVec result{};
+            typename Vec::UniVec result;
             for(uint32_t d = 0u; d < T_dim; d++)
                 result[d] = std::min((*this)[d], rhs[d]);
             return result;
@@ -789,7 +789,7 @@ namespace alpaka
         /* to avoid allocation side effects the result is always a vector                                             \
          * with default policies                                                                                      \
          */                                                                                                           \
-        Vec<resultScalarType, T_dim> result{};                                                                        \
+        Vec<resultScalarType, T_dim> result;                                                                          \
         for(uint32_t i = 0u; i < T_dim; i++)                                                                          \
             result[i] = lhs[i] op rhs[i];                                                                             \
         return result;                                                                                                \
@@ -805,7 +805,7 @@ namespace alpaka
         /* to avoid allocation side effects the result is always a vector                                             \
          * with default policies                                                                                      \
          */                                                                                                           \
-        Vec<resultScalarType, T_dim> result{};                                                                        \
+        Vec<resultScalarType, T_dim> result;                                                                          \
         for(uint32_t i = 0u; i < T_dim; i++)                                                                          \
             result[i] = lhs[i] op rhs;                                                                                \
         return result;                                                                                                \
@@ -820,7 +820,7 @@ namespace alpaka
         /* to avoid allocation side effects the result is always a vector                                             \
          * with default policies                                                                                      \
          */                                                                                                           \
-        Vec<resultScalarType, T_dim> result{};                                                                        \
+        Vec<resultScalarType, T_dim> result;                                                                          \
         for(uint32_t i = 0u; i < T_dim; i++)                                                                          \
             result[i] = lhs op rhs[i];                                                                                \
         return result;                                                                                                \
