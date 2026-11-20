@@ -92,7 +92,7 @@ namespace alpaka::internal
         }
 
 #define SIMD_MASK_REF_ASSIGN_OP(OP, BOOL_FALLBACK)                                                                    \
-    constexpr SmartMaskValueRef& operator OP(bool b) noexcept                                                         \
+    constexpr SmartMaskValueRef& operator OP(bool b) noexcept requires(!std::is_same_v<ValueMaskType, bool>)          \
     {                                                                                                                 \
         return (*this OP internal::valueMaskCast<ValueMaskType>(b));                                                  \
     }                                                                                                                 \
