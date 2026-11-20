@@ -52,15 +52,23 @@ namespace alpaka::rand
             ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
             {
                 using BitsT = typename TEngine::result_type;
-                T ret = 0;
-                constexpr auto N = sizeof(T) / sizeof(BitsT);
-                for(unsigned int a = 0; a < N; ++a)
+                if constexpr(sizeof(T) < sizeof(BitsT))
                 {
-                    ret
-                        ^= (static_cast<T>(engine())
-                            << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+                    // One engine number has more bits than T: keep the low bits.
+                    return static_cast<T>(engine());
                 }
-                return ret;
+                else
+                {
+                    T ret = 0;
+                    constexpr auto N = sizeof(T) / sizeof(BitsT);
+                    for(unsigned int a = 0; a < N; ++a)
+                    {
+                        ret
+                            ^= (static_cast<T>(engine())
+                                << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+                    }
+                    return ret;
+                }
             }
         };
 
