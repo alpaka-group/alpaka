@@ -274,4 +274,50 @@ namespace alpaka::onAcc::warp
             laneMask,
             width != 0u ? width : getSize<T_Acc>());
     }
+
+    /** Inclusive prefix scan over the lanes of a warp (Kogge-Stone with shflUp).
+     *
+     * Lane i gets op(v_0, ..., v_i).
+     * Collective: all lanes of the warp must reach the same call in converged control flow. A branch around the call
+     * is only allowed if all lanes of the warp take it, otherwise select the value inside the branch and call
+     * inclusiveScan() with all lanes after it.
+     * No block synchronization and no memory fence is performed.
+     *
+     * @param value contribution of this lane
+     * @param op associative binary functor, need not be commutative
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T inclusiveScan(T_Acc const& acc, T value, auto const& op)
+    {
+        uint32_t const laneIdx = getLaneIdx(acc);
+        for(uint32_t delta = 1u; delta < getSize<T_Acc>(); delta *= 2u)
+        {
+            T const lower = shflUp(acc, value, delta);
+            if(laneIdx >= delta)
+                value = op(lower, value);
+        }
+        return value;
+    }
+
+    /** Exclusive prefix scan over the lanes of a warp.
+     *
+     * Lane i gets op(v_0, ..., v_{i-1}), the first lane gets `identity`.
+     * The total of the warp is op(result, value) of its last lane.
+     * Collective: all lanes of the warp must reach the same call in converged control flow. A branch around the call
+     * is only allowed if all lanes of the warp take it, otherwise select the value inside the branch and call
+     * exclusiveScan() with all lanes after it.
+     * No block synchronization and no memory fence is performed.
+     *
+     * @param value contribution of this lane
+     * @param op associative binary functor, need not be commutative
+     * @param identity result of the first lane
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T exclusiveScan(T_Acc const& acc, T value, auto const& op, T const& identity)
+    {
+        T const lower = shflUp(acc, inclusiveScan(acc, value, op), 1u);
+        return getLaneIdx(acc) == 0u ? identity : lower;
+    }
 } // namespace alpaka::onAcc::warp
