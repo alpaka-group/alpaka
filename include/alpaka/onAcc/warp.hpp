@@ -20,6 +20,7 @@
 #include "alpaka/onAcc/internal/warp.hpp"
 #include "alpaka/tag.hpp"
 
+#include <algorithm>
 #include <cstdint>
 
 namespace alpaka::onAcc::warp
@@ -273,5 +274,31 @@ namespace alpaka::onAcc::warp
             value,
             laneMask,
             width != 0u ? width : getSize<T_Acc>());
+    }
+
+    /** Reduce a value over the lanes of a warp (butterfly with shflXor).
+     *
+     * Collective: all lanes of the warp must reach the same call in converged control flow. A branch around the call
+     * is only allowed if all lanes of the warp take it, otherwise select the value inside the branch and call
+     * reduce() with all lanes after it.
+     * No block synchronization and no memory fence is performed.
+     *
+     * @attention The number of threads of the block must be a multiple of the warp size or a power of two smaller
+     * than the warp size.
+     *
+     * @param value contribution of this lane
+     * @param op associative and commutative binary functor
+     * @return reduction over the warp, identical in all lanes
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T reduce(T_Acc const& acc, T value, auto const& op)
+    {
+        // a block can be smaller than a warp
+        auto const numThreadsInBlock = static_cast<uint32_t>(acc[alpaka::layer::thread].count().product());
+        uint32_t const numLanes = std::min(getSize<T_Acc>(), numThreadsInBlock);
+        for(uint32_t laneMask = numLanes / 2u; laneMask > 0u; laneMask /= 2u)
+            value = op(value, shflXor(acc, value, laneMask, numLanes));
+        return value;
     }
 } // namespace alpaka::onAcc::warp
