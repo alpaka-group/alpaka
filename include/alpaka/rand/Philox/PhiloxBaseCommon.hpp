@@ -6,6 +6,7 @@
 
 #include "alpaka/rand/Philox/PhiloxStateless.hpp"
 
+#include <cstdint>
 #include <utility>
 
 namespace alpaka::rand::engine
@@ -68,11 +69,19 @@ namespace alpaka::rand::engine
         ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
         {
             Counter& counter = static_cast<TImpl*>(this)->state.counter;
-            Counter temp = counter;
-            counter[0] += low32Bits(offset);
-            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
-            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
+            // 128-bit addition of the 64-bit offset to the counter words {0, 1, 2, 3}.
+            std::uint64_t const low = (static_cast<std::uint64_t>(counter[1]) << 32) | counter[0];
+            std::uint64_t const sum = low + offset;
+            counter[0] = low32Bits(sum);
+            counter[1] = high32Bits(sum);
+            if(sum < low)
+            {
+                counter[2]++;
+                if(counter[2] == 0)
+                {
+                    counter[3]++;
+                }
+            }
         }
 
         /** Advance the counter by the length of \a subsequence
