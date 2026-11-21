@@ -106,19 +106,22 @@ namespace alpaka::rand::engine
         /// Skips the next \a offset numbers
         ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
         {
-            static_assert(TParams::counterSize == 4, "Only counterSize is supported.");
-            state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
-            offset += state.position < 4 ? 0 : 4;
-            state.position -= state.position < 4 ? 0 : 4u;
-            for(auto numShifts = state.position; numShifts > 0; --numShifts)
+            static_assert(TParams::counterSize == 4, "Only counterSize 4 is supported.");
+            // Position of the target number in the current block plus the remainder; less than 8.
+            uint64_t const inBlock = state.position + offset % TParams::counterSize;
+            uint64_t const blocks = offset / TParams::counterSize + inBlock / TParams::counterSize;
+            uint64_t shifts = offset;
+            if(blocks > 0)
             {
-                // Shift state results to allow hard coded access to element zero.
-                // This will avoid high register usage on NVIDIA devices.
-                state.result[0] = state.result[1];
-                state.result[1] = state.result[2];
-                state.result[2] = state.result[3];
+                // advanceState() moves from the current block to the next one.
+                this->skip4(blocks - 1);
+                advanceState();
+                shifts = inBlock % TParams::counterSize;
             }
-            this->skip4(offset / 4);
+            for(; shifts > 0; --shifts)
+            {
+                nextNumber();
+            }
         }
 
     public:
@@ -126,14 +129,19 @@ namespace alpaka::rand::engine
          *
          * @param seed Set the Philox generator key
          * @param subsequence Select a subsequence of size 2^64
-         * @param offset Skip \a offset numbers form the start of the subsequence
+         * @param offset Skip \a offset numbers from the start of the subsequence
          */
         ALPAKA_FN_HOST_ACC PhiloxSingle(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
             : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0}
         {
+            static_assert(TParams::counterSize == 4, "Only counterSize 4 is supported.");
             this->skipSubsequence(subsequence);
-            skip(offset);
+            this->skip4(offset / TParams::counterSize);
             advanceState();
+            for(uint64_t shifts = offset % TParams::counterSize; shifts > 0; --shifts)
+            {
+                nextNumber();
+            }
         }
 
         /** Get the next random number

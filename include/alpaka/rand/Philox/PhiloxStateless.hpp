@@ -89,7 +89,7 @@ namespace alpaka::rand::engine
             return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
         }
 
-        /** Performs N rounds of the Philox shuffle
+        /** Performs N rounds of the Philox shuffle, with N = numRounds()
          *
          * @param counter_in initial state of the counter
          * @param key_in initial state of the key
@@ -100,8 +100,8 @@ namespace alpaka::rand::engine
             Key key{key_in};
             Counter counter = singleRound(counter_in, key);
 
-            ALPAKA_UNROLL(numRounds())
-            for(unsigned int n = 0; n < numRounds(); ++n)
+            ALPAKA_UNROLL(numRounds() - 1)
+            for(unsigned int n = 1; n < numRounds(); ++n)
             {
                 key = bumpKey(key);
                 counter = singleRound(counter, key);

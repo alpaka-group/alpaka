@@ -10,6 +10,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <cstdint>
 #include <type_traits>
 
 class RandTestKernel
@@ -110,4 +111,54 @@ TEMPLATE_LIST_TEST_CASE("defaultRandomGeneratorIsTriviallyCopyable", "[rand]", a
     using Acc = TestType;
     using DefaultEngine = decltype(alpaka::rand::engine::createDefault(std::declval<Acc>(), 0u, 0u, 0u));
     STATIC_REQUIRE(std::is_trivially_copyable_v<DefaultEngine>);
+}
+
+class RandSeedAndTypeTestKernel
+{
+public:
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    {
+        // The high 32 bits of the seed and of the subsequence select a different sequence.
+        constexpr std::uint64_t highBit = std::uint64_t{1} << 32;
+        auto dist = alpaka::rand::distribution::createUniformUint<std::uint32_t>(acc);
+        auto low = alpaka::rand::engine::createDefault(acc, 43, 7);
+        auto highSeed = alpaka::rand::engine::createDefault(acc, highBit + 43, 7);
+        auto const lowNumber = dist(low);
+        ALPAKA_CHECK(*success, lowNumber != dist(highSeed));
+#if defined(ALPAKA_DISABLE_VENDOR_RNG) || !defined(ALPAKA_ACC_SYCL_ENABLED)
+        // The SYCL vendor engine ignores the subsequence.
+        auto highSubsequence = alpaka::rand::engine::createDefault(acc, 43, highBit + 7);
+        ALPAKA_CHECK(*success, lowNumber != dist(highSubsequence));
+#endif
+
+#if defined(ALPAKA_DISABLE_VENDOR_RNG)                                                                                \
+    || (!defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)                                 \
+        && !defined(ALPAKA_ACC_SYCL_ENABLED))
+        // Integer types narrower than the engine result still get random bits.
+        // The vendor generators have no distribution for these types.
+        auto narrowDist = alpaka::rand::distribution::createUniformUint<std::uint16_t>(acc);
+        auto gen = alpaka::rand::engine::createDefault(acc, 12345, 6789);
+        std::uint16_t bits = 0;
+        for(int i = 0; i < 16; ++i)
+        {
+            bits = static_cast<std::uint16_t>(bits | narrowDist(gen));
+        }
+        ALPAKA_CHECK(*success, bits != 0);
+#endif
+    }
+};
+
+TEMPLATE_LIST_TEST_CASE("defaultRandomGeneratorSeedAndNarrowTypes", "[rand]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Dim = alpaka::Dim<Acc>;
+    using Idx = alpaka::Idx<Acc>;
+
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+
+    RandSeedAndTypeTestKernel kernel;
+
+    REQUIRE(fixture(kernel));
 }

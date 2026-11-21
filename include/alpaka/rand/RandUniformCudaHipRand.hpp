@@ -78,9 +78,9 @@ namespace alpaka::rand
             Xor() = default;
 
             __device__ Xor(
-                std::uint32_t const& seed,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0)
+                std::uint64_t const& seed,
+                std::uint64_t const& subsequence = 0,
+                std::uint64_t const& offset = 0)
             {
 #        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 curand_init(seed, subsequence, offset, &state);
@@ -269,9 +269,9 @@ namespace alpaka::rand
         {
             static __device__ auto createDefault(
                 RandUniformCudaHipRand<TApi> const& /*rand*/,
-                std::uint32_t const& seed = 0,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> uniform_cuda_hip::Xor
+                std::uint64_t const& seed = 0,
+                std::uint64_t const& subsequence = 0,
+                std::uint64_t const& offset = 0) -> uniform_cuda_hip::Xor
             {
                 return {seed, subsequence, offset};
             }

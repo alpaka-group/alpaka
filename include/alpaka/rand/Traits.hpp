@@ -80,6 +80,20 @@ namespace alpaka::rand
             //! The random number default generator engine get trait.
             template<typename TRand, typename TSfinae = void>
             struct CreateDefault;
+
+            //! \return The exclusive or of the low 32 bits and a mix of the high 32 bits, for engines that take
+            //!         32-bit seeds. A value below 2^32 does not change. The mix is the MurmurHash3 finalizer, so
+            //!         values with exchanged or equal halves do not give the same result.
+            ALPAKA_FN_HOST_ACC constexpr auto foldTo32Bits(std::uint64_t const value) -> std::uint32_t
+            {
+                auto high = static_cast<std::uint32_t>(value >> 32);
+                high ^= high >> 16;
+                high *= 0x85eb'ca6bu;
+                high ^= high >> 13;
+                high *= 0xc2b2'ae35u;
+                high ^= high >> 16;
+                return static_cast<std::uint32_t>(value) ^ high;
+            }
         } // namespace trait
 
         //! \return A default random number generator engine. Its type is guaranteed to be trivially copyable.
@@ -89,9 +103,9 @@ namespace alpaka::rand
         template<typename TRand>
         ALPAKA_FN_HOST_ACC auto createDefault(
             TRand const& rand,
-            std::uint32_t const& seed = 0,
-            std::uint32_t const& subsequence = 0,
-            std::uint32_t const& offset = 0)
+            std::uint64_t const& seed = 0,
+            std::uint64_t const& subsequence = 0,
+            std::uint64_t const& offset = 0)
         {
             using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
             return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);

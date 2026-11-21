@@ -184,11 +184,11 @@ namespace alpaka::rand
         {
             static auto createDefault(
                 RandGenericSycl<TDim> const& rand,
-                std::uint32_t const& seed = 0,
-                std::uint32_t const& /* subsequence */ = 0,
-                std::uint32_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
+                std::uint64_t const& seed = 0,
+                std::uint64_t const& /* subsequence */ = 0,
+                std::uint64_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
             {
-                return {rand, seed};
+                return {rand, foldTo32Bits(seed)};
             }
         };
     } // namespace engine::trait

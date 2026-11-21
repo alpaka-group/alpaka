@@ -52,15 +52,27 @@ namespace alpaka::rand
             ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
             {
                 using BitsT = typename TEngine::result_type;
-                T ret = 0;
-                constexpr auto N = sizeof(T) / sizeof(BitsT);
-                for(unsigned int a = 0; a < N; ++a)
+                if constexpr(std::is_same_v<T, bool>)
                 {
-                    ret
-                        ^= (static_cast<T>(engine())
-                            << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+                    return (engine() & BitsT{1}) != 0;
                 }
-                return ret;
+                else if constexpr(sizeof(T) < sizeof(BitsT))
+                {
+                    // One engine number has more bits than T: keep the low bits.
+                    return static_cast<T>(engine());
+                }
+                else
+                {
+                    T ret = 0;
+                    constexpr auto N = sizeof(T) / sizeof(BitsT);
+                    for(unsigned int a = 0; a < N; ++a)
+                    {
+                        ret
+                            ^= (static_cast<T>(engine())
+                                << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+                    }
+                    return ret;
+                }
             }
         };
 
@@ -205,9 +217,9 @@ namespace alpaka::rand
             template<typename TAcc>
             ALPAKA_FN_HOST_ACC static auto createDefault(
                 TAcc const& /* acc */,
-                std::uint32_t const& seed,
-                std::uint32_t const& subsequence,
-                std::uint32_t const& offset) -> Philox4x32x10
+                std::uint64_t const& seed,
+                std::uint64_t const& subsequence,
+                std::uint64_t const& offset) -> Philox4x32x10
             {
                 return {seed, subsequence, offset};
             }
