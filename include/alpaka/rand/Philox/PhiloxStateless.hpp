@@ -97,7 +97,6 @@ namespace alpaka::rand::engine
          */
         static ALPAKA_FN_HOST_ACC auto nRounds(Counter const& counter_in, Key const& key_in) -> Counter
         {
-            static_assert(numRounds() >= 1, "Philox needs at least one round.");
             Key key{key_in};
             Counter counter = singleRound(counter_in, key);
 
