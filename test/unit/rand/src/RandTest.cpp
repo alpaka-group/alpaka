@@ -125,10 +125,13 @@ public:
         auto dist = alpaka::rand::distribution::createUniformUint<std::uint32_t>(acc);
         auto low = alpaka::rand::engine::createDefault(acc, 43, 7);
         auto highSeed = alpaka::rand::engine::createDefault(acc, highBit + 43, 7);
-        auto highSubsequence = alpaka::rand::engine::createDefault(acc, 43, highBit + 7);
         auto const lowNumber = dist(low);
         ALPAKA_CHECK(*success, lowNumber != dist(highSeed));
+#if defined(ALPAKA_DISABLE_VENDOR_RNG) || !defined(ALPAKA_ACC_SYCL_ENABLED)
+        // The SYCL vendor engine ignores the subsequence.
+        auto highSubsequence = alpaka::rand::engine::createDefault(acc, 43, highBit + 7);
         ALPAKA_CHECK(*success, lowNumber != dist(highSubsequence));
+#endif
 
 #if defined(ALPAKA_DISABLE_VENDOR_RNG)                                                                                \
     || (!defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)                                 \
