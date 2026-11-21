@@ -2,8 +2,11 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include <alpaka/rand/RandDefault.hpp>
 #include <alpaka/rand/RandPhilox.hpp>
 #include <alpaka/rand/RandPhiloxStateless.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
+#include <alpaka/rand/Traits.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 
@@ -352,4 +355,291 @@ TEST_CASE("UniformRealExcludesOne", "[rand]")
     MaxValueEngine engine;
     CHECK(alpaka::rand::UniformReal<float>()(engine) < 1.0f);
     CHECK(alpaka::rand::UniformReal<double>()(engine) < 1.0);
+}
+
+namespace
+{
+    // Expected numbers of the stateful engines. Number n of the single-number engine is word n % 4 of
+    // generate({b low, b high, s low, s high}, {seed low, seed high}) with block b = 1 + n / 4 and subsequence s.
+    // Vector i of the vector engine at offset n is the block of the 128-bit counter (s << 64) + 1 + n + i.
+    struct PhiloxStatefulKnownNumbers
+    {
+        std::uint64_t seed;
+        std::uint64_t subsequence;
+        std::uint64_t offset;
+        std::uint32_t single[8];
+        std::uint32_t vector[8];
+    };
+
+    constexpr std::size_t numPhiloxStatefulKnownNumbers = 3;
+
+    ALPAKA_FN_HOST_ACC constexpr auto philoxStatefulKnownNumbers(std::size_t index) -> PhiloxStatefulKnownNumbers
+    {
+        switch(index)
+        {
+        case 0:
+            return {
+                0x0123'4567'89ab'cdef,
+                (std::uint64_t{1} << 32) + 7,
+                (std::uint64_t{1} << 34) + 5,
+                {0xf058'c646,
+                 0xc889'd089,
+                 0x75f2'ac85,
+                 0xf9fc'55b6,
+                 0x08b8'bb9c,
+                 0xd605'e12c,
+                 0x4b05'e171,
+                 0x9a80'40db},
+                {0x0ea1'2801,
+                 0x96de'f29d,
+                 0x3365'410b,
+                 0xee0b'7a5d,
+                 0x678c'68b6,
+                 0x8d57'b9cd,
+                 0xae5d'ec9b,
+                 0xa7c7'3973}};
+        case 1:
+            return {
+                0xfedc'ba98'7654'3210,
+                0xffff'ffff'ffff'ffff,
+                0xffff'ffff'ffff'ffff,
+                {0x3f50'06e0,
+                 0x35a1'b7d8,
+                 0xb526'0185,
+                 0x5bc5'1535,
+                 0x59b6'4fb2,
+                 0x35d7'33e6,
+                 0x3515'ae08,
+                 0xb650'f3a5},
+                {0xba4b'834c,
+                 0x0559'bf7f,
+                 0xf35d'3e34,
+                 0x349c'2ad4,
+                 0x29fc'c21d,
+                 0x0611'21ec,
+                 0x300a'371d,
+                 0xcf79'8377}};
+        default:
+            return {
+                42,
+                0,
+                0,
+                {0xfcdb'2127,
+                 0x53ba'6cfd,
+                 0x838f'5a6e,
+                 0x744e'06fb,
+                 0xd36c'0225,
+                 0xa887'5dcb,
+                 0x9a4d'6d99,
+                 0xc609'a559},
+                {0xfcdb'2127,
+                 0x53ba'6cfd,
+                 0x838f'5a6e,
+                 0x744e'06fb,
+                 0xd36c'0225,
+                 0xa887'5dcb,
+                 0x9a4d'6d99,
+                 0xc609'a559}};
+        }
+    }
+
+    // Gives access to the protected skip functions of the single-number engine.
+    class PhiloxSingleProbe : public alpaka::rand::engine::PhiloxSingle<alpaka::rand::engine::PhiloxParams<4, 32, 10>>
+    {
+    public:
+        using Base = alpaka::rand::engine::PhiloxSingle<alpaka::rand::engine::PhiloxParams<4, 32, 10>>;
+        using Base::Base;
+
+        void skipBlocks(std::uint64_t const blocks)
+        {
+            this->skip4(blocks);
+        }
+
+        void skipNumbers(std::uint64_t const numbers)
+        {
+            this->skip(numbers);
+        }
+    };
+
+    // An engine that always returns one value, with the range [TMin, TMax].
+    template<typename TValue, TValue TMin, TValue TMax>
+    struct FixedValueEngine
+    {
+        using result_type = TValue;
+
+        TValue value;
+
+        ALPAKA_FN_HOST_ACC auto operator()() -> TValue
+        {
+            return value;
+        }
+
+        ALPAKA_FN_HOST_ACC static constexpr auto min() -> TValue
+        {
+            return TMin;
+        }
+
+        ALPAKA_FN_HOST_ACC static constexpr auto max() -> TValue
+        {
+            return TMax;
+        }
+    };
+} // namespace
+
+TEST_CASE("HostStatefulEnginesKnownNumbers", "[rand]")
+{
+    for(std::size_t index = 0; index < numPhiloxStatefulKnownNumbers; ++index)
+    {
+        auto const known = philoxStatefulKnownNumbers(index);
+        alpaka::rand::Philox4x32x10 single(known.seed, known.subsequence, known.offset);
+        for(std::size_t i = 0; i < 8; ++i)
+        {
+            INFO("case " << index << " number " << i);
+            CHECK(single() == known.single[i]);
+        }
+        alpaka::rand::Philox4x32x10Vector vector(known.seed, known.subsequence, known.offset);
+        for(std::size_t v = 0; v < 2; ++v)
+        {
+            auto const result = vector();
+            for(std::size_t i = 0; i < 4; ++i)
+            {
+                INFO("case " << index << " vector " << v << " word " << i);
+                CHECK(result[i] == known.vector[4 * v + i]);
+            }
+        }
+    }
+}
+
+class PhiloxTestKernelStatefulKnownNumbers
+{
+public:
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& /* acc */, bool* success) const -> void
+    {
+        for(std::size_t index = 0; index < numPhiloxStatefulKnownNumbers; ++index)
+        {
+            auto const known = philoxStatefulKnownNumbers(index);
+            alpaka::rand::Philox4x32x10 single(known.seed, known.subsequence, known.offset);
+            for(std::size_t i = 0; i < 8; ++i)
+            {
+                ALPAKA_CHECK(*success, single() == known.single[i]);
+            }
+            alpaka::rand::Philox4x32x10Vector vector(known.seed, known.subsequence, known.offset);
+            for(std::size_t v = 0; v < 2; ++v)
+            {
+                auto const result = vector();
+                for(std::size_t i = 0; i < 4; ++i)
+                {
+                    ALPAKA_CHECK(*success, result[i] == known.vector[4 * v + i]);
+                }
+            }
+        }
+    }
+};
+
+TEMPLATE_LIST_TEST_CASE("PhiloxRandomGeneratorStatefulKnownNumbers", "[rand]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Dim = alpaka::Dim<Acc>;
+
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+
+    PhiloxTestKernelStatefulKnownNumbers kernel;
+
+    REQUIRE(fixture(kernel));
+}
+
+TEST_CASE("HostPhiloxSkip4CarriesIntoTheHighWords", "[rand]")
+{
+    using Counter = PhiloxSingleProbe::Counter;
+    PhiloxSingleProbe engine;
+    engine.state.counter = Counter{0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 5};
+    engine.skipBlocks(1);
+    CHECK(engine.state.counter == Counter{0, 0, 0, 6});
+    engine.state.counter = Counter{0xffff'fffe, 0xffff'ffff, 7, 9};
+    engine.skipBlocks(3);
+    CHECK(engine.state.counter == Counter{1, 0, 8, 9});
+    engine.state.counter = Counter{5, 0, 0, 0};
+    engine.skipBlocks(0xffff'ffff'ffff'ffff);
+    CHECK(engine.state.counter == Counter{4, 0, 1, 0});
+}
+
+TEST_CASE("HostPhiloxSkipToNumberTwoToTheSixtyFour", "[rand]")
+{
+    // Seed 3, subsequence 9: numbers 2^64 and 2^64 + 1 are words 0 and 1 of block 2^62 + 1.
+    PhiloxSingleProbe engine(3, 9, 0);
+    static_cast<void>(engine());
+    engine.skipNumbers(0xffff'ffff'ffff'ffff);
+    CHECK(engine() == 0x965b'c3d3);
+    CHECK(engine() == 0x5b33'dcdf);
+}
+
+TEST_CASE("UniformUintNarrowTypesAndBool", "[rand]")
+{
+    alpaka::rand::Philox4x32x10 engine(12345, 6789);
+    alpaka::rand::distribution::gpu::UniformUint<std::uint16_t> narrow;
+    std::uint16_t bits = 0;
+    for(int i = 0; i < 64; ++i)
+    {
+        bits = static_cast<std::uint16_t>(bits | narrow(engine));
+    }
+    CHECK(bits == 0xffff);
+    alpaka::rand::distribution::gpu::UniformUint<bool> oneBit;
+    int count = 0;
+    for(int i = 0; i < 64; ++i)
+    {
+        count += oneBit(engine) ? 1 : 0;
+    }
+    CHECK(count > 16);
+    CHECK(count < 48);
+}
+
+TEST_CASE("FoldTo32BitsKeepsSmallValuesAndSeparatesHalves", "[rand]")
+{
+    using alpaka::rand::engine::trait::foldTo32Bits;
+    CHECK(foldTo32Bits(0) == 0);
+    CHECK(foldTo32Bits(12345) == 12345);
+    CHECK(foldTo32Bits(0xffff'ffff) == 0xffff'ffff);
+    constexpr std::uint64_t seven = 7;
+    constexpr std::uint64_t nine = 9;
+    CHECK(foldTo32Bits((seven << 32) | nine) != foldTo32Bits((nine << 32) | seven));
+    CHECK(foldTo32Bits((std::uint64_t{42} << 32) | 42) != foldTo32Bits(0));
+    CHECK(foldTo32Bits(std::uint64_t{1} << 32) != foldTo32Bits(1));
+    CHECK(foldTo32Bits(0xffff'ffff'ffff'ffff) != foldTo32Bits(0));
+    auto first = alpaka::rand::engine::createDefault(alpaka::rand::MersenneTwister{}, (seven << 32) | nine);
+    auto second = alpaka::rand::engine::createDefault(alpaka::rand::MersenneTwister{}, (nine << 32) | seven);
+    CHECK(first() != second());
+}
+
+TEST_CASE("UniformRealStaysBelowTheUpperLimit", "[rand]")
+{
+    MaxValueEngine engine;
+    float const unit = alpaka::rand::UniformReal<float>(1.0f, 2.0f)(engine);
+    CHECK(unit >= 1.0f);
+    CHECK(unit < 2.0f);
+    CHECK(alpaka::rand::UniformReal<float>(100.0f, 101.0f)(engine) < 101.0f);
+    CHECK(alpaka::rand::UniformReal<float>(-2.0f, 0.0f)(engine) < 0.0f);
+    CHECK(alpaka::rand::UniformReal<double>(1e10, 1e10 + 1)(engine) < 1e10 + 1);
+}
+
+TEST_CASE("UniformRealUsesTheEngineRange", "[rand]")
+{
+    // The range of std::minstd_rand.
+    using MinstdLike = FixedValueEngine<std::uint32_t, 1, 2'147'483'646>;
+    MinstdLike top{2'147'483'646};
+    float const topValue = alpaka::rand::UniformReal<float>()(top);
+    CHECK(topValue < 1.0f);
+    CHECK(topValue > 0.99f);
+    MinstdLike bottom{1};
+    CHECK(alpaka::rand::UniformReal<float>()(bottom) == 0.0f);
+    // An engine that returns all 64-bit values.
+    using Full64 = FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff>;
+    Full64 half{std::uint64_t{1} << 63};
+    CHECK(alpaka::rand::UniformReal<double>()(half) == 0.5);
+    Full64 largest{0xffff'ffff'ffff'ffff};
+    double const largestValue = alpaka::rand::UniformReal<double>()(largest);
+    CHECK(largestValue < 1.0);
+    CHECK(largestValue > 0.99);
 }
