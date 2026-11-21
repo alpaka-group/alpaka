@@ -10,7 +10,9 @@
 #include "alpaka/rand/Philox/PhiloxVector.hpp"
 #include "alpaka/rand/Traits.hpp"
 
+#include <cmath>
 #include <cstdint>
+#include <cstring>
 #include <limits>
 #include <random>
 #include <type_traits>
@@ -142,6 +144,7 @@ namespace alpaka::rand
     };
 
     /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
+    //! Uniform floating-point numbers in [min, max), for min < max.
     template<typename TResult, typename TSfinae = void>
     class UniformReal : public interface::Implements<ConceptRand, UniformReal<TResult>>
     {
@@ -165,50 +168,111 @@ namespace alpaka::rand
         {
         }
 
-        ALPAKA_FN_HOST_ACC UniformReal(T min, T max) : _min(min), _max(max), _range(_max - _min)
+        ALPAKA_FN_HOST_ACC UniformReal(T min, T max)
+            : _min(min)
+            , _max(max)
+            , _range(_max - _min)
+            , _belowMax(largestBelow(max))
         {
         }
 
         template<typename TEngine>
         ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> TResult
         {
+            using Value = std::remove_cv_t<std::remove_reference_t<decltype(engine.max())>>;
+            static_assert(std::is_unsigned_v<Value>, "The engine must return unsigned integers.");
+            Value const engineMin = engine.min();
+            Value const engineMax = engine.max();
             if constexpr(meta::IsArrayOrVector<TResult>::value)
             {
                 auto result = engine();
                 TResult ret{
-                    toUnitInterval(result[0]) * _range + _min,
-                    toUnitInterval(result[1]) * _range + _min,
-                    toUnitInterval(result[2]) * _range + _min,
-                    toUnitInterval(result[3]) * _range + _min};
+                    scale(toUnitInterval<Value>(result[0], engineMin, engineMax)),
+                    scale(toUnitInterval<Value>(result[1], engineMin, engineMax)),
+                    scale(toUnitInterval<Value>(result[2], engineMin, engineMax)),
+                    scale(toUnitInterval<Value>(result[3], engineMin, engineMax))};
                 return ret;
             }
             else
             {
                 // Since it's possible to get a host-only engine here, the call has to go through proxy
-                return toUnitInterval(EngineCallHostAccProxy<TEngine>{}(engine)) * _range + _min;
+                return scale(toUnitInterval<Value>(EngineCallHostAccProxy<TEngine>{}(engine), engineMin, engineMax));
             }
 
             ALPAKA_UNREACHABLE(TResult{});
         }
 
     private:
-        //! Maps a 32-bit engine number to [0, 1) with an exact conversion.
-        static ALPAKA_FN_HOST_ACC auto toUnitInterval(std::uint32_t const value) -> T
+        //! 2^-n as a T.
+        static ALPAKA_FN_HOST_ACC constexpr auto inversePowerOfTwo(int n) -> T
         {
-            constexpr int digits = std::numeric_limits<T>::digits;
-            if constexpr(digits < 32)
+            T result = 1;
+            for(; n > 0; --n)
             {
-                return static_cast<T>(value >> (32 - digits))
-                       * (static_cast<T>(1) / static_cast<T>(std::uint64_t{1} << digits));
+                result *= static_cast<T>(0.5);
+            }
+            return result;
+        }
+
+        //! Maps an engine number in [engineMin, engineMax] to [0, 1).
+        //! The conversion is exact for an engine that returns all values of TValue.
+        template<typename TValue>
+        static ALPAKA_FN_HOST_ACC auto toUnitInterval(
+            TValue const value,
+            TValue const engineMin,
+            TValue const engineMax) -> T
+        {
+            constexpr int valueBits = std::numeric_limits<TValue>::digits;
+            constexpr int digits = std::numeric_limits<T>::digits;
+            if(engineMin == 0 && engineMax == std::numeric_limits<TValue>::max())
+            {
+                if constexpr(digits < valueBits)
+                {
+                    return static_cast<T>(value >> (valueBits - digits)) * inversePowerOfTwo(digits);
+                }
+                else
+                {
+                    return static_cast<T>(value) * inversePowerOfTwo(valueBits);
+                }
+            }
+            T const unit = static_cast<T>(value - engineMin) / (static_cast<T>(engineMax - engineMin) + T{1});
+            constexpr T belowOne = T{1} - std::numeric_limits<T>::epsilon() / 2;
+            return unit < T{1} ? unit : belowOne;
+        }
+
+        //! The largest value of T below the finite value x.
+        static ALPAKA_FN_HOST_ACC auto largestBelow(T const x) -> T
+        {
+            if(!(x < T{0}) && !(x > T{0}))
+            {
+                return -std::numeric_limits<T>::denorm_min();
+            }
+            if constexpr(sizeof(T) == sizeof(std::uint32_t) || sizeof(T) == sizeof(std::uint64_t))
+            {
+                using Bits = std::conditional_t<sizeof(T) == sizeof(std::uint32_t), std::uint32_t, std::uint64_t>;
+                Bits bits;
+                std::memcpy(&bits, &x, sizeof(T));
+                bits = x > T{0} ? bits - 1 : bits + 1;
+                T result;
+                std::memcpy(&result, &bits, sizeof(T));
+                return result;
             }
             else
             {
-                return static_cast<T>(value) * (static_cast<T>(1) / static_cast<T>(std::uint64_t{1} << 32));
+                return std::nextafter(x, -std::numeric_limits<T>::infinity());
             }
+        }
+
+        //! Maps u in [0, 1) to [min, max).
+        ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
+        {
+            T const result = unit * _range + _min;
+            return result < _max ? result : _belowMax;
         }
 
         T const _min;
         T const _max;
         T const _range;
+        T const _belowMax;
     };
 } // namespace alpaka::rand
