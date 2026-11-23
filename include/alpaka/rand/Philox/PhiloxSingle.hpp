@@ -103,6 +103,20 @@ namespace alpaka::rand::engine
             return result;
         }
 
+        /// Skips the next \a count numbers of the current block.
+        /// Requires state.position + count < TParams::counterSize.
+        ALPAKA_FN_HOST_ACC void skipInBlock(std::uint32_t count)
+        {
+            state.position += count;
+            for(; count > 0; --count)
+            {
+                // Element zero always contains the next number, see nextNumber().
+                state.result[0] = state.result[1];
+                state.result[1] = state.result[2];
+                state.result[2] = state.result[3];
+            }
+        }
+
         /// Skips the next \a offset numbers
         ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
         {
@@ -118,10 +132,7 @@ namespace alpaka::rand::engine
                 advanceState();
                 shifts = inBlock % TParams::counterSize;
             }
-            for(; shifts > 0; --shifts)
-            {
-                nextNumber();
-            }
+            skipInBlock(static_cast<std::uint32_t>(shifts));
         }
 
     public:
@@ -138,10 +149,7 @@ namespace alpaka::rand::engine
             this->skipSubsequence(subsequence);
             this->skip4(offset / TParams::counterSize);
             advanceState();
-            for(uint64_t shifts = offset % TParams::counterSize; shifts > 0; --shifts)
-            {
-                nextNumber();
-            }
+            skipInBlock(static_cast<std::uint32_t>(offset % TParams::counterSize));
         }
 
         /** Get the next random number
