@@ -147,7 +147,7 @@ namespace alpaka
 
         /** Constructor
          *
-         * @param pointer pointer to the memory
+         * @param staticSizedArray pointer to the memory
          */
         constexpr MdSpanArray(T_ArrayType& staticSizedArray) : m_ptr(const_cast<MutArrayType*>(&staticSizedArray))
         {
@@ -217,12 +217,12 @@ namespace alpaka
             return (*m_ptr)[idx];
         }
 
+        /** @} */
+
         constexpr bool operator==(MdSpanArray const other) const
         {
             return m_ptr == other.m_ptr;
         }
-
-        /** @} */
 
         constexpr auto getExtents() const
         {

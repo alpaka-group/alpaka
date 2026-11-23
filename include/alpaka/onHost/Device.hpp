@@ -249,8 +249,6 @@ namespace alpaka::onHost
      * allowed to access the data on two devices at the same time, this must be avoided by explicit synchronizations.
      * Unified memory follows the rules of UVM memory of the device backend e.g. CUDA, HIP, ...
      *
-     * @ingroup foo
-     *
      * @tparam T_Type type of the data elements
      * @param queue queue handle
      * @param extents number of elements for each dimension

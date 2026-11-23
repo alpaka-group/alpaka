@@ -36,10 +36,11 @@ namespace alpaka::onAcc
         constexpr WorkerGroup(
             T_ThreadIdxOrOrigin threadIdxOrOrigin,
             T_NumThreadsOrUnit numThreadsOrUnit,
-            T_MultiDimensional = MultiDimensional<true>{})
+            T_MultiDimensional multiDimensional = MultiDimensional<true>{})
             : m_threadIdxOrOrigin{threadIdxOrOrigin}
             , m_numThreadsOrUnit{numThreadsOrUnit}
         {
+            alpaka::unused(multiDimensional);
         }
 
         [[nodiscard]] constexpr auto getThreadCount(auto const& acc) const

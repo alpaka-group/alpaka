@@ -230,7 +230,7 @@ namespace alpaka::onHost
 
         /** Add an action to be executed when the shared_ptr is destroyed.
          *
-         * @param action Callable to execute on destruction.
+         * @param any Callable to execute on destruction.
          */
         void destructorWaitFor(auto const& any)
         {

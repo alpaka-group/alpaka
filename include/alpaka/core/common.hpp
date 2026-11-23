@@ -89,7 +89,7 @@
 //! ALPAKA_NO_HOST_ACC_WARNING
 //! ALPAKA_FN_HOST_ACC function_declaration()
 //! WARNING: Only use this method if there is no other way.
-//! Most cases can be solved by #if ALPAKA_ARCH_PTX or #if ALPAKA_LANG_CUDA.
+//! Most cases can be solved by "#if ALPAKA_ARCH_PTX" or "#if ALPAKA_LANG_CUDA".
 #if (ALPAKA_LANG_CUDA && !ALPAKA_COMP_CLANG_CUDA)
 #    if ALPAKA_COMP_MSVC
 #        define ALPAKA_NO_HOST_ACC_WARNING __pragma(hd_warning_disable)
