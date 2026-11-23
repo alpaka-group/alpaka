@@ -226,7 +226,13 @@ def get_spack_build_jobs(spack_builder: bashi.SpackBuilder, stage_name: str) -> 
             spack package build jobs. If stage is not empty, contains also the stage section.
     """
     jobs: dict[str, Any] = {}
-    if stage_name != "":
+    num_missing_packages = 0
+
+    # iterate over all Ubuntu versions and count missing packages
+    for packages in spack_builder.get_build_cache_packages().missing_packages.values():
+        num_missing_packages += len(packages)
+
+    if num_missing_packages > 0 and stage_name != "":
         jobs["stages"] = [stage_name]
 
     for ubuntu_ver, sw_name, sw_version in bashi.os_pkg_iter(spack_builder.get_build_cache_packages().missing_packages):

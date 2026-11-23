@@ -238,7 +238,9 @@ def main() -> None:
     for ubuntu, spack_packages in spack_builder.get_build_cache_packages().missing_packages.items():
         allowed_spack_packages: dict[bashi.ValueName, list[bashi.ValueVersion]] = {}
         for sw_name, sw_version in bashi.pkg_iter(spack_packages):
-            if sw_name == bashi.ALPAKA_ACC_GPU_CUDA_ENABLE and sw_version == bashi.ValueVersion("12.6"):
+            if sw_name == bashi.ALPAKA_ACC_GPU_CUDA_ENABLE and bashi.ValueVersion(
+                "12.6"
+            ) <= sw_version <= bashi.ValueVersion("12.8"):
                 bashi.SpackBuilder._dict_add_unique_list_entry(sw_name, sw_version, allowed_spack_packages)
         spack_builder.get_build_cache_packages().missing_packages[ubuntu] = allowed_spack_packages
 

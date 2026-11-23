@@ -36,7 +36,7 @@ def write_job_yaml(
         a file handle.
     """
     for key, body in jobs.items():
-        yaml.dump({key: body}, output_stream)
+        yaml.dump({key: body}, output_stream, Dumper=bashi.MultilineDumper)
         output_stream.write("\n")
 
 
