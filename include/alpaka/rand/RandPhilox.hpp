@@ -266,6 +266,11 @@ namespace alpaka::rand
         //! Maps u in [0, 1) to [min, max).
         ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
         {
+            // In the range [0, 1) the result is the unit value. The comparisons are false for NaN.
+            if(_min <= T{0} && _min >= T{0} && _max <= T{1} && _max >= T{1})
+            {
+                return unit;
+            }
             T const result = unit * _range + _min;
             return result < _max ? result : _belowMax;
         }
