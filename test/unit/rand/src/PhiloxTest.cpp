@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/rand/RandDefault.hpp>
 #include <alpaka/rand/RandPhilox.hpp>
 #include <alpaka/rand/RandPhiloxStateless.hpp>
@@ -12,10 +13,10 @@
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_floating_point.hpp>
 
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <vector>
 
 class PhiloxTest
@@ -634,13 +635,108 @@ TEST_CASE("UniformRealUsesTheEngineRange", "[rand]")
     CHECK(topValue < 1.0f);
     CHECK(topValue > 0.99f);
     MinstdLike bottom{1};
-    CHECK_THAT(alpaka::rand::UniformReal<float>()(bottom), Catch::Matchers::WithinULP(0.0f, 0));
+    CHECK(alpaka::math::floatEqualExactNoWarning(alpaka::rand::UniformReal<float>()(bottom), 0.0f));
     // An engine that returns all 64-bit values.
     using Full64 = FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff>;
     Full64 half{std::uint64_t{1} << 63};
-    CHECK_THAT(alpaka::rand::UniformReal<double>()(half), Catch::Matchers::WithinULP(0.5, 0));
+    CHECK(alpaka::math::floatEqualExactNoWarning(alpaka::rand::UniformReal<double>()(half), 0.5));
     Full64 largest{0xffff'ffff'ffff'ffff};
     double const largestValue = alpaka::rand::UniformReal<double>()(largest);
     CHECK(largestValue < 1.0);
     CHECK(largestValue > 0.99);
+}
+
+TEST_CASE("HostPhiloxSkipEqualsDiscard", "[rand]")
+{
+    constexpr std::uint64_t seed = 42;
+    constexpr std::uint64_t subsequence = 5;
+    auto const reference = drawNumbers(alpaka::rand::Philox4x32x10(seed, subsequence, 0), 48);
+    // Each start position in the block, and skips that stay in the block, end it and go past it.
+    for(std::size_t draws = 0; draws < 8; ++draws)
+    {
+        for(std::uint64_t skip = 0; skip <= 17; ++skip)
+        {
+            PhiloxSingleProbe engine(seed, subsequence, 0);
+            for(std::size_t i = 0; i < draws; ++i)
+            {
+                static_cast<void>(engine());
+            }
+            engine.skipNumbers(skip);
+            INFO("draws " << draws << " skip " << skip);
+            CHECK(engine.state.position == (draws + skip) % 4);
+            for(std::size_t i = 0; i < 8; ++i)
+            {
+                CHECK(engine() == reference[draws + skip + i]);
+            }
+        }
+    }
+    // A skip of more than 2^32 numbers is the same as the constructor offset.
+    for(std::uint64_t draws = 0; draws < 4; ++draws)
+    {
+        for(std::uint64_t const skip :
+            {(std::uint64_t{1} << 34) + 1, (std::uint64_t{1} << 34) + 2, (std::uint64_t{1} << 34) + 3})
+        {
+            PhiloxSingleProbe engine(seed, subsequence, 0);
+            for(std::uint64_t i = 0; i < draws; ++i)
+            {
+                static_cast<void>(engine());
+            }
+            engine.skipNumbers(skip);
+            alpaka::rand::Philox4x32x10 expected(seed, subsequence, draws + skip);
+            INFO("draws " << draws << " skip " << skip);
+            for(std::size_t i = 0; i < 8; ++i)
+            {
+                CHECK(engine() == expected());
+            }
+        }
+    }
+}
+
+namespace
+{
+    // Draws one number and compares it with the expected value, exactly.
+    template<typename T, typename TEngine>
+    auto drawsExactly(alpaka::rand::UniformReal<T> dist, TEngine engine, T const expected) -> bool
+    {
+        return alpaka::math::floatEqualExactNoWarning(dist(engine), expected);
+    }
+} // namespace
+
+TEST_CASE("UniformRealScalesTheUnitValue", "[rand]")
+{
+    using Full32 = FixedValueEngine<std::uint32_t, 0, 0xffff'ffff>;
+    using RealF = alpaka::rand::UniformReal<float>;
+    using RealD = alpaka::rand::UniformReal<double>;
+    // The unit values 0, 0.5 and the largest float below 1.
+    Full32 const zero{0};
+    Full32 const half{0x8000'0000};
+    Full32 const top{0xffff'ffff};
+    constexpr float belowOne = 1.0f - std::numeric_limits<float>::epsilon() / 2;
+    CHECK(drawsExactly(RealF(), zero, 0.0f));
+    CHECK(drawsExactly(RealF(), half, 0.5f));
+    CHECK(drawsExactly(RealF(), top, belowOne));
+    CHECK(drawsExactly(RealF(0.0f, 1.0f), half, 0.5f));
+    CHECK(drawsExactly(RealF(-0.0f, 1.0f), half, 0.5f));
+    CHECK(drawsExactly(RealD(0.0, 1.0), half, 0.5));
+    // Ranges that have one limit in common with [0, 1).
+    CHECK(drawsExactly(RealF(0.0f, 2.0f), half, 1.0f));
+    CHECK(drawsExactly(RealF(0.0f, 0.5f), half, 0.25f));
+    CHECK(drawsExactly(RealF(-1.0f, 1.0f), half, 0.0f));
+    CHECK(drawsExactly(RealF(0.5f, 1.0f), half, 0.75f));
+    CHECK(drawsExactly(RealD(0.0, 2.0), half, 1.0));
+    CHECK(drawsExactly(RealD(0.0, 0.5), half, 0.25));
+    CHECK(drawsExactly(RealD(-1.0, 1.0), half, 0.0));
+    CHECK(drawsExactly(RealD(0.5, 1.0), half, 0.75));
+    CHECK(drawsExactly(RealF(-1.0f, 1.0f), zero, -1.0f));
+    CHECK(drawsExactly(RealF(0.5f, 1.0f), zero, 0.5f));
+    // A vector result uses the same range.
+    using Vector = alpaka::rand::Philox4x32x10Vector::ResultContainer<float>;
+    alpaka::rand::Philox4x32x10Vector unitEngine(7, 0, 0);
+    alpaka::rand::Philox4x32x10Vector rangeEngine(7, 0, 0);
+    auto const unit = alpaka::rand::UniformReal<Vector>()(unitEngine);
+    auto const range = alpaka::rand::UniformReal<Vector>(0.0f, 2.0f)(rangeEngine);
+    for(std::size_t i = 0; i < 4; ++i)
+    {
+        CHECK(alpaka::math::floatEqualExactNoWarning(range[i], 2.0f * unit[i]));
+    }
 }
