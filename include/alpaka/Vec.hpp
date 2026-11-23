@@ -234,7 +234,7 @@ namespace alpaka
          *
          * @attention This constructor allows implicit casts.
          *
-         * @param args value of each dimension, x,y,z,... Exactly one value per component is required. Use value
+         * @param args value of each dimension, z,y,x,... Exactly one value per component is required. Use value
          * initialization, e.g. `Vec<int, 3u> vec{};`, or `Vec<int, 3u>::fill(value)` for initialized components.
          *
          * A constexpr vector should be initialized with {} instead of () because at least
