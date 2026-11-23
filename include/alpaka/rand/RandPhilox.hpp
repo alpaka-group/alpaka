@@ -5,15 +5,14 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
-#include "alpaka/math/FloatEqualExact.hpp"
 #include "alpaka/meta/IsArrayOrVector.hpp"
 #include "alpaka/rand/Philox/PhiloxSingle.hpp"
 #include "alpaka/rand/Philox/PhiloxVector.hpp"
 #include "alpaka/rand/Traits.hpp"
 
+#include <bit>
 #include <cmath>
 #include <cstdint>
-#include <cstring>
 #include <limits>
 #include <random>
 #include <type_traits>
@@ -174,6 +173,7 @@ namespace alpaka::rand
             , _max(max)
             , _range(_max - _min)
             , _belowMax(largestBelow(max))
+            , _clampNeeded(!(min == T{0} && max == T{1}))
         {
         }
 
@@ -244,31 +244,42 @@ namespace alpaka::rand
         //! The largest value of T below the finite value x.
         static ALPAKA_FN_HOST_ACC auto largestBelow(T const x) -> T
         {
+            if(x == std::numeric_limits<T>::infinity() || x == -std::numeric_limits<T>::infinity())
+            {
+                return x;
+            }
             if(!(x < T{0}) && !(x > T{0}))
             {
                 return -std::numeric_limits<T>::denorm_min();
             }
             if constexpr(sizeof(T) == sizeof(std::uint32_t) || sizeof(T) == sizeof(std::uint64_t))
             {
+                // The integer representation steps to the next value, without a library call.
                 using Bits = std::conditional_t<sizeof(T) == sizeof(std::uint32_t), std::uint32_t, std::uint64_t>;
-                Bits bits;
-                std::memcpy(&bits, &x, sizeof(T));
-                bits = x > T{0} ? bits - 1 : bits + 1;
-                T result;
-                std::memcpy(&result, &bits, sizeof(T));
-                return result;
+                Bits const bits = std::bit_cast<Bits>(x);
+                return std::bit_cast<T>(x > T{0} ? static_cast<Bits>(bits - 1) : static_cast<Bits>(bits + 1));
             }
             else
             {
-                return std::nextafter(x, -std::numeric_limits<T>::infinity());
+                // Long double on x86 has padding bytes instead of a plain integer representation.
+                // Any value below x satisfies the upper bound, it does not have to be the
+                // immediate predecessor.
+                T const step = (x > T{0} ? x : -x) * std::numeric_limits<T>::epsilon();
+                if(step > T{0})
+                {
+                    return x - step;
+                }
+                return x > T{0} ? T{0} : x * T{2};
             }
         }
 
         //! Maps u in [0, 1) to [min, max).
         ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
         {
-            // For min = 0 and max = 1 the result is the unit value.
-            if(math::floatEqualExactNoWarning(_min, T{0}) && math::floatEqualExactNoWarning(_max, T{1}))
+            // The clamp is only needed outside of [0, 1): unit is below one by construction and
+            // unit * 1 + 0 is exact. The decision is computed once in the constructor, so the
+            // compare does not stay in the draw loop when the distribution is a function argument.
+            if(!_clampNeeded)
             {
                 return unit;
             }
@@ -280,5 +291,6 @@ namespace alpaka::rand
         T const _max;
         T const _range;
         T const _belowMax;
+        bool const _clampNeeded;
     };
 } // namespace alpaka::rand
