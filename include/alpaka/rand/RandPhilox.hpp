@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/math/FloatEqualExact.hpp"
 #include "alpaka/meta/IsArrayOrVector.hpp"
 #include "alpaka/rand/Philox/PhiloxSingle.hpp"
 #include "alpaka/rand/Philox/PhiloxVector.hpp"
@@ -266,8 +267,8 @@ namespace alpaka::rand
         //! Maps u in [0, 1) to [min, max).
         ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
         {
-            // In the range [0, 1) the result is the unit value. The comparisons are false for NaN.
-            if(_min <= T{0} && _min >= T{0} && _max <= T{1} && _max >= T{1})
+            // For min = 0 and max = 1 the result is the unit value.
+            if(math::floatEqualExactNoWarning(_min, T{0}) && math::floatEqualExactNoWarning(_max, T{1}))
             {
                 return unit;
             }
