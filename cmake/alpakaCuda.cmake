@@ -135,11 +135,6 @@ if(CMAKE_CUDA_COMPILER)
     endif()
 
     message(STATUS "cuda with host compiler: " ${_alpaka_CUDA_HOST_COMPILER})
-
-    ## GCC compiler flag to show a longer stack for concept diagnostics
-    if(${_alpaka_CUDA_HOST_COMPILER} STREQUAL "GNU")
-        alpaka_set_compiler_options(HOST target alpaka_target_cuda "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-fconcepts-diagnostics-depth=${alpaka_GCC_CONCEPT_DEPTH}>")
-    endif()
 else()
     find_package(CUDAToolkit)
     if(NOT CUDAToolkit_FOUND)

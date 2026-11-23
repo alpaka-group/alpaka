@@ -110,14 +110,6 @@ alpaka_compiler_option(FTZ "Set flush to zero" DEFAULT)
 
 alpaka_compiler_option(RELOCATABLE_DEVICE_CODE "Enable relocatable device code for CUDA, HIP and SYCL devices" DEFAULT)
 
-if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    set(alpaka_GCC_CONCEPT_DEPTH
-        5
-        CACHE STRING
-        "Setup for GCC: How many nested concepts are displayed in the event of an error?"
-    )
-endif()
-
 # Create core targets
 if(NOT TARGET alpaka)
     ## target: alpaka::header
@@ -212,11 +204,6 @@ endif()
 # Avoid extending global alpaka targets more than once in the complete configure tree.
 get_property(_alpaka_TARGETS_EXTENDED GLOBAL PROPERTY ALPAKA_TARGETS_EXTENDED)
 if(NOT _alpaka_TARGETS_EXTENDED)
-    ## GCC compiler flag to show a longer stack for concept diagnostics
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        alpaka_set_compiler_options(HOST target alpaka_target_host "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-fconcepts-diagnostics-depth=${alpaka_GCC_CONCEPT_DEPTH}>")
-    endif()
-
     ## HWLOC
     include(${_alpaka_CMAKE_DIR}/alpakaHwloc.cmake)
 

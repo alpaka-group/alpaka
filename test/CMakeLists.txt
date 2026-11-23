@@ -17,6 +17,10 @@ add_library(${_TEST_TARGET_NAME} INTERFACE)
 target_include_directories(${_TEST_TARGET_NAME} INTERFACE include)
 add_library(alpaka::test ALIAS ${_TEST_TARGET_NAME})
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    alpaka_set_compiler_options(HOST target ${_TEST_TARGET_NAME} "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-fconcepts-diagnostics-depth=5>")
+endif()
+
 ################################################################################
 # Add subdirectories.
 ################################################################################
