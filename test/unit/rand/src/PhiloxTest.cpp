@@ -12,6 +12,7 @@
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -633,11 +634,11 @@ TEST_CASE("UniformRealUsesTheEngineRange", "[rand]")
     CHECK(topValue < 1.0f);
     CHECK(topValue > 0.99f);
     MinstdLike bottom{1};
-    CHECK(alpaka::rand::UniformReal<float>()(bottom) == 0.0f);
+    CHECK_THAT(alpaka::rand::UniformReal<float>()(bottom), Catch::Matchers::WithinULP(0.0f, 0));
     // An engine that returns all 64-bit values.
     using Full64 = FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff>;
     Full64 half{std::uint64_t{1} << 63};
-    CHECK(alpaka::rand::UniformReal<double>()(half) == 0.5);
+    CHECK_THAT(alpaka::rand::UniformReal<double>()(half), Catch::Matchers::WithinULP(0.5, 0));
     Full64 largest{0xffff'ffff'ffff'ffff};
     double const largestValue = alpaka::rand::UniformReal<double>()(largest);
     CHECK(largestValue < 1.0);
