@@ -174,8 +174,7 @@ namespace alpaka::rand
             , _max(max)
             , _range(_max - _min)
             , _belowMax(largestBelow(max))
-            , _clampNeeded(
-                  !(math::floatEqualExactNoWarning(min, T{0}) && math::floatEqualExactNoWarning(max, T{1})))
+            , _clampNeeded(!(math::floatEqualExactNoWarning(min, T{0}) && math::floatEqualExactNoWarning(max, T{1})))
         {
         }
 
