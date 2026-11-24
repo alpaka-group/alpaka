@@ -102,7 +102,8 @@ namespace alpaka::rand::engine::internal
             // Use a constexpr variable to ensure the unroll factor is a compile-time constant
             constexpr unsigned rounds = numRounds();
 
-            for(unsigned int n = 0; n < rounds; ++n)
+            // The call above is round one, so the loop adds rounds - 1 further rounds.
+            for(unsigned int n = 1; n < rounds; ++n)
             {
                 key = bumpKey(key);
                 counter = singleRound(counter, key);

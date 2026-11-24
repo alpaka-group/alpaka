@@ -93,14 +93,17 @@ namespace alpaka::rand::engine
 
         /** Initialize a new Philox engine
          *
+         * Vector i at offset n is the same as numbers 4 (n + i) to 4 (n + i) + 3 of Philox4x32x10 with
+         * the same seed and subsequence.
+         *
          * @param seed Set the Philox generator key
          * @param subsequence Select a subsequence of size 2^64
-         * @param offset Number of numbers to skip from the start of the subsequence.
+         * @param offset Number of vectors to skip from the start of the subsequence.
          */
         constexpr explicit Philox4x32x10Vector(
-            std::uint32_t const seed = 0,
-            std::uint32_t const subsequence = 0,
-            std::uint32_t const offset = 0)
+            std::uint64_t const seed = 0,
+            std::uint64_t const subsequence = 0,
+            std::uint64_t const offset = 0)
             : m_engineVariant(seed, subsequence, offset)
         {
         }

@@ -55,16 +55,18 @@ namespace alpaka::rand::engine::internal
     public:
         /** Construct a new Philox engine with vector output
          *
+         * Vector i at offset n is the same as numbers 4 (n + i) to 4 (n + i) + 3 of the single-number
+         * engine with the same seed and subsequence.
+         *
          * @param seed Set the Philox generator key
          * @param subsequence Select a subsequence of size 2^64
-         * @param offset Skip \a offset numbers from the start of the subsequence
+         * @param offset Skip \a offset vectors from the start of the subsequence
          */
         constexpr explicit PhiloxVector(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
             : Base(State{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}})
         {
             this->skipSubsequence(subsequence);
             skip(offset);
-            nextVector();
         }
 
         /** Get the next vector of random numbers

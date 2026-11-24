@@ -80,22 +80,36 @@ namespace alpaka::rand::engine::internal
             return result;
         }
 
-        /// Skips the next \a offset numbers
-        constexpr void skip(uint64_t offset)
+        /// Skips the next \a count numbers of the current block.
+        /// Requires state.position + count <= T_Params::counterSize.
+        constexpr void skipInBlock(std::uint32_t count)
         {
-            static_assert(T_Params::counterSize == 4, "Only counterSize is supported.");
-            this->state.position = static_cast<decltype(this->state.position)>(this->state.position + (offset & 3u));
-            offset += this->state.position < 4 ? 0 : 4;
-            this->state.position -= this->state.position < 4 ? 0 : 4u;
-            for(auto numShifts = this->state.position; numShifts > 0; --numShifts)
+            this->state.position += count;
+            for(; count > 0; --count)
             {
-                // Shift state results to allow hard coded access to element zero.
-                // This will avoid high register usage on NVIDIA devices.
+                // Element zero always contains the next number, see nextNumber().
                 this->state.result[0] = this->state.result[1];
                 this->state.result[1] = this->state.result[2];
                 this->state.result[2] = this->state.result[3];
             }
-            this->skip4(offset / 4);
+        }
+
+        /// Skips the next \a offset numbers
+        constexpr void skip(uint64_t offset)
+        {
+            static_assert(T_Params::counterSize == 4, "Only counterSize 4 is supported.");
+            // Position of the target number in the current block plus the remainder; less than 8.
+            uint64_t const inBlock = this->state.position + offset % T_Params::counterSize;
+            uint64_t const blocks = offset / T_Params::counterSize + inBlock / T_Params::counterSize;
+            uint64_t shifts = offset;
+            if(blocks > 0)
+            {
+                // advanceState() moves from the current block to the next one.
+                this->skip4(blocks - 1);
+                advanceState();
+                shifts = inBlock % T_Params::counterSize;
+            }
+            skipInBlock(static_cast<std::uint32_t>(shifts));
         }
 
     public:
@@ -109,8 +123,9 @@ namespace alpaka::rand::engine::internal
             : Base(State{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0u})
         {
             this->skipSubsequence(subsequence);
-            skip(offset);
+            this->skip4(offset / T_Params::counterSize);
             advanceState();
+            skipInBlock(static_cast<std::uint32_t>(offset % T_Params::counterSize));
         }
 
         /** Get the next random number
