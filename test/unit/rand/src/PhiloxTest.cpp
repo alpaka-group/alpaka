@@ -14,6 +14,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -740,3 +741,176 @@ TEST_CASE("UniformRealScalesTheUnitValue", "[rand]")
         CHECK(alpaka::math::floatEqualExactNoWarning(range[i], 2.0f * unit[i]));
     }
 }
+
+namespace
+{
+    //! Returns the value through a volatile object: the compiler does not know the result.
+    template<typename T>
+    auto runTimeValue(T const value) -> T
+    {
+        T volatile hidden = value;
+        return hidden;
+    }
+} // namespace
+
+TEST_CASE("UniformRealUsesRunTimeLimits", "[rand]")
+{
+    using Full32 = FixedValueEngine<std::uint32_t, 0, 0xffff'ffff>;
+    using RealF = alpaka::rand::UniformReal<float>;
+    using RealD = alpaka::rand::UniformReal<double>;
+    Full32 const zero{0};
+    Full32 const halfValue{0x8000'0000};
+    Full32 const top{0xffff'ffff};
+    constexpr float belowOne = 1.0f - std::numeric_limits<float>::epsilon() / 2;
+    float const zeroF = runTimeValue(0.0f);
+    float const oneF = runTimeValue(1.0f);
+    // The limits [0, 1) and [-0, 1) give the unit value.
+    CHECK(drawsExactly(RealF(zeroF, oneF), zero, 0.0f));
+    CHECK(drawsExactly(RealF(zeroF, oneF), halfValue, 0.5f));
+    CHECK(drawsExactly(RealF(zeroF, oneF), top, belowOne));
+    CHECK(drawsExactly(RealF(runTimeValue(-0.0f), oneF), halfValue, 0.5f));
+    CHECK(drawsExactly(RealD(runTimeValue(0.0), runTimeValue(1.0)), halfValue, 0.5));
+    // One limit in common with [0, 1).
+    CHECK(drawsExactly(RealF(zeroF, runTimeValue(2.0f)), halfValue, 1.0f));
+    CHECK(drawsExactly(RealF(runTimeValue(0.5f), oneF), halfValue, 0.75f));
+    CHECK(drawsExactly(RealF(runTimeValue(-1.0f), oneF), zero, -1.0f));
+    CHECK(drawsExactly(RealD(runTimeValue(0.0), runTimeValue(2.0)), halfValue, 1.0));
+    // The product rounds to the upper limit: the result is the largest value below it.
+    CHECK(drawsExactly(RealF(runTimeValue(100.0f), runTimeValue(101.0f)), top, std::nextafter(101.0f, 0.0f)));
+    CHECK(drawsExactly(RealD(runTimeValue(1e10), runTimeValue(1e10 + 1)), top, std::nextafter(1e10 + 1, 0.0)));
+    // A copy of the distribution gives the same numbers.
+    RealF const unitRange(zeroF, oneF);
+    RealF const otherRange(zeroF, runTimeValue(2.0f));
+    RealF const unitCopy(unitRange);
+    RealF const otherCopy(otherRange);
+    CHECK(drawsExactly(unitCopy, top, belowOne));
+    CHECK(drawsExactly(otherCopy, halfValue, 1.0f));
+}
+
+//! Draws with distributions that the host made and gave to the kernel, as an argument and as a member.
+template<typename T>
+class UniformRealArgumentKernel
+{
+public:
+    alpaka::rand::UniformReal<T> m_unitRange;
+    alpaka::rand::UniformReal<T> m_otherRange;
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& /* acc */,
+        bool* success,
+        alpaka::rand::UniformReal<T> unitRange,
+        alpaka::rand::UniformReal<T> otherRange,
+        T const min,
+        T const max) const -> void
+    {
+        alpaka::rand::Philox4x32x10 engines[6]
+            = {{42, 1, 0}, {42, 1, 0}, {42, 1, 0}, {42, 1, 0}, {42, 1, 0}, {42, 1, 0}};
+        alpaka::rand::UniformReal<T> reference;
+        alpaka::rand::UniformReal<T> local(min, max);
+        auto unitMember = m_unitRange;
+        auto otherMember = m_otherRange;
+        for(int i = 0; i < 64; ++i)
+        {
+            T const unit = reference(engines[0]);
+            T const expected = local(engines[1]);
+            ALPAKA_CHECK(*success, expected >= min);
+            ALPAKA_CHECK(*success, expected < max);
+            ALPAKA_CHECK(*success, alpaka::math::floatEqualExactNoWarning(unitRange(engines[2]), unit));
+            ALPAKA_CHECK(*success, alpaka::math::floatEqualExactNoWarning(unitMember(engines[3]), unit));
+            ALPAKA_CHECK(*success, alpaka::math::floatEqualExactNoWarning(otherRange(engines[4]), expected));
+            ALPAKA_CHECK(*success, alpaka::math::floatEqualExactNoWarning(otherMember(engines[5]), expected));
+        }
+    }
+};
+
+TEMPLATE_LIST_TEST_CASE("UniformRealIsAKernelArgument", "[rand]", TestTypes)
+{
+    using Acc = std::tuple_element_t<0, TestType>;
+    using DataType = std::tuple_element_t<1, TestType>;
+    using Idx = alpaka::Idx<Acc>;
+    using Dim = alpaka::Dim<Acc>;
+
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+
+    DataType const min = runTimeValue(static_cast<DataType>(1.5));
+    DataType const max = runTimeValue(static_cast<DataType>(4));
+    alpaka::rand::UniformReal<DataType> const unitRange(runTimeValue(DataType{0}), runTimeValue(DataType{1}));
+    alpaka::rand::UniformReal<DataType> const otherRange(min, max);
+    UniformRealArgumentKernel<DataType> kernel{unitRange, otherRange};
+
+    REQUIRE(fixture(kernel, unitRange, otherRange, min, max));
+}
+
+TEST_CASE("UniformRealWithAnInfiniteUpperLimitGivesTheLargestFiniteValue", "[rand]")
+{
+    using Full32 = FixedValueEngine<std::uint32_t, 0, 0xffff'ffff>;
+    Full32 const zero{0};
+    Full32 const halfValue{0x8000'0000};
+    Full32 const top{0xffff'ffff};
+    for(Full32 const engine : {zero, halfValue, top})
+    {
+        INFO("engine value " << engine.value);
+        CHECK(drawsExactly(
+            alpaka::rand::UniformReal<float>(0.0f, std::numeric_limits<float>::infinity()),
+            engine,
+            std::numeric_limits<float>::max()));
+        CHECK(drawsExactly(
+            alpaka::rand::UniformReal<double>(1.0, std::numeric_limits<double>::infinity()),
+            engine,
+            std::numeric_limits<double>::max()));
+        // The GPU back ends do not support long double in device code.
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(ALPAKA_ACC_SYCL_ENABLED)
+        CHECK(drawsExactly(
+            alpaka::rand::UniformReal<long double>(0.0L, std::numeric_limits<long double>::infinity()),
+            engine,
+            std::numeric_limits<long double>::max()));
+#endif
+    }
+}
+
+// The GPU back ends do not support long double in device code.
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(ALPAKA_ACC_SYCL_ENABLED)
+TEST_CASE("UniformRealLongDoubleStaysBelowTheUpperLimit", "[rand]")
+{
+    using RealL = alpaka::rand::UniformReal<long double>;
+    // The largest unit value of a 64-bit engine: the product rounds to the upper limit.
+    FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff> top{0xffff'ffff'ffff'ffff};
+    long double const positive = RealL(1.0L, 2.0L)(top);
+    CHECK(positive >= 1.0L);
+    CHECK(positive < 2.0L);
+    long double const negative = RealL(-2.0L, -1.0L)(top);
+    CHECK(negative >= -2.0L);
+    CHECK(negative < -1.0L);
+    long double const zeroLimit = RealL(-1.0L, 0.0L)(top);
+    CHECK(zeroLimit >= -1.0L);
+    CHECK(zeroLimit < 0.0L);
+    long double const large = RealL(1.0e30L, 2.0e30L)(top);
+    CHECK(large >= 1.0e30L);
+    CHECK(large < 2.0e30L);
+}
+
+TEST_CASE("UniformRealLongDoubleStaysAboveTheLowerLimit", "[rand]")
+{
+    using RealL = alpaka::rand::UniformReal<long double>;
+    FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff> top{0xffff'ffff'ffff'ffff};
+    // The range has one value: the limits are neighbours.
+    long double const belowOne = std::nextafter(1.0L, 0.0L);
+    long double const neighbour = RealL(belowOne, 1.0L)(top);
+    CHECK(neighbour >= belowOne);
+    CHECK(neighbour < 1.0L);
+    long double const belowThree = std::nextafter(3.0L, 0.0L);
+    long double const neighbourOfThree = RealL(belowThree, 3.0L)(top);
+    CHECK(neighbourOfThree >= belowThree);
+    CHECK(neighbourOfThree < 3.0L);
+    // Subnormal limits.
+    long double const tiny = std::numeric_limits<long double>::denorm_min();
+    long double const subnormal = RealL(2 * tiny, 3 * tiny)(top);
+    CHECK(subnormal >= 2 * tiny);
+    CHECK(subnormal < 3 * tiny);
+    long double const negativeSubnormal = RealL(-4 * tiny, -3 * tiny)(top);
+    CHECK(negativeSubnormal >= -4 * tiny);
+    CHECK(negativeSubnormal < -3 * tiny);
+}
+#endif
