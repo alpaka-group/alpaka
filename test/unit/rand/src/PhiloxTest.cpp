@@ -638,8 +638,8 @@ TEST_CASE("UniformRealUsesTheEngineRange", "[rand]")
     CHECK(alpaka::math::floatEqualExactNoWarning(alpaka::rand::UniformReal<float>()(bottom), 0.0f));
     // An engine that returns all 64-bit values.
     using Full64 = FixedValueEngine<std::uint64_t, 0, 0xffff'ffff'ffff'ffff>;
-    Full64 half{std::uint64_t{1} << 63};
-    CHECK(alpaka::math::floatEqualExactNoWarning(alpaka::rand::UniformReal<double>()(half), 0.5));
+    Full64 halfValue{std::uint64_t{1} << 63};
+    CHECK(alpaka::math::floatEqualExactNoWarning(alpaka::rand::UniformReal<double>()(halfValue), 0.5));
     Full64 largest{0xffff'ffff'ffff'ffff};
     double const largestValue = alpaka::rand::UniformReal<double>()(largest);
     CHECK(largestValue < 1.0);
@@ -709,24 +709,24 @@ TEST_CASE("UniformRealScalesTheUnitValue", "[rand]")
     using RealD = alpaka::rand::UniformReal<double>;
     // The unit values 0, 0.5 and the largest float below 1.
     Full32 const zero{0};
-    Full32 const half{0x8000'0000};
+    Full32 const halfValue{0x8000'0000};
     Full32 const top{0xffff'ffff};
     constexpr float belowOne = 1.0f - std::numeric_limits<float>::epsilon() / 2;
     CHECK(drawsExactly(RealF(), zero, 0.0f));
-    CHECK(drawsExactly(RealF(), half, 0.5f));
+    CHECK(drawsExactly(RealF(), halfValue, 0.5f));
     CHECK(drawsExactly(RealF(), top, belowOne));
-    CHECK(drawsExactly(RealF(0.0f, 1.0f), half, 0.5f));
-    CHECK(drawsExactly(RealF(-0.0f, 1.0f), half, 0.5f));
-    CHECK(drawsExactly(RealD(0.0, 1.0), half, 0.5));
+    CHECK(drawsExactly(RealF(0.0f, 1.0f), halfValue, 0.5f));
+    CHECK(drawsExactly(RealF(-0.0f, 1.0f), halfValue, 0.5f));
+    CHECK(drawsExactly(RealD(0.0, 1.0), halfValue, 0.5));
     // Ranges that have one limit in common with [0, 1).
-    CHECK(drawsExactly(RealF(0.0f, 2.0f), half, 1.0f));
-    CHECK(drawsExactly(RealF(0.0f, 0.5f), half, 0.25f));
-    CHECK(drawsExactly(RealF(-1.0f, 1.0f), half, 0.0f));
-    CHECK(drawsExactly(RealF(0.5f, 1.0f), half, 0.75f));
-    CHECK(drawsExactly(RealD(0.0, 2.0), half, 1.0));
-    CHECK(drawsExactly(RealD(0.0, 0.5), half, 0.25));
-    CHECK(drawsExactly(RealD(-1.0, 1.0), half, 0.0));
-    CHECK(drawsExactly(RealD(0.5, 1.0), half, 0.75));
+    CHECK(drawsExactly(RealF(0.0f, 2.0f), halfValue, 1.0f));
+    CHECK(drawsExactly(RealF(0.0f, 0.5f), halfValue, 0.25f));
+    CHECK(drawsExactly(RealF(-1.0f, 1.0f), halfValue, 0.0f));
+    CHECK(drawsExactly(RealF(0.5f, 1.0f), halfValue, 0.75f));
+    CHECK(drawsExactly(RealD(0.0, 2.0), halfValue, 1.0));
+    CHECK(drawsExactly(RealD(0.0, 0.5), halfValue, 0.25));
+    CHECK(drawsExactly(RealD(-1.0, 1.0), halfValue, 0.0));
+    CHECK(drawsExactly(RealD(0.5, 1.0), halfValue, 0.75));
     CHECK(drawsExactly(RealF(-1.0f, 1.0f), zero, -1.0f));
     CHECK(drawsExactly(RealF(0.5f, 1.0f), zero, 0.5f));
     // A vector result uses the same range.
