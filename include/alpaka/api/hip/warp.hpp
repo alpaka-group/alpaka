@@ -37,9 +37,9 @@ namespace alpaka::onAcc::warp::internal
     template<alpaka::onAcc::concepts::Acc T_Acc>
     struct GetNumActiveLanes::Op<T_Acc, api::Hip>
     {
-        constexpr __device__ auto operator()(T_Acc const&, api::Hip) const
+        constexpr __device__ auto operator()(T_Acc const& acc, api::Hip) const
         {
-            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<ALPAKA_TYPEOF(acc)>();
+            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<T_Acc>();
 
             alpaka::concepts::Vector auto blockThreadCount
                 = pCast<uint32_t>(acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads));
@@ -59,7 +59,7 @@ namespace alpaka::onAcc::warp::internal
     {
         constexpr __device__ uint32_t operator()(T_Acc const& acc, api::Hip) const
         {
-            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<ALPAKA_TYPEOF(acc)>();
+            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<T_Acc>();
             alpaka::concepts::Vector auto blockThreadCount
                 = pCast<uint32_t>(acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads));
             alpaka::concepts::Vector auto threadIdxInBlock
@@ -73,8 +73,8 @@ namespace alpaka::onAcc::warp::internal
     {
         constexpr __device__ uint32_t operator()(T_Acc const& acc, api::Hip) const
         {
-            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<ALPAKA_TYPEOF(acc)>();
-            alpaka::concepts::Vector auto blockThreadCount
+            constexpr uint32_t warpExtent = onAcc::warp::internal::getSize<T_Acc>();
+            std::integral auto blockThreadCount
                 = pCast<uint32_t>(acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads)).product();
             return alpaka::divCeil(blockThreadCount, warpExtent);
         }
