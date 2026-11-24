@@ -584,9 +584,9 @@ namespace alpaka::onHost::internal::hwloc
 
                 hwloc_bitmap_zero(bestNodes);
 
-                constexpr auto Min = std::numeric_limits<hwloc_uint64_t>::min();
-                constexpr auto Max = std::numeric_limits<hwloc_uint64_t>::max();
-                hwloc_uint64_t best = isBestValue(Max, Min, property) ? Min : Max;
+                constexpr auto minValue = std::numeric_limits<hwloc_uint64_t>::min();
+                constexpr auto maxValue = std::numeric_limits<hwloc_uint64_t>::max();
+                hwloc_uint64_t best = isBestValue(maxValue, minValue, property) ? minValue : maxValue;
 
                 for(hwloc_obj_t node : domainNodes)
                 {
