@@ -6,26 +6,29 @@
 
 #if ALPAKA_LANG_ONEAPI
 
+#    include <catch2/catch_template_test_macros.hpp>
 #    include <catch2/catch_test_macros.hpp>
 #    include <sycl/sycl.hpp>
 
+#    include <type_traits>
 #    include <utility>
 #    include <vector>
 
 using namespace alpaka;
 
-TEST_CASE("oneAPI native handle link API", "[thirdPartyInteraction][oneApi]")
+using TestApis = std::decay_t<decltype(onHost::allBackends(std::tuple{api::oneApi}, exec::enabledExecutors))>;
+
+TEMPLATE_LIST_TEST_CASE("oneAPI native handle link API", "[thirdPartyInteraction][oneApi]", TestApis)
 {
-    auto selector = onHost::makeDeviceSelector(api::oneApi, deviceKind::intelGpu);
+    auto cfg = TestType::makeDict();
+    auto deviceSpec = onHost::makeDeviceSpec(cfg);
+    auto selector = onHost::makeDeviceSelector(deviceSpec);
+    INFO(deviceSpec.getName());
     if(!selector.isAvailable())
-        SKIP("No oneAPI Intel GPU device available");
+        SKIP("No device available for " << deviceSpec.getName());
 
-    sycl::platform platform{sycl::gpu_selector_v};
-    auto devices = platform.get_devices(sycl::info::device_type::gpu);
-    if(devices.empty())
-        SKIP("No SYCL GPU device available on the selected platform");
-
-    sycl::device nativeDevice = devices[0];
+    auto const deviceKind = deviceSpec.getDeviceKind();
+    sycl::device nativeDevice{detail::SYCLDeviceSelector<ALPAKA_TYPEOF(deviceKind)>{}};
     sycl::context nativeContext{nativeDevice};
     auto nativeDeviceHandle = std::make_pair(nativeDevice, nativeContext);
 
