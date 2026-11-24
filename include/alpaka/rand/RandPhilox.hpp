@@ -242,62 +242,32 @@ namespace alpaka::rand
             return unit < T{1} ? unit : belowOne;
         }
 
-        //! The largest value of T below x.
-        //! For float and double the result is the immediate predecessor; for every other type only a value strictly
-        //! below x is guaranteed. The value +inf saturates to the largest finite value, -inf is returned unchanged.
+        //! The largest value of T below the finite value x.
         static ALPAKA_FN_HOST_ACC auto largestBelow(T const x) -> T
         {
-            if(x > std::numeric_limits<T>::max())
-                return std::numeric_limits<T>::max();
-            if(x < -std::numeric_limits<T>::max())
-                return x;
             if(!(x < T{0}) && !(x > T{0}))
             {
                 return -std::numeric_limits<T>::denorm_min();
             }
-            using Value = std::remove_cv_t<T>;
-            if constexpr(std::is_same_v<Value, float>)
+            if constexpr(
+                std::numeric_limits<T>::is_iec559
+                && (sizeof(T) == sizeof(std::uint32_t) || sizeof(T) == sizeof(std::uint64_t)))
             {
-                // IEEE binary32: step the integer representation, no library call and constexpr safe.
-                static_assert(std::numeric_limits<float>::is_iec559, "float must be IEEE binary32.");
-                auto const bits = std::bit_cast<std::uint32_t>(x);
-                return std::bit_cast<float>(x > 0.0f ? bits - 1u : bits + 1u);
-            }
-            else if constexpr(std::is_same_v<Value, double>)
-            {
-                // IEEE binary64: step the integer representation, no library call and constexpr safe.
-                static_assert(std::numeric_limits<double>::is_iec559, "double must be IEEE binary64.");
-                auto const bits = std::bit_cast<std::uint64_t>(x);
-                return std::bit_cast<double>(x > 0.0 ? bits - 1u : bits + 1u);
+                // The integer representation of an IEEE value steps to the neighbour value.
+                using Bits = std::conditional_t<sizeof(T) == sizeof(std::uint32_t), std::uint32_t, std::uint64_t>;
+                auto const bits = std::bit_cast<Bits>(x);
+                return std::bit_cast<T>(x > T{0} ? static_cast<Bits>(bits - 1) : static_cast<Bits>(bits + 1));
             }
             else
             {
-                /* Every other floating point type lands here, for example the host x86 long double
-                 * (an 80-bit value in a 16-byte object) or float128. Selecting the branch by type
-                 * instead of sizeof(T) matters because this function is compiled once for the host and
-                 * once per device, and the type is not the same in both: HIP turns long double into
-                 * 8 bytes in device code, nvcc performs long double arithmetic as double, and SYCL
-                 * rejects long double device code.
-                 *
-                 * The step is one full epsilon, so it moves at least one ulp and the subtraction cannot
-                 * round back to x. It may land one or two representable values below x: for x = 1 it
-                 * returns 1 - 2^-63 while the predecessor is 1 - 2^-64. That is enough because the
-                 * caller uses the result as a saturation value and only requires a value strictly
-                 * below x, never the immediate predecessor.
-                 */
-                T const step = (x > T{0} ? x : -x) * std::numeric_limits<T>::epsilon();
-                if(step > T{0})
-                    return x - step;
-                return x > T{0} ? T{0} : x * T{2};
+                return std::nextafter(x, -std::numeric_limits<T>::infinity());
             }
         }
 
         //! Maps u in [0, 1) to [min, max).
         ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
         {
-            // The clamp is only needed outside of [0, 1): unit is below one by construction and
-            // unit * 1 + 0 is exact. The decision is computed once in the constructor, so the
-            // compare does not stay in the draw loop when the distribution is a function argument.
+            // For min = 0 and max = 1 the result is the unit value.
             if(!_clampNeeded)
             {
                 return unit;
@@ -310,6 +280,7 @@ namespace alpaka::rand
         T const _max;
         T const _range;
         T const _belowMax;
+        //! False for min = 0 and max = 1: scale() returns the unit value.
         bool const _clampNeeded;
     };
 } // namespace alpaka::rand
