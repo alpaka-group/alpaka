@@ -75,7 +75,6 @@ namespace
         ALPAKA_FN_ACC void operator()(
             auto const& acc,
             concepts::IMdSpan<bool> auto success,
-            concepts::IMdSpan<uint32_t> auto reportedLanes,
             concepts::IMdSpan<uint32_t> auto countedLanes,
             uint32_t stride,
             uint32_t blocksInGrid) const
@@ -89,11 +88,21 @@ namespace
             uint32_t const numWarps = onAcc::warp::getNumWarps(acc);
             uint32_t const slot = blockIdx * stride + warpIdx;
 
-            onAcc::atomicMax(acc, &reportedLanes[slot], numActiveLanes);
-            onAcc::atomicAdd(acc, &countedLanes[slot], 1u);
+            bool const validWarps = warpIdx < numWarps && numWarps <= stride;
+            if(validWarps)
+                onAcc::atomicAdd(acc, &countedLanes[slot], 1u);
+            onAcc::syncBlockThreads(acc);
 
-            warpCheck(success, warpIdx < numWarps);
+            // check each thread, a maximum over the warp (atomicMax) would hide too small values
+            warpCheck(success, validWarps && countedLanes[slot] == numActiveLanes);
+            // a too large numWarps passes warpIdx < numWarps, therefore the last warp must contain threads
+            warpCheck(success, validWarps && countedLanes[blockIdx * stride + numWarps - 1u] != 0u);
             warpCheck(success, laneIdx < numActiveLanes);
+            // a constant laneIdx of 0 passes the check above, shfl ensures it is the lane of this thread
+            auto const threadIdx = static_cast<uint32_t>(linearize(
+                acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads),
+                acc.getIdxWithin(onAcc::origin::block, onAcc::unit::threads)));
+            warpCheck(success, onAcc::warp::shfl(acc, threadIdx, laneIdx) == threadIdx);
             warpCheck(success, numWarps == acc.getExtentsOf(onAcc::origin::block, onAcc::unit::warps).x());
             warpCheck(success, acc.getExtentsOf(onAcc::origin::warp, onAcc::unit::threads).x() == numActiveLanes);
             warpCheck(
@@ -140,19 +149,15 @@ namespace
 
         auto successHost = onHost::allocHost<bool>(1u);
         auto successDev = onHost::allocLike(device, successHost);
-        auto reportedDev = onHost::alloc<uint32_t>(device, numBlocks * stride);
         auto countedDev = onHost::alloc<uint32_t>(device, numBlocks * stride);
         onHost::memset(queue, successDev, static_cast<uint8_t>(true));
-        onHost::fill(queue, reportedDev, 0u);
         onHost::fill(queue, countedDev, 0u);
 
         queue.enqueue(
             onHost::ThreadSpec{blockExtents, threadsPerBlock, exec},
-            KernelBundle{MdWarpExtentsKernel{}, successDev, reportedDev, countedDev, stride, numBlocks});
+            KernelBundle{MdWarpExtentsKernel{}, successDev, countedDev, stride, numBlocks});
 
-        auto reportedHost = onHost::allocHostLike(reportedDev);
         auto countedHost = onHost::allocHostLike(countedDev);
-        onHost::memcpy(queue, reportedHost, reportedDev);
         onHost::memcpy(queue, countedHost, countedDev);
         onHost::memcpy(queue, successHost, successDev);
         onHost::wait(queue);
@@ -168,8 +173,6 @@ namespace
                 if(counted == 0u)
                     continue;
                 threadsInBlock += counted;
-                // all threads of a warp see the same number of lanes, which must match the counted lanes
-                result = result && counted == reportedHost[idx];
             }
             result = result && threadsInBlock == stride;
         }
@@ -184,6 +187,7 @@ TEMPLATE_LIST_TEST_CASE(
 {
     auto deviceExec = test::getDeviceExecutorOrSkipTest(TestType::makeDict());
     // one warp per block, each warp has less lanes than the warp size
+    // (in 1D this holds for all backends whose warp size is at least 32)
     CHECK(runLinearExtentsTest<LinearWarpExtentsKernel>(deviceExec, Vec<uint32_t, 1u>{34u}, Vec<uint32_t, 1u>{31u}));
 }
 
@@ -223,11 +227,14 @@ TEMPLATE_LIST_TEST_CASE(
     auto deviceExec = test::getDeviceExecutorOrSkipTest(TestType::makeDict());
     // one value below and above common warp sizes
     for(uint32_t threads : {15u, 17u, 31u, 33u, 63u, 65u})
+    {
+        INFO("threads=" << threads);
         CHECK(
             runLinearExtentsTest<LinearWarpExtentsKernel>(
                 deviceExec,
                 Vec<uint32_t, 1u>{3u},
                 Vec<uint32_t, 1u>{threads}));
+    }
 }
 
 TEMPLATE_LIST_TEST_CASE("warp extents in multidimensional blocks", "[warp][warpExtents]", WarpTestBackends)
