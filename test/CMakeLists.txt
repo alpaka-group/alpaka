@@ -17,8 +17,20 @@ add_library(${_TEST_TARGET_NAME} INTERFACE)
 target_include_directories(${_TEST_TARGET_NAME} INTERFACE include)
 add_library(alpaka::test ALIAS ${_TEST_TARGET_NAME})
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    alpaka_set_compiler_options(HOST target ${_TEST_TARGET_NAME} "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-fconcepts-diagnostics-depth=5>")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR _alpaka_CUDA_HOST_COMPILER STREQUAL "GNU")
+    set(alpaka_GCC_CONCEPT_DEPTH
+        5
+        CACHE STRING
+        "Setup for GCC: How many nested concepts are displayed in the event of an error?"
+    )
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        alpaka_set_compiler_options(HOST target ${_TEST_TARGET_NAME} "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-fconcepts-diagnostics-depth=${alpaka_GCC_CONCEPT_DEPTH}>")
+    endif()
+
+    if(_alpaka_CUDA_HOST_COMPILER STREQUAL "GNU")
+        alpaka_set_compiler_options(HOST target ${_TEST_TARGET_NAME} "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-fconcepts-diagnostics-depth=${alpaka_GCC_CONCEPT_DEPTH}>")
+    endif()
 endif()
 
 ################################################################################
