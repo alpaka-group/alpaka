@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/math/FloatEqualExact.hpp"
 #include "alpaka/meta/IsArrayOrVector.hpp"
 #include "alpaka/rand/Philox/PhiloxSingle.hpp"
 #include "alpaka/rand/Philox/PhiloxVector.hpp"
@@ -173,7 +174,8 @@ namespace alpaka::rand
             , _max(max)
             , _range(_max - _min)
             , _belowMax(largestBelow(max))
-            , _clampNeeded(!(min == T{0} && max == T{1}))
+            , _clampNeeded(
+                  !(math::floatEqualExactNoWarning(min, T{0}) && math::floatEqualExactNoWarning(max, T{1})))
         {
         }
 
@@ -241,27 +243,28 @@ namespace alpaka::rand
             return unit < T{1} ? unit : belowOne;
         }
 
-        //! The largest value of T below the finite value x.
+        //! The largest value of T below x.
         //! For float and double the result is the immediate predecessor; for every other type only a value strictly
-        //! below x is guaranteed.
+        //! below x is guaranteed. The value +inf saturates to the largest finite value, -inf is returned unchanged.
         static ALPAKA_FN_HOST_ACC auto largestBelow(T const x) -> T
         {
-            if(x == std::numeric_limits<T>::infinity() || x == -std::numeric_limits<T>::infinity())
-            {
+            if(x > std::numeric_limits<T>::max())
+                return std::numeric_limits<T>::max();
+            if(x < -std::numeric_limits<T>::max())
                 return x;
-            }
             if(!(x < T{0}) && !(x > T{0}))
             {
                 return -std::numeric_limits<T>::denorm_min();
             }
-            if constexpr(std::is_same_v<T, float>)
+            using Value = std::remove_cv_t<T>;
+            if constexpr(std::is_same_v<Value, float>)
             {
                 // IEEE binary32: step the integer representation, no library call and constexpr safe.
                 static_assert(std::numeric_limits<float>::is_iec559, "float must be IEEE binary32.");
                 auto const bits = std::bit_cast<std::uint32_t>(x);
                 return std::bit_cast<float>(x > 0.0f ? bits - 1u : bits + 1u);
             }
-            else if constexpr(std::is_same_v<T, double>)
+            else if constexpr(std::is_same_v<Value, double>)
             {
                 // IEEE binary64: step the integer representation, no library call and constexpr safe.
                 static_assert(std::numeric_limits<double>::is_iec559, "double must be IEEE binary64.");
