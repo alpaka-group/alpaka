@@ -56,6 +56,9 @@ namespace alpaka::onHost
 
         /** Get a device
          *
+         * An runtime exception is thrown if the device is not usable e.g. if a CUDA device is set to access mode
+         * "single process only".
+         *
          * @param idx device index (range [0;number of devices), invalid index will throw an exception
          * @return @see onHost::Device
          */
