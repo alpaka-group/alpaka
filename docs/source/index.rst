@@ -80,6 +80,7 @@ Individual chapters are based on the information of the chapters before.
    tutorial/warp.rst
    tutorial/kernelFn.rst
    tutorial/vendorInterop.rst
+   tutorial/nativeHandles.rst
    tutorial/algorithms.rst
 
 .. toctree::
