@@ -34,6 +34,7 @@
 
 #    include <cstdint>
 #    include <sstream>
+#    include <stdexcept>
 
 namespace alpaka::onHost
 {
@@ -54,6 +55,25 @@ namespace alpaka::onHost
                 : m_device(std::move(device))
                 , m_sharedCallbackThread{std::make_shared<alpaka::core::CallbackThread>()}
                 , m_SharedStream{std::make_shared<Stream>(m_device)}
+                , m_idx(idx)
+                , m_isBlocking(internal::isBlocking(policies.getQueueKind()))
+            {
+                ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+            }
+
+            /** Create a queue from a user provided native stream.
+             *
+             * The native stream is not owned by alpaka, therefore it is never destroyed.
+             */
+            Queue(
+                internal::concepts::DeviceHandle auto device,
+                uint32_t const idx,
+                alpaka::concepts::QueuePolicyList auto const& policies,
+                typename ApiInterface::Stream_t stream,
+                bool syncBeforeDestroy)
+                : m_device(std::move(device))
+                , m_sharedCallbackThread{std::make_shared<alpaka::core::CallbackThread>()}
+                , m_SharedStream{std::make_shared<Stream>(m_device, stream, syncBeforeDestroy)}
                 , m_idx(idx)
                 , m_isBlocking(internal::isBlocking(policies.getQueueKind()))
             {
@@ -110,14 +130,41 @@ namespace alpaka::onHost
                         ApiInterface::streamCreateWithFlags(&m_stream, ApiInterface::streamNonBlocking));
                 }
 
+                /** Adopt a user provided native stream.
+                 *
+                 * The native stream is not owned by alpaka, therefore it is never destroyed.
+                 */
+                Stream(Handle<T_Device> device, typename ApiInterface::Stream_t stream, bool syncBeforeDestroy)
+                    : m_device{std::move(device)}
+                    , m_stream{stream}
+                    , m_manageStream{false}
+                    , m_syncBeforeDestroy{syncBeforeDestroy}
+                {
+                    ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+                    if(stream == nullptr)
+                        throw std::runtime_error(
+                            "Cannot link the CUDA/HIP default stream; create a non-blocking stream first.");
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ApiInterface,
+                        ApiInterface::setDevice(onHost::getNativeHandle(m_device)));
+                }
+
                 ~Stream()
                 {
                     ALPAKA_LOG_FUNCTION(onHost::logger::queue);
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(
                         ApiInterface,
                         ApiInterface::setDevice(onHost::getNativeHandle(m_device)));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::streamSynchronize(m_stream));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::streamDestroy(m_stream));
+                    if(m_syncBeforeDestroy)
+                    {
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(
+                            ApiInterface,
+                            ApiInterface::streamSynchronize(m_stream));
+                    }
+                    if(m_manageStream)
+                    {
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ApiInterface, ApiInterface::streamDestroy(m_stream));
+                    }
                 }
 
                 using Stream_t = typename ApiInterface::Stream_t;
@@ -130,6 +177,10 @@ namespace alpaka::onHost
                 // hold the device to avoid that the device is fully reset before the queue is destroyed
                 Handle<T_Device> m_device;
                 Stream_t m_stream;
+                // if true the stream is managed by alpaka, else false
+                bool m_manageStream = true;
+                // if true the stream is synchronized before the last handle is destroyed
+                bool m_syncBeforeDestroy = true;
             };
 
             Handle<T_Device> m_device;
@@ -182,6 +233,7 @@ namespace alpaka::onHost
                 return m_SharedStream->getStream();
             }
 
+            friend struct onHost::internal::MakeQueue;
             friend struct onHost::internal::Enqueue;
             friend struct onHost::internal::Wait;
 

@@ -18,6 +18,7 @@
 #    include <memory>
 #    include <numeric>
 #    include <optional>
+#    include <utility>
 
 namespace alpaka
 {
@@ -246,6 +247,7 @@ namespace alpaka
                 friend struct internal::GetDeviceProperties::Op<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>;
 
             private:
+                friend struct onHost::internal::MakeDevice;
                 friend struct onHost::internal::IsDataAccessible;
                 friend struct GetDeviceProperties;
 
@@ -270,6 +272,147 @@ namespace alpaka
 
         namespace internal
         {
+            template<typename T_ApiInterface, alpaka::concepts::DeviceKind T_DeviceKind>
+            struct MakeDevice::Link<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>
+            {
+                Handle<syclGeneric::Device<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>> operator()(
+                    syclGeneric::Platform<T_ApiInterface, T_DeviceKind>& platform,
+                    std::pair<sycl::device, sycl::context> const& nativeHandle,
+                    bool syncBeforeDestroy)
+                {
+                    ALPAKA_LOG_FUNCTION(alpaka::onHost::logger::device);
+                    std::lock_guard<std::mutex> lk{platform.deviceGuard};
+                    /* If there is at least one alpaka managed device in the list we can not link devices for the
+                     * device kind because it is required to overwrite the sycl context to guarantee that externally
+                     * allocated memory can be used by alpaka.
+                     */
+                    bool canApplyContext = true;
+                    bool hasAlreadyLinkedDevices = false;
+                    for(auto& deviceWeakPtr : platform.devices)
+                    {
+                        if(auto sharedPtr = deviceWeakPtr.lock())
+                        {
+                            if(sharedPtr->m_manageDevice)
+                                canApplyContext = false;
+                            else
+                                hasAlreadyLinkedDevices = true;
+                        }
+                    }
+
+                    if(!canApplyContext)
+                    {
+                        throw std::runtime_error(
+                            "For this device kind there are already alpaka managed devices in the list. Linking "
+                            "external devices is not possible.");
+                    }
+
+                    sycl::platform targetPlatform;
+                    std::vector<sycl::device> targetDevices;
+                    if(hasAlreadyLinkedDevices)
+                    {
+                        if(!platform.syclPlatform.has_value())
+                            throw std::runtime_error("The underlying SYCL platform is invalid.");
+                        if(std::get<1>(nativeHandle) != platform.getContext())
+                        {
+                            throw std::runtime_error(
+                                "The provided SYCL context does not match the context of already linked devices.");
+                        }
+                        targetPlatform = platform.syclPlatform.value();
+                        targetDevices = platform.syclDevices;
+                    }
+                    else
+                    {
+                        targetPlatform = std::get<0>(nativeHandle).get_platform();
+                        targetDevices = targetPlatform.get_devices();
+                    }
+
+                    // search the user provided device within the target device list
+                    uint32_t const numDevices = static_cast<uint32_t>(targetDevices.size());
+                    uint32_t idx = numDevices;
+                    for(uint32_t d = 0; d < numDevices; ++d)
+                    {
+                        if(targetDevices[d] == std::get<0>(nativeHandle))
+                        {
+                            idx = d;
+                            break;
+                        }
+                    }
+
+                    if(idx == numDevices)
+                        throw std::runtime_error(std::string("Device handle provided not found."));
+
+                    if(idx < platform.devices.size())
+                    {
+                        if(auto sharedPtr = platform.devices[idx].lock())
+                        {
+                            if(sharedPtr->m_manageDevice)
+                                throw std::runtime_error(
+                                    "Device with index " + std::to_string(idx)
+                                    + " is managed by alpaka and cannot be linked.");
+                            if(sharedPtr->m_syncBeforeDestroy != syncBeforeDestroy)
+                                throw std::runtime_error(
+                                    "Device with index " + std::to_string(idx)
+                                    + " is already linked with a different syncBeforeDestroy setting.");
+                            return sharedPtr;
+                        }
+                    }
+
+                    if(!hasAlreadyLinkedDevices)
+                    {
+                        platform.syclPlatform = targetPlatform;
+                        platform.syclDevices = std::move(targetDevices);
+                        platform.devices.resize(platform.syclDevices.size());
+                        platform.syclContext = std::get<1>(nativeHandle);
+                    }
+
+                    auto newDevice
+                        = std::make_shared<syclGeneric::Device<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>>(
+                            std::move(platform.getSharedPtr()),
+                            std::get<0>(nativeHandle),
+                            idx,
+                            syncBeforeDestroy);
+                    platform.devices[idx] = newDevice;
+                    return newDevice;
+                }
+            };
+
+            template<typename T_ApiInterface, alpaka::concepts::DeviceKind T_DeviceKind>
+            struct MakeDevice::Unlink<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>
+            {
+                void operator()(
+                    syclGeneric::Platform<T_ApiInterface, T_DeviceKind>& platform,
+                    std::pair<sycl::device, sycl::context> const& nativeHandle) const
+                {
+                    ALPAKA_LOG_FUNCTION(alpaka::onHost::logger::device);
+                    std::lock_guard<std::mutex> lk{platform.deviceGuard};
+
+                    uint32_t const numDevices = platform.getDeviceCount();
+                    // search the user provided device within the alpaka device list
+                    uint32_t idx = numDevices;
+                    for(uint32_t d = 0; d < numDevices; ++d)
+                    {
+                        if(platform.syclDevices[d] == std::get<0>(nativeHandle))
+                        {
+                            idx = d;
+                            break;
+                        }
+                    }
+                    if(idx == numDevices)
+                        throw std::runtime_error(std::string("Device handle provided not found."));
+
+                    auto sharedPtr = platform.devices[idx].lock();
+                    if(!sharedPtr)
+                        throw std::runtime_error(
+                            std::string("Try to unlink unknown device with id '") + std::to_string(idx) + "'");
+                    if(sharedPtr->m_manageDevice)
+                        throw std::runtime_error(
+                            std::string("Unlinking an alpaka managed device with id '") + std::to_string(idx)
+                            + "' is not allowed.");
+
+                    platform.devices[idx].reset();
+                }
+            };
+
             template<typename T_ApiInterface, alpaka::concepts::DeviceKind T_DeviceKind>
             struct GetDeviceProperties::Op<syclGeneric::Platform<T_ApiInterface, T_DeviceKind>>
             {

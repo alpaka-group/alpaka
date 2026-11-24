@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Handle.hpp"
+#include "alpaka/api/api.hpp"
 #include "alpaka/interface.hpp"
 #include "alpaka/onHost/Event.hpp"
 #include "alpaka/onHost/EventPolicyList.hpp"
@@ -128,6 +129,67 @@ namespace alpaka::onHost
                     *m_device.get(),
                     policies),
                 policies};
+        }
+
+        /** Create a queue from a user provided native handle.
+         *
+         * The native handle is owned by the user, alpaka will never destroy or reset it. The native stream or queue
+         * must be asynchronous. The alpaka queue kind controls only whether alpaka synchronizes after each enqueue,
+         * therefore queueKind::blocking is supported as well.
+         *
+         * @param policies Queue construction policies.
+         * @param nativeQueueHandle api native queue handle
+         * @param syncBeforeDestroy if true alpaka synchronizes the native queue before the last handle is released
+         * @return A onHost::Queue that tasks and memory operations can be enqueued on.
+         */
+        template<alpaka::concepts::QueuePolicyList T_Policies>
+        auto linkQueue(T_Policies const& policies, auto&& nativeQueueHandle, bool syncBeforeDestroy = true)
+            requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            return Queue{
+                internal::MakeQueue::Link<ALPAKA_TYPEOF(*m_device.get()), T_Policies>{}(
+                    *m_device.get(),
+                    policies,
+                    ALPAKA_FORWARD(nativeQueueHandle),
+                    syncBeforeDestroy),
+                policies};
+        }
+
+        /** @copydoc linkQueue()
+         *
+         * @param policy Single queue construction policy.
+         */
+        template<alpaka::concepts::QueuePolicy T_Policy>
+        auto linkQueue(T_Policy policy, auto&& nativeQueueHandle, bool syncBeforeDestroy = true)
+            requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            return linkQueue(QueuePolicyList{policy}, ALPAKA_FORWARD(nativeQueueHandle), syncBeforeDestroy);
+        }
+
+        /** @copydoc linkQueue()
+         *
+         * The queue is linked with the default queue policies, i.e. it is non-blocking and timing is disabled.
+         */
+        auto linkQueue(auto&& nativeQueueHandle, bool syncBeforeDestroy = true)
+            requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            return linkQueue(QueuePolicyList{}, ALPAKA_FORWARD(nativeQueueHandle), syncBeforeDestroy);
+        }
+
+        /** Remove a queue which was previously linked from a native handle.
+         *
+         * Unlinking an alpaka managed device is not allowed.
+         * The is not destructed, it is only updates alpaka's internal bookkeeping.
+         * All alpaka handles stay valid, the caller is responsible that the native handle stays valid until all alpaka
+         * operations are fully processed.
+         *
+         * @param nativeQueueHandle api native queue handle
+         */
+        auto unlinkQueue(auto&& nativeQueueHandle) requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            internal::MakeQueue::Unlink<ALPAKA_TYPEOF(*m_device.get())>{}(
+                *m_device.get(),
+                ALPAKA_FORWARD(nativeQueueHandle));
         }
 
         /** Create an event for this device.

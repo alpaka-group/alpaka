@@ -16,6 +16,8 @@
 
 #    include <sycl/sycl.hpp>
 
+#    include <algorithm>
+
 namespace alpaka::onHost
 {
     namespace syclGeneric
@@ -33,9 +35,32 @@ namespace alpaka::onHost
                 ALPAKA_LOG_FUNCTION(onHost::logger::device);
             }
 
+            /** Create a device from a user provided native sycl device.
+             *
+             * The native device is not owned by alpaka, therefore it is never reset.
+             */
+            Device(
+                internal::concepts::PlatformHandle auto platform,
+                sycl::device const& dev,
+                uint32_t const idx,
+                bool syncBeforeDestroy)
+                : m_platform(std::move(platform))
+                , m_idx(idx)
+                , m_sycl_dev(dev)
+                , m_manageDevice(false)
+                , m_syncBeforeDestroy(syncBeforeDestroy)
+                , m_properties{internal::getDeviceProperties(*m_platform.get(), m_idx)}
+            {
+                ALPAKA_LOG_FUNCTION(onHost::logger::device);
+            }
+
             ~Device()
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::device);
+                if(m_syncBeforeDestroy)
+                {
+                    wait();
+                }
             }
 
             Device(Device const&) = delete;
@@ -66,6 +91,51 @@ namespace alpaka::onHost
 
                 queues.emplace_back(newQueue);
                 return newQueue;
+            }
+
+            /** Create a queue from a user provided native sycl queue.
+             *
+             * The native queue is not owned by alpaka and will never be destroyed or reset.
+             */
+            [[nodiscard]] Handle<syclGeneric::Queue<Device>> linkQueue(
+                alpaka::concepts::QueuePolicyList auto const& policies,
+                sycl::queue const& queue,
+                bool syncBeforeDestroy)
+            {
+                ALPAKA_LOG_FUNCTION(onHost::logger::queue + onHost::logger::device);
+                auto thisHandle = this->getSharedPtr();
+                std::lock_guard<std::mutex> lk{m_writeGuard};
+
+                auto newQueue = std::make_shared<syclGeneric::Queue<Device>>(
+                    std::move(thisHandle),
+                    queues.size(),
+                    policies,
+                    queue,
+                    syncBeforeDestroy);
+
+                queues.emplace_back(newQueue);
+                return newQueue;
+            }
+
+            /** Remove a previously linked native sycl queue from the alpaka bookkeeping.
+             *
+             * The native queue itself is not modified.
+             */
+            void unlinkQueue(sycl::queue const& queue)
+            {
+                std::lock_guard<std::mutex> lk{m_writeGuard};
+
+                auto result = std::find_if(
+                    queues.begin(),
+                    queues.end(),
+                    [&](auto const& deviceQueue)
+                    {
+                        auto sharedPtr = deviceQueue.lock();
+                        return sharedPtr && sharedPtr->getNativeHandle() == queue;
+                    });
+                if(result == queues.end())
+                    throw std::runtime_error(std::string("Native queue not found."));
+                queues.erase(result);
             }
 
             [[nodiscard]] std::pair<sycl::device, sycl::context> getNativeHandle() const noexcept
@@ -125,6 +195,10 @@ namespace alpaka::onHost
             std::vector<std::weak_ptr<syclGeneric::Queue<Device>>> queues;
             std::vector<std::weak_ptr<syclGeneric::Event<Device>>> events;
             std::mutex m_writeGuard;
+            // if true the device is managed by alpaka, else false
+            bool m_manageDevice = true;
+            // if true the device is synchronized before the last handle is destroyed
+            bool m_syncBeforeDestroy = true;
 
             DeviceProperties m_properties;
 
@@ -136,11 +210,21 @@ namespace alpaka::onHost
             friend struct onHost::internal::AllocUnified;
             friend struct onHost::internal::AllocMapped;
             friend struct onHost::internal::IsDataAccessible;
+            friend struct onHost::internal::MakeDevice;
+            friend struct onHost::internal::MakeQueue;
         };
     } // namespace syclGeneric
 
     namespace internal
     {
+        template<typename T_Platform>
+        struct MakeQueue::Unlink<syclGeneric::Device<T_Platform>>
+        {
+            void operator()(syclGeneric::Device<T_Platform>& device, sycl::queue const& queue) const
+            {
+                device.unlinkQueue(queue);
+            }
+        };
 
         template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
         struct Alloc::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents>

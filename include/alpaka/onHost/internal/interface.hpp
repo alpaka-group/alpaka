@@ -63,6 +63,24 @@ namespace alpaka::onHost
                     return platform.makeDevice(idx);
                 }
             };
+
+            template<typename T_Platform>
+            struct Link
+            {
+                auto operator()(auto& platform, auto&& nativeHandle, bool syncBeforeDestroy) const
+                {
+                    return platform.linkDevice(ALPAKA_FORWARD(nativeHandle), syncBeforeDestroy);
+                }
+            };
+
+            template<typename T_Platform>
+            struct Unlink
+            {
+                void operator()(auto& platform, auto&& nativeHandle) const
+                {
+                    platform.unlinkDevice(ALPAKA_FORWARD(nativeHandle));
+                }
+            };
         };
 
         struct GetDevice
@@ -107,6 +125,28 @@ namespace alpaka::onHost
                 auto operator()(T_Device& device, T_QueuePolicyList const& policies) const
                 {
                     return device.makeQueue(policies);
+                }
+            };
+
+            template<typename T_Device, alpaka::concepts::QueuePolicyList T_QueuePolicyList>
+            struct Link
+            {
+                auto operator()(
+                    T_Device& device,
+                    T_QueuePolicyList const& policies,
+                    auto&& nativeQueueHandle,
+                    bool syncBeforeDestroy) const
+                {
+                    return device.linkQueue(policies, ALPAKA_FORWARD(nativeQueueHandle), syncBeforeDestroy);
+                }
+            };
+
+            template<typename T_Device>
+            struct Unlink
+            {
+                void operator()(T_Device& device, auto&& nativeHandle) const
+                {
+                    device.unlinkQueue(ALPAKA_FORWARD(nativeHandle));
                 }
             };
         };
