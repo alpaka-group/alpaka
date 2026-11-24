@@ -115,6 +115,9 @@ TEMPLATE_LIST_TEST_CASE("warp shflXor exchanges partner lanes", "[warp][shfl_xor
 
     onHost::memset(queue, successDev, static_cast<std::uint8_t>(true));
     queue.enqueue(onHost::FrameSpec{blocks, threads, exec}, KernelBundle{ShflXorMultiThreadKernel{}, successDev});
+    queue.enqueue(
+        onHost::FrameSpec{Vec{5u, 3u}, Vec{4u, warpExtent}, exec},
+        KernelBundle{ShflXorMultiThreadKernel{}, successDev});
     onHost::memcpy(queue, successHost, successDev);
     onHost::wait(queue);
     CHECK(successHost[0]);

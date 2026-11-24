@@ -63,11 +63,10 @@ namespace
 
 
             concepts::Vector auto warpIdxInGrid = acc.getIdxWithin(onAcc::origin::grid, onAcc::unit::warps);
+            auto linearBlockIdx = linearize(acc[layer::block].count(), acc[layer::block].idx());
             /* Use the block index and the expected number of blocks plus the warp index in the block to get the global
              * warp index */
-            warpCheck(
-                success,
-                acc[layer::block].idx().x() * expectedWarpsPerBlock + warpIdxInBlock.x() == warpIdxInGrid.x());
+            warpCheck(success, linearBlockIdx * expectedWarpsPerBlock + warpIdxInBlock.x() == warpIdxInGrid.x());
 
             // Use the linear global thread index to calculate the warp index.
             concepts::Vector auto threadIdxInGrid = acc.getIdxWithin(onAcc::origin::grid, onAcc::unit::threads);
@@ -109,6 +108,10 @@ TEMPLATE_LIST_TEST_CASE("warp size trait matches runtime size", "[warp][getSize]
     queue.enqueue(
         onHost::ThreadSpec{blocks, threads, exec},
         // Pass the host-side expectation down to the device for verification.
+        KernelBundle{GetSizeKernel{}, successDev, static_cast<std::uint32_t>(warpExtent), warpsPerBlock});
+    // A single column of blocks keeps the linear thread index in the grid contiguous within each warp.
+    queue.enqueue(
+        onHost::ThreadSpec{Vec{5u, 1u}, Vec{warpsPerBlock, warpExtent}, exec},
         KernelBundle{GetSizeKernel{}, successDev, static_cast<std::uint32_t>(warpExtent), warpsPerBlock});
     onHost::memcpy(queue, successHost, successDev);
     onHost::wait(queue);
