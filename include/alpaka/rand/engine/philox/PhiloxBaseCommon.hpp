@@ -77,11 +77,14 @@ namespace alpaka::rand::engine::internal
         constexpr void skip4(uint64_t offset)
         {
             Counter& counter = this->state.counter;
-            Counter temp = counter;
-            counter[0] += low32Bits(offset);
-            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
-            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
+            // 128-bit addition of the 64-bit offset to the counter words {0, 1, 2, 3}.
+            std::uint64_t const low = (static_cast<std::uint64_t>(counter[1]) << 32) | counter[0];
+            std::uint64_t const sum = low + offset;
+            std::uint32_t const previousWord2 = counter[2];
+            counter[0] = low32Bits(sum);
+            counter[1] = high32Bits(sum);
+            counter[2] += sum < low ? 1u : 0u;
+            counter[3] += counter[2] < previousWord2 ? 1u : 0u;
         }
 
         /** Advance the counter by the length of \a subsequence
