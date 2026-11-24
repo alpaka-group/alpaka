@@ -381,7 +381,7 @@ namespace alpaka::onHost::internal
     void scan(
         auto& queue,
         alpaka::onHost::concepts::Device auto& devAcc,
-        alpaka::concepts::Executor auto& exec,
+        alpaka::concepts::Executor auto exec,
         alpaka::concepts::IMdSpan auto&& buffer,
         alpaka::concepts::IMdSpan auto&& outputVec,
         alpaka::concepts::IDataSource auto& inputVec)
@@ -456,7 +456,7 @@ namespace alpaka::onHost::internal
     void scan(
         auto& queue,
         alpaka::onHost::concepts::Device auto& devAcc,
-        alpaka::concepts::Executor auto& exec,
+        alpaka::concepts::Executor auto exec,
         alpaka::concepts::IMdSpan auto&& outputVec,
         alpaka::concepts::IDataSource auto const& inputVec)
     {
