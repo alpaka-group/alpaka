@@ -7627,6 +7627,62 @@
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 				// ============================================================================
+				// == ./include/alpaka/math/FloatEqualExact.hpp ==
+				// ==
+				/* Copyright 2021 Jiri Vyskocil
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+
+				#include <type_traits>
+
+				namespace alpaka
+				{
+				    namespace math
+				    {
+				        /** Compare two floating point numbers for exact equivalence. Use only when necessary, and be aware of the
+				         * implications. Most codes should not use this function and instead implement a correct epsilon-based
+				         * comparison. If you are unfamiliar with the topic, check out
+				         * https://www.geeksforgeeks.org/problem-in-comparing-floating-point-numbers-and-how-to-compare-them-correctly/
+				         * or Goldberg 1991: "What every computer scientist should know about floating-point arithmetic",
+				         * https://dl.acm.org/doi/10.1145/103162.103163
+				         *
+				         * This function calls the == operator for floating point types, but disables the warning issued by the
+				         * compiler when compiling with the float equality warning checks enabled. This warning is valid an valuable in
+				         * most codes and should be generally enabled, but there are specific instances where a piece of code might
+				         * need to do an exact comparison (e.g. @a CudaVectorArrayWrapperTest.cpp). The verbose name for the function
+				         * is intentional as it should raise a red flag if used while not absolutely needed. Users are advised to add a
+				         * justification whenever they use this function.
+				         *
+				         * @tparam T both operands have to be the same type and conform to std::is_floating_point
+				         * @param a first operand
+				         * @param b second operand
+				         * @return a == b
+				         */
+				        template<typename T>
+				        ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto floatEqualExactNoWarning(T a, T b) -> bool
+				        {
+				            static_assert(std::is_floating_point_v<T>, "floatEqualExactNoWarning is for floating point values only!");
+
+				            // So far only GCC and Clang check for float comparison and both accept the GCC pragmas.
+				#ifdef __GNUC__
+				#    pragma GCC diagnostic push
+				#    pragma GCC diagnostic ignored "-Wfloat-equal"
+				#endif
+				            return a == b;
+				#ifdef __GNUC__
+				#    pragma GCC diagnostic pop
+				#endif
+				        }
+				    } // namespace math
+				} // namespace alpaka
+				// ==
+				// == ./include/alpaka/math/FloatEqualExact.hpp ==
+				// ============================================================================
+
+				// ============================================================================
 				// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
 				// ==
 				/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
@@ -7861,16 +7917,16 @@
 							            return high32Bits(WEYL_64_1());
 							        }
 
-							        /// First Philox S-box multiplier
+							        /// First Philox S-box multiplier, applied to counter word 0 (Random123 PHILOX_M4x32_0)
 							        static constexpr std::uint32_t MULTIPLITER_4x32_0()
 							        {
-							            return 0xCD9E'8D57;
+							            return 0xD251'1F53;
 							        }
 
-							        /// Second Philox S-box multiplier
+							        /// Second Philox S-box multiplier, applied to counter word 2 (Random123 PHILOX_M4x32_1)
 							        static constexpr std::uint32_t MULTIPLITER_4x32_1()
 							        {
-							            return 0xD251'1F53;
+							            return 0xCD9E'8D57;
 							        }
 							    };
 							} // namespace alpaka::rand::engine
@@ -7960,7 +8016,7 @@
 						            return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
 						        }
 
-						        /** Performs N rounds of the Philox shuffle
+						        /** Performs N rounds of the Philox shuffle, with N = numRounds()
 						         *
 						         * @param counter_in initial state of the counter
 						         * @param key_in initial state of the key
@@ -7971,8 +8027,8 @@
 						            Key key{key_in};
 						            Counter counter = singleRound(counter_in, key);
 
-						            ALPAKA_UNROLL(numRounds())
-						            for(unsigned int n = 0; n < numRounds(); ++n)
+						            ALPAKA_UNROLL(numRounds() - 1)
+						            for(unsigned int n = 1; n < numRounds(); ++n)
 						            {
 						                key = bumpKey(key);
 						                counter = singleRound(counter, key);
@@ -7999,6 +8055,7 @@
 						// ============================================================================
 
 
+					// #include <cstdint>    // amalgamate: file already included
 					// #include <utility>    // amalgamate: file already included
 
 					namespace alpaka::rand::engine
@@ -8061,11 +8118,19 @@
 					        ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
 					        {
 					            Counter& counter = static_cast<TImpl*>(this)->state.counter;
-					            Counter temp = counter;
-					            counter[0] += low32Bits(offset);
-					            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-					            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
-					            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
+					            // 128-bit addition of the 64-bit offset to the counter words {0, 1, 2, 3}.
+					            std::uint64_t const low = (static_cast<std::uint64_t>(counter[1]) << 32) | counter[0];
+					            std::uint64_t const sum = low + offset;
+					            counter[0] = low32Bits(sum);
+					            counter[1] = high32Bits(sum);
+					            if(sum < low)
+					            {
+					                counter[2]++;
+					                if(counter[2] == 0)
+					                {
+					                    counter[3]++;
+					                }
+					            }
 					        }
 
 					        /** Advance the counter by the length of \a subsequence
@@ -8184,22 +8249,36 @@
 				            return result;
 				        }
 
-				        /// Skips the next \a offset numbers
-				        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
+				        /// Skips the next \a count numbers of the current block.
+				        /// Requires state.position + count < TParams::counterSize.
+				        ALPAKA_FN_HOST_ACC void skipInBlock(std::uint32_t count)
 				        {
-				            static_assert(TParams::counterSize == 4, "Only counterSize is supported.");
-				            state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
-				            offset += state.position < 4 ? 0 : 4;
-				            state.position -= state.position < 4 ? 0 : 4u;
-				            for(auto numShifts = state.position; numShifts > 0; --numShifts)
+				            state.position += count;
+				            for(; count > 0; --count)
 				            {
-				                // Shift state results to allow hard coded access to element zero.
-				                // This will avoid high register usage on NVIDIA devices.
+				                // Element zero always contains the next number, see nextNumber().
 				                state.result[0] = state.result[1];
 				                state.result[1] = state.result[2];
 				                state.result[2] = state.result[3];
 				            }
-				            this->skip4(offset / 4);
+				        }
+
+				        /// Skips the next \a offset numbers
+				        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
+				        {
+				            static_assert(TParams::counterSize == 4, "Only counterSize 4 is supported.");
+				            // Position of the target number in the current block plus the remainder; less than 8.
+				            uint64_t const inBlock = state.position + offset % TParams::counterSize;
+				            uint64_t const blocks = offset / TParams::counterSize + inBlock / TParams::counterSize;
+				            uint64_t shifts = offset;
+				            if(blocks > 0)
+				            {
+				                // advanceState() moves from the current block to the next one.
+				                this->skip4(blocks - 1);
+				                advanceState();
+				                shifts = inBlock % TParams::counterSize;
+				            }
+				            skipInBlock(static_cast<std::uint32_t>(shifts));
 				        }
 
 				    public:
@@ -8207,14 +8286,16 @@
 				         *
 				         * @param seed Set the Philox generator key
 				         * @param subsequence Select a subsequence of size 2^64
-				         * @param offset Skip \a offset numbers form the start of the subsequence
+				         * @param offset Skip \a offset numbers from the start of the subsequence
 				         */
 				        ALPAKA_FN_HOST_ACC PhiloxSingle(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
 				            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0}
 				        {
+				            static_assert(TParams::counterSize == 4, "Only counterSize 4 is supported.");
 				            this->skipSubsequence(subsequence);
-				            skip(offset);
+				            this->skip4(offset / TParams::counterSize);
 				            advanceState();
+				            skipInBlock(static_cast<std::uint32_t>(offset % TParams::counterSize));
 				        }
 
 				        /** Get the next random number
@@ -8313,16 +8394,18 @@
 				    public:
 				        /** Construct a new Philox engine with vector output
 				         *
+				         * Vector i is the same as numbers 4 (offset + i) to 4 (offset + i) + 3 of the single-number engine with
+				         * the same seed and subsequence.
+				         *
 				         * @param seed Set the Philox generator key
 				         * @param subsequence Select a subsequence of size 2^64
-				         * @param offset Skip \a offset numbers form the start of the subsequence
+				         * @param offset Skip \a offset vectors from the start of the subsequence
 				         */
 				        ALPAKA_FN_HOST_ACC PhiloxVector(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
 				            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}}
 				        {
 				            this->skipSubsequence(subsequence);
 				            skip(offset);
-				            nextVector();
 				        }
 
 				        /** Get the next vector of random numbers
@@ -8423,6 +8506,20 @@
 				            //! The random number default generator engine get trait.
 				            template<typename TRand, typename TSfinae = void>
 				            struct CreateDefault;
+
+				            //! \return The exclusive or of the low 32 bits and a mix of the high 32 bits, for engines that take
+				            //!         32-bit seeds. A value below 2^32 does not change. The mix is the MurmurHash3 finalizer, so
+				            //!         values with exchanged or equal halves do not give the same result.
+				            ALPAKA_FN_HOST_ACC constexpr auto foldTo32Bits(std::uint64_t const value) -> std::uint32_t
+				            {
+				                auto high = static_cast<std::uint32_t>(value >> 32);
+				                high ^= high >> 16;
+				                high *= 0x85eb'ca6bu;
+				                high ^= high >> 13;
+				                high *= 0xc2b2'ae35u;
+				                high ^= high >> 16;
+				                return static_cast<std::uint32_t>(value) ^ high;
+				            }
 				        } // namespace trait
 
 				        //! \return A default random number generator engine. Its type is guaranteed to be trivially copyable.
@@ -8432,9 +8529,9 @@
 				        template<typename TRand>
 				        ALPAKA_FN_HOST_ACC auto createDefault(
 				            TRand const& rand,
-				            std::uint32_t const& seed = 0,
-				            std::uint32_t const& subsequence = 0,
-				            std::uint32_t const& offset = 0)
+				            std::uint64_t const& seed = 0,
+				            std::uint64_t const& subsequence = 0,
+				            std::uint64_t const& offset = 0)
 				        {
 				            using ImplementationBase = interface::ImplementationBase<ConceptRand, TRand>;
 				            return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
@@ -8446,6 +8543,8 @@
 				// ============================================================================
 
 
+			// #include <bit>    // amalgamate: file already included
+			// #include <cmath>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <limits>    // amalgamate: file already included
 			#include <random>
@@ -8476,7 +8575,7 @@
 			         *
 			         * @param seed Set the Philox generator key
 			         * @param subsequence Select a subsequence of size 2^64
-			         * @param offset Skip \a offset numbers form the start of the subsequence
+			         * @param offset Skip \a offset numbers from the start of the subsequence
 			         */
 			        ALPAKA_FN_HOST_ACC Philox4x32x10(
 			            std::uint64_t const seed = 0,
@@ -8530,12 +8629,13 @@
 			         *
 			         * @param seed Set the Philox generator key
 			         * @param subsequence Select a subsequence of size 2^64
-			         * @param offset Number of numbers to skip form the start of the subsequence.
+			         * @param offset Number of vectors to skip from the start of the subsequence. Vector i is the same as
+			         *        numbers 4 (offset + i) to 4 (offset + i) + 3 of Philox4x32x10 with the same seed and subsequence.
 			         */
 			        ALPAKA_FN_HOST_ACC Philox4x32x10Vector(
-			            std::uint32_t const seed = 0,
-			            std::uint32_t const subsequence = 0,
-			            std::uint32_t const offset = 0)
+			            std::uint64_t const seed = 0,
+			            std::uint64_t const subsequence = 0,
+			            std::uint64_t const offset = 0)
 			            : engineVariant(seed, subsequence, offset)
 			        {
 			        }
@@ -8577,6 +8677,7 @@
 			    };
 
 			    /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
+			    //! Uniform floating-point numbers in [min, max), for min < max.
 			    template<typename TResult, typename TSfinae = void>
 			    class UniformReal : public interface::Implements<ConceptRand, UniformReal<TResult>>
 			    {
@@ -8600,39 +8701,119 @@
 			        {
 			        }
 
-			        ALPAKA_FN_HOST_ACC UniformReal(T min, T max) : _min(min), _max(max), _range(_max - _min)
+			        ALPAKA_FN_HOST_ACC UniformReal(T min, T max)
+			            : _min(min)
+			            , _max(max)
+			            , _range(_max - _min)
+			            , _belowMax(largestBelow(max))
+			            , _clampNeeded(!(math::floatEqualExactNoWarning(min, T{0}) && math::floatEqualExactNoWarning(max, T{1})))
 			        {
 			        }
 
 			        template<typename TEngine>
 			        ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> TResult
 			        {
+			            using Value = std::remove_cv_t<std::remove_reference_t<decltype(engine.max())>>;
+			            static_assert(std::is_unsigned_v<Value>, "The engine must return unsigned integers.");
+			            Value const engineMin = engine.min();
+			            Value const engineMax = engine.max();
 			            if constexpr(meta::IsArrayOrVector<TResult>::value)
 			            {
 			                auto result = engine();
-			                T scale = static_cast<T>(1) / static_cast<T>(engine.max()) * _range;
 			                TResult ret{
-			                    static_cast<T>(result[0]) * scale + _min,
-			                    static_cast<T>(result[1]) * scale + _min,
-			                    static_cast<T>(result[2]) * scale + _min,
-			                    static_cast<T>(result[3]) * scale + _min};
+			                    scale(toUnitInterval<Value>(result[0], engineMin, engineMax)),
+			                    scale(toUnitInterval<Value>(result[1], engineMin, engineMax)),
+			                    scale(toUnitInterval<Value>(result[2], engineMin, engineMax)),
+			                    scale(toUnitInterval<Value>(result[3], engineMin, engineMax))};
 			                return ret;
 			            }
 			            else
 			            {
 			                // Since it's possible to get a host-only engine here, the call has to go through proxy
-			                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / static_cast<T>(engine.max())
-			                           * _range
-			                       + _min;
+			                return scale(toUnitInterval<Value>(EngineCallHostAccProxy<TEngine>{}(engine), engineMin, engineMax));
 			            }
 
 			            ALPAKA_UNREACHABLE(TResult{});
 			        }
 
 			    private:
+			        //! 2^-n as a T.
+			        static ALPAKA_FN_HOST_ACC constexpr auto inversePowerOfTwo(int n) -> T
+			        {
+			            T result = 1;
+			            for(; n > 0; --n)
+			            {
+			                result *= static_cast<T>(0.5);
+			            }
+			            return result;
+			        }
+
+			        //! Maps an engine number in [engineMin, engineMax] to [0, 1).
+			        //! The conversion is exact for an engine that returns all values of TValue.
+			        template<typename TValue>
+			        static ALPAKA_FN_HOST_ACC auto toUnitInterval(
+			            TValue const value,
+			            TValue const engineMin,
+			            TValue const engineMax) -> T
+			        {
+			            constexpr int valueBits = std::numeric_limits<TValue>::digits;
+			            constexpr int digits = std::numeric_limits<T>::digits;
+			            if(engineMin == 0 && engineMax == std::numeric_limits<TValue>::max())
+			            {
+			                if constexpr(digits < valueBits)
+			                {
+			                    return static_cast<T>(value >> (valueBits - digits)) * inversePowerOfTwo(digits);
+			                }
+			                else
+			                {
+			                    return static_cast<T>(value) * inversePowerOfTwo(valueBits);
+			                }
+			            }
+			            T const unit = static_cast<T>(value - engineMin) / (static_cast<T>(engineMax - engineMin) + T{1});
+			            constexpr T belowOne = T{1} - std::numeric_limits<T>::epsilon() / 2;
+			            return unit < T{1} ? unit : belowOne;
+			        }
+
+			        //! The largest value of T below the finite value x.
+			        static ALPAKA_FN_HOST_ACC auto largestBelow(T const x) -> T
+			        {
+			            if(!(x < T{0}) && !(x > T{0}))
+			            {
+			                return -std::numeric_limits<T>::denorm_min();
+			            }
+			            if constexpr(
+			                std::numeric_limits<T>::is_iec559
+			                && (sizeof(T) == sizeof(std::uint32_t) || sizeof(T) == sizeof(std::uint64_t)))
+			            {
+			                // The integer representation of an IEEE value steps to the neighbour value.
+			                using Bits = std::conditional_t<sizeof(T) == sizeof(std::uint32_t), std::uint32_t, std::uint64_t>;
+			                auto const bits = std::bit_cast<Bits>(x);
+			                return std::bit_cast<T>(x > T{0} ? static_cast<Bits>(bits - 1) : static_cast<Bits>(bits + 1));
+			            }
+			            else
+			            {
+			                return std::nextafter(x, -std::numeric_limits<T>::infinity());
+			            }
+			        }
+
+			        //! Maps u in [0, 1) to [min, max).
+			        ALPAKA_FN_HOST_ACC auto scale(T const unit) const -> T
+			        {
+			            // For min = 0 and max = 1 the result is the unit value.
+			            if(!_clampNeeded)
+			            {
+			                return unit;
+			            }
+			            T const result = unit * _range + _min;
+			            return result < _max ? result : _belowMax;
+			        }
+
 			        T const _min;
 			        T const _max;
 			        T const _range;
+			        T const _belowMax;
+			        //! False for min = 0 and max = 1: scale() returns the unit value.
+			        bool const _clampNeeded;
 			    };
 			} // namespace alpaka::rand
 			// ==
@@ -8684,15 +8865,27 @@
 		            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
 		            {
 		                using BitsT = typename TEngine::result_type;
-		                T ret = 0;
-		                constexpr auto N = sizeof(T) / sizeof(BitsT);
-		                for(unsigned int a = 0; a < N; ++a)
+		                if constexpr(std::is_same_v<T, bool>)
 		                {
-		                    ret
-		                        ^= (static_cast<T>(engine())
-		                            << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+		                    return (engine() & BitsT{1}) != 0;
 		                }
-		                return ret;
+		                else if constexpr(sizeof(T) < sizeof(BitsT))
+		                {
+		                    // One engine number has more bits than T: keep the low bits.
+		                    return static_cast<T>(engine());
+		                }
+		                else
+		                {
+		                    T ret = 0;
+		                    constexpr auto N = sizeof(T) / sizeof(BitsT);
+		                    for(unsigned int a = 0; a < N; ++a)
+		                    {
+		                        ret
+		                            ^= (static_cast<T>(engine())
+		                                << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+		                    }
+		                    return ret;
+		                }
 		            }
 		        };
 
@@ -8837,9 +9030,9 @@
 		            template<typename TAcc>
 		            ALPAKA_FN_HOST_ACC static auto createDefault(
 		                TAcc const& /* acc */,
-		                std::uint32_t const& seed,
-		                std::uint32_t const& subsequence,
-		                std::uint32_t const& offset) -> Philox4x32x10
+		                std::uint64_t const& seed,
+		                std::uint64_t const& subsequence,
+		                std::uint64_t const& offset) -> Philox4x32x10
 		            {
 		                return {seed, subsequence, offset};
 		            }
@@ -9602,11 +9795,11 @@
 		        {
 		            ALPAKA_FN_HOST static auto createDefault(
 		                TinyMersenneTwister const& /* rand */,
-		                std::uint32_t const& seed = 0,
-		                std::uint32_t const& subsequence = 0,
-		                std::uint32_t const& offset = 0) -> cpu::TinyMersenneTwister
+		                std::uint64_t const& seed = 0,
+		                std::uint64_t const& subsequence = 0,
+		                std::uint64_t const& offset = 0) -> cpu::TinyMersenneTwister
 		            {
-		                return {seed, subsequence, offset};
+		                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
 		            }
 		        };
 
@@ -9615,11 +9808,11 @@
 		        {
 		            ALPAKA_FN_HOST static auto createDefault(
 		                MersenneTwister const& /* rand */,
-		                std::uint32_t const& seed = 0,
-		                std::uint32_t const& subsequence = 0,
-		                std::uint32_t const& offset = 0) -> cpu::MersenneTwister
+		                std::uint64_t const& seed = 0,
+		                std::uint64_t const& subsequence = 0,
+		                std::uint64_t const& offset = 0) -> cpu::MersenneTwister
 		            {
-		                return {seed, subsequence, offset};
+		                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
 		            }
 		        };
 
@@ -9628,11 +9821,11 @@
 		        {
 		            ALPAKA_FN_HOST static auto createDefault(
 		                RandomDevice const& /* rand */,
-		                std::uint32_t const& seed = 0,
-		                std::uint32_t const& subsequence = 0,
-		                std::uint32_t const& offset = 0) -> cpu::RandomDevice
+		                std::uint64_t const& seed = 0,
+		                std::uint64_t const& subsequence = 0,
+		                std::uint64_t const& offset = 0) -> cpu::RandomDevice
 		            {
-		                return {seed, subsequence, offset};
+		                return {foldTo32Bits(seed), foldTo32Bits(subsequence), foldTo32Bits(offset)};
 		            }
 		        };
 		    } // namespace engine::trait
@@ -18108,62 +18301,7 @@
 				// #pragma once
 				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
-					// ============================================================================
-					// == ./include/alpaka/math/FloatEqualExact.hpp ==
-					// ==
-					/* Copyright 2021 Jiri Vyskocil
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-
-					#include <type_traits>
-
-					namespace alpaka
-					{
-					    namespace math
-					    {
-					        /** Compare two floating point numbers for exact equivalence. Use only when necessary, and be aware of the
-					         * implications. Most codes should not use this function and instead implement a correct epsilon-based
-					         * comparison. If you are unfamiliar with the topic, check out
-					         * https://www.geeksforgeeks.org/problem-in-comparing-floating-point-numbers-and-how-to-compare-them-correctly/
-					         * or Goldberg 1991: "What every computer scientist should know about floating-point arithmetic",
-					         * https://dl.acm.org/doi/10.1145/103162.103163
-					         *
-					         * This function calls the == operator for floating point types, but disables the warning issued by the
-					         * compiler when compiling with the float equality warning checks enabled. This warning is valid an valuable in
-					         * most codes and should be generally enabled, but there are specific instances where a piece of code might
-					         * need to do an exact comparison (e.g. @a CudaVectorArrayWrapperTest.cpp). The verbose name for the function
-					         * is intentional as it should raise a red flag if used while not absolutely needed. Users are advised to add a
-					         * justification whenever they use this function.
-					         *
-					         * @tparam T both operands have to be the same type and conform to std::is_floating_point
-					         * @param a first operand
-					         * @param b second operand
-					         * @return a == b
-					         */
-					        template<typename T>
-					        ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto floatEqualExactNoWarning(T a, T b) -> bool
-					        {
-					            static_assert(std::is_floating_point_v<T>, "floatEqualExactNoWarning is for floating point values only!");
-
-					            // So far only GCC and Clang check for float comparison and both accept the GCC pragmas.
-					#ifdef __GNUC__
-					#    pragma GCC diagnostic push
-					#    pragma GCC diagnostic ignored "-Wfloat-equal"
-					#endif
-					            return a == b;
-					#ifdef __GNUC__
-					#    pragma GCC diagnostic pop
-					#endif
-					        }
-					    } // namespace math
-					} // namespace alpaka
-					// ==
-					// == ./include/alpaka/math/FloatEqualExact.hpp ==
-					// ============================================================================
-
+				// #include "alpaka/math/FloatEqualExact.hpp"    // amalgamate: file already inlined
 				// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <cmath>    // amalgamate: file already included
@@ -20944,11 +21082,11 @@
 			        {
 			            static auto createDefault(
 			                RandGenericSycl<TDim> const& rand,
-			                std::uint32_t const& seed = 0,
-			                std::uint32_t const& /* subsequence */ = 0,
-			                std::uint32_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
+			                std::uint64_t const& seed = 0,
+			                std::uint64_t const& /* subsequence */ = 0,
+			                std::uint64_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
 			            {
-			                return {rand, seed};
+			                return {rand, foldTo32Bits(seed)};
 			            }
 			        };
 			    } // namespace engine::trait
@@ -27516,9 +27654,9 @@
 			            Xor() = default;
 
 			            __device__ Xor(
-			                std::uint32_t const& seed,
-			                std::uint32_t const& subsequence = 0,
-			                std::uint32_t const& offset = 0)
+			                std::uint64_t const& seed,
+			                std::uint64_t const& subsequence = 0,
+			                std::uint64_t const& offset = 0)
 			            {
 			#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 			                curand_init(seed, subsequence, offset, &state);
@@ -27707,9 +27845,9 @@
 			        {
 			            static __device__ auto createDefault(
 			                RandUniformCudaHipRand<TApi> const& /*rand*/,
-			                std::uint32_t const& seed = 0,
-			                std::uint32_t const& subsequence = 0,
-			                std::uint32_t const& offset = 0) -> uniform_cuda_hip::Xor
+			                std::uint64_t const& seed = 0,
+			                std::uint64_t const& subsequence = 0,
+			                std::uint64_t const& offset = 0) -> uniform_cuda_hip::Xor
 			            {
 			                return {seed, subsequence, offset};
 			            }
