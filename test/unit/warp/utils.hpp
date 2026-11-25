@@ -15,14 +15,27 @@ namespace alpaka::test::warp
     using WarpTestBackends
         = std::decay_t<decltype(onHost::allBackends(onHost::enabledDeviceSpecs, exec::enabledExecutors))>;
 
-    template<typename SuccessView>
     // Marks the shared success flag false when a lane detects a failure without aborting execution.
-    constexpr void warpCheck(SuccessView success, bool condition)
+    template<typename SuccessView>
+    constexpr void warpCheck(SuccessView success, bool condition) requires requires { success[0u] = false; }
     {
         if(!condition)
         {
             // Trip the shared success flag without aborting the kernel.
             success[0u] = false;
+        }
+    }
+
+    /**! Overload to write the status to a boolean
+     *
+     * @param success Set to false if condition is false else do nothing.
+     */
+    constexpr void warpCheck(bool& success, bool condition)
+    {
+        if(!condition)
+        {
+            // Trip the shared success flag without aborting the kernel.
+            success = false;
         }
     }
 

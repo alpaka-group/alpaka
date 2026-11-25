@@ -36,25 +36,25 @@ namespace
             // global memory triggers an IGC internal compiler error for oneAPI Intel GPU builds.
             bool ok = true;
             // number of threads should be a multiple of the warp size
-            warpCheck(&ok, warpExtent >= 1u);
+            warpCheck(ok, warpExtent >= 1u);
 
             // Lane ID drives the expected source values for each shuffle check.
             uint32_t const lane = onAcc::warp::getLaneIdx(acc);
 
             // Exercise trivial zero-offset and max-offset cases.
             // Broadcasting from literal lane 0 must work regardless of the caller lane.
-            warpCheck(&ok, onAcc::warp::shfl(acc, 42, 0u) == 42);
+            warpCheck(ok, onAcc::warp::shfl(acc, 42, 0u) == 42);
             // Using the current lane as the payload and requesting src=0 should always give back 0.
-            warpCheck(&ok, onAcc::warp::shfl(acc, lane, 0u) == 0);
+            warpCheck(ok, onAcc::warp::shfl(acc, lane, 0u) == 0);
             if constexpr(warpExtent >= 2)
             {
                 // Requesting src=1 broadcasts lane 1's value to every participant.
                 // test requires at least two threads in a warp
-                warpCheck(&ok, onAcc::warp::shfl(acc, lane, 1u) == 1);
+                warpCheck(ok, onAcc::warp::shfl(acc, lane, 1u) == 1);
             }
 
             // Large src index is clamped to the logical width; value must remain unchanged.
-            warpCheck(&ok, onAcc::warp::shfl(acc, 5, std::numeric_limits<uint32_t>::max()) == 5);
+            warpCheck(ok, onAcc::warp::shfl(acc, 5, std::numeric_limits<uint32_t>::max()) == 5);
 
             auto const epsilon = std::numeric_limits<float>::epsilon();
             for(uint32_t width = 1; width < warpExtent; width *= 2)
@@ -65,18 +65,18 @@ namespace
                     auto const section = width * (lane / width);
                     // Integer payloads should resolve to the subgroup-relative source index.
                     auto const shuffle = onAcc::warp::shfl(acc, lane, idx, width);
-                    warpCheck(&ok, shuffle == idx + section);
+                    warpCheck(ok, shuffle == idx + section);
 
                     // Floating payloads exercise non-integral types under the same subgroup restriction.
                     auto const ans = onAcc::warp::shfl(acc, 4.0f - static_cast<float>(lane), idx, width);
                     auto const expect = 4.0f - static_cast<float>(idx + section);
-                    warpCheck(&ok, alpaka::math::abs(ans - expect) < epsilon);
+                    warpCheck(ok, alpaka::math::abs(ans - expect) < epsilon);
                 }
             }
 
             if(static_cast<int>(lane) >= static_cast<int>(warpExtent / 2u))
             {
-                warpCheck(&ok, onAcc::warp::shfl(acc, 42, warpExtent - 1u) == 42);
+                warpCheck(ok, onAcc::warp::shfl(acc, 42, warpExtent - 1u) == 42);
                 // Upper half should be fully masked from the final checks.
                 warpCheck(success, ok);
                 return;
@@ -84,7 +84,7 @@ namespace
             else
             {
                 // check that shfl can be called within branches of the same level
-                warpCheck(&ok, onAcc::warp::shfl(acc, 11, 0u) == 11);
+                warpCheck(ok, onAcc::warp::shfl(acc, 11, 0u) == 11);
             }
             // int is used to silence cast warning because warpExtent can be zero during the host path evaluation
             for(int idxTmp = 0u; idxTmp < static_cast<int>(warpExtent) / 2; ++idxTmp)
@@ -92,11 +92,11 @@ namespace
                 uint32_t idx = static_cast<uint32_t>(idxTmp);
                 // Active sub-group must always read the value produced by the chosen lane.
                 // Within the lower half, shuffling with src=idx must reproduce the selected lane.
-                warpCheck(&ok, onAcc::warp::shfl(acc, lane, idx) == idx);
+                warpCheck(ok, onAcc::warp::shfl(acc, lane, idx) == idx);
                 auto const ans = onAcc::warp::shfl(acc, 4.0f - static_cast<float>(lane), idx);
                 // Float payload confirms the same behaviour holds across types for the masked subgroup.
                 auto const expect = 4.0f - static_cast<float>(idx);
-                warpCheck(&ok, alpaka::math::abs(ans - expect) < epsilon);
+                warpCheck(ok, alpaka::math::abs(ans - expect) < epsilon);
             }
             warpCheck(success, ok);
         }
