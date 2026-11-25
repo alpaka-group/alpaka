@@ -1,4 +1,4 @@
-/* Copyright 2026 René Widera
+/* Copyright 2026 René Widera, Felice Pantaleo
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -128,4 +128,92 @@ TEST_CASE("PhiloxVectorTakesTheFullSeed", "[rand]")
     CHECK(Vector(43)() != Vector(highBit + 43)());
     CHECK(Vector(43, 7)() != Vector(43, highBit + 7)());
     CHECK(Vector(43, 7, 0)() != Vector(43, 7, highBit)());
+}
+
+TEST_CASE("PhiloxRandom123KnownAnswersWithAllWords", "[rand]")
+{
+    // Random123 tests/kat_vectors, philox4x32-10: all words set, and the digits of pi.
+    struct KnownAnswer
+    {
+        Counter counter;
+        Key key;
+        Counter expected;
+    };
+
+    constexpr KnownAnswer knownAnswers[] = {
+        {{0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff},
+         {0xffff'ffff, 0xffff'ffff},
+         {0x408f'276d, 0x41c8'3b0e, 0xa20b'c7c6, 0x6d54'51fd}},
+        {{0x243f'6a88, 0x85a3'08d3, 0x1319'8a2e, 0x0370'7344},
+         {0xa409'3822, 0x299f'31d0},
+         {0xd16c'fe09, 0x94fd'cceb, 0x5001'e420, 0x2412'6ea1}},
+    };
+    for(auto const& answer : knownAnswers)
+        CHECK(Stateless::generate(answer.counter, answer.key) == answer.expected);
+}
+
+namespace
+{
+    // Gives access to the protected skip functions of the single-number engine.
+    class SingleProbe : public alpaka::rand::engine::internal::PhiloxSingle<Params>
+    {
+    public:
+        using Base = alpaka::rand::engine::internal::PhiloxSingle<Params>;
+        using Base::Base;
+
+        constexpr void skipBlocks(std::uint64_t const blocks)
+        {
+            this->skip4(blocks);
+        }
+
+        constexpr void skipNumbers(std::uint64_t const numbers)
+        {
+            this->skip(numbers);
+        }
+    };
+} // namespace
+
+TEST_CASE("PhiloxSkip4CarriesIntoTheHighWords", "[rand]")
+{
+    SingleProbe engine;
+    engine.state.counter = Counter{0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 5};
+    engine.skipBlocks(1);
+    CHECK(engine.state.counter == Counter{0, 0, 0, 6});
+    engine.state.counter = Counter{0xffff'fffe, 0xffff'ffff, 7, 9};
+    engine.skipBlocks(3);
+    CHECK(engine.state.counter == Counter{1, 0, 8, 9});
+    engine.state.counter = Counter{5, 0, 0, 0};
+    engine.skipBlocks(0xffff'ffff'ffff'ffff);
+    CHECK(engine.state.counter == Counter{4, 0, 1, 0});
+    engine.state.counter = Counter{5, 0, 0xffff'ffff, 0};
+    engine.skipBlocks(0);
+    CHECK(engine.state.counter == Counter{5, 0, 0xffff'ffff, 0});
+}
+
+TEST_CASE("PhiloxSkipEqualsDiscard", "[rand]")
+{
+    constexpr std::uint64_t seed = 42;
+    constexpr std::uint64_t subsequence = 5;
+    Single reference(seed, subsequence, 0);
+    auto const expected = draw(reference, 32);
+    // Each start position in the block, and skips that stay in the block, end it and go past it.
+    for(std::size_t draws = 0; draws < 8; ++draws)
+    {
+        for(std::uint64_t skip = 0; skip <= 17; ++skip)
+        {
+            SingleProbe engine(seed, subsequence, 0);
+            for(std::size_t i = 0; i < draws; ++i)
+                static_cast<void>(engine());
+            engine.skipNumbers(skip);
+            INFO("draws " << draws << " skip " << skip);
+            for(std::size_t i = 0; i < 4; ++i)
+                CHECK(engine() == expected[draws + skip + i]);
+        }
+    }
+    // Numbers 2^64 and 2^64 + 1 of seed 3, subsequence 9 are words 0 and 1 of block 2^62 + 1.
+    SingleProbe engine(3, 9, 0);
+    static_cast<void>(engine());
+    engine.skipNumbers(0xffff'ffff'ffff'ffff);
+    CHECK(engine() == 0x965b'c3d3);
+    CHECK(engine() == 0x5b33'dcdf);
 }
