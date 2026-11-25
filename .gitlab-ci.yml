@@ -16,7 +16,11 @@ stages:
 variables:
   # container version of the generated jobs
   ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION: "4.1"
+  # ATTENTION: if you change this version, you need to change also the variable ALPAKA_CONTAINER_VERSION
+  # in script/job_generator/src/alpaka_bashi/versions.py
   APCI_BASE_IMAGE_VERSION: "1.2"
+  # git commit sha of the spack package builtin repository
+  ACPI_SPACK_PACKAGES_REPO_HASH: 2629bc901c4b248bbaf6967e104a04c2ff7b9955
 
 generate:
   stage: generator
@@ -24,6 +28,12 @@ generate:
   image: registry.hzdr.de/crp/alpaka-spack-buildcache/alpaka-job-generator-ubuntu24.04:${APCI_BASE_IMAGE_VERSION}
   script:
     - . /opt/spack/share/spack/setup-env.sh
+    - _spack_packages_repo_path=$(spack repo list | awk '$2 == "builtin" {print $NF}')
+    - _spack_packages_repo_commit_hash=$(git -C "${_spack_packages_repo_path}" rev-parse HEAD)
+    - if [[ "${ACPI_SPACK_PACKAGES_REPO_HASH}" != "${_spack_packages_repo_commit_hash}" ]]; then
+        echo -e "\e[1;33mUpdate to spack package repository to git commit hash ${_spack_packages_repo_commit_hash}\e[0m";
+        spack repo update -c "${ACPI_SPACK_PACKAGES_REPO_HASH}" builtin;
+      fi
     - python3 -m venv /tmp/env
     - source /tmp/env/bin/activate
     # TODO: Remove me before merge

@@ -208,4 +208,9 @@ def get_spack_alias() -> bashi.SpackAliasDict:
     return bashi.get_spack_alias() | {
         HWLOC: bashi.SpackAlias("hwloc", lambda _: ALPAKA_SPACK_HWLOC_VERSION),
         ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: bashi.SpackAlias("intel-oneapi-tbb", lambda _: ALPAKA_SPACK_TBB_VERSION),
+        # TODO: Remove me, if spack package support for CMake is implemented.
+        # Spack updates the CMake minor versions. Therefore old patch levels cannot be installed.
+        # Therefore CMake versions are defined, which are cached in the alpaka-group-container but not available
+        # in Spack anymore. Remove patch level to install latest patch level.
+        CMAKE: bashi.SpackAlias(CMAKE, lambda v: bashi.ValueVersion(f"{v.major}.{v.minor}")),
     }

@@ -43,6 +43,7 @@ def write_job_yaml(
 def write_single_file_job_configuration(
     pipelines: dict[bashi.ValueVersion, bashi.CombinationList],
     spack_builder: bashi.SpackBuilder,
+    spack_package_repository_sha: str,
     args: argparse.Namespace,
     output_stream: TextIO,
 ):
@@ -52,7 +53,10 @@ def write_single_file_job_configuration(
         pipelines (dict[bashi.ValueVersion, bashi.CombinationList]): All CI pipelines and their jobs.
         spack_builder (bashi.SpackBuilder): Contains all spack packages, which needs to be build and additional
             information.
+        spack_package_repository_sha (str): Set spack package repository sha, which should be
+            used for the spack package build jobs. If empty, do not update repository.
         args (argparse.Namespace): Application arguments.
+        output_stream (TextIO): Output stream for the yaml code.
     """
     job_filter_name = get_filter_name(args)
 
@@ -63,7 +67,7 @@ def write_single_file_job_configuration(
 
     if spack_builder.get_build_cache_packages().missing_packages:
         single_file_stages.append(CI_PIPELINE_SPACK)
-        jobs |= get_spack_build_jobs(spack_builder, CI_PIPELINE_SPACK)
+        jobs |= get_spack_build_jobs(spack_builder, spack_package_repository_sha, CI_PIPELINE_SPACK)
 
     jobs |= get_job_configuration(
         combination_list=list(chain(*pipelines.values())),
@@ -100,6 +104,7 @@ def write_single_file_job_configuration(
 def write_multiple_file_job_configuration(
     pipelines: dict[bashi.ValueVersion, bashi.CombinationList],
     spack_builder: bashi.SpackBuilder,
+    spack_package_repository_sha: str,
     wave_sizes: dict[bashi.ValueVersion, WaveSize],
     args: argparse.Namespace,
 ):
@@ -110,6 +115,8 @@ def write_multiple_file_job_configuration(
         jobs.
         spack_builder (bashi.SpackBuilder): Contains all spack packages, which needs to be build and additional
             information.
+        spack_package_repository_sha (str): Set spack package repository sha, which should be
+            used for the spack package build jobs. If empty, do not update repository.
         wave_sizes (dict[bashi.ValueVersion, int]): Size of each wave.
         args (argparse.Namespace): Application arguments.
     """
@@ -127,7 +134,7 @@ def write_multiple_file_job_configuration(
                 job_filter=job_filter_name,
             )
         elif pipeline_name == CI_PIPELINE_SPACK:
-            jobs = get_spack_build_jobs(spack_builder, pipeline_name)
+            jobs = get_spack_build_jobs(spack_builder, spack_package_repository_sha, pipeline_name)
         else:
             jobs = get_job_configuration(
                 combination_list=combinations,

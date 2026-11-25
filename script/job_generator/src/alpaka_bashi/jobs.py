@@ -213,12 +213,16 @@ def get_dummy_job_yaml(stage_name: str = "") -> dict[str, Any]:
     return dummy_job
 
 
-def get_spack_build_jobs(spack_builder: bashi.SpackBuilder, stage_name: str) -> dict[str, Any]:
+def get_spack_build_jobs(
+    spack_builder: bashi.SpackBuilder, spack_package_repository_sha: str, stage_name: str
+) -> dict[str, Any]:
     """
     Generate from the given SpackBuilder all spack package build jobs.
 
     Args:
         spack_builder (bashi.SpackBuilder): SpackBuilder which contains all required spack packages to be build.
+        spack_package_repository_sha (str): Set spack package repository sha, which should be
+            used for the jobs. If empty, do not update repository.
         stage_name (str): Set optional stage name. If string is empty, set no stage.
 
     Returns:
@@ -242,7 +246,9 @@ def get_spack_build_jobs(spack_builder: bashi.SpackBuilder, stage_name: str) -> 
         if stage_name:
             job["stage"] = stage_name
         job["image"] = bashi.get_spack_build_image_name(ubuntu_ver, ALPAKA_CONTAINER_VERSION)
-        job["script"] = bashi.get_spack_build_script(ubuntu_ver, sw_name, sw_version, spack_builder.spack_packages)
+        job["script"] = bashi.get_spack_build_script(
+            ubuntu_ver, sw_name, sw_version, spack_builder.spack_packages, spack_package_repository_sha
+        )
         job["tags"] = ["x86_64", "cpuonly"]
 
     return jobs

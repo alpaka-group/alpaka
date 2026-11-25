@@ -58,6 +58,13 @@ def get_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--spack-package-repo-sha",
+        type=str,
+        help="Set Spack package repository git commit sha, which should be used in the spack build jobs."
+        "If not set, the build jobs uses the pre-configured sha of the spack installation.",
+    )
+
+    parser.add_argument(
         "--filter",
         type=str,
         default="",
@@ -103,6 +110,23 @@ def setup_row_printer() -> None:
         bashi.add_print_row_nice_version_alias(val_name, aliases)
 
 
+def get_spack_package_repository_sha(args: argparse.Namespace) -> str:
+    """Return spack package repository sha which should be used in the spack package build jobs.
+    Return empty string, if repository should be not updated."""
+    if args.spack_package_repo_sha:
+        return args.spack_package_repo_sha
+
+    if "ACPI_SPACK_PACKAGES_REPO_HASH" in os.environ:
+        return os.environ["ACPI_SPACK_PACKAGES_REPO_HASH"]
+
+    if "CI" in os.environ:
+        raise RuntimeError(
+            "CI variable is defined, but no spack package repository sha was set. "
+            "Neither via CLI argument --spack-package-repo-sha nor environment variable ACPI_SPACK_PACKAGES_REPO_HASH."
+        )
+    return ""
+
+
 def get_missing_cached_spack_packages(combination_list: bashi.CombinationList) -> bashi.SpackBuilder:
     """
     Calculate all spack packages, which needs to be build for the given combination-list.
@@ -128,6 +152,14 @@ def get_missing_cached_spack_packages(combination_list: bashi.CombinationList) -
     spack_builder = bashi.SpackBuilder(
         combination_list, alpaka_bashi.get_spack_alias(), bashi.get_spack_build_cache_url
     )
+
+    # if all spack packages can be build or exist in the build cache, do not print a warning.
+    num_unavailable_packages = 0
+    for packages in spack_builder.get_required_available_spack_packages().missing_packages.values():
+        num_unavailable_packages += len(packages)
+    if num_unavailable_packages == 0:
+        return spack_builder
+
     missing_packages_str = "The following spack packages does not exist:\n"
     for ubuntu, spack_packages in spack_builder.get_required_available_spack_packages().missing_packages.items():
         if spack_packages.values():
@@ -176,6 +208,8 @@ def main() -> None:
     args = get_args()
 
     setup_row_printer()
+
+    spack_package_repository_sha = get_spack_package_repository_sha(args)
 
     software_versions = alpaka_bashi.get_software_versions_for_alpaka()
     param_matrix: bashi.ParameterValueMatrix = bashi.get_parameter_value_matrix(
@@ -238,7 +272,7 @@ def main() -> None:
     for ubuntu, spack_packages in spack_builder.get_build_cache_packages().missing_packages.items():
         allowed_spack_packages: dict[bashi.ValueName, list[bashi.ValueVersion]] = {}
         for sw_name, sw_version in bashi.pkg_iter(spack_packages):
-            if sw_name == bashi.ALPAKA_ACC_GPU_CUDA_ENABLE:
+            if sw_name in (bashi.ALPAKA_ACC_GPU_CUDA_ENABLE, bashi.CMAKE):
                 bashi.SpackBuilder._dict_add_unique_list_entry(sw_name, sw_version, allowed_spack_packages)
         spack_builder.get_build_cache_packages().missing_packages[ubuntu] = allowed_spack_packages
 
@@ -248,14 +282,18 @@ def main() -> None:
     # applied on the different pipelines.
     # By the way, it also automatically sort the jobs by pipeline.
     if not args.split_pipeline:
-        alpaka_bashi.write_single_file_job_configuration(pipelines, spack_builder, args, sys.stdout)
+        alpaka_bashi.write_single_file_job_configuration(
+            pipelines, spack_builder, spack_package_repository_sha, args, sys.stdout
+        )
     else:
         wave_sizes = {
             CI_PIPELINE_COMPILE_ONLY_VER: alpaka_bashi.WaveSize(30, 2),
             CI_PIPELINE_RUNTIME_CPU_VER: alpaka_bashi.WaveSize(30, 2),
         }
 
-        alpaka_bashi.write_multiple_file_job_configuration(pipelines, spack_builder, wave_sizes, args)
+        alpaka_bashi.write_multiple_file_job_configuration(
+            pipelines, spack_builder, spack_package_repository_sha, wave_sizes, args
+        )
 
     sys.exit(0)
 
