@@ -79,7 +79,7 @@ namespace alpaka::onAcc::warp::internal
         };
     };
 
-    /** Return the number of threads in the current thread within its warp. */
+    /** Return the number of lanes within the warp of the current thread, at most warp::getSize(). */
     constexpr uint32_t getNumActiveLanes(alpaka::onAcc::concepts::Acc auto const& acc)
     {
         using Acc = ALPAKA_TYPEOF(acc);
@@ -121,7 +121,7 @@ namespace alpaka::onAcc::warp::internal
         };
     };
 
-    /** Return the warp index within the block. */
+    /** Return the number of warps within the block. */
     constexpr uint32_t getNumWarps(alpaka::onAcc::concepts::Acc auto const& acc)
     {
         using Acc = ALPAKA_TYPEOF(acc);

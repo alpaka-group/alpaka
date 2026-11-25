@@ -127,6 +127,9 @@ TEMPLATE_LIST_TEST_CASE("warp shflDown shifts toward higher lanes", "[warp][shfl
 
     onHost::memset(queue, successDev, static_cast<std::uint8_t>(true));
     queue.enqueue(onHost::FrameSpec{blocks, threads, exec}, KernelBundle{ShflDownMultiThreadKernel{}, successDev});
+    queue.enqueue(
+        onHost::FrameSpec{Vec{5u, 3u}, Vec{4u, warpExtent}, exec},
+        KernelBundle{ShflDownMultiThreadKernel{}, successDev});
     onHost::memcpy(queue, successHost, successDev);
     onHost::wait(queue);
     CHECK(successHost[0]);
