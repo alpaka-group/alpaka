@@ -246,6 +246,9 @@ def get_spack_build_jobs(
         if stage_name:
             job["stage"] = stage_name
         job["image"] = bashi.get_spack_build_image_name(ubuntu_ver, ALPAKA_CONTAINER_VERSION)
+        # The resource group guaranties, that only one spack job is executed in the whole project at the same time.
+        # Solves the problem, that simulations build cache index updates causes HTTP-to-many-requests errors.
+        job["resource_group"] = "spack-build"
         job["script"] = bashi.get_spack_build_script(
             ubuntu_ver, sw_name, sw_version, spack_builder.spack_packages, spack_package_repository_sha
         )
