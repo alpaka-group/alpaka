@@ -101,7 +101,7 @@ cd build/
 
 "${ALPAKA_CI_CMAKE_EXECUTABLE}" --log-level=VERBOSE -G "${ALPAKA_CI_CMAKE_GENERATOR}" ${ALPAKA_CI_CMAKE_GENERATOR_PLATFORM}\
     -Dalpaka_BUILD_EXAMPLES=ON -DBUILD_TESTING=ON -Dalpaka_BUILD_BENCHMARKS=ON $(env2cmake alpaka_ENABLE_WERROR) \
-    ${_BOOST_CONFIG[@]} \
+    ${_BOOST_CONFIG[@]+"${_BOOST_CONFIG[@]}"} \
     $(env2cmake CMAKE_BUILD_TYPE) "$(env2cmake CMAKE_CXX_FLAGS)" $(env2cmake CMAKE_CXX_COMPILER) "$(env2cmake CMAKE_EXE_LINKER_FLAGS)" $(env2cmake CMAKE_CXX_EXTENSIONS)\
     $(env2cmake alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE) $(env2cmake alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE) \
     $(env2cmake alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE) \

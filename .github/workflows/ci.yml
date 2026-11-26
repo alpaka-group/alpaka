@@ -22,7 +22,7 @@ concurrency:
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_CI_CMAKE_VER                           : {3.25.1, 3.25.3, 3.26.4}
-# ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
+# ALPAKA_CI_XCODE_VER                           : {16.1, 16.4}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
 # ALPAKA_CI_ANALYSIS                            : {ON, OFF}
@@ -114,21 +114,21 @@ jobs:
         - name: windows_cl-2022_debug_analysis
           os: windows-2022
           env: {ALPAKA_CI_CXX: cl.exe,  ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_CMAKE_VER: 3.25.3,                          ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2}
-        - name: macos_xcode-15.4_debug_analysis
-          os: macos-14
-          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 15.4,                                CMAKE_BUILD_TYPE: Debug,                                                         ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                                             alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+        - name: macos_xcode-16.4_debug_analysis
+          os: macos-15
+          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 16.4,                                CMAKE_BUILD_TYPE: Debug,                                                         ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                                             alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
         - name: linux_gcc-12_debug_analysis
           os: ubuntu-22.04
           env: {ALPAKA_CI_CXX: g++,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_CMAKE_VER: 3.25.3, OMP_NUM_THREADS: 4, ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2}
           container: ubuntu:22.04
 
-        ### macOS
-        - name: macos_xcode-15.4_release
-          os: macos-14
-          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 15.4,                                CMAKE_BUILD_TYPE: Release,                                                                                                                                                                                                                                                                        alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+          ### macOS
         - name: macos_xcode-16.1_debug
           os: macos-15
           env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 16.1,                                CMAKE_BUILD_TYPE: Debug,                                                                                                                                                                                                                                                                          alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+        - name: macos_xcode-16.4_release
+          os: macos-15
+          env: {ALPAKA_CI_CXX: clang++, ALPAKA_CI_XCODE_VER: 16.4,                                CMAKE_BUILD_TYPE: Release,                                                                                                                                                                                                                                                                        alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
 
         ### Windows
         - name: windows_cl-2022_release
