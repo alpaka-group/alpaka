@@ -19,8 +19,10 @@ struct IotaKernelND
         constexpr uint32_t warpSize = onAcc::warp::getSize<ALPAKA_TYPEOF(acc)>();
         concepts::Vector auto numThreadsPerBlock = acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads);
         // test using some of the predefined warp worker and range types
-        for(auto bOffset :
-            onAcc::makeIdxMap(acc, onAcc::worker::linearBlocksInGrid, IdxRange{Vec{0u}, outSize, numThreadsPerBlock}))
+        for(auto bOffset : onAcc::makeIdxMap(
+                acc,
+                onAcc::worker::linearBlocksInGrid,
+                IdxRange{Vec{0u}, outSize, Vec{numThreadsPerBlock.product()}}))
             for(auto w : onAcc::makeIdxMap(acc, onAcc::worker::linearWarpsInBlock, onAcc::range::linearWarpsInBlock))
             {
                 for(auto t :
@@ -60,6 +62,15 @@ TEMPLATE_LIST_TEST_CASE("warp iota1D", "", TestApis)
     auto frameSize = Vec{warpSize + 3u};
     onHost::fill(queue, dBuff, Vec{0u});
     queue.enqueue(onHost::FrameSpec{extent / frameSize, frameSize, exec}, KernelBundle{IotaKernelND{}, dBuff, extent});
+    onHost::memcpy(queue, hBuff, dBuff);
+    onHost::wait(queue);
+    meta::ndLoopIncIdx(extent, [&](auto idx) { CHECK(idx == hBuff[idx]); });
+
+    // MD blocks of full warps
+    onHost::fill(queue, dBuff, Vec{0u});
+    queue.enqueue(
+        onHost::FrameSpec{Vec{5u, 3u}, Vec{3u, warpSize}, exec},
+        KernelBundle{IotaKernelND{}, dBuff, extent});
     onHost::memcpy(queue, hBuff, dBuff);
     onHost::wait(queue);
     meta::ndLoopIncIdx(extent, [&](auto idx) { CHECK(idx == hBuff[idx]); });

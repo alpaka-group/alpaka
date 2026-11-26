@@ -52,6 +52,17 @@ namespace alpaka::onAcc::warp::internal
     };
 
     template<alpaka::onAcc::concepts::Acc T_Acc>
+    struct GetNumActiveLanes::Op<T_Acc, api::OneApi>
+    {
+        constexpr auto operator()(T_Acc const&, api::OneApi) const
+        {
+            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
+            // can be less than the warp size
+            return sg.get_local_linear_range();
+        }
+    };
+
+    template<alpaka::onAcc::concepts::Acc T_Acc>
     struct GetWarpIdx::Op<T_Acc, api::OneApi>
     {
         constexpr auto operator()(T_Acc const&, api::OneApi) const
@@ -59,6 +70,17 @@ namespace alpaka::onAcc::warp::internal
             sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
             // lane id within the warp subgroup
             return sg.get_group_linear_id();
+        }
+    };
+
+    template<alpaka::onAcc::concepts::Acc T_Acc>
+    struct GetNumWarps::Op<T_Acc, api::OneApi>
+    {
+        constexpr auto operator()(T_Acc const&, api::OneApi) const
+        {
+            sycl::sub_group sg = sycl::ext::oneapi::this_work_item::get_sub_group();
+            // number of warps within a block
+            return sg.get_group_linear_range();
         }
     };
 

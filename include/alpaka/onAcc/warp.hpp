@@ -43,10 +43,29 @@ namespace alpaka::onAcc::warp
         return internal::getLaneIdx(acc);
     }
 
+    /** Return number of lanes within the warp
+     *
+     * This is **not** the warp size, it is the number of threads in the current warp.
+     * Do **not** assume all warps have the same number of active lanes, else you would miss edge cases like the
+     * remainder warp or implementation behaviors e.g. of Sycl.
+     * This function is not equal to activemask() which return different masks in branches.
+     * It is safe to call this method from within diverging thread branches.
+     */
+    constexpr uint32_t getNumActiveLanes(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumActiveLanes(acc);
+    }
+
     /** Return the warp index within the block. */
     constexpr uint32_t getWarpIdx(alpaka::onAcc::concepts::Acc auto const& acc)
     {
         return internal::getWarpIdx(acc);
+    }
+
+    /** Return the number of warps within the block. */
+    constexpr uint32_t getNumWarps(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumWarps(acc);
     }
 
     /** Evaluates predicate for all active threads of the warp
