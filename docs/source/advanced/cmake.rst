@@ -158,6 +158,14 @@ Arguments
      - `STDSIMD`   - enforce that the CXX compiler supports `std::simd`, if not CMake will fail
      - `EMULATION` - disable the usage of `std::simd` even if supported by the CXX compiler
 
+``alpaka_CPU_SIMD_BITS``
+  .. code-block:: markdown
+
+     Define the SIMD vector width of the CPU architecture in unit of bits.
+     If set to ``0`` (default) alpaka is auto detecting the SIMD width.
+
+     **without CMake:** Define the preprocessor define `ALPAKA_CPU_SIMD_BITS` to set the SIMD vector width.
+
 ``alpaka_LANGUAGE_SEPARATION``
   .. code-block:: markdown
 
