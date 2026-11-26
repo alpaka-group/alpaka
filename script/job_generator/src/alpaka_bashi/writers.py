@@ -65,7 +65,10 @@ def write_single_file_job_configuration(
     # The spack packages needs to be available before the test jobs are started.
     single_file_stages = []
 
-    if spack_builder.get_build_cache_packages().missing_packages:
+    number_of_spack_packages = 0
+    for packages in spack_builder.get_build_cache_packages().missing_packages.values():
+        number_of_spack_packages += len(packages)
+    if number_of_spack_packages > 0:
         single_file_stages.append(CI_PIPELINE_SPACK)
         jobs |= get_spack_build_jobs(spack_builder, spack_package_repository_sha, CI_PIPELINE_SPACK)
 
