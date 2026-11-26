@@ -81,7 +81,7 @@ namespace alpaka::onHost
             T_Type* data,
             T_UserExtents const& extents,
             T_UserPitches const& pitches,
-            std::invocable<> auto deleter,
+            std::invocable<> auto const& deleter,
             T_MemAlignment const memAlignment = Alignment{})
             : BaseView{any, data, extents, pitches, memAlignment}
             , m_deleter{std::make_shared<internal::ManagedDealloc>(deleter)}

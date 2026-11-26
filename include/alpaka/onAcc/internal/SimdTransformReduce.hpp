@@ -24,10 +24,13 @@ namespace alpaka::onAcc::internal
 {
 
     /** concurrent reduce implementation */
-    template<typename T_Parent>
+    template<typename T_Derived>
     struct SimdTransformReduce
     {
+    private:
+        // only the derived class T_Derived may create the base
         constexpr SimdTransformReduce() = default;
+        friend T_Derived;
 
     protected:
         template<uint32_t T_maxConcurrencyInByte, alpaka::concepts::Alignment T_MemAlignment = AutoAligned>
@@ -44,7 +47,7 @@ namespace alpaka::onAcc::internal
             using ValueType = alpaka::GetValueType_t<ALPAKA_TYPEOF(data0)>;
             decltype(auto) transformFunc = wrapTransformFunc(ALPAKA_FORWARD(func));
 
-            constexpr auto simdCfg = T_Parent::template calcSimdPackConfig<ValueType>(
+            constexpr auto simdCfg = T_Derived::template calcSimdPackConfig<ValueType>(
                 ALPAKA_TYPEOF(acc.getApi()){},
                 ALPAKA_TYPEOF(acc.getDeviceKind()){},
                 T_maxConcurrencyInByte);
@@ -64,14 +67,14 @@ namespace alpaka::onAcc::internal
                     ALPAKA_FORWARD(dataN)...);
             }
 
-            auto const workGroup = asParent().getWorkGroup();
+            auto const workGroup = asDerived().getWorkGroup();
             // execute the algorithm with SIMD width one
             auto traverse = onAcc::makeIdxMap(
                 acc,
                 workGroup,
                 IdxRange{numElements},
-                asParent().getTraversePolicy(),
-                asParent().getIdxLayoutPolicy());
+                asDerived().getTraversePolicy(),
+                asDerived().getIdxLayoutPolicy());
 
             using SimdOneReturnType = ALPAKA_TYPEOF(makeSimdized<1u>(neutralElement));
             SimdOneReturnType simdizedReducedValue = makeSimdized<1u>(neutralElement);
@@ -104,7 +107,7 @@ namespace alpaka::onAcc::internal
             auto&& func,
             auto&&... data)
         {
-            return Simd{op(CVec<uint32_t, T_idx>{}, acc, ALPAKA_FORWARD(func), ALPAKA_FORWARD(data)...)...};
+            return Simd{op(CVec<uint32_t, T_idx>{}, acc, func, data...)...};
         }
 
         ALPAKA_FN_INLINE ALPAKA_FN_ACC static constexpr decltype(auto) wrapTransformFunc(auto&& transformFunc)
@@ -166,6 +169,7 @@ namespace alpaka::onAcc::internal
             std::integer_sequence<uint32_t, T_repeat...>)
         {
             // The ternary operator is used to allow using the folding expression on iter.
+            // NOLINTNEXTLINE(bugprone-branch-clone)
             return std::make_tuple(*(T_repeat + 1 != 0u ? iter++ : iter++)...);
         }
 
@@ -332,7 +336,7 @@ namespace alpaka::onAcc::internal
                 auto&& func,
                 auto&&... data)
             {
-                return Simd{op(CVec<uint32_t, T_idx>{}, acc, ALPAKA_FORWARD(func), ALPAKA_FORWARD(data)...)...};
+                return Simd{op(CVec<uint32_t, T_idx>{}, acc, func, data...)...};
             }
         };
 
@@ -352,9 +356,9 @@ namespace alpaka::onAcc::internal
             return ScalarReducer<ALPAKA_TYPEOF(acc), ALPAKA_TYPEOF(reduceOp)>{acc, reduceOp};
         }
 
-        constexpr auto const& asParent() const
+        constexpr auto const& asDerived() const
         {
-            return static_cast<T_Parent const&>(*this);
+            return static_cast<T_Derived const&>(*this);
         }
 
         template<uint32_t T_simdWidth, uint32_t T_numSimdPerFnCall, alpaka::concepts::Alignment T_MemAlignment>
@@ -369,7 +373,7 @@ namespace alpaka::onAcc::internal
         {
             auto reduceFunc = getReducer(acc, userReduceFunc);
 
-            auto const workGroup = asParent().getWorkGroup();
+            auto const workGroup = asDerived().getWorkGroup();
 
             // we SIMDfy only over the fast moving dimension (columns of memory)
             auto const wSize = workGroup.getThreadCount(acc).back();
@@ -393,14 +397,15 @@ namespace alpaka::onAcc::internal
                 acc,
                 workGroup,
                 IdxRange{IdxType::fill(0), domainSize, stride},
-                asParent().getTraversePolicy(),
-                asParent().getIdxLayoutPolicy());
+                asDerived().getTraversePolicy(),
+                asDerived().getIdxLayoutPolicy());
 
             using SimdReturn = ALPAKA_TYPEOF(makeSimdized<T_simdWidth>(neutralElement));
             SimdReturn simdizedReducedValue = makeSimdized<T_simdWidth>(neutralElement);
 
             if constexpr(
-                domainSize.dim() > 1u && std::is_same_v<ALPAKA_TYPEOF(asParent().getTraversePolicy()), traverse::Flat>)
+                domainSize.dim() > 1u
+                && std::is_same_v<ALPAKA_TYPEOF(asDerived().getTraversePolicy()), traverse::Flat>)
             {
                 /* For cases where we traverse with the flat policy, we cannot assume that we can blindly increase the
                  * iterator later N times. This could happen in cases where we have enough concurrency. We evaluate for
@@ -421,8 +426,8 @@ namespace alpaka::onAcc::internal
                         acc,
                         wOuter,
                         IdxRange{domSize},
-                        asParent().getTraversePolicy(),
-                        asParent().getIdxLayoutPolicy()))
+                        asDerived().getTraversePolicy(),
+                        asDerived().getIdxLayoutPolicy()))
                 {
                     // build a worker group with fast-moving dimension threads for the inner loop
                     auto wIdxInner = ALPAKA_TYPEOF(domainSize)::fill(0).rAssign(workGroup.getThreadIdx(acc).back());
@@ -434,8 +439,8 @@ namespace alpaka::onAcc::internal
                         acc,
                         wInner,
                         IdxRange{rowIdx, domainSize, stride},
-                        asParent().getTraversePolicy(),
-                        asParent().getIdxLayoutPolicy())[CVec<uint32_t, ALPAKA_TYPEOF(domainSize)::dim() - 1u>{}];
+                        asDerived().getTraversePolicy(),
+                        asDerived().getIdxLayoutPolicy())[CVec<uint32_t, ALPAKA_TYPEOF(domainSize)::dim() - 1u>{}];
 
                     for(auto iter = simdIdxContainerFastDim.begin(); iter != simdIdxContainerFastDim.end();)
                     {
@@ -443,10 +448,10 @@ namespace alpaka::onAcc::internal
                             acc,
                             iter,
                             simdizedReducedValue,
-                            ALPAKA_FORWARD(reduceFunc),
-                            ALPAKA_FORWARD(func),
-                            ALPAKA_FORWARD(data0),
-                            ALPAKA_FORWARD(dataN)...);
+                            reduceFunc,
+                            func,
+                            data0,
+                            dataN...);
                     }
                 }
             }
@@ -458,10 +463,10 @@ namespace alpaka::onAcc::internal
                         acc,
                         iter,
                         simdizedReducedValue,
-                        ALPAKA_FORWARD(reduceFunc),
-                        ALPAKA_FORWARD(func),
-                        ALPAKA_FORWARD(data0),
-                        ALPAKA_FORWARD(dataN)...);
+                        reduceFunc,
+                        func,
+                        data0,
+                        dataN...);
                 }
             }
 
@@ -471,8 +476,8 @@ namespace alpaka::onAcc::internal
                     acc,
                     workGroup,
                     IdxRange{remainderDomainSize, numElements},
-                    asParent().getTraversePolicy(),
-                    asParent().getIdxLayoutPolicy()))
+                    asDerived().getTraversePolicy(),
+                    asDerived().getIdxLayoutPolicy()))
             {
                 auto transformResult = callFunctor(
                     acc,
