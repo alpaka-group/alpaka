@@ -36,9 +36,6 @@ generate:
       fi
     - python3 -m venv /tmp/env
     - source /tmp/env/bin/activate
-    # TODO: Remove me before merge
-    - git clone --depth=1 https://github.com/SimeonEhrig/bashi.git -b spack /bashi
-    - pip3 install /bashi
     - pip3 install script/job_generator
     - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
       --split-pipeline
