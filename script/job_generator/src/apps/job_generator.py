@@ -203,6 +203,8 @@ def print_spack_info(spack_builder: bashi.SpackBuilder):
                 print(termcolor.colored(f"  {get_spack_alias()[pkg_name].package_name}@{pkg_version}", "red"))
 
 
+# pylint: disable=too-many-locals
+# pylint: disable=too-many-branches
 def main() -> None:
     """The main entry point."""
     args = get_args()
@@ -273,6 +275,7 @@ def main() -> None:
         allowed_spack_packages: dict[bashi.ValueName, list[bashi.ValueVersion]] = {}
         for sw_name, sw_version in bashi.pkg_iter(spack_packages):
             if sw_name in (bashi.ALPAKA_ACC_GPU_CUDA_ENABLE, bashi.CMAKE, bashi.GCC, bashi.CLANG):
+                # pylint: disable=protected-access
                 bashi.SpackBuilder._dict_add_unique_list_entry(sw_name, sw_version, allowed_spack_packages)
         spack_builder.get_build_cache_packages().missing_packages[ubuntu] = allowed_spack_packages
 
