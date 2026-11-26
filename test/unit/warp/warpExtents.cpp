@@ -114,7 +114,7 @@ namespace
         }
     };
 
-    template<typename TKernel>
+    template<typename T_Kernel>
     bool runLinearExtentsTest(auto const& deviceExec, Vec<uint32_t, 1u> blocks, Vec<uint32_t, 1u> threads)
     {
         onHost::Device device = test::getDevice(deviceExec);
@@ -129,7 +129,7 @@ namespace
         auto const threadsPerBlock = isSeqExecutor(exec) ? threads.fill(1u) : threads;
         queue.enqueue(
             onHost::ThreadSpec{blocks, threadsPerBlock, exec},
-            KernelBundle{TKernel{}, successDev, blocks[0u]});
+            KernelBundle{T_Kernel{}, successDev, blocks[0u]});
 
         onHost::memcpy(queue, successHost, successDev);
         onHost::wait(queue);
