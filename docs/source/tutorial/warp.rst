@@ -43,6 +43,7 @@ Important rules:
 - ``onAcc::warp::shflXor`` ``xor`` the read value from a lane with its own
 - ``onAcc::warp::all`` and ``onAcc::warp::any`` for voting between participating warp threads
 - ``onAcc::warp::ballot`` for predicate masks
+- ``onAcc::warp::reduce`` to reduce a value over the lanes of a warp (or of groups of ``width`` lanes); every lane of the group gets the result
 
 Complete Source File
 --------------------
