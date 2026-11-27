@@ -36,6 +36,22 @@ namespace alpaka
 #endif
     }
 
+    /** True only while compiling device code for an NVIDIA or AMD GPU.
+     *
+     * Covers native CUDA/HIP and oneAPI/SYCL kernels lowered to those devices. The host pass of those builds and
+     * every other target return false.
+     */
+    constexpr bool isNvidiaOrAmdDeviceCode()
+    {
+#if ALPAKA_ARCH_PTX || ALPAKA_ARCH_AMD
+        return true;
+#elif defined(__SYCL_DEVICE_ONLY__) && (defined(__NVPTX__) || defined(__AMDGCN__))
+        return true;
+#else
+        return false;
+#endif
+    }
+
     namespace onHost
     {
         constexpr auto apis = std::make_tuple(api::host, api::cuda, api::hip, api::oneApi);
