@@ -183,6 +183,18 @@ Wait for the event (and all operations put to the same queue before it)
     :end-before: END-CHEATSHEET-waitEvent
     :dedent:
 
+Initialize from native handles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Adopt an existing vendor device and stream/queue. The native stream/queue must be asynchronous.
+  The alpaka queue may be ``queueKind::nonBlocking`` or ``queueKind::blocking``.
+
+  .. code-block:: c++
+
+     auto sel = onHost::makeDeviceSelector(api::cuda, deviceKind::nvidiaGpu);
+     onHost::Device dev = sel.linkDevice(nativeDevice, true);
+     onHost::Queue q = dev.linkQueue(queueKind::nonBlocking, nativeQueue, false);
+     // queueKind::blocking is also supported; alpaka then synchronizes after each enqueue
+
 Memory
 ------
 

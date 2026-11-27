@@ -109,12 +109,81 @@ namespace alpaka::onHost
                 return newDevice;
             }
 
+            /** Create a device from a user provided native device handle.
+             *
+             * The native handle is not owned by alpaka and will never be destroyed.
+             */
+            Handle<unifiedCudaHip::Device<Platform>> linkDevice(uint32_t const& nativeHandle, bool syncBeforeDestroy)
+            {
+                ALPAKA_LOG_FUNCTION(alpaka::onHost::logger::device);
+                uint32_t const numDevices = getDeviceCount();
+                if(nativeHandle >= numDevices)
+                {
+                    std::stringstream ssErr;
+                    ssErr << "Unable to return device handle for GPU (" << T_DeviceKind{}.getName()
+                          << ") device with index " << nativeHandle << " because there are only " << numDevices
+                          << " devices!";
+                    throw std::runtime_error(ssErr.str());
+                }
+                std::lock_guard<std::mutex> lk{deviceGuard};
+
+                if(auto sharedPtr = devices[nativeHandle].lock())
+                {
+                    if(sharedPtr->m_manageDevice)
+                    {
+                        std::stringstream ssErr;
+                        ssErr << "Device with index " << nativeHandle << " is managed by alpaka and cannot be linked.";
+                        throw std::runtime_error(ssErr.str());
+                    }
+                    if(sharedPtr->m_syncBeforeDestroy != syncBeforeDestroy)
+                    {
+                        std::stringstream ssErr;
+                        ssErr << "Device with index " << nativeHandle
+                              << " is already linked with a different syncBeforeDestroy setting.";
+                        throw std::runtime_error(ssErr.str());
+                    }
+                    return sharedPtr;
+                }
+                auto thisHandle = getSharedPtr();
+                auto newDevice = std::make_shared<unifiedCudaHip::Device<Platform>>(
+                    std::move(thisHandle),
+                    nativeHandle,
+                    syncBeforeDestroy);
+                devices[nativeHandle] = newDevice;
+                return newDevice;
+            }
+
             friend struct internal::GetDeviceProperties;
         };
     } // namespace unifiedCudaHip
 
     namespace internal
     {
+        template<typename T_ApiInterface, alpaka::concepts::DeviceKind T_DeviceKind>
+        struct MakeDevice::Unlink<unifiedCudaHip::Platform<T_ApiInterface, T_DeviceKind>>
+        {
+            void operator()(unifiedCudaHip::Platform<T_ApiInterface, T_DeviceKind>& platform, uint32_t nativeHandle)
+                const
+            {
+                ALPAKA_LOG_FUNCTION(alpaka::onHost::logger::device);
+                std::lock_guard<std::mutex> lk{platform.deviceGuard};
+
+                if(nativeHandle >= platform.devices.size())
+                    throw std::runtime_error(
+                        std::string("Try to unlink unknown device with id '") + std::to_string(nativeHandle) + "'");
+                auto sharedPtr = platform.devices[nativeHandle].lock();
+                if(!sharedPtr)
+                    throw std::runtime_error(
+                        std::string("Try to unlink unknown device with id '") + std::to_string(nativeHandle) + "'");
+                if(sharedPtr->m_manageDevice)
+                    throw std::runtime_error(
+                        std::string("Unlinking an alpaka managed device with id '") + std::to_string(nativeHandle)
+                        + "' is not allowed.");
+
+                platform.devices[nativeHandle].reset();
+            }
+        };
+
         template<typename T_ApiInterface, alpaka::concepts::DeviceKind T_DeviceKind>
         struct GetDeviceProperties::Op<unifiedCudaHip::Platform<T_ApiInterface, T_DeviceKind>>
         {

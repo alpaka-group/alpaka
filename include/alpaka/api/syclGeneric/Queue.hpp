@@ -192,6 +192,30 @@ namespace alpaka::onHost
                 ALPAKA_LOG_FUNCTION(onHost::logger::queue);
             }
 
+            /** Create a queue from a user provided native sycl queue.
+             *
+             * The native queue is not owned by alpaka and will never be destroyed or reset.
+             */
+            Queue(
+                internal::concepts::DeviceHandle auto device,
+                uint32_t const idx,
+                alpaka::concepts::QueuePolicyList auto const& policies,
+                sycl::queue const& queue,
+                bool syncBeforeDestroy)
+                : m_device(std::move(device))
+                , m_SharedNativeQueue{std::make_shared<NativeQueue>(queue, syncBeforeDestroy)}
+                , m_sharedCallbackThread{std::make_shared<alpaka::core::CallbackThread>()}
+                , m_idx(idx)
+                , m_isBlocking(internal::isBlocking(policies.getQueueKind()))
+            {
+                ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+                if(!queue.has_property<sycl::property::queue::in_order>())
+                {
+                    throw std::runtime_error(
+                        std::string("Only queues with property 'sycl::property::queue::in_order' are supported"));
+                }
+            }
+
             [[nodiscard]] bool isBlocking() const noexcept
             {
                 return m_isBlocking;
@@ -329,9 +353,22 @@ namespace alpaka::onHost
                     ALPAKA_LOG_FUNCTION(onHost::logger::queue);
                 }
 
+                /** Adopt a user provided native sycl queue.
+                 *
+                 * The native queue is not owned by alpaka, therefore it is never destroyed or reset.
+                 */
+                NativeQueue(sycl::queue const& queue, bool syncBeforeDestroy)
+                    : m_queue(queue)
+                    , m_syncBeforeDestroy(syncBeforeDestroy)
+                {
+                    ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+                }
+
                 ~NativeQueue()
                 {
                     ALPAKA_LOG_FUNCTION(onHost::logger::queue);
+                    if(!m_syncBeforeDestroy)
+                        return;
                     try
                     {
                         m_queue.wait_and_throw();
@@ -371,6 +408,8 @@ namespace alpaka::onHost
                 }
 
                 sycl::queue m_queue;
+                // if true the queue is waited for before the last handle is destroyed
+                bool m_syncBeforeDestroy = true;
 
             private:
                 /** Event which is representing the last enqueued task/action by alpaka

@@ -64,6 +64,39 @@ namespace alpaka::onHost
             return Device{internal::MakeDevice::Op<ALPAKA_TYPEOF(*m_platform.get())>{}(*m_platform.get(), idx)};
         }
 
+        /** Create a device from a user provided native handle.
+         *
+         * The native handle is owned by the user, alpaka will never destroy it.
+         *
+         * @param nativeHandle api native device handle
+         * @param syncBeforeDestroy if true alpaka synchronizes the native device before the last handle is released
+         * @return @see onHost::Device
+         */
+        auto linkDevice(auto&& nativeHandle, bool syncBeforeDestroy = true)
+            requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            return Device{internal::MakeDevice::Link<ALPAKA_TYPEOF(*m_platform.get())>{}(
+                *m_platform.get(),
+                ALPAKA_FORWARD(nativeHandle),
+                syncBeforeDestroy)};
+        }
+
+        /** Remove a device which was previously linked from a native handle.
+         *
+         * Unlinking an alpaka managed device is not allowed.
+         * The is not destructed, it is only updates alpaka's internal bookkeeping.
+         * All alpaka handles stay valid, the caller is responsible that the native handle stays valid until all alpaka
+         * operations are fully processed.
+         *
+         * @param nativeHandle api native device handle
+         */
+        void unlinkDevice(auto&& nativeHandle) requires(!std::same_as<T_Api, alpaka::api::Host>)
+        {
+            internal::MakeDevice::Unlink<ALPAKA_TYPEOF(*m_platform.get())>{}(
+                *m_platform.get(),
+                ALPAKA_FORWARD(nativeHandle));
+        }
+
     private:
         ALPAKA_TYPEOF(internal::makePlatform(T_Api{}, T_DeviceKind{})) m_platform;
         DeviceSpec<T_Api, T_DeviceKind> m_deviceSpec;
