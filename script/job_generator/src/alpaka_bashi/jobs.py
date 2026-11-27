@@ -14,14 +14,14 @@ import packaging.version
 from bashi.globals import CLANG, GCC
 from typeguard import typechecked
 
-from alpaka_bashi.ci_yaml.names import get_job_name
+from alpaka_bashi.ci_yaml.names import get_job_name, get_spack_build_job_name
 from alpaka_bashi.globals import CI_PIPELINE_NAME, get_version_aliases
 from alpaka_bashi.jobs_builder.clang_tidy import get_clang_tidy_job
 from alpaka_bashi.jobs_builder.default import construct_job_yaml
 from alpaka_bashi.jobs_builder.dummy import get_dummy_job
 from alpaka_bashi.jobs_builder.emulated_simd import get_emulated_simd_job
 from alpaka_bashi.jobs_builder.sanitizer import SanitizerType, get_sanitizer_job
-from alpaka_bashi.versions import get_used_compiler_versions
+from alpaka_bashi.versions import ALPAKA_CONTAINER_VERSION, get_used_compiler_versions
 
 
 @dataclass
@@ -211,3 +211,47 @@ def get_dummy_job_yaml(stage_name: str = "") -> dict[str, Any]:
     if stage_name != "":
         dummy_job["dummy-job"]["stage"] = stage_name
     return dummy_job
+
+
+def get_spack_build_jobs(
+    spack_builder: bashi.SpackBuilder, spack_package_repository_sha: str, stage_name: str
+) -> dict[str, Any]:
+    """
+    Generate from the given SpackBuilder all spack package build jobs.
+
+    Args:
+        spack_builder (bashi.SpackBuilder): SpackBuilder which contains all required spack packages to be build.
+        spack_package_repository_sha (str): Set spack package repository sha, which should be
+            used for the jobs. If empty, do not update repository.
+        stage_name (str): Set optional stage name. If string is empty, set no stage.
+
+    Returns:
+        dict[str, Any]: Return the dict representation of the GitLab CI code of all generated
+            spack package build jobs. If stage is not empty, contains also the stage section.
+    """
+    jobs: dict[str, Any] = {}
+    num_missing_packages = 0
+
+    # iterate over all Ubuntu versions and count missing packages
+    for packages in spack_builder.get_build_cache_packages().missing_packages.values():
+        num_missing_packages += len(packages)
+
+    if num_missing_packages > 0 and stage_name != "":
+        jobs["stages"] = [stage_name]
+
+    for ubuntu_ver, sw_name, sw_version in bashi.os_pkg_iter(spack_builder.get_build_cache_packages().missing_packages):
+        job_name = get_spack_build_job_name(ubuntu_ver, sw_name, sw_version)
+        jobs[job_name] = {}
+        job = jobs[job_name]
+        if stage_name:
+            job["stage"] = stage_name
+        job["image"] = bashi.get_spack_build_image_name(ubuntu_ver, ALPAKA_CONTAINER_VERSION)
+        # The resource group guaranties, that only one spack job is executed in the whole project at the same time.
+        # Solves the problem, that simulations build cache index updates causes HTTP-to-many-requests errors.
+        job["resource_group"] = "spack-build"
+        job["script"] = bashi.get_spack_build_script(
+            ubuntu_ver, sw_name, sw_version, spack_builder.spack_packages, spack_package_repository_sha
+        )
+        job["tags"] = ["x86_64", "cpuonly"]
+
+    return jobs

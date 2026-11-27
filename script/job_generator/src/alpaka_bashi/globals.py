@@ -53,12 +53,15 @@ CI_PIPELINE_RUNTIME_GPU: str = "runtime_job_gpu"
 CI_PIPELINE_RUNTIME_GPU_VER: bashi.ValueVersion = packaging.version.parse("2")
 CI_PIPELINE_SPECIAL: str = "special_job"
 CI_PIPELINE_SPECIAL_VER: bashi.ValueVersion = packaging.version.parse("3")
+CI_PIPELINE_SPACK: str = "spack_build"
+CI_PIPELINE_SPACK_VER: bashi.ValueVersion = packaging.version.parse("4")
 
 CI_PIPELINE_NAME_MAPPING: dict[str, bashi.ValueVersion] = {
     CI_PIPELINE_COMPILE_ONLY: CI_PIPELINE_COMPILE_ONLY_VER,
     CI_PIPELINE_RUNTIME_CPU: CI_PIPELINE_RUNTIME_CPU_VER,
     CI_PIPELINE_RUNTIME_GPU: CI_PIPELINE_RUNTIME_GPU_VER,
     CI_PIPELINE_SPECIAL: CI_PIPELINE_SPECIAL_VER,
+    CI_PIPELINE_SPACK: CI_PIPELINE_SPACK_VER,
 }
 
 

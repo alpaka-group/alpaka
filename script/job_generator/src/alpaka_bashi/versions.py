@@ -36,6 +36,13 @@ from bashi.version.dependencies.nvcc import NVCC_CLANG_MAX_VERSION, NVCC_GCC_MAX
 
 from alpaka_bashi.globals import BUILD_TYPE, BUILD_TYPES, HWLOC
 
+# TODO: remove the comment
+# Since the transition from alpaka-group-container to spack build cache is not finished, we use to
+# container versions. The container versions of the alpaka-group-container is passed as
+# command-line argument.
+# version of the CI spack base container
+ALPAKA_CONTAINER_VERSION: str = "1.2"
+
 ALPAKA_VERSIONS: dict[str, list[str | int | float]] = {
     GCC: [12, 13, 14, 15, 16],
     CLANG: [17, 18, 19, 20, 21, 22, 23],
@@ -48,6 +55,11 @@ ALPAKA_VERSIONS: dict[str, list[str | int | float]] = {
     BUILD_TYPE: BUILD_TYPES,
     HWLOC: [ON, OFF],
 }
+
+# this value-versions are only enable or disabled in a combination
+# specify a spack package version, which should be used for an enabled value-version
+ALPAKA_SPACK_HWLOC_VERSION: bashi.ValueVersion = bashi.ValueVersion("2.13")
+ALPAKA_SPACK_TBB_VERSION: bashi.ValueVersion = bashi.ValueVersion("2023.1")
 
 
 def _get_clang_cuda_versions() -> list[str | int | float]:
@@ -184,3 +196,21 @@ def get_alpaka_version_relation() -> bashi.VersionRelation:
         nvcc_gcc_max_version=nvcc_gcc_max_version,
         nvcc_clang_max_version=nvcc_clang_max_version,
     )
+
+
+def get_spack_alias() -> bashi.SpackAliasDict:
+    """
+    Return a dict, which maps bashi and alpaka-bashi value-names to spack package names.
+
+    Returns:
+        Dict[ValueName, str]: Dictionary with value-name spack package name mapping.
+    """
+    return bashi.get_spack_alias() | {
+        HWLOC: bashi.SpackAlias("hwloc", lambda _: ALPAKA_SPACK_HWLOC_VERSION),
+        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: bashi.SpackAlias("intel-oneapi-tbb", lambda _: ALPAKA_SPACK_TBB_VERSION),
+        # TODO: Remove me, if spack package support for CMake is implemented.
+        # Spack updates the CMake minor versions. Therefore old patch levels cannot be installed.
+        # Therefore CMake versions are defined, which are cached in the alpaka-group-container but not available
+        # in Spack anymore. Remove patch level to install latest patch level.
+        CMAKE: bashi.SpackAlias(CMAKE, lambda v: bashi.ValueVersion(f"{v.major}.{v.minor}")),
+    }

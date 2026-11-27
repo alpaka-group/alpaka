@@ -10,30 +10,48 @@
 
 stages:
   - generator
+  - run-spack-jobs
   - run-test-jobs
 
 variables:
   # container version of the generated jobs
   ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION: "4.1"
+  # ATTENTION: if you change this version, you need to change also the variable ALPAKA_CONTAINER_VERSION
+  # in script/job_generator/src/alpaka_bashi/versions.py
+  APCI_BASE_IMAGE_VERSION: "1.2"
+  # git commit sha of the spack package builtin repository
+  ACPI_SPACK_PACKAGES_REPO_HASH: 2629bc901c4b248bbaf6967e104a04c2ff7b9955
 
 generate:
   stage: generator
   # update alpine version to use newer python version
-  image: python:3.14-alpine
+  image: registry.hzdr.de/crp/alpaka-spack-buildcache/alpaka-job-generator-ubuntu24.04:${APCI_BASE_IMAGE_VERSION}
   script:
+    - . /opt/spack/share/spack/setup-env.sh
+    - _spack_packages_repo_path=$(spack repo list | awk '$2 == "builtin" {print $NF}')
+    - _spack_packages_repo_commit_hash=$(git -C "${_spack_packages_repo_path}" rev-parse HEAD)
+    - if [[ "${ACPI_SPACK_PACKAGES_REPO_HASH}" != "${_spack_packages_repo_commit_hash}" ]]; then
+        echo -e "\e[1;33mUpdate to spack package repository to git commit hash ${_spack_packages_repo_commit_hash}\e[0m";
+        spack repo update -c "${ACPI_SPACK_PACKAGES_REPO_HASH}" builtin;
+      fi
+    - python3 -m venv /tmp/env
+    - source /tmp/env/bin/activate
     - pip3 install script/job_generator
     - job-generator ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
       --split-pipeline
+      --pipeline-out-spack_build spack.yml
       --pipeline-out-compile_only compile_only.yml
       --pipeline-out-runtime_job_cpu runtime_cpu.yml
       --pipeline-out-runtime_job_gpu runtime_gpu.yml
       --pipeline-out-special_job special.yml
+    - cat spack.yml
     - cat compile_only.yml
     - cat runtime_cpu.yml
     - cat runtime_gpu.yml
     - cat special.yml
   artifacts:
     paths:
+      - spack.yml
       - compile_only.yml
       - runtime_cpu.yml
       - runtime_gpu.yml
@@ -43,6 +61,14 @@ generate:
   tags:
   - x86_64
   - cpuonly
+
+run-spack-build-jobs:
+  stage: run-spack-jobs
+  trigger:
+    include:
+      - artifact: spack.yml
+        job: generate
+    strategy: depend
 
 run-compile-only-test:
   stage: run-test-jobs
