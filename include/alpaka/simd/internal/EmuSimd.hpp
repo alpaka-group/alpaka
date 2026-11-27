@@ -109,7 +109,10 @@ namespace alpaka
 
             constexpr void copyFrom(T_Type const* data, alpaka::concepts::Alignment auto alignment)
             {
-                if constexpr((alignment.template get<T_Type>() % alignof(ALPAKA_TYPEOF(*this))) == 0u)
+                constexpr bool isAligned = (alignment.template get<T_Type>() % alignof(ALPAKA_TYPEOF(*this))) == 0u;
+                /* Keep the aggregate copy only for NVIDIA/AMD GPU kernels. On RISC-V clang lowers it to a libc
+                 * memcpy for large packs, therefore all other targets copy lane by lane. */
+                if constexpr(alpaka::isNvidiaOrAmdDeviceCode() && isAligned)
                     *(this) = *reinterpret_cast<ALPAKA_TYPEOF(*this) const*>(data);
                 else
                 {
@@ -120,7 +123,8 @@ namespace alpaka
 
             constexpr void copyTo(auto* data, alpaka::concepts::Alignment auto alignment) const
             {
-                if constexpr((alignment.template get<T_Type>() % alignof(ALPAKA_TYPEOF(*this))) == 0u)
+                constexpr bool isAligned = (alignment.template get<T_Type>() % alignof(ALPAKA_TYPEOF(*this))) == 0u;
+                if constexpr(alpaka::isNvidiaOrAmdDeviceCode() && isAligned)
                     *reinterpret_cast<std::remove_const_t<ALPAKA_TYPEOF(*this)>*>(data) = (*this);
                 else
                 {
