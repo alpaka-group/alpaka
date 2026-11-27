@@ -7,7 +7,9 @@
 #include "alpaka/api/trait.hpp"
 #include "alpaka/concepts.hpp"
 #include "alpaka/onHost/DeviceSelector.hpp"
+#include "alpaka/onHost/MemoryPolicyList.hpp"
 #include "alpaka/onHost/concepts.hpp"
+#include "alpaka/onHost/trait.hpp"
 #include "alpaka/tag.hpp"
 #include "alpaka/trait.hpp"
 #include "alpaka/unused.hpp"
@@ -193,7 +195,7 @@ namespace alpaka::onHost
     /** Allocate host memory for a given element type and extents.
      *
      * The allocation is performed on the host controller device
-     * (`api::host` ans `deviceKind::cpu`).
+     * (`api::host` and `deviceKind::cpu`).
      * The returned view owns the allocated memory.
      *
      * @tparam T_ValueType type of the data elements
@@ -203,11 +205,48 @@ namespace alpaka::onHost
     template<typename T_ValueType>
     inline auto allocHost(alpaka::concepts::VectorOrScalar auto const& extents)
     {
+        return allocHost<T_ValueType>(extents, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocHost()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<
+        typename T_ValueType,
+        alpaka::concepts::MemoryPolicy T_FirstPolicy,
+        alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocHost(
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        T_FirstPolicy firstPolicy,
+        T_Policies... policies)
+    {
+        return allocHost<T_ValueType>(extents, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocHost()
+     *
+     * @param policies Memory allocation policies, see @c onHost::alloc() for the supported placement preferences.
+     */
+    template<typename T_ValueType, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocHost(
+        alpaka::concepts::VectorOrScalar auto const& extents,
+        MemoryPolicyList<T_Policies...> const& policies)
+    {
         auto device = makeHostDevice<T_ValueType>();
+        static_assert(
+            isMemoryPropertySupportedBy_v<ALPAKA_TYPEOF(policies.getMemoryProperty()), ALPAKA_TYPEOF(device)>,
+            "The requested alpaka::memoryProperty is not supported by this device. Select a supported one with "
+            "onHost::hasProperty(device, property, ..., memoryProperty::defaultProperty), or query "
+            "onHost::supportedMemoryProperties(device) for the properties this device implements.");
+
         Vec const extentsVec = extents;
-        return internal::Alloc::Op<T_ValueType, std::decay_t<decltype(*device.get())>, ALPAKA_TYPEOF(extentsVec)>{}(
-            *device.get(),
-            extentsVec);
+        return internal::Alloc::Op<
+            T_ValueType,
+            std::decay_t<decltype(*device.get())>,
+            ALPAKA_TYPEOF(extentsVec),
+            ALPAKA_TYPEOF(policies.getMemoryProperty())>{}(*device.get(), extentsVec, policies.getMemoryProperty());
     }
 
     /** Allocate host memory with the same value type and extents as an existing view.
@@ -221,8 +260,29 @@ namespace alpaka::onHost
      */
     inline auto allocHostLike(auto const& view)
     {
+        return allocHostLike(view, MemoryPolicyList<>{});
+    }
+
+    /** @copydoc allocHostLike()
+     *
+     * @param firstPolicy First memory allocation policy.
+     * @param policies Additional memory allocation policies.
+     */
+    template<alpaka::concepts::MemoryPolicy T_FirstPolicy, alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocHostLike(auto const& view, T_FirstPolicy firstPolicy, T_Policies... policies)
+    {
+        return allocHostLike(view, MemoryPolicyList{firstPolicy, policies...});
+    }
+
+    /** @copydoc allocHostLike()
+     *
+     * @param policies Memory allocation policies, see @c onHost::alloc() for the supported placement preferences.
+     */
+    template<alpaka::concepts::MemoryPolicy... T_Policies>
+    inline auto allocHostLike(auto const& view, MemoryPolicyList<T_Policies...> const& policies)
+    {
         auto device = makeHostDevice<ALPAKA_TYPEOF(view)>();
-        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view));
+        return alloc<alpaka::GetValueType_t<ALPAKA_TYPEOF(view)>>(device, internal::getExtents(view), policies);
     }
 
     /** @} */

@@ -46,6 +46,7 @@
 #include "alpaka/onHost/Device.hpp"
 #include "alpaka/onHost/DeviceSelector.hpp"
 #include "alpaka/onHost/EventPolicyList.hpp"
+#include "alpaka/onHost/MemoryPolicyList.hpp"
 #include "alpaka/onHost/Queue.hpp"
 #include "alpaka/onHost/QueuePolicyList.hpp"
 #include "alpaka/onHost/algo/concurrent.hpp"

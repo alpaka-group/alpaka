@@ -142,10 +142,17 @@ namespace alpaka::onHost
     namespace internal
     {
 
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct Alloc::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct Alloc::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(syclGeneric::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(
+                syclGeneric::Device<T_Platform>& device,
+                T_Extents const& extents,
+                [[maybe_unused]] T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
                 constexpr uint32_t alignment = api::util::simdOptimizedAlignment<T_Type>(
@@ -171,10 +178,17 @@ namespace alpaka::onHost
             }
         };
 
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct AllocUnified::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocUnified::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(syclGeneric::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(
+                syclGeneric::Device<T_Platform>& device,
+                T_Extents const& extents,
+                [[maybe_unused]] T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
                 constexpr uint32_t alignment = api::util::simdOptimizedAlignment<T_Type>(
@@ -206,10 +220,17 @@ namespace alpaka::onHost
             }
         };
 
-        template<typename T_Type, typename T_Platform, alpaka::concepts::Vector T_Extents>
-        struct AllocMapped::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents>
+        template<
+            typename T_Type,
+            typename T_Platform,
+            alpaka::concepts::Vector T_Extents,
+            alpaka::concepts::MemoryProperty T_Property>
+        struct AllocMapped::Op<T_Type, syclGeneric::Device<T_Platform>, T_Extents, T_Property>
         {
-            auto operator()(syclGeneric::Device<T_Platform>& device, T_Extents const& extents) const
+            auto operator()(
+                syclGeneric::Device<T_Platform>& device,
+                T_Extents const& extents,
+                [[maybe_unused]] T_Property property) const
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::memory + onHost::logger::device);
                 constexpr uint32_t alignment = api::util::simdOptimizedAlignment<T_Type>(
