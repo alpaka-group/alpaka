@@ -101,3 +101,9 @@ def set_generic_variables(variables: dict[str, Any], combination: bashi.Combinat
     variables["APCI_RUN_CTEST"] = (
         "OFF" if combination[JOB_EXECUTION_TYPE].version == CI_PIPELINE_COMPILE_ONLY_VER else "ON"
     )
+
+    # debug variable for HIP
+    # variables["AMD_LOG_LEVEL"] = "5"
+    # with 2 hardware queues the test evReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRelease is failing
+    variables["GPU_MAX_HW_QUEUES"] = "3"
+    # variables["HSA_ENABLE_SDMA"] = "0"

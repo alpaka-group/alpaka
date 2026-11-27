@@ -37,6 +37,20 @@ namespace alpaka::onHost
             {
                 ALPAKA_LOG_FUNCTION(onHost::logger::device);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::setDevice(idx));
+                /* We observe random crashes in the CI for HIP.
+                 * On alpaka 2.x we always create hip stream to create a device context.
+                 * alpaka 3.x is not doing it.
+                 * Due to data races in the HIP stack an application can run into segfaults or stuck.
+                 * By creating the stream very early and throw it than away we can hopefully work around the HIP bugs.
+                 *
+                 * Nevertheless, creating the stream as also advantages, CUDA and HIP is not allocating the device when
+                 * you call `cudaSetDevice()` and if the device is set into the process exclusive mode and a second
+                 * process try to use the device the follow-up call will fail. By allocating a stream we know if the
+                 * device is usable and can clearly communicate it to the user.
+                 */
+                typename ApiInterface::Stream_t defaultStream = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::streamCreate(&defaultStream));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ApiInterface, ApiInterface::streamDestroy(defaultStream));
             }
 
             ~Device()
