@@ -108,6 +108,12 @@ set_property(CACHE alpaka_DEP_HWLOC PROPERTY STRINGS OFF ON AUTO)
 alpaka_compiler_option(FAST_MATH "Enable fast-math" DEFAULT)
 alpaka_compiler_option(FTZ "Set flush to zero" DEFAULT)
 
+# SIMD WIDTH -> will be passed in alpaka_finalize() to any target
+set(alpaka_CPU_SIMD_BITS "0" CACHE STRING "CPU SIMD vector width in bits. 0 enables automatic detection.")
+if(NOT alpaka_CPU_SIMD_BITS MATCHES "^[0-9]+$")
+    message(FATAL_ERROR "alpaka_CPU_SIMD_BITS must be a non-negative integer")
+endif()
+
 alpaka_compiler_option(RELOCATABLE_DEVICE_CODE "Enable relocatable device code for CUDA, HIP and SYCL devices" DEFAULT)
 
 # Create core targets

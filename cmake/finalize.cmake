@@ -349,6 +349,12 @@ function(alpaka_internal_finalize target)
             target_link_options(${target} PRIVATE -fsanitize=undefined)
         endif()
     endif()
+
+    if(alpaka_CPU_SIMD_BITS GREATER 0)
+        # Set the compiler flag to any alpaka target because even a CUDA/HIP compiler can compile host cpu code.
+        # Do not set the define if it is zero to provide the user to set the define in the C++ files directly.
+        target_compile_definitions(${target} PRIVATE "ALPAKA_CPU_SIMD_BITS=${alpaka_CPU_SIMD_BITS}")
+    endif()
 endfunction()
 
 ### Update target properties and source file properties to enable compilation with the selected alpaka targets.

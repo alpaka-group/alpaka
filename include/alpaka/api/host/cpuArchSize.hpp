@@ -66,9 +66,19 @@ namespace alpaka::onHost::internal
             sizeof(T_Type);
 #endif
 
+        /** Allow the user to enfore the SIMD width for the current CPU architecture.
+         *
+         * If the user defining ALPAKA_CPU_SIMD_BITS we force use it for the SIMD with and do not use into any
+         * autocorrection.
+         */
+#if defined(ALPAKA_CPU_SIMD_BITS) && ALPAKA_CPU_SIMD_BITS != 0
+        constexpr size_t simdWidthInByte = ALPAKA_CPU_SIMD_BITS / 8u;
+#else
         // we assume that the standard is maintaining the vector length better than we, therefore take it if vector
         // types are supported
         constexpr size_t simdWidthInByte = stdSimdWidth<T_Type>() ? stdSimdWidth<T_Type>() : possibleSimdWidthBytes;
+#endif
+
 
         return alpaka::divExZero(simdWidthInByte, sizeof(T_Type));
     }
