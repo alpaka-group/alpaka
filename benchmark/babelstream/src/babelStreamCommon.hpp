@@ -448,7 +448,8 @@ namespace
                    {"AddKernel", getDataThroughput<DataType>(3u, static_cast<unsigned>(arraySize))},
                    {"TriadKernel", getDataThroughput<DataType>(3u, static_cast<unsigned>(arraySize))},
                    {"DotKernel", getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize))},
-                   {"NStreamKernel", getDataThroughput<DataType>(2u, static_cast<unsigned>(arraySize))}};
+                   // NStream reads a, b and c and writes a: four array accesses.
+                   {"NStreamKernel", getDataThroughput<DataType>(4u, static_cast<unsigned>(arraySize))}};
 
             // Populate each KernelRunData entry in kernelToRundataMap
             for(auto const& [kernelName, throughput] : throughputValues)
