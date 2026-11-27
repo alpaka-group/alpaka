@@ -35,12 +35,32 @@ namespace alpaka::onAcc::warp::internal
     };
 
     template<alpaka::onAcc::concepts::Acc T_Acc>
+    struct GetNumActiveLanes::Op<T_Acc, api::Host>
+    {
+        constexpr auto operator()(T_Acc const& acc, api::Host) const
+        {
+            alpaka::unused(acc);
+            return uint32_t{1u};
+        }
+    };
+
+    template<alpaka::onAcc::concepts::Acc T_Acc>
     struct GetWarpIdx::Op<T_Acc, api::Host>
     {
         constexpr auto operator()(T_Acc const& acc, api::Host) const
         {
             alpaka::unused(acc);
             return uint32_t{0u};
+        }
+    };
+
+    template<alpaka::onAcc::concepts::Acc T_Acc>
+    struct GetNumWarps::Op<T_Acc, api::Host>
+    {
+        constexpr auto operator()(T_Acc const& acc, api::Host) const
+        {
+            alpaka::unused(acc);
+            return uint32_t{1u};
         }
     };
 

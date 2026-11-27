@@ -118,13 +118,13 @@ namespace alpaka::onAcc
         template<concepts::Acc T_Acc>
         struct GetExtentsOf::Op<T_Acc, ALPAKA_TYPEOF(origin::warp), ALPAKA_TYPEOF(unit::threads)>
         {
-            constexpr alpaka::concepts::CVector<uint32_t> auto operator()(
+            constexpr alpaka::concepts::Vector<alpaka::NotRequired, 1u> auto operator()(
                 T_Acc const& acc,
                 ALPAKA_TYPEOF(origin::warp),
                 ALPAKA_TYPEOF(unit::threads)) const
             {
-                alpaka::unused(acc);
-                return alpaka::CVec<uint32_t, T_Acc::getWarpSize()>{};
+                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(acc[layer::thread].count())>;
+                return alpaka::Vec<IndexType, 1u>{static_cast<IndexType>(warp::internal::getNumActiveLanes(acc))};
             }
         };
 
@@ -148,10 +148,8 @@ namespace alpaka::onAcc
                 ALPAKA_TYPEOF(origin::block),
                 ALPAKA_TYPEOF(unit::warps)) const
             {
-                std::integral auto linearThreadsInBlock
-                    = acc.getExtentsOf(onAcc::origin::block, onAcc::unit::threads).product();
-                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(linearThreadsInBlock)>;
-                return Vec{divCeil(linearThreadsInBlock, static_cast<IndexType>(T_Acc::getWarpSize()))};
+                using IndexType = alpaka::GetValueType_t<ALPAKA_TYPEOF(acc[layer::thread].count())>;
+                return alpaka::Vec<IndexType, 1u>{static_cast<IndexType>(warp::internal::getNumWarps(acc))};
             }
         };
 
