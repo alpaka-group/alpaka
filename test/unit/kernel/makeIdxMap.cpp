@@ -126,3 +126,88 @@ TEMPLATE_LIST_TEST_CASE("makeIdxMap", "[kernel][makeIdxMap]", TestBackends)
 
     std::apply([&](auto const&... extent) { (runExtent(extent), ...); }, extentsAndFrameSize);
 }
+
+/** Each worker must get exactly its own index if the worker group and the range describe the same domain. */
+struct WorkerIdxKernel
+{
+    ALPAKA_FN_ACC void operator()(auto const& acc, concepts::IMdSpan<bool> auto success) const
+    {
+        checkIdx(
+            acc,
+            success,
+            onAcc::worker::blocksInGrid,
+            onAcc::range::blocksInGrid,
+            acc.getIdxWithin(onAcc::origin::grid, onAcc::unit::blocks));
+        checkIdx(
+            acc,
+            success,
+            onAcc::worker::threadsInBlock,
+            onAcc::range::threadsInBlock,
+            acc.getIdxWithin(onAcc::origin::block, onAcc::unit::threads));
+        checkIdx(
+            acc,
+            success,
+            onAcc::worker::linearWarpsInBlock,
+            onAcc::range::linearWarpsInBlock,
+            Vec{onAcc::warp::getWarpIdx(acc)});
+        checkIdx(
+            acc,
+            success,
+            onAcc::worker::linearThreadsInWarp,
+            onAcc::range::linearThreadsInWarp,
+            Vec{onAcc::warp::getLaneIdx(acc)});
+    }
+
+private:
+    ALPAKA_FN_ACC void checkIdx(
+        auto const& acc,
+        concepts::IMdSpan<bool> auto success,
+        auto const workGroup,
+        auto const range,
+        concepts::Vector auto const expectedIdx) const
+    {
+        uint32_t numIndices = 0u;
+        for(auto idx : onAcc::makeIdxMap(acc, workGroup, range))
+        {
+            if(idx != expectedIdx)
+                success[0u] = false;
+            ++numIndices;
+        }
+        // detect missing indices too
+        if(numIndices != 1u)
+            success[0u] = false;
+    }
+};
+
+TEMPLATE_LIST_TEST_CASE("makeIdxMap worker index", "[kernel][makeIdxMap]", TestBackends)
+{
+    auto deviceExec = test::getDeviceExecutorOrSkipTest(TestType::makeDict());
+    onHost::Device device = test::getDevice(deviceExec);
+    concepts::Executor auto exec = test::getExecutor(deviceExec);
+
+    onHost::Queue queue = device.makeQueue(queueKind::blocking);
+
+    auto successHost = onHost::allocHost<bool>(1u);
+    auto successDev = onHost::allocLike(device, successHost);
+
+    auto runFrame = [&](concepts::Vector auto frameExtents)
+    {
+        onHost::memset(queue, successDev, static_cast<uint8_t>(true));
+        queue.enqueue(
+            onHost::FrameSpec{frameExtents.fill(3u), frameExtents, exec},
+            KernelBundle{WorkerIdxKernel{}, successDev});
+        onHost::memcpy(queue, successHost, successDev);
+        onHost::wait(queue);
+        INFO("frameExtents=" << frameExtents);
+        CHECK(successHost[0u]);
+    };
+
+    uint32_t const warpSize = device.getDeviceProperties().warpSize;
+    // 1D, the last warp is full or contains a single thread
+    runFrame(Vec{2u * warpSize});
+    runFrame(Vec{2u * warpSize + 1u});
+    // MD, warps can be smaller than the warp size
+    runFrame(Vec{4u, 2u});
+    runFrame(Vec{4u, warpSize + 1u});
+    runFrame(Vec{2u, 2u, 8u});
+}

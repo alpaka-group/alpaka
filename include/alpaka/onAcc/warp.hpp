@@ -43,10 +43,29 @@ namespace alpaka::onAcc::warp
         return internal::getLaneIdx(acc);
     }
 
+    /** Return number of lanes within the warp
+     *
+     * This is **not** the warp size, it is the number of threads in the current warp.
+     * Do **not** assume all warps have the same number of active lanes, else you would miss edge cases like the
+     * remainder warp or implementation behaviors e.g. of Sycl.
+     * This function is not equal to activemask() which return different masks in branches.
+     * It is safe to call this method from within diverging thread branches.
+     */
+    constexpr uint32_t getNumActiveLanes(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumActiveLanes(acc);
+    }
+
     /** Return the warp index within the block. */
     constexpr uint32_t getWarpIdx(alpaka::onAcc::concepts::Acc auto const& acc)
     {
         return internal::getWarpIdx(acc);
+    }
+
+    /** Return the number of warps within the block. */
+    constexpr uint32_t getNumWarps(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumWarps(acc);
     }
 
     /** Evaluates predicate for all active threads of the warp
@@ -273,5 +292,28 @@ namespace alpaka::onAcc::warp
             value,
             laneMask,
             width != 0u ? width : getSize<T_Acc>());
+    }
+
+    /** Reduce a value over the lanes of a warp (butterfly with shflXor).
+     *
+     * Notes:
+     * * All lanes calling this function must execute the same line of code, it is not portable to write
+     *   if(a) {reduce} else {reduce}.
+     * * A branch can be taken by a part of the warp only if all lanes of each group build by width take it.
+     * * All lanes of each group must exist, the last warp of a block can be partial.
+     * * No block synchronization and no memory fence is performed.
+     *
+     * @param value contribution of this lane
+     * @param op associative and commutative binary functor
+     * @param width size of the group participating in the reduction, must be a power of 2.
+     * @return reduction over the group build by width, identical in all lanes of the group
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T reduce(T_Acc const& acc, T value, auto const& op, uint32_t width = getSize<T_Acc>())
+    {
+        for(uint32_t laneMask = width / 2u; laneMask > 0u; laneMask /= 2u)
+            value = op(value, shflXor(acc, value, laneMask, width));
+        return value;
     }
 } // namespace alpaka::onAcc::warp

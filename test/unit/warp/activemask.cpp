@@ -79,12 +79,14 @@ TEMPLATE_LIST_TEST_CASE("warp activemask reflects participating lanes", "[warp][
     auto const blocks = Vec<std::uint32_t, 1u>{5u};
     auto const threads = Vec<std::uint32_t, 1u>{4u * warpExtent};
     auto const frame = onHost::FrameSpec{blocks, threads, exec};
+    auto const frameMd = onHost::FrameSpec{Vec{5u, 3u}, Vec{4u, warpExtent}, exec};
 
     for(std::uint32_t inactiveLane = 0u; inactiveLane < warpExtent; ++inactiveLane)
     {
         // Sweep every lane once to confirm the mask drops exactly that participant.
         onHost::memset(queue, successDev, static_cast<std::uint8_t>(true));
         queue.enqueue(frame, KernelBundle{ActivemaskMultiThreadKernel{}, successDev, inactiveLane});
+        queue.enqueue(frameMd, KernelBundle{ActivemaskMultiThreadKernel{}, successDev, inactiveLane});
         onHost::memcpy(queue, successHost, successDev);
         onHost::wait(queue);
         INFO("inactiveLane=" << inactiveLane);
