@@ -43,10 +43,29 @@ namespace alpaka::onAcc::warp
         return internal::getLaneIdx(acc);
     }
 
+    /** Return number of lanes within the warp
+     *
+     * This is **not** the warp size, it is the number of threads in the current warp.
+     * Do **not** assume all warps have the same number of active lanes, else you would miss edge cases like the
+     * remainder warp or implementation behaviors e.g. of Sycl.
+     * This function is not equal to activemask() which return different masks in branches.
+     * It is safe to call this method from within diverging thread branches.
+     */
+    constexpr uint32_t getNumActiveLanes(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumActiveLanes(acc);
+    }
+
     /** Return the warp index within the block. */
     constexpr uint32_t getWarpIdx(alpaka::onAcc::concepts::Acc auto const& acc)
     {
         return internal::getWarpIdx(acc);
+    }
+
+    /** Return the number of warps within the block. */
+    constexpr uint32_t getNumWarps(alpaka::onAcc::concepts::Acc auto const& acc)
+    {
+        return internal::getNumWarps(acc);
     }
 
     /** Evaluates predicate for all active threads of the warp
@@ -273,5 +292,62 @@ namespace alpaka::onAcc::warp
             value,
             laneMask,
             width != 0u ? width : getSize<T_Acc>());
+    }
+
+    /** Inclusive prefix scan over the lanes of a warp (Kogge-Stone with shflUp).
+     *
+     * Lane i of a group gets op(v_0, ..., v_i) of its group.
+     * Notes:
+     * * All lanes calling this function must execute the same line of code, it is not portable to write
+     *   if(a) {inclusiveScan} else {inclusiveScan}.
+     * * A branch can be taken by a part of the warp only if all lanes of each group build by width take it.
+     * * A lane only reads from lower lanes of its group, the last warp of a block can be partial.
+     * * No block synchronization and no memory fence is performed.
+     *
+     * @param value contribution of this lane
+     * @param op associative binary functor, need not be commutative
+     * @param width size of the group participating in the scan, must be a power of 2.
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T inclusiveScan(T_Acc const& acc, T value, auto const& op, uint32_t width = getSize<T_Acc>())
+    {
+        uint32_t const laneInGroup = getLaneIdx(acc) % width;
+        for(uint32_t delta = 1u; delta < width; delta *= 2u)
+        {
+            T const lower = shflUp(acc, value, delta, width);
+            if(laneInGroup >= delta)
+                value = op(lower, value);
+        }
+        return value;
+    }
+
+    /** Exclusive prefix scan over the lanes of a warp.
+     *
+     * Lane i of a group gets op(v_0, ..., v_{i-1}) of its group, the first lane gets `identity`.
+     * The total of a group is op(result, value) of its last existing lane.
+     * Notes:
+     * * All lanes calling this function must execute the same line of code, it is not portable to write
+     *   if(a) {exclusiveScan} else {exclusiveScan}.
+     * * A branch can be taken by a part of the warp only if all lanes of each group build by width take it.
+     * * A lane only reads from lower lanes of its group, the last warp of a block can be partial.
+     * * No block synchronization and no memory fence is performed.
+     *
+     * @param value contribution of this lane
+     * @param op associative binary functor, need not be commutative
+     * @param identity result of the first lane of a group
+     * @param width size of the group participating in the scan, must be a power of 2.
+     */
+    template<typename T, alpaka::onAcc::concepts::Acc T_Acc>
+    requires(std::is_trivially_copyable_v<T>)
+    constexpr T exclusiveScan(
+        T_Acc const& acc,
+        T value,
+        auto const& op,
+        T const& identity,
+        uint32_t width = getSize<T_Acc>())
+    {
+        T const lower = shflUp(acc, inclusiveScan(acc, value, op, width), 1u, width);
+        return getLaneIdx(acc) % width == 0u ? identity : lower;
     }
 } // namespace alpaka::onAcc::warp

@@ -8,6 +8,7 @@
 #include "alpaka/CVec.hpp"
 #include "alpaka/Simd.hpp"
 #include "alpaka/Vec.hpp"
+#include "alpaka/core/Assert.hpp"
 #include "alpaka/core/common.hpp"
 #include "alpaka/onAcc/Acc.hpp"
 #include "alpaka/onAcc/SimdAlgo.hpp"
@@ -18,6 +19,7 @@
 
 #include <array> // std::array
 #include <cstddef> // std::size_t
+#include <functional> // std::plus
 #include <tuple> // std::tuple
 #include <type_traits> // is_same_v
 #include <typeinfo>
@@ -43,17 +45,6 @@ namespace alpaka::onHost::internal
             return static_cast<T_Idx>(8);
         else
             return static_cast<T_Idx>(32768) / sizeof(T_Data);
-    }
-
-    /* This function introduces padding to the shared memory accesses to reduce bank conflicts between threads. The
-     * template parameter is the device kind, which dictates how many memory banks are assumed. For CPU or
-     * unknown/unimplemented device kinds, infinite memory banks are assumed, i.e., no padding is used.
-     */
-    template<typename T_Acc, typename T_Idx>
-    constexpr T_Idx conflictFreeAccess(T_Idx const& n)
-    {
-        constexpr auto warpSize = static_cast<T_Idx>(onAcc::warp::getSize<T_Acc>());
-        return n + n / warpSize;
     }
 
     /* Do a muting exclusive scan on the given miniblock, and return the total sum.
@@ -110,6 +101,9 @@ namespace alpaka::onHost::internal
     /* This kernel calculates an exclusive scan for each block individually. The algorithm is based on Blelloch, with
      * the improvement from Lichterman, written up in the CUDA blog (see 39.2.5):
      * https://developer.nvidia.com/gpugems/gpugems3/part-vi-gpu-computing/chapter-39-parallel-prefix-sum-scan-cuda
+     *
+     * Blelloch is used to scan the mini blocks of a thread in registers. The sums of the threads are scanned with warp
+     * shuffles and only the sums of the warps are exchanged via shared memory.
      */
     template<ScanType T_scanType, typename T_Idx, typename T_Data>
     class ScanBlocksKernel
@@ -124,7 +118,6 @@ namespace alpaka::onHost::internal
             auto... blockSums) const
         {
             using DeviceType = ALPAKA_TYPEOF(acc.getDeviceKind());
-            using AccType = ALPAKA_TYPEOF(acc);
 
             alpaka::concepts::CVector auto numThreadsPerBlock = acc[layer::thread].count();
             constexpr std::integral auto elsPerThread = largeChunkExtents.x() / numThreadsPerBlock.x();
@@ -134,12 +127,19 @@ namespace alpaka::onHost::internal
             constexpr std::integral auto miniBlockSize
                 = std::min(maximumMiniBlockSize<DeviceType, T_Idx, T_Data>(), elsPerThread);
             constexpr std::integral auto miniBlocksPerThread = elsPerThread / miniBlockSize;
-            constexpr std::integral auto miniBlocksPerChunk = chunkExtent.x() / miniBlockSize;
 
             constexpr auto lLocalArrayLength = miniBlocksPerThread * miniBlockSize;
             using LocalArray = T_Data[lLocalArrayLength];
 
             auto const validElementsInLastFrame = (numElements - T_Idx{1}) % chunkExtent + T_Idx{1};
+
+            constexpr uint32_t warpSize = onAcc::warp::getSize<ALPAKA_TYPEOF(acc)>();
+            // capacity for the warp sums, a 1D block is split linearly into warps and the last warp can be partial
+            constexpr T_Idx maxNumWarps = divCeil(numThreadsPerBlock.x(), static_cast<T_Idx>(warpSize));
+            auto const numWarps = static_cast<T_Idx>(onAcc::warp::getNumWarps(acc));
+            ALPAKA_ASSERT_ACC(numWarps <= maxNumWarps);
+            // the last lane of a warp holds the sum of the warp
+            bool const isLastLaneOfWarp = onAcc::warp::getLaneIdx(acc) == onAcc::warp::getNumActiveLanes(acc) - 1u;
 
             /* This kernel is called with 1-dimensional frame extents.
              *
@@ -155,8 +155,11 @@ namespace alpaka::onHost::internal
                 // allocate "per-thread" register memory to store all mini blocks of a thread persistently
                 LocalArray regMem;
 
-                constexpr auto conflictFreeAdr = conflictFreeAccess<AccType>(miniBlocksPerChunk - T_Idx{1}) + T_Idx{1};
-                auto tmp = onAcc::declareSharedMdArray<T_Data, uniqueId()>(acc, CVec<T_Idx, conflictFreeAdr>{});
+                // exclusive prefix of each mini block within this thread and of this thread within its warp
+                T_Data miniBlockPrefixes[miniBlocksPerThread];
+                T_Data threadPrefix{0};
+
+                auto warpSums = onAcc::declareSharedMdArray<T_Data, uniqueId()>(acc, CVec<T_Idx, maxNumWarps>{});
                 auto const frameOffset = chunkExtent * chunkIdx;
 
                 for(auto frameElem : onAcc::makeIdxMap(
@@ -194,6 +197,7 @@ namespace alpaka::onHost::internal
                     }
 
                     // -- HANDLE MINI BLOCKS OF THIS THREAD --
+                    T_Data threadSum{0};
                     for(auto miniBlockOffset = T_Idx{0}; miniBlockOffset < elsPerThread;
                         miniBlockOffset += miniBlockSize)
                     {
@@ -201,60 +205,34 @@ namespace alpaka::onHost::internal
                         auto miniBlockSum
                             = scanMiniBlock<T_Idx, T_Data>(regMem + miniBlockOffset, CVec<T_Idx, miniBlockSize>{});
 
-                        // write miniblock sum into shared memory
-                        tmp[conflictFreeAccess<AccType>((frameElem + miniBlockOffset) / miniBlockSize)] = miniBlockSum;
+                        miniBlockPrefixes[miniBlockOffset / miniBlockSize] = threadSum;
+                        threadSum += miniBlockSum;
                     }
-                }
 
-                // -- UP-SWEEP / REDUCE --
-                for(T_Idx d = miniBlocksPerChunk / T_Idx{2}, offset = T_Idx{1}; d > 0; d >>= 1u, offset <<= 1u)
-                {
-                    onAcc::syncBlockThreads(acc);
-                    for(auto frameElem : onAcc::makeIdxMap(
-                            acc,
-                            onAcc::worker::threadsInBlock,
-                            IdxRange{CVec<T_Idx, 0>{}, Vec<T_Idx, 1>{T_Idx{2} * d}, T_Idx{2}}))
-                    {
-                        T_Idx left = offset * (frameElem + T_Idx{1}).x() - T_Idx{1};
-                        T_Idx right = offset * (frameElem + T_Idx{2}).x() - T_Idx{1};
-                        left = conflictFreeAccess<AccType>(left);
-                        right = conflictFreeAccess<AccType>(right);
-                        tmp[right] += tmp[left];
-                    }
+                    // -- SCAN THREAD SUMS WITHIN THE WARP --
+                    threadPrefix = onAcc::warp::exclusiveScan(acc, threadSum, std::plus{}, T_Data{0});
+                    if(isLastLaneOfWarp)
+                        warpSums[onAcc::warp::getWarpIdx(acc)] = threadPrefix + threadSum;
                 }
                 onAcc::syncBlockThreads(acc);
 
+                // -- SCAN WARP SUMS --
                 for([[maybe_unused]] auto frameElem :
                     onAcc::makeIdxMap(acc, onAcc::worker::threadsInBlock, IdxRange{1}))
                 {
+                    T_Data runningSum{0};
+                    for(T_Idx warpIdx = 0; warpIdx < numWarps; ++warpIdx)
+                    {
+                        T_Data const warpSum = warpSums[warpIdx];
+                        warpSums[warpIdx] = runningSum;
+                        runningSum += warpSum;
+                    }
+
                     // -- SAVE BLOCK SUMS --
                     if constexpr(sizeof...(blockSums))
                     {
                         auto blockSums0 = std::get<0>(std::make_tuple(blockSums...));
-                        blockSums0[chunkIdx] = tmp[conflictFreeAccess<AccType>(miniBlocksPerChunk - T_Idx{1})];
-                    }
-
-                    // -- SET 0 --
-                    tmp[conflictFreeAccess<AccType>(miniBlocksPerChunk - T_Idx{1})] = 0;
-                }
-
-                // -- DOWN-SWEEP --
-                for(T_Idx d = 1, offset = miniBlocksPerChunk / T_Idx{2}; d < miniBlocksPerChunk;
-                    d <<= 1u, offset >>= 1u)
-                {
-                    onAcc::syncBlockThreads(acc);
-                    for(auto frameElem : onAcc::makeIdxMap(
-                            acc,
-                            onAcc::worker::threadsInBlock,
-                            IdxRange{CVec<T_Idx, 0>{}, Vec<T_Idx, 1>{T_Idx{2} * d}, T_Idx{2}}))
-                    {
-                        T_Idx left = offset * (frameElem.x() + T_Idx{1}) - T_Idx{1};
-                        T_Idx right = offset * (frameElem.x() + T_Idx{2}) - T_Idx{1};
-                        left = conflictFreeAccess<AccType>(left);
-                        right = conflictFreeAccess<AccType>(right);
-                        auto t = tmp[left];
-                        tmp[left] = tmp[right];
-                        tmp[right] += t;
+                        blockSums0[chunkIdx] = runningSum;
                     }
                 }
                 onAcc::syncBlockThreads(acc);
@@ -273,8 +251,8 @@ namespace alpaka::onHost::internal
                         T_Data blockSum{0};
                         if(frameOffset + frameElem + miniBlockOffset < numElements)
                         {
-                            blockSum
-                                = tmp[conflictFreeAccess<AccType>((frameElem.x() + miniBlockOffset) / miniBlockSize)];
+                            blockSum = warpSums[onAcc::warp::getWarpIdx(acc)] + threadPrefix
+                                       + miniBlockPrefixes[miniBlockOffset / miniBlockSize];
                         }
 
                         // add block sum to mini block

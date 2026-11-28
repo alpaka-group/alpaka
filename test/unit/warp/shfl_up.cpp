@@ -117,6 +117,9 @@ TEMPLATE_LIST_TEST_CASE("warp shflUp shifts toward lower lanes", "[warp][shfl_up
 
     onHost::memset(queue, successDev, static_cast<std::uint8_t>(true));
     queue.enqueue(onHost::FrameSpec{blocks, threads, exec}, KernelBundle{ShflUpMultiThreadKernel{}, successDev});
+    queue.enqueue(
+        onHost::FrameSpec{Vec{5u, 3u}, Vec{4u, warpExtent}, exec},
+        KernelBundle{ShflUpMultiThreadKernel{}, successDev});
     onHost::memcpy(queue, successHost, successDev);
     onHost::wait(queue);
     CHECK(successHost[0]);
